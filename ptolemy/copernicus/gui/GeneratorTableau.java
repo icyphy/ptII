@@ -53,6 +53,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -172,6 +173,23 @@ public class GeneratorTableau extends Tableau {
 		_save();
 	    }
 
+	    if (getEffigy().url == null 
+		|| getEffigy().url.getURL() == null) { 
+		// If the user does File -> New -> GraphEditor,
+		// View -> Code Generator, then we might end up 
+		// dealing with an Effigy that has a null url.
+		_save();
+		if (getEffigy() == null
+		    || getEffigy().url == null 
+		    || getEffigy().url.getURL() == null) { 
+		    throw new IllegalActionException(model, ex, 
+				     "Could not read the URL of this "
+				     + "model.  getEffigy(): "
+				     + getEffigy());
+		    }
+		}
+	    }
+
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
@@ -248,23 +266,9 @@ public class GeneratorTableau extends Tableau {
                         model, "_generator");
             }
 
-	    if (getEffigy().url != null 
-		&& getEffigy().url.getURL() != null) { 
-		// Update the modelPath parameter with the path to the model
-		attribute.sanityCheckAndUpdateParameters(getEffigy().url
+	    // Update the modelPath parameter with the path to the model
+	    attribute.sanityCheckAndUpdateParameters(getEffigy().url
 						     .getURL().toString());
-	    } else {
-		// FIXME: I'm not sure if this is what we want.
-		// The problem is that if the user opens a new model
-		// and then does View -> Codegenerator, then
-		// the URL of the effigy is null, so we cannot query
-		// the empty model for things like its name and the
-		// number of iterations.  So, we default to Orthocom
-		attribute.sanityCheckAndUpdateParameters(
-		    ptolemy.data.expr
-		    .UtilityFunctions.getProperty("ptolemy.ptII.dir")
-		    + "/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml");
-	    }
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
@@ -341,10 +345,7 @@ public class GeneratorTableau extends Tableau {
 			    // parameter should name a subdirectory of
 			    // ptolemy/copernnicus such as "java" or "shallow".
 			    String codeGenerator = 
-				((StringToken)
-				 ((Parameter)options
-				  .getAttribute("codeGenerator"))
-				 .getToken()).stringValue();
+				getStringToken(options, "codeGenerator");
 
 			    // Convert "java" to java.
 			    //codeGenerator =
@@ -352,16 +353,10 @@ public class GeneratorTableau extends Tableau {
 			    //				.length() - 1);
 								    
 			    String targetPath =
-				((StringToken)
-				 ((Variable)options
-				  .getAttribute("targetPath"))
-				 .getToken()).stringValue();
+				getStringToken(options, "targetPath");
 
 			    String ptIIUserDirectory =
-				((StringToken)
-				 ((Parameter)options
-				  .getAttribute("ptIIUserDirectory"))
-				 .getToken()).stringValue();
+				getStringToken(options, "ptIIUserDirectory");
 
 			    //targetPath =
 				//targetPath.substring(1, targetPath
@@ -468,10 +463,7 @@ public class GeneratorTableau extends Tableau {
 
 			    if (show && decompile) {
 				String targetPackage =
-				    ((StringToken)
-				     ((Parameter)options
-				      .getAttribute("targetPackage"))
-				     .getToken()).stringValue();
+				    getStringToken(options, "targetPackage");
 
 				//targetPackage =
 				//    targetPackage.substring(1, targetPackage
@@ -491,10 +483,7 @@ public class GeneratorTableau extends Tableau {
 				}
 
 				String classPath =
-				    ((StringToken)
-				     ((Parameter)options
-				      .getAttribute("classPath"))
-				     .getToken()).stringValue();
+				    getStringToken(options, "classPath");
 
 				execCommands.add("javap "
                                         + "-classpath \"" 
@@ -604,5 +593,24 @@ public class GeneratorTableau extends Tableau {
 	}
 	return results;
     }
+
+    // Get a StringToken by name, throw IllegalActionException if
+    // a StringToken by that name cannot be found.
+    private String getStringToken(Attribute attribute, String tokenName)
+	throws IllegalActionException {
+	try {
+	    return ((StringToken)
+		    ((Variable)attribute
+		     .getAttribute(tokenName))
+		    .getToken()).stringValue();
+	} catch (Exception ex) {
+	    throw new IllegalActionException(attribute, ex,
+					     "Could not find an attribute "
+					     + "named '"
+					     + tokenName + "' in "
+					     + attribute);
+	}
+    }
+
 }
 
