@@ -30,6 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 
 import java.io.File;
@@ -189,7 +190,9 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  to the top effigy containing the associated Tableau, if there
      *  is one, and otherwise throws an exception. This ensures that the
      *  data written is the description of the entire model, not just
-     *  the portion within some composite actor.
+     *  the portion within some composite actor.   It also adjusts the
+     *  URIAttribute in the model to match the specified file, if
+     *  necessary, and creates one otherwise.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
@@ -200,7 +203,22 @@ public abstract class PtolemyFrame extends TableauFrame {
             if (effigy != null) {
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-                effigy.topEffigy().writeFile(file);
+                Effigy topEffigy = effigy.topEffigy();
+                topEffigy.writeFile(file);
+                if (topEffigy instanceof PtolemyEffigy) {
+                    NamedObj model = ((PtolemyEffigy)topEffigy).getModel();
+                    // NOTE: Fairly brute force here... There might
+                    // already be a URIAttribute, but we simply overwrite it.
+                    // Perhaps should check to see whether the one that is
+                    // there matches.  EAL
+                    try {
+                        URIAttribute uri = new URIAttribute(model, "_uri");
+                        uri.setURI(file.toURI());
+                    } catch (KernelException ex) {
+                        throw new InternalErrorException(
+                        "Failed to create URIAttribute for new location!");
+                    }
+                }                            
                 return;
             }
         }
