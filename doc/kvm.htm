@@ -102,11 +102,11 @@ in <CODE>$PTII/mk/ptII.mk</CODE>
 
 <li> Compile a simple Palm KVM demo:
 <pre>
-cd $PTII/kvm/hello
+cd $PTII/ptolemy/apps/kvm/demo/hello
 make
 </pre>
 
-<li> Transfer <CODE>$PTII/kvm/hello/Hello.prc</CODE> to your Palm
+<li> Transfer <CODE>$PTII/ptolemy/apps/kvm/demo/hello/Hello.prc</CODE> to your Palm
 or Handspring and run it.
 
 </ol>
@@ -138,20 +138,20 @@ $PTII/vendors/sun/j2me_cldc/kvm/VmWin/build/kvm.exe -classpath "$PTII/vendors/su
 </ol>
 
 <h2>KVM Demonstration</h2>
-<a href="../ptolemy/kvm/demo/ramp"><code>$PTII/ptolemy/kvm/demo/ramp</code></a>
+<a href="../ptolemy/apps/kvm/demo/ramp"><code>$PTII/ptolemy/kvm/demo/ramp</code></a>
 contains a simple SDF demonstration system that consists of a Ramp and
 a FileWriter.
 <br><bold>FIXME: Ramp stars do not work yet</bold>
 
 <p>This simulation sets several makefile variables in
-<a href="../ptolemy/kvm/demo/ramp/makefile"><code>$PTII/ptolemy/kvm/demo/ramp/makefile</code></a> and then includes
+<a href="../ptolemy/apps/kvm/demo/ramp/makefile"><code>$PTII/ptolemy/apps/kvm/demo/ramp/makefile</code></a> and then includes
 <a href="#kvm_mk"><code>$PTII/mk/kvm.mk</code></a>.
 <p>To run the demonstration:
 <ol>
 <li><a href="#kvm_installation">Install the KVM</a> and rerun configure.
 <li>Compile the <code>.java</code> files:
 <pre>
-cd $PTII/ptolemy/kvm/demo
+cd $PTII/ptolemy/apps/kvm/demo
 make
 </pre>
 <li> Run the demo as using the standard Ptolemy II runtime:
@@ -197,7 +197,7 @@ At run time, lines like:
 </pre>
 cause errors like:
 <pre>
-ALERT: Error verifying class ptolemy/kvm/hello/Hello
+ALERT: Error verifying class ptolemy/apps/kvm/hello/Hello
 </pre>
 even though preverify does not indicate that there is an error
 
