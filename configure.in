@@ -116,13 +116,13 @@ so we search for the java compiler.])
     if test ! -d "$PTJAVA_DIR"; then
 	DEFAULT_JDK=/opt/jdk1.2.2
 	if test -d "$DEFAULT_JDK"; then
-	    PTJAVA_DIR=`cd $DEFAULT_JDK; pwd`
+	    PTJAVA_DIR=`cd "$DEFAULT_JDK"; pwd`
 	    AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
 
 	else
 	    DEFAULT_JDK=/usr/java
 	    if test -d "$DEFAULT_JDK"; then
-		PTJAVA_DIR=`cd $DEFAULT_JDK; pwd`
+		PTJAVA_DIR=`cd "$DEFAULT_JDK"; pwd`
 		AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
 	    else
 			    AC_MSG_ERROR([
@@ -203,7 +203,7 @@ JVERSION=unknown
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
-cd $srcdir/config
+cd "$srcdir/config"
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if "$JAVAC" confTest.java ; then
     AC_MSG_RESULT(ok)
@@ -219,7 +219,7 @@ if "$JAVAC" confTest.java ; then
 else
    AC_MSG_WARN(['"$JAVAC" confTest.java' failed'])
 fi
-cd $startdir
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #	If we are under JDK1.2.2, then increase the size of
@@ -511,7 +511,7 @@ else
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=`pwd`
-    cd $srcdir/config
+    cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" java3dTest.java ; then
        AC_MSG_RESULT(ok)
@@ -524,7 +524,7 @@ else
 	otherwise the build will proceed fine with out Java 3D.])
     fi
 fi
-cd $startdir
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #	Test for javax.sound
@@ -537,7 +537,7 @@ AC_MSG_CHECKING([for javax.sound])
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
-cd $srcdir/config
+cd "$srcdir/config"
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC javasoundTest.java ; then
     AC_MSG_RESULT(ok)
@@ -548,7 +548,7 @@ else
 	javasound is used in actor.lib, but you can probably
 	get away without it.])
 fi
-cd $startdir
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
