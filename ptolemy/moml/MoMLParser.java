@@ -2149,7 +2149,8 @@ public class MoMLParser extends HandlerBase {
                 }
                 if (security == null || withinApplet == false) {
                     MessageHandler.warning("Security concern:\n"
-                            + "Reading MoML from the net at address:\n"
+                            + "About to look for MoML from the "
+                            + "net at address:\n"
                             + xmlFile.toExternalForm()
                             + "\nOK to proceed?");
                 }
