@@ -1,4 +1,4 @@
-/* A transformer that removes unnecessary fields from classes.
+/* 
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.

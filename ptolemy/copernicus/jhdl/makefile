@@ -54,7 +54,8 @@ JSRCS = \
 	Main.java \
 	Predefined.java \
 	RegisterDelay.java \
-	BlockDataFlowGraph.java
+	BlockDataFlowGraph.java \
+	BlockControlFlowGraph.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

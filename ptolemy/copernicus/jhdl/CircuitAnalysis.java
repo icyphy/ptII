@@ -299,7 +299,7 @@ public class CircuitAnalysis {
 	System.out.println("//BlockGraph for Method:"+ method.getName()+"\n"+
 			   BlockGraphToDotty.convert(bbgraph, "bbgraph"));
 	List blockList=bbgraph.getBlocks();
-	BlockDataFlowGraph dataFlowGraph;
+	BlockDataFlowGraph dataFlowGraph=null;
 	Map blockToSuperBlockMap = new HashMap();
 	
 	// Iterate over all basic blocks provided by Soot
@@ -307,7 +307,11 @@ public class CircuitAnalysis {
 	    Block block=(Block)blockList.get(blockNum);
 	    //Set requiredNodeSet = new HashSet();
 	    // Create a dataflow graph for each basic block
-  	    dataFlowGraph=new BlockDataFlowGraph(block);
+	    try {
+		dataFlowGraph=new BlockDataFlowGraph(block);
+	    } catch (IllegalActionException e) {
+		System.err.println(e);
+	    }
   	    System.out.println("//Dataflow graph for block "+
   			       block.getIndexInMethod()+"\n"+
   			       PtDirectedGraphToDotty.convert(dataFlowGraph));

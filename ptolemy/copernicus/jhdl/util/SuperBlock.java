@@ -104,6 +104,8 @@ public class SuperBlock implements GraphNode {
 	_combineNonShrinkable(graph);
     }
 
+    // propagate labels to a specific block. I know that I am further upstream
+    // in the dag.
     public void propagateLabelsTo(SuperBlock succ){
 	Unit first = succ._block.getHead();
 	Unit last = this._block.getTail();
@@ -236,9 +238,10 @@ public class SuperBlock implements GraphNode {
 	if (_labels == null){
 	    //If no labels were added to this node, it must be the head of the graph
 	    
-	    _labels = new HashMap();
+	    // Hashing a superblock to a vector of Labels
+	    _labels = new HashMap(); 
 	    Vector v = new Vector();
-	    v.add(new Label());
+	    v.add(new Label());  // add top-level for myself
 	    _labels.put(this, v);
 	    return;
 	}
