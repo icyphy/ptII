@@ -3,9 +3,14 @@
 # handle the latest version of the plugin
 #
 # $Id$
-# Usage: fixapplets file.html [...]
+# Usage: fixapplets [-n] file.htm [...]
 
-
+printOnly=no
+if [ $1 = "-n" ]; then
+    echo "$0: -n: Not updating files"
+    printOnly=yes
+    shift
+fi
 
 for file in $@
 do
@@ -20,8 +25,13 @@ do
 	    appletParamNames["width"] = 1
 	    appletParamNames["height"] = 1
 	}
- $1 ~ /<OBJECT/ { sawObject = 1}
- sawObject == 0 { print $0 }
+ $0 ~ /<!-- HTML CONVERTER -->/ { sawHTMLConverter = 1
+                  stopPrinting = 1
+                }
+ $1 ~ /<OBJECT/ { stopPrinting = 1
+                }
+ $0 ~ /<SCRIPT LANGUAGE="JavaScript"><!--/ {stopPrinting = 1}
+ stopPrinting == 0 { print $0 }
  $1 ~ /<EMBED/  { sawEmbed = 1
 		  paramCount = 0
 		  appletParamCount = 0
@@ -40,6 +50,11 @@ do
 
 			# Look for applet parameters
 			sawAppletParam = 0
+                        if (substr(f[2], length(f[2]), 1) == "\\") {
+                            # Strip off any trailing back slashes
+                            f[2] = substr(f[2], 1, length(f[2]) - 1)
+                        }
+
 			for (appletParamName in appletParamNames) {
 			    if (n[1] == appletParamName) {
 			        if (n[1] == "code" \
@@ -53,6 +68,7 @@ do
 			}
 			if (sawAppletParam == 0 \
 				    && n[1] != "type" \
+				    && n[1] != "scriptable" \
 				    && n[1] != "pluginspage") {
 			    paramName[paramCount] = n[1]
 			    paramValue[paramCount++] = f[2]
@@ -72,28 +88,48 @@ do
 		    }
  $1 ~ /<\/NOEMBED/  { sawNoEmbed = 0 }
  $1 ~ /<\/EMBED/    { sawEmbed = 0}
- $1 ~ /<\/OBJECT>/  { 
-		    sawObject = 0
+ $1 ~ /<\/OBJECT>/  { if (sawHTMLConverter == 0) {
+                         generateApplet = 1 
+                         stopPrinting = 0
+                      }
+                    }
+
+ $0 ~ /<!-- \/HTML CONVERTER -->/  {
+                      sawHTMLConverter = 0
+                      stopPrinting = 0
+                      generateApplet = 1 
+                    }
+
+ generateApplet == 1 {
+                    generateApplet = 0
 		    print "<applet"
+
 		    for (appletParam in appletParams) {
 			if (appletParams[appletParam] != "") {
 			    printf("\t%s = %s\n", appletParam, appletParams[appletParam])
 			}
-		    }
+		    } 
+
 		    print ">"
 		    for (i = 0; i < paramCount; i++) {
-			printf("<param name = %s value = %s>", paramName[i], paramValue[i])
+			printf("        <param name = %s value = %s>\n", paramName[i], paramValue[i])
 		    }
 		    if (alternateHTML ~ /No JDK 1.3 support for applet!/) {_
 			print "No Java Plug-in support for applet, see <a href=\"http://java.sun.com/products/plugin/\"><code>http://java.sun.com/products/plugin/</code></a>"
 		    } else {
-			print alternateHTML
+                        if (substr(alternateHTML,length(alternateHTML), 1) == "\\") {
+
+                            print substr(alternateHTML, 1, length(alternateHTML)- 1)
+                        } else {
+			    print alternateHTML
+                        }
 		    }
 		    print "</applet>"
-		}
+               }		
 
  ' $file > fixapplets.htm
 
+        # At this point, fixapplets.htm contains just the applet tag 
 	
 	# 2) Run the HTMLConverter that is part of the jdk on
 	# the html file.
@@ -119,7 +155,7 @@ $NF ~ /);$/ {
 
      {
       if (sawWriteln == 1) {
-           if (substr($NF,length($NF),1) == "\\") {
+           if (substr($NF,length($NF), 1) == "\\") {
                print $0
            } else {
                if ( $0 ~ /^<PARAM/) {
@@ -140,8 +176,8 @@ $NF ~ /);$/ {
 	-e 's/HEIGHT/height/' \
 	-e 's/VALUE  = /VALUE = /' \
 	-e 's/VALUE=[^ ]/VALUE = /' \
+	-e 's/VALUE = *\("[^"]*"\) *>/VALUE = \1 >/' \
 	-e 's/<!--"CONVERTED_APPLET"-->//' \
-	-e 's/<!-- HTML CONVERTER -->//' \
 	-e 's/<!--"END_CONVERTED_APPLET"-->//' \
 	-e '# Split up lines that contain code ... codebase ...
             s/ code = \("[^"]*"\) codebase = \("[^"]*"\) archive = \("[^"]*"\) width = \("[^"]*"\) height = \("[^"]*"\)/code = \1 \\\
@@ -157,8 +193,9 @@ $NF ~ /);$/ {
 	-e 's/<PARAM NAME = archive /<PARAM NAME = "archive" \\\
                    /' \
 	-e 's/<PARAM NAME = background /<PARAM NAME = "background" /' \
+	-e 's/background = */background = /' \
 	 |
-grep -v '^ \\$' |
+     grep -v '^ \\$' |
 awk ' $0 == "<!--" { sawCommentStart = NF; sawAppletStart = 0} 
       { if (sawCommentStart == 0)  {
            print $0
@@ -172,7 +209,46 @@ awk ' $0 == "<!--" { sawCommentStart = NF; sawAppletStart = 0}
         }
       }
       $0 == "-->" { sawCommentStart = 0; sawAppletStart = 0}
+    ' | 
+awk '
+      { if ($0 !~ /<!-- HTML CONVERTER -->/ && $0 !~ /<!-- \/HTML CONVERTER -->/){
+          if (skipNextLine > 0) {
+	      skipNextLine--
+          } else {
+              if (NR > 1) {
+	          print lastline
+              }
+          }
+	  lastline = $0
+       } else {
+	  if ($0 ~ /<!-- HTML CONVERTER -->/) {
+	      lastline = $0
+          } else {
+	      if ($0 ~ /<!-- \/HTML CONVERTER -->/) {
+		 skipNextLine = 2      
+		 print lastline
+                 print $0
+		 lastline = $0
+	      }
+          }
+       }
+     }
+     END {print lastline}     
      ' > fixapplets2.htm
-diff $file fixapplets2.htm
+     diff $file fixapplets2.htm
+     if [ "$printOnly" = "no" ]; then
+	 mv fixapplets2.htm $file
+     else 
+	 tmpFile="`basename $file .htm`.htm"
+	 if [ ! -f $tmpFile ]; then
+	     mv fixapplets2.htm $tmpFile
+	     echo "Your results are in $tmpFile"
+	 else 
+	     echo "Your results are in fixapplets2.htm"
+	 fi    
+     fi
+     #rm -rf htmlconverter_bak fixapplets.htm	 
 
 done
+
+
