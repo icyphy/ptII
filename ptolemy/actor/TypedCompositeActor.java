@@ -269,7 +269,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  of the connection to be less than or equal to the type at the
      *  destination port.
      *  To collect the type constraints from the contained actors,
-     *  This method recursively calls the typeConstaints() method of the
+     *  This method recursively calls the typeConstraints() method of the
      *  deeply contained actors and combine all the constraints together.
      *  <p>
      *  This method is read-synchronized on the workspace.
