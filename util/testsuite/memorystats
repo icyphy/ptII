@@ -49,7 +49,7 @@ awk 'BEGIN {min=99999999}
 		    free=substr($6, 1, length($6)-1) + 0
 		    static=substr($9, 1, length($9)-1) + 0
 		    staticRT=substr($11, 1, length($11)-1) + 0
-		    dynamicRT=substr($13, 1, length($11)-1) + 0
+		    dynamicRT=substr($13, 1, length($13)-1) + 0
 
 		    memorySum += memory
 		    freeSum += free
@@ -66,7 +66,7 @@ awk 'BEGIN {min=99999999}
 		    percentFree=int (((freeSum/count)+0.0)/((memorySum/count)+0.0) * 100.0 + 0.5)
 		    print description ": Averages of second and succeeding " count-1 " runs:" 
 
-		    print description " ave: " timeAverage " ms. Memory: " memorySum/count "K Free: " freeSum/count "K ("  percentFree "%) Stat: " staticSum/count "K StatRT: " staticRTSum/count "K DynRT: " dynamicRTSum/count
+		    print description " ave: " timeAverage " ms. Memory: " memorySum/count "K Free: " freeSum/count "K ("  percentFree "%) Stat: " staticSum/count "K StatRT: " staticRTSum/count "K DynRT: " dynamicRTSum/count "K"
 	       }
 }' description="$1" -
 

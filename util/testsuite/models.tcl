@@ -71,6 +71,13 @@ proc getParameter {namedobj paramname} {
     return [java::cast ptolemy.data.expr.Parameter $p]
 }
 
+# Get a attribute by name, properly cast to Settable.
+#
+proc getSettable {namedobj paramname} {
+    set p [$namedobj getAttribute $paramname]
+    return [java::cast ptolemy.kernel.util.Settable $p]
+}
+
 # Create an SDF model with no actors in it and return it.
 # The optional argument sets the number of iterations to be executed.
 # It defaults to one.
