@@ -48,9 +48,7 @@ JSRCS = \
 	PlotLiveDemo.java \
 	PlotPoint.java
 
-EXTRA_SRCS = $(JSRCS) \
-	BarGraph.html Live.html Marks.html Sinusoids.html index.html \
-	data.plt bargraph.plt
+EXTRA_SRCS = $(JSRCS)
 
 MISC_FILES = doc test
 
