@@ -23,9 +23,15 @@
 
   <!-- Factories for tableaux. -->
   <entity name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
-    <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
+    <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
     <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
+      <!-- These will appear in the View menu of an fsm tableau. -->
+      <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
+      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+      <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    </entity>
+    <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
+    <entity name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
       <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory"/>
       <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
