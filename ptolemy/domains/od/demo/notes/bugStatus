@@ -22,8 +22,21 @@ Then ODStringDemo reaches
 	i	14.0
 	n	5000.0
 	;	5000.0
-This assumes completionTime = 5001
+and the queue size = 2 (see ODPrintString.wrapup). This assumes 
+completionTime = 5001.
 
 
+If ODActor.getCurrent() consists of:
 
+    public double getCurrentTime() {
+        return _currentTime;
+    }
+
+Then ODStringDemo reaches 
+	O	10.0
+	D	10.5
+	_	11.0
+	;	11.5
+and the queue size = 8 (see ODPrintString.wrapup). This assumes 
+completionTime = 5001.
 
