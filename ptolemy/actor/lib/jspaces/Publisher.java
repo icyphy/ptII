@@ -71,19 +71,19 @@ public class Publisher extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
 
-        startingSerialNumber = new Parameter(this, "startingSerialNumber", 
+        startingSerialNumber = new Parameter(this, "startingSerialNumber",
                 new LongToken(0));
         startingSerialNumber.setTypeEquals(BaseType.LONG);
 
-        leaseTime = new Parameter(this, "leaseTime", 
+        leaseTime = new Parameter(this, "leaseTime",
                 new LongToken(Lease.FOREVER));
         leaseTime.setTypeEquals(BaseType.LONG);
     }
@@ -91,7 +91,7 @@ public class Publisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -104,7 +104,7 @@ public class Publisher extends Sink {
     /** The starting serial number of the entries to be published.
      *  The entries will have increasing serial numbers.
      *  The default value is 0 of type LongToken.
-     */  
+     */
     public Parameter startingSerialNumber;
 
     /** The lease time for entries written into the space. The default
@@ -126,7 +126,7 @@ public class Publisher extends Sink {
 	    Publisher newobj = (Publisher)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.startingSerialNumber = 
+            newobj.startingSerialNumber =
                 (Parameter)newobj.getAttribute("startingSerialNumber");
             newobj.leaseTime = (Parameter)newobj.getAttribute("leaseTime");
 	    return newobj;
@@ -177,11 +177,11 @@ public class Publisher extends Sink {
 	    long time = ((LongToken)leaseTime.getToken()).longValue();
             IndexEntry maxtemp= new IndexEntry(
                     name, "maximum", null);
-            // FIXME: This may introduce deadlock if maximum is lost 
+            // FIXME: This may introduce deadlock if maximum is lost
             // in the space.
             IndexEntry maximum =
                 (IndexEntry)_space.take(maxtemp, null, Long.MAX_VALUE);
-                
+
             long serialnumber = maximum.getPosition();
             System.out.println("Publisher get Max: " + serialnumber);
             for (int i = 0; i < input.getWidth(); i++) {
@@ -216,7 +216,7 @@ public class Publisher extends Sink {
             throw new IllegalActionException(this,
                     "Interruptted" + e.getMessage());
         }
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,6 +224,6 @@ public class Publisher extends Sink {
 
     private JavaSpace _space;
     private long _currentSerialNumber;
-        
+
 }
 

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@cory.eecs.berkeley.edu) 
+@ProposedRating Red (johnli@cory.eecs.berkeley.edu)
 @AcceptedRating Red (johnli@cory.eecs.berkeley.edu)
 */
 
@@ -40,17 +40,17 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// LogicalXnor
 /**
-A polymorphic logical XNOR operator. 
-This actor has a single input port, which is a multiport, and one 
+A polymorphic logical XNOR operator.
+This actor has a single input port, which is a multiport, and one
 output port, which is not.
-For now, the type of the multiport is set to accept only 
+For now, the type of the multiport is set to accept only
 BooleanTokens, until a standard is established to handle numeric
 values and the mixing of those and booleans.
 <p>
 This actor is not strict. That is, it does not require that each input
-channel have a token upon firing.  As long as one channel contains a 
-token, output will be produced.  In the case of only one channel having a 
-token, that token will be the output.  If no input tokens are available at 
+channel have a token upon firing.  As long as one channel contains a
+token, output will be produced.  In the case of only one channel having a
+token, that token will be the output.  If no input tokens are available at
 all, then no output is produced.  This actor will consume as many tokens
 as are available in each channel.
 
@@ -83,11 +83,11 @@ public class LogicalXnor extends Transformer {
 
 
     /** If there is at least one token on the <i>input</i>, the output
-     *  token will be set to the first value encountered.  The output 
+     *  token will be set to the first value encountered.  The output
      *  token will then call add() on each of the remaining input tokens
      *  and be set to the resulting value.  The negation of this will be
-     *  broadcasted.  The add() function of a BooleanToken is the equivalent 
-     *  of the logical XOR operation. 
+     *  broadcasted.  The add() function of a BooleanToken is the equivalent
+     *  of the logical XOR operation.
      *
      *  @exception IllegalActionException If there is no director.
      */
@@ -98,11 +98,11 @@ public class LogicalXnor extends Transformer {
                 in = input.get(i);
                 if(value == null)
                     value = in;
-                else 
+                else
                     value = ((BooleanToken)value.add(in)).not();
             }
         }
-        if (value != null) 
+        if (value != null)
 	    output.broadcast((BooleanToken)value);
     }
 }

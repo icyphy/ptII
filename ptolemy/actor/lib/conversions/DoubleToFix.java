@@ -40,13 +40,13 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
-/** 
+/**
 
 Read a DoubleToken and converts it to a FixToken with a given
 precision.  In fitting the double into a fix point, the following
 quantization modes are supported.
 
-<ul> 
+<ul>
 <li> mode = 0, <b>Rounding</b>:.
 <li> mode = 1, <b>Truncate</b>:.
 </ul>
@@ -54,7 +54,7 @@ quantization modes are supported.
 The default quantizer is rounding and the default value for precision
 is "(16/2)".
 
-@author Bart Kienhuis 
+@author Bart Kienhuis
 @version $Id$
 */
 
@@ -73,11 +73,11 @@ public class DoubleToFix extends Transformer {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 	output.setTypeEquals(BaseType.FIX);
-        
-	precision = 
+
+	precision =
             new Parameter(this, "precision", new StringToken("(16/2)"));
         precision.setTypeEquals(BaseType.STRING);
-   
+
 	quantizer = new Parameter(this, "quantizer", new IntToken(0));
         quantizer.setTypeEquals(BaseType.INT);
     }
@@ -116,15 +116,15 @@ public class DoubleToFix extends Transformer {
     }
 
     /** Read at most one token from each input and convert the Token
-     *  value in a FixToken with a given precision.  
+     *  value in a FixToken with a given precision.
      *
-     * @exception IllegalActionException If there is no director.  
+     * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         FixToken result = null;
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
-            switch( _quantizer ) { 
+            switch( _quantizer ) {
             case 0:
                 result = new FixToken(
                         Quantizer.round(in.doubleValue(), _precision) );
@@ -146,7 +146,7 @@ public class DoubleToFix extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _precision = new Precision(precision.getToken().toString());        
+        _precision = new Precision(precision.getToken().toString());
         _quantizer = ((IntToken)quantizer.getToken()).intValue();
     }
 

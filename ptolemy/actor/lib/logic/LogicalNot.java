@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli.eecs.berkeley.edu)  
+@ProposedRating Red (johnli.eecs.berkeley.edu)
 @AcceptedRating Red (johnli.eecs.berkeley.edu)
 */
 
@@ -41,11 +41,11 @@ import ptolemy.actor.lib.Transformer;
 //// LogicalNot
 /**
 A polymorphic logical NOT operator.
-This adder has one input port and one output port, 
+This adder has one input port and one output port,
 neither of which are multiports.
-For now, the type of the input port is limited to 
-BooleanToken, until a standard for handling non-booleans is 
-resolved.  A BooleanToken that arrives in the <i>input</i> 
+For now, the type of the input port is limited to
+BooleanToken, until a standard for handling non-booleans is
+resolved.  A BooleanToken that arrives in the <i>input</i>
 will be negated and passed to the <i>output</i> port for broadcasting.
 If no input token is available at all, then no output is produced.
 

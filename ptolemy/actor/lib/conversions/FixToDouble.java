@@ -45,7 +45,7 @@ rounding error may occur. In that case the value of the FixToken is
 determined, depending on the quanitzation mode selected. The following
 quantization modes are supported in case an overflow occurs.
 
-<ul> 
+<ul>
 <li> mode = 0, <b>Saturate</b>: The FixToken is set,
 depending on its sign, equal to the Max or Min value possible
 with the new given precision.
@@ -56,7 +56,7 @@ set equal to zero.
 The default quantizer is Saturate and the default value for precision
 is "(16/2)".
 
-@author Bart Kienhuis 
+@author Bart Kienhuis
 @version $Id$
 */
 
@@ -78,11 +78,11 @@ public class FixToDouble extends Transformer {
 
         // Set the Parameter
 	precision = new Parameter(this, "precision", new StringToken("16/2"));
-        precision.setTypeEquals(BaseType.STRING);              
+        precision.setTypeEquals(BaseType.STRING);
 
         // Set the Parameter
 	quantizer = new Parameter(this, "quantizer", new IntToken(0));
-        quantizer.setTypeEquals(BaseType.INT);              
+        quantizer.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ public class FixToDouble extends Transformer {
     }
 
     /** Read at most one token from each input and convert the FixToken
-     *  into a DoubleToken. 
-     * @exception IllegalActionException If there is no director.  
+     *  into a DoubleToken.
+     * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
@@ -132,7 +132,7 @@ public class FixToDouble extends Transformer {
             // Scale the FixToken to specific precision.
             // If rounding occurs, select which quantizer to use.
             FixToken scaled = in.scaleToPrecision( _precision, _quantizer );
-	    DoubleToken result = new DoubleToken( scaled.convertToDouble() ); 
+	    DoubleToken result = new DoubleToken( scaled.convertToDouble() );
             output.send(0, result);
         }
     }
@@ -143,7 +143,7 @@ public class FixToDouble extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _precision = new Precision(((StringToken)precision.getToken()).
-                toString());        
+                toString());
         _quantizer = ((IntToken)quantizer.getToken()).intValue();
     }
 

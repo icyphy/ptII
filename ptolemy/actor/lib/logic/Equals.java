@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@eecs.berkeley.edu) 
-@AcceptedRating Red (johnli@eecs.berkeley.edu) 
+@ProposedRating Red (johnli@eecs.berkeley.edu)
+@AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -38,7 +38,7 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Equals
-/** 
+/**
 
 A polymorphic logical equals operator.  This operator has two
 input ports and one output port, none of which are multiports.  The
@@ -82,13 +82,13 @@ public class Equals extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for the EQUALS operation.  This port represents the left 
-     *  side of an equals sign.  Its type is inferred from the connections. 
+    /** Input for the EQUALS operation.  This port represents the left
+     *  side of an equals sign.  Its type is inferred from the connections.
      */
     public TypedIOPort upperPort = null;
 
-    /** Input for the EQUALS operation.  This port represents the right 
-     *  side of an equals sign.  Its type is inferred from the connections. 
+    /** Input for the EQUALS operation.  This port represents the right
+     *  side of an equals sign.  Its type is inferred from the connections.
      */
     public TypedIOPort lowerPort = null;
 
@@ -121,8 +121,8 @@ public class Equals extends TypedAtomicActor {
 
     /** If there is a token in both the <i>upperPort</i> and <i>lowerPort</i>
      *  ports, compare their equality and return the resulting
-     *  BooleanToken in the <i>output</i> port.  If one or more of the input 
-     *  ports has no token, do nothing.  
+     *  BooleanToken in the <i>output</i> port.  If one or more of the input
+     *  ports has no token, do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
@@ -132,6 +132,6 @@ public class Equals extends TypedAtomicActor {
                 output.broadcast(BooleanToken.TRUE);
             else
                 output.broadcast(BooleanToken.FALSE);
-        }   
+        }
     }
 }

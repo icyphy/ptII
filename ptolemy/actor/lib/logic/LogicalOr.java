@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@eecs.berkeley.edu) 
-@AcceptedRating Red (johnli@eecs.berkeley.edu) 
+@ProposedRating Red (johnli@eecs.berkeley.edu)
+@AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -41,9 +41,9 @@ import ptolemy.actor.lib.Transformer;
 //// LogicalOr
 /**
 A polymorphic Logical OR operator.
-This actor has a single input port, which is a multiport, and one 
-output port, which is not. For now, the type of the multiport is 
-set to accept only BooleanTokens, until a standard is established 
+This actor has a single input port, which is a multiport, and one
+output port, which is not. For now, the type of the multiport is
+set to accept only BooleanTokens, until a standard is established
 to handle numeric values and the mixing of those and booleans.
 <p>
 This actor is not strict. That is, it does not require that each input
@@ -82,7 +82,7 @@ public class LogicalOr extends Transformer {
 
     /** If there is at least one token on the <i>input</i>, the output
      *  token will be set to the first value encountered.  The logical
-     *  OR operation will then be applied to each input, and its 
+     *  OR operation will then be applied to each input, and its
      *  value is returned.
      *
      *  @exception IllegalActionException If there is no director.
@@ -92,9 +92,9 @@ public class LogicalOr extends Transformer {
 	for (int i = 0; i < input.getWidth(); i++) {
 	    while(input.hasToken(i)) {
                 in = input.get(i);
-		if (value == null) 
+		if (value == null)
 		    value = in;
-		else 
+		else
                     if(value.isEqualTo(BooleanToken.TRUE).booleanValue() ||
                             in.isEqualTo(BooleanToken.TRUE).booleanValue())
                         value = BooleanToken.TRUE;

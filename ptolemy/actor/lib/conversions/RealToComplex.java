@@ -101,10 +101,10 @@ public class RealToComplex extends TypedAtomicActor {
         return newobj;
     }
 
-    /** Consume one token from each input port 
+    /** Consume one token from each input port
      *  (the real and imaginary parts of the output complex token) and output
      *  a new complex token.
-     *  
+     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

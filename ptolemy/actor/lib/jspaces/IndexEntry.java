@@ -39,7 +39,7 @@ import net.jini.core.entry.Entry;
 /**
 IndexEntry is a JavaSpaces Entry that contains a index for TokenEntries.
 An IndexEntry has a name, a type, and a position number.
-The name is the name of corresponding token entries. The type can be 
+The name is the name of corresponding token entries. The type can be
 "minimum" or "maximum", showing the index type that this entry represents.
 The position number is a positive long.
 
@@ -88,7 +88,7 @@ public class IndexEntry implements Entry {
     ////                         public methods                    ////
 
     /** Return the position of this index. If the position
-     *  is null, return 0. 
+     *  is null, return 0.
      *  @return The postion.
      */
     public long getPosition() {

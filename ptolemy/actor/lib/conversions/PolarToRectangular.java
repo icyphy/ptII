@@ -43,7 +43,7 @@ import ptolemy.kernel.util.*;
 /** This actor takes in two double tokens (magnitude and angle)
     one from each input port and output two new double tokens (xValue
     and yValue). The output is a rectangular form representation of the vector
-    given at the inputs in polar form. The angle is in radians. 
+    given at the inputs in polar form. The angle is in radians.
 
 @author Michael Leung
 @version $Id$

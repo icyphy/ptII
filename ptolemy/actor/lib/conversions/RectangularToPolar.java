@@ -43,7 +43,7 @@ import ptolemy.kernel.util.*;
 /** This actor takes in two double tokens (xValue and yValue)
  *  from each input port, and outputs two new double tokens (magnitude and
     angle) to two different ports.
-    The output is a polar form representation of the vector given at the 
+    The output is a polar form representation of the vector given at the
     inputs in rectangular form. The angle is in radians.
 
 @author Michael Leung
@@ -111,9 +111,9 @@ public class RectangularToPolar extends TypedAtomicActor {
         return newobj;
     }
 
-    /** Consume two double tokens (xValue and yvalue) from each input port, 
-     *  and output two new double tokens (magnitude and angle). The output is a 
-     *  polar form representation of the vector given at the inputs in 
+    /** Consume two double tokens (xValue and yvalue) from each input port,
+     *  and output two new double tokens (magnitude and angle). The output is a
+     *  polar form representation of the vector given at the inputs in
      *  rectangular form. The angle is in radians.
      *
      *  @exception IllegalActionException If there is no director.
