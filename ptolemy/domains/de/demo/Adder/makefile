@@ -63,7 +63,7 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) appletviewer ABRO.htm
+	CLASSPATH=$(CLASSPATH) appletviewer Adder.htm
 
 depend:
 	@echo "no dependencies in this directory"
