@@ -48,12 +48,12 @@ ptolemyII expression language. The added functionality is
         <p><pre>fix(5.34, 10, 2)</pre><p>
 
 <li> Creating a matrix of fix point tokens
-        <p><pre>fix([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 10,  2)</pre><p>
+        <p><pre>fix([ -.040609, -.001628, .17853, .37665, .37665,
+        .17853, -.001628, -.040609 ], 10,  2)</pre><p>
 
 <li> Quantizing doubles to a specific precision
         <p><pre>quantize([ -.040609, -.001628, .17853, .37665, .37665,
         .17853, -.001628, -.040609 ], 10,  2)</pre><p>
-
 </ul>
 
 @author Bart Kienhuis
@@ -72,9 +72,30 @@ public class FixPointFunctions {
 
     /**
 
-        Create a Token with a fix point value of a given precision. This
-        function is used by the expression parser to create a FixToken. A
-        FixToken is created as
+        Create a Token with a fix point value of an integer with a
+        given precision. This function is used by the expression
+        parser to create a FixToken. A FixToken is created as
+
+        <p><pre>fix(5, 10, 2)</pre><p>
+
+        This generates a FixToken with the value 5 using 10 bits of
+        which 2 are used to represent the integer part and 8 for the
+        fractional part.
+
+        @param value The integer value of the FixToken
+        @param numberOfBits The total number of bits.
+        @param integerBits The number of bits used for the integer part.
+    */
+    public static Token fix(int value, int numberOfBits, int integerBits) {
+        return new FixToken(value, numberOfBits, integerBits);
+    }
+
+
+    /**
+
+        Create a Token with a fix point value of double with a given
+        precision. This function is used by the expression parser to
+        create a FixToken. A FixToken is created as
 
         <p><pre>fix(5.34, 10, 2)</pre><p>
 
@@ -82,12 +103,11 @@ public class FixPointFunctions {
         which 2 are used to represent the integer part and 8 for the
         fractional part.
 
-        @param value The value of the FixToken
+        @param value The double value of the FixToken
         @param numberOfBits The total number of bits.
         @param integerBits The number of bits used for the integer part.
     */
-    public static Token fix(double value,
-            int numberOfBits, int integerBits) {
+    public static Token fix(double value, int numberOfBits, int integerBits) {
         return new FixToken(value, numberOfBits, integerBits);
     }
 
@@ -95,7 +115,8 @@ public class FixPointFunctions {
         precision. This method is used by the expression parser to create
         a matrix of fix point tokens. It is created as
 
-        <p><pre>fix([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 10,  2)</pre><p>
+        <p><pre>fix([ -.040609, -.001628, .17853, .37665, .37665,
+        .17853, -.001628, -.040609 ], 10,  2)</pre><p>
 
         This generates a 1x8 FixMatrixToken. The precision of each fix
         point value is 10 bits of which 2 are used for the integer part
