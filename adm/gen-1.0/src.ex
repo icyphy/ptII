@@ -83,6 +83,8 @@ ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
 ptolemy/lang
 ptolemy/plot/adm
+ptolemy/plot/ptplot5.1.tar.gz
+ptolemy/plot/ptplot5.1.zip
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
