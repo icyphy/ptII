@@ -143,7 +143,7 @@ public class Expression extends TypedAtomicActor {
 
 	try {
 	    matlabEngine = new Engine();
-	} catch (UnsatisfiedLinkError err) {
+	} catch (LinkageError err) {
 	    throw new IllegalActionException(this, err,
 	         "There was a problem invoking the Ptolemy II Matlab interface"
                  + ".\nThe interface only works under Windows, and requires\n"
