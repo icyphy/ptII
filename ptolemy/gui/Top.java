@@ -138,22 +138,6 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the key used to identify this window.
-     *  @return The key identifying the model.
-     */
-    public Object getKey() {
-        return _key;
-    }
-
-    /** Set the key used to identify this window, and display a string
-     *  representation of this key in the titlebar.
-     *  @param key The key identifying the model.
-     */
-    public void setKey(Object key) {
-        _key = key;
-        setTitle(key.toString());
-    }
-
     /** Report an exception.  This displays a message in a dialog and
      *  prints the stack trace to the standard error stream.
      *  @param ex The exception to report.
@@ -218,8 +202,8 @@ public abstract class Top extends JFrame {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy II.\n" +
-                "By: Claudius Ptolemeus, ptolemy@eecs.berkeley.edu\n" +
+                "Ptolemy II " + getClass().getName() + "\n" +
+                "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n" +
                 "Copyright (c) 1997-2000, " +
@@ -340,6 +324,7 @@ public abstract class Top extends JFrame {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
+	    
             setTitle(_file.getName());
             _directory = fileDialog.getCurrentDirectory();
             _save();
@@ -351,12 +336,6 @@ public abstract class Top extends JFrame {
      *  @exception IOException If the write fails.
      */
     protected abstract void _writeFile(File file) throws IOException;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The key used to identify the model.
-    private Object _key;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
