@@ -69,7 +69,7 @@ public class SDFApplet extends PtolemyApplet {
             pinfo[i] = basepinfo[i];
         }
         String newinfo[][] = {
-            {"iterations", "", "number of iterations"},
+            {"iterations", "", "number of interations"},
             {"defaultiterations", "1", "default number of iterations"}
         };
         pinfo[basepinfo.length] = newinfo[0];
@@ -78,7 +78,9 @@ public class SDFApplet extends PtolemyApplet {
     }
 
     /** Initialize the applet. The number of iterations is given by an
-     *  applet parameter "iterations".  The default value is one.
+     *  applet parameter "iterations".  If this parameter is not given,
+     *  then a dialog is created on screen to query the user for the number
+     *  of iterations.
      *  After calling the base class init() method,
      *  this method creates a top-level composite actor
      *  and director for that composite.  Both are accessible
@@ -147,21 +149,37 @@ public class SDFApplet extends PtolemyApplet {
     }
 
     /** Get the number of iterations from the entry box, if there is one,
+     *  or from the director, if not.
+     */
+    protected int _getIterations() {
+        int result = 1;
+        if(_director != null) {
+            Parameter iterparam =
+                    (Parameter)_director.getAttribute("Iterations");
+            result = ((IntToken)(iterparam.getToken())).intValue();
+        }
+        if(_iterationsbox != null) {
+            try {
+                result = (new Integer(_iterationsbox.getText())).intValue();
+            } catch (NumberFormatException ex) {
+                report("Error in number of iterations:\n", ex);
+            }
+        }
+        return result;
+    }
+
+    /** Get the number of iterations from the entry box, if there is one,
      *  and then execute the system.
      */
     protected void _go() {
-        if(_iterationsbox != null) {
-            try {
-                int iterations =
-                        (new Integer(_iterationsbox.getText())).intValue();
+        try {
+            int iterations = _getIterations();
+            Parameter iterparam =
+                    (Parameter)_director.getAttribute("Iterations");
 
-                Parameter iterparam =
-                        (Parameter)_director.getAttribute("Iterations");
-
-                iterparam.setToken(new IntToken(iterations));
-            } catch (Exception ex) {
-                report("Unable to set number of iterations:\n", ex);
-            }
+            iterparam.setToken(new IntToken(iterations));
+        } catch (Exception ex) {
+            report("Unable to set number of iterations:\n", ex);
         }
         super._go();
     }

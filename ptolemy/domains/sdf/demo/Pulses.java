@@ -69,7 +69,7 @@ public class Pulses extends SDFApplet {
             _query.onoff("sqrt", "Square root pulse", false);
             add(_query);
 
-            // The 0 argument requests only a go button.
+            // The 1 argument requests only a go button.
             add(_createRunControls(1));
 
             // Create and configure impulse source
