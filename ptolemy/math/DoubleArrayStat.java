@@ -78,18 +78,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return product;
     }
 
-    /** Return the sum of the squares of all of the elements in the array.
-     *  Return 0.0 if the length of the array is 0.
-     */
-    public static final double sumOfSquares(double[] array) {
-        double sum = 0.0;
-        for (int i = 0; i < array.length; i++) {
-            sum += (array[i] * array[i]);
-        }
-        return sum;
-    }
-
     /** Return the arithmetic mean of the elements in the array.
+     *  If the length of the array is 0, return a NaN.    
      */
     public static final double mean(double[] array) {
         _nonZeroLength(array, "DoubleArrayStat.mean");
@@ -141,14 +131,16 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return minElement;
     }
 
-    /** Return the variance of the elements in the array.
+    /** Return the variance of the elements in the array, assuming 
+     *  sufficient statistics.
      *  Simply return variance(array, false).
      */
     public static double variance(double[] array) {
         return variance(array, false);
     }
 
-    /** Return the variance of the elements in the array.
+    /** Return the variance of the elements in the array, assuming 
+     *  sufficient statistics.
      *  The variance is computed as follows :
      *  <p>
      *  <pre>

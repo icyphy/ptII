@@ -49,6 +49,7 @@ set b0 [java::new {double[]} 0]
 
 set a1 [java::new {double[]} 5 [list 3.7 -6.6 0.0003 -3829 -3.261]]
 set a2 [java::new {double[]} 5 [list 4826.2 236.1 -36.21 5 65.4]]
+set a3 [java::new {double[]} 5 [list 236.1 -36.21 4826.2 5.0 65.4]]
 set b1 [java::new {double[]} 3 [list -0.0000976 5832.61 -43.21]]
 
 set e1 [java::new {double[]} 4 [list -62.3 0.332 5.22 -0.03]]
@@ -369,6 +370,19 @@ test DoubleArrayMath-12.3 {subtract with two empty arrays} {
     set ar [java::call ptolemy.math.DoubleArrayMath subtract $a0 $b0]
     jdkPrintArray $ar
 } {}
+
+####################################################################
+test DoubleArrayMath-13.1 {sumOfSquares} {
+    set r [java::call ptolemy.math.DoubleArrayMath sumOfSquares $a3]
+    list $r
+} 23353562.9741
+
+####################################################################
+test DoubleArrayMath-13.2 {sumOfSquares empty array} {
+    set r [java::call ptolemy.math.DoubleArrayMath sumOfSquares $a0]
+    list $r
+} 0.0
+
 
 ####################################################################
 test DoubleArrayMath-13.1 {toString with two empty array} {

@@ -66,41 +66,123 @@ public class FloatMatrixMath {
      *  @return A new matrix of floats.
      */
     public static final float[][] add(float[][] matrix, float z) {
-        float[][] result = new float[_rows(matrix)][_columns(matrix)];
+        float[][] retval = new float[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                result[i][j] = matrix[i][j] + z;
+                retval[i][j] = matrix[i][j] + z;
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one. The matrices must be
-     *  of the same size.
+     *  adding the second matrix to the first one. 
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
      *  @param matrix1 The first matrix of floats.
      *  @param matrix2 The second matrix of floats.
      *  @return A new matrix of floats.
      */
-    public static final float[][] add(float[][] matrix1, float[][] matrix2) {
+    public static final float[][] add(final float[][] matrix1, 
+            final float[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        float[][] result = new float[_rows(matrix1)][_columns(matrix1)];
+        float[][] retval = new float[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
-                result[i][j] = matrix1[i][j] + matrix2[i][j];
+                retval[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is a copy of the matrix argument.
      *  @param matrix A matrix of floats.
      *  @return A new matrix of floats.
      */
-    public static final float[][] allocCopy(float[][] matrix) {
+    public static final float[][] allocCopy(final float[][] matrix) {
         return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
     }
+
+    /** Return a new array that is formed by applying an instance of a 
+     *  FloatBinaryOperation to each element in the input matrix,     
+     *  using z as the left operand in all cases and the matrix elements
+     *  as the right operands (op.operate(z, matrix[i][j])).
+     */
+    public static final float[][] applyBinaryOperation(
+            FloatBinaryOperation op, final float z, final float[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+            
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(z, matrix[i][j]);
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a 
+     *  FloatBinaryOperation to each element in the input matrix,     
+     *  using the matrix elements as the left operands and z as the right 
+     *  operand in all cases (op.operate(matrix[i][j], z)).
+     */
+    public static final float[][] applyBinaryOperation(
+            FloatBinaryOperation op, final float[][] matrix, final float z) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+            
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix[i][j], z);
+            }
+        }
+        return retval;
+    }
+            
+    /** Return a new array that is formed by applying an instance of a 
+     *  FloatBinaryOperation to the two matrices, element by element,
+     *  using the elements of the first matrix as the left operands and the 
+     *  elements of the second matrix as the right operands.
+     *  (op.operate(matrix1[i][j], matrix2[i][j])).
+     *  If the matrices are not the same size, throw an IllegalArgumentException.
+     */
+    public static final float[][] applyBinaryOperation(
+            FloatBinaryOperation op, final float[][] matrix1, final float[][] matrix2) {     
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+        
+        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);      
+            
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
+            }
+        }     
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a 
+     *  FloatUnaryOperation to each element in the input matrix 
+     *  (op.operate(matrix[i][j])).
+     */
+    public static final float[][] applyUnaryOperation(
+            final FloatUnaryOperation op, final float[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+            
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix[i][j]);
+            }
+        }        
+        return retval;
+    }
+
+
 
     /** Return a new matrix that is a sub-matrix of the input
      *  matrix argument. The row and column from which to start
@@ -111,9 +193,9 @@ public class FloatMatrixMath {
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
      */
-    public static final float[][] crop(float[][] matrix,
-            int rowStart, int colStart,
-            int rowSpan, int colSpan) {
+    public static final float[][] crop(final float[][] matrix,
+            final int rowStart, final int colStart,
+            final int rowSpan, final int colSpan) {
         float[][] retval = new float[rowSpan][colSpan];
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(matrix[rowStart + i], colStart,
@@ -123,11 +205,10 @@ public class FloatMatrixMath {
     }
 
     /** Return the determinate of a square matrix.
+     *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1]
-     *  @param matrix A matrix of floats.
-     *  @return The determinate of the matrix.
      */
-    public static final float determinate(float[][] matrix) {
+    public static final float determinate(final float[][] matrix) {
         _checkSquare("determinate", matrix);
 
         float[][] a;
@@ -187,29 +268,46 @@ public class FloatMatrixMath {
         return det;
     }
     
+    /** Return a new matrix that is constructed by placing the elements of the input 
+     *  array on the diagonal of the square matrix, starting from the top left corner 
+     *  down to the bottom right corner. All other elements are zero. The size of of the 
+     *  matrix is n x n, where n is the length of the input array. 
+     */
+    public static final float[][] diag(final float[] array) {
+        int n = array.length;
+        
+        float[][] retval = new float[n][n];
+        
+        // assume the matrix is zero-filled
+        
+        for (int i = 0; i < n; i++) {
+            retval[i][i] = array[i];
+        }
+        
+        return retval;            
+    } 
+             
 
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix.  The matrices must be of the same size.
-     *  @param matrix1 A matrix of floats.
-     *  @param matrix2 A matrix of floats.
-     *  @return A new matrix of floats.
+     *  second matrix. 
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
      */
-    public static final float[][] divideElements(float[][] matrix1,
-            float[][] matrix2) {
+    public static final float[][] divideElements(final float[][] matrix1,
+            final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
-        float[][] result = new float[rows][columns];
+        float[][] retval = new float[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                result[i][j] = matrix1[i][j] / matrix2[i][j];
+                retval[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -220,7 +318,7 @@ public class FloatMatrixMath {
      *  @param A matrix of floats.
      *  @return A new array of floats.
      */
-    public static final float[] fromMatrixToArray(float[][] matrix) {
+    public static final float[] fromMatrixToArray(final float[][] matrix) {
         return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
     }
 
@@ -237,7 +335,7 @@ public class FloatMatrixMath {
      *  @param matrix A matrix of floats.
      *  @return A new array of floats.
      */
-    public static final float[] fromMatrixToArray(float[][] matrix,
+    public static final float[] fromMatrixToArray(final float[][] matrix,
             int maxRow, int maxCol) {
         float[] retval = new float[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
@@ -248,11 +346,10 @@ public class FloatMatrixMath {
 
     /** Return a new matrix, which is defined by Aij = 1/(i+j+1),
      *  the Hilbert matrix. The matrix is square with one
-     *  dimension specifier required.
-     *  @param dim An int
-     *  @return A new Hilbert matrix of floats
+     *  dimension specifier required. This matrix is useful because it always
+     *  has an inverse.
      */
-    public static final float[][] hilbert(int dim) {
+    public static final float[][] hilbert(final int dim) {
         float[][] retval = new float[dim][dim];
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
@@ -263,12 +360,10 @@ public class FloatMatrixMath {
     }
     
 
-    /** Return an identity matrix with the specified dimension. The
+    /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
-     *  @param dim An int
-     *  @return A new identity matrix of floats
      */
-    public static final float[][] identity(int dim) {
+    public static final float[][] identity(final int dim) {
         float[][] retval = new float[dim][dim];
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
@@ -280,10 +375,8 @@ public class FloatMatrixMath {
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
      *  This method is from [1]
-     *  @param matrix A matrix of floats
-     *  @return A new matrix of floats, or null if no inverse exists
      */
-    public static final float[][] inverse(float[][] A) {
+    public static final float[][] inverse(final float[][] A) {
         _checkSquare("inverse", A);
 
         int n = _rows(A);
@@ -374,8 +467,8 @@ public class FloatMatrixMath {
      *  @param destMatrix A matrix of floats, used as the destination.
      *  @param srcMatrix A matrix of floats, used as the source.
      */
-    public static final void matrixCopy(float[][] srcMatrix,
-            float[][] destMatrix) {
+    public static final void matrixCopy(final float[][] srcMatrix,
+            final float[][] destMatrix) {
         matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
                 _columns(srcMatrix));
     }
@@ -394,11 +487,11 @@ public class FloatMatrixMath {
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
      */
-    public static final void matrixCopy(float[][] srcMatrix,
-            int srcRowStart, int srcColStart,
-            float[][] destMatrix,
-            int destRowStart, int destColStart,
-            int rowSpan, int colSpan) {
+    public static final void matrixCopy(final float[][] srcMatrix,
+            final int srcRowStart, final int srcColStart,
+            final float[][] destMatrix,
+            final int destRowStart, final int destColStart,
+            final int rowSpan, final int colSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
@@ -408,23 +501,22 @@ public class FloatMatrixMath {
     }
 
 
+    
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
-     *  @param matrix A matrix of floats.
-     *  @scalefactor The constant by which to multiply the matrix.
      */
-    public static final float[][] multiply(float[][] matrix,
-            float scalefactor) {
+    public static final float[][] multiply(final float[][] matrix,
+            final float scalefactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        float[][] result = new float[rows][columns];
+        float[][] retval = new float[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                result[i][j] = matrix[i][j] * scalefactor;
+                retval[i][j] = matrix[i][j] * scalefactor;
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -432,12 +524,9 @@ public class FloatMatrixMath {
      *  The number of rows of the matrix must equal the number of elements
      *  in the array. The returned array will have a length equal to the number
      *  of columns of the matrix.
-     *  @param matrix A matrix of floats.
-     *  @param array An array of floats.
-     *  @return A new array of floats.
      */
-    public static final float[] multiply(float[][] matrix,
-            float[] array) {
+    public static final float[] multiply(final float[][] matrix,
+            final float[] array) {
 
         int rows = _rows(matrix);
         int columns = _columns(matrix);
@@ -449,15 +538,15 @@ public class FloatMatrixMath {
                     "of the matrix (" + rows + ")");
         }
 
-        float[] result = new float[columns];
+        float[] retval = new float[columns];
         for (int i = 0; i < columns; i++) {
             float sum = 0.0f;
             for (int j = 0; j < rows; j++) {
                 sum += matrix[j][i] * array[j];
             }
-            result[i] = sum;
+            retval[i] = sum;
         }
-        return result;
+        return retval;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -465,12 +554,9 @@ public class FloatMatrixMath {
      *  The number of columns of the matrix must equal the number of elements
      *  in the array. The returned array will have a length equal to the number
      *  of rows of the matrix.
-     *  @param array An array of floats.
-     *  @param matrix A matrix of floats.
-     *  @return A new array of floats.
      */
-    public static final float[] multiply(float[] array,
-            float[][] matrix) {
+    public static final float[] multiply(final float[] array,
+            final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -481,15 +567,15 @@ public class FloatMatrixMath {
                     "columns of the matrix (" + columns + ")");
         }
 
-        float[] result = new float[rows];
+        float[] retval = new float[rows];
         for (int i = 0; i < rows; i++) {
             float sum = 0.0f;
             for (int j = 0; j < columns; j++) {
                 sum += matrix[i][j] * array[j];
             }
-            result[i] = sum;
+            retval[i] = sum;
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -506,76 +592,177 @@ public class FloatMatrixMath {
      */
     public static final float[][] multiply(float[][] matrix1,
             float[][] matrix2) {
-        float[][] result = new float[_rows(matrix1)][matrix2[0].length];
+        float[][] retval = new float[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 float sum = 0.0f;
                 for (int k = 0; k < matrix2.length; k++) {
                     sum += matrix1[i][k] * matrix2[k][j];
                 }
-                result[i][j] = sum;
+                retval[i][j] = sum;
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments. The matrices must be
-     *  of the same size.
-     *  @param matrix1 A matrix of floats.
-     *  @param matrix2 A matrix of floats.
-     *  @return A new matrix of floats.
+     *  multiplication of the two matrix arguments. 
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.     
      */
-    public static final float[][] multiplyElements(float[][] matrix1,
-            float[][] matrix2) {
+    public static final float[][] multiplyElements(final float[][] matrix1,
+            final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
-        float[][] result = new float[rows][columns];
+        float[][] retval = new float[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                result[i][j] = matrix1[i][j] * matrix2[i][j];
+                retval[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is the additive inverse of the
      *  argument matrix.
-     *  @param matrix A matrix of floats.
-     *  @return A new matrix of floats.
      */
-    public static final float[][] negative(float[][] matrix) {
-        float[][] result = new float[_rows(matrix)][_columns(matrix)];
-        for (int i = 0; i < _rows(matrix); i++) {
-            for (int j = 0; j < _columns(matrix); j++) {
-                result[i][j] = -matrix[i][j];
+    public static final float[][] negative(final float[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+    
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                retval[i][j] = -matrix[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
-
-    /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.  The matrices must be
-     *  of the same size.
-     *  @param matrix1 The first matrix of floats.
-     *  @param matrix2 The second matrix of floats.
-     *  @return A new matrix of floats.
+    /** Return a new matrix that is formed by orthogonalizing the columns of the
+     *  input matrix (the column vectors are orthogonal). If not all columns are 
+     *  linearly independent, the output matrix will contain a column of zeros
+     *  for all redundant input columns.
      */
-    public static final float[][] subtract(float[][] matrix1,
-            float[][] matrix2) {
+    public static final float[][] orthogonalizeColumns(final float[][] matrix) {
+       Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));              
+       return transpose((float[][]) orthoInfo[0]);            
+    }
+
+    /** Return a new matrix that is formed by orthogonalizing the columns of the
+     *  input matrix (the column vectors are orthogonal and have norm 1). If not 
+     *  all columns are linearly independent, the output matrix will contain a 
+     *  column of zeros for all redundant input columns.
+     */
+    public static final float[][] orthonormalizeColumns(final float[][] matrix) {                     
+       return transpose(orthogonalizeRows(transpose(matrix)));
+    }
+    
+    /** Return a new matrix that is formed by orthogonalizing the rows of the
+     *  input matrix (the row vectors are orthogonal). If not all rows are 
+     *  linearly independent, the output matrix will contain a row of zeros
+     *  for all redundant input rows.
+     */
+    public static final float[][] orthogonalizeRows(final float[][] matrix) {
+       Object[] orthoInfo = _orthogonalizeRows(matrix);              
+       return (float[][]) orthoInfo[0];            
+    }
+
+    /** Return a new matrix that is formed by orthonormalizing the rows of the
+     *  input matrix (the row vectors are orthogonal and have norm 1). If not all 
+     *  rows are linearly independent, the output matrix will contain a row of 
+     *  zeros for all redundant input rows.
+     */
+    public static final float[][] orthonormalizeRows(final float[][] matrix) {
+       int rows = _rows(matrix);
+    
+       Object[] orthoInfo = _orthogonalizeRows(matrix);              
+       float[][] orthogonalMatrix = (float[][]) orthoInfo[0];
+       float[] oneOverNormSquaredArray = (float[]) orthoInfo[2];
+       
+       for (int i = 0; i < rows; i++) {
+           orthogonalMatrix[i] = FloatArrayMath.scale(
+            orthogonalMatrix[i], (float) Math.sqrt(oneOverNormSquaredArray[i]));
+       }
+       
+       return orthogonalMatrix;            
+    }    
+
+
+    /** Return a pair of matrices that are the decomposition of the input matrix
+     *  (which must have linearly independent column vectors), which is m x n,
+     *  into the matrix product of Q, which is m x n with orthonormal column vectors,
+     *  and R, which is an invertible n x n upper triangular matrix. 
+     *  Throw an IllegalArgumentException if the columns vectors of the input matrix 
+     *  are not linearly independent.
+     *  @param matrix The input matrix of floats.
+     *  @return The pair of newly allocated matrices of floats, out[0] = Q, out[1] = R.
+     */
+    public static final float[][][] qr(final float[][] matrix) {      
+        int columns = _columns(matrix);    
+    
+        /*  Find an orthogonal basis using _orthogonalizeRows().
+         *  Note that _orthogonalizeRows() orthogonalizes row vectors, so we have use the 
+         *  transpose of input matrix to orthogonlize its columns vectors. The output will 
+         *  be the transpose of Q.
+         */
+        Object[] orthoRowInfo = _orthogonalizeRows(transpose(matrix));
+        
+        float[][] qT = (float[][]) orthoRowInfo[0];
+
+        // get the dot product matrix, dp[j][i] = <inColumn[i], outColumn[j]> 
+        float[][] dotProducts = (float[][]) orthoRowInfo[1];
+
+        // Normalize the row vectors of qT (column vectors of Q) by dividing by the
+        // norm of each row vector.        
+        // To compute R, normalize each row of dotProducts by dividing each row  
+        // the norm of each column vector of Q.        
+        
+        float[] oneOverNormSquaredArray = (float[]) orthoRowInfo[2];
+
+        // check that all columns were linearly independent
+        Integer nullity = (Integer) orthoRowInfo[3];
+        if (nullity.intValue() > 0) {
+           throw new IllegalArgumentException("qr() : not all column vectors are " +
+                                              "linearly independent.");
+        }
+        
+        for (int i = 0; i < columns; i++) {
+            float oneOverNorm = (float) Math.sqrt(oneOverNormSquaredArray[i]);
+            qT[i] = FloatArrayMath.scale(qT[i], oneOverNorm);
+            
+            // R is upper triangular, so normalize only upper elements
+            for (int j = i; j < columns; j++) {
+                dotProducts[i][j] *= oneOverNorm;
+            }
+        }     
+        
+        return new float[][][] { transpose(qT), dotProducts };
+    }          
+
+
+
+    
+    /** Return a new matrix that is constructed from the argument by
+     *  subtracting the second matrix from the first one.  
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.          
+     */
+    public static final float[][] subtract(final float[][] matrix1,
+            final float[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
-        float[][] result = new float[_rows(matrix1)][_columns(matrix1)];
-        for (int i = 0; i < _rows(matrix1); i++) {
-            for (int j = 0; j < _columns(matrix1); j++) {
-                result[i][j] = matrix1[i][j] - matrix2[i][j];
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        float[][] retval = new float[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                retval[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new matrix that is formed by converting the floats in
@@ -584,59 +771,69 @@ public class FloatMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] toDoubleMatrix(final float[][] matrix) {
-        double[][] retval = new double[_rows(matrix)][_columns(matrix)];
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+ 
+        double[][] retval = new double[rows][columns];
         
-        for (int i = 0; i < _rows(matrix); i++) {
-            for (int j = 0; j < _columns(matrix); j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 retval[i][j] = (double) matrix[i][j];
             }
         }
         return retval;
-    }
+    }    
+
     
 
-
+    
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to integers.
      *  @param array An matrix of float.
      *  @return A new matrix of integers.
      */
     public static final int[][] toIntegerMatrix(final float[][] matrix) {
-        int[][] retval = new int[_rows(matrix)][_columns(matrix)];
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+ 
+        int[][] retval = new int[rows][columns];
         
-        for (int i = 0; i < _rows(matrix); i++) {
-            for (int j = 0; j < _columns(matrix); j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 retval[i][j] = (int) matrix[i][j];
             }
         }
         return retval;
-    }        
-    
+    }            
 
+    
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to longs.
      *  @param array An matrix of float.
      *  @return A new matrix of longs.
      */
     public static final long[][] toLongMatrix(final float[][] matrix) {
-        long[][] retval = new long[_rows(matrix)][_columns(matrix)];
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+ 
+        long[][] retval = new long[rows][columns];
         
-        for (int i = 0; i < _rows(matrix); i++) {
-            for (int j = 0; j < _columns(matrix); j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 retval[i][j] = (long) matrix[i][j];
             }
         }
         return retval;
-    }        
-    
+    }            
 
+    
     /** Return a new matrix of floats that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
      *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
      *  entries are denoted by (row, column).
      *  @param array An array of floats.
-     *  @param rows An int.
-     *  @param cols An int.
+     *  @param rows An integer representing the number of rows of the new matrix.
+     *  @param cols An integer representing the number of columns of the new matrix.
      *  @return A new matrix of floats.
      */
     public static final float[][] toMatrixFromArray(float[] array, int rows,
@@ -651,7 +848,7 @@ public class FloatMatrixMath {
     /** Return a new String representing the matrix, formatted as
      *  in Java array initializers.
      */
-    public static final String toString(float[][] matrix) {
+    public static final String toString(final float[][] matrix) {
         return toString(matrix, ArrayStringFormat.javaASFormat);
     }
 
@@ -661,8 +858,8 @@ public class FloatMatrixMath {
      *  call this method with ArrayStringFormat.exprASFormat as the
      *  format argument.
      */
-    public static final String toString(float[][] matrix,
-            ArrayStringFormat asf) {
+    public static final String toString(final float[][] matrix,
+            final ArrayStringFormat asf) {
         StringBuffer sb = new StringBuffer();
         sb.append(asf.matrixBeginString());
 
@@ -694,10 +891,8 @@ public class FloatMatrixMath {
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
      *  Note that the trace of a matrix is equal to the sum of its eigenvalues.
-     *  @param matrix A matrix of floats.
-     *  @return The trace of the matrix.
      */
-    public static final float trace(float[][] matrix) {
+    public static final float trace(final float[][] matrix) {
         int dim = _checkSquare("trace", matrix);
         float sum = 0.0f;
 
@@ -708,21 +903,20 @@ public class FloatMatrixMath {
     }
 
     /** Return a new matrix that is constructed by transposing the input
-     *  matrix.
-     *  @param matrix A matrix of floats.
-     *  @return A new matrix of floats.
+     *  matrix. If the input matrix is m x n, the output matrix will be 
+     *  n x m.
      */
-    public static final float[][] transpose(float[][] matrix) {
+    public static final float[][] transpose(final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        float[][] result = new float[columns][rows];
+        float[][] retval = new float[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                result[j][i] = matrix[i][j];
+                retval[j][i] = matrix[i][j];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Returns true iff the differences of all corresponding elements of
@@ -737,8 +931,8 @@ public class FloatMatrixMath {
      *  allowed error.
      *  @return A boolean condition.
      */
-    public static final boolean within(float[][] matrix1, float[][] matrix2,
-            float absoluteError) {
+    public static final boolean within(final float[][] matrix1, 
+            final float[][] matrix2, float absoluteError) {
         if (absoluteError < 0.0f) {
             throw new IllegalArgumentException(
                     "within(): absoluteError (" + absoluteError +
@@ -773,8 +967,8 @@ public class FloatMatrixMath {
      *  @param errorMatrix A matrix of floats.
      *  @return A boolean condition.
      */
-    public static final boolean within(float[][] matrix1, float[][] matrix2,
-            float[][] errorMatrix) {
+    public static final boolean within(final float[][] matrix1, 
+            final float[][] matrix2, final float[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -792,11 +986,8 @@ public class FloatMatrixMath {
         return true;
     }
 
-    /** Return the number of columns of a matrix.
-     *  @param matrix A matrix of floats.
-     *  @return An int.
-     */
-    private static final int _columns(float[][] matrix) {
+    /** Return the number of columns of a matrix. */
+    private static final int _columns(final float[][] matrix) {
         return matrix[0].length;
     }
 
@@ -806,9 +997,8 @@ public class FloatMatrixMath {
      *  @param matrix1 A matrix of floats.
      *  @param matrix2 A matrix of floats.
      */
-    private static final void _checkSameDimension(String caller,
-            float[][] matrix1,
-            float[][] matrix2) {
+    private static final void _checkSameDimension(final String caller,
+             final float[][] matrix1, final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -827,25 +1017,114 @@ public class FloatMatrixMath {
      *  @param matrix A matrix of floats.
      *  @return The dimension of the square matrix.
      */
-    private static final int _checkSquare(String caller, float[][] matrix) {
+    private static final int _checkSquare(final String caller, 
+             final float[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.floatMatrixMath." + caller +
+                    "ptolemy.math.FloatMatrixMath." + caller +
                     "() : matrix argument " + _dimensionString(matrix) +
                     " is not a square matrix.");
         }
         return _rows(matrix);
     }
 
-    private static final String _dimensionString(float[][] matrix) {
+    private static final String _dimensionString(final float[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
-    /** Return the number of rows of a matrix.
-     *  @param matrix A matrix of floats.
-     *  @return An int.
-     */
-    private static final int _rows(float[][] matrix) {
+    /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :
+     *  1) A new set of row vectors out[0] ... out[n-1] which are the 
+     *     orthogonalized  versions of each input row vector. If a row vector 
+     *     rowArray[i] is a linear combination of the last 0 .. i - 1 row vectors, 
+     *     set array[i] to an array of 0's (array[i] being the 0 vector is a 
+     *     special case of this). Put the result in retval[0].<br>
+     *  2) An n x n matrix containing the dot products of the input row vectors 
+     *     and the output row vectors, 
+     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.
+     *     Put the result in retval[1].<br>
+     *  3) An array containing 1 / (norm(outArray[i])<sup>2</sup>), with n entries. 
+     *     Put the result in retval[2].<br>     
+     *  4) A count of the number of rows that were found to be linear combinations 
+     *     of previous rows. Replace those rows with rows of zeros. The count
+     *     is equal to the nullity of the transpose of the input matrix. Wrap the
+     *     count with an Integer, and put it in retval[3].<br>
+     *  
+     *  Orthogonalization is done with the Gram-Schmidt process.
+     */        
+    protected static final Object[] _orthogonalizeRows(final float[][] rowArrays) {
+        int rows = rowArrays.length;
+        int columns =  rowArrays[0].length;
+        int nullity = 0;
+        
+        float[][] orthogonalMatrix = new float[rows][];
+                        
+        float[] oneOverNormSquaredArray = new float[rows];
+                                                             
+        // A matrix containing the dot products of the input row vectors and 
+        // output row vectors, dotProductMatrix[j][i] = <rowArray[i], outArray[j]> 
+        float[][] dotProductMatrix = new float[rows][rows];
+                                
+        for (int i = 0; i < rows; i++) {
+            // get a reference to the row vector
+            float[] refArray = rowArrays[i];
+        
+            // initalize row vector
+            float[] rowArray = refArray;
+                        
+            // subtract projections onto all previous vectors
+            for (int j = 0; j < i; j++) {
+  
+                // save the dot product for future use for QR decomposition
+                float dotProduct = 
+                 FloatArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
+                
+                dotProductMatrix[j][i] = dotProduct;            
+                
+                rowArray = FloatArrayMath.subtract(rowArray, 
+                            FloatArrayMath.scale(orthogonalMatrix[j], 
+                             dotProduct * oneOverNormSquaredArray[j]));
+            }
+
+            // compute the dot product between the input and output vector
+            // for the diagonal entry of dotProductMatrix
+            dotProductMatrix[i][i] = 
+             FloatArrayMath.dotProduct(refArray, rowArray);
+
+            // check the norm to find zero rows, and save the 1 / norm^2 for later
+            // computation
+                                    
+            float normSquared = FloatArrayMath.sumOfSquares(rowArray);                        
+                                                
+            if (normSquared == 0.0f) {
+               if (i == 0) {
+                  // The input row was the zero vector, we now have a reference to it.
+                  // Set the row to a new zero vector to ensure the output memory
+                  // is entirely disjoint from the input memory.
+                  orthogonalMatrix[i] = new float[columns];
+               } else {
+                  // Reuse the memory allocated by the last subtract() call -- 
+                  // the row is all zeros.
+                  orthogonalMatrix[i] = rowArray;
+               }
+               
+               // set the normalizing factor to 0.0f to avoid division by 0,
+               // it works because the projection onto the zero vector yields
+               // zero 
+               oneOverNormSquaredArray[i] = 0.0f;           
+               
+               nullity++;    
+            } else {
+               orthogonalMatrix[i] = rowArray;          
+               oneOverNormSquaredArray[i] = 1.0f / normSquared;               
+            }                        
+        }
+        return new Object[] { orthogonalMatrix, dotProductMatrix, 
+                              oneOverNormSquaredArray, new Integer(nullity) };         
+    }    
+
+    
+    /** Return the number of rows of a matrix. */
+    private static final int _rows(final float[][] matrix) {
         return matrix.length;
     }
 }

@@ -227,18 +227,6 @@ test DoubleArrayStat-3.1 {sumOfElements empty array} {
 } 0.0
 
 ####################################################################
-test DoubleArrayStat-3.1 {sumOfSquares} {
-    set r [java::call ptolemy.math.DoubleArrayStat sumOfSquares $a2]
-    list $r
-} 23353562.9741
-
-####################################################################
-test DoubleArrayStat-3.1 {sumOfSquares empty array} {
-    set r [java::call ptolemy.math.DoubleArrayStat sumOfSquares $a0]
-    list $r
-} 0.0
-
-####################################################################
 test DoubleArrayStat-3.1 {variance sample} {
     set r [java::call ptolemy.math.DoubleArrayStat variance $a2]
     set er [java::call ptolemy.math.DoubleArrayStat variance $a2 false] 

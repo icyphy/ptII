@@ -90,17 +90,6 @@ public class IntegerArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element absolute value of the input array.
-     *  If the length of the array is 0, return a new array of length 0.
-     */
-    public static final int[] abs(final int[] array) {
-        int[] retval = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            retval[i] = Math.abs(array[i]);
-        }
-        return retval;
-    }
-
     /** Return a new array that is the result of appending array2 to the end
      *  of array1. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)
@@ -141,8 +130,191 @@ public class IntegerArrayMath {
         return retval;
     }
 
+    /** Return a new array that is formed by applying an instance of a 
+     *  IntegerBinaryOperation to each element in the input array 
+     *  and z, using the array elements as the left operands and z
+     *  as the right operand in all cases. (op.operate(array[i], z)).
+     *  If the length of the array is 0, return a new array of length 0.          
+     */
+    public static final int[] applyBinaryOperation(
+     IntegerBinaryOperation op, final int[] array, final int z) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = op.operate(array[i], z);
+        }
+        return retval;
+    }
+      
+    /** Return a new array that is formed by applying an instance of a 
+     *  IntegerBinaryOperation to each element in the input array,     
+     *  using z as the left operand in all cases and the array elements
+     *  as the right operands (op.operate(z, array[i])).
+     *  If the length of the array is 0, return a new array of length 0.          
+     */
+    public static final int[] applyBinaryOperation(
+     IntegerBinaryOperation op, final int z, final int[] array) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = op.operate(array[i], z);
+        }
+        return retval;
+    }
+            
+    /** Return a new array that is formed by applying an instance of a 
+     *  IntegerBinaryOperation to the two arrays, element by element,
+     *  using the elements of the first array as the left operands and the 
+     *  elements of the second array as the right operands.
+     *  (op.operate(array[i], array2[i])).
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final int[] applyBinaryOperation(
+     IntegerBinaryOperation op, final int[] array1, final int[] array2) {
+        int length = _commonLength(array1, array2, 
+         "IntegerArrayMath.applyBinaryOperation");     
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = op.operate(array1[i], array2[i]);
+        }
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a 
+     *  IntegerUnaryOperation to each element in the input array 
+     *  (op.operate(array[i])).
+     *  If the length of the array is 0, return a new array of length 0.          
+     */
+    public static final int[] applyUnaryOperation(
+     final IntegerUnaryOperation op, final int[] array) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = op.operate(array[i]);
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the formed by bitwise ANDing z with each element
+     *  of the input array (array[i] & z).
+     *  If the length of the array is 0, return a new array of length 0.     
+     */
+    public static final int[] bitwiseAnd(final int[] array, final int z) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] & z;
+        }
+        return retval;
+    }
+      
+    /** Return a new array that is the element-by-element bitwise AND of the two
+     *  input arrays (array1[i] & array2[i]).
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final int[] bitwiseAnd(final int[] array1,
+     final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseAnd");
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array1[i] & array2[i];
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the element-by-element bitwise complement of the 
+     *  input array (~array[i]).
+     *  If the length of the array is 0, return a new array of length 0.
+     */
+    public static final int[] bitwiseComplement(final int[] array) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = ~array[i];
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the formed by bitwise ORing z with each element
+     *  of the input array (array[i] | z).
+     *  If the length of the array is 0, return a new array of length 0.     
+     */
+    public static final int[] bitwiseOr(final int[] array, final int z) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] | z;
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the element-by-element bitwise OR of the two
+     *  input arrays (array1[i] | array2[i]).
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final int[] bitwiseOr(final int[] array1,
+     final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseOr");
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array1[i] | array2[i];
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the formed by bitwise XORing z with each element
+     *  of the input array (array[i] ^ z).
+     *  If the length of the array is 0, return a new array of length 0.     
+     */
+    public static final int[] bitwiseXor(final int[] array, final int z) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] ^ z;
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the element-by-element bitwise XOR of the two
+     *  input arrays (array1[i] ^ array2[i]).
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final int[] bitwiseXor(final int[] array1,
+     final int[] array2) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseXor");
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array1[i] ^ array2[i];
+        }
+        return retval;
+    }
+    
+    /** Return a new array that is the formed by dividing each element of the input
+     *  array by z (array[i] / z).
+     *  If the length of the array is 0, return a new array of length 0.     
+     */
+    public static final int[] divide(final int[] array, final int z) {
+        int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] / z;
+        }
+        return retval;
+    }
+
+
+
+
     /** Return a new array that is the element-by-element division of
-     *  the first array by the second array.
+     *  the first array by the second array (array1[i] / array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
@@ -159,7 +331,7 @@ public class IntegerArrayMath {
         }
         return retval;
     }
-
+              
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.
      *  If the two arrays do not have the same length, throw an
@@ -178,6 +350,8 @@ public class IntegerArrayMath {
         return sum;
     }
 
+
+
     /** Return a new array that is a copy of the argument except that the
      *  elements are limited to lie within the specified range.
 
@@ -194,24 +368,24 @@ public class IntegerArrayMath {
      */
     public static final int[] limit(final int[] array,
      final int bottom, final int top) {
-        int[] result = new int[array.length];
+        int[] retval = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) ||  
 
                 (array[i] == Integer.MAX_VALUE)) {
 
-                result[i] = top;
+                retval[i] = top;
             } else if ((array[i] < bottom) ||
 
                 (array[i] == Integer.MIN_VALUE)) {
 
-                result[i] = bottom;
+                retval[i] = bottom;
                 
             } else {
-                result[i] = array[i];
+                retval[i] = array[i];
             }
         }
-        return result;
+        return retval;
     }
 
     /** Return a new array that is the formed by the modulo of each element
@@ -227,7 +401,7 @@ public class IntegerArrayMath {
     }
 
     /** Return a new array that is the element-by-element modulo of the two
-     *  input arrays (array1[i] % array2[i].
+     *  input arrays (array1[i] % array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
@@ -250,7 +424,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] multiply(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.multiply");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -259,6 +433,21 @@ public class IntegerArrayMath {
         return retval;
     }
 
+    /** Return a new array that is the formed by the additive inverse of each
+     *  element of the input array (-array[i]).
+     */
+    public static final int[] negative(final int[] array) {
+            int length = array.length;
+        int[] retval = new int[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = -array[i];
+        }
+        return retval;
+    }
+
+
+   
+   
     /** Return a new array of ints that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be
@@ -271,7 +460,7 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] padMiddle(final int[] array,
-     final int newLength) {
+            final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
@@ -297,7 +486,6 @@ public class IntegerArrayMath {
 
         return retval;
     }
-
 
     /** Return a new array of length newLength that is formed by
      *  either truncating or padding the input array.
@@ -371,19 +559,19 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] shiftArithmetic(int[] array, int shiftAmount) {
-        int[] result = new int[array.length];
+        int[] retval = new int[array.length];
         
         if (shiftAmount >= 0) {        
            for (int i = 0; i < array.length; i++) {
-               result[i] = array[i] << shiftAmount;
+               retval[i] = array[i] << shiftAmount;
            }
         } else if (shiftAmount < 0) {
            for (int i = 0; i < array.length; i++) {
-               result[i] = array[i] >>> -shiftAmount;
+               retval[i] = array[i] >>> -shiftAmount;
            }
         }
         
-        return result;
+        return retval;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -399,28 +587,26 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] shiftLogical(int[] array, int shiftAmount) {
-        int[] result = new int[array.length];
+        int[] retval = new int[array.length];
         
         if (shiftAmount >= 0) {        
            for (int i = 0; i < array.length; i++) {
-               result[i] = array[i] << shiftAmount;
+               retval[i] = array[i] << shiftAmount;
            }
         } else if (shiftAmount < 0) {
            for (int i = 0; i < array.length; i++) {
-               result[i] = array[i] >> -shiftAmount;
+               retval[i] = array[i] >> -shiftAmount;
            }
         }
         
-        return result;
+        return retval;
     }
     
 
     /** Return a new array that is the element-by-element difference of the
-     *  two input arrays, i.e. the first array minus the second array.
+     *  two input arrays, i.e. the first array minus the second array
+     *  (array1[i] - array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
-     *  @param array1 The first array of ints.
-     *  @param array2 The second array of ints.
-     *  @return A new array of ints.
      */
     public static final int[] subtract(final int[] array1,
      final int[] array2) {
@@ -432,11 +618,21 @@ public class IntegerArrayMath {
         }
         return retval;
     }
+
+    /** Return the sum of the squares of all of the elements in the array.
+     *  Return 0 if the length of the array is 0.
+     */
+    public static final int sumOfSquares(int[] array) {
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            sum += (array[i] * array[i]);
+        }
+        return sum;
+    }
     
     /** Return a new array that is formed by converting the ints in
      *  the argument array to doubles.
-     *  If the length of the argument array is 0,
-     *  return a new array of length 0.
+     *  If the length of the argument array is 0, return a new array of length 0.
      *  @param array An array of int.
      *  @return A new array of doubles.
      */
@@ -466,15 +662,13 @@ public class IntegerArrayMath {
             retval[i] = (float) array[i];
         }
         return retval;
-    }
-    
+    }    
 
 
 
     /** Return a new array that is formed by converting the ints in
      *  the argument array to longs.
-     *  If the length of the argument array is 0,
-     *  return a new array of length 0.
+     *  If the length of the argument array is 0, return a new array of length 0.
      *  @param array An array of int.
      *  @return A new array of longs.
      */
@@ -486,9 +680,9 @@ public class IntegerArrayMath {
             retval[i] = (long) array[i];
         }
         return retval;
-    }
-    
+    }    
 
+    
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
      */

@@ -1720,7 +1720,7 @@ public class SignalProcessing {
     private static final double _LOG10SCALE = 1.0 / Math.log(10.0);
     private static final double _LOG2SCALE  = 1.0 / Math.log(2.0);
 
-    // Indicates an forward/inverse transform for checking arguments
+    // Indicates a forward/inverse transform for checking arguments
     private static final boolean _FORWARD_TRANSFORM = false;
     private static final boolean _INVERSE_TRANSFORM = true;
 }
