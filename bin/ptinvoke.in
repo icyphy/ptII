@@ -621,7 +621,7 @@ case `basename "$0"` in
 	if [ "$1" = "-single" ]; then
 	    shift
 	    SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/SingleWindow.jar${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
-	    javastartupclass=ptolemy.vergil.SingleWindowApplication
+	    javastartupclass=thales.vergil.SingleWindowApplication
         fi
 
 	javasourcedir=ptolemy/vergil
