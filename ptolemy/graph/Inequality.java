@@ -68,7 +68,7 @@ public class Inequality {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /*  Adds the specified <code>InequalityTerm</code> to the list of
+    /** Adds the specified <code>InequalityTerm</code> to the list of
      *  variables in this inequality. The specified
      *  <code>InequalityTerm</code> should be a single variable, i.e.,
      *  it should return <code>true</code> in <code>settable</code>.
