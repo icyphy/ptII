@@ -59,46 +59,66 @@ applet is displayed on a XGA screen-->
 </OBJECT>
 </center>
 <P>
+<B>Background</B>
+<BR>
 The above applet illustrates the localization of Zeno conditions in the
 DDE domain. The demo consists of two topologically identical branches
-connected to a 
-<A HREF="../../../../actor/lib/Clock.java"><I>clock</I></A>
+connected to a clock
 source actor. Each branch contains a feedback loop and is fed identical
-tokens from the clock source. As with all feedback loops in DDE models,
-a time delay is encountered as tokens feedback through the loops. It
-has been shown that in discrete event systems (both distributed and
-centralized) the feedback time delay must be greater than a positive
-constant value or else a <I>Zeno</I> condition will be experienced. 
+tokens from the clock source. As with all feedback loops in DDE (and DE) 
+models, a positive time delay is necessary in feedback loops to prevent
+deadlock. If the time delay of a given loop is lower bounded by zero but 
+can not be guaranteed to be greater than a fixed positive value, 
+then a Zeno condition occurs in which time will cease to advance even 
+though the actors of the feedback loop continue to execute without 
+deadlocking.
 <P>
 In centralized discrete event systems, Zeno conditions prevent progress
-in the entire simulation model. In distributed systems, Zeno conditions
-are localized as much as is possible based on the topology of the system
-because DDE models naturally separate unnecessary dependencies in 
-subcomponents of the model.
+in the entire simulation. This is true because the feedback cycle 
+experiencing the Zeno condition prevents time from advancing in the 
+entire model. In contrast, distributed systems localize Zeno conditions
+as much as possible based on the topology of the system. Thus, as shown
+in the demo above, a Zeno condition can exist in one section of a 
+topology without impacting the entire system.
 <P>
-In the above model, the bottom branch experiences a Zeno condition. This
-causes the the bottom branch to continue execution long after the top 
-branch has ceased execution, even though the clock source sends identical
-data to both branches.
+<B>Operation</B>
+<BR>
+In the above model, the bottom branch experiences a Zeno condition as soon
+as time advances to 45. This causes the the bottom branch to continue 
+execution long after the top branch has ceased execution, even though the 
+clock source sends identical data to both branches. <I>Note that for 
+convenience the lower branch only approximates a Zeno condition. It 
+has been deliberately designed to eventually end the Zeno condition and
+complete execution.</I>
 <P>
-<B>THIS IS NOT COMPLETE</B>
-
+A color coding scheme is utilized as follows:
+<UL>
+	<LI>BLUE: Execution has not begun.<BR> 
+	<LI>YELLOW: Waiting to consume a token.<BR> 
+	<LI>GREEN: Producing a token.<BR> 
+	<LI>RED: Execution is complete.<BR> 
+</UL>
 <P>
 This applet is implemented by
 <TT><A HREF="LocalZenoApplet.java">LocalZenoApplet.java</A></TT>.
-<P>The model consists of the following domain-polymorphic actors:
-<ul>
-<li> <A HREF="../../../../actor/lib/Clock.java">Clock</A>
-</ul>
+<P>
+The model consists of the following domain-polymorphic actors:
+<UL>
+	<LI> <A HREF="../../../../actor/lib/Clock.java">Clock</A>
+	<LI> <A HREF="../../../../actor/gui/TimedPlotter.java">TimedPlotter</A>
+</UL>
 <P>and the following DDE actors:
-<ul>
-<li> <A HREF="../../lib/DDESink.java">Sink</A>
-</ul>
+<UL>
+	<LI> <A HREF="../../lib/DDESink.java">DDESink</A>
+	referred to as <I>Rcvr</I> in the topology above.
+	<LI> <A HREF="../../lib/DoubleFork.java">DoubleFork</A> 
+	referred to as <I>Join</I> in the topology above.
+	<LI> <A HREF="../../kernel/FBDelay.java">FBDelay</A> 
+	referred to as <I>FeedBack</I> in the topology above.
+	<LI> <A HREF="../../lib/TimeAdvance.java">TimeAdvance</A> 
+	not shown in the topology above.
+</UL>
 
 <BR>
-<CENTER>
-<!IMG SRC="../img/Histogram.gif" HEIGHT=251 WIDTH=566
-Alt="Imagemap" Usemap="#ActorsMap" Ismap>
-</CENTER>
 </BODY>
 </HTML>
