@@ -24,6 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
+FIXME: things to review:
 setDirector throws NameDuplicationException
 fire: call transferOutputs on local, not executive director.
 preinitialize: validate attributes of this composite and
