@@ -280,31 +280,25 @@ public abstract class TableauFrame extends Top {
     }
 
     /** Save the model to the current file, determined by the
-     *  and _file protected variable, or if that has not been set,
-     *  by the <i>url</i> attribute of the associated effigy, or if
+     *  and <i>url</i> parameter of the associated effigy, or if
      *  that has not been set or is not a writable file, then invoke
      *  _saveAs(). This calls _writeFile() to perform the save.
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
-        // FIXME: If we are inside another model, this overwrites the
-        // toplevel model with the lower level model.
-        if (_file == null) {
-            // Access the URL info from the model to attempt to set
-            // the _file variable.
-            Effigy effigy = getEffigy();
-            if (effigy != null) {
-                URL url = effigy.url.getURL();
-                if (url != null) {
-                    String protocol = url.getProtocol();
-                    if (protocol.equals("file")) {
-                        String filename = url.getFile();
-                        _file = new File(filename);
-                    }
-                }
+        File file = _writableFile();
+        if (file != null) {
+            try {
+                _writeFile(file);
+                setModified(false);
+                return true;
+            } catch (IOException ex) {
+                report("Error writing file", ex);
+                return false;
             }
+        } else {
+            return _saveAs();
         }
-        return super._save();
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -332,26 +326,33 @@ public abstract class TableauFrame extends Top {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
-
-            _file = file;
 	    _directory = fileDialog.getCurrentDirectory();
-            boolean result = _save();
-
-            if (result) {
-                // Open a new window on the model.
-                try {
-                    URL newURL = file.toURL();
-                    String newKey = newURL.toExternalForm();
-                    getConfiguration().openModel(newURL, newURL, newKey);
-                } catch (Exception ex) {
-                    MessageHandler.error(
-                            "Unable to open the file just saved.",ex);
-                }
+            try {
+                _writeFile(file);
+                setModified(false);
+            } catch (IOException ex) {
+                report("Error writing file", ex);
+                return false;
             }
-            return result;
+
+            // Open a new window on the model.
+            try {
+                URL newURL = file.toURL();
+                String newKey = newURL.toExternalForm();
+                getConfiguration().openModel(newURL, newURL, newKey);
+                // If the tableau was unnamed before, then we need
+                // to close this window after doing the save.
+                if (_writableFile() == null) {
+                    // This will have the effect of closing all the
+                    // tableaux associated with the unnamed model.
+                    getEffigy().setContainer(null);
+                }
+            } catch (Exception ex) {
+                MessageHandler.error(
+                        "Error in save as.",ex);
+            }
         }
-        // Action was cancelled.
-        return false;
+        return true;
     }
 
     /** Write the model to the specified file.  This method delegates
@@ -414,6 +415,25 @@ public abstract class TableauFrame extends Top {
             }
         }
         return false;
+    }
+
+    // Return a writable file for the URL given by the <i>url</i>
+    // parameter of the associated effigy, if there is one, or return
+    // null if there is not.
+    private File _writableFile() {
+        File result = null;
+        Effigy effigy = getEffigy();
+        if (effigy != null) {
+            URL url = effigy.url.getURL();
+            if (url != null) {
+                String protocol = url.getProtocol();
+                if (protocol.equals("file")) {
+                    String filename = url.getFile();
+                    result = new File(filename);
+                }
+            }
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

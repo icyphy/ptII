@@ -292,9 +292,6 @@ public abstract class Top extends JFrame {
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
 
-    /** The input file. */
-    protected File _file = null;
-
     /** File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
 
@@ -530,6 +527,9 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The input file.
+    private File _file = null;
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
