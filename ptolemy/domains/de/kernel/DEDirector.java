@@ -28,6 +28,7 @@
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 Review transferOutputs().
 Review changes in fire() and _dequeueEvents().
+Review fireAtCurrentTime()'s use of the time Double.NEGATIVE_INFINITY
 */
 
 package ptolemy.domains.de.kernel;
@@ -436,7 +437,8 @@ public class DEDirector extends Director {
 
                     if (next.timeStamp() > getCurrentTime()) {
                         break;
-                    } else if (next.timeStamp() < getCurrentTime()) {
+                    } else if (next.timeStamp() != Double.NEGATIVE_INFINITY 
+                            && next.timeStamp() < getCurrentTime()) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
@@ -451,6 +453,10 @@ public class DEDirector extends Director {
     }
 
     /** Schedule an actor to be fired at the specified absolute time.
+     *  This method is only intended to be called from within main
+     *  simulation thread.  Actors that create their own asynchronous
+     *  threads should used the fireAtCurrentTime() method to schedule
+     *  firings.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
@@ -470,14 +476,32 @@ public class DEDirector extends Director {
 
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, time);
+            if (_isEmbedded()) {
+                _requestFiring();
+            }
             _eventQueue.notifyAll();
         }
     }
 
-    /** Schedule an actor to be fired at the current time.
-     *  @param actor The scheduled actor to fire.
-     *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException If the specified time is in the past.
+    /** Schedule a firing of the given actor as soon as possible.  If
+     *  this method is called from within the main simulation thread,
+     *  then this will result in the actor being fired at the current
+     *  time.  This method may also be invoked from a thread other
+     *  than the main simulation thread, making it useful for actors
+     *  that perform asynchronous processing, such as waiting for data
+     *  in another thread. In these cases, calling fireAt(actor,
+     *  getCurrenttime()) is not sufficient, since there is no way for
+     *  an asynchronous thread to ensure that time does not advance in
+     *  the model.  When invoked from an asynchronous thread, this
+     *  method will attempt to fire the actor at the earliest time
+     *  that this director is fired.
+     *
+     *  This class overrides the base class method to additionally add
+     *  an pure event for the given actor to the event queue that will
+     *  be processed before all other events.
+     *  @param actor The actor to be fired.
+     *  @exception IllegalActionException If this method is called
+     *  before the model is running.
      */
     public void fireAtCurrentTime(Actor actor)
             throws IllegalActionException {
@@ -492,8 +516,10 @@ public class DEDirector extends Director {
             // responsibility. This error would be fairly hard to make,
             // so we don't check for it here.
 
-            // Set the depth equal to the depth of the actor.
-            _enqueueEvent(actor, getCurrentTime());
+            // "As soon as possible" is encoded in this class by the time 
+            // Double.NEGATIVE_INFINITY.
+            _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
+            super.fireAtCurrentTime();
             _eventQueue.notifyAll();
         }
     }
@@ -518,6 +544,9 @@ public class DEDirector extends Director {
 
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, time + getCurrentTime());
+            if(_isEmbedded()) {
+                _requestFiring();
+            }
             _eventQueue.notifyAll();
         }
     }
@@ -737,17 +766,23 @@ public class DEDirector extends Director {
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
+        
+        // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
+        // a firing as soon as possible.
+        if (nextEventTime == Double.NEGATIVE_INFINITY) {
+            nextEventTime = outsideCurrentTime;
+        }
+
         // FIXME: Ideally, we should add this test. But DT does not
         // return a correct getCurrentTime.
-        /*
-          if (outsideCurrentTime > nextEventTime + 1e-10) {
-          throw new IllegalActionException(this,
-          "Missed a firing at "
-          + nextEventTime + "."
-          + " The outside time is already " +
-          + outsideCurrentTime + ".");
-          }
-        */
+        if (outsideCurrentTime > nextEventTime + 1e-10) {
+            throw new IllegalActionException(this,
+                    "Missed a firing at "
+                    + nextEventTime + "."
+                    + " The outside time is already " +
+                    + outsideCurrentTime + ".");
+        }
+        
         // Now we check if there's any input.
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
@@ -1057,6 +1092,11 @@ public class DEDirector extends Director {
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
 
+                    // Deal with a fireAtCurrentTime event.
+                    if(currentTime == Double.NEGATIVE_INFINITY) {
+                        currentTime = getCurrentTime();
+                    }
+
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
                         // This actor has requested that it not be fired again.
@@ -1104,7 +1144,8 @@ public class DEDirector extends Director {
                 // Check whether the next event has equal tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
-                if (nextEvent.isSimultaneousWith(currentEvent) &&
+                if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY || 
+                        nextEvent.isSimultaneousWith(currentEvent)) &&
                         nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
 
@@ -1165,10 +1206,10 @@ public class DEDirector extends Director {
 
         if (_eventQueue == null) return;
         int microstep = 0;
-
         if (time == getCurrentTime()) {
             microstep = _microstep + 1;
-        } else if ( time < getCurrentTime()) {
+        } else if (time != Double.NEGATIVE_INFINITY &&
+                time < getCurrentTime()) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
                     + " Current time is " + getCurrentTime()
@@ -1177,7 +1218,7 @@ public class DEDirector extends Director {
         int depth = _getDepth(actor);
         if (_debugging) _debug("enqueue a pure event: ",
                 ((NamedObj)actor).getName(),
-                "time = "+ time + " microstep = "+ microstep + " depth = "
+                "time = " + time + " microstep = " + microstep + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
@@ -1205,7 +1246,8 @@ public class DEDirector extends Director {
 
         if (time == getCurrentTime()) {
             microstep = _microstep;
-        } else if ( time < getCurrentTime()) {
+        } else if (time != Double.NEGATIVE_INFINITY &&
+                time < getCurrentTime()) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
@@ -1463,30 +1505,6 @@ public class DEDirector extends Director {
         }
     }
 
-    // Copied from ptolemy.ct.kernel.CTMixedSignalDirector
-    /**Return true if this is a top-level director. This is a syntactic sugar.
-     * @return True if this director is at the top-level.
-     */
-    private boolean _isTopLevel() {
-        long version = workspace().getVersion();
-        if (version == _mutationVersion) {
-            return _isTop;
-        }
-        try {
-            workspace().getReadAccess();
-            CompositeActor container = (CompositeActor)getContainer();
-            if (container.getExecutiveDirector() == null) {
-                _isTop = true;
-            } else {
-                _isTop = false;
-            }
-            _mutationVersion = version;
-        } finally {
-            workspace().doneReading();
-            return _isTop;
-        }
-    }
-
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
@@ -1497,15 +1515,9 @@ public class DEDirector extends Director {
 
         if (_debugging) _debug("Request refiring of opaque composite actor.");
         // Enqueue a refire for the container of this director.
-        ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-                (Actor)getContainer(), nextEvent.timeStamp());
-    }
-
-    // Return true if this director is embedded inside an opaque composite
-    // actor contained by another composite actor.
-    private boolean _isEmbedded() {
-        return (getContainer() != null &&
-                getContainer().getContainer() != null);
+        CompositeActor container = (CompositeActor)getContainer();
+        container.getExecutiveDirector().fireAt(
+                container, nextEvent.timeStamp());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1544,11 +1556,4 @@ public class DEDirector extends Director {
 
     // A Hashtable stores the mapping of each actor to its depth.
     private Hashtable _actorToDepth = null;
-
-    // The version of mutation. If this version is not the workspace
-    // version then every thing related to mutation need to be updated.
-    private long _mutationVersion = -1;
-
-    // Indicate if this is the top level director.
-    private boolean _isTop;
 }
