@@ -283,7 +283,6 @@ public abstract class AbstractActionsAttribute extends Action
                 throw new RuntimeException(ex);
             }
         }
-        System.out.println("list = " + list);
         return list;
     }
 

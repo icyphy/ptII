@@ -751,7 +751,6 @@ public class FSMActor extends CompositeEntity
                 while (attributes.hasNext()) {
                     HasTypeConstraints typeableAttribute = 
                         (HasTypeConstraints)attributes.next();
-                    System.out.println("attr = " + typeableAttribute);
                     result.addAll(typeableAttribute.typeConstraintList());
                 }
             }
