@@ -79,6 +79,7 @@
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
             <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
+            <input source="ptolemy/actor/corba/corba.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
