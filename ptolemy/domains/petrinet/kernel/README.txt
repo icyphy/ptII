@@ -1,3 +1,6 @@
+This directory implements the hierarchical and compositional
+Petri net model. For an exmple of Hierarchical and compositional
+Petri net model, please see test68.xml.
 
 This directory contains 6 java files:
 PetriNetActor.java     PetriNetReceiver.java  Transition.java
