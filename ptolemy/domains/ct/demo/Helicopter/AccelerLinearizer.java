@@ -154,7 +154,7 @@ public class AccelerLinearizer extends TypedAtomicActor
         }
         paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA));
 
-        _cAx = 9.8/20.0;
+        _cAx = 9.8/25.0;
         paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));
 
         _cPz = -2.0;
@@ -181,8 +181,8 @@ public class AccelerLinearizer extends TypedAtomicActor
         double D3Pz = ((DoubleToken)inputD3Pz.get(0)).doubleValue();
         double D4Pz = ((DoubleToken)inputD4Pz.get(0)).doubleValue();
 
-        double Vx = -1.0*(_alphaA[0]*(DDPx-_cAx) + _alphaP[1]* D3Px +
-                _alphaP[2]*D4Px);
+        double Vx = -1.0*(_alphaA[0]*(DDPx-_cAx) + _alphaA[1]* D3Px +
+                _alphaA[2]*D4Px);
         double Vz = -1.0*(_alphaP[0]*(Pz-_cPz) + _alphaP[1]* DPz +
                 _alphaP[2]*DDPz + _alphaP[3]*D3Pz + _alphaP[4]*D4Pz);
 
