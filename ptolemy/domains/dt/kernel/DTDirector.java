@@ -569,7 +569,7 @@ public class DTDirector extends SDFDirector {
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
         setCurrentTime(_formerValidTimeFired + timeIncrement);
-        _requestRefireAt(_formerValidTimeFired + timeIncrement);
+        _requestRefireAt(getCurrentTime());
         if (! _isFiringAllowed) {
             return true;
         }
