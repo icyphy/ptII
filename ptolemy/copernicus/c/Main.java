@@ -83,7 +83,7 @@ public class Main extends KernelMain {
 	_initialize();
 
         // Add a transformer to convert each actor class to C
-        // "wjtp" means "whole java tranformation package"
+        // "wjtp" means "whole java transformation package"
         // This transformer is required to be a scene transformer,
         // and it is applied before body transformers.
         // "wjtp.c" is the name of the phase.
