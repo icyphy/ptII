@@ -367,34 +367,44 @@ public class Expression extends TypedAtomicActor {
 
         /** Return the function result.
          *  @return A Type.
+         *  @throws IllegalActionException If inferring types for the
+         *  expression fails.
          */
-        public Object getValue() {
-            try {
-                // Note: This code is similar to the token evaluation
-                // code above.
-                if (_parseTree == null) {
-                    // Note that the parser is NOT retained, since in most
-                    // cases the expression doesn't change, and the parser
-                    // requires a large amount of memory.
-                    PtParser parser = new PtParser();
-                    _parseTree = parser.generateParseTree(
-                            expression.getExpression());
+        public Object getValue() throws IllegalActionException {
+            // Deal with the singularity at UNKNOWN..  Assume that if
+            // any variable that the expression depends on is UNKNOWN,
+            // then the type of the whole expression is unknown..
+            // This allows us to properly find functions that do exist
+            // (but not for UNKNOWN arguments), and to give good error
+            // messages when functions are not found.
+            InequalityTerm[] terms = getVariables();
+            for (int i = 0; i < terms.length; i++) {
+                InequalityTerm term = terms[i];
+                if (term != this && term.getValue() == BaseType.UNKNOWN) {
+                    return BaseType.UNKNOWN;
                 }
-
-                if (_scope == null) {
-                    _scope = new VariableScope();
-                }
-                Type type = _typeInference.inferTypes(_parseTree, _scope);
-                return type;
-            } catch (IllegalActionException ex) {
-                // Note: how do we know this is monotonic? An error
-                // could occur anywhere in solving..
-                return BaseType.UNKNOWN;
             }
+
+            // Note: This code is similar to the token evaluation
+            // code above.
+            if (_parseTree == null) {
+                // Note that the parser is NOT retained, since in most
+                // cases the expression doesn't change, and the parser
+                // requires a large amount of memory.
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(
+                        expression.getExpression());
+            }
+                
+            if (_scope == null) {
+                _scope = new VariableScope();
+                }
+            Type type = _typeInference.inferTypes(_parseTree, _scope);
+            return type;
         }
 
         /** Return the type variable in this inequality term. If the type
-         *  of the input port is not declared, return an one element array
+         *  of input ports are not declared, return an one element array
          *  containing the inequality term representing the type of the port;
          *  otherwise, return an empty array.
          *  @return An array of InequalityTerm.
@@ -486,7 +496,12 @@ public class Expression extends TypedAtomicActor {
          *  @return A description of this term.
          */
         public String toString() {
-            return "(" + expression.getExpression() + ", " + getValue() + ")";
+            try {
+                return "(" + expression.getExpression() + ", " + 
+                    getValue() + ")";
+            } catch (IllegalActionException ex) {
+                return "(" + expression.getExpression() + ", INVALID)";
+            }
         }
 
         ///////////////////////////////////////////////////////////////
