@@ -394,7 +394,7 @@ fi
 javac="\$JAVAHOME/bin/java"
 jdbflags=""
 quiet=0
-while [ "${1#-}" != "$1" ]; do
+while [ "${1:-}" != "$1" ]; do
     # If -debug is supplied then allow debugger attaches to java VM.
     # Run "jdb -attach javadebug" to attach debugger to JVM.
     if [ "$1" = "-debug" ]; then
