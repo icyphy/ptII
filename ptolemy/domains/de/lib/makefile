@@ -66,26 +66,25 @@ JSRCS = \
 	DEFullAdder.java \
 	DEGain.java \
 	DEHistogram.java \
+	DEInterruptibleServer.java \
 	DELogicAnalyzer.java \
+	DENot.java \
 	DEORGate.java \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
 	DEProcessor.java \
 	DEPseudoPlot.java \
+	DERamp.java \
 	DERegister.java \
 	DESampler.java \
 	DEServer.java \
 	DEServerAlt.java \
 	DEStatistics.java \
+	DETestLevel.java \
 	DEWaitingTime.java \
 	DEWaveForm.java \
-	DEXORGate.java \
-	InterruptibleServer.java \
-	Not.java \
-	TestLevel.java \
-	Ramp.java
-
+	DEXORGate.java
 
 EXTRA_SRCS =	$(JSRCS)
 

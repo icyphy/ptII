@@ -37,7 +37,7 @@ import ptolemy.graph.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// Ramp
+//// DERamp
 /**
 An actor that produces an output event with a monotonically increasing value
 when stimulated by an input event. The value of the output event starts at
@@ -48,9 +48,9 @@ fires.
 @version $Id$
 @see Actor
 */
-public class Ramp extends TypedAtomicActor {
+public class DERamp extends TypedAtomicActor {
 
-    /** Construct a Ramp with default parameters.
+    /** Construct a DERamp with default parameters.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @param value The initial output event value.
@@ -59,7 +59,7 @@ public class Ramp extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(TypedCompositeActor container, String name)
+    public DERamp(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         this(container, name, 0, 1);
     }
@@ -75,7 +75,7 @@ public class Ramp extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(TypedCompositeActor container, String name,
+    public DERamp(TypedCompositeActor container, String name,
             double value, double step)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -90,7 +90,7 @@ public class Ramp extends TypedAtomicActor {
         input.setDeclaredType(Token.class);
     }
 
-    /** Construct a Ramp with the specified container, name, initial
+    /** Construct a DERamp with the specified container, name, initial
      *  value and step size. The initial value and step size are
      *  represented by String expressions which will be evaluated
      *  by the corresponding Parameters.
@@ -105,7 +105,7 @@ public class Ramp extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(TypedCompositeActor container, String name,
+    public DERamp(TypedCompositeActor container, String name,
             String value, String step)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -136,7 +136,7 @@ public class Ramp extends TypedAtomicActor {
         // FIXME: this might not work if user change the parameter during
         // simulation.
         if (compare == CPO.INCOMPARABLE) {
-            throw new InvalidStateException("Bad parameter type in Ramp.initialize()");
+            throw new InvalidStateException("Bad parameter type in DERamp.initialize()");
         }
         if (compare == CPO.LOWER) {
             output.setDeclaredType(stepClass);

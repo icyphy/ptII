@@ -35,7 +35,7 @@ import ptolemy.data.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// Not
+//// DENot
 /** Negate the input token. If the input is non-zero then the output is zero,
  *  and vice-versa.
  *  <p>
@@ -45,7 +45,7 @@ import java.util.Enumeration;
 @version $Id$
 @see Actor
 */
-public class Not extends TypedAtomicActor {
+public class DENot extends TypedAtomicActor {
 
     /** Constructor.
      * @param container The composite actor that this actor belongs too.
@@ -55,7 +55,7 @@ public class Not extends TypedAtomicActor {
      * @exception IllegalActionException FIXME: useless description:
      *  internal problem
      */
-    public Not(TypedCompositeActor container,
+    public DENot(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

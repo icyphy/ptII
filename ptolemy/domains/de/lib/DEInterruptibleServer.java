@@ -36,7 +36,7 @@ import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// InterruptibleServer
+//// DEInterruptibleServer
 /**
 Emulate a server. Input events are delayed by fixed minimum delay plus the
 amount of interrupt processing time needed.
@@ -45,7 +45,7 @@ amount of interrupt processing time needed.
 @version $Id$
 @see DEActor
 */
-public class InterruptibleServer extends DEActor {
+public class DEInterruptibleServer extends DEActor {
 
     public static boolean DEBUG = false;
 
@@ -58,7 +58,7 @@ public class InterruptibleServer extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public InterruptibleServer(TypedCompositeActor container,
+    public DEInterruptibleServer(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         this(container, name, 1.0, 0.5);
@@ -73,7 +73,7 @@ public class InterruptibleServer extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public InterruptibleServer(TypedCompositeActor container,
+    public DEInterruptibleServer(TypedCompositeActor container,
             String name,
             double minServiceTime, 
             double interruptServiceTime)
@@ -125,7 +125,7 @@ public class InterruptibleServer extends DEActor {
                 interrupt.get(0);
                 _busyUntil += interruptServiceTime;
                 if (DEBUG) {
-                    System.out.println("InterruptibleServer: Interrupted " + 
+                    System.out.println("DEInterruptibleServer: Interrupted " + 
                             "while busy at time " + 
                             currentTime + " and will be busy until " + 
                             _busyUntil + " .");
@@ -141,7 +141,7 @@ public class InterruptibleServer extends DEActor {
                 output.broadcast(_tokenBeingServed);
                 _tokenBeingServed = null;
                 if (DEBUG) {
-                    System.out.println("InterruptibleServer: Output at " + 
+                    System.out.println("DEInterruptibleServer: Output at " + 
                             "time " + currentTime + " .");
                 }
             }
@@ -160,7 +160,7 @@ public class InterruptibleServer extends DEActor {
                 }
 
                 if (DEBUG) {
-                    System.out.println("InterruptibleServer: Interrupted " + 
+                    System.out.println("DEInterruptibleServer: Interrupted " + 
                             "while not busy at time " + 
                             currentTime + " and will be busy until " + 
                             _busyUntil + " .");
@@ -183,7 +183,7 @@ public class InterruptibleServer extends DEActor {
                 }
 
                 if (DEBUG) {
-                    System.out.println("InterruptibleServer: Input at " + 
+                    System.out.println("DEInterruptibleServer: Input at " + 
                             "time " + currentTime + " .");
                 }
                 fireAt(_busyUntil);

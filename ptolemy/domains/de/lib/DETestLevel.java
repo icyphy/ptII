@@ -35,7 +35,7 @@ import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// TestLevel
+//// DETestLevel
 /**
 Detect threshold crossings if the crossingsOnly parameter is TRUE. Otherwise,
 it simply compares the input agains the "threshold".
@@ -55,8 +55,8 @@ FALSE is sent otherwise.
 @version $Id$
 @see Actor
 */
-public class TestLevel extends TypedAtomicActor {
-    /** Construct a DERamp star.
+public class DETestLevel extends TypedAtomicActor {
+    /** Construct a DETestLevel star.
      *
      * @param container The composite actor that this actor belongs too.
      * @param name The name of this actor.
@@ -64,7 +64,7 @@ public class TestLevel extends TypedAtomicActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public TestLevel(TypedCompositeActor container, String name)
+    public DETestLevel(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
@@ -79,7 +79,7 @@ public class TestLevel extends TypedAtomicActor {
         _paramTh = new Parameter(this, "Threshold", new DoubleToken(0.0));
 	_prev = _threshold;
     }
-    /** Construct a DERamp star.
+    /** Construct a DETestLevel star.
      *
      * @param value The initial output event value.
      * @param step The step size by which to increase the output event values.
@@ -89,7 +89,7 @@ public class TestLevel extends TypedAtomicActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public TestLevel(TypedCompositeActor container,
+    public DETestLevel(TypedCompositeActor container,
             String name,
             boolean crossingsOnly, double threshold)
             throws NameDuplicationException, IllegalActionException  {
