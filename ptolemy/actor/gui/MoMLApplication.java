@@ -221,13 +221,21 @@ public class MoMLApplication {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
 		    // we can't use this.getClass().getClassLoader()
+
                     // NOTE: There doesn't seem to be any way to convert
                     // this a canonical name, so if a model is opened this
                     // way, and then later opened as a file, the model
                     // directory will think it has two different files.
-                    Class refClass = Class.forName(
-                            "ptolemy.kernel.util.NamedObj");
-                    URL inURL = refClass.getClassLoader().getResource(spec);
+
+                    //Class refClass = Class.forName(
+                    //        "ptolemy.kernel.util.NamedObj");
+                    //URL inURL = refClass.getClassLoader().getResource(spec);
+
+		    // This works in Web Start, see
+		    // http://java.sun.com/products/javawebstart/faq.html#54
+		    URL inURL = Thread.currentThread()
+			.getContextClassLoader().getResource(spec);  
+
                     if (inURL == null) {
 			throw new Exception();
                     } else {
