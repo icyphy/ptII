@@ -102,7 +102,6 @@ public class HSInit extends NamedObj implements TransitionAction {
     /** Execute the action.
      */
     public void execute() throws IllegalActionException {
-        _valueVar.evaluate();
         FSMState dest = _container.destinationState();
         CompositeActor nref = (CompositeActor)dest.getRefinement();
 
