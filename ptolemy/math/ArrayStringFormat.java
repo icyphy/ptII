@@ -86,7 +86,8 @@ public interface ArrayStringFormat {
     /**
      */
     public static class ArrayStringFormatBase implements ArrayStringFormat {
-        public ArrayStringFormatBase(String elementDelimiter, String matrixBegin,
+        public ArrayStringFormatBase(String elementDelimiter,
+                String matrixBegin,
                 String matrixEnd, String vectorBegin, String vectorDelimiter,
                 String vectorEnd) {
             _elementDelimiter = elementDelimiter;
