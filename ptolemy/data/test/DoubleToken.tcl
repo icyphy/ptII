@@ -195,12 +195,14 @@ test DoubleToken-4.1 {Test dividing doubles and ints.} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$tok1 divide $tok2]
-    set res2 [$tok1 divideReverse $tok2]
+    set resultToken [java::new {ptolemy.data.DoubleToken double} \
+	    0.1639344262295]
+    set res2 [[$tok1 divideReverse $tok2] isCloseTo $resultToken]
 
-    set res3 [$tok2 divide $tok1]
+    set res3 [[$tok2 divide $tok1] isCloseTo $resultToken]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {6.1 0.1639344 0.1639344}
+} {6.1 true true}
 
 ######################################################################
 ####
