@@ -310,14 +310,6 @@ public class Plot extends PlotBox {
         }
     }
 
-    /**
-     * Draw the axes and the accumulated points.
-     */
-    public void paint(Graphics graphics) {
-        if (_debug > 7) System.out.println("Plot: paint");
-        drawPlot(graphics, true);
-    }
-
     /** Parse pxgraph style command line arguments.
      * This method exists only for backward compatibility with the X11 pxgraph
      * program.
