@@ -71,8 +71,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) dtTestEntities.xml
 # want make checkjunk to barf on them.
 MISC_FILES =	\
 	alljtests.tcl \
-	auto \
-	bugs
+	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
