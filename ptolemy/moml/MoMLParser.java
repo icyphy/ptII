@@ -3539,8 +3539,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 undoMoML.insert(0, "<group>");
                 undoMoML.append("</group>\n");
                 _undoContext.appendUndoMoML(undoMoML.toString());
-                // FIXME
-                System.out.println("***********************\n" + undoMoML.toString() + "************************\n");
             }
         }
         return toDelete;
