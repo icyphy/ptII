@@ -1143,6 +1143,10 @@ fi
 #       check to see if $PTII/vendors/sun/j2me_cldc exists
 #--------------------------------------------------------------------
 
+# PTKVM_DIR is set to jspaces and used in 
+# $PTII/ptolemy/makefile if kvm was found
+PTKVM_DIR=
+#
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
 if test ! -d "$PTII/ptolemy/kvm"; then
     echo "$ac_t""$PTII/ptolemy/kvm is not present, so we need not
@@ -1153,7 +1157,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1157: checking for kvm directory" >&5
+echo "configure:1161: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1166,7 +1170,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1170: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1174: checking for \$KVM_DIR/bin/api/classes" >&5
 	if test -d "$KVM_DIR/bin/api/classes"; then
 	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1176,13 +1180,13 @@ echo "configure:1170: checking for \$KVM_DIR/bin/api/classes" >&5
     else    
 	echo "$ac_t""Not found in $KVM_DIR" 1>&6
 	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
-echo "configure:1180: checking for kvm directory in /j2me_cldc" >&5
+echo "configure:1184: checking for kvm directory in /j2me_cldc" >&5
 	# Likely place for kvm under windows
 	KVM_DIR=/j2me_cldc
         if test -d "$KVM_DIR"; then
 	    echo "$ac_t""$KVM_DIR" 1>&6
             echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1186: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1190: checking for \$KVM_DIR/bin/api/classes" >&5
 	    if test -d "$KVM_DIR/bin/api/classes"; then
 	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	        echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1203,6 +1207,10 @@ Kvm can be downloaded from http://java.sun.com/products/cldc'" 1>&2
 	# Note that we don't substitute in the $(PTII) or $(KVM_DIR) here
 	KVM_DIR='$(PTII)/vendors/sun/kvm'
    	KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
+    else 
+	# Set to kvm and used in 
+	# $PTII/ptolemy/makefile if kvm was found
+	PTKVM_DIR=kvm
     fi    
 fi
 
@@ -1255,6 +1263,10 @@ fi
 
 # Set to jspaces and used in 
 # $PTII/ptolemy/actor/lib/makefile if jini was found
+
+
+# Set to kvm and used in 
+# $PTII/ptolemy/makefile if kvm was found
 
 
 # Set to lego and used in 
@@ -1427,6 +1439,7 @@ s%@PTJACL_JAR@%$PTJACL_JAR%g
 s%@PTJACL_JFLAG@%$PTJACL_JFLAG%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
 s%@PTJSPACES_DIR@%$PTJSPACES_DIR%g
+s%@PTKVM_DIR@%$PTKVM_DIR%g
 s%@PTLEGO_DIR@%$PTLEGO_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
