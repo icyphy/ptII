@@ -140,7 +140,7 @@ This model is still under investigation.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 25.0]">
             </property>
         </property>
-        <property name="level2" class="ptolemy.data.expr.Parameter" value="-0.45">
+        <property name="level2" class="ptolemy.data.expr.Parameter" value="1.25">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -155,7 +155,7 @@ This model is still under investigation.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[109.5, 65.0]">
             </property>
         </property>
-        <property name="level3" class="ptolemy.data.expr.Parameter" value="1.25">
+        <property name="level3" class="ptolemy.data.expr.Parameter" value="-0.45">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -323,7 +323,7 @@ This model is still under investigation.</text></svg></configure>
             </property>
             <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 155.0]">
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
@@ -336,7 +336,7 @@ This model is still under investigation.</text></svg></configure>
             </property>
             <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 220.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 220.0]">
             </property>
         </entity>
         <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
@@ -357,15 +357,15 @@ This model is still under investigation.</text></svg></configure>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="continuous" relation="relation"/>
         <link port="detect level.output" relation="relation3"/>
@@ -415,12 +415,12 @@ This model is still under investigation.</text></svg></configure>
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="start">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -445,18 +445,22 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 140.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 225.0]">
                 </property>
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 130.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 140.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 225.0]">
                 </property>
             </port>
             <entity name="state1" class="ptolemy.domains.fsm.kernel.State">
@@ -464,7 +468,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 55.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 140.0]">
                 </property>
             </entity>
             <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
@@ -472,7 +476,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 55.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 140.0]">
                 </property>
             </entity>
             <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
@@ -480,7 +484,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 145.0]">
                 </property>
             </entity>
             <entity name="state4" class="ptolemy.domains.fsm.kernel.State">
@@ -488,7 +492,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 145.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -496,7 +500,11 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
+                </property>
+            </entity>
+            <entity name="start" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 65.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -553,6 +561,26 @@ with their output actions.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
+            <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.633956307025887">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
             <link port="state1.incomingPort" relation="relation4"/>
             <link port="state1.outgoingPort" relation="relation"/>
             <link port="state2.incomingPort" relation="relation"/>
@@ -560,7 +588,9 @@ with their output actions.</text></svg></configure>
             <link port="state3.incomingPort" relation="relation2"/>
             <link port="state3.outgoingPort" relation="relation3"/>
             <link port="state4.incomingPort" relation="relation3"/>
+            <link port="init.incomingPort" relation="relation5"/>
             <link port="init.outgoingPort" relation="relation4"/>
+            <link port="start.outgoingPort" relation="relation5"/>
         </entity>
         <entity name="const" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
