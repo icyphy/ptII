@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, 1, 948, 770}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, 1, 948, 780}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
     </property>
@@ -93,10 +93,18 @@
         </property>
     </property>
     <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 530.0]">
         </property>
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow.output port has&#10;units gallonUS while the&#10;HeatExchanger.flow port&#10;has units gallonUS/hour.">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
+        </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -433,7 +441,9 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
+        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -459,6 +469,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 132.5]">
         </property>
         <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$input second">
+        </property>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -508,22 +520,32 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[585.0, 75.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[445.0, 265.0]">
         </vertex>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <link port="TimedPlotter.input" relation="relation5"/>
     <link port="Growth.population" relation="relation5"/>
