@@ -432,33 +432,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MobileModel" class="ptolemy.actor.MobileModel">
-        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
-        </property>
-        <property name="defaultDirector" class="ptolemy.actor.Director">
-        </property>
-        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 250.8671875">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="298.7734375, 85.4921875">
-            </property>
-        </port>
-        <port name="modelString" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="279.4609375, 165.63281186421713">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="293.078125, 245.390625">
-            </property>
-        </port>
-    </entity>
     <entity name="PushConsumer" class="ptolemy.actor.corba.PushConsumer">
         <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="nameServerInit">
         </property>
@@ -480,16 +453,36 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="MobileModel2" class="ptolemy.actor.MobileModel">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
+        </property>
+        <property name="defaultDirector" class="ptolemy.actor.Director">
+        </property>
+        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">
+        </property>
+        <doc>The inside model of this composite actor can be dynamically defined.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 250.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="modelString" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DatagramReader.output" relation="relation"/>
-    <link port="DatagramWriter.data" relation="relation2"/>
-    <link port="MobileModel.input" relation="relation"/>
-    <link port="MobileModel.modelString" relation="relation3"/>
-    <link port="MobileModel.output" relation="relation2"/>
-    <link port="PushConsumer.output" relation="relation3"/>
+    <link port="DatagramWriter.data" relation="relation3"/>
+    <link port="PushConsumer.output" relation="relation4"/>
+    <link port="MobileModel2.input" relation="relation"/>
+    <link port="MobileModel2.modelString" relation="relation4"/>
+    <link port="MobileModel2.output" relation="relation3"/>
 </entity>

@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="mobileFunctionRd" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -120,21 +122,6 @@ then run mobileFunctionWr.xml, maybe several times if you want to.</text></svg><
             <property name="input"/>
         </port>
     </entity>
-    <entity name="MobileFunction" class="ptolemy.actor.MobileFunction">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 150.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="function" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -208,28 +195,42 @@ then run mobileFunctionWr.xml, maybe several times if you want to.</text></svg><
 </plot>?>
         </configure>
     </entity>
+    <entity name="MobileFunction2" class="ptolemy.actor.hoc.MobileFunction">
+        <doc>The function it applied to its input data can be dynamically defined.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="function" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DatagramReader.output" relation="relation"/>
     <link port="UnsignedByteArrayToString.input" relation="relation"/>
     <link port="UnsignedByteArrayToString.output" relation="relation3"/>
-    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.output" relation="relation2"/>
     <link port="Expression.f" relation="relation3"/>
-    <link port="MobileFunction.input" relation="relation2"/>
-    <link port="MobileFunction.function" relation="relation5"/>
-    <link port="MobileFunction.output" relation="relation4"/>
-    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation7"/>
     <link port="Ramp.trigger" relation="relation6"/>
     <link port="Clock.output" relation="relation6"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="MobileFunction2.input" relation="relation7"/>
+    <link port="MobileFunction2.function" relation="relation2"/>
+    <link port="MobileFunction2.output" relation="relation5"/>
 </entity>
