@@ -205,14 +205,12 @@ public class ComponentRelation extends Relation {
     ////                         protected methods                        ////
 
     /** Return a reference to the local port list.  Throw an exception if
-     *  there already is a link (only one link is supported), or if the
-     *  specified port is not a ComponentPort.
+     *  the specified port is not a ComponentPort.
      *  NOTE : This method has been made protected for the sole purpose
      *  of connecting Ports to Relations (see Port.link(Relation)). It
      *  should NOT be accessed by any other method.
      *  @param port The port to link to.
-     *  @exception IllegalActionException AliasRelation cannot support more
-     *   than one link.
+     *  @exception IllegalActionException Incompatible port
      */
     protected CrossRefList _getPortList (Port port) 
             throws IllegalActionException {
