@@ -32,18 +32,17 @@ package ptolemy.vergil.debugger;
 
 import diva.gui.toolbox.JContextMenu;
 
-import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointDialogFactory
@@ -74,15 +73,16 @@ public class BreakpointDialogFactory implements MenuItemFactory {
     /** Add an item to the given context menu that will open a dialog
      *  to configure breakpoints for an object.
      *  @param menu The context menu.
-     *  @param object The object whose ports are being manipulated.
+     *  @param object The object whose breakpoints are being modified.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = "Set Breakpoints";
         final NamedObj target = object;
 
         // Ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity))
+        if (!(target instanceof Entity)) {
             return null;
+        }
 
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
@@ -99,12 +99,10 @@ public class BreakpointDialogFactory implements MenuItemFactory {
                 if (parent instanceof Frame) {
                     new BreakpointConfigurerDialog((Frame)parent,
                             (Entity)target,
-                            _configuration,
                             _graphController);
                 } else {
                     new BreakpointConfigurerDialog(null,
                             (Entity)target,
-                            _configuration,
                             _graphController);
                 }
             }
@@ -113,19 +111,8 @@ public class BreakpointDialogFactory implements MenuItemFactory {
         return menu.add(action, name);
     }
 
-    /** Set the configuration for use by the help screen.
-     *  FIXME: Is this used?
-     *  @param configuration The configuration.
-     */
-    public void setConfiguration(Configuration configuration) {
-        _configuration = configuration;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The configuration. */
-    private Configuration _configuration;
 
     /** The graph controller associated with the actor selected. */
     private BasicGraphController _graphController;

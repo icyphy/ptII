@@ -42,7 +42,6 @@ import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.vergil.basic.BasicGraphController;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,11 +52,10 @@ import javax.swing.BoxLayout;
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointConfigurer
 /**
-This class is an editor to configure the ports of an object.
-It supports setting their input, output, and multiport properties,
-and adding and removing ports.  Only ports that extend the TypedIOPort
-class are listed, since more primitive ports cannot be configured
-in this way.
+A GUI widget for configuring breakpoints.  This class is an editor to
+configure the breakpoints of an actor.  The user can set breakpoints
+before or after any of the following firing events: prefire, fire,
+postfire, iterate.
 
 @see ptolemy.actor.gui.PortConfigurer
 
@@ -67,8 +65,9 @@ in this way.
 
 public class BreakpointConfigurer extends Query implements QueryListener {
 
-    /** Construct a port configurer for the specified entity.
+    /** Construct a breakpoint configurer for the specified entity.
      *  @param object The entity to configure.
+     *  @param graphController The associated graph controller for the object.
      */
     public BreakpointConfigurer(Entity object,
             BasicGraphController graphController) {
@@ -180,13 +179,12 @@ public class BreakpointConfigurer extends Query implements QueryListener {
             // Check if there is already a DebugListener for this _object.
             DebugListener listener = (DebugListener) _object.getAttribute(
                     "DebugController");
+            Director director = ((Actor)_object).getExecutiveDirector();
             if (listener == null) {
                 // Register a new DebugListener with the director.
-                BasicGraphFrame frame = _graphController.getFrame();
                 DebugController debugController =
                     new DebugController(_object, _graphController);
 
-                Director director = ((Actor)frame.getModel()).getDirector();
                 if (director != null) {
                     director.addDebugListener(debugController);
                 }
@@ -194,8 +192,6 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                 // Remove debug listener if there are no longer any
                 // breakpoints for this _object
                 if (noneSelected) {
-                    BasicGraphFrame frame = _graphController.getFrame();
-                    Director director = ((Actor)frame.getModel()).getDirector();
                     if (director != null) {
                         director.removeDebugListener(listener);
                         ((Attribute)listener).setContainer(null);

@@ -1,11 +1,11 @@
 /* An execution listener that suspends execution based on breakpoints.
 
- Copyright (c) 1999-2002 SUPELEC and The Regents of the University of
- California.  All rights reserved.  Permission is hereby granted,
- without written agreement and without license or royalty fees, to
- use, copy, modify, and distribute this software and its documentation
- for any purpose, provided that the above copyright notice and the
- following two paragraphs appear in all copies of this software.
+ Copyright (c) 1999-2002 The Regents of the University of California.
+ All rights reserved.  Permission is hereby granted, without written
+ agreement and without license or royalty fees, to use, copy, modify,
+ and distribute this software and its documentation for any purpose,
+ provided that the above copyright notice and the following two
+ paragraphs appear in all copies of this software.
 
  IN NO EVENT SHALL SUPELEC OR THE UNIVERSITY OF CALIFORNIA BE LIABLE
  TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR
@@ -99,8 +99,10 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 AbstractBasicGraphModel graphModel =
                     (AbstractBasicGraphModel)_graphController.getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
+                //NamedObj toplevel = _object.toplevel();
 
                 // FIXME: why is this null check needed?
+                // FIXME: why do we need to compare against toplevel?
                 while (objToHighlight != null
                         && objToHighlight.getContainer() != toplevel) {
                     objToHighlight = (NamedObj)objToHighlight.getContainer();
