@@ -38,11 +38,13 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.util.StringUtilities;
@@ -1374,7 +1376,9 @@ public class NamedObj implements
     }
 
     /** Set or change the name.  If a null argument is given the
-     *  name is set to an empty string.
+     *  name is set to an empty string. Propagate the change to
+     *  any derived objects.  If the name change fails on any
+     *  of those, then the names of all objects are left unchanged.
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
@@ -1406,7 +1410,112 @@ public class NamedObj implements
         }
         try {
             _workspace.getWriteAccess();
+            
+            // Propagate.  Note that a rename in a derived object
+            // could cause a NameDuplicationException.  We have to
+            // be able to unroll the changes if that occurs.
+            Iterator heritage = getDerivedList().iterator();
+            Set changedName = new HashSet();
+            HashMap changedClassName = new HashMap();
+            NamedObj derived = null;
+            try {
+                while (heritage.hasNext()) {
+                    derived = (NamedObj)heritage.next();
+                    // If the derived object has the same
+                    // name as the old name, then we assume it
+                    // should change.
+                    if (derived.getName().equals(oldName)) {
+                        derived.setName(name);
+                        changedName.add(derived);
+                    }
+                    // Also need to modify the class name of
+                    // the instance or derived class if the
+                    // class or base class changes its name.
+                    if (derived instanceof Instantiable) {
+                        Instantiable parent = ((Instantiable)derived)
+                            .getParent();
+                        // This relies on the depth-first search
+                        // order of the getHeritageList() method
+                        // to be sure that the base class will
+                        // already be in the changedName set if
+                        // its name will change.
+                        if (parent != null
+                                && (parent == this
+                                        || changedName.contains(parent))) {
+                            String previousClassName
+                                = derived.getClassName();
+                            int last = previousClassName
+                                .lastIndexOf(oldName);
+                            if (last < 0) {
+                                throw new InternalErrorException(
+                                        "Expected instance "
+                                        + derived.getFullName()
+                                        + " to have class name ending with "
+                                        + oldName
+                                        + " but its class name is "
+                                        + previousClassName);
+                            }
+                            String newClassName = name;
+                            if (last > 0) {
+                                newClassName
+                                    = previousClassName
+                                    .substring(0, last)
+                                    + name;
+                            }
+                            derived.setClassName(newClassName);
+                            changedClassName.put(
+                                    derived, previousClassName);
+                        }
+                    }
+                }
+            } catch (NameDuplicationException ex) {
+                // Unravel the name changes before
+                // rethrowing the exception.
+                Iterator toUndo = changedName.iterator();
+                while (toUndo.hasNext()) {
+                    NamedObj revert = (NamedObj)toUndo.next();
+                    revert.setName(oldName);
+                }
+                Iterator classNameFixes = changedClassName.entrySet().iterator();
+                while (classNameFixes.hasNext()) {
+                    Map.Entry revert = (Map.Entry)classNameFixes.next();
+                    NamedObj toFix = (NamedObj)revert.getKey();
+                    String previousClassName = (String)revert.getValue();
+                    toFix.setClassName(previousClassName);
+                }
+                throw new IllegalActionException(this, ex,
+                        "Propagation to instance and/or derived class causes" +
+                        "name duplication: " + derived.getFullName());
+            }
+
             _name = name;
+            
+            // If this object is a class definition, then find
+            // subclasses and instances and propagate the
+            // change to the name of the
+            // object they refer to.
+            if ((this instanceof Instantiable)
+                    && ((Instantiable)this).isClassDefinition()) {
+                List deferredFrom = ((Instantiable)this).getChildren();
+                if (deferredFrom != null) {
+                    Iterator deferrers = deferredFrom.iterator();
+                    while (deferrers.hasNext()) {
+                        WeakReference reference
+                            = (WeakReference)deferrers.next();
+                        NamedObj deferrer = (NamedObj)reference.get();
+                        if (deferrer != null) {
+                            // Got a live one.
+                            // Need to determine whether the name is
+                            // absolute or relative.
+                            String replacementName = name;
+                            if (deferrer.getClassName().startsWith(".")) {
+                                replacementName = getFullName();
+                            }
+                            deferrer.setClassName(replacementName);
+                        }
+                    }
+                }
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -1849,8 +1958,8 @@ public class NamedObj implements
     /** Return the depth of the deferral that defines the specified object.
      *  The specified object is assumed to be contained (deeply) by this
      *  object (or to be equal to this object). If this object is not
-     *  an inherited object, then the depth is -1. If this object is an
-     *  inherited object defined by an object that a container defers to,
+     *  a derived object, then the depth is -1. If this object is a
+     *  derived object defined by an object that a container defers to,
      *  then the depth is the number of levels up the hierarchy to that
      *  container.  If this object is an inherited object but is not defined
      *  by an object that a container defers to (e.g., it is a class
