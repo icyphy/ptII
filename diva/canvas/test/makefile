@@ -42,8 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+TCL_SRCS =
 
 JSRCS = \
 	All.java \
@@ -68,7 +67,7 @@ JGRAPHICAL_TESTS = \
 
 # If we add non-graphical tests, add $(JSIMPLE_TESTS) to EXTRA_SRCS
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) test.xml
+	$(TCL_SRCS) $(JSRCS) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -86,13 +85,23 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 
-test: $(EXTRA_SRCS) jclass test_java test_jgraphical
+test: $(EXTRA_SRCS) jclass test_java All #test_jgraphical 
 
 # The nightly build runs make tests, which in this case will not
 # run the graphical tests
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
+
+# Run the sample tests
+All: jclass
+	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.All
+
+JCanvas: jclass
+	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.JCanvasTest
+
+ConcreteFigures: jclass
+	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.ConcreteFigures
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
