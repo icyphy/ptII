@@ -429,13 +429,15 @@ public abstract class Top extends JFrame {
                         _helpMenu.add(_helpMenuItems[i]);
                     }
 
-                    // Unfortunately, at this time, Java provides no mechanism for
-                    // derived classes to insert menus at arbitrary points in the
-                    // menu bar.  Also, the menubar ignores the alignment property
-                    // of the JMenu.  By convention, however, we want the help menu to
-                    // be the rightmost menu.  Thus, we use a strategy pattern here,
-                    // and call a protected method that derived classes can use to
-                    // add menus.
+                    // Unfortunately, at this time, Java provides no
+                    // mechanism for derived classes to insert menus
+                    // at arbitrary points in the menu bar.  Also, the
+                    // menubar ignores the alignment property of the
+                    // JMenu.  By convention, however, we want the
+                    // help menu to be the rightmost menu.  Thus, we
+                    // use a strategy pattern here, and call a
+                    // protected method that derived classes can use
+                    // to add menus.
                     _addMenus();
 
                     _menubar.add(_helpMenu);
@@ -464,8 +466,9 @@ public abstract class Top extends JFrame {
     public void show() {
         Runnable doShow = new Runnable() {
             public void run() {
-                // NOTE: We used to call pack() here, but this would override any manual
-                // changes in sizing that had been made.
+                // NOTE: We used to call pack() here, but this would
+                // override any manual changes in sizing that had been
+                // made.
                 setState(Frame.NORMAL);
                 Top.super.show();
             }

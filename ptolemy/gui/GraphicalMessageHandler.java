@@ -34,6 +34,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.ref.WeakReference;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -70,17 +71,23 @@ public class GraphicalMessageHandler extends MessageHandler {
      *   is iconified, or null if none has been specified.
      */
     public static Component getContext() {
-        return _context;
+        return (Component)_context.get();
     }
 
     /** Set the component with respect to which the display window
      *  should be created.  This ensures that if the application is
      *  iconified or deiconified, that the display window goes with it.
+     *  This is maintained in a weak reference so that the frame can be 
+     *  garbage collected.
      *  @see #getContext()
      *  @param context The component context.
      */
     public static void setContext(Component context) {
-        _context = context;
+        // FIXME: This seems utterly incomplete...
+        // We will inevitably have multiple frames,
+        // so having one static context just doesn't
+        // work.      
+        _context = new WeakReference(context);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,29 +100,29 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected void _error(final String info) {
         Runnable doMessage = new Runnable() {
-            public void run() {
-                Object[] message = new Object[1];
-               String string = info;
-               message[0] = StringUtilities.ellipsis(string,
-                       StringUtilities.ELLIPSIS_LENGTH_SHORT);
+                public void run() {
+                    Object[] message = new Object[1];
+                    String string = info;
+                    message[0] = StringUtilities.ellipsis(string,
+                            StringUtilities.ELLIPSIS_LENGTH_SHORT);
+                
+                    Object[] options = {"Dismiss"};
 
-               Object[] options = {"Dismiss"};
-
-               // Show the MODAL dialog
-               JOptionPane.showOptionDialog(
-                       _context,
-                       message,
-                       "Error",
-                       JOptionPane.YES_NO_OPTION,
-                       JOptionPane.ERROR_MESSAGE,
-                       null,
-                       options,
-                       options[0]);
-           }
-        };
+                    // Show the MODAL dialog
+                    JOptionPane.showOptionDialog(
+                            getContext(),
+                            message,
+                            "Error",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                }
+            };
         Top.deferIfNecessary(doMessage);
     }
-
+    
     /** Show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the throwable
@@ -152,7 +159,7 @@ public class GraphicalMessageHandler extends MessageHandler {
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(
-                        _context,
+                        getContext(),
                         message,
                         MessageHandler.shortDescription(throwable),
                         JOptionPane.YES_NO_OPTION,
@@ -185,7 +192,7 @@ public class GraphicalMessageHandler extends MessageHandler {
 
                 // Show the MODAL dialog
                 JOptionPane.showOptionDialog(
-                        _context,
+                        getContext(),
                         message,
                         "Message",
                         JOptionPane.YES_NO_OPTION,
@@ -226,10 +233,10 @@ public class GraphicalMessageHandler extends MessageHandler {
             // than 80 characters
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
-
+            
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(
-                    _context,
+                    getContext(),
                     message,
                     "Warning",
                     JOptionPane.YES_NO_OPTION,
@@ -256,7 +263,7 @@ public class GraphicalMessageHandler extends MessageHandler {
 
                     // Show the MODAL dialog
                     int selected = JOptionPane.showOptionDialog(
-                            _context,
+                            getContext(),
                             message,
                             "Warning",
                             JOptionPane.YES_NO_OPTION,
@@ -298,10 +305,10 @@ public class GraphicalMessageHandler extends MessageHandler {
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
             Object[] options = {"OK", "Display Stack Trace", "Cancel"};
-
+            
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(
-                    _context,
+                    getContext(),
                     message,
                     "Warning",
                     JOptionPane.YES_NO_OPTION,
@@ -322,10 +329,10 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(info,
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
                     Object[] options = {"OK", "Display Stack Trace"};
-
+ 
                     // Show the MODAL dialog
                     int selected = JOptionPane.showOptionDialog(
-                            _context,
+                            getContext(),
                             message,
                             "Warning",
                             JOptionPane.YES_NO_OPTION,
@@ -355,10 +362,10 @@ public class GraphicalMessageHandler extends MessageHandler {
         message[0] = StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
         Object[] options = {"Yes", "No"};
-
+ 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
-                _context,
+                getContext(),
                 message,
                 "Warning",
                 JOptionPane.YES_NO_OPTION,
@@ -378,7 +385,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     ////                         protected variables               ////
 
     // The context.
-    protected static Component _context = null;
+    protected static WeakReference _context = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -413,10 +420,10 @@ public class GraphicalMessageHandler extends MessageHandler {
         message[0] = StringUtilities.ellipsis(string,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
         message[1] = stext;
-
+        
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(
-                _context,
+                getContext(),
                 message,
                 "Stack trace",
                 JOptionPane.ERROR_MESSAGE);
