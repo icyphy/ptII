@@ -184,13 +184,15 @@ public class PtolemyModule implements Module {
 			manager.addExecutionListener(
 			    new VergilExecutionListener(_application));
                     }
-
+                    
+                    // We can't reuse the execution frame, since some 
+                    // window systems don't properly dispose the frame when
+                    // it is closed.
                     if(_executionFrame != null) {
-			_executionFrame.getContentPane().removeAll();
-                    } else {
-                        _executionFrame = new JFrame();
+			_executionFrame.setVisible(false);
                     }
-
+                    _executionFrame = new JFrame();
+                    
                     ModelPane modelPane = new ModelPane(toplevel);
                     _executionFrame.getContentPane().add(modelPane,
                             BorderLayout.NORTH);

@@ -457,17 +457,18 @@ public class VergilApplication extends MDIApplication {
         addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
 
-        action = new AbstractAction ("Print") {
+        action = DefaultActions.printAction(this);
+
+            /*new AbstractAction ("Print") {
             public void actionPerformed(ActionEvent e) {
                 Document d = getCurrentDocument();
                 if (d == null) {
                     System.out.println("Graph document is null");
                 } else {
-	            JComponent pane = (JComponent) getView(d);
-		    if(pane instanceof Printable) {
-			PrinterJob job = PrinterJob.getPrinterJob();
+                    if(d instanceof Printable) {
+                        PrinterJob job = PrinterJob.getPrinterJob();
                         PageFormat format = job.pageDialog(job.defaultPage());
-			job.setPrintable((Printable)pane, format);
+			job.setPrintable((Printable)d, format);
 			if (job.printDialog()) {
 			    try {
                                 job.print();
@@ -478,7 +479,7 @@ public class VergilApplication extends MDIApplication {
 		    }
                 }
             }
-        };
+            };*/
         addAction(action);
         addMenuItem(menuFile, action, 'P', "Print current document");
 

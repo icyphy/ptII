@@ -1,8 +1,12 @@
 BUGS:
 Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
-When a graph with no graphical information is loaded, then layout should be triggered.
-If an executed model refs other files, then those files should be relative to the model, not to the cwd of the editor.
+When a graph with no graphical information is loaded, then layout should be
+	triggered.
+If an executed model refs other files, then those files should be relative 
+	to the model, not to the cwd of the editor.
+In TimedSource, attributeChanged triggers a fireAt().  What happens if 
+	an attribute changes before fireAt can be called?
 
 TODO:
 Snap to Grid.
