@@ -33,6 +33,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
+import ptolemy.actor.IODependency;
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -211,6 +212,27 @@ public class ModalModel extends CTCompositeActor {
         return newModel;
     }   
 
+    /** Return an instance of DirectedGraph, where the nodes are IOPorts,
+     *  and the edges are the relations between ports. The graph shows 
+     *  the dependencies between the input and output ports. If there is
+     *  a path between a pair, input and output, they are dependent. 
+     *  Otherwise, they are independent.
+     */
+    public IODependency getIODependencies() {
+        if (_ioDependency == null) {
+            _ioDependency = 
+                new IODependencyOfModalModel(this);
+        }
+        //_ioDependency.validate();
+        return _ioDependency;
+    }
+
+    /** We treat the modal model as an opaque actor.
+     */
+    public boolean isOpaque() {
+       return true;
+    }
+
     /** Create a new director for use in this composite.  This base
      *  class returns an instance of FSMDirector, but derived classes
      *  may return a subclass.  Note that this method is called in the
@@ -290,6 +312,15 @@ public class ModalModel extends CTCompositeActor {
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods               ////
+
+    /** Get the FSM controller.
+     */
+    protected FSMActor _getController() {
+       return _controller;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -401,5 +432,7 @@ public class ModalModel extends CTCompositeActor {
     // by the user. This prevents setting the HDFFSMActor flag before
     // the FSMActor is created.
     private boolean _directorChanged = false;
+    
+    private IODependencyOfModalModel _ioDependency;
     
 }
