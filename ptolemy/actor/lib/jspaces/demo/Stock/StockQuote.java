@@ -117,7 +117,7 @@ public class StockQuote extends Source {
     public void fire() throws IllegalActionException {
         try {
             super.fire();
-	    String tickerString = ((StringToken)ticker.getToken()).toString();
+	    String tickerString = ((StringToken)ticker.getToken()).stringValue();
 	    String spec = (_urlString + tickerString);
 	    URL url = new URL(spec);
 	    InputStream stream = url.openStream();

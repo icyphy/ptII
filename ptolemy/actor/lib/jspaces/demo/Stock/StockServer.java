@@ -161,7 +161,7 @@ public class StockServer extends TypedCompositeActor {
 	    // StockQuote actors so that the SDF graph is connected.
 	    DummySink sink = new DummySink(this, "sink");
 
-	    String allTickers = ((StringToken)tickers.getToken()).toString();
+	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
 	    StringTokenizer st = new StringTokenizer(allTickers);
 	    int numQuotes = 0;
 	    while (st.hasMoreTokens()) {
