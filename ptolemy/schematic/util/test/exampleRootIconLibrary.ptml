@@ -1,8 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE iconlibrary SYSTEM "../../lib/ptml.dtd">
-
-<iconlibrary name="root" version="1.0">
-<description>Icons for use in ptolemy</description>
-<sublibrary url="exampleIconLibrary.ptml"/>
-</iconlibrary>
-
