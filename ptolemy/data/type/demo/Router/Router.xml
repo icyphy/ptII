@@ -130,7 +130,7 @@ Rayleigh distribution.</text>
                 </property>
                 <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
                 </property>
-                <property name="remainder" class="ptolemy.kernel.util.StringAttribute" value="remainder">
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
                 </property>
                 <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
                 </property>
