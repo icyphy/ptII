@@ -615,7 +615,13 @@ public class HDFDirector extends SDFDirector {
             _modalModelClass =
                 Class.forName("ptolemy.vergil.fsm.modal.ModalModel");
         } catch (Throwable throwable) {
-            throw new ExceptionInInitializerError(throwable);
+            System.out.println("Warning: HDFDirector failed to initialize: "
+                    + throwable);
+            ExceptionInInitializerError error = 
+                new ExceptionInInitializerError("Class.forName('"
+                        + "ptolemy.vergil.fsm.modal.ModalModel') failed");
+            error.initCause(throwable);
+            throw error;
         }
     }
 
