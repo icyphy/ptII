@@ -50,8 +50,8 @@ import javax.crypto.Cipher;
 /**
 Decrypt an unsigned byte array using a symmetric algorithm.
 
-<p>See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a description of symmetric vs.
-asymmetric algorithms.
+<p>See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a
+description of symmetric vs. asymmetric algorithms.
 
 <p>This actor reads an unsigned byte array at the <i>input<i> port,
 dencrypts the data using the data from the <i>key</i> port and then
