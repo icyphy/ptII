@@ -377,7 +377,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         if(getHistoryCapacity() != solver.getHistoryCapacityRequirement()) {
             setHistoryCapacity(solver.getHistoryCapacityRequirement());
         }
-        if(getValidHistoryCount()>=2) {
+        if(getValidHistoryCount() >= 2) {
             _history.rebalance(dir.getCurrentStepSize());
         }
         return true;
