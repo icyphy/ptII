@@ -96,17 +96,6 @@ public class OnePort extends TypedAtomicActor {
     }
 
 
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        OnePort newObject = (OnePort)(super.clone(workspace));
-        newObject.input =  (SDFIOPort)newObject.getPort("input");
-        newObject.output = (SDFIOPort)newObject.getPort("output");
-        newObject.inrate = (Parameter) newObject.getAttribute("inrate");
-        newObject.outrate = (Parameter) newObject.getAttribute("outrate");
-        return newObject;
-    }
-
-
     public final void fire() throws IllegalActionException  {
         int i;
         int integer, remainder;
