@@ -85,7 +85,7 @@ all: jclass Primes.prc
 install: jclass subinstall $(PTCLASSJAR)
 
 Primes.prc: $(JCLASS)
-	CLASSPATH=$(CLASSPATH) java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.primes.Primes
+	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.primes.Primes
 
 demo: jclass
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kvm.primes.PrimesText
