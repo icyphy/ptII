@@ -303,9 +303,9 @@ public class Entity extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-            ////                         private variables                        ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         private variables                       ////
 
-            // A list of Ports owned by this Entity.
-            private NamedList _portList;
+    // A list of Ports owned by this Entity.
+    private NamedList _portList;
 }

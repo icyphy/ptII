@@ -49,12 +49,12 @@ of arbitrary objects.
 
 public interface Nameable {
 
-    //////////////////////////////////////////////////////////////////////////
-////                         public methods                           ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
-/** Return the container.
- */
-public Nameable getContainer();
+    /** Return the container.
+     */
+    public Nameable getContainer();
 
     /** In an implementation, the full name should reflect the container
      *  object, if there is one, for example by concatenating the
