@@ -270,7 +270,6 @@ public class AudioReader extends Source {
             // This value was chosen arbitrarily.
             int getSamplesArraySize = 64;
             try {
-                System.out.println("URL = " + fileOrURL.asURL());
                 _soundReader = new SoundReader(fileOrURL.asURL(),
                         getSamplesArraySize);
             } catch (IOException ex) {
