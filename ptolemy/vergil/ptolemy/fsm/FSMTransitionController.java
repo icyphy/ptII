@@ -44,6 +44,7 @@ import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.AbstractConnector;
 import diva.canvas.connector.ArcConnector;
+import diva.canvas.connector.ArcManipulator;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorAdapter;
@@ -73,6 +74,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
@@ -98,8 +100,9 @@ public class FSMTransitionController extends BasicEdgeController {
             (SelectionInteractor) getEdgeInteractor();
 	interactor.setSelectionModel(sm);
 
-        // Create and set up the manipulator for connectors
-        ConnectorManipulator manipulator = new ConnectorManipulator();
+        // Create and set up the manipulator for connectors.
+        // This overrides the manipulator created by the base class.
+        ConnectorManipulator manipulator = new ArcManipulator();
         manipulator.setSnapHalo(4.0);
         manipulator.addConnectorListener(new LinkDropper());
         interactor.setPrototypeDecorator(manipulator);
@@ -187,7 +190,7 @@ public class FSMTransitionController extends BasicEdgeController {
     /** An inner class that handles interactive changes to connectivity. */
     protected class LinkDropper extends ConnectorAdapter {
 
-        /** Called when a connector end is dropped--attach or
+        /** Called when a connector end is dropped.  Attach or
          *  detach the edge as appropriate.
          */
         public void connectorDropped(ConnectorEvent evt) {
@@ -203,6 +206,20 @@ public class FSMTransitionController extends BasicEdgeController {
 		break;
 	    case ConnectorEvent.TAIL_END:
 		model.getArcModel().setTail(edge, node);
+		break;
+	    case ConnectorEvent.MIDPOINT:
+                Arc arc = (Arc) edge;
+                Transition transition = (Transition)arc.getRelation();
+                if(transition != null && c instanceof ArcConnector) {
+                    // Set the new exitAngle parameter value based
+                    // on the current arc.
+                    String moml = "<property name=\"exitAngle\" value=\""
+                            + ((ArcConnector)c).getAngle()
+                            + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(
+                            this, transition, moml);
+                    transition.requestChange(request);
+                }
 		break;
 	    default:
 		throw new IllegalStateException(

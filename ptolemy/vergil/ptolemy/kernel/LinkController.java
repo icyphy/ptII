@@ -202,10 +202,12 @@ public class LinkController extends BasicEdgeController {
          * Render a visual representation of the given edge.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            AbstractConnector c = new ManhattanConnector(tailSite, headSite);
-            //AbstractConnector c = new StraightConnector(tailSite, headSite);
+            ManhattanConnector c = new ManhattanConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
+            // The default bend radius of 50 is too large...
+            // parallel curves look bad.
+            c.setBendRadius(20);
 
 	    Link link = (Link)edge;
 	    Relation relation = link.getRelation();

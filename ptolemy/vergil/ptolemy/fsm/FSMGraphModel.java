@@ -657,11 +657,36 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                         createdNewRelation = true;
                         // Linking two ports with a new relation.
                         relationName = ptolemyModel.uniqueName("relation");
+                        // Set the exitAngle based on other relations.
+                        // Count the number of connections between the
+                        // headPort and the tailPort.
+                        Iterator ports = tailPort.deepConnectedPortList()
+                                .iterator();
+                        int count = 0;
+                        while (ports.hasNext()) {
+                            if (ports.next() == headPort) count++;
+                        }
+                        // Increase the angle as the count increases.
+                        // Any function of "count" will work here that starts
+                        // at PI/5 and approaches something less than PI
+                        // as count gets large.  Unfortunately, self-loops
+                        // again have to be handled specially.
+                        double angle;
+                        if (headPort.getContainer()
+                                != tailPort.getContainer()) {
+                            angle = Math.PI/5.0 + 1.5* Math.atan(0.3*count);
+                        } else {
+                            angle = Math.PI/3.0 - 0.75 * Math.atan(0.3*count);
+                        }
+
+                        // Create the new relation.
                         // Note that we specify no class so that we use the
                         // container's factory method when this gets parsed
                         moml.append("<relation name=\""
                                 + relationName
-                                + "\"/>\n");
+                                + "\"><property name=\"exitAngle\" value=\""
+                                + angle
+                                + "\"/></relation>\n");
 		        moml.append("<link port=\""
                                 + tailPort.getName(ptolemyModel)
                                 + "\" relation=\""
