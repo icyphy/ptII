@@ -69,8 +69,8 @@ during run-time, the MathFunction actor may be the a better choice.
 @author Edward A. Lee
 @version $Id$
 @see MathFunction
+@since Ptolemy II 1.0.1
 */
-
 public class Remainder extends Transformer {
 
     /** Construct an actor with the given container and name.
