@@ -51,8 +51,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+//import org.apache.xml.serialize.OutputFormat;
+//import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -123,6 +123,8 @@ public class XSLTUtilities {
      * transformation.
      */
     public static Document parse(String filename) throws Exception {
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
+            "net.sf.saxon.om.DocumentBuilderFactoryImpl");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         // We use InputSource here so that we can specify the filename
@@ -143,13 +145,12 @@ public class XSLTUtilities {
         //System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
         //                   defaultDBFI == null ? "" : defaultDBFI);
 
-        OutputFormat format = new OutputFormat(document);
-        format.setLineWidth(65);
-        format.setIndenting(true);
-        format.setIndent(4);
         OutputStream outputStream = new ByteArrayOutputStream();
-        XMLSerializer serializer = new XMLSerializer(outputStream, format);
-        serializer.serialize(document);
+        StreamResult result = new StreamResult(outputStream);
+        TransformerFactory transformerFactory =
+            TransformerFactory.newInstance();
+        Transformer serializer = transformerFactory.newTransformer();
+        serializer.transform(new DOMSource(document), result);
         outputStream.close();
         return outputStream.toString();
     }
