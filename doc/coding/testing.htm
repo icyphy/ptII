@@ -419,6 +419,13 @@ cd $PTII
 ptspell `find . -name "*.html" -print`
 </PRE>
 
+<h3>Deprecated methods in documentation</h3>
+Javadoc generates a list of deprecated methods in
+<a href="../codeDoc/deprecated-list.html"><CODE>$PTII/doc/codeDoc/deprecated-list.html</CODE></a>.  The
+<a href="../../util/testsuite/deprecated "><CODE>$PTII/util/testsuite/deprecated</CODE></a> script reads in <CODE>deprecated-list.html</CODE>
+and searches <CODE>$PTII/doc/design/html/*.html</CODE> for
+any occurrences of deprecated methods.
+
 <H3>Check the distribution for bogus files</H3>
 Run the following makefile rules and commands:
 <DL>
