@@ -178,7 +178,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *  INPUT_TRANSITION, OUTPUT_TRANSITION, or INTERNAL_TRANSITION.
      *  @return the transition type.
      */
-    public int getTransitionType() {
+    public int getType() {
         String labelString = label.getExpression();
         if (labelString.endsWith("?")) {
 	    return INPUT_TRANSITION;
@@ -188,7 +188,7 @@ public class InterfaceAutomatonTransition extends Transition {
 	    return INTERNAL_TRANSITION;
 	} else {
 	    throw new InternalErrorException(
-	            "InterfaceAutomatonTransition.getTransitionType: "
+	            "InterfaceAutomatonTransition.getType: "
 		    + "The label does not end with ? or ! or ;");
         }
     }

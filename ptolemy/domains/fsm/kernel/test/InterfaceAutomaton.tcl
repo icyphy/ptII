@@ -200,17 +200,17 @@ test InterfaceAutomaton-7.1 {test setting input transition} {
     $lab setExpression a?
     set act [java::field \
         [java::cast ptolemy.domains.fsm.kernel.Transition $t0] outputActions]
-    list [$t0 getTransitionType] [$t0 getGuardExpression] [$act getExpression] 
+    list [$t0 getType] [$t0 getGuardExpression] [$act getExpression] 
 } {0 a_isPresent {}}
 
 test InterfaceAutomaton-7.2 {test setting output transition} {
     $lab setExpression b!
-    list [$t0 getTransitionType] [$t0 getGuardExpression] [$act getExpression] 
+    list [$t0 getType] [$t0 getGuardExpression] [$act getExpression] 
 } {1 true b=true}
 
 test InterfaceAutomaton-7.3 {test setting internal transition} {
     $lab setExpression "c;"
-    list [$t0 getTransitionType] [$t0 getGuardExpression] [$act getExpression] 
+    list [$t0 getType] [$t0 getGuardExpression] [$act getExpression] 
 } {2 true c=true}
 
 ######################################################################
