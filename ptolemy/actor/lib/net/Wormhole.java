@@ -144,6 +144,7 @@ fireAtCurrentTime() method.  This causes the director to call fire()
 on the clipboard portion. <p>
 
 @author Winthrop Williams
+@version $Id$
 */
 public class Wormhole extends TypedAtomicActor {
 
