@@ -31,6 +31,8 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
+import ptolemy.gui.MessageHandler;
+import ptolemy.gui.CancelException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -57,16 +59,16 @@ polynomial are specified by the <i>denominator</i> parameter.
 <p>
 The <i>numerator</i> parameter represents the numerator coefficients
 as a row vector of a token of type DoubleMatrixToken. The format is
-{{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default
-value of this parameter is {{1.0}}.
+[b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>]. The default
+value of this parameter is [1.0].
 <p>
 The <i>denominator</i> parameter represents the denominator
 coefficients as a row vector of a token of type DoubleMatrixToken. The
-format is {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note
+format is [a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>]. Note
 that the value of a<sub>0</sub> is constrained to be 1. This
-implementation will silently ignore whatever value the user enters for
-as the first element of <i>denominator</i>, and will use 1.0 instead.
-The default value of this parameter is {{1.0}}.
+implementation will issue a warning if the user enters as the first
+element of <i>denominator</i> something other than 1.0, and will use
+1.0 instead.  The default value of this parameter is [1.0].
 <p>
 The default values therefore correspond to a filter with a transfer
 function of 1.
@@ -75,7 +77,8 @@ function of 1.
 <p>
 [1]
 A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
-Prentice Hall, 1989
+Prentice Hall, 1989.
+
 @author Brian K. Vogel
 @version $Id$
 */
@@ -111,18 +114,17 @@ public class IIR extends Transformer {
 
     /** This parameter represents the numerator coefficients as a row
      *  vector of a token of type DoubleMatrixToken. The format is
-     *  {{b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}}. The default
-     *  value of this parameter is {{1.0}}.
+     *  [b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>]. The default
+     *  value of this parameter is [1.0].
      */
     public Parameter numerator;
 
     /** This  parameter represents the denominator coefficients as a row
      *  vector of a token of type DoubleMatrixToken. The format is
-     *  {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that
-     *  the value of a<sub>0</sub> is constrained to be 1. This
-     *  implementation will silently ignore whatever value the user
-     *  enters for as the first element of <i>denominator</i>, and will
-     *  use 1.0 instead.  The default value of this parameter is {{1.0}}.
+     *  [a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>]. Note that
+     *  the value of a<sub>0</sub> is constrained to be 1.0. This
+     *  implementation will issue a warning if it is not.
+     *  The default value of this parameter is [1.0].
      */
     public Parameter denominator;
 
@@ -145,9 +147,20 @@ public class IIR extends Transformer {
 	    _denominator =
                 (((DoubleMatrixToken)denominator.
                         getToken()).doubleMatrix())[0];
-	    // Note: a<sub>0</sub> must always be 1, so ignore whatever the
-            // user entered and just use 1.
-	    _denominator[0] = 1.0;
+	    // Note: a<sub>0</sub> must always be 1.
+            // Issue a warning if it isn't.
+            if (_denominator[0] != 1.0) {
+                try {
+                    MessageHandler.warning(
+                            "First denominator value is required to be 1.0. "
+                            + "Using 1.0.");
+                } catch (CancelException ex) {
+                    throw new IllegalActionException(this,
+                            "Canceled parameter change.");
+                }
+                // user entered and just use 1.
+                _denominator[0] = 1.0;
+            }
 	} else {
             super.attributeChanged(attribute);
             return;
