@@ -127,7 +127,7 @@ public class HTVQEncode extends SDFTransformer {
         output.setTypeEquals(BaseType.INT);
 
         codeBook = new Parameter(this, "codeBook",
-                new StringToken("ptolemy/domains/sdf" +
+                new StringToken("/ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
@@ -211,30 +211,19 @@ public class HTVQEncode extends SDFTransformer {
         String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
             if (filename != null) {
-                if(_baseurl != null) {
-                    try {
-                        URL dataurl = new URL(_baseurl, filename);
-                        _debug("HTVQEncode: codebook = " + dataurl);
-                        source = dataurl.openStream();
-                    } catch (MalformedURLException e) {
-                        System.err.println(e.toString());
-                    } catch (FileNotFoundException e) {
-                        System.err.println("HTVQEncode: " +
-                                "file not found: " + e);
-                    } catch (IOException e) {
-                        throw new IllegalActionException(
-                                "HTVQEncode: error reading" +
-                                " input file: " + e.getMessage());
-                    }
-                } else {
-                    File sourcefile = new File(filename);
-                    if(!sourcefile.exists() || !sourcefile.isFile())
-                        throw new IllegalActionException("Codebook file " +
-                                filename + " does not exist!");
-                    if(!sourcefile.canRead())
-                        throw new IllegalActionException("Codebook file " +
-                                filename + " is unreadable!");
-                    source = new FileInputStream(sourcefile);
+                try {
+                    URL dataurl = getClass().getResource(filename);
+                    _debug("HTVQEncode: codebook = " + dataurl);
+                    source = dataurl.openStream();
+                } catch (MalformedURLException e) {
+                    System.err.println(e.toString());
+                } catch (FileNotFoundException e) {
+                    System.err.println("HTVQEncode: " +
+                            "file not found: " + e);
+                } catch (IOException e) {
+                    throw new IllegalActionException(
+                            "HTVQEncode: error reading" +
+                            " input file: " + e.getMessage());
                 }
             }
 
@@ -274,14 +263,6 @@ public class HTVQEncode extends SDFTransformer {
                 }
             }
         }
-    }
-
-    /**
-     * Set the base URL from which this actor was loaded.  This actor should
-     * load any data that it needs relative to this URL.
-     */
-    public void setBaseURL(URL baseurl) {
-        _baseurl = baseurl;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -472,5 +453,4 @@ public class HTVQEncode extends SDFTransformer {
     private int _blockCount;
     private int _blockWidth;
     private int _blockHeight;
-    private URL _baseurl;
 }

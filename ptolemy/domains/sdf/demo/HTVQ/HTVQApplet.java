@@ -96,10 +96,8 @@ public class HTVQApplet extends SDFApplet {
             Parameter blockHeight = new Parameter(_toplevel, "blockHeight",
                     new IntToken(2));
 
-            URL baseURL = new URL(getDocumentBase(), "../../../../../");
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
-            source.setBaseURL(baseURL);
-
+            
             //added PSNR actor
             PSNR snr = new PSNR(_toplevel, "PSNR");
 
@@ -108,13 +106,11 @@ public class HTVQApplet extends SDFApplet {
             part.partitionRows.setExpression("blockHeight");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
-            encode.setBaseURL(baseURL);
             encode.blockCount.setExpression("176*144/blockWidth/blockHeight");
             encode.blockWidth.setExpression("blockWidth");
             encode.blockHeight.setExpression("blockHeight");
 
 	    VQDecode decode = new VQDecode(_toplevel, "Decoder");
-            decode.setBaseURL(baseURL);
             decode.blockCount.setExpression("176*144/blockWidth/blockHeight");
             decode.blockWidth.setExpression("blockWidth");
             decode.blockHeight.setExpression("blockHeight");

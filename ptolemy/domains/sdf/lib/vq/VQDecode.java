@@ -70,7 +70,7 @@ public class VQDecode extends SDFTransformer {
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         codeBook = new Parameter(this, "codeBook",
-                new StringToken("ptolemy/domains/sdf" +
+                new StringToken("/ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
@@ -162,29 +162,18 @@ public class VQDecode extends SDFTransformer {
         String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
             if (filename != null) {
-                if(_baseurl != null) {
-                    try {
-                        URL dataurl = new URL(_baseurl, filename);
-                        _debug("VQDecode: codebook = " + dataurl);
-                        source = dataurl.openStream();
-                    } catch (MalformedURLException e) {
-                        System.err.println(e.toString());
-                    } catch (FileNotFoundException e) {
-                        System.err.println("File not found: " + e);
-                    } catch (IOException e) {
-			throw new IllegalActionException(
-                                "Error reading" +
-                                " input file: " + e.getMessage());
-                    }
-                } else {
-                    File sourcefile = new File(filename);
-                    if(!sourcefile.exists() || !sourcefile.isFile())
-                        throw new IllegalActionException("Codebook file " +
-                                filename + " does not exist!");
-                    if(!sourcefile.canRead())
-                        throw new IllegalActionException("Codebook file " +
-                                filename + " is unreadable!");
-                    source = new FileInputStream(sourcefile);
+                try {
+                    URL dataurl = getClass().getResource(filename);
+                    _debug("VQDecode: codebook = " + dataurl);
+                    source = dataurl.openStream();
+                } catch (MalformedURLException e) {
+                    System.err.println(e.toString());
+                } catch (FileNotFoundException e) {
+                    System.err.println("File not found: " + e);
+                } catch (IOException e) {
+                    throw new IllegalActionException(
+                            "Error reading" +
+                            " input file: " + e.getMessage());
                 }
             }
 
@@ -225,13 +214,6 @@ public class VQDecode extends SDFTransformer {
         }
     }
 
-    /**
-     * Set the url representing the root classpath from which to load files.
-     */
-    public void setBaseURL(URL baseurl) {
-        _baseurl = baseurl;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -269,5 +251,4 @@ public class VQDecode extends SDFTransformer {
     private int _blockCount;
     private int _blockWidth;
     private int _blockHeight;
-    private URL _baseurl;
 }

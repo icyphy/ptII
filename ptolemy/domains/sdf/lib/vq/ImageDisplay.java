@@ -182,12 +182,9 @@ public class ImageDisplay extends Sink implements Placeable {
                 _container.paint(_container.getGraphics());
             }
         };
-        try {
-            // Make sure the image gets updated.
-            SwingUtilities.invokeAndWait(painter);
-        } catch(Exception e) {
-            System.out.println("interrupted");
-        }
+        // Make sure the image gets updated.
+        SwingUtilities.invokeLater(painter);
+        Thread.yield();
     }
 
     /** Set the background */

@@ -89,7 +89,7 @@ public class ImageSequence extends Source {
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
-                new StringToken("ptolemy/domains/sdf/lib/vq" +
+                new StringToken("/ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
@@ -141,7 +141,7 @@ public class ImageSequence extends Source {
 
         // If we've already loaded all these images, then don't load
         // them again.
-        if((_baseurl != null)&&(_images != null)) {
+        if(_images != null) {
             return;
         }
 
@@ -169,22 +169,9 @@ public class ImageSequence extends Source {
                 String filename = new String(arr);
                 _debug("file = " + filename + "\n");
 
-                // load the file as a url if baseurl is set, or as a file if
-                // not
                 if (filename != null) {
-                    if(_baseurl != null) {
-                        URL dataurl = new URL(_baseurl, filename);
-                        source = dataurl.openStream();
-                    } else {
-                        File sourcefile = new File(filename);
-                        if(!sourcefile.exists() || !sourcefile.isFile())
-                            throw new IllegalActionException("Image file " +
-                                    filename + " does not exist!");
-                        if(!sourcefile.canRead())
-                            throw new IllegalActionException("Image file " +
-                                    filename + " is unreadable!");
-                        source = new FileInputStream(sourcefile);
-                    }
+                    URL dataurl = getClass().getResource(filename);
+                    source = dataurl.openStream();
                 }
 
                 // Load the frame from the file.
@@ -202,10 +189,12 @@ public class ImageSequence extends Source {
                     new IntMatrixToken(_frameInts, _imageRows, _imageColumns);
             }
             catch (IllegalActionException ex) {
+                _images = null;
                 throw ex;
             }
             catch (Exception ex) {
                 ex.printStackTrace();
+                _images = null;
                 throw new IllegalActionException(ex.getMessage());
             }
             finally {
@@ -215,21 +204,13 @@ public class ImageSequence extends Source {
                     }
                     catch (IOException ex) {
                         ex.printStackTrace();
+                        _images = null;
                         throw new IllegalActionException(ex.getMessage());
                     }
                 }
             }
         }
         _frameNumber = 0;
-    }
-
-    /**
-     * Set the base URL from which this actor was loaded.  This actor should
-     * load any data that it needs relative to this URL.
-     */
-    // FIXME this should be made a parameter.
-    public void setBaseURL(URL baseurl) {
-        _baseurl = baseurl;
     }
 
     /** Fire this actor.
@@ -261,6 +242,9 @@ public class ImageSequence extends Source {
         return len;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     private int _frameCount;
     private IntMatrixToken _images[];
     private byte _frameBytes[];
@@ -271,5 +255,4 @@ public class ImageSequence extends Source {
     private int _startFrame;
     private int _endFrame;
     private int _frameNumber;
-    private URL _baseurl;
 }
