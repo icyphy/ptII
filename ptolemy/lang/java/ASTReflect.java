@@ -119,8 +119,6 @@ public final class ASTReflect {
             // interface, a primitive type, or void, then null is
             // returned"
             superClass = AbsentTreeNode.instance;
-	    
-		/*new TypeNameNode(new NameNode(AbsentTreeNode.instance,""));*/
         } else {
             superClass =
 		new TypeNameNode((NameNode)_makeNameNode(
