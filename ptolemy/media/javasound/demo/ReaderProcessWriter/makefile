@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/media/javasound
+ME =		ptolemy/media/javasound/demo/SoftClip
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../../..
 
 
 CLASSPATH =	$(ROOT)
@@ -42,10 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	SoundCapture.java \
-	SoundPlayback.java \
-	SoundReader.java \
-	SoundWriter.java
+	ReaderProcessWriter.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
@@ -66,6 +63,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 
 install: all
+
+demo:
+	CLASSPATH=$(CLASSPATH) java ptolemy.media.javasound.demo.ReaderProcessWriter.ReaderProcessWriter
 
 depend:
 	@echo "no dependencies in this directory"
