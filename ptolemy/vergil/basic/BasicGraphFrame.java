@@ -1088,7 +1088,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             Entity entity) {
         try {
             CompositeEntity library = (CompositeEntity)
-                configuration.getEntity("actor library.vergilUserLibrary");
+                configuration.getEntity("actor library."
+                        + VERGIL_USER_LIBRARY_NAME);
             if(library == null) {
                 MessageHandler.error(
                         "Save In Library failed: " +
@@ -1203,6 +1204,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         canvas.getCanvasPane().setTransform(current);
         _graphPanner.repaint();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The name of the user library.  The default value is 
+     *  "user library".  The value of this variable is what appears 
+     *  in the Vergil left hand tree menu.
+     */
+    public static String VERGIL_USER_LIBRARY_NAME = "user library";    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
