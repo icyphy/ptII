@@ -113,6 +113,17 @@ public class Context {
         return _includeFileSet.iterator();
     }
 
+    /** Return true if and only if single class mode translation is 
+     *  presently enabled. In single class mode, inherited methods
+     *  and fields are ignored, which can greatly reduce the number of
+     *  references to other classes. Single class mode is used primarily
+     *  for diagnostic purposes, and for rapid testing of new code.
+     *  @return true if and only if single class mode translation is enabled.
+     */
+    public static boolean getSingleClassMode() {
+        return _singleClassMode;
+    }
+
     /** Return an Iterator over the set of string constants in the context.
      *  @return an Iterator over the set of string constants.
      */
@@ -141,17 +152,6 @@ public class Context {
         _disableImports = true;
     }
     
-    /** Return true if and only if single class mode translation is 
-     *  presently enabled. In single class mode, inherited methods
-     *  and fields are ignored, which can greatly reduce the number of
-     *  references to other classes. Single class mode is used primarily
-     *  for diagnostic purposes, and for rapid testing of new code.
-     *  @return true if and only if single class mode translation is enabled.
-     */
-    public static boolean getSingleClassMode() {
-        return _singleClassMode;
-    }
-
     /** Turn on (enable) single class mode translation
      *  (see {@link #getSingleClassMode()}).
      */
