@@ -156,7 +156,9 @@ public class SineFM extends SDFTransformer {
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
 	    _resultTokenArray[i] =
-		new DoubleToken(A*Math.sin((_omegaTokenArray[i].doubleValue())*(_tokenArray[i].doubleValue())+p));
+		new DoubleToken(A*Math.sin(
+                        (_omegaTokenArray[i].doubleValue()) *
+                        (_tokenArray[i].doubleValue())+p));
 	}
 
 	output.sendArray(0, _resultTokenArray);
