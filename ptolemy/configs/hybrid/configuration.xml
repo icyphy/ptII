@@ -36,8 +36,8 @@
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
           <!-- Set the initStepSize and stopTime to get 100 samples. -->
-          <property name="initStepSize" value="0.01"/>
-          <property name="stopTime" value="1.0"/>
+          <property name="initStepSize" value="0.1"/>
+          <property name="stopTime" value="10.0"/>
         </property>
       </entity>
     </entity>
@@ -86,34 +86,80 @@ create refinements for the states.</text></svg></configure></property>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
-  <!-- Main default library -->
+  <!-- Main actor library -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
 
     <!-- Marker so that tree view expands the library. -->
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <!-- Default utilities library. -->
-    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+    <!-- Custom utilities library. -->
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/annotation.xml"/>
+            <input source="ptolemy/configs/utilityParameter.xml"/>
+            <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
+            <input source="ptolemy/configs/utilityPortParameter.xml"/>
+            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+            <input source="ptolemy/configs/utilityModalModel.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
 
-    <!-- Default entity library to appear in the library browser. -->
+    <!-- Custom actor library. -->
     <class name="actor library" extends="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
-  <input source="ptolemy/actor/lib/timedsources.xml"/>
-  <input source="ptolemy/actor/lib/timedsinks.xml"/>
-  <input source="ptolemy/actor/lib/io/io.xml"/>
+<!-- Sources include only timed sources. -->
+<input source="ptolemy/actor/lib/timedsources.xml"/>
+
+<!-- Sinks include only timed sinks. -->
+<input source="ptolemy/actor/lib/timedsinks.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Standard libraries. -->
   <input source="ptolemy/actor/lib/math.xml"/>
-  <input source="ptolemy/actor/lib/random.xml"/>
-  <input source="ptolemy/actor/lib/flowcontrol.xml"/>
-  <input source="ptolemy/actor/lib/realtime.xml"/>
   <input source="ptolemy/actor/lib/logic/logic.xml"/>
   <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Continuous-time actors. -->
+<input source="ptolemy/domains/ct/lib/dynamics.xml"/>
+<input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
+<input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Flow control library is modified. -->
+<!-- FIXME: For some incomprehensible reason, the following library -->
+<!-- cannot be deferred with a configure element.  Bug in MoMLParser? -->
+<entity name="flow control" class="ptolemy.moml.EntityLibrary">
+  <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
+  <input source="ptolemy/actor/lib/aggregators.xml"/>
+  <input source="ptolemy/actor/lib/booleanflowcontrol.xml"/>
+  <!-- Execution control library is modified. -->
+  <entity name="execution control" class="ptolemy.moml.EntityLibrary">
+          <doc>Actors that stop execution of the model.</doc>
+          <entity name="Stop"
+                  class="ptolemy.actor.lib.Stop"/>
+          <entity name="ThrowException"
+                  class="ptolemy.actor.lib.ThrowException"/>
+          <entity name="Assertion"
+                  class="ptolemy.domains.ct.lib.CTAssertion"/>
+  </entity>
+</entity>
+
+<!---------------------------------------------------------------------------->
+<!-- Standard libraries. -->
+
+  <input source="ptolemy/actor/lib/io/io.xml"/>
+  <input source="ptolemy/actor/lib/realtime.xml"/>
   <input source="ptolemy/actor/lib/array.xml"/>
-  <input source="ptolemy/actor/lib/busses.xml"/>
+  <input source="ptolemy/actor/lib/random.xml"/>
   <input source="ptolemy/actor/lib/signalprocessing.xml"/>
-  <input source="ptolemy/domains/ptinyDomains.xml"/>
           </group>
         ?>
       </configure>
