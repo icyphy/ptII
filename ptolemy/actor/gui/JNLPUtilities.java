@@ -268,23 +268,38 @@ public class JNLPUtilities {
             File destinationFile)
             throws IOException {
 
-        BufferedInputStream input =
-            new BufferedInputStream(sourceURL.openStream());
+        BufferedInputStream input = null;
+        BufferedOutputStream output = null;
+        try {
+            input = new BufferedInputStream(sourceURL.openStream());
 
-        BufferedOutputStream output =
-            new BufferedOutputStream(
-                    new FileOutputStream(destinationFile));
+            output = new BufferedOutputStream(
+                        new FileOutputStream(destinationFile));
 
-        // The resource pointed to might be a pdf file, which
-        // is binary, so we are careful to read it byte by
-        // byte and not do any conversions of the bytes.
+            // The resource pointed to might be a pdf file, which
+            // is binary, so we are careful to read it byte by
+            // byte and not do any conversions of the bytes.
 
-        int c;
-        while (( c = input.read()) != -1) {
-            output.write(c);
+            int c;
+            while (( c = input.read()) != -1) {
+                output.write(c);
+            }
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Throwable throwable) {
+                    // Ignore, not much we can do
+                }
+            }
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (Throwable throwable) {
+                    // Ignore, not much we can do
+                }
+            }
         }
-        input.close();
-        output.close();
     }
 
 
