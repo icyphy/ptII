@@ -463,7 +463,7 @@ if [ "$1" = "-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
 fi
 
 # Default invocation help string, used by -help, overridden as necessary.
-invokeHelp="$0: Usage: $0 [commonOptions] [commandSpecificOptions] [modelOrClass]"
+invokeHelp="Usage: $base [commonOptions] [commandSpecificOptions] [modelOrClass]"
 
 # Set to no if we should not pass the -help argument to the exec'd process
 # For example, ptjacl does not handle the -help arg, so we exit rather
@@ -581,8 +581,8 @@ case $commandname in
     decompile)
 	if [ -f "$JODE_JAR" ]; then
 	    help="Decompile by calling jode, for example: \
-                  $0 ptolemy.util.StringUtilities"
-	    invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
+                  $commandname ptolemy.util.StringUtilities"
+	    invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
 	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
@@ -623,14 +623,14 @@ and run:
         ;;
     histogram)
 	help="Histogram Plotter"
-	invokeHelp="$0: Usage: $0 [commonOptions] [histogramOptions] [PlotMLOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [histogramOptions] [PlotMLOrASCIIFile]"
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
     jode)
 	help="Decompile by calling jode, for example: \
-                  $0 ptolemy.util.StringUtilities"
-	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
+                  $commandname ptolemy.util.StringUtilities"
+	invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
 	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
@@ -660,8 +660,8 @@ and run:
     moml)
 	help="This command has no default configuration, use this command \
             when you want to run your own graphical editor, for example: \
-	    $0 $PTII_CLEAN/ptolemy/configs/vergilConfigurationDSP.xml"
-	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] configuration.xml [model.xml]"
+	    $commandname $PTII_CLEAN/ptolemy/configs/vergilConfigurationDSP.xml"
+	invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] configuration.xml [model.xml]"
 	javastartupclass=ptolemy.actor.gui.MoMLApplication
 	javasourcedir=
 	jarfile="$ALL_JAR"
@@ -672,19 +672,19 @@ and run:
             The models may be either class files or MoMLFiles.  \
 	    This command instantiate models, and if a model is an instance \
 	    of CompositeActor, runs it without a control panel. For example: \
-            \"$0\" \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
+            \"$commandname\" \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
 	    This command also understands some of the same arguments as \
 	    the vergil command, so for example	
-            \"$0\" -full \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
+            \"$commandname\" -full \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
             will display the model using vergil and run the model."
-	invokeHelp="$0: Usage: $0 [commonOptions] [ptexecuteSpecificOptions] classOrMoMLFile [classOrMoMLFile...]"
+	invokeHelp="Usage: $commandname [commonOptions] [ptexecuteSpecificOptions] classOrMoMLFile [classOrMoMLFile...]"
 	javastartupclass=ptolemy.actor.gui.PtExecuteApplication
 	javasourcedir=
 	;;
     ptinvoke)
 	help="Invoke the class named by the first argument, for example \
-            $0 ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly"
-	invokeHelp="$0: Usage: $0 className [commonOptions] [ptinvokeSpecificOptions][classNameOptions]"
+            $commandname ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly"
+	invokeHelp="Usage: $commandname className [commonOptions] [ptinvokeSpecificOptions][classNameOptions]"
 	passHelpArgument=no
 	# FIXME: need to process command line args here?
 	if [ "$1" = "-q" ]; then
@@ -702,7 +702,7 @@ and run:
     ptjacl)
 	help="Bring up Jacl (a 100% Java implementation of Tcl) in the \
 	    current window"
-	invokeHelp="$0: Usage: $0 [commonOptions] [tclOptions] [TclFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [tclOptions] [TclFile]"
 	passHelpArgument=no
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
@@ -712,7 +712,7 @@ and run:
     ptjaclapp)
 	help="Bring up Jacl (a 100% Java implementation of Tcl) in a \
 	    separate window"
-	invokeHelp="$0: Usage: $0 [commonOptions] [tclOptions] [TclFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [tclOptions] [TclFile]"
 	passHelpArgument=no
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
@@ -721,7 +721,7 @@ and run:
 	;;
     ptstartjini)
 	help="Start up Jini" 
-	invokeHelp="$0: Usage: $0"
+	invokeHelp="Usage: $commandname"
 	passHelpArgument=no
 	javastartupclass=com.sun.jini.example.service.StartService
 	javasourcedir=ptolemy/actor/gui
@@ -740,7 +740,7 @@ and run:
     ptolemy)
         help="Bring up a control panel for each model rather than running it \
 	    like ptexecute, for example: \
-            $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
+            $commandname $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	jarfile="$ALL_JAR"
@@ -748,19 +748,19 @@ and run:
 	;;
     ptplot)
 	help="Signal Plotter, see \$PTII/ptolemy/plot/doc"
-	invokeHelp="$0: Usage: $0 [commonOptions] [ptplotOptions] [PlotMLOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [ptplotOptions] [PlotMLOrASCIIFile]"
 	javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
     pxgraph)
 	help="Plotter compatible with old X11 pxgraph"
-	invokeHelp="$0: Usage: $0 [commonOptions] [pxgraphOptions] [pxgraphOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [pxgraphOptions] [pxgraphOrASCIIFile]"
 	javastartupclass=ptolemy.plot.compat.PxgraphApplication
 	javasourcedir=ptolemy/plot/compat
 	;;
     soot)
 	help="Soot optimizer"
-	invokeHelp="$0: Usage: $0 [commonOptions] [sootOptions]"
+	invokeHelp="Usage: $commandname [commonOptions] [sootOptions]"
 	javastartupclass=soot.Main
 	javasourcedir=
 	jarfile="$SOOT_JAR"
@@ -768,7 +768,7 @@ and run:
 	;;
     tinicomm)
 	help="Tini board communications shell"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=JavaKit
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -778,7 +778,7 @@ and run:
 	javac="$JAVAHOME/bin/javac"
 	ptflag="" # setting ptII environment variable is not valid under javac
 	help="Tini compiler using embedded libraries"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -786,7 +786,7 @@ and run:
 	;;	
     tiniconverter)
 	help="Tini board static linker, creates .tini files"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=TINIConvertor
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -794,11 +794,13 @@ and run:
 	;;
     vergil)
 	help="Invoke the Ptolemy II User Interface, for example: \
-              $0 \
-              or \
-              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml \
-              $0 -single    bring up a singleWindow interface \
-              NOTE: properties are read from $CLASSPATH/lib/ptII.properties"
+              $commandname \
+              $commandname $PTII_CLEAN/ptolemy/moml/demo/modulation.xml \
+              $commandname -single \
+              where the latter brings up a singleWindow interface. \
+              NOTE: properties are read from \$CLASSPATH/lib/ptII.properties \
+              "
+              
 	javastartupclass=ptolemy.vergil.VergilApplication
 
         # Single Window Interface
@@ -826,24 +828,25 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	if [ "$help"x != "x" ]; then
 	    # Deal with multiline help messages
 	    echo "$help" | sed 's/   */ \
-/g'
+  /g'
 	fi    
-	echo " Where commonOptions is one or more of:"
-	echo " -debug   Enable debugging, see \$PTII/doc/coding/debugging.htm"
-	echo " -help    Print this help message"
-	echo " -helpall List the Ptolemy II commands that can be invoked"
-	echo " -jdb     Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
-	echo " -profiler Run under cpu sample profiling"
-        echo " -q       Do not echo the command being run"
-	echo " -sandbox Run model under tight security, see \$PTII/bin/sandbox.policy" 
-	echo " -policyfile policyfile  Run model with a policyfile" 
-	echo " Note that not all combinations above the above arguments make sense."
+	echo "The [commonOptions] can be one or more of:"
+	echo " -debug     Enable debugging with jdb, see \$PTII/doc/coding/debugging.htm"
+	echo " -help      Print this help message"
+	echo " -helpall   List the Ptolemy II commands that can be invoked"
+	echo " -jdb       Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
+	echo " -profiler  Run under cpu sample profiling"
+    echo " -q         Do not echo the command being run"
+	echo " -sandbox   Run model under tight security, see \$PTII/bin/sandbox.policy" 
+	echo " -policyfile policyfile  Run model with a specified policyfile" 
+	echo "Note that not all combinations above the above arguments make sense."
+	echo ""
 	# Most commands have their own help built in, but some do not. 
 	if [ "$passHelpArgument" = "no" ]; then
 	    exit
 	else    
 	    echo ""
-	    echo "Now invoking $0 -help for further help and usage information"
+	    echo "Now invoking $commandname -help for command-specific options:"
 	    echo ""
 	fi    
 
