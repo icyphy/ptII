@@ -69,11 +69,11 @@ Berkeley, CA 94706</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
-                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
@@ -1034,7 +1034,7 @@ Berkeley, CA 94706</property>
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
                     <property name="fileName">ptII1_0setup.exe</property>
-                    <property array="True" length="7" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                    <property array="True" length="8" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
                             <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
@@ -1055,6 +1055,10 @@ Berkeley, CA 94706</property>
                             <property name="fullSearch">False</property>
                             <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
                         </arrayItem>
+	                <arrayItem type="com.installshield.util.jvm.JVMFile">
+	                    <property name="fullSearch">False</property>
+	                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
+	                </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
                             <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_122.jvm</property>
