@@ -4,7 +4,7 @@
 #
 # @Version: @(#)RcvrTimeTriple.tcl	1.1	11/17/98
 #
-# @Copyright (c) 1997-1998 The Regents of the University of California.
+# @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

@@ -188,7 +188,7 @@ public class PlotApplication extends PlotFrame {
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
-                "Copyright (c) 1997-1998,\n" +
+                "Copyright (c) 1997-1999,\n" +
                 "The Regents of the University of California.");
         message.setTitle("About Ptolemy Plot");
     }
