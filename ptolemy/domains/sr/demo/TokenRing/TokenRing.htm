@@ -8,9 +8,8 @@
 <BODY>
 
 <H1>TokenRing</H1>
+A cyclic token-ring arbiter composed of three blocks.
 
-
-<P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -61,7 +60,23 @@ applet is displayed on a XGA screen-->
 </EMBED>
 </OBJECT>
 </CENTER>
-The <a href="TokenRingVergil.htm">block diagram</a>
+<p> This system arbitrates fairly among requests for exclusive access
+to a shared resource by marching a token around a ring.  In each
+instant, the arbiter grants access to the first requestor to the right
+of the block with the token.
+
+<p>In this model, Block1 starts with the token (see the parameter of the
+NonStrictDelay actor inside of BlockN).
+
+<p>This example is from:
+<br>    Stephen A. Edwards and Edward A. Lee
+    "The Semantics and Execution of a Synchronous Block-Diagram Language"
+    Technical Memorandum UCB/ERL M01/33, 
+    University of California, Berkeley, CA 94720, 
+    October 25, 2001.
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/01/blockdiagram/"><code>http://ptolemy.eecs.berkeley.edu/publications/papers/01/blockdiagram/</code></a>
+
+<p>The <a href="TokenRingVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
 called Vergil.
 </p>
