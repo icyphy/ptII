@@ -73,8 +73,7 @@ public class SchematicEntity extends SchematicElement {
      */
     public SchematicEntity (HashedMap attributes, EntityType et) {
         super("entity", attributes);
-        entitytype = et;
-        addChildElement(entitytype);
+        setEntityType(et);
     }
 
     /**
@@ -87,6 +86,23 @@ public class SchematicEntity extends SchematicElement {
         return entitytype;
     }
 
+    /**
+     * Set the object that describes this entity. This object
+     * can be used to instantiate an actor given certain
+     * other information (such as the domain) or to look up
+     * icons in an icon library.
+     */
+    public void setEntityType (EntityType et) {
+        removeChildElement(entitytype);
+        entitytype = et;
+        addChildElement(entitytype);
+    }
+
     EntityType entitytype;
 }
+
+
+
+
+
 
