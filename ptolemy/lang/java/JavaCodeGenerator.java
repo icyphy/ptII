@@ -4,7 +4,7 @@ For efficiency reasons, the return value of each visit method returns a
 string list, which is a List composed of Strings or string lists.
 _stringListToString() converts a string list into a flattened String.
 
-Copyright (c) 1998-2000 The Regents of the University of California.
+Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

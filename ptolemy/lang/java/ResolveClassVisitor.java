@@ -2,7 +2,7 @@
 Create declarations for fields, constructors, and methods, and add them to
 their enclosing class's scope.
 
-Copyright (c) 1998-2000 The Regents of the University of California.
+Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

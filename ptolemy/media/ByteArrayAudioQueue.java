@@ -1,6 +1,6 @@
 /* An audio queue that can be initialized with an array of bytes.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* A visitor that constructs a short description of the node it visits.
 
-Copyright (c) 1998-2000 The Regents of the University of California.
+Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

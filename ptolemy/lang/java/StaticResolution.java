@@ -1,7 +1,7 @@
 /* Methods to aid in the static resolution of names and types in a Java
 program.
 
-Copyright (c) 1998-2000 The Regents of the University of California.
+Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
