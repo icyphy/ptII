@@ -287,7 +287,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                      throw new IllegalArgumentException("A port that "
                              + "is both an input and output can not be " 
                              + "properly dealt with by "
-                             + "DDEReceiver.isInsideBoundary");
+                             + "PNQueueReceiver.isInsideBoundary");
                  }
                  _insideBoundaryCacheIsOn = true;
                  return _isInsideBoundaryValue;
@@ -334,7 +334,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                      throw new IllegalArgumentException("A port that "
                              + "is both an input and output can not be " 
                              + "properly dealt with by "
-                             + "DDEReceiver.isInsideBoundary");
+                             + "PNQueueReceiver.isInsideBoundary");
                  }
                  _outsideBoundaryCacheIsOn = true;
                  return _isOutsideBoundaryValue;
