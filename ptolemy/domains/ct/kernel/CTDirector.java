@@ -700,9 +700,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // Initialize the local variables except the time objects. 
         _initializeLocalVariables();
 
-        // FIXME: Why do we need this?
-        // Force to reconstruct a CT scheduler??
-        // Will it be OK to synchronize to workspace version? 
+        // NOTE: Force to reconstruct a CT schedule.
         // invalidate schedule
         scheduler.setValid(false);
 
