@@ -66,10 +66,9 @@ test FreeVariableModelAnalysis-1.1 {} {
     $init setToken [java::new ptolemy.data.DoubleToken 2.5]
     $step setExpression init
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [listToStrings $result] \
-	[listToStrings [$analysis getFreeVariables $ramp]]
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {{} {}}
 
 
@@ -83,10 +82,9 @@ test FreeVariableModelAnalysis-1.2 {} {
     $init setToken [java::new ptolemy.data.DoubleToken 2.5]
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {{} p0}
 
 test FreeVariableModelAnalysis-1.3 {} {
@@ -101,11 +99,10 @@ test FreeVariableModelAnalysis-1.3 {} {
     $init setExpression p1
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [listToObjects $result] \
-	[listToObjects [$analysis getFreeVariables $ramp]]
-} {{} {p1 p0}}
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
+	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+} {{} {p0 p1}}
 
 
 test FreeVariableModelAnalysis-1.4 {} {
@@ -120,9 +117,8 @@ test FreeVariableModelAnalysis-1.4 {} {
     $init setExpression p1
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [listToObjects $result] \
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
 	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {a {p0 p1}}
 
@@ -139,10 +135,8 @@ test FreeVariableModelAnalysis-1.5 {} {
     $init setExpression "p1 + a"
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    # use lsort so the test passes under both Solaris and Windows
-    list [listToObjects $result] \
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
 	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {a {a p0 p1}}
 
@@ -158,9 +152,8 @@ test FreeVariableModelAnalysis-1.6 {Note... not a correct model (circular depend
     $init setExpression "p1 + a"
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [listToObjects $result] \
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
 	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {a {a p0 p1}}
 
@@ -176,8 +169,7 @@ test FreeVariableModelAnalysis-1.7 {} {
     $init setExpression "p1 + a"
     $step setExpression 5
 
-    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis]
-    set result [$analysis analyzeFreeVariables $e0]
-    list [lsort [listToObjects $result]] \
+    set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
+    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
 	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
 } {{a p0 p1} {a p1}}

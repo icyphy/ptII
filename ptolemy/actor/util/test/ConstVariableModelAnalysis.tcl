@@ -129,7 +129,9 @@ test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
     $init setExpression p1
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
@@ -150,7 +152,9 @@ test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
     $init setExpression "p1 + 1"
     $step setExpression p0
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
@@ -162,15 +166,17 @@ test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular 
     set a [java::new ptolemy.data.expr.Parameter $e0 a]
     set p0 [java::new ptolemy.data.expr.Parameter $e0 p0]
     set p1 [java::new ptolemy.data.expr.Parameter $e0 p1]
-    $p0 setExpression p1
-    $p1 setExpression p0
+    $p0 setExpression "5"
+    $p1 setExpression "p0"
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
     $init setExpression "p1 + a"
-    $step setExpression p0
+    $step setExpression "p0"
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]]
 } {{p0 p1} {firingCountLimit step}}
@@ -180,15 +186,17 @@ test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
     set a [java::new ptolemy.data.expr.Parameter $e0 a]
     set p0 [java::new ptolemy.data.expr.Parameter $e0 p0]
     set p1 [java::new ptolemy.data.expr.Parameter $e0 p1]
-    $p0 setExpression p0
-    $p1 setExpression p1
+    $p0 setExpression "p1"
+    $p1 setExpression "5"
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
     $init setExpression "p1 + unbound"
     $step setExpression 5
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
@@ -208,7 +216,9 @@ test ConstVariableModelAnalysis-1.8 {test scoping} {
     $init setExpression "step + 5"
     $step setExpression a
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
@@ -228,7 +238,9 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
     $init setExpression "init + 5"
     $step setExpression a
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
@@ -269,7 +281,9 @@ test ConstVariableModelAnalysis-2.0 {test fsms.} {
     $t1_action setExpression "p1=1"
     $t2_action setExpression "p1=2"
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $fsm]]] \
@@ -324,7 +338,9 @@ test ConstVariableModelAnalysis-2.2 {test modal model.} {
     set dynamicVariableSet [java::new java.util.HashSet]
     $dynamicVariableSet add $a
 
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
+    set varSet [java::new java.util.HashSet]
+    $varSet add $a
+    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $e1]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \

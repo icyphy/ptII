@@ -68,12 +68,12 @@ variables.
 set of variables that are not constant and then performing the
 complement.  This is somewhat easier to compute.  The computation is
 performed in two passes, the first of which extracts the set of
-variables which must be not-constant either by not having an
-expression, by inclusion in an initial set, by virtue of being a
-PortParameter with an external connection, or by assignment from
-within a modal model.  The second pass collects all the variables
-which are not constant because they depend on other variables which
-are not constant.  This class also recognizes dependence declarations
+variables which must be not-constant either by not being evaluatable,
+by inclusion in an initial set, by virtue of being a PortParameter
+with an external connection, or by assignment from within a modal
+model.  The second pass collects all the variables which are not
+constant because they depend on other variables which are not
+constant.  This class also recognizes dependence declarations
 represented by the {@link DependencyDeclaration} class.
 
 <p> This class also keeps track of the "change context" of each
