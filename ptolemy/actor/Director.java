@@ -29,7 +29,7 @@
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
-fireAtReletiveTime(Actor,double)
+fireAtRelativeTime(Actor,double)
 */
 
 package ptolemy.actor;
@@ -231,7 +231,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public void fireAtReletiveTime(Actor actor, double time)
+    public void fireAtRelativeTime(Actor actor, double time)
             throws IllegalActionException {
 
         // do nothing in this base class.
