@@ -47,29 +47,28 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
 
-/** An implementation of the ptolemy.actor.Receiver interface for
- *  the DE domain.  Tokens that are put into this receiver logically
- *  have time stamps. If the time stamp is not explicitly given using
- *  the setDelay() method,  then it is assumed to be the current time
- *  (which is maintained by the director).  The put() method sends
- *  the specified token to the director, which returns it to this receiver
- *  (via the protected method _triggerEvent()) when current time matches
- *  the time stamp of the token. The get() method returns only tokens
- *  that the director has so returned. Thus, when
- *  a token is put into the receiver using put(), it does not become
- *  immediately available to the get() method.
- *  <p>
- *  By default, the time stamp of a token is the current time of the
- *  director when put() is called. To specify a time stamp in the
- *  future, call setDelay() prior to calling put(). This should be
- *  done in a synchronized manner, since there could be multiple
- *  thread running in this domain.
- *  <p>
- *  Before firing an actor, the director is expected to put at least one
- *  token into at least one of the receivers contained by the actor.
- *
- *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
- *  @version $Id$
+/** An implementation of the ptolemy.actor.Receiver interface for the
+DE domain.  Tokens that are put into this receiver logically have time
+stamps. If the time stamp is not explicitly given using the setDelay()
+method, then it is assumed to be the current time (which is maintained
+by the director).  The put() method sends the specified token to the
+director, which returns it to this receiver (via the protected method
+_triggerEvent()) when current time matches the time stamp of the
+token. The get() method returns only tokens that the director has so
+returned. Thus, when a token is put into the receiver using put(), it
+does not become immediately available to the get() method.
+
+<p>By default, the time stamp of a token is the current time of the
+director when put() is called. To specify a time stamp in the future,
+call setDelay() prior to calling put(). This should be done in a
+synchronized manner, since there could be multiple thread running in
+this domain.
+
+<p>Before firing an actor, the director is expected to put at least one
+token into at least one of the receivers contained by the actor.
+
+@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@version $Id$
  */
 public class DEReceiver extends AbstractReceiver {
 
@@ -110,6 +109,56 @@ public class DEReceiver extends AbstractReceiver {
         return (Token)_tokens.removeFirst();
     }
 
+    /** Return the director that created this receiver.
+     *  If this receiver is an inside receiver of
+     *  an output port of an opaque composite actor,
+     *  then the director will be the local director
+     *  of the container of its port. Otherwise, it's the executive
+     *  director of the container of its port.Note that
+     *  the director returned is guaranteed to be non-null.
+     *  This method is read synchronized on the workspace.
+     *  @return An instance of DEDirector.
+     *  @exception IllegalActionException If there is no container port, or
+     *   if the port has no container actor, or if the actor has no director,
+     *   or if the director is not an instance of DEDirector.
+     */
+    public DEDirector getDirector() throws IllegalActionException {
+        IOPort port = (IOPort)getContainer();
+        if (port != null) {
+            if (_directorVersion == port.workspace().getVersion()) {
+                return _director;
+            }
+            // Cache is invalid.  Reconstruct it.
+            try {
+                port.workspace().getReadAccess();
+                Actor actor = (Actor)port.getContainer();
+                if (actor != null) {
+                    Director dir;
+                    if ( (port.isOutput()) &&
+                            (actor instanceof CompositeActor) &&
+                            ((CompositeActor)actor).isOpaque()) {
+                        dir = actor.getDirector();
+                    } else {
+                        dir = actor.getExecutiveDirector();
+                    }
+                    if (dir != null) {
+                        if (dir instanceof DEDirector) {
+                            _director = (DEDirector)dir;
+                            _directorVersion = port.workspace().getVersion();
+                            return _director;
+                        } else {
+                            throw new IllegalActionException(getContainer(),
+                                    "Does not have a DEDirector.");
+                        }
+                    }
+                }
+            } finally {
+                port.workspace().doneReading();
+            }
+        }
+        throw new IllegalActionException(getContainer(),
+                "Does not have a IOPort as the container of the receiver.");
+    }
 
     /** Return true, indicating that there is always room.
      *  @return True.
@@ -235,60 +284,6 @@ public class DEReceiver extends AbstractReceiver {
      */
     protected void _triggerEvent(Token token) {
         _tokens.add(token);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the director that created this receiver.
-     *  If this receiver is an inside receiver of
-     *  an output port of an opaque composite actor,
-     *  then the director will be the local director
-     *  of the container of its port. Otherwise, it's the executive
-     *  director of the container of its port.Note that
-     *  the director returned is guaranteed to be non-null.
-     *  This method is read synchronized on the workspace.
-     *  @return An instance of DEDirector.
-     *  @exception IllegalActionException If there is no container port, or
-     *   if the port has no container actor, or if the actor has no director,
-     *   or if the director is not an instance of DEDirector.
-     */
-    public DEDirector getDirector() throws IllegalActionException {
-        IOPort port = (IOPort)getContainer();
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
-            }
-            // Cache is invalid.  Reconstruct it.
-            try {
-                port.workspace().getReadAccess();
-                Actor actor = (Actor)port.getContainer();
-                if (actor != null) {
-                    Director dir;
-                    if ( (port.isOutput()) &&
-                            (actor instanceof CompositeActor) &&
-                            ((CompositeActor)actor).isOpaque()) {
-                        dir = actor.getDirector();
-                    } else {
-                        dir = actor.getExecutiveDirector();
-                    }
-                    if (dir != null) {
-                        if (dir instanceof DEDirector) {
-                            _director = (DEDirector)dir;
-                            _directorVersion = port.workspace().getVersion();
-                            return _director;
-                        } else {
-                            throw new IllegalActionException(getContainer(),
-                                    "Does not have a DEDirector.");
-                        }
-                    }
-                }
-            } finally {
-                port.workspace().doneReading();
-            }
-        }
-        throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
     }
 
     ///////////////////////////////////////////////////////////////////
