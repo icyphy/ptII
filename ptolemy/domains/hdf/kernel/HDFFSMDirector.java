@@ -171,7 +171,8 @@ public class HDFFSMDirector extends FSMDirector {
      *  enabled, then it is chosen and the choice actions contained by
      *  transition are executed. Return the destination state. If no
      *  transition is enabled, return the current state.
-     *  @return The destination state.
+     *  @return The destination state, or the current state if no
+     *   transition is enabled.
      */
     public State chooseStateTransition(State state)
             throws IllegalActionException {
@@ -365,7 +366,13 @@ public class HDFFSMDirector extends FSMDirector {
             //currentState = controller.currentState();
             //System.out.println("after super init: curState = "
               //  + currentState.getName());
-            transientStateTransition();
+              
+            //transientStateTransition();
+            _setCurrentState(_nextIntransientState);
+            _setCurrentConnectionMap();
+            _currentLocalReceiverMap =
+                (Map)_localReceiverMaps.get(controller.currentState());
+            
             //currentState = controller.currentState();
             //_setCurrentConnectionMap();
             //System.out.println("after transient State transition" +
@@ -584,6 +591,7 @@ public class HDFFSMDirector extends FSMDirector {
         // does not have a refinement.
         //System.out.println("preinit transient transition");
         currentState = transientStateTransition();
+        _nextIntransientState = currentState;
         super.preinitialize();
         _setCurrentState(currentState);
         //super.postfire();
@@ -1125,4 +1133,6 @@ public class HDFFSMDirector extends FSMDirector {
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;
+    
+    private State _nextIntransientState;
 }
