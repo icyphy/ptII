@@ -53,7 +53,6 @@ MODELS= \
 	testTrois.xml
 
 C_FILES = \
-	main.c \
 	meaningOfLife.c \
 	testDeux.c \
 	testTrois.c
@@ -101,17 +100,6 @@ demo_vergil:
 	"$(PTII)/bin/vergil" -jni \
 		$(MODELS)
 
-fourtyTwo.o: fourtyTwo.c
-	$(CC) -c $^
-
-// FIXME: .dll is Windows only
-fourtyTwo.dll: fourtyTwo.o
-	gcc -shared -o $@ $^
-
-main: fourtyTwo.dll main.c
-	$(CC) -o main main.c  -L./ -lfourtyTwo
-
-
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
 SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
@@ -121,15 +109,5 @@ $(SHARED_LIBRARY): $(SHAREDBASE).c $(SHAREDBASE).h makefile
 	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
 		-o $@ \
 		$(SHAREDBASE).c
-
-doit: jni/jnifourtyTwo/JnijnifourtyTwo.dll
-jni/jnifourtyTwo/JnijnifourtyTwo.dll:
-	gcc -I$(PTJAVA_DIR)/include -I$(PTJAVA_DIR)/include/win32 \
-		-Wl,--add-stdcall-alias -shared \
-		-L. -lfourtyTwo -o jni/jnifourtyTwo/JnijnifourtyTwo.dll \
-		jni/jnifourtyTwo/jnifourtyTwoImeaningOfLife.cpp
-
-#gcc -I/cygdrive/c/j2sdk1.4.1_01/include -I/cygdrive/c/j2sdk1.4.1_01/include/win32 -I ../demo/jni  -Wl,--add-stdcall-alias -shared -L../demo/jni/ -lfourtyTwo -o HelloWorld.dll jnifourtyTwoImeaningOfLife.cpp 
-
 
 include $(ROOT)/mk/ptcommon.mk
