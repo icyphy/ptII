@@ -29,8 +29,11 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# ME is used when creating jar files
+ME = 		@targetPath@/@modelName@
+
 # Root of the Java directory
-ROOT =		@ptII@
+ROOT =		@codeBase@
 
 CLASSPATH =	$(ROOT)
 
