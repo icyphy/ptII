@@ -262,7 +262,7 @@ public class MoMLParser extends HandlerBase {
         if ( _toplevel instanceof CompositeEntity) {
             CompositeEntity container = (CompositeEntity)_toplevel;
             // Get the list of all actors for this model
-            List actorList = container.deepEntityList();
+            List actorList = container.entityList();
             Iterator entities = actorList.iterator();        
             // Walk through the model
             while(entities.hasNext()) {
