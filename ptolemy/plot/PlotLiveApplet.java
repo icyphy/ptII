@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
-@ProposedRating Red
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 package ptolemy.plot;
