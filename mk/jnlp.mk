@@ -632,15 +632,15 @@ $(UNJAR_DIST_DIR):
 		echo $$x; \
 		case "$$x" in \
 			lib/*) \
-			   echo "Copying to lib"; \
+			   echo "  Copying to lib"; \
 			   cp $$x $(UNJAR_DIST_DIR)/lib;; \
 			doc/codeDoc*) \
-			   echo "Copying to doc"; \
+			   echo "  Copying to doc"; \
 			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
 			ptolemy/domains/*/*.jar) \
 			   echo "Copying to domains specific jars for cg "; \
 			   mkdir -p $(UNJAR_DIST_DIR)/`dirname $$x`; \
-			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`; \
+			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`;; \
 			*)(cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 	        esac; \
 	done;
