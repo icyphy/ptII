@@ -73,7 +73,7 @@ field is set once in the constructor and immutable afterwards.
 
 @see Plot
 @see PlotBox
-author Christopher Hylands and Edward A. Lee
+@author Christopher Hylands and Edward A. Lee
 @version $Id$
 */
 public class PlotFrame extends Frame {
