@@ -32,12 +32,12 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	4.0
+MAJOR_VERSION = 	4.0.1
 MINOR_VERSION =
 
 VERSION=	$(MAJOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	4_0
+WINDOWS_VERSION =	4_0_1
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
