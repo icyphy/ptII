@@ -58,7 +58,7 @@ import soot.ValueBox;
 
 public abstract class AbstractCompoundExpression 
     extends CompoundBooleanExpression
-    implements Expr, ToBriefString, ConditionExpr {
+    implements Expr, ToBriefString {
 
     public AbstractCompoundExpression(Value op1, Value op2) { 
 	if (op1 instanceof ConditionExpr)

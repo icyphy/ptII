@@ -110,16 +110,50 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
     public Stmt processGotoStmt(GotoStmt stmt) { return stmt; }
     public Value processThisRef(ThisRef ifr) {return ifr;}
-    public Value processLocal(Local l) {return l;}
     public Value processParameterRef(ParameterRef ifr) {return ifr; }
     public Value processConstant(Constant c) { return c; }
 
-    public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base) {
+    public Value processLocal(Local l, boolean left) {
+	return l;
+    }
+
+    public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
+					 boolean left) {
 
 	Node baseNode = _graph.getValueNode(base);
 	Node ifrNode = _graph.getValueNode(ifr);
-	
-	_graph.addEdge(baseNode,ifrNode,"base");
+
+	// Iterate through all nodes in the graph and see if there
+	// is a matching InstanceFieldRef (i.e. same base and
+	// same field).
+	InstanceFieldRef dupIfr = null;
+	for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
+	    Node n = (Node) i.next();
+	    if (n.weight() instanceof InstanceFieldRef) {
+		InstanceFieldRef t_ifr = (InstanceFieldRef) n.weight();
+		if (SootBlockDirectedGraph.equal(t_ifr, ifr)) {
+		    dupIfr = t_ifr;
+		}
+	    }
+	}
+
+	if (dupIfr == null) {
+	    // No matching IFR. Add edge for base.
+	    _graph.addEdge(baseNode,ifrNode,_graph.BASE_WEIGHT);
+ 	} else {
+	    // A matching IFR has been found. Delete the Node that
+	    // has been created for ifr and create a reference
+	    // between ifr with the Node of the matching ifr.
+	    _graph.removeNode(ifrNode);
+	    _graph.replaceValueNode(ifr,dupIfr);
+	    if (left) {
+		// An assignment is being made. Create a new node
+		// with the existing IFR.
+		Node newNode = _graph.addValueNode(dupIfr);
+		_graph.addEdge(baseNode,newNode,_graph.BASE_WEIGHT);
+	    }
+	}
+
 	return ifr;
     }
 
@@ -138,13 +172,13 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     public static void main(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	List blocks = getBlocks(args);
+	Block blocks[] = getBlocks(args);
 	SootBlockDirectedGraph graphs[] = 
-	    new SootBlockDirectedGraph[blocks.size()];
-	for (int i = 0 ; i < blocks.size(); i++) {
-	    graphs[i] = new SootBlockDirectedGraph();
+	    new SootBlockDirectedGraph[blocks.length];
+	for (int i = 0 ; i < blocks.length; i++) {
+	    graphs[i] = new SootBlockDirectedGraph(blocks[i]);
 	    try {
-		SootDFGBuilder s = new SootDFGBuilder((Block) blocks.get(i),
+		SootDFGBuilder s = new SootDFGBuilder(blocks[i],
 						      graphs[i]);
 		PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
 	    } catch (SootASTException e) {

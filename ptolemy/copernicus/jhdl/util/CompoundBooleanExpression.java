@@ -62,10 +62,12 @@ import soot.jimple.NeExpr;
  * @since Ptolemy II 2.0
 */
 
-public abstract class CompoundBooleanExpression implements Value {
+public abstract class CompoundBooleanExpression implements Value, ConditionExpr {
 
     public abstract CompoundBooleanExpression invert() throws IllegalActionException;
     public abstract Object clone();
+    public abstract Value getOp1();
+    public abstract Value getOp2();
 
     public static Value invertValue(Value inValue) throws IllegalActionException {
 	Value newValue=null;

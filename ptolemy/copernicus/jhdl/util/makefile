@@ -58,7 +58,11 @@ JSRCS =		BlockGraphToDotty.java \
 		MergedControlFlowGraph.java \
 		GraphToDotty.java \
 		JHDLNotExpr.java \
-		HashListMap.java
+		HashListMap.java \
+		CompoundBooleanExpression.java \
+		AbstractCompoundExpression.java \
+		CompoundAndExpression.java \
+		CompoundOrExpression.java
 
 
 EXTRA_SRCS =	$(JSRCS)

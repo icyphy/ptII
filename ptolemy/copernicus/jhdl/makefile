@@ -42,7 +42,7 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(J
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		util test
+DIRS =		util soot test
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -66,7 +66,11 @@ JSRCS = \
 	IntervalDFG.java \
 	MapList.java \
 	BDFGToJHDLCircuit.java \
-	BinaryMuxNode.java 
+	BinaryMuxNode.java \
+	SootBlockVisitor.java \
+	SootBlockAST.java \
+	DefaultSootBlockVisitor.java
+
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

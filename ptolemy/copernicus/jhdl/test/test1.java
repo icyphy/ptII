@@ -101,9 +101,10 @@ public class test1 extends TypedAtomicActor {
 	this.e = a;
     }
     /** invoke statement * expr **/
-    public void method4(int b) {
+    public int method4(int b) {
 	g(b+3);
 	int a=g(b+2);
+	return a;
     }
 
     /** If-Else Control Flow (no Boolean expressions) **/
@@ -425,6 +426,20 @@ public class test1 extends TypedAtomicActor {
 	    e = a * d - e;
 	}
 	return d;
+    }
+
+    /** InstanceFieldRef **/
+    public int method38(test1 t) {
+	int a = t.e;
+	a += t.e;
+	return a;
+    }
+
+    /** InstanceFieldRef **/
+    public int method38_1(test1 t) {
+	int a = t.e;
+	t.e = a + t.e;
+	return t.e+2;
     }
 
     /** Use of an array **/

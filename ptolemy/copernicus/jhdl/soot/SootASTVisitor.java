@@ -348,11 +348,11 @@ public class SootASTVisitor {
 	if (val instanceof BinopExpr)
 	    r = processBinopExpr( (BinopExpr) val);
 	if (val instanceof Local)
-	    r = processLocal( (Local) val);
+	    r = processLocal( (Local) val, left);
 	if (val instanceof CastExpr)
 	    r = processCastExpr((CastExpr) val);
 	if (val instanceof Ref)
-	    r = processRef ((Ref) val);
+	    r = processRef ((Ref) val, left);
 	if (val instanceof InvokeExpr)
 	    r = processInvokeExpr((InvokeExpr) val);
 	if (val instanceof Constant)
@@ -482,7 +482,7 @@ public class SootASTVisitor {
 	return null;
     }
 
-    public Value processLocal(Local l) {
+    public Value processLocal(Local l, boolean left) {
 	return null;
     }
 
@@ -495,55 +495,57 @@ public class SootASTVisitor {
 	return null;
     }
 
-    public Value processRef(Ref cr) throws SootASTException {
+    public Value processRef(Ref cr, boolean left) throws SootASTException {
 
 	if (cr instanceof ConcreteRef)
-	    return processConcreteRef((ConcreteRef) cr);
+	    return processConcreteRef((ConcreteRef) cr, left);
 	if (cr instanceof IdentityRef)
 	    return processIdentityRef((IdentityRef) cr);
 	return null;
     }
 
-    public Value processConcreteRef(ConcreteRef cr) 
+    public Value processConcreteRef(ConcreteRef cr, boolean left) 
 	throws SootASTException {
 	if (cr instanceof ArrayRef)
-	    return processArrayRef((ArrayRef) cr);	
+	    return processArrayRef((ArrayRef) cr, left);
 	if (cr instanceof FieldRef)
-	    return processFieldRef((FieldRef) cr);	
+	    return processFieldRef((FieldRef) cr, left);
 	return null;
     }
 
-    public Value processArrayRef(ArrayRef ifr) 
+    public Value processArrayRef(ArrayRef ifr, boolean left) 
 	throws SootASTException {
 	Value base = processValue(ifr.getBase());
 	Value index = processValue(ifr.getIndex());
-	return processArrayRef(ifr, base, index);
+	return processArrayRef(ifr, base, index, left);
     }
 
-    public Value processArrayRef(ArrayRef ifr, Value base, Value index) {
+    public Value processArrayRef(ArrayRef ifr, Value base, Value index, 
+				 boolean left) {
 	return null;
     }
 
-    public Value processFieldRef(FieldRef ifr) 
+    public Value processFieldRef(FieldRef ifr, boolean left) 
 	throws SootASTException {
 	if (ifr instanceof InstanceFieldRef)
-	    return processInstanceFieldRef((InstanceFieldRef) ifr);
+	    return processInstanceFieldRef((InstanceFieldRef) ifr, left);
 	if (ifr instanceof StaticFieldRef)
-	    return processStaticFieldRef((StaticFieldRef) ifr);
+	    return processStaticFieldRef((StaticFieldRef) ifr, left);
 	return null;
     }
     
-    public Value processInstanceFieldRef(InstanceFieldRef ifr) 
+    public Value processInstanceFieldRef(InstanceFieldRef ifr, boolean left) 
 	throws SootASTException {
 	Value base = processValue(ifr.getBase());
-	return processInstanceFieldRef(ifr,base);
+	return processInstanceFieldRef(ifr,base,left);
     }
 
-    public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base) {
+    public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
+					 boolean left) {
 	return null;
     }
 
-    public Value processStaticFieldRef(StaticFieldRef ifr) {
+    public Value processStaticFieldRef(StaticFieldRef ifr, boolean left) {
 	return null;
     }
 
@@ -665,22 +667,24 @@ public class SootASTVisitor {
      * a given Method from a class. The method/class name are speciefied
      * as command line arguments.
      **/
-    public static List getBlocks(String args[]) {
+    public static Block[] getBlocks(String args[]) {
 
 	soot.SootMethod testMethod = getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
-	return bbgraph.getBlocks();
+	List l = bbgraph.getBlocks();
+	Block[] b = new Block[l.size()];
+	return (Block[]) l.toArray(b);
     }
 
     public static void main(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	List blocks = getBlocks(args);
-	for (int i = 0 ; i < blocks.size(); i++) {
+	Block blocks[] = getBlocks(args);
+	for (int i = 0 ; i < blocks.length; i++) {
 	    try {
-		SootASTVisitor s = new SootASTVisitor((Block) blocks.get(i));
+		SootASTVisitor s = new SootASTVisitor(blocks[i]);
 	    } catch (SootASTException e) {
 		System.err.println(e);
 		System.exit(1);

@@ -106,6 +106,7 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	//return null;
     }
 
+    /*
     public static List getBlocks(String args[]) {
 
 	soot.SootMethod testMethod = getSootMethod(args);
@@ -124,25 +125,32 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
 	return bbgraph.getBlocks();
     }
+    */
 
-    public static void main(String args[]) {
+    public static SootBlockDirectedGraph[] getGraphs(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	List blocks = getBlocks(args);
+	Block blocks[] = getBlocks(args);
 	SootBlockDirectedGraph graphs[] = 
-	    new SootBlockDirectedGraph[blocks.size()];
-	for (int i = 0 ; i < blocks.size(); i++) {
-	    graphs[i] = new SootBlockDirectedGraph();
+	    new SootBlockDirectedGraph[blocks.length];	
+	for (int i = 0 ; i < blocks.length; i++) {
+	    graphs[i] = new SootBlockDirectedGraph(blocks[i]);
 	    try {
 		ControlSootDFGBuilder s = 
-		    new ControlSootDFGBuilder((Block) blocks.get(i),
+		    new ControlSootDFGBuilder(blocks[i],
 					      graphs[i]);
-		PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
 	    } catch (SootASTException e) {
 		//System.err.println(e);
 		e.printStackTrace();
 		System.exit(1);
 	    }
 	} 
+	return graphs;
+    }
+
+    public static void main(String args[]) {
+	SootBlockDirectedGraph[] g=getGraphs(args);
+	for (int i = 0;i<g.length;i++)
+	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,g[i]);
     }
 
 }

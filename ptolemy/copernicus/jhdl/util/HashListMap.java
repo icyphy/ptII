@@ -98,6 +98,10 @@ public class HashListMap extends HashMap implements MapList {
 	return (List) get(o);
     }
 
+    public void setList(Object o, List l) {
+	put(o,l);
+    }
+
     public Object clone() {
 	HashListMap hlm = new HashListMap(size());
 	for (Iterator i=keySet().iterator();i.hasNext();) {
