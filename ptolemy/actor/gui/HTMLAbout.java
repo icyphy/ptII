@@ -121,8 +121,13 @@ public class HTMLAbout {
         while (models.hasNext()) {
             String model = (String)models.next();
             URL modelURL = new URL(demosURL, model);
-            configuration.openModel(demosURL, modelURL,
-                    modelURL.toExternalForm());
+            try {
+                configuration.openModel(demosURL, modelURL,
+                        modelURL.toExternalForm());
+            } catch (Throwable throwable) {
+                throw new Exception("Failed to open '" + modelURL
+                        + "'", throwable);
+            }
         } 
         return demosURL;
     }
