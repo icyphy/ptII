@@ -301,7 +301,10 @@ proc jdkCapture {script varName} {
     set result [uplevel $script]
     java::call System setOut $stdout
     $printStream flush
-    set output [$stream toString]
+    # This is an evil hack.  If we don't substitute here, then
+    # the next two tests fail under NT
+    regsub [java::call System getProperty "line.separator"] \
+	    [$stream toString] "\n" output
     return $result
 }
 
