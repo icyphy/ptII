@@ -24,7 +24,7 @@ feedback can reduce the sensitivity to process variations,
 eliminate mechanical resonances, and increase sensor bandwidth, selectivity 
 and dynamic range.
 <P>
-Sigma-delta modulation, also called the pulse density modulation or the 
+Sigma-delta modulation[1], also called the pulse density modulation or the 
 bang-bang control, is a digital feedback technique, which gets the A/D 
 conversion functionality "for free". The figure below shows the conceptual
 diagram of system. The central part of the digital feedback is an one
@@ -33,7 +33,7 @@ bit quantizer.
 <CENTER><img src="SigmaDelta.gif"></CENTER>
 <P>
 <H1>Implementation:</H1>
-We implemented the system as Mark Alan Lemkin designed in [3]. As shown in
+We implemented the system as Mark Alan Lemkin designed in [2]. As shown in
 the Figure below, the second order CT subsystem is used to model the beam.
  The voltage on the beam-gap capacitor is sampled every T seconds (much
  faster than the required output of the digital signal),  then filtered by
@@ -46,9 +46,11 @@ is a Sin wave. The TclBlend code is<A HREF="SigmaDelta.tcl"> here</A>
 <CENTER><img src="SigmaDelta2.gif"></CENTER>
 <P>
 <H1>Simulation</H1>
-To run the simulation (in the ptolemy cluster), involke tyjtclsh<BR>
-<CODE>ptII/ptolemy/domains/ct/demo> tyjtclsh<BR>
-jtclsh% source SigmaDelta.tcl<BR></CODE>
+To run the simulation (in the ptolemy cluster), invoke <B>tyjtclsh</B>
+<P>
+<CODE>cd  ~ptII/ptolemy/domains/ct/demo<BR>
+tyjtclsh<BR>
+source SigmaDelta.tcl<BR></CODE>
 <H1>Result</H1>
 The result should be like:<BR>
 <B>CTPlot:</B>
@@ -59,6 +61,9 @@ The result should be like:<BR>
 <p>
 <CENTER><img src="SDDEPlot.gif"></CENTER>
 <P>
+<H1>References</H1>
+[1] James C. Candy, <I>"A Use of Limit Cycle Oscillations to Obtain Robust Analog-to-Digital Converters"</I>, IEEE Trans. on Communications, Vol. COM-22, No. 3, March 1974, pp298-305<BR>
+[2] Mark A. Lemkin, <I>"Micro Accelerometer Design with Digital Feedback Control"</I>, doctoral dissertation,  University of California, Berkeley, Fall 1997
 <HR>
 <CENTER>UNIVERSITY OF CALIFORNIA</CENTER>
 
