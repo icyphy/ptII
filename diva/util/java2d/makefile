@@ -60,7 +60,8 @@ JSRCS = \
 	PolylineIterator.java \
 	ShapeUtilities.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	package.html
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,7 +72,11 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'Polygon2D$$Double.class' \
+	'Polygon2D$$Float.class' \
+	'Polyline2D$$Double.class' \
+	'Polyline2D$$Float.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -70,6 +70,9 @@ OPTIONAL_FILES = \
 	'PythonTableau$$1.class' \
 	'PythonTableau$$Factory.class' \
 	'PythonTableau$$TclShellFrame.class' \
+	'PythonShellEffigy$$ShellFactory.class' \
+	'PythonShellTableau$$Factory.class' \
+	'PythonShellTableau$$PythonShellFrame.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

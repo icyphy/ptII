@@ -79,7 +79,15 @@ MISC_FILES =	#alljtests.tcl alljsimpletests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'ShapeUtilitiesTest$$1.class' \
+	'ShapeUtilitiesTest$$2.class' \
+	'ShapeUtilitiesTest$$3.class' \
+	'ShapeUtilitiesTest$$4.class' \
+	'XMLElementTest$$1.class' \
+	'XMLElementTest$$2.class' \
+	'XMLElementTest$$3.class' \
+	'XMLParserTest$$1.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

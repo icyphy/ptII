@@ -57,6 +57,7 @@ JSRCS = \
 	XmlWriter.java
 
 EXTRA_SRCS =	$(JSRCS) \
+	package.html \
 	xml1.xml
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -68,7 +69,11 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'XmlElement$$1.class' \
+	'XmlElement$$2.class' \
+	'XmlElement$$3.class' \
+	'XmlReader$$Handler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
