@@ -349,19 +349,6 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (_debugging) _debug("Computing schedule");
         Schedule sched = scheduler.getSchedule();
 
-        // FIXME: You probably only want this from the scheduler, but
-        // currently there is no easy way to listen to the scheduler
-        // from inside Vergil.  Hence we'll print the schedule here too...
-        if (_debugging) {
-            Iterator firings = sched.firingIterator();
-            while (firings.hasNext()) {
-		Firing firing = (Firing)firings.next();
-		Actor actor = (Actor)firing.getActor();
-		int iterationCount = firing.getIterationCount();
-                _debug("Actor " + actor + " will fire " +
-                        iterationCount + " time(s).");
-            }
-        }
     }
 
     /** Return false if the system has finished executing, either by
