@@ -96,7 +96,10 @@ public class ButtonTime extends WallClockTime implements Placeable {
         }
     }
 
-    /** Set the background */
+    /** Get the background.
+     *  @return The Color of the background.
+     *  @see #setBackground(Color)
+     */
     public Color getBackground() {
         return _button.getBackground();
     }
@@ -156,7 +159,10 @@ public class ButtonTime extends WallClockTime implements Placeable {
         return super.postfire();
     }
 
-    /** Set the background */
+    /** Set the background.
+     *  @param Color The color of the background.
+     *  @see #getBackground()
+     */
     public void setBackground(Color background) {
         _button.setBackground(background);
     }

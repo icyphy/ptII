@@ -126,6 +126,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public PSDFScheduler()
             throws IllegalActionException, NameDuplicationException {
@@ -140,6 +144,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public PSDFScheduler(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

@@ -85,6 +85,10 @@ public class PSDFDirector extends SDFDirector {
      *  the workspace. Increment the version number of the workspace.
      *
      *  The PSDFDirector will have a default scheduler of type PDFScheduler.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public PSDFDirector()
             throws IllegalActionException, NameDuplicationException {
@@ -98,6 +102,10 @@ public class PSDFDirector extends SDFDirector {
      *  The PSDFDirector will have a default scheduler of type PDFScheduler.
      *
      *  @param workspace The workspace for this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public PSDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -153,10 +161,6 @@ public class PSDFDirector extends SDFDirector {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    protected boolean _postfirereturns = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

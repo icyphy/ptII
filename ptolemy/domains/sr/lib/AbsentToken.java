@@ -41,7 +41,7 @@ import ptolemy.data.Token;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class AbsentToken extends Token {
-    /** Construct a token with value false
+    /** Construct a token with value false.
      */
     public AbsentToken() {
     }
