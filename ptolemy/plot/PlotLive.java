@@ -143,6 +143,9 @@ public abstract class PlotLive extends Plot implements Runnable {
                 } catch (InterruptedException e) {}
             }
         }
+	// Set to null so that if the applet is restarted the
+	// thread will be restarted.
+        _plotThread = null;
     }
 
     /**
