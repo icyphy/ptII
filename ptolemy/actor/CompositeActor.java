@@ -207,9 +207,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot fire a non-opaque actor.");
             }
             // Use the local director to transfer inputs.
-            Enumeration ports = inputPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort)ports.nextElement();
+            Enumeration inports = inputPorts();
+            while(inports.hasMoreElements()) {
+                IOPort p = (IOPort)inports.nextElement();
                 _director.transferInputs(p);
             }
             // Note that this is assured of firing the local director,
@@ -218,9 +218,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // Use the executive director to transfer outputs.
             Director edir = getExecutiveDirector();
             if (edir != null) {
-                Enumeration ports = outputPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Enumeration outports = outputPorts();
+                while(outports.hasMoreElements()) {
+                    IOPort p = (IOPort)outports.nextElement();
                     edir.transferOutputs(p);
                 }
             }
