@@ -2,14 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DemoDatagramSender" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[6, 9]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -19,9 +20,11 @@
     <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
-        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4000">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
         </property>
         <property name="encodeForPtolemyParser" class="ptolemy.data.expr.Parameter" value="true">
         </property>

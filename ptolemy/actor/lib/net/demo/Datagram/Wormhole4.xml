@@ -2,9 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Wormhole4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 129]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -116,7 +117,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="1:SystemClipboard" class="ptolemy.actor.lib.net.SystemClipboard">
+    <entity name="1:SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
         <doc>Gives access to the system clipboard</doc>
         <property name="_location" class="ptolemy.moml.Location" value="435.0, 125.0">
         </property>
@@ -130,7 +131,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="KeystrokeSensor" class="ptolemy.actor.lib.net.KeystrokeSensor">
+    <entity name="KeystrokeSensor" class="ptolemy.actor.lib.gui.KeystrokeSensor">
         <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
         <property name="_location" class="ptolemy.moml.Location" value="315.0, 155.0">
         </property>
@@ -144,7 +145,7 @@
     <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
-        <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="65000">
+        <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="65536">
         </property>
         <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="130000">
         </property>

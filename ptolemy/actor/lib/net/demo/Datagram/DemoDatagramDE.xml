@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DemoDatagramDE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -21,7 +22,27 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.moml.Location" value="400.0, 80.0">
+        </property>
+    </property>
+    <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo shows the datagram actors used in the DE domain.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="10.0, 15.0">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -36,32 +57,6 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
-        <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
-        </property>
-        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
-        </property>
-        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4095">
-        </property>
-        <property name="encodeForPtolemyParser" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 113.5">
-        </property>
-        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -102,14 +97,54 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
-        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
         </property>
-        <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="440">
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+                </property>
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
+                </property>
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="235.0, 110.0">
+        </property>
+        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
+        </property>
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultReturnAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -123,12 +158,16 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="230.0, 220.0">
+        <property name="_location" class="ptolemy.moml.Location" value="230.0, 230.0">
         </property>
+        <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="returnSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -141,12 +180,12 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Display.input" relation="relation4"/>
-    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation3"/>
-    <link port="DatagramReceiver.output" relation="relation4"/>
+    <link port="DatagramWriter.data" relation="relation2"/>
+    <link port="DatagramReader.output" relation="relation"/>
 </entity>
