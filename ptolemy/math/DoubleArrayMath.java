@@ -50,37 +50,37 @@ import java.lang.Double;              /* Needed by javadoc */
 
 public class DoubleArrayMath {
 
-  // Protected constructor prevents construction of this class.
-  protected DoubleArrayMath() {}
+    // Protected constructor prevents construction of this class.
+    protected DoubleArrayMath() {}
 
-  /////////////////////////////////////////////////////////////////////////
-  ////                         Public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-  /** Return a new array that is the element-by-element sum of the two
-   *  input arrays.
-   *  If the lengths of both arrays are 0, return a new array of length 0.
-   *  If the two arrays do not have the same length, throw an
-   *  IllegalArgumentException.
-   */
-  public static final double[] add(double[] array1, double[] array2) {
-    int length = _commonLength(array1, array2, "DoubleArrayMath.add");
-    double[] retval = new double[length];
-    for (int i = 0; i < length; i++) {
-        retval[i] = array1[i] + array2[i];
+    /** Return a new array that is the element-by-element sum of the two
+     *  input arrays.
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final double[] add(double[] array1, double[] array2) {
+        int length = _commonLength(array1, array2, "DoubleArrayMath.add");
+        double[] retval = new double[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array1[i] + array2[i];
+        }
+        return retval;
     }
-    return retval;
-  }
 
-  /** Return a new array that is the absolute value of the input array.
-   *  If the length of the array is 0, return a new array of length 0.
-   */
-  public static final double[] abs(double[] array) {
-    double[] retval = new double[array.length];
-    for (int i = 0; i < array.length; i++) {
-        retval[i] = Math.abs(array[i]);
+    /** Return a new array that is the absolute value of the input array.
+     *  If the length of the array is 0, return a new array of length 0.
+     */
+    public static final double[] abs(double[] array) {
+        double[] retval = new double[array.length];
+        for (int i = 0; i < array.length; i++) {
+            retval[i] = Math.abs(array[i]);
+        }
+        return retval;
     }
-    return retval;
-  }
 
   /** Return a new array that is the result of appending array2 to the end
    *  of array1. This method simply calls
@@ -389,10 +389,11 @@ public class DoubleArrayMath {
     return true;
   }
 
-  /////////////////////////////////////////////////////////////////////////
-  //    protected methods
 
-  /** Throw an exception if the array is null or length 0.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Throw an exception if the array is null or length 0.
    *  Otherwise return the length of the array.
    *  @param array An array of doubles.
    *  @param methodName A String representing the method name of the caller,
