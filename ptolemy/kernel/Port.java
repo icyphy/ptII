@@ -66,7 +66,7 @@ public class Port extends NamedObj {
      *  port to a relation to which it's already connected.
      */	
     public void connectToRelation(Relation relation) 
-    throws NullReferenceException {
+            throws NullReferenceException {
 
 	if( relation == null )
 	    throw new NullReferenceException( 
@@ -83,10 +83,6 @@ public class Port extends NamedObj {
 	//}
 	else if(_relationsList == null) _relationsList = new CrossRefList(this);
 
-	// FIXME: This assumes that the portList in relations is public 
-	// and is called "portList"
-	// if (relation._portList == null) 
-	//         relation._portList = new CrossRefList(relation);
         _relationsList.associate( relation._portList );
 
 	return;
@@ -119,13 +115,12 @@ public class Port extends NamedObj {
 
     /** Returns an enumeration of the CrossRefList and thus of all the 
      *  relations the Port is associated with
-     * @return Return an enumeration of relations. Return null if the i
-     * list is not initialized.
+     * @return Return an enumeration of relations. 
      */
     public Enumeration enumRelations() {
 
-        if (_relationsList == null) return null;
-	else return _relationsList.enumerate();
+        if (_relationsList == null) _relationsList = new CrossRefList(this);
+	return _relationsList.enumerate();
     }
 
 
