@@ -124,9 +124,7 @@ JAVAC = 	$(PTJAVA_DIR)/bin/javac
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g
 JOPTIMIZE =	-O
-# Under JDK1.4, codegen requres javac -target 1.1
-JTARGET =	@JTARGET@
-JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) $(JTARGET)
+JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 
 # The 'javadoc' program
 JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
