@@ -33,7 +33,7 @@ ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = Helicopter Lorenz SigmaDelta SquareWave StickyMasses \
-	Thermostat Corba $(PTJSPACES_DIR)
+	Thermostat $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
