@@ -191,7 +191,7 @@ do
 
 	# Check for problems with equals signs
 	results=`egrep '[^-|*/ ><+&=\!]=' $file | \
-	    egrep -iv 'HREF=|NAME=|=WxH|"="' `
+	    egrep -iv 'HREF=|NAME=|=WxH|"="|=\\\"' `
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a leading space"
 	    echo "$results"
@@ -248,12 +248,13 @@ do
 	# 13) Check for @exception tags that are not worded properly
 	# Added a . to this regex so that we find things like
 	#  @exception java.util.NoSuchElementException If the enumeration is
-	results=`egrep '@exception' $file | egrep -v '@exception [A-Za-z0-9.]* If' | grep -v 'Not thrown in this base class' | grep -v 'Always thrown'`
+	results=`egrep '@exception' $file | egrep -v '@exception [A-Za-z0-9.]* If' | grep -v 'Not thrown in this base class' | grep -v 'Always thrown' | grep -v "Thrown in derived classes if"`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: @exception tags should either be"
 	    echo "      '@exception MyException If such and such occurs'"
 	    echo " or   '@exception MyException Not thrown in this base class'"
 	    echo " or   '@exception MyException Always thrown'"
+	    echo " or   '@exception MyException Thrown in derived classes if'"
 	    echo "$results"
 	fi
 
