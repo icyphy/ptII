@@ -222,7 +222,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                             // Repaint twice since the scale has changed
                             // and we need to cover the damage area prior
                             // the change as well as after.
-                            //((ImageFigure)figure).repaint();
+                            // ((ImageFigure)figure).repaint();
+                            ((ImageFigure)figure).setCentered(false);
                             ((ImageFigure)figure).setImage(_scaledImage);
                             // ((ImageFigure)figure).repaint();
                         }

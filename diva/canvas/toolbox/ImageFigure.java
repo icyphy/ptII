@@ -34,6 +34,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
 
 import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
 
 /**
  * A figure which draws a user-specified image.
@@ -42,16 +43,32 @@ import diva.canvas.AbstractFigure;
  * @version $Id$
  */
 public class ImageFigure extends AbstractFigure
-    implements ImageObserver {
-    /**
-     * The local transform
+        implements ImageObserver {
+            
+    /** Indicator of whether this figure should be centered on its origin.
+     *  By default, this class is not centered.
      */
-    private AffineTransform _xf = new AffineTransform();
+    private boolean _centered = false;
+
+    /**
+     * The height of the figure.
+     */
+    private int _height = 0;
 
     /**
      * The image of this figure.
      */
     private Image _image;
+    
+    /**
+     * The width of the figure.
+     */
+    private int _width = 0;
+
+    /**
+     * The local transform
+     */
+    private AffineTransform _xf = new AffineTransform();
 
     /**
      * Create an empty image figure.
@@ -76,14 +93,22 @@ public class ImageFigure extends AbstractFigure
     }
 
     /** Return the origin of the figure in the enclosing transform
-     *  context.  This class overrides the base class to return the
-     *  upper left corner of the image.  This ensures that the origin
-     *  does not move as the image loads.
+     *  context.  This overrides the base class to return the center
+     *  of the shape, if the figure is centered, or the origin of the
+     *  shape if the figure is not centered.
      *  @return The origin of the figure.
      */
     public Point2D getOrigin () {
         Rectangle2D bounds = getBounds();
-        return new Point2D.Double(bounds.getX(), bounds.getY());
+        if (_centered) {
+            return super.getOrigin();
+            // Used to do:
+            // return new Point2D.Double(bounds.getX(), bounds.getY());
+        } else {
+            Point2D point = new Point2D.Double(0,0);
+            _xf.transform(point, point);
+            return point;
+        }
     }
 
     /**
@@ -97,10 +122,19 @@ public class ImageFigure extends AbstractFigure
         if (_image != null) {
             int w = _image.getWidth(this);
             int h = _image.getHeight(this);
+            if (w < 0 || h < 0) {
+                // Width and height are not ready
+                // (Image is not fully loaded or it
+                // is fully loaded, but the Java
+                // implementation stupidly hasn't gotten
+                // around to updating the fields in the
+                // image object.
+                w = _width;
+                h = _height;
+            }
             Rectangle2D r = new Rectangle2D.Double(0, 0, w, h);
             return _xf.createTransformedShape(r);
-        }
-        else {
+        } else {
             return new Rectangle2D.Double();
         }
     }
@@ -117,7 +151,7 @@ public class ImageFigure extends AbstractFigure
      *  @param width The width of the image.
      *  @param height The height of the image.
      *  @return False if the infoflags indicate that the image is
-     *   completely loaded; true otherwise.  This always returns false.
+     *   completely loaded; true otherwise.
      */
     public boolean imageUpdate(Image image,
             int infoflags,
@@ -127,12 +161,41 @@ public class ImageFigure extends AbstractFigure
             int height) {
         // FIXME: This should probably create some default error
         // image if the infoflags argument contains ERROR or ABORT.
+        
+        // NOTE: Incredibly stupidly, when Java calls this method
+        // with a new width and height, it hasn't set those fields
+        // in the image yet.  Thus, even though width and height
+        // have been updated, they are not accessible in the image,
+        // which will still return -1 to getWidth() and getHeight().
+        // Go figure...  I guess the idea is that we have to
+        // duplicate the image information locally. Dumb.
+
+        if ((infoflags & ImageObserver.HEIGHT) != 0) {
+            _height = height;
+        }
+        if ((infoflags & ImageObserver.WIDTH) != 0) {
+            _width = width;
+        }
         repaint();
 
-        // If we get a further update, then make sure we call this
-        // method again.
+        // Make sure this gets called again if there are further updates.
         _image.getWidth(this);
+        _image.getHeight(this);
+        
+        // Despite the Java documentation, returning false here
+        // appears to never be correct. The image never gets
+        // rendered.
         return true;
+    }
+
+    /** Return whether the figure should be centered on its origin.
+     *  @return False If the origin of the figure, as
+     *   returned by getOrigin(), is the upper left corner.
+     *  @see #getOrigin()
+     *  @see #setCentered(boolean)
+     */
+    public boolean isCentered() {
+        return _centered;
     }
 
     /**
@@ -145,6 +208,19 @@ public class ImageFigure extends AbstractFigure
             // when the image is ready.
             g.drawImage(_image, _xf, this);
         }
+    }
+
+    /** Specify whether the figure should be centered on its origin.
+     *  By default, it is.
+     *  @param centered False to make the origin of the figure, as
+     *   returned by getOrigin(), be the upper left corner.
+     *  @see #getOrigin()
+     */
+    public void setCentered(boolean centered) {
+        repaint();
+        Point2D point = getOrigin();
+        _centered = centered;
+        CanvasUtilities.translateTo(this, point.getX(), point.getY());
     }
 
     /**
@@ -172,6 +248,3 @@ public class ImageFigure extends AbstractFigure
         repaint();
     }
 }
-
-
-
