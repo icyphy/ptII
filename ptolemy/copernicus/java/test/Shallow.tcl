@@ -48,29 +48,33 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-proc sootCodeGeneration {model} {
+proc sootShallowCodeGeneration {model} {
     global relativePathToPTII
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
+    set rtjar [java::call System getProperty "sun.boot.class.path"]
 
     set sootClasspath $relativePathToPTII/vendors/soot/1.2.2/jasminclasses.jar[java::field java.io.File pathSeparator]$relativePathToPTII/vendors/soot/1.2.2/sootclasses.jar
 
-    set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath
+    set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
 
     exec java -Xmx132m -classpath $classpath \
-	    ptolemy.apps.soot.MoMLCompiler.Main $model -d $relativePathToPTII
-    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
+	    ptolemy.copernicus.java.Main $model -d $relativePathToPTII \
+	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
+	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
+    set modelName ptolemy.copernicus.java.test.cg.ToplevelModel
+    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
 }
 
 
 # Generate code for all the xml files in a directory.
-proc autoSaveAsJava {autoDirectory} {
+proc autoShallowCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "------------------ testing $file"
 	test "Auto" "Automatic test in file $file" {
-	    saveAsJava $file
+	    sootShallowCodeGeneration $file
 	    list {}
 	} {{}}
     }
@@ -80,8 +84,28 @@ proc autoSaveAsJava {autoDirectory} {
 ######################################################################
 ####
 #
+
+
 test MoMLCompiler-1.1 {Compile and run the Orthocomm test} {
     set result [sootCodeGeneration \
 	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
     lrange $result 0 9
 } {2 4 6 8 10 12 14 16 18 20}
+
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+#autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains de lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains fsm test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
+
+# Print out stats
+#doneTests
