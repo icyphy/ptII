@@ -49,6 +49,10 @@ symmetry of the references, and supports efficient removal of links.
 Removing a reference in one list automatically updates N
 back-references in O(N) time, independent of the
 sizes of the cross-reference lists.
+<p>
+Instances of this class are required to have a container, and the
+container is immutable (it cannot be changed after the instance
+is constructed).
 
 @author Geroncio Galicia
 @contributor Edward A. Lee
@@ -56,10 +60,8 @@ sizes of the cross-reference lists.
 */
 public final class CrossRefList implements Serializable  {
 
-    // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
-    // NOTE: Why is this necessary?  The class is final... EAL
-
     /** Construct a list with the specified container.
+     *  The container is immutable (it cannot be changed).
      *  @param container The container of the object to be constructed.
      *  @exception IllegalActionException If the argument is null.
      */
@@ -157,9 +159,9 @@ public final class CrossRefList implements Serializable  {
 
         ++_listVersion;
         CrossRef localCrossRef = new CrossRef();
-        // FIXME: put below line in initializer and
-        // make _far a "blank final"
-        // NOTE: Again: why? Class is final... EAL
+        // NOTE: In jdk 1.2 or higher, the line below could  be
+        // put in and initializer and _far could be made a "blank final."
+        // This would prevent modifications.
         localCrossRef._far = farList.new CrossRef(localCrossRef);
     }
     
@@ -232,9 +234,9 @@ public final class CrossRefList implements Serializable  {
     
     private CrossRef _lastNode;
     
-    // FIXME: make final to prohibit what is called "reference
-    // reseating" (not resetting).
-    // NOTE: Why?  The class is final... EAL
+    // NOTE: In jdk 1.2 or higher, this could be made final to prohibit
+    // what is called "reference reseating" (not resetting), i.e. to
+    // make the variable immutable.
     private Object _container;
     
     //////////////////////////////////////////////////////////////////////////
