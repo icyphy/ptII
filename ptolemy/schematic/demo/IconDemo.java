@@ -32,6 +32,8 @@ import diva.util.java2d.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+import java.net.URL;
+
 import java.util.HashMap;
 import java.util.Enumeration;
 import javax.swing.SwingConstants;
@@ -56,6 +58,12 @@ public class IconDemo {
     // The default interactor
     Interactor defaultInteractor;
 
+    // The root XML element
+    XMLElement root;
+
+    // The root icon library
+    IconLibrary iconLibrary = null;
+
     /** Create a JCanvas and put it into a window
      */
     public IconDemo () {
@@ -73,48 +81,32 @@ public class IconDemo {
         window.setVisible(true);
     }
 
-    /** Create an icon. The icon's graphic is created
-     * by directly calling the PaintedShape API.
+    /** Parse the icon libraries
      */
-    public void createIcon () {
-        FigureLayer layer = graphicsPane.getForegroundLayer();
-
-        // Create the graphic
-        PaintedList graphic = new PaintedList();
-
-        Polygon2D polygon = new Polygon2D.Double();
-        polygon.moveTo(30,50);
-        polygon.lineTo(70,80);
-        polygon.lineTo(70,20);
-        graphic.add(new PaintedShape(polygon, Color.red, 1.0f));
-
-        Line2D line1 = new Line2D.Double(10,50,30,50);
-        graphic.add(new PaintedPath(line1));
-
-        Line2D line2 = new Line2D.Double(70,50,90,50);
-        graphic.add(new PaintedPath(line2));
-
-        // Create the icon
-        BasicRectangle background = new BasicRectangle(0,0,100,100,
-                Color.green.brighter().brighter().brighter().brighter());
-        IconFigure icon = new IconFigure(background, graphic);
-        layer.add(icon);
-        icon.setInteractor(defaultInteractor);
-    }
-
-    /** Create an icon from an XML library
-     */
-    public void createIconFromLibrary () {
-        FigureLayer layer = graphicsPane.getForegroundLayer();
+    public void parseIconLibraries () {
         PTMLParser parser = new PTMLParser();
         
-        // FIXME Un-hardwire this
-        // String url = "file:c:/java/ptII/ptolemy/schematic/lib/pticons.ptml";
-        String url = "file:/users/johnr/java/ptII/ptolemy/schematic/lib/pticons.ptml";
-            
+        // Get the path to the icon library. Read the PTII root from
+        // the system properties
+        String url = "";
+        try {
+            URL urlbase = new URL("file:" + System.getProperty("PTII"));
+            urlbase = new URL(urlbase, "ptII/ptolemy/schematic/lib/pticons.ptml");
+            url = urlbase.toString();
+            System.out.println("Icon library URL = " + url);
+
+            //String url = "file:" + System.getProperty("PTII") +
+            //  "/ptolemy/schematic/lib/pticons.ptml";
+            //String url = "file:/users/johnr/java/ptII/ptolemy/schematic/lib/pticons.ptml";
+        }
+        catch (Exception ex) {
+            System.out.println("Couldn't construct url");
+            System.out.println(ex.getMessage());
+        }
+
         // Parse the icon libraries
-        XMLElement root = null;
-        IconLibrary iconLibrary = null;
+        root = null;
+        iconLibrary = null;
         try {
             root = parser.parse(url);
             System.out.println("Parsed:\n" + root);
@@ -125,10 +117,16 @@ public class IconDemo {
         catch (Exception e) {
             System.out.println(e);
         }
- 
+} 
+
+    /** Create an icon from an XML library
+     */
+    public IconFigure createIconFromLibrary (String libname, String iconname) {
+        FigureLayer layer = graphicsPane.getForegroundLayer();
+
         // Get the "sources" library and the "Const" icon
-        IconLibrary sources = iconLibrary.getSubLibrary("Sources");
-        Icon constIcon = sources.getIcon("Clock");
+        IconLibrary sources = iconLibrary.getSubLibrary(libname);
+        Icon constIcon = sources.getIcon(iconname);
 
         // Create a new painted object for the graphic
         PaintedList graphic = new PaintedList();
@@ -147,18 +145,29 @@ public class IconDemo {
 
         // Create an icon for it
         BasicRectangle background = new BasicRectangle(0,0,100,100,
-                Color.yellow.brighter().brighter().brighter().brighter().brighter());
+                Color.green);
         IconFigure icon = new IconFigure(background, graphic);
         layer.add(icon);
         icon.setInteractor(defaultInteractor);
-        icon.translate(200,100);
+        /// icon.translate(200,100);
+        return icon;
      }
     
+    /** Create a display of icons
+     */
+    public void createIconDisplay () {
+        IconFigure icon = createIconFromLibrary("Sources", "Clock");
+        icon.translate(100,50);
+        
+        icon = createIconFromLibrary("Sources", "Const");
+        icon.translate(250,50);
+    }
+
     /** Main function
      */
     public static void main (String argv[]) {
         IconDemo ex = new IconDemo();
-        ex.createIcon();
-        ex.createIconFromLibrary();
+        ex.parseIconLibraries();
+        ex.createIconDisplay();
     }
 }

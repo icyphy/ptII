@@ -74,7 +74,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 run::
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.schematic.demo.IconDemo
+	$(JAVA) -classpath "$(CLASSPATH)" -DPTII=$(PTII) ptolemy.schematic.demo.IconDemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
