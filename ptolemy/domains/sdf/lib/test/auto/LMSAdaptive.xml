@@ -5,15 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 30.0">
         </property>
@@ -49,56 +41,31 @@ more that 0.1.  This is not a great test, but it helps.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 250.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 154, 819, 459}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 154, 819, 459}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 175.0}">
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 110.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-3.898043091E-17, -0.1286166, -0.2122066, -0.1800633, 3.898043091E-17, 0.3001054, 0.6366198, 0.9003163, 1.0, 0.9003163, 0.6366198, 0.3001054, 3.898043091E-17, -0.1800633, -0.2122066, -0.1286166}">
         </property>
         <doc name="tooltip">FIR filter</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 110.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive">
-        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
         </property>
         <property name="stepSize" class="ptolemy.data.expr.Parameter" value="stepSize">
-        </property>
-        <property name="errorDelay" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="initialTaps" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
         </property>
@@ -116,42 +83,17 @@ more that 0.1.  This is not a great test, but it helps.</text></svg></configure>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="error" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="tapValues" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 70.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 70.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -159,88 +101,38 @@ more that 0.1.  This is not a great test, but it helps.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 50.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 60.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 130.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 190.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0968417343485E-4, 7.0137538479284E-4, 0.0021988555484, 0.0070216280411, 0.0153873407292, 0.0154494042651, 0.0175353350056, 0.0182471837926, 0.0204352164541}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0073156060352, 0.0096197107181, 0.0158792616265, 0.0171115701403, 0.0160543063557, 0.0084083002275, 0.0124975432291, 0.022218544588, 0.0188364255794}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.00001">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 135.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -2.9258335665563E-4, -0.0014825433949, -0.0082001080366, -0.0118467625717, -0.0119937415836, -0.0199110571478, -0.0207599460269, -0.0183905620497}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -0.005916062291, -0.0089576120363, -0.0077575793068, -0.0087892640453, -0.0116688244361, -0.0206185954713, -0.0460723970026, -0.0546803543556}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.00001">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 190.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="115.0, 110.0">
