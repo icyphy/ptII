@@ -769,6 +769,54 @@ public class UtilityFunctions {
         return new StringToken(StringUtilities.getProperty(propertyName));
     }
 
+    /** Return a pseudo random sequence listed in an array.
+     *  @param polynomial The polynomial with binary coefficients.
+     *  @param initial Initial state of the shift register.
+     *  @param length Length of the array.
+     *  @return An array of binaries listed in the order of 
+     *  pseudo random sequence.
+     *  @see ptolemy.actor.lib.comm.Scrambler
+     */ 
+    public static ArrayToken pseudoRandom(
+            int polynomial, int initial, int length)
+            throws IllegalActionException {
+        if (initial <= 0) {
+            throw new IllegalActionException(
+                    "shift register's initial must be postive.");
+        }
+        if (polynomial <= 0) {
+            throw new IllegalActionException(
+                    "Polynomial is required to be strictly postive.");
+        }
+        if ((polynomial & 1) == 0) {
+            throw new IllegalActionException(
+                    "The low-order bit of the polynomial is not set.");
+        }
+
+        int reg = initial;
+        int mask = polynomial;
+        IntToken[] result = new IntToken[length];
+        for (int i = 0; i < length; i++) {
+            reg = reg << 1;
+            int masked = mask & reg;
+            int parity = 0;
+            while (masked > 0) {
+                parity = parity ^ (masked & 1);
+                masked = masked >> 1;
+            }
+            reg = reg | parity; 
+            result[i] = new IntToken(parity);           
+        }
+        try {
+            return new ArrayToken(result);
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.pseudoRandom: "
+                    + "Cannot create the array that contains "
+                    + "pseudo random numbers.");
+        }
+    }
+
     /** Return an array of IID random numbers with value greater than
      *  or equal to 0.0 and less than 1.0.
      *  @param length The length of the array.
