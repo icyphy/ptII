@@ -519,8 +519,8 @@ public class DTDirector extends SDFDirector {
      *  called when a link is made between ports and/or relations.
      *  see also other mutation methods:
      *    
-     *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
-     *  @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
+     *  @see ptolemy.kernel.util.NamedObj#attributeChanged
+     *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
     public void invalidateSchedule() {
     //  -invalidateSchedule-
