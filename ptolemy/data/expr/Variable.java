@@ -1281,7 +1281,10 @@ public class Variable extends Attribute
         // to itself.
         if (_dependencyLoop) {
             _dependencyLoop = false;
-            throw new IllegalActionException("There is a dependency loop.");
+            throw new IllegalActionException("There is a dependency loop"
+                    + " where " + getFullName() + " directly or indirectly"
+                    + " refers to itself in its expression: "
+                    + _currentExpression);
         }
         _dependencyLoop = true;
 
