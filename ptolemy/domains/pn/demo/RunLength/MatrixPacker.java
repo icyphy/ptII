@@ -41,6 +41,7 @@ import java.util.Enumeration;
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
+@version $Id$
 */
 
 public class MatrixPacker extends AtomicActor {
