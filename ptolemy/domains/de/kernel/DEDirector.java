@@ -529,30 +529,13 @@ public class DEDirector extends Director {
         }
 
         // We want to keep the event queues at all levels in hierarchy
-        // as short as possible. 
+        // as short as possible. So, this pure event is not reported
+        // to higher level in hierarchy. The postfire method of this
+        // director is responsible to report the next nearest event
+        // in the future to higher level.
 
-        // For the fireAt and fireAtRelativeTime methods. When a new
-        // pure event is created, whether a refiring is necessary has
-        // to be decided. If the event queue is empty, or the events 
-        // (either pure events or token events) in the queue have later
-        // time tags, refiring is necessary.
-
-        boolean needToRequestRefiring = false;
-        if (_eventQueue.size() == 0) {
-            needToRequestRefiring = true;
-        } else {
-            DEEvent firstEvent = _eventQueue.get();
-            double firstEventTime = firstEvent.timeStamp();
-            if (firstEventTime > time) {
-                needToRequestRefiring = true;
-            }
-        }
-        
         synchronized(_eventQueue) {
             _enqueueEvent(actor, time);
-            if (_isEmbedded() && needToRequestRefiring) {
-                _requestFiring();
-            }
             _eventQueue.notifyAll();
         }
     }
@@ -595,7 +578,6 @@ public class DEDirector extends Director {
             // FIXME: I do not think this is a good design. If multi-threaded
             // simulation is necessary, DDE domain is a better choice. 
             _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
-            super.fireAtCurrentTime(actor);
             _eventQueue.notifyAll();
         }
     }
@@ -1178,7 +1160,7 @@ public class DEDirector extends Director {
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
                         // This actor has requested not to be fired again.
-                        if (_debugging) _debug("Skipping actor: ",
+                        if (_debugging) _debug("Skipping diabled actor: ",
                                 ((Nameable)actorToFire).getFullName());
                         actorToFire = null;
                         // start a new iteration of the loop: 
@@ -1207,7 +1189,7 @@ public class DEDirector extends Director {
 
                 // Transfer the event to the receiver and keep track
                 // of which receiver is filled.
-                DEReceiver receiver = currentEvent.receiver();
+                DEReceiver receiver = (DEReceiver) currentEvent.receiver();
 
                 // If receiver is null, then it's a 'pure event', 
                 // and there's no need to put event into receiver.
@@ -1225,14 +1207,14 @@ public class DEDirector extends Director {
                 // be the same, but check anyway.
                 // FIXME: this will never be true for non-strict actors...
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                     nextEvent.isSimultaneousWith(currentEvent)) 
+                     nextEvent.hasTheSameTagAndDepthAs(currentEvent)) 
                      && nextEvent.actor() == currentEvent.actor()) {
 
                     // Consume the event from the queue.
                     _eventQueue.take();
 
                     // Transfer the event into the receiver.
-                    DEReceiver receiver = nextEvent.receiver();
+                    DEReceiver receiver = (DEReceiver) nextEvent.receiver();
                     // If receiver is null, then it's a 'pure event' and
                     // there's no need to put event into receiver.
                     if (receiver != null) {

@@ -30,6 +30,7 @@ package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
@@ -77,7 +78,7 @@ public final class DEEvent implements Comparable {
      *  @exception NullPointerException If the receiver is null or is
      *   not contained by a port contained by an actor.
      */
-    public DEEvent(DEReceiver receiver, Token token, double timeStamp,
+    public DEEvent(Receiver receiver, Token token, double timeStamp,
             int microstep, int depth) {
         _receiver = receiver;
         // FIXME: should we check whether the receiver is null?
@@ -111,19 +112,6 @@ public final class DEEvent implements Comparable {
         _receiverDepth = depth;
     }
     
-    // This is a test constructure for the de.lib.TimedDelay actor.
-    public DEEvent(Actor actor, Token token, double timeStamp) {
-        _token = token;
-        _actor = actor;
-        _ioPort = null;
-        _timeStamp = timeStamp;
-        _microstep = 0;
-        _receiverDepth = 0;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Return the destination actor for this event.
      *  @return The destination actor.
      */
@@ -182,6 +170,23 @@ public final class DEEvent implements Comparable {
         return _receiverDepth;
     }
 
+    /** Return true if this event has the same tag with the specified one.  
+     *  @param event The event to compare against.
+     */
+    public final boolean hasTheSameTagAs(DEEvent event) {
+        return (_timeStamp == event._timeStamp) &&
+            (_microstep == event._microstep);
+    }
+
+    /** Return true if this event has the same tag with the specified one,
+     *  and their depths are the same.
+     *  @param event The event to compare against.
+     */
+    public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
+        return hasTheSameTagAs(event) &&
+            (_receiverDepth == event._receiverDepth);
+    }
+
     /** Return the ioPort of the destination actor for this event.
      *  @return The destination ioPort.
      */
@@ -214,7 +219,7 @@ public final class DEEvent implements Comparable {
      *  then return null.
      *  @return The destination receiver
      */
-    public final DEReceiver receiver() {
+    public final Receiver receiver() {
         return _receiver;
     }
 
@@ -260,7 +265,7 @@ public final class DEEvent implements Comparable {
     private int _microstep;
 
     // The destination receiver (only set for non-pure events).
-    private DEReceiver _receiver;
+    private Receiver _receiver;
 
     // The depth of the destination receiver.
     private int _receiverDepth;
