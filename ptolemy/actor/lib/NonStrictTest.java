@@ -184,6 +184,7 @@ public class NonStrictTest extends Sink {
         _iteration = 0;
         _trainingTokens = null;
         _firedOnce = false;
+        _initialized = true;
         if (((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
@@ -270,14 +271,15 @@ public class NonStrictTest extends Sink {
 
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
-     *  @exception IllegalActionException If fire() was not called at least
-     *  once.
+     *  @exception IllegalActionException If initialized() was called
+     *  and fire() was not called.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
         if (!training
+                && _initialized
                 && ! _firedOnce) {
             throw new IllegalActionException(this,
                     "The fire() method of this actor was never called. "
@@ -352,4 +354,8 @@ public class NonStrictTest extends Sink {
      *  least once, then throw an exception in wrapup().
      */
     protected boolean _firedOnce = false; 
+
+    /** Set to true when initialized() is called.
+     */
+    protected boolean _initialized = false;
 }
