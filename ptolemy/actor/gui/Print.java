@@ -37,10 +37,13 @@ import ptolemy.actor.*;
 
 import java.awt.Container;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 
 /** Display the values of the tokens arriving on the input channels
  *  in a text area on the screen.
@@ -104,6 +107,17 @@ public class Print extends TypedAtomicActor implements Placeable {
                 Token token = input.get(i);
                 String value = token.stringValue();
                 textArea.append(value + "\n");
+
+                // Regrettably, the default in swing is that the top
+                // of the textarea is visible, not the most recent text.
+                // So we have to manually move the scrollbar.
+                // FIXME: Unfortunately, this doesn't work.
+                // There appears to be no way in swing to do this...
+                // Putting it in SwingUtilities.invokeLater() doesn't help...
+                JScrollBar bar = _scrollPane.getVerticalScrollBar();
+                if (bar != null) {
+                    bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
+                }
             }
         }
     }
@@ -142,12 +156,21 @@ public class Print extends TypedAtomicActor implements Placeable {
             // exists, so that the close button is dealt with, etc.
             JFrame frame = new JFrame(getFullName());
             textArea = new JTextArea();
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            frame.getContentPane().add(scrollPane);
+            _scrollPane = new JScrollPane(textArea);
+            frame.getContentPane().add(_scrollPane);
         } else {
             textArea = new JTextArea();
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            _container.add(scrollPane);
+            _scrollPane = new JScrollPane(textArea);
+            _container.add(_scrollPane);
+        }
+    }
+
+    /** Override the base class to make sure the end of the text is visible.
+     */
+    public void wrapup() {
+        JScrollBar bar = _scrollPane.getVerticalScrollBar();
+        if (bar != null) {
+            bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
         }
     }
 
@@ -155,4 +178,5 @@ public class Print extends TypedAtomicActor implements Placeable {
     ////                         private members                   ////
 
     private Container _container;
+    private JScrollPane _scrollPane;
 }
