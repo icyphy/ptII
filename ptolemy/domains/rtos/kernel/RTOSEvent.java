@@ -43,7 +43,7 @@ import java.lang.Comparable;
 
 /** A RTOS event in an event that triggers the execution of a RTOS actor
  *  (task). It contains destination receiver, a token, 
- *  a priority for the destination receiver, a flag <i>hasBeenPreempted</i>
+ *  a priority for the destination receiver, a flag <i>hasStarted</i>
  *  indicating whether the processing of it has been started but has not
  *  finished (due to preemption), and an <i>processingTime</i> for the time 
  *  needed to finish processing this event. Note that for an event
@@ -85,7 +85,7 @@ public final class RTOSEvent implements Comparable {
         }
         _token = token;
         _priority = priority;
-        _hasBeenPreempted = false;
+        _hasStarted = false;
         _processingTime = processingTime;
     }
 
@@ -120,8 +120,8 @@ public final class RTOSEvent implements Comparable {
      *  event is strictly smaller than that of the argument. 
      *  Return -1 if the priority of this event is strictly greater than
      *  the arguement. If the two priorities are
-     *  identical, then the hasBeenPreempted field is checked.  
-     *  return 1 if hasBeenPreempted of this event is true.
+     *  identical, then the hasStarted field is checked.  
+     *  return 1 if hasStarted of this event is true.
      *  Return -1 if this event has not been preempted, but the argument
      *  has. Return 0 otherwise, i.e. none has been preempted.
      *
@@ -134,9 +134,9 @@ public final class RTOSEvent implements Comparable {
             return 1;
         } else if ( _priority < event._priority) {
             return -1;
-        } else if ( _hasBeenPreempted ) {
+        } else if ( _hasStarted ) {
             return -1;
-        } else if ( !_hasBeenPreempted && event._hasBeenPreempted ) {
+        } else if ( !_hasStarted && event._hasStarted ) {
             return 1;
         } else {
             return 0;
@@ -159,7 +159,7 @@ public final class RTOSEvent implements Comparable {
      */
     public final boolean isEquallyPriorTo(RTOSEvent event) {
         return (_priority == event._priority) &&
-            (!_hasBeenPreempted) && (!event._hasBeenPreempted);
+            (!_hasStarted) && (!event._hasStarted);
     }
 
     /** Return the token contained by this event.
@@ -176,18 +176,30 @@ public final class RTOSEvent implements Comparable {
         return _priority;
     }
 
-    /** Return true if the processing of this event has been preempted.
-     *  @return The hasBeenPreempted.
+    /** Set the priority of the event.
      */
-    public final boolean hasBeenPreempted() {
-        return _hasBeenPreempted;
+    public final void setPriority(int newPriority) {
+        _priority = newPriority;
+    }
+
+    /** Return true if the processing of this event has started 
+     *  (but then preempted).
+     *  @return Ture if the processing of this event has started.
+     */
+    public final boolean hasStarted() {
+        return _hasStarted;
+    }
+
+    /** Set has started to true.
+     */
+    public final void startProcessing() {
+        _hasStarted = true;
     }
 
     /** Mark that the processing of this event has been preempted.
      *  @param time The time when the processing of this event is preempted
      */
-    public final void preemptAfter(double time) {
-        _hasBeenPreempted = true;
+    public final void timeProgress(double time) {
         _processingTime = _processingTime - time;
     }
     
@@ -206,7 +218,7 @@ public final class RTOSEvent implements Comparable {
         return "RTOSEvent(token=" + _token + ", priority=" + _priority 
             + ", dest=" 
             + _actor
-            + ", hasBeenPreempted=" + _hasBeenPreempted
+            + ", hasStarted=" + _hasStarted
             + ", processingTime=" + _processingTime + ")";
     }
     
@@ -226,10 +238,10 @@ public final class RTOSEvent implements Comparable {
     // The priority.
     private int _priority;
 
-    // Indicate whether the processing of the event has been preempted.
-    private boolean _hasBeenPreempted;
+    // Indicate whether the processing of the event has started.
+    private boolean _hasStarted;
 
-    // The time needed to process the event.
+    // The remaining time needed to finish processing the event.
     private double _processingTime;
 
 }

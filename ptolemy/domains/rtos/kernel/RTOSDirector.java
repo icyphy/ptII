@@ -148,6 +148,14 @@ public class RTOSDirector extends Director {
      */
     public Parameter stopTime;
 
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, then do not process events until the
+     *  elapsed real time matches the time stamp of the events.
+     *  The value defaults to false.
+     */
+    public Parameter synchronizeToRealTime;
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
     
@@ -176,6 +184,9 @@ public class RTOSDirector extends Director {
             }
         } else if (attribute == preemptive) {
             _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
+        } else if (attribute == synchronizeToRealTime) {
+            _synchronizeToRealTime =
+                ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -189,6 +200,18 @@ public class RTOSDirector extends Director {
         return _currentTime;
     }
 
+    /** Return the system time at which the model begins executing.
+     *  That is, the system time (in milliseconds) when the initialize()
+     *  method of the director is called.
+     *  The time is in the form of milliseconds counting
+     *  from 1/1/1970 (UTC).
+     *  @return The real start time of the model.
+     */
+    public long getRealStartTimeMillis() {
+        return _realStartTime;
+    }
+
+
     /** Request a refire from the executive director.
      *  
      *  @exception IllegalActionException If the initialize() method of
@@ -196,13 +219,76 @@ public class RTOSDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         
+        if(_isEmbedded()) {
+            _outsideTime = ((CompositeActor)getContainer()).
+                getExecutiveDirector().getCurrentTime();
+        } else {
+            _outsideTime = 0.0;
+            _nextIterationTime = 0.0;
+        }
         super.initialize();
-        
+        _realStartTime = System.currentTimeMillis();
         if (_isEmbedded() && !_pureEventQueue.isEmpty()) {
             double nextPureEventTime = 
                 ((DEEvent)_pureEventQueue.get()).timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
+    }
+
+    /** Check outside time and set current time to be the outside time
+     *  and manipulate the processing time of the first event in 
+     *  the event queue.
+     *  If <i>synchronizeToRealTime</i> is true, then wait until the
+     *  real time has catched up to the next iteration time. 
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (_isEmbedded()) {
+            _outsideTime = ((CompositeActor)getContainer())
+                .getExecutiveDirector().getCurrentTime();
+        } else {
+            // set outside time to the next iteration time, which
+            // is the smaller one of the next pure event time and
+            // the finishing time of processing the next RTOS event.
+            _outsideTime = _nextIterationTime;
+        }
+        if (_debugging) _debug("Prefire: outside time = " + _outsideTime,
+                " current time = " + getCurrentTime());
+        if (!_eventQueue.isEmpty()) {
+            RTOSEvent event = (RTOSEvent)_eventQueue.get();
+            if (event.hasStarted()) {
+                if (_debugging) _debug("deduct "+ 
+                        (_outsideTime - getCurrentTime()), 
+                        " from processing time of event",
+                        event.toString());
+                event.timeProgress(_outsideTime - getCurrentTime());
+            }
+        }
+        if (!_isEmbedded() && _synchronizeToRealTime) {
+            // Wait for real time to cache up.
+            long elapsedTime = System.currentTimeMillis()
+                        - _realStartTime;
+            double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
+            if (Math.abs(_outsideTime - elapsedTimeInSeconds) > 1e-3) {
+                long timeToWait = (long)((_outsideTime -
+                        elapsedTimeInSeconds)*1000.0);
+                if (timeToWait > 0) {
+                    if (_debugging) {
+                        _debug("Waiting for real time to pass: "
+                                + timeToWait);
+                    }
+                    synchronized(_eventQueue) {
+                        try {
+                            _eventQueue.wait(timeToWait);
+                        } catch (InterruptedException ex) {
+                            // Continue executing.
+                        }
+                    }
+                }
+            }
+        }
+            
+        setCurrentTime(_outsideTime);
+        return true;
     }
     
     /** Disable the specified actor.  All events destined to this actor
@@ -248,36 +334,40 @@ public class RTOSDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         // First look at the pure event queue.
-        double nextPureEventTime = ((DoubleToken)stopTime.getToken()).
+        _nextIterationTime = ((DoubleToken)stopTime.getToken()).
                 doubleValue();
         while (!_pureEventQueue.isEmpty()) {
             DEEvent pureEvent = (DEEvent)_pureEventQueue.get();
             double timeStamp = pureEvent.timeStamp();
-            if (timeStamp < getCurrentTime()) {
-                if (_preemptive) {
-                    throw new IllegalActionException(this, 
-                            "missed an external input message.");
-                } else {
-                    _firePureEvent(_pureEventQueue.take());
+            if (timeStamp < (getCurrentTime() - 1e-10)) {
+                // This should never happen.
+                throw new IllegalActionException(this, 
+                            "external input message in the past.");
+            } else if (Math.abs(timeStamp - getCurrentTime()) < 1e-10) {
+                _pureEventQueue.take();
+                Actor actor = pureEvent.actor();
+                if (actor != null) {
+                    if (actor.prefire()) {
+                        actor.fire();
+                        if(!actor.postfire()) {
+                            // FIXME: add the actor to the dead actor list.
+                        }
+                    }
                 }
-            } else if (timeStamp == getCurrentTime()) {
-                 _firePureEvent(_pureEventQueue.take());
             } else {
                 // All pure event are in the future.
                 // Get the time for the next pure event.
-                // It will be used under preemptive execution.
-                nextPureEventTime = timeStamp;
+                // It will be used for finding the next iteration time.
+                _nextIterationTime = timeStamp;
                 break;
             }
         }
         // Then we process RTOS events. Fire one actor at a time.
-        // Dequeue all events with the same priority.
         if (!_eventQueue.isEmpty()) {
+            boolean queueEmpty = false;
             RTOSEvent event = (RTOSEvent)_eventQueue.get();
-            double processingTime = event.processingTime();
-            if (!_preemptive || ((getCurrentTime() + processingTime) 
-                    <= nextPureEventTime)) {
-                // Put the event back to its receiver.
+            while (event.processingTime() < 1e-10) {
+                // It's time to finish processing this event. So do it.
                 if(_debugging) _debug(getName(),
                         "put trigger event to",
                         ((NamedObj)event.actor()).getName());
@@ -286,20 +376,47 @@ public class RTOSDirector extends Director {
                 // FIXME: Need to put all the tokens at the same time?
                 Actor actor = event.actor();
                 if (actor.prefire()) {
-                    setCurrentTime(getCurrentTime() + event.processingTime());
                     actor.fire();
                     actor.postfire();
                 }
-            } else {
-                // Preemptive execution and the execution is preempted by
-                // a pure event.
-                event.preemptAfter(nextPureEventTime - getCurrentTime());
-                setCurrentTime(nextPureEventTime);
+                if (!_eventQueue.isEmpty()) {
+                    event = (RTOSEvent)_eventQueue.get();
+                } else {
+                    queueEmpty = true;
+                    break;
+                }
             }
-        } else {
-            // All RTOS events are processed. It is save to move to the
-            // next pure event.
-            setCurrentTime(nextPureEventTime);
+            if (!queueEmpty) {
+                if(_debugging) _debug("The first event in the queue is ",
+                        event.toString());
+                if (!event.hasStarted()) {
+                    // Start a new task.
+                    // Now the bahavior depend on whether the execution is
+                    // preemptive.
+                    if (_debugging) _debug("processing event:",
+                            event.toString());
+                    if (!_preemptive) {
+                        event = (RTOSEvent)_eventQueue.take();
+                        event.startProcessing();
+                        // Set it priority to -1 so it won't be preemtped.
+                    event.setPriority(0);
+                    _eventQueue.put(event);
+                    } else {
+                        event.startProcessing();
+                    }
+                    if (_debugging) _debug("Start processing ", 
+                            event.toString());
+                }
+                // Check the finish processing time.
+                double finishTime = getCurrentTime() + 
+                    event.processingTime();
+                if ( finishTime < _nextIterationTime) {
+                    _nextIterationTime = finishTime;
+                }
+            }
+        }
+        if(_isEmbedded()) {
+            _requestFiringAt(_nextIterationTime);
         }
     }
     
@@ -361,7 +478,8 @@ public class RTOSDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         if(_debugging) _debug("Finish one iteration at time:" + 
-                getCurrentTime());
+                getCurrentTime(),
+                " Next iteration time = " + _nextIterationTime);
         if (getCurrentTime() >= ((DoubleToken)stopTime.getToken()).
                 doubleValue()) {
             return false;
@@ -400,23 +518,6 @@ public class RTOSDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
 
-
-    // Execute the destination actor of a pure event.
-    private void _firePureEvent(DEEvent event) throws IllegalActionException {
-        double time = getCurrentTime();
-        setCurrentTime(event.timeStamp());
-        Actor actor = event.actor();
-        if (actor != null) {
-            if (actor.prefire()) {
-                actor.fire();
-                if(!actor.postfire()) {
-                    // FIXME: add the actor to the dead actor list.
-                }
-            }
-        }
-        setCurrentTime(time);
-    }
-
     // Remove useless parameters inherited from DEDirector, and set
     // different defaults.
     private void _initParameters() {
@@ -432,6 +533,10 @@ public class RTOSDirector extends Director {
                     "defaultTaskExecutionTime", new DoubleToken(0.0));
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
             
+            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
+                    new BooleanToken(false));
+            synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() +
                     "fail to initialize parameters.");
@@ -475,6 +580,18 @@ public class RTOSDirector extends Director {
     // local cache of the parameter
     private boolean _preemptive = false;
 
+    // local cache of sunchronize to real time
+    private boolean _synchronizeToRealTime = false;
+
     // disabled actors list.
     private Set _disabledActors = null;
+
+    // The outside time
+    private double _outsideTime;
+
+    // The next iteration time
+    private double _nextIterationTime;
+
+    // The real start time in milliseconds count.
+    private long _realStartTime;
 }
