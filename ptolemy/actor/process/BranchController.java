@@ -179,7 +179,9 @@ public class BranchController implements Runnable {
                     throw new ClassCastException("Failed to cast '"
                             + producerReceivers[i][0] + "', which is a '"
                             + producerReceivers[i][0].getClass().getName()
-                            + "' to a ProcessReceiver.");
+                            + "' to a ProcessReceiver. Note that currently, "
+                            + "process domains like PN and CSP do not work "
+                            + "inside non process domains." );
 
                 }
                 consumerReceiver = (ProcessReceiver)consumerReceivers[i][0];
