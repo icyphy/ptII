@@ -165,22 +165,28 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Examine the non-preemptive transitions from the current state.
+    /** Examine the non-preemptive transitions from the given state.
      *  If there is more than one transition enabled, an exception is
      *  thrown. If there is exactly one non-preemptive transition
      *  enabled, then it is chosen and the choice actions contained by
-     *  transition are executed.
+     *  transition are executed. Return the destination state. If no
+     *  transition is enabled, return the current state.
+     *  @return The destination state.
      */
-    public void chooseStateTransition()
+    public State chooseStateTransition(State state)
             throws IllegalActionException {
 
         //CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
-        State st = ctrl.currentState();
-
+        //State state = ctrl.currentState();
+        State destinationState;
         Transition tr =
-            _chooseTransition(st.nonpreemptiveTransitionList());
-
+            _chooseTransition(state.nonpreemptiveTransitionList());
+        if (tr != null)
+            destinationState = tr.destinationState();
+        else
+            destinationState = state;   
+        
         if (tr != null) {
 
             TypedActor[] trRefinements = (tr.getRefinement());
@@ -213,6 +219,7 @@ public class HDFFSMDirector extends FSMDirector {
             }
             _readOutputsFromRefinement();
         }
+        return destinationState;
     }
 
     /** Set the values of input variables in the mode controller.
@@ -227,6 +234,7 @@ public class HDFFSMDirector extends FSMDirector {
         FSMActor ctrl = getController();
         ctrl.setNewIteration(_sendRequest);
         _readInputs();
+        Transition tr;
         State st = ctrl.currentState();
         //System.out.println("fire: curState = " + st.getName());
         Actor[] actors = ctrl.currentState().getRefinement();
@@ -245,13 +253,56 @@ public class HDFFSMDirector extends FSMDirector {
         _readOutputsFromRefinement();
 
         if (_embeddedInSDF) {
-            chooseStateTransition();
+            st = chooseStateTransition(st);
+            actors = st.getRefinement();
+            while (actors == null) {
+                st = chooseStateTransition(st);
+                tr = _getLastChosenTransition();
+                if (tr == null)
+                    throw new IllegalActionException(this,
+                        "Reached a transient state" +
+                        "without enabled transition.");
+                actors = (tr.destinationState()).getRefinement();
+            }
         }
         if (_sendRequest && !_embeddedInSDF) {
             ChangeRequest request =
                 new ChangeRequest(this, "choose a transition") {
-                    protected void _execute() throws KernelException {
-                        chooseStateTransition();
+                    protected void _execute() throws KernelException, 
+                            IllegalActionException{
+                        FSMActor controller = getController();
+                        State state = controller.currentState();
+                        TypedActor[] actors;
+                        Transition tr;
+                        state = chooseStateTransition(state);
+                        //System.out.println("next state: " + state.getName());
+                        //State st;
+                        
+                        actors = state.getRefinement();
+                        
+                        while (actors == null) {
+                            //System.out.println("null state, continue to choose.");
+                            state = chooseStateTransition(state);
+                            tr = _getLastChosenTransition();
+                            //System.out.println("next transition : " + tr.getName());
+                            //System.out.println("next state: " + state.getName());
+                            
+                            //System.out.println
+                            if (tr == null){
+                                //throw new IllegalActionException(this,
+                                  //  "Reached a transient state" +
+                                    //"without enabled transition.");
+                                    System.out.println("should throw an exception.");
+                                    break;
+                            }
+                            else {
+                                //System.out.println("tr.destinationState: "
+                                  //  + (tr.destinationState()).getName());
+                                //System.out.println("tr.destionationState: "
+                                  //  + state.getName());
+                                actors = (tr.destinationState()).getRefinement();
+                            }
+                        }
                     }
                 };
             request.setPersistent(false);
@@ -707,7 +758,7 @@ public class HDFFSMDirector extends FSMDirector {
         TypedActor[] currentRefinements = currentState.getRefinement();
         while (currentRefinements == null) {
             //System.out.println("transientStateTransition:");
-            chooseStateTransition();
+            chooseStateTransition(currentState);
             //ctrl.postfire();
             super.postfire();
             currentState = ctrl.currentState();
