@@ -211,3 +211,4 @@ public class DiscreteRandomSource extends RandomSource {
 
     /** Random value calculated in prefire(). */
     private Token _current;
+}
