@@ -100,11 +100,9 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 			    icon = new XMLIcon(object, "_icon");
 			}
 		    } catch (KernelException ex) {
-			throw new InternalErrorException("could not create icon " +
-							 "in " + object + 
-							 " even " + 
-							 "though one did " + 
-							 "not exist");
+			throw new InternalErrorException(
+                                "could not create icon in " + object + 
+                                " even though one did not exist.");
 		    }
 		    // Wow.. this is a confusing line of code.. :)
 		    component.setIcon(icon.createIcon());

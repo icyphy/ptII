@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	EntityLibrary.java \
 	ErrorHandler.java \
-	Icon.java \
 	ImportAttribute.java \
 	Locatable.java \
 	Location.java \

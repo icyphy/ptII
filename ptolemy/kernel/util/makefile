@@ -55,6 +55,8 @@ JSRCS = \
 	ChangeListener.java \
 	ChangeRequest.java \
 	CrossRefList.java \
+	Configurable.java \
+	ConfigurableAttribute.java \
 	Debuggable.java \
 	DebugEvent.java \
 	DebugListener.java \
@@ -67,16 +69,16 @@ JSRCS = \
 	NamedList.java \
 	NamedObj.java \
 	NameDuplicationException.java \
-	NonpersistentProcessedString.java \
 	NoSuchItemException.java \
-	ProcessedString.java \
 	PtolemyThread.java \
 	RecorderListener.java \
 	Settable.java \
+	SingletonAttribute.java \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
 	StringUtilities.java \
+	TransientAttribute.java \
 	UserSettable.java \
 	ValueListener.java \
 	Workspace.java

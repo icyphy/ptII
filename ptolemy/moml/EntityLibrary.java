@@ -30,7 +30,6 @@
 
 package ptolemy.moml;
 
-import ptolemy.actor.Configurable;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;

@@ -312,31 +312,31 @@ test MoMLChangeRequest-2.2 {Test propagation} {
     # NOTE: exportMoML won't give a full description.
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
-    {ptolemy.kernel.util.NonpersistentProcessedString {.top.iconDescription} attributes {
+    {ptolemy.kernel.util.TransientAttribute {.top.iconDescription} attributes {
     }}
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.top.gen.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.top.gen.iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.top.gen.new.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.top.gen.new.iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.top.der.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.top.der.iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.top.der.new.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.top.der.new.iconDescription} attributes {
             }}
         } ports {
         }}
@@ -393,43 +393,43 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     # NOTE: exportMoML won't give a full description.
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
-    {ptolemy.kernel.util.NonpersistentProcessedString {.top.iconDescription} attributes {
+    {ptolemy.kernel.util.TransientAttribute {.top.iconDescription} attributes {
     }}
     {ptolemy.moml.ParserAttribute {.top._parser} attributes {
     }}
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.top.gen.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.top.gen.iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.top.gen.new.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.top.gen.new.iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.intClass} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.top.intClass.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.top.intClass.iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.intClass.new} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.top.intClass.new.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.top.intClass.new.iconDescription} attributes {
             }}
         } ports {
         }}
     } relations {
     }}
     {ptolemy.kernel.CompositeEntity {.top.der} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.top.der.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.top.der.iconDescription} attributes {
         }}
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.top.der.new.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.top.der.new.iconDescription} attributes {
             }}
         } ports {
         }}

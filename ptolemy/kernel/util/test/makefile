@@ -59,6 +59,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	Attribute.tcl \
 	ChangeRequest.tcl \
+	ConfigurableAttribute.tcl \
 	CrossRefList.tcl \
 	IllegalActionException.tcl \
 	InternalErrorException.tcl \
@@ -68,9 +69,10 @@ JSIMPLE_TESTS = \
 	NamedList.tcl \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
-	ProcessedString.tcl \
 	PtolemyThread.tcl \
+	SingletonAttribute.tcl \
 	StringUtilities.tcl \
+	TransientAttribute.tcl \
 	Workspace.tcl
 
 # Graphical Java tests that use Tcl.

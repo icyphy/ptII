@@ -33,12 +33,7 @@ import ptolemy.kernel.ComponentEntity;
 
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NonpersistentProcessedString;
-import ptolemy.kernel.util.ProcessedString;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.*;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.StringToken;
@@ -95,14 +90,7 @@ public class State extends ComponentEntity {
         refinementName = new Parameter(this, "refinementName");
         refinementName.setTypeEquals(BaseType.STRING);
 
-	ProcessedString icon;
-	icon = (ProcessedString)getAttribute("iconDescription");
-	if(icon == null) {
-	    icon = new NonpersistentProcessedString(this, "iconDescription");
-	}
-        // FIXME should be 'svg'
-	icon.setInstruction(null);
-	icon.setString("<svg>\n" + 
+        _setDefaultIcon("<svg>\n" +
 		"<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
 		"</svg>\n");
     }

@@ -31,7 +31,7 @@
          Changed the signature of the configure() method.
 */
 
-package ptolemy.actor;
+package ptolemy.kernel.util;
 
 import java.io.InputStream;
 import java.net.URL;

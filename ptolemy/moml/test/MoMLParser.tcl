@@ -83,11 +83,38 @@ set moml_2_1 "$header
     <doc><?html <H1>HTML Markup</H1><I>italics</I>.?></doc>
 </model>
 "
-test MoMLParser-1.2.1 {parse simple model with HTML markup in CDATA} {
+test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruction} {
     $parser reset
     set toplevel [$parser parse $moml_2_1]
     $toplevel exportMoML
 } $moml_2_1
+
+#----------------------------------------------------------------------
+set moml_2_1 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc><H1>HTML Markup</H1><I>italics</I>.</doc>
+</model>
+"
+test MoMLParser-1.2.2 {parse simple model with HTML markup} {
+    $parser reset
+    set toplevel [$parser parse $moml_2_1]
+    $toplevel exportMoML
+} $moml_2_1
+
+#----------------------------------------------------------------------
+set moml_2_1 "$header
+# NOTE: If no name is given to the inside doc element, then it will
+# be assigned the MoML default name "_doc_".
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc><H1>HTML <doc name=\"foo\">Markup</doc></H1><I>italics</I>.</doc>
+</model>
+"
+test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
+    $parser reset
+    set toplevel [$parser parse $moml_2_1]
+    $toplevel exportMoML
+} $moml_2_1
+
 
 #----------------------------------------------------------------------
 set moml_3 "$header
@@ -2195,3 +2222,133 @@ test MoMLParser-10.1 {test vertex} {
     <link port="C.in" relation="r"/>
 </model>
 }
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+   <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+      <configure>xxx</configure>
+   </property>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-11.1 {test configuration} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>xxx</configure>
+    </property>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>
+<h1>Header</h1>
+<p>Paragraph.</p>
+        </configure>
+    </property>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-11.2 {test configuration with embedded HTML} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>
+<h1>Header</h1>
+<p>Paragraph.</p>
+        </configure>
+    </property>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>
+<h1>Header</h1>
+<configure>yyy</configure>
+<p>Paragraph.</p>
+</configure>
+    </property>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-11.3 {test configuration with embedded configure tag} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>
+<h1>Header</h1>
+<configure>yyy</configure>
+<p>Paragraph.</p>
+</configure>
+    </property>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-11.4 {test configuration value() method} {
+    set attr [java::cast  ptolemy.kernel.util.ConfigurableAttribute \
+             [$toplevel getAttribute p]]
+    $attr value
+} {
+<h1>Header</h1>
+<configure>yyy</configure>
+<p>Paragraph.</p>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure source="test.xml">
+<h1>Header</h1>
+</configure>
+    </property>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-11.5 {test configuration with external source} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure source="test.xml">
+<h1>Header</h1>
+</configure>
+    </property>
+</model>
+}
+

@@ -32,7 +32,6 @@ package ptolemy.vergil.toolbox;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.Configurable;
 import ptolemy.moml.*;
 import java.util.*;
 import java.net.URL;
@@ -85,8 +84,8 @@ public class XMLIcon extends EditorIcon {
             // FIXME  This listener should set _paintedList to null.
             //        _description.removeValueListener(_updateListener);
         }
-        ProcessedString description =
-            (ProcessedString)container.getAttribute("iconDescription");
+        SingletonAttribute description =
+            (SingletonAttribute)container.getAttribute("iconDescription");
         if(_description != description) {
             _description = description;
             try {
@@ -171,7 +170,8 @@ public class XMLIcon extends EditorIcon {
             _paintedList = null;
             return;
         }
-        String text = _description.getString();
+        String text = _description.value();
+
    	Reader in = new StringReader(text);
         // FIXME: Do we need a base here?
 	XmlDocument document = new XmlDocument((URL)null);
@@ -186,5 +186,5 @@ public class XMLIcon extends EditorIcon {
     private PaintedList _paintedList;
 
     // The description of this icon in XML.
-    private ProcessedString _description;
+    private ConfigurableAttribute _description;
 }

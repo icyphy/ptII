@@ -1,6 +1,6 @@
-# Tests for the ProcessedString class
+# Tests for the ConfigurableAttribute class
 #
-# @Author: Steve Neuendorffer
+# @Author: Steve Neuendorffer and Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -47,30 +47,27 @@ set header {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
-test ProcessedString-1.1 {test export moml.} {
+test ConfigurableAttribute-1.1 {test export moml.} {
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $n0 setName N0
-    set p1 [java::new ptolemy.kernel.util.ProcessedString $n0 P1]
-    $p1 setString {My Test String}
-    $p1 setInstruction {instruction}
+    set p1 [java::new ptolemy.kernel.util.ConfigurableAttribute $n0 P1]
+    $p1 configure [java::null] [java::null] {My Test String}
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="P1" class="ptolemy.kernel.util.ProcessedString">
-        <configure><?instruction
-My Test String?>
-        </configure>
+    <property name="P1" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure>My Test String</configure>
     </property>
 </model>
 }
 
-test ProcessedString-1.2 {test methods.} {
-    list [$p1 getInstruction] [$p1 getString]
-} {instruction {My Test String}}
+test ConfigurableAttribute-1.2 {test value method.} {
+    $p1 value
+} {My Test String}
 
-test ProcessedString-1.3 {test parse moml.} {
+test ConfigurableAttribute-1.3 {test parse moml.} {
     set moml_1 "$header
 <model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
 </model>
@@ -79,12 +76,8 @@ test ProcessedString-1.3 {test parse moml.} {
     set toplevel [$parser parse $moml_1]
     $parser parse {
 <model name=".top">
-    <property name="myAttribute" class="ptolemy.kernel.util.ProcessedString">
-        <configure><?testML
-The Quick brown
-Fox Jumped over
-The lazy Dog.?>
-        </configure>
+    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure><?testML xxx ?></configure>
     </property>
 </model>
 }
@@ -93,78 +86,57 @@ The lazy Dog.?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="myAttribute" class="ptolemy.kernel.util.ProcessedString">
-        <configure><?testML
-The Quick brown
-Fox Jumped over
-The lazy Dog.?>
-        </configure>
+    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure><?testML xxx ?></configure>
     </property>
 </model>
 }
 
-test ProcessedString-1.4 {test parse moml} {
-    set e1 [java::cast ptolemy.kernel.util.ProcessedString [$toplevel getAttribute myAttribute]]
-    list [$e1 getInstruction] [$e1 getString]
-} {testML {The Quick brown
-Fox Jumped over
-The lazy Dog.}}
+test ConfigurableAttribute-1.4 {test value method with parse moml} {
+    set e1 [java::cast ptolemy.kernel.util.ConfigurableAttribute [$toplevel getAttribute myAttribute]]
+    $e1 value
+} {<?testML xxx ?>}
+
+test ConfigurableAttribute-1.5 {test with weird configure text} {
+    $parser reset
+    set toplevel [$parser parse {
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
+<configure><?svg
+<!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
+  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+<svg>
+  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
+  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
+</svg> ?>
+</configure>
+    </property>
+</model>
+}]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.util.NamedObj">
+    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
+        <configure><?svg <!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
+  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+<svg>
+  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
+  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
+  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
+  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
+</svg> ?>
+</configure>
+    </property>
+</model>
+}
+
+
    
-test ProcessedString-1.5 {test parse moml with no PI} {
-    set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</model>
-"
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_1]
-    $parser parse {
-<model name=".top">
-    <property name="myAttribute" class="ptolemy.kernel.util.ProcessedString">
-        <configure>
-The Quick brown
-Fox Jumped over
-The lazy Dog.
-        </configure>
-    </property>
-</model>
-}
-   $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="myAttribute" class="ptolemy.kernel.util.ProcessedString">
-        <configure>
-The Quick brown
-Fox Jumped over
-The lazy Dog.
-        </configure>
-    </property>
-</model>
-}
-
-test ProcessedString-1.6 {test parse moml with no PI} {
-    set e1 [java::cast ptolemy.kernel.util.ProcessedString [$toplevel getAttribute myAttribute]]
-    list [$e1 getInstruction] [$e1 getString]
-} {{} {The Quick brown
-Fox Jumped over
-The lazy Dog.}}
-
-test ProcessedString-1.7 {test parse moml with no PI} {
-    set n0 [java::new ptolemy.kernel.util.NamedObj]
-    $n0 setName N0
-    set p1 [java::new ptolemy.kernel.util.ProcessedString $n0 P1]
-    $p1 setString {My String}
-    $p1 setInstruction [java::null]
-    $n0 exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="P1" class="ptolemy.kernel.util.ProcessedString">
-        <configure>
-My String
-        </configure>
-    </property>
-</model>
-} 

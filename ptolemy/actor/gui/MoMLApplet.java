@@ -43,7 +43,6 @@ import com.microstar.xml.XmlException;
 
 // Ptolemy imports
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;

@@ -768,12 +768,12 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     $container connect $output $input edge0
     $container description
 } {ptolemy.actor.TypedCompositeActor {.} attributes {
-    {ptolemy.kernel.util.NonpersistentProcessedString {..iconDescription} attributes {
+    {ptolemy.kernel.util.TransientAttribute {..iconDescription} attributes {
     }}
 } ports {
 } entities {
     {ptolemy.actor.TypedAtomicActor {..source} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {..source.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {..source.iconDescription} attributes {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
@@ -788,7 +788,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         } type {declared NaT resolved NaT}}
     }}
     {ptolemy.actor.TypedAtomicActor {..dest} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {..dest.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {..dest.iconDescription} attributes {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {

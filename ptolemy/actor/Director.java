@@ -802,17 +802,10 @@ public class Director extends Attribute implements Executable {
 
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-	ProcessedString icon;
-	try {
-	    icon = new NonpersistentProcessedString(this, "iconDescription");
-	} catch (KernelException ex) {
-	    throw new InternalErrorException(
-                    "Error creating icon for " + getFullName());
-	}
-        // FIXME should be 'svg'
-	icon.setInstruction(null);
-	icon.setString("<svg>\n" + 
-		"<rect x=\"0\" y=\"10\" width=\"100\" height=\"30\" style=\"fill:green\"/>\n" +
-		"</svg>\n");
+	_setDefaultIcon("<svg>\n" +
+                "<rect x=\"0\" y=\"10\" "
+                + "width=\"100\" height=\"30\" "
+                + "style=\"fill:green\"/>\n" +
+                "</svg>\n");
     }
 }

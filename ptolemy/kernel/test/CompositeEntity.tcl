@@ -508,12 +508,12 @@ test CompositeEntity-11.5 {Test NAME and CLASS description} {
 test CompositeEntity-11.6 {Test full description} {
     $e0 description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
 } {ptolemy.kernel.CompositeEntity {.E0} attributes {
-    {ptolemy.kernel.util.NonpersistentProcessedString {.E0.iconDescription} attributes {
+    {ptolemy.kernel.util.TransientAttribute {.E0.iconDescription} attributes {
     }}
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.E0.E3} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.E0.E3.iconDescription} attributes {
         }}
     } ports {
         {ptolemy.kernel.ComponentPort {.E0.E3.P7} attributes {
@@ -526,7 +526,7 @@ test CompositeEntity-11.6 {Test full description} {
         }}
     } entities {
         {ptolemy.kernel.CompositeEntity {.E0.E3.E4} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.E4.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.E0.E3.E4.iconDescription} attributes {
             }}
         } ports {
             {ptolemy.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
@@ -547,7 +547,7 @@ test CompositeEntity-11.6 {Test full description} {
             }}
         } entities {
             {ptolemy.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
-                {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.E4.E1.iconDescription} attributes {
+                {ptolemy.kernel.util.TransientAttribute {.E0.E3.E4.E1.iconDescription} attributes {
                 }}
             } ports {
                 {ptolemy.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
@@ -562,7 +562,7 @@ test CompositeEntity-11.6 {Test full description} {
                 }}
             }}
             {ptolemy.kernel.ComponentEntity {.E0.E3.E4.E2} attributes {
-                {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.E4.E2.iconDescription} attributes {
+                {ptolemy.kernel.util.TransientAttribute {.E0.E3.E4.E2.iconDescription} attributes {
                 }}
             } ports {
                 {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
@@ -606,7 +606,7 @@ test CompositeEntity-11.6 {Test full description} {
             }}
         }}
         {ptolemy.kernel.ComponentEntity {.E0.E3.E5} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.E5.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.E0.E3.E5.iconDescription} attributes {
             }}
         } ports {
             {ptolemy.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
@@ -617,7 +617,7 @@ test CompositeEntity-11.6 {Test full description} {
             }}
         }}
         {ptolemy.kernel.ComponentEntity {.E0.E3.E6} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E3.E6.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.E0.E3.E6.iconDescription} attributes {
             }}
         } ports {
             {ptolemy.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
@@ -651,7 +651,7 @@ test CompositeEntity-11.6 {Test full description} {
         }}
     }}
     {ptolemy.kernel.CompositeEntity {.E0.E7} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E7.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.E0.E7.iconDescription} attributes {
         }}
     } ports {
         {ptolemy.kernel.ComponentPort {.E0.E7.P8} attributes {
@@ -672,7 +672,7 @@ test CompositeEntity-11.6 {Test full description} {
         }}
     } entities {
         {ptolemy.kernel.ComponentEntity {.E0.E7.E8} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E7.E8.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.E0.E7.E8.iconDescription} attributes {
             }}
         } ports {
             {ptolemy.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
@@ -705,7 +705,7 @@ test CompositeEntity-11.6 {Test full description} {
         }}
     }}
     {ptolemy.kernel.CompositeEntity {.E0.E10} attributes {
-        {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E10.iconDescription} attributes {
+        {ptolemy.kernel.util.TransientAttribute {.E0.E10.iconDescription} attributes {
         }}
     } ports {
         {ptolemy.kernel.ComponentPort {.E0.E10.P12} attributes {
@@ -728,7 +728,7 @@ test CompositeEntity-11.6 {Test full description} {
         }}
     } entities {
         {ptolemy.kernel.ComponentEntity {.E0.E10.E9} attributes {
-            {ptolemy.kernel.util.NonpersistentProcessedString {.E0.E10.E9.iconDescription} attributes {
+            {ptolemy.kernel.util.TransientAttribute {.E0.E10.E9.iconDescription} attributes {
             }}
         } ports {
             {ptolemy.kernel.ComponentPort {.E0.E10.E9.P14} attributes {

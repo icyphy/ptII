@@ -32,7 +32,6 @@ package ptolemy.moml;
 
 // Ptolemy imports.
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Documentation;
 import ptolemy.data.expr.Variable;
@@ -249,8 +248,8 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** Handle character data.  In this implementation, the
-     *  character data is accumulated in a buffer until the
-     *  end element.  Character data appears only in doc elements.
+     *  character data is accumulated in a buffer until the end element.
+     *  Character data appears only in doc and configure elements.
      *  &AElig;lfred will call this method once for each chunk of
      *  character data found in the contents of elements.  Note that
      *  the parser may break up a long sequence of characters into
@@ -302,6 +301,21 @@ public class MoMLParser extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
+        // FIXME: Instead of doing string comparisons, do a hash lookup.
+        if (elementName.equals("configure")) {
+            // Count configure tags so that they can nest.
+            _configureNesting--;
+        } else if (elementName.equals("doc")) {
+            // Count doc tags so that they can nest.
+            _docNesting--;
+        }
+        if (_configureNesting > 0 || _docNesting > 0) {
+            // Inside a configure or doc tag.
+            // Simply replicate the element in the current
+            // character buffer.
+            _currentCharData.append("</" + elementName + ">");
+            return;
+        }
 	if ( _skipRendition ) {
 	     if (elementName.equals("rendition")) {
 		 _skipRendition = false;
@@ -316,7 +330,7 @@ public class MoMLParser extends HandlerBase {
                 // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
             }
         } else if (elementName.equals("doc")) {
-            if (_currentDocName == null) {
+            if (_currentDocName == null && _docNesting == 0) {
                 _currentDocName = "_doc_";
             }
             // If there already is a doc element with the specified name,
@@ -546,6 +560,8 @@ public class MoMLParser extends HandlerBase {
         _toplevel = null;
         _current = null;
         _namespace = DEFAULT_NAMESPACE;
+        _configureNesting = 0;
+        _docNesting = 0;
     }
 
     /** Resolve an external entity.  If the first argument is the
@@ -617,12 +633,45 @@ public class MoMLParser extends HandlerBase {
      *   in constructing the model.
      */
     public void startElement(String elementName) throws XmlException {
+        // FIXME: Instead of doing all these string comparisons, do
+        // a hash lookup.
         _currentElement = elementName;
         try {
+            if (_configureNesting > 0 || _docNesting > 0) {
+                // Inside a configure or doc tag.  First, check to see
+                // whether this is another configure or doc tag.
+                // Then simply replicate the element in the current
+                // character buffer.
+                if (elementName.equals("configure")) {
+                    // Count configure tags so that they can nest.
+                    _configureNesting++;
+                } else if (elementName.equals("doc")) {
+                    // Count doc tags so that they can nest.
+                    _docNesting++;
+                }
+                _currentCharData.append("<" + elementName);
+                // Put the attributes into the character data.
+                // FIXME: These will not come out in the same order that
+                // they originally appeared.
+                Iterator attributes = _attributes.entrySet().iterator();
+                while (attributes.hasNext()) {
+                    Map.Entry entry = (Map.Entry)attributes.next();
+                    if (entry.getValue() != null) {
+                        _currentCharData.append(" "
+                               + entry.getKey() 
+                               + "=\""
+                               + entry.getValue()
+                               + "\"");
+                    }
+                }
+                _attributes.clear();
+                _currentCharData.append(">");
+                return;
+            }
 	    if (_skipRendition) {
 		return;
 	    }
-           // NOTE: The elements are alphabetical below...
+            // NOTE: The elements are alphabetical below...
             // NOTE: I considered using reflection to invoke a set of
             // methods with names that match the element names.  However,
             // since we can't count on the XML parser to enforce the DTD,
@@ -662,7 +711,8 @@ public class MoMLParser extends HandlerBase {
                         + _current);
                 _configureSource = (String)_attributes.get("source");
                 _currentCharData = new StringBuffer();
-
+                // Count configure tags so that they can nest.
+                _configureNesting++;
             } else if (elementName.equals("deleteEntity")) {
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName,
@@ -767,6 +817,8 @@ public class MoMLParser extends HandlerBase {
             } else if (elementName.equals("doc")) {
                 _currentDocName = (String)_attributes.get("name");
                 _currentCharData = new StringBuffer();
+                // Count doc tags so that they can nest.
+                _docNesting++;
 
             } else if (elementName.equals("entity")) {
                 String className = (String)_attributes.get("class");
@@ -2111,6 +2163,9 @@ public class MoMLParser extends HandlerBase {
     // The class loader that will be used to instantiate objects.
     private ClassLoader _classLoader = getClass().getClassLoader();
 
+    // Count of configure tags so that they can nest.
+    private int _configureNesting = 0;
+
     // The source attribute specified by the configure element.
     private String _configureSource;
 
@@ -2140,6 +2195,9 @@ public class MoMLParser extends HandlerBase {
 
     // The default namespace.
     private static String DEFAULT_NAMESPACE = "";
+
+    // Count of doc tags so that they can nest.
+    private int _docNesting = 0;
 
     // The current namespace.
     private String _namespace = DEFAULT_NAMESPACE;

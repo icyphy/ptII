@@ -33,11 +33,9 @@ package ptolemy.vergil.ptolemy;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
-import ptolemy.moml.Icon;
 import ptolemy.moml.ImportAttribute;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 import diva.graph.GraphController;

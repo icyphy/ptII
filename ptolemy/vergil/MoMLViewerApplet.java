@@ -40,7 +40,6 @@ import java.awt.*;
 import com.microstar.xml.XmlException;
 
 import ptolemy.gui.*;
-import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;

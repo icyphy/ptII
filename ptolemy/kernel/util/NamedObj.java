@@ -25,8 +25,10 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 added public String getName(NamedObj parent);
+added inner class MoMLInfo, and removed a bunch of methods.
+added _setIconDescription() method.
 */
 
 package ptolemy.kernel.util;
@@ -1208,6 +1210,27 @@ public class NamedObj implements Nameable, Debuggable,
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    /** Set the default icon to the specified SVG description.
+     *  SVG (scalable vector graphics) is an XML schema used to describe
+     *  icons in visual renditions of Ptolemy II models.  This method
+     *  simply treats the argument as a string, and does not enforce
+     *  that it be proper SVG or XML.  Derived classes that have
+     *  default icons will call this method, typically in their
+     *  constructors, to define the icon description.
+     *  @param description The SVG description.
+     */
+    protected void _setDefaultIcon(String description) {
+	try {
+	    TransientAttribute icon
+                    = new TransientAttribute(this, "iconDescription");
+            icon.configure(null, null, description);
+	} catch (Exception ex) {
+	    throw new InternalErrorException(
+                    "Error creating default icon for " + 
+                    getFullName() + ":" + ex);
+	}
     }
 
     /** Split the specified name at the first period and return the

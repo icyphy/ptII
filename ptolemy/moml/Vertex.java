@@ -44,8 +44,8 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// Vertex
 /**
-This attribute represents a waypoint in a relation. It implements
-Locatable, meaning that can be associated with a physical location
+This attribute represents a waypoint in a relation. It extends
+Location, meaning that can be associated with a physical location
 in a visual rendition.  It can optionally be associated with another
 instance of Vertex to indicate that there is a path from this
 one to the other one. Cyclic paths are not permitted, although
