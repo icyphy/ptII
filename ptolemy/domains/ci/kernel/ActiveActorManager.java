@@ -1,28 +1,28 @@
 /* Thread that manages the execution of active actors in the CI domain.
 
- Copyright (c) 2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
@@ -46,20 +46,20 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ActiveActorManager
 /**
-An active actor manager iterates an active actor until its postfire()
-returns false, or the director is requested to stop. If the active
-actor has pull input and its prefire() returns false, the actor manager
-will notify the CI director to process the pull request by the actor.
+   An active actor manager iterates an active actor until its postfire()
+   returns false, or the director is requested to stop. If the active
+   actor has pull input and its prefire() returns false, the actor manager
+   will notify the CI director to process the pull request by the actor.
 
-When the actor has a <i>period</i> parameter, the actor manager will
-sleep between successive iterations of the actor for the duration
-given by the parameter, in milliseconds. This is used to control the
-execution rate of source actors in the model that are always ready to
-produce the next output.
+   When the actor has a <i>period</i> parameter, the actor manager will
+   sleep between successive iterations of the actor for the duration
+   given by the parameter, in milliseconds. This is used to control the
+   execution rate of source actors in the model that are always ready to
+   produce the next output.
 
-@author Xiaojun Liu, Yang Zhao
-@version $Id$
-@since Ptolemy II 3.0
+   @author Xiaojun Liu, Yang Zhao
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ActiveActorManager extends PtolemyThread {
 
@@ -72,7 +72,7 @@ public class ActiveActorManager extends PtolemyThread {
         _actor = actor;
         _director = director;
         CompositeActor container =
-                (CompositeActor)((NamedObj)actor).getContainer();
+            (CompositeActor)((NamedObj)actor).getContainer();
         _manager = container.getManager();
         _init();
         director._addActorManager(this);
