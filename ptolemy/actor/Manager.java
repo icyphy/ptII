@@ -273,8 +273,17 @@ public class Manager extends NamedObj implements Runnable {
         }
         // Report the execution time.
         long endTime = (new Date()).getTime();
+
+	// Memory usage stats 
+	Runtime runtime = Runtime.getRuntime();
+	long totalMemory = runtime.totalMemory()/1024;
+	long freeMemory = runtime.freeMemory()/1024;
+
         System.out.println("ptolemy.actor.Manager run(): elapsed time: "
-                + (endTime - startTime) + " ms");
+			   + (endTime - startTime) + " ms. Memory: "
+			   + totalMemory + "K Free: " + freeMemory + "K ("
+			   + Math.round( (((double)freeMemory)/((double)totalMemory)) * 100.0)
+			   + "%)");
     }
 
     /** If the state is not IDLE, set a flag to request that
