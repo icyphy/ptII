@@ -23,7 +23,7 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 230, 819, 563}}">
     </property>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../../doc/img/PtolemyII.jpg&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="148.078125, 222.203125">
         </property>
