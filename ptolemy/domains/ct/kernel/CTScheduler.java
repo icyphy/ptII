@@ -521,9 +521,6 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTMemarisActor) {  //deprecated.
                 _memaris.insertLast(a);
             }
-            if (a instanceof CTStatefulActor) {  
-                _stateful.insertLast(a);
-            }
             if (a instanceof CTStatefulActor) {
                 _stateful.insertLast(a);
             }

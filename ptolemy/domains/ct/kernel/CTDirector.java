@@ -352,6 +352,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
              pEvents.clear();
          }
      }
+
     /** Update a changed paramter. If the changed parameter name matches
      *  the name of a parameter of the director, then the coresponding
      *  parameter value will be updated. Otherwise, throw an exception.
