@@ -134,7 +134,7 @@ public class BusContentionApplet extends CSPApplet {
 
         try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(_jgraph, finalModel);
 		}
 	    });
@@ -144,7 +144,7 @@ public class BusContentionApplet extends CSPApplet {
             System.exit(0);
         }
 
-        StateListener listener = 
+        StateListener listener =
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
@@ -152,7 +152,7 @@ public class BusContentionApplet extends CSPApplet {
     }
 
     /**  Construct the graph representing the topology.
-     * This is sort of bogus because it's totally hird-wired,
+     * This is sort of bogus because it's totally hard-wired,
      * but it will do for now...
      */
     public GraphModel constructDivaGraph() {
@@ -282,14 +282,14 @@ public class BusContentionApplet extends CSPApplet {
     }
 
     /** Construct the graph widget with the default constructor (giving
-     *  it an empty graph). 
+     *  it an empty graph).
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600,400) );
+	g.setPreferredSize( new Dimension(600, 400) );
 
-        // Make sure we have the right renderers and then 
-	// display the graph
+        // Make sure we have the right renderers and then
+	// display the graph.
         final GraphPane gp = (GraphPane) g.getCanvasPane();
         final GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
@@ -330,12 +330,12 @@ public class BusContentionApplet extends CSPApplet {
      *  if the number of iterations has not been specified, then create
      *  a dialog box for that number to be entered.  The panel containing
      *  the buttons and the entry box is returned.
-     *  @param numbuttons The number of buttons to create.
+     *  @param numButtons The number of buttons to create.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel controlPanel = super._createRunControls(numbuttons);
+    protected Panel _createRunControls(int numButtons) {
+        Panel controlPanel = super._createRunControls(numButtons);
 
-        if (numbuttons > 2) {
+        if (numButtons > 2) {
             Button layout = new Button("Layout");
             controlPanel.add(layout);
             layout.addActionListener(new LayoutListener());
