@@ -169,7 +169,8 @@ public class HDFDirector extends SDFDirector {
      *  @exception InvalidStateException If this director does not have a
      *  container.
      */
-    public void fire() throws IllegalActionException {
+    /*
+     public void fire() throws IllegalActionException {
 	if (_debug_info) { 
 	    System.out.println(getName() + " : fire() invoked.");
 	}
@@ -237,7 +238,7 @@ public class HDFDirector extends SDFDirector {
             }
         }
     }
-
+    */
 
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
