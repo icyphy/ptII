@@ -47,15 +47,21 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	ParamTest.java 
+	EntityTest.java \
+	ParamTest.java \
+	RelationTest.java 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	CompositeEntity.tcl \
 	CrossRefList.tcl \
+	Entity.tcl \
+	HierEntity.tcl \
 	IntParam.tcl \
 	NamedObj.tcl \
 	NamedObjList.tcl \
-	ParamList.tcl
+	ParamList.tcl \
+	Relation.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
