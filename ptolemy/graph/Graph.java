@@ -1186,6 +1186,38 @@ public class Graph implements Cloneable {
         return result.toString();
     }
 
+    /** Return true if the given object is a valid edge weight for this graph.
+     *  An object is a valid edge weight if it is meaningful to assign it as
+     *  an edge weight in this type of graph.
+     *  If the given object is null this method returns true if it is valid
+     *  to have an unweighted edge in this type of graph.
+     *  This base class method returns true unconditionally, even if the
+     *  given object is null. In derived classes, the method should be 
+     *  overridden to take into account any restrictions on edge weights.
+     *  @param object The given object.
+     *  @return True if if the given object is a valid edge weight for this 
+     *  graph.
+     */
+    boolean validEdgeWeight(Object object) {
+        return true;
+    }
+
+    /** Return true if the given object is a valid node weight for this graph.
+     *  An object is a valid node weight if it is meaningful to assign it as
+     *  a node weight in this type of graph.
+     *  If the given object is null this method returns true if it is valid
+     *  to have an unweighted node in this type of graph.
+     *  This base class method returns true unconditionally, even if the
+     *  given object is null. In derived classes, the method should be 
+     *  overridden to take into account any restrictions on node weights.
+     *  @param object The given object.
+     *  @return True if if the given object is a valid node weight for this 
+     *  graph.
+     */
+    boolean validNodeWeight(Object object) {
+        return true;
+    }
+
     /** Given a collection of graph elements (nodes and edges), return an array
      * of weights associated with these elements.
      * If a weight is common across multiple elements in
@@ -1345,11 +1377,23 @@ public class Graph implements Cloneable {
 
     /** Register a new edge in the graph. The edge is assumed to
      *  be non-null, unique, and consistent with the node set.
-     *  Derived classes can override this method to first check that
-     *  the edge weight is meaningful in the context of the graph.
+     *  This method performs updates of internal
+     *  data structures that are required for every edge that is added
+     *  to the graph.
+     *  Derived classes can override this method to perform additional updates
+     *  of internal data structures.
      *  @param edge The new edge.
+     *  @exception RuntimeException if the weight of the given edge is
+     *  not valid, as determined by {@link #validEdgeWeight(Object)}.
+     *  @see #_registerNode(Node).
      */
     protected void _registerEdge(Edge edge) {
+        Object weight = edge.hasWeight() ? edge.weight() : null;
+        if (!validEdgeWeight(weight)) {
+            throw new RuntimeException("Invalid edge weight. The offending "
+                    + "weight: " + ((weight == null) ? "null\n" : 
+                    ("\n" + weight.toString() + "\n")));
+        }
         _edges.add(edge);
         _connect(edge, edge.source());
         if (!edge.isSelfLoop()) {
@@ -1358,10 +1402,10 @@ public class Graph implements Cloneable {
         if (edge.hasWeight()) {
             ArrayList sameWeightList;
             try {
-                sameWeightList = _sameWeightEdges(edge.weight());
+                sameWeightList = _sameWeightEdges(weight);
             } catch (Exception exception) {
                 sameWeightList = new ArrayList();
-                _edgeWeightMap.put(edge.weight(), sameWeightList);
+                _edgeWeightMap.put(weight, sameWeightList);
             }
             sameWeightList.add(edge);
         }
@@ -1369,21 +1413,32 @@ public class Graph implements Cloneable {
     }
 
     /** Register a new node in the graph. The node is assumed to
-     *  be non-null and unique.
-     *  Derived classes can override this method to first check that
-     *  the node weight is meaningful in the context of the graph.
+     *  be non-null and unique. This method performs updates of internal
+     *  data structures that are required for every node that is added
+     *  to the graph.
+     *  Derived classes can override this method to perform additional updates
+     *  of internal data structures. 
      *  @param node The new node.
+     *  @exception RuntimeException if the weight of the given node is
+     *  not valid, as determined by {@link #validNodeWeight(Object)}.
+     *  @see #_registerEdge(Node).
      */
     protected void _registerNode(Node node) {
+        Object weight = node.hasWeight() ? node.weight() : null;
+        if (!validNodeWeight(weight)) {
+            throw new RuntimeException("Invalid node weight. The offending "
+                    + "weight: " + ((weight == null) ? "null\n" : 
+                    ("\n" + weight.toString() + "\n")));
+        }
         _nodes.add(node);
         _incidentEdgeMap.put(node, new ArrayList());
         if (node.hasWeight()) {
             ArrayList sameWeightList;
             try {
-                sameWeightList = _sameWeightNodes(node.weight());
+                sameWeightList = _sameWeightNodes(weight);
             } catch (Exception exception) {
                 sameWeightList = new ArrayList();
-                _nodeWeightMap.put(node.weight(), sameWeightList);
+                _nodeWeightMap.put(weight, sameWeightList);
             }
             sameWeightList.add(node);
         }
