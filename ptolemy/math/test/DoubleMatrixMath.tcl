@@ -79,6 +79,60 @@ proc javaPrintArray {javaArrayObj} {
 # set VERBOSE 1
 
 ####################################################################
+test DoubleMatrixMath-0.5.1 {applyBinaryOperation DoubleBinaryOperation double double[][]} {
+    set dbo [java::new ptolemy.math.test.TestDoubleBinaryOperation]
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {applyBinaryOperation ptolemy.math.DoubleBinaryOperation double double[][]} $dbo -1.7 $m3]
+
+    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+
+    ptclose $stmp {{{-5.4 4.9 -1.7003} {-4863.9 -237.8 34.55} {54.7 24.6 -6.6}}}
+} {1}
+
+####################################################################
+test DoubleMatrixMath-0.5.2 {applyBinaryOperation DoubleBinaryOperation double[][] double} {
+    set dbo [java::new ptolemy.math.test.TestDoubleBinaryOperation]
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {applyBinaryOperation ptolemy.math.DoubleBinaryOperation double[][] double} $dbo $m3 -1.7]
+
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    ptclose $stmp {{{5.4 -4.9 1.7003} {4863.9 237.8 -34.55} {-54.7 -24.6 6.6}}}
+} {1}
+
+####################################################################
+test DoubleMatrixMath-0.5.3.1 {applyBinaryOperation DoubleBinaryOperation double[][] double[][]} {
+    set dbo [java::new ptolemy.math.test.TestDoubleBinaryOperation]
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {applyBinaryOperation ptolemy.math.DoubleBinaryOperation double[][] double[][]} $dbo $m3 $m3_2]
+
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{6.9 0.0 -6.2997} {4862.1 227.1 -31.0} {-90.6 -52.5 -0.2}}}
+} {}
+
+####################################################################
+test DoubleMatrixMath-0.5.3.2 {applyBinaryOperation DoubleBinaryOperation double[][] double[][] with matrices that are different sizes} {
+    set dbo [java::new ptolemy.math.test.TestDoubleBinaryOperation]
+    catch { set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {applyBinaryOperation ptolemy.math.DoubleBinaryOperation double[][] double[][]} $dbo $m3 $m23]} errMsg
+    set errMsg
+} {java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.applyBinaryOperation() : one matrix [3 x 3] is not the same size as another matrix [2 x 3].}
+
+####################################################################
+test DoubleMatrixMath-0.6.1 {applyUnaryOperation DoubleUnaryOperation double[][]} {
+    set duo [java::new ptolemy.math.test.TestDoubleUnaryOperation]
+    set mr [java::call ptolemy.math.DoubleMatrixMath \
+	    {applyUnaryOperation ptolemy.math.DoubleUnaryOperation double[][] } $duo $m23]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    
+    epsilonDiff $stmp {{{-3.7 6.6 -3.0E-4} {-4862.2 -236.1 36.25}}}
+} {}
+
+####################################################################
 test DoubleMatrixMath-1.1 {add double[][] double} {
     set mr [java::call ptolemy.math.DoubleMatrixMath {add double[][] double} $m1 -1.7]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
@@ -93,7 +147,7 @@ test DoubleMatrixMath-1.2 {add double[][] double} {
 } {{{3.95, -6.35, 0.2503}, {4862.45, 236.35, -36.0}}}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {add double[][] double[][] not same size} {
+test DoubleMatrixMath-1.3 {add double[][] double[][] not same size} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath add $m23 $m3]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.add() : one matrix [2 x 3] is not the same size as another matrix [3 x 3].}}
@@ -118,14 +172,14 @@ test DoubleMatrixMath-2.2 {determinate double[][]} {
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {divideElements double[][] double[][] not same size} {
+test DoubleMatrixMath-3.1 {divideElements double[][] double[][] not same size} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath divideElements \
            $m32 $m3]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.divideElements() : one matrix [3 x 2] is not the same size as another matrix [3 x 3].}}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {divideElements double[][] double[][]} {
+test DoubleMatrixMath-3.1 {divideElements double[][] double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath divideElements $m23 $m23_2]
    set mt [java::new {double[][]} 2 [list [list -1.15625 1.0 4.76190476190476E-5] [list 48622.0 26.2333333333333 6.90476190476191]]]
    set ok [java::call ptolemy.math.DoubleMatrixMath \
@@ -133,31 +187,31 @@ test DoubleMatrixMath-1.1 {divideElements double[][] double[][]} {
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-3.1 {identity int 1} {
+test DoubleMatrixMath-4.1 {identity int 1} {
    set mr [java::call ptolemy.math.DoubleMatrixMath identity 1]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{1.0}}}
 
 ####################################################################
-test DoubleMatrixMath-3.2 {identity int 2} {
+test DoubleMatrixMath-4.2 {identity int 2} {
    set mr [java::call ptolemy.math.DoubleMatrixMath identity 2]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{1.0, 0.0}, {0.0, 1.0}}}
 
 ####################################################################
-test DoubleMatrixMath-3.3 {identity int 3} {
+test DoubleMatrixMath-4.3 {identity int 3} {
    set mr [java::call ptolemy.math.DoubleMatrixMath identity 3]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}}
 
 ####################################################################
-test DoubleMatrixMath-4.1 {inverse double[][] not square} {
+test DoubleMatrixMath-5.1 {inverse double[][] not square} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath inverse $m23]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.inverse() : matrix argument [2 x 3] is not a square matrix.}}
 
 ####################################################################
-test DoubleMatrixMath-4.2 {inverse double[][]} {
+test DoubleMatrixMath-5.2 {inverse double[][]} {
     set mr [java::call ptolemy.math.DoubleMatrixMath inverse $m3]
     set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
     # Get rid of trailing ,
@@ -167,7 +221,7 @@ test DoubleMatrixMath-4.2 {inverse double[][]} {
 
 
 ####################################################################
-test DoubleMatrixMath-1.1 {multiply double[][] double[][]} {
+test DoubleMatrixMath-6.1 {multiply double[][] double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath multiply $m32 $m23_2]
    set mt [java::new {double[][]} 3 [list [list -12.5 -83.82 57.96] \
        [list -15535.43 -29965.62 29392.335] [list 177.85 135.54 -217.245]]] 
@@ -176,13 +230,13 @@ test DoubleMatrixMath-1.1 {multiply double[][] double[][]} {
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {multiplyElements double[][] double[][] not same size} {
+test DoubleMatrixMath-6.2 {multiplyElements double[][] double[][] not same size} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath multiplyElements $m3 $m23]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.multiplyElements() : one matrix [3 x 3] is not the same size as another matrix [2 x 3].}}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {multiplyElements double[][] double[][]} {
+test DoubleMatrixMath-6.3 {multiplyElements double[][] double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath multiplyElements $m23 $m23_2]
    set mt [java::new {double[][]} 2 [list [list -11.84 43.56 0.00189] \
 	   [list 486.22 2124.9 190.3125]]]
@@ -191,19 +245,19 @@ test DoubleMatrixMath-1.1 {multiplyElements double[][] double[][]} {
 } {1}
  
 ####################################################################
-test DoubleMatrixMath-4.3 {negative double[][]} {
+test DoubleMatrixMath-7.1 {negative double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath negative $m23]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{-3.7, 6.6, -3.0E-4}, {-4862.2, -236.1, 36.25}}}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {subtract double[][] double[][] not same size} {
+test DoubleMatrixMath-8.1 {subtract double[][] double[][] not same size} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath subtract $m32 $m3]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.subtract() : one matrix [3 x 2] is not the same size as another matrix [3 x 3].}}
 
 ####################################################################
-test DoubleMatrixMath-5.1 {subtract double[][] double[][]} {
+test DoubleMatrixMath-8.2 {subtract double[][] double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath subtract $m23 $m23_2]
    set mt [java::new {double[][]} 2 [list [list 6.9 0.0 -6.2997] \
                                     [list 4862.1 227.1 -31.0]]] 
@@ -212,33 +266,33 @@ test DoubleMatrixMath-5.1 {subtract double[][] double[][]} {
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-1.1 {fromMatrixToArray double[][] int int} {
+test DoubleMatrixMath-9.1 {fromMatrixToArray double[][] int int} {
    set ar [java::call ptolemy.math.DoubleMatrixMath fromMatrixToArray $m23 2 3]
    set ok [java::call ptolemy.math.DoubleArrayMath \
    {within double[] double[] double} $ar $a12 0]
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-6.1 {toMatrixFromArray double[][] int int} {
+test DoubleMatrixMath-9.2 {toMatrixFromArray double[][] int int} {
    set mr [java::call ptolemy.math.DoubleMatrixMath toMatrixFromArray $a12 2 3]
    set ok [java::call ptolemy.math.DoubleMatrixMath \
    {within double[][] double[][] double} $mr $m23 0]
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-7.1 {trace double[][] not square} {
+test DoubleMatrixMath-10.1 {trace double[][] not square} {
     catch {set r [java::call ptolemy.math.DoubleMatrixMath trace $m23]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.trace() : matrix argument [2 x 3] is not a square matrix.}}
 
 ####################################################################
-test DoubleMatrixMath-7.2 {trace double[][]} {
+test DoubleMatrixMath-10.2 {trace double[][]} {
    set r [java::call ptolemy.math.DoubleMatrixMath trace $m3]
    set ok [java::call ptolemy.math.SignalProcessing close $r 244.7]
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-8.1 {transpose double[][]} {
+test DoubleMatrixMath-11.1 {transpose double[][]} {
    set mr [java::call ptolemy.math.DoubleMatrixMath transpose $m23]
    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{3.7, 4862.2}, {-6.6, 236.1}, {3.0E-4, -36.25}}}

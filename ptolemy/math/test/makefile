@@ -46,7 +46,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-
+	TestDoubleBinaryOperation.java \
+	TestDoubleUnaryOperation.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
