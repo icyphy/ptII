@@ -199,6 +199,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
                     break;
                 }
             }
+            break;
         case MouseEvent.MOUSE_DRAGGED:
             if (_currentInteractor != null) {
                 _currentInteractor.mouseDragged(event);
