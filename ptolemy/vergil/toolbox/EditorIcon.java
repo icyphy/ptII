@@ -65,7 +65,7 @@ The icon consists of a background figure, created by the
 createBackgroundFigure() method, and a decorated version, created
 by the createFigure() method.  The decorated version has, in this
 base class, a label showing the name of the entity, unless the entity
-contains an attribute called "_suppressName".  The swing icon created
+contains an attribute called "_hideName".  The swing icon created
 by createIcon() does not include the decorations, but rather is only
 the background figure.  In this base class, the background figure is
 a simple white box.
@@ -116,7 +116,7 @@ public class EditorIcon extends Attribute implements NotPersistent {
      *  figure returned by createBackgroundFigure() as its background.
      *  This method adds a LabelFigure to the CompositeFigure that
      *  contains the name of the container of this icon, unless the
-     *  container has an attribute called "_suppressName".
+     *  container has an attribute called "_hideName".
      *  This method should never return null, even if the icon has
      *  not been properly initialized.
      *  @return A new CompositeFigure consisting of the background figure
@@ -131,7 +131,7 @@ public class EditorIcon extends Attribute implements NotPersistent {
         // which typically carries no label.
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
-        if(container.getAttribute("_suppressName") == null) {
+        if(container.getAttribute("_hideName") == null) {
             LabelFigure label = new LabelFigure(container.getName(),
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             // Shift the label slightly right so it doesn't collide with ports.
