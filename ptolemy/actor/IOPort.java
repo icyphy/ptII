@@ -34,6 +34,7 @@ createReceivers creates inside receivers based solely on insideWidth, and
    outsideReceivers based solely on outside width.
 connectionsChanged: no longer validates the attributes of this port.  This is
    now done in Manager.initialize().
+Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
 */
 
 package ptolemy.actor;
@@ -342,6 +343,8 @@ public class IOPort extends ComponentPort {
         newObject._insideOutputVersion = -1;
         newObject._width = 0;
         newObject._widthVersion = -1;
+        newObject._insideWidth = 0;
+        newObject._insideWidthVersion = -1;
         newObject._farReceivers = null;
         newObject._farReceiversVersion = -1;
         newObject._localReceivers = null;
@@ -666,35 +669,41 @@ public class IOPort extends ComponentPort {
             throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
         try {
-            try {
-                _workspace.getReadAccess();
-                // Note that the getReceivers() method might throw an
-                // IllegalActionException if there's no director.
-                localReceivers = getReceivers();
-                if (localReceivers[channelIndex] == null) {
-                    throw new NoTokenException(this,
-                            "get: no receiver at index: "
-                            + channelIndex + ".");
-                }
-            } finally {
-                _workspace.doneReading();
-            }
-            Token token = null;
-            for (int j = 0; j < localReceivers[channelIndex].length; j++) {
-                Token localToken = localReceivers[channelIndex][j].get();
-                if (token == null) {
-                    token = localToken;
+            _workspace.getReadAccess();
+            // Note that the getReceivers() method might throw an
+            // IllegalActionException if there's no director.
+            localReceivers = getReceivers();
+            if (channelIndex >= localReceivers.length) {
+                if (!isInput()) {
+                    throw new IllegalActionException(this,
+                            "Port is not an input port!");
+                } else { 
+                    throw new IllegalActionException(this,
+                            "Channel index " + channelIndex 
+                            + " is out of range, because width is only " 
+                            + getWidth() + ".");
                 }
             }
-            if (token == null) {
-                throw new NoTokenException(this, "get: No token to return.");
+            
+            if (localReceivers[channelIndex] == null) {
+                throw new NoTokenException(this,
+                        "No receiver at index: "
+                        + channelIndex + ".");
             }
-            return token;
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may be thrown if the port is not an input port.
-            throw new IllegalActionException(this,
-                    "get: channel index is out of range.");
+        } finally {
+            _workspace.doneReading();
         }
+        Token token = null;
+        for (int j = 0; j < localReceivers[channelIndex].length; j++) {
+            Token localToken = localReceivers[channelIndex][j].get();
+            if (token == null) {
+                token = localToken;
+            }
+        }
+        if (token == null) {
+            throw new NoTokenException(this, "No token to return.");
+        }
+        return token;
     }
 
     /** Get an array of tokens from the specified channel. The
@@ -807,6 +816,69 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Get a token from the specified inside channel of this port.
+     *  If the channel has a group with more than one receiver
+     *  (something that is possible if this is a transparent port),
+     *  then this method calls get() on all receivers, but returns
+     *  only the first non-null token returned by these calls.
+     *  Normally this method is not used on transparent ports.  If
+     *  there is no token to return, then throw an exception.  This
+     *  method is usually called only by the director of a composite
+     *  actor during transferOutputs, as atomic actors do not normally
+     *  have relations connected on the inside of their ports.
+     *
+     *  <p> Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a
+     *  get, it is important that the thread does not hold read access
+     *  on the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling get.
+     *
+     *  @param channelIndex The channel index.
+     *  @return A token from the specified channel.
+     *  @exception NoTokenException If there is no token.
+     *  @exception IllegalActionException If there is no director, and hence
+     *   no receivers have been created, if the port is not an output port, or
+     *   if the channel index is out of range.
+     */
+    public Token getInside(int channelIndex)
+            throws NoTokenException, IllegalActionException {
+        Receiver[][] localReceivers;
+        try {
+            _workspace.getReadAccess();
+            // Note that the getInsideReceivers() method might throw an
+            // IllegalActionException if there's no director.
+            localReceivers = getInsideReceivers();
+            if (channelIndex >= localReceivers.length) {
+                if (!isOutput()) {
+                    throw new IllegalActionException(this,
+                            "Port is not an output port!");
+                } else {
+                    throw new IllegalActionException(this,
+                            "Channel index " + channelIndex +
+                            " is out of range, because inside width is only " 
+                            + getWidthInside() + ".");
+                }
+            }
+            if (localReceivers[channelIndex] == null) {
+                throw new NoTokenException(this,
+                        "No receiver at inside index: "
+                        + channelIndex + ".");
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        Token token = null;
+        for (int j = 0; j < localReceivers[channelIndex].length; j++) {
+            Token localToken = localReceivers[channelIndex][j].get();
+            if (token == null) {
+                token = localToken;
+            }
+        }
+        if (token == null) {
+            throw new NoTokenException(this, "No token to return.");
+        }
+        return token;
+    }
 
     /** If the port is an opaque output port, return the receivers that
      *  receive data from all inside linked relations.
@@ -835,19 +907,14 @@ public class IOPort extends ComponentPort {
             }
 
             // Have to compute the _inside_ width.
-            int width = 0;
-            Iterator relations = insideRelationList().iterator();
-            while (relations.hasNext()) {
-                IORelation relation = (IORelation) relations.next();
-                width += relation.getWidth();
-            }
+            int width = getWidthInside();
 
             if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
 
             // Cache not valid.  Reconstruct it.
             _localInsideReceivers = new Receiver[width][0];
             int index = 0;
-            relations = insideRelationList().iterator();
+            Iterator relations = insideRelationList().iterator();
 
             // NOTE: Have to be careful here to keep track of the
             // occurrence number of the receiver.
@@ -1276,6 +1343,37 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return the inside width of this port.  The inside width is the
+     *  sum of the widths of the relations that the port is linked to
+     *  on the inside.  This method is read-synchronized on the
+     *  workspace.
+     *
+     *  @return The width of the inside of the port.
+     */
+    public int getWidthInside() {
+        try {
+            _workspace.getReadAccess();
+            long version = _workspace.getVersion();
+            if (_insideWidthVersion != version) {
+                _insideWidthVersion = version;
+                int sum = 0;
+                Iterator relations = insideRelationList().iterator();
+                while (relations.hasNext()) {
+                    IORelation relation = (IORelation) relations.next();
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (relation != null) {
+                        sum += relation.getWidth();
+                    }
+                }
+                _insideWidth = sum;
+            }
+            return _insideWidth;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Return true if the specified channel can accept a token via the
      *  put() method.  If this port is not an output, or the channel index
      *  is out of range, then throws IllegalActionException.  If there
@@ -1305,6 +1403,37 @@ public class IOPort extends ComponentPort {
         return true;
     }
 
+    /** Return true if the specified channel can accept a token via
+     *  the putInside() method.  If this port is not an input, or the
+     *  channel index is out of range, then throw
+     *  IllegalActionException.  If there are multiple receivers in
+     *  the group associated with the channel, then return true only
+     *  if all the receivers can accept a token.
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not
+     *  support this query, if this is not an input port, or if the
+     *  channel index is out of range.
+     */
+    public boolean hasRoomInside(int channelIndex) 
+            throws IllegalActionException {
+        try {
+            Receiver[][] farReceivers = getInsideReceivers();
+            if (farReceivers == null || farReceivers[channelIndex] == null) {
+                return false;
+            }
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                if (!farReceivers[channelIndex][j].hasRoom()) return false;
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This might be thrown if the port is not an output port.
+            throw new IllegalActionException(this,
+                    "hasRoom: channel index is out of range.");
+        }
+        return true;
+    }
+
     /** Return true if the specified channel has a token to deliver
      *  via the get() method.  If this port is not an input, or if the
      *  channel index is out of range, then throw an exception.
@@ -1320,21 +1449,65 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex) throws IllegalActionException {
-        try {
-            // The getReceivers() method throws an IllegalActionException if
-            // there's no director.
-            Receiver[][] receivers = getReceivers();
-            if (receivers == null || receivers[channelIndex] == null) {
-                return false;
+        // The getReceivers() method throws an IllegalActionException if
+        // there's no director.
+        Receiver[][] receivers = getReceivers();
+        if (channelIndex >= receivers.length) {
+            if (!isInput()) {
+                throw new IllegalActionException(this,
+                        "Port is not an input port!");
+            } else { 
+                throw new IllegalActionException(this,
+                        "Channel index " + channelIndex 
+                        + " is out of range, because width is only " 
+                        + getWidth() + ".");
             }
-            for (int j = 0; j < receivers[channelIndex].length; j++) {
-                if (receivers[channelIndex][j].hasToken()) return true;
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This might be thrown if the port is not an input port.
-            throw new IllegalActionException(this,
-                    "hasToken: channel index is out of range.");
         }
+        if (receivers == null || receivers[channelIndex] == null) {
+            return false;
+        }
+        for (int j = 0; j < receivers[channelIndex].length; j++) {
+            if (receivers[channelIndex][j].hasToken()) return true;
+        }
+        return false;
+    }
+
+    /** Return true if the specified channel has a token to deliver
+     *  via the getInside() method.  If this port is not an output, or
+     *  if the channel index is out of range, then throw an exception.
+     *  Note that this does not report any tokens in receivers of an
+     *  input port.
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an output port, or if the channel index is out
+     *   of range.
+     */
+    public boolean hasTokenInside(int channelIndex)
+            throws IllegalActionException {
+        // The getInsideReceivers() method throws an
+        // IllegalActionException if there's no director.
+        Receiver[][] receivers = getInsideReceivers();
+        if (channelIndex >= receivers.length) {
+            if (!isOutput()) {
+                throw new IllegalActionException(this,
+                        "Port is not an output port!");
+            } else {
+                throw new IllegalActionException(this,
+                        "Channel index " + channelIndex +
+                        " is out of range, because inside width is only " 
+                        + getWidthInside() + ".");
+            }
+        }
+        if (receivers == null || receivers[channelIndex] == null) {
+            return false;
+        }
+        for (int j = 0; j < receivers[channelIndex].length; j++) {
+            if (receivers[channelIndex][j].hasToken()) return true;
+        }
+    
         return false;
     }
 
@@ -1459,7 +1632,7 @@ public class IOPort extends ComponentPort {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the inside
                 // is an input.
-                _isInput = false;  // By default we are not an output port.
+                _isInput = false;  // By default we are not an input port.
                 Iterator ports = deepInsidePortList().iterator();
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
@@ -1633,7 +1806,7 @@ public class IOPort extends ComponentPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void  send(int channelIndex, Token token)
+    public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         try {
@@ -1642,6 +1815,57 @@ public class IOPort extends ComponentPort {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                farReceivers[channelIndex][j].put(token);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
+        }
+    }
+
+    /** Send the specified token to all receivers connected to the
+     *  specified inside channel of this port.  Tokens are in general
+     *  immutable, so each receiver is given a reference to the same
+     *  token and no clones are made.  If the port is not connected to
+     *  anything on the inside, or receivers have not been created in
+     *  the remote port, or the channel index is out of range, or the
+     *  port is not an input port, then just silently return.  This
+     *  behavior makes it easy to leave external input ports of a
+     *  composite unconnected when you are not interested in the
+     *  received values.  The transfer is accomplished by calling the
+     *  put() method of the inside remote receivers.  If the port is
+     *  not connected to anything, or receivers have not been created
+     *  in the remote port, then just return.  This method is normally
+     *  called only by the transferInputs method of directors of
+     *  composite actors, as AtomicActors do not usually have any
+     *  relations on the inside of their ports.
+     *
+     *  <p> Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a
+     *  put, it is important that the thread does not hold read access
+     *  on the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @param token The token to send
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void sendInside(int channelIndex, Token token)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farReceivers = deepGetReceivers();
                 if (farReceivers == null ||
                         farReceivers[channelIndex] == null) return;
             } finally {
@@ -1899,6 +2123,37 @@ public class IOPort extends ComponentPort {
 	}
     }
 
+    /** Return a list of the ports connected to this port on the
+     *  inside that can accept data from this port.  This include
+     *  input ports that are connected on the outside to this port,
+     *  and output ports that are connected on the inside to this one.
+     *  If the port is an input port of an atomic actor, then return an
+     *  empty list.
+     *  @return A list of IOPort objects.
+     */
+    public List sinkPortListInside() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+            Director excDirector = ((Actor) container).getExecutiveDirector();
+            int depthOfDirector = excDirector.depthInHierarchy();
+            LinkedList result = new LinkedList();
+            Iterator ports = deepInsidePortList().iterator();
+            while (ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                int depth = ((NamedObj)port.getContainer()).depthInHierarchy();
+                if (port.isInput() && depth > depthOfDirector) {
+                    result.addLast(port);
+                } else if (port.isOutput() && depth <= depthOfDirector) {
+                    result.addLast(port);
+                }
+            }
+            return result;
+	} finally {
+	    _workspace.doneReading();
+	}
+    }
+
     /** Return a list of ports connected to this port on the
      *  outside that can send data to this port.  This includes
      *  output ports that are connected on the outside to this port,
@@ -1935,46 +2190,41 @@ public class IOPort extends ComponentPort {
      *  ignored. This method will transfer exactly one token on
      *  each input channel that has at least one token available.
      *
-     *  @exception IllegalActionException If this port is not an opaque
-     *   input port.
+     *  @exception IllegalActionException If this port is not an
+     *  opaque input port.
      *  @return True if at least one data token is transferred.
+     *  @deprecated Domains should use sendInside directly to
+     *  implement their transferInputs method.
      */
     public boolean transferInputs() throws IllegalActionException {
-        if (!this.isInput() || !this.isOpaque()) {
+        if (!isInput() || !isOpaque()) {
             throw new IllegalActionException(this,
                     "transferInputs: this port is not an opaque" +
                     "input port.");
         }
         boolean wasTransferred = false;
-        Receiver[][] insideReceivers = this.deepGetReceivers();
-        for (int i = 0; i < this.getWidth(); i++) {
-	    // NOTE: tokens on a channel are consumed only if the
-	    // corresponding inside receiver is not null. This behavior
-	    // should be OK for all of the current domains.
-            if (insideReceivers != null && insideReceivers[i] != null) {
-                try {
-                    if (this.isKnown(i)) {
-                        if (this.hasToken(i)) {
-                            Token t = this.get(i);
-                            if (_debugging) _debug(getName(),
-                                    "transferring input from "
-                                    + this.getName());
-                            for (int j = 0; j < insideReceivers[i].length;
-                                 j++) {
-                                insideReceivers[i][j].put(t);
-                            }
-                            wasTransferred = true;
-                        } else {
-                            for (int j = 0; j < insideReceivers[i].length;
-                                 j++) {
-                                insideReceivers[i][j].setAbsent();
-                            }
-                        }
+        for (int i = 0; i < getWidth(); i++) {
+	    // NOTE: This is not compatible with certain cases in PN, 
+            // where we don't want to block on a port if nothing is connected
+            // to the port on the inside.
+            try {
+                if (isKnown(i)) {
+                    if (hasToken(i)) {
+                        Token t = get(i);
+                        if (_debugging) _debug(getName(),
+                                "transferring input from "
+                                + getName());
+                        sendInside(i, t);
+                        wasTransferred = true;
+                    } else {
+                        // FIXME: this breaks SR...
+                        throw new IllegalActionException(this,
+                                "transfer of Absent is not implemented.");
                     }
-                } catch (NoTokenException ex) {
-                    // this shouldn't happen.
-                    throw new InternalErrorException(this, ex, null);
                 }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
             }
         }
         return wasTransferred;
@@ -1988,8 +2238,10 @@ public class IOPort extends ComponentPort {
      *  each output channel that has at least one token available.
      *
      *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
+     *  output port.
      *  @return True if at least one data token is transferred.
+     *  @deprecated domains should use getInside directly to implement their
+     *  transferOutputs method.
      */
     public boolean transferOutputs() throws IllegalActionException {
         if (!this.isOutput() || !this.isOpaque()) {
@@ -1998,26 +2250,20 @@ public class IOPort extends ComponentPort {
                     "an opaque output port.");
         }
         boolean wasTransferred = false;
-        Receiver[][] insideReceivers = this.getInsideReceivers();
-        if (insideReceivers != null) {
-            for (int i = 0; i < insideReceivers.length; i++) {
-                if (insideReceivers[i] != null) {
-                    for (int j = 0; j < insideReceivers[i].length; j++) {
-                        try {
-                            if (insideReceivers[i][j].isKnown()) {
-                                if (insideReceivers[i][j].hasToken()) {
-                                    Token t = insideReceivers[i][j].get();
-                                    this.send(i, t);
-                                    wasTransferred = true;
-                                } else {
-                                    this.sendAbsent(i);
-                                }
-                            }
-                        } catch (NoTokenException ex) {
-                            throw new InternalErrorException(this, ex, null);
-                        }
-                    }
+        for (int i = 0; i < getWidthInside(); i++) {
+            try {
+                // Note: SR absent case not implemented.
+                //                if (isKnown(i)) {
+                    if (hasTokenInside(i)) {
+                        Token t = getInside(i);
+                        send(i, t);
+                        wasTransferred = true;
+              //       } else {
+//                         this.sendAbsent(i);
+//                     }
                 }
+            } catch (NoTokenException ex) {
+                throw new InternalErrorException(this, ex, null);
             }
         }
         return wasTransferred;
@@ -2429,15 +2675,16 @@ public class IOPort extends ComponentPort {
         super._exportMoMLContents(output, depth);
     }
 
-    /** Return the sums of the widths of the relations linked on the inside,
-     *  except the specified port.  If any of these relations has not had
-     *  its width specified, throw an exception.  This is used by IORelation
-     *  to infer the width of a bus with unspecified width and to determine
-     *  whether more than one relation with unspecified width is linked on the
-     *  inside, and by the liberalLink() method to check validity of the link.
-     *  If the argument is null, all relations linked on the inside are checked.
-     *  This method is not read-synchronized on the workspace, so the caller
-     *  should be.
+    /** Return the sums of the widths of the relations linked on the
+     *  inside, except the specified port.  If any of these relations
+     *  has not had its width specified, throw an exception.  This is
+     *  used by IORelation to infer the width of a bus with
+     *  unspecified width and to determine whether more than one
+     *  relation with unspecified width is linked on the inside, and
+     *  by the liberalLink() method to check validity of the link.  If
+     *  the argument is null, all relations linked on the inside are
+     *  checked.  This method is not read-synchronized on the
+     *  workspace, so the caller should be.
      *
      *  @param except The relation to exclude.
      */
@@ -2633,6 +2880,16 @@ public class IOPort extends ComponentPort {
     // The workspace version number on the last update of the _width.
     // 'transient' means that the variable will not be serialized.
     private transient long _widthVersion = -1;
+
+    // The cached inside width of the port, which is the sum of the
+    // widths of the inside relations.  The default 0 because
+    // initially there are no linked relations.  It is set or updated
+    // when getWidthInside() is called.  'transient' means that the
+    // variable will not be serialized.
+    private transient int _insideWidth = 0;
+    // The workspace version number on the last update of the _insideWidth.
+    // 'transient' means that the variable will not be serialized.
+    private transient long _insideWidthVersion = -1;
 
     // A cache of the deeply connected Receivers, and the versions.
     // 'transient' means that the variable will not be serialized.
