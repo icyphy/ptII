@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="annotation" class="ptolemy.kernel.util.Attribute">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">Double click to edit text.</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+  </property>
+  <!-- The following attribute specifies the context menu commands -->
+  <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
+  <!-- The following attribute makes the right editor open -->
+  <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+</property>
