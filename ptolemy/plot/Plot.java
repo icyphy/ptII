@@ -1436,14 +1436,10 @@ public class Plot extends PlotBox {
             int dataset, long xpos, long ypos,
             boolean clip) {
 
-        // FIXME: If the point is outside of range, and being drawn,
-        // then it is probably a legend point.  When printing, we probably
-        // want to use a line rather than a point for the legend.
-        // (So that line patterns are visible).  Should that be handled here?
-
         // If the point is not out of range, draw it.
-        if (!clip || (ypos <= _lry && ypos >= _uly &&
-                xpos <= _lrx && xpos >= _ulx)) {
+        boolean pointinside = ypos <= _lry && ypos >= _uly &&
+                xpos <= _lrx && xpos >= _ulx;
+        if (!clip || pointinside) {
             int xposi = (int)xpos;
             int yposi = (int)ypos;
 
@@ -1452,107 +1448,121 @@ public class Plot extends PlotBox {
             int marks = _marks;
             if (!fmt.marksUseDefault) marks = fmt.marks;
 
-            switch (marks) {
-            case 0:
-                // If no mark style is given, draw a filled rectangle.
-                // This is used, for example, to draw the legend.
-                graphics.fillRect(xposi-6, yposi-6, 6, 6);
-                break;
-            case 1:
-                // points -- use 3-pixel ovals.
-                graphics.fillOval(xposi-1, yposi-1, 3, 3);
-                break;
-            case 2:
-                // dots
-                graphics.fillOval(xposi-_radius, yposi-_radius,
-                        _diameter, _diameter);
-                break;
-            case 3:
-                // marks
-                int xpoints[], ypoints[];
-                // Points are only distinguished up to _MAX_MARKS data sets.
-                int mark = dataset % _MAX_MARKS;
-                switch (mark) {
+            // If the point is out of range, and being drawn, then it is
+            // probably a legend point.  When printing in black and white,
+            // we want to use a line rather than a point for the legend.
+            // (So that line patterns are visible). The only exception is
+            // when the marks style uses distinct marks, or if there is
+            // no line being drawn.
+            // NOTE: It is unfortunate to have to test the class of graphics,
+            // but there is no easy way around this that I can think of.
+            if (!pointinside && marks != 3 && _connected &&
+                    (graphics instanceof EPSGraphics)) {
+                graphics.drawLine(xposi-6, yposi, xposi+6, yposi);
+            } else {
+                // Color display.  Use normal legend.
+                switch (marks) {
                 case 0:
-                    // filled circle
-                    graphics.fillOval(xposi-_radius, yposi-_radius,
-                            _diameter, _diameter);
+                    // If no mark style is given, draw a filled rectangle.
+                    // This is used, for example, to draw the legend.
+                    graphics.fillRect(xposi-6, yposi-6, 6, 6);
                     break;
                 case 1:
-                    // cross
-                    graphics.drawLine(xposi-_radius, yposi-_radius,
-                            xposi+_radius, yposi+_radius);
-                    graphics.drawLine(xposi+_radius, yposi-_radius,
-                            xposi-_radius, yposi+_radius);
+                    // points -- use 3-pixel ovals.
+                    graphics.fillOval(xposi-1, yposi-1, 3, 3);
                     break;
                 case 2:
-                    // square
-                    graphics.drawRect(xposi-_radius, yposi-_radius,
-                            _diameter, _diameter);
+                    // dots
+                    graphics.fillOval(xposi-_radius, yposi-_radius,
+                    _diameter, _diameter);
                     break;
                 case 3:
-                    // filled triangle
-                    xpoints = new int[4];
-                    ypoints = new int[4];
-                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                    xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
-                    xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
-                    xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                    graphics.fillPolygon(xpoints, ypoints, 4);
+                    // marks
+                    int xpoints[], ypoints[];
+                    // Points are only distinguished up to _MAX_MARKS data sets.
+                    int mark = dataset % _MAX_MARKS;
+                    switch (mark) {
+                    case 0:
+                        // filled circle
+                        graphics.fillOval(xposi-_radius, yposi-_radius,
+                        _diameter, _diameter);
+                        break;
+                    case 1:
+                        // cross
+                        graphics.drawLine(xposi-_radius, yposi-_radius,
+                        xposi+_radius, yposi+_radius);
+                        graphics.drawLine(xposi+_radius, yposi-_radius,
+                        xposi-_radius, yposi+_radius);
+                        break;
+                    case 2:
+                        // square
+                        graphics.drawRect(xposi-_radius, yposi-_radius,
+                        _diameter, _diameter);
+                        break;
+                    case 3:
+                        // filled triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                        graphics.fillPolygon(xpoints, ypoints, 4);
+                        break;
+                    case 4:
+                        // diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                        graphics.drawPolygon(xpoints, ypoints, 5);
+                        break;
+                    case 5:
+                        // circle
+                        graphics.drawOval(xposi-_radius, yposi-_radius,
+                        _diameter, _diameter);
+                        break;
+                    case 6:
+                        // plus sign
+                        graphics.drawLine(xposi, yposi-_radius, xposi,
+                        yposi+_radius);
+                        graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
+                        yposi);
+                        break;
+                    case 7:
+                        // filled square
+                        graphics.fillRect(xposi-_radius, yposi-_radius,
+                        _diameter, _diameter);
+                        break;
+                    case 8:
+                        // triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                        graphics.drawPolygon(xpoints, ypoints, 4);
+                        break;
+                    case 9:
+                        // filled diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                        graphics.fillPolygon(xpoints, ypoints, 5);
+                        break;
+                    }
                     break;
-                case 4:
-                    // diamond
-                    xpoints = new int[5];
-                    ypoints = new int[5];
-                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                    xpoints[1] = xposi+_radius; ypoints[1] = yposi;
-                    xpoints[2] = xposi; ypoints[2] = yposi+_radius;
-                    xpoints[3] = xposi-_radius; ypoints[3] = yposi;
-                    xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                    graphics.drawPolygon(xpoints, ypoints, 5);
-                    break;
-                case 5:
-                    // circle
-                    graphics.drawOval(xposi-_radius, yposi-_radius,
-                            _diameter, _diameter);
-                    break;
-                case 6:
-                    // plus sign
-                    graphics.drawLine(xposi, yposi-_radius, xposi,
-                            yposi+_radius);
-                    graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
-                            yposi);
-                    break;
-                case 7:
-                    // filled square
-                    graphics.fillRect(xposi-_radius, yposi-_radius,
-                            _diameter, _diameter);
-                    break;
-                case 8:
-                    // triangle
-                    xpoints = new int[4];
-                    ypoints = new int[4];
-                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                    xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
-                    xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
-                    xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                    graphics.drawPolygon(xpoints, ypoints, 4);
-                    break;
-                case 9:
-                    // filled diamond
-                    xpoints = new int[5];
-                    ypoints = new int[5];
-                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                    xpoints[1] = xposi+_radius; ypoints[1] = yposi;
-                    xpoints[2] = xposi; ypoints[2] = yposi+_radius;
-                    xpoints[3] = xposi-_radius; ypoints[3] = yposi;
-                    xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                    graphics.fillPolygon(xpoints, ypoints, 5);
-                    break;
+                    default:
+                    // none
                 }
-                break;
-            default:
-                // none
             }
         }
     }
@@ -1882,7 +1892,7 @@ public class Plot extends PlotBox {
             _sawfirstdataset = true;
             _currentdataset++;
         }
-        if (getLegend(_currentdataset) == null) {
+        if (! _sawfirstdataset && getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
             _firstinset = true;
