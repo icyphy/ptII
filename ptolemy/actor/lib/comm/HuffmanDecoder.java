@@ -1,4 +1,4 @@
-/* Huffman Coder.
+/* Huffman Decoder.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
@@ -41,12 +41,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
 /** 
-   Given a probability distribution and alphabet, encode the input using
-   Huffman code and send the result in booleans to the output port. 
-   Its base class HuffmanBasic.java generates the code book.
-   The HuffmanCoder actor simply encode the input into the corresponding 
-   booleans in the code book.
-   @see HuffmanBasic.java
+   Given a probability distribution and the corresponding alphabet, 
+   decode the input using Huffman code and send the result to the output 
+   port. Its base class HuffmanBasic.java generates the code book.
+   The decoder simply decode the input according to this code book.
+   @see HuffmanBasic.java and HuffmanCoder.java.
     
    @author Rachel Zhou
    @version $Id$
@@ -54,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
-public class HuffmanCoder extends HuffmanBasic {
+public class HuffmanDecoder extends HuffmanBasic {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -65,15 +64,15 @@ public class HuffmanCoder extends HuffmanBasic {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HuffmanCoder(CompositeEntity container, String name)
+    public HuffmanDecoder(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // Declare port types.
         ArrayType alphabetArrayType = (ArrayType)alphabet.getType();
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
-        input.setTypeAtLeast(elementTerm);
-        output.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeAtLeast(elementTerm);
+        input.setTypeEquals(BaseType.BOOLEAN);
     }
 
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
@@ -87,44 +86,33 @@ public class HuffmanCoder extends HuffmanBasic {
             alphabetTokens[i] = alphabetArrayToken.getElement(i);
         }
         // Get the input token. Ready for output.
-        Token inputToken = (Token)input.get(0);
+        if (! input.hasToken(0) && !_code.equals(""))
+            throw new IllegalActionException(this,
+                "This is not a decodable code.");
+        BooleanToken inputToken = (BooleanToken)input.get(0);
+        if (inputToken.booleanValue())
+            _code = _code + "1";
+        else
+            _code = _code + "0";
         
-        // Find the token in the alphabet;
-        boolean validInput = false;
+        // Find the codeword in the code book.
         for (int i = 0; i < _pmf.length; i ++) {
-            if (inputToken.equals(alphabetTokens[i])) {
-                validInput = true;
-                _sendBooleans(_codeBook[i]);
+            if (_code.equals(_codeBook[i])) {
+                output.send(0, alphabetTokens[i]);
+                _code = "";
                 break;
             }
         }
-        // FIXME: If the input is not found in the alphabet,
-        // which means it's probability of occurence is zero,
-        // we might want to ignore it (or give a warning message.)
-        if (!validInput) {
-            throw new IllegalActionException(this,
-                "Input is not matched to the alphabet");
-        }
     }
     
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _code = "";
+    }
 
     ////////////////////////////////////////////////////////////
-    ////                   private methods                  ////
+    ////                   private variables                ////
     
-    /** Given a codeword, which should be a string of '0' and '1',
-     *  converted it to a sequence of booleans and send them to the
-     *  output port.
-     * @param codeword The string of codeword.
-     * @throws IllegalActionException If the output receiver throws it.
-     */
-    private void _sendBooleans(String codeword)
-        throws IllegalActionException {
-        for(int i=0; i < codeword.length(); i ++) {
-            if (codeword.charAt(i) == '1')
-                output.send(0, new BooleanToken(true));
-            else
-                output.send(0, new BooleanToken(false));
-        }
-    }
+    private String _code = "";
 
 }

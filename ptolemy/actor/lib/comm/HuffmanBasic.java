@@ -1,4 +1,4 @@
-/* Huffman Coder.
+/* Huffman code base class.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
@@ -49,12 +49,12 @@ import ptolemy.math.SignalProcessing;
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanBasic
 /** 
-   Given a probability distribution, encode the input using Huffman code
-   and send the result in booleans to the output port. The probability
-   distribution is given by the <i>pmf</i> parameter. The corresponding
-   alphabet is given by the <i>alphabet</i> parameter.
-   FIXME: It would be nice that the decoder can grab the codebook generated
-   by this encoder in some way.
+   Given a probability distribution, generate the Huffman code book.
+   The probability distribution is given by the <i>pmf</i> parameter. 
+   The corresponding alphabet is given by the <i>alphabet</i> parameter.
+   The code book is in a format of an array of strings, each string
+   consists of '0' and '1's. The code book is sent to the 
+   <i>huffmanCodeBook</i> output port.
     
    @author Rachel Zhou
    @version $Id$
@@ -264,6 +264,20 @@ public class HuffmanBasic extends Transformer {
         _parametersInvalid = true;
     }
 
+    //////////////////////////////////////////////////////////////
+    ////                     protected variables                ////
+
+    // The huffman code book.    
+    protected String[] _codeBook;
+    
+    // Flag that indicates if the parameters are invalid. If it is
+    // true, then a new code book needs to be generated.
+    protected boolean _parametersInvalid;
+    
+    // The probability mass function.
+    protected double[] _pmf;
+
+
     ////////////////////////////////////////////////////////////
     ////                   private methods                  ////
     
@@ -326,18 +340,5 @@ public class HuffmanBasic extends Transformer {
             }
         }
     }
-
-    //////////////////////////////////////////////////////////////
-    ////                     private variables                ////
-
-    // The huffman code book.    
-    protected String[] _codeBook;
     
-    // Flag that indicates if the parameters are invalid. If it is
-    // true, then a new code book needs to be generated.
-    protected boolean _parametersInvalid;
-    
-    // The probability mass function.
-    protected double[] _pmf;
-
 }

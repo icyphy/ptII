@@ -54,7 +54,9 @@ JSRCS = \
 	HadamardCode.java \
         HammingCoder.java \
         HammingDecoder.java \
+        HuffmanBasic.java \
         HuffmanCoder.java \
+        HuffmanDecoder.java \
         Scrambler.java \
 	Slicer.java \
 	TrellisDecoder.java \
