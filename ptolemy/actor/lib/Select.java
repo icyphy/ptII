@@ -31,7 +31,6 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -108,28 +107,12 @@ public class Select extends Transformer {
 
     /** Read an input token from the specified input channel and produce
      *  it on the output.
-     *  @exception IllegalActionException If there is no director, or if
-     *   the <i>select</i> input is out of range.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean enabled = false;
-        if (control.hasToken(0)) {
-            _channel = ((IntToken)control.get(0)).intValue();
-            enabled = true;
-        }
-        boolean inRange = false;
-        for (int i = 0; i < input.getWidth(); i++) {
-            inRange = inRange || (i == _channel);
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                if (enabled && i == _channel) {
-                    output.send(0, token);
-                }
-            }
-        }
-        if (!inRange) {
-            throw new IllegalActionException(this,
-                    "Select input is out of range: " + _channel + ".");
+        // Redo this check in case the control has changed since prefire().
+        if (input.hasToken(_control)) {
+            output.send(0, input.get(_control));
         }
     }
 
@@ -139,12 +122,32 @@ public class Select extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _channel = 0;
+        _control = 0;
+    }
+
+    /** Read a control token, if there is one, and check to see
+     *  whether an input is available on the input channel specified by
+     *  the most recent control token, if it is in range.
+     *  Return false if there is no input token to read.
+     *  Otherwise, return whatever the superclass returns.
+     *  @return True if the actor is ready to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (control.hasToken(0)) {
+            _control = ((IntToken)control.get(0)).intValue();
+        }
+        if (_control < 0
+                || _control > input.getWidth()
+                || !input.hasToken(_control)) {
+            return false;
+        }
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The most recently read control token.
-    private int _channel = 0;
+    private int _control = 0;
 }

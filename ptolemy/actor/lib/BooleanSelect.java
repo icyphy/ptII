@@ -33,7 +33,6 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -153,21 +152,14 @@ public class BooleanSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean enabled = false;
-        if (control.hasToken(0)) {
-            _control = ((BooleanToken)control.get(0)).booleanValue();
-            enabled = true;
-        }
-        if (trueInput.hasToken(0)) {
-            Token trueToken = trueInput.get(0);
-            if (enabled && _control) {
-                output.send(0, trueToken);
+        if (_control) {
+            // Redo this check in case the control has changed since prefire().
+            if (trueInput.hasToken(0)) {
+                output.send(0, trueInput.get(0));
             }
-        }
-        if (falseInput.hasToken(0)) {
-            Token falseToken = falseInput.get(0);
-            if (enabled && !_control) {
-                output.send(0, falseToken);
+        } else {
+            if (falseInput.hasToken(0)) {
+                output.send(0, falseInput.get(0));
             }
         }
     }
@@ -181,10 +173,30 @@ public class BooleanSelect extends TypedAtomicActor {
         _control = false;
     }
 
+    /** Return false if any input channel does not have a token.
+     *  Otherwise, return whatever the superclass returns.
+     *  @return False if there are not enough tokens to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (control.hasToken(0)) {
+            _control = ((BooleanToken)control.get(0)).booleanValue();
+        }
+        if (_control) {
+            if (!trueInput.hasToken(0)) {
+                return false;
+            }
+        } else {
+            if (!falseInput.hasToken(0)) {
+                return false;
+            }
+        }
+        return super.prefire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The most recently read control token.
     private boolean _control = false;
 }
-

@@ -100,17 +100,15 @@ public class Multiplexor extends Transformer {
      *   the <i>select</i> input is out of range.
      */
     public void fire() throws IllegalActionException {
-        boolean enabled = false;
         if (select.hasToken(0)) {
             _channel = ((IntToken) select.get(0)).intValue();
-            enabled = true;
         }
         boolean inRange = false;
         for (int i = 0; i < input.getWidth(); i++) {
             inRange = inRange || (i == _channel);
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                if (enabled && i == _channel) {
+                if (i == _channel) {
                     output.send(0, token);
                 }
             }
@@ -122,8 +120,7 @@ public class Multiplexor extends Transformer {
     }
 
     /** Initialize to the default, which is to use channel zero. */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void initialize() {
         _channel = 0;
     }
 
