@@ -41,30 +41,31 @@ Strings
 typedef PCCG_ARRAY_INSTANCE_PTR iA1_char;
 #endif
 
-/* Convert a character array to a string Structure so that it can be used by
-  string constants.
-*/
+// Convert a character array to a string Structure so that it can be used by
+// string constants.
 _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
 {
-    _STRING_INSTANCE_STRUCT s; /* dummy string structure */
+    _STRING_INSTANCE_STRUCT s; //dummy string structure
     iA1_char charArrayStruct;
     int sizeOfArray;
   
     s = (_STRING_INSTANCE_STRUCT)malloc(sizeof(struct _STRING_INSTANCE_STRUCT));
-    /* Initialize charArrayStruct. */
-    /* FIXME: "class" not initialized in charArrayStruct. */
+    // Initialize charArrayStruct.
+    // FIXME: "class" not initialized in charArrayStruct.
     charArrayStruct = malloc(sizeof(PCCG_ARRAY_INSTANCE));
     sizeOfArray = strlen(charArray) * sizeof(char);
     charArrayStruct->array_data = charArray ; 
-    /* FIXME: array_length should be a COPY of charArray. memcpy may be
-       needed. */
+    // FIXME: array_length should be a COPY of charArray. memcpy may be
+    // needed.
     charArrayStruct->array_length = strlen(charArray);
    
    
-    /* Set the fields of the string structure. */
+    // Set the fields of the string structure.
     s->class = &_STRING_CLASS_STRUCT;
     s->f1860107401_value = charArrayStruct;
-    /* FIXME: Other fields of String are unitialized. */
+    s->f01486352994_count = charArrayStruct->array_length;
+
+    // FIXME: Other fields of String are unitialized.
     
     return s;
     

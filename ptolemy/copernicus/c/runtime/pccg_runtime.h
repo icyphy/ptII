@@ -34,15 +34,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 #define _runtime_h
 
 #include "pccg.h"
-#include <string.h> /* Solaris needs this */
+#include "name_defs.h"
+#include "java/lang/Exception.h"
 #include <setjmp.h>
 
 
 /* data to enable exception-catching */
 extern jmp_buf env;
 extern int epc;
-extern char *exception_type;
-extern int exception_id;
+extern _EXCEPTION_INSTANCE exception_id;
 
 extern boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
         PCCG_CLASS *checkType);

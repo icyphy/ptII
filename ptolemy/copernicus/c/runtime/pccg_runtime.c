@@ -33,11 +33,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 #include "pccg.h"
 #include "pccg_runtime.h"
 
-/* data to enable exception-catching */
+/* Data to enable exception-catching */
 jmp_buf env;
 int epc;
-char *exception_type;
-int exception_id;
+_EXCEPTION_INSTANCE exception_id;
 
 /**
  *  PCCG implementation of the instanceof operator.

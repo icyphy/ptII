@@ -35,6 +35,8 @@ Definitions of Names of Objects, and limits of variables
 #define _INIT_STRING_WITH_CHAR_ARRAY f1692611266__init_
 
 #define _OBJECT_INSTANCE i1063877011_Object
+#define _EXCEPTION_INSTANCE i72706427_Exception
+
 #define _INITIALIZE_SYSTEM_CLASS f1659169041_initializeSystemClass
 
 /* LIMITS */
