@@ -295,7 +295,10 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 	set oldelement [string trimright $oldelement "i"]
 
 	if [ catch {
-	    if [expr {$newelement > $oldelement}] {
+	    if { "$newelement" == "NaN" &&  "$oldelement" != "NaN" }  {
+		    lappend returnresults "$newelement== NaN, $oldelement != NaN"
+	    } else { 
+		if [expr {$newelement > $oldelement}] {
 		if [expr { $newelement > ($oldelement + $epsilon)}] {
 		    lappend returnresults "$newelement > $oldelement + $epsilon"
 		}
@@ -304,6 +307,7 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 		    lappend returnresults "$newelement < $oldelement + $epsilon"
 		}
 	    }
+	}
 	} errmsg] {
 	    global errorInfo
 	    error "epsilonDiff {$newresults} {$oldresults}:\n\
