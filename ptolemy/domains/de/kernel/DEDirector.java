@@ -289,7 +289,6 @@ public class DEDirector extends Director {
     /** Append the specified listener to the current set of debug listeners.
      *  If a calendar queue has been created,
      *  register the listener to the calendar queue, too.
-     *  If the listener is already in the set,
      *  @param listener The listener to add to the list of listeners
      *   to which debug messages are sent.
      */
@@ -663,7 +662,7 @@ public class DEDirector extends Director {
      *  and the director is embedded in an opaque composite actor, then
      *  request a firing of the outside director.
      *  This method should be invoked once per execution, after the
-     *  initialization phase, but before any iteration.  Since type
+     *  preinitialization phase, but before any iteration.  Since type
      *  resolution has been completed, the initialize() method of a contained
      *  actor may produce output or schedule events.
      *  The real start time of the model is recorded when this method
@@ -885,7 +884,7 @@ public class DEDirector extends Director {
         super.removeDebugListener(listener);
     }
 
-    /** Request that execution of the current iteration stop.
+    /** Request that execution of the current iteration stops.
      *  This is similar to stopFire(), except that the current iteration
      *  is not allowed to complete.  This is useful if there is actor
      *  in the model that has a bug where it fails to consume inputs.
@@ -908,7 +907,7 @@ public class DEDirector extends Director {
         super.stop();
     }
 
-    /** Request that execution of the current iteration complete.
+    /** Request that execution of the current iteration completes.
      *  If the director is paused waiting for events to appear in the
      *  event queue, then it stops waiting,
      *  and calls stopFire() for all actors
@@ -917,8 +916,8 @@ public class DEDirector extends Director {
     public void stopFire() {
         if (_eventQueue != null) {
             synchronized(_eventQueue) {
-                // NOTE: The stop() method requests stopping.
-                // This does not, to allow the current iteration to
+                // NOTE: The stop() method requests stopping,
+                // which does not allow the current iteration to
                 // complete.
                 // _stopRequested = true;
                 _eventQueue.notifyAll();
