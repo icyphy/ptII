@@ -58,7 +58,7 @@ EXTRA_SRCS =	$(JSRCS) \
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
-MISC_FILES =	doc test
+MISC_FILES =	doc #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
