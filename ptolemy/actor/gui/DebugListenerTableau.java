@@ -105,10 +105,10 @@ public class DebugListenerTableau extends Tableau {
         return _debug;
     }
 
-    /** Set the object for this tableau to listen to, or null
-     *  to stop listening to the current one.  If this tableau is
-     *  already listening to an object, then first stop listening
-     *  to that object.
+    /** Set the object for this tableau to listen to, or null to stop
+     *  listening to the current one.  If this tableau is already
+     *  listening to an object, then first stop listening to that
+     *  object.  Set the title of the window to show name of object.
      *  @param debuggable The object to listen to.
      */
     public void setDebuggable(Debuggable debuggable) {
