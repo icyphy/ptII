@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/ptolemy/fsm/modal/test
+ME =		ptolemy/vergil/fsm/modal/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -48,8 +48,7 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	ModalModel.tcl
+JSIMPLE_TESTS =
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
