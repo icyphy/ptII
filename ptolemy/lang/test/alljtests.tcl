@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"Decl.tcl Environ.tcl" != ""} {foreach i [list Decl.tcl Environ.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"Decl.tcl Scope.tcl" != ""} {foreach i [list Decl.tcl Scope.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}

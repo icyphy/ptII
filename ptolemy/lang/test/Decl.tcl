@@ -59,7 +59,7 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 test Decl-1.1 {make a simple Decl} {
-    set decl [java::new ptolemy.lang.Decl "my Decl" 0]
+    set decl [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
     list [$decl toString]
 } {{{my Decl, 0}}}
 
@@ -67,7 +67,7 @@ test Decl-1.1 {make a simple Decl} {
 ####
 #
 test Decl-1.2 {make a simple Decl with ANY_NAME and CG_ANY Category} {
-    set decl [java::new ptolemy.lang.Decl \
+    set decl [java::new ptolemy.lang.test.TestDecl \
 	    [java::field ptolemy.lang.Decl ANY_NAME] \
 	    [java::field ptolemy.lang.Decl CG_ANY]]
     list [$decl toString]
@@ -77,8 +77,8 @@ test Decl-1.2 {make a simple Decl with ANY_NAME and CG_ANY Category} {
 ####
 #
 test Decl-2.1 {test equals} {
-    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 0]
-    set anyDecl [java::new ptolemy.lang.Decl \
+    set simpleDecl [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
+    set anyDecl [java::new ptolemy.lang.test.TestDecl \
 	    [java::field ptolemy.lang.Decl ANY_NAME] \
 	    [java::field ptolemy.lang.Decl CG_ANY]]
     list [$simpleDecl equals $simpleDecl] \
@@ -91,7 +91,7 @@ test Decl-2.1 {test equals} {
 ####
 #
 test Decl-2.2 {test equals on a non-decl} {
-    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 0]
+    set simpleDecl [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
     set object [java::new Object]
     catch {$simpleDecl equals $object} result
     list $result
@@ -101,17 +101,17 @@ test Decl-2.2 {test equals on a non-decl} {
 ####
 #
 test Decl-2.3 {test equals on various names and categoriies} {
-    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 1]
-    set simpleDeclWithSameName [java::new ptolemy.lang.Decl "my Decl" 1]
+    set simpleDecl [java::new ptolemy.lang.test.TestDecl "my Decl" 1]
+    set simpleDeclWithSameName [java::new ptolemy.lang.test.TestDecl "my Decl" 1]
     set simpleDeclWithDifferentCategory \
-	    [java::new ptolemy.lang.Decl "my Decl" 2]
+	    [java::new ptolemy.lang.test.TestDecl "my Decl" 2]
     set simpleDeclWithDifferentName \
-	    [java::new ptolemy.lang.Decl "my other Decl" 1]
+	    [java::new ptolemy.lang.test.TestDecl "my other Decl" 1]
 
     set simpleDeclWithCategoryZero \
-	    [java::new ptolemy.lang.Decl "my Decl" 0]
+	    [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
     set anotherSimpleDeclWithCategoryZero \
-	    [java::new ptolemy.lang.Decl "my Decl" 0]
+	    [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
 
     list \
 	    [$simpleDecl equals $simpleDeclWithSameName] \
@@ -126,16 +126,16 @@ test Decl-2.3 {test equals on various names and categoriies} {
 ####
 #
 test Decl-2.3 {test equals with CG_ANY} {
-    set anyDecl [java::new ptolemy.lang.Decl \
+    set anyDecl [java::new ptolemy.lang.test.TestDecl \
 	    [java::field ptolemy.lang.Decl ANY_NAME] \
 	    [java::field ptolemy.lang.Decl CG_ANY]]
-    set anotherAnyDecl [java::new ptolemy.lang.Decl \
+    set anotherAnyDecl [java::new ptolemy.lang.test.TestDecl \
 	    [java::field ptolemy.lang.Decl ANY_NAME] \
 	    [java::field ptolemy.lang.Decl CG_ANY]]
-    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 1]
+    set simpleDecl [java::new ptolemy.lang.test.TestDecl "my Decl" 1]
 
     set simpleDeclWithAnyCategory \
-	    [java::new ptolemy.lang.Decl "my Decl" \
+	    [java::new ptolemy.lang.test.TestDecl "my Decl" \
 	    [java::field ptolemy.lang.Decl CG_ANY]]
 
     list \
@@ -152,7 +152,7 @@ test Decl-2.3 {test equals with CG_ANY} {
 ####
 #
 test Decl-3.1 {getName, setName} {
-    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 0]
+    set simpleDecl [java::new ptolemy.lang.test.TestDecl "my Decl" 0]
     set r1 [$simpleDecl toString]
     set r2 [$simpleDecl getName]
     $simpleDecl setName "new Decl name"
