@@ -128,9 +128,10 @@ if [ -z "$JAVAHOME" ]; then
 	echo " Java distribution"
 	exit 3
     fi
-    if [ ! -r "$JAVAHOME/lib/classes.zip" ]; then
+    if [ ! -r "$JAVAHOME/lib/classes.zip" -a ! -d "$JAVAHOME/classes" ]; then
+        # DEC alpha has the classes in $JAVAHOME/classes
 	echo "$0: \$JAVAHOME == $JAVAHOME, but $JAVAHOME/lib/classes.zip"
-	echo " does not exist or is not readable."
+	echo " and $JAVAHOME/classes do not exist or are not readable."
 	echo " Please set \$JAVAHOME to the directory that contains your"
 	echo " Java distribution"
 	exit 3
