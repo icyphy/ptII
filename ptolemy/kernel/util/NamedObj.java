@@ -1966,6 +1966,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** A list of pending change requests. */
     protected List _changeRequests;
     
+    /** A list of weak references to change listeners. */
+    protected List _changeListeners;
+    
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
@@ -1989,9 +1992,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** The Attributes attached to this object. */
     private NamedList _attributes;
-    
-    /** A list of weak references to change listeners. */
-    private List _changeListeners;
     
     /** @serial Instance of a workspace that can be used if no other
      *  is specified.
