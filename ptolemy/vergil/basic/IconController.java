@@ -134,7 +134,7 @@ public class IconController extends ParameterizedNodeController {
                          // NOTE: The KernelException should not be thrown, but
                          // if it is, it will be handled properly.
                          protected void _execute() throws KernelException {
-                             _iconsPendingContainer.remove(icon);
+                             _iconsPendingContainer.remove(object);
                              // If the icon already has a container, do nothing.
                              if (icon.getContainer() != null) return;
                              // If the container already has an icon, do nothing.
