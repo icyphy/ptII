@@ -44,14 +44,18 @@ import java.io.Writer;
 //////////////////////////////////////////////////////////////////////////
 //// ParameterPort
 /**
-FIXME
+A specialized port for use with PortParameter.  This port is created
+by an instance of PortParameter and provides values to a parameter.
+The parameter value is updated whenever there a get() is called on
+this port.  This port is only useful if the container is opaque,
+however, this is not checked. The constructor is protected to ensure
+that the port is only created by instances of PortParameter.
+The port is not persistent (no MoML is written), so PortParameter
+must create a new instance of it each time it is created.
 
-NOTE: Container must be opaque.
-NOTE: Cannot be a multiport.
-
+@see PortParameter
 @author  Edward A. Lee
 @version $Id$
-@see AttributeReceiver
 */
 public class ParameterPort extends TypedIOPort {
 
@@ -81,8 +85,6 @@ public class ParameterPort extends TypedIOPort {
         // despite not being connected on the inside.
         // NOTE: This is a Variable so it is transient.
         new Variable(this, "tokenConsumptionRate", new IntToken(1));
-// FIXME
-addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,6 +159,30 @@ addDebugListener(new StreamListener());
         super.setContainer(null);
     }
 
+    /** Set or change the name, and propagate the name change to the
+     *  associated port.  If a null argument is given, then the
+     *  name is set to an empty string.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container already
+     *   contains an attribute with the proposed name.
+     */
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
+        if (_settingName || _parameter == null) {
+            super.setName(name);
+        } else {
+            try {
+                _settingName = true;
+                _parameter.setName(name);
+            } finally {
+                _settingName = false;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -170,6 +196,12 @@ addDebugListener(new StreamListener());
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(entity);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Indicator that we are in the midst of setting the name. */
+    protected boolean _settingName = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

@@ -43,17 +43,26 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
 /**
-FIXME
-getExpression() always returns the user-set expression.
-getToken() first checks to see whether an input has arrived
-at the associated port
+A parameter that creates an associated port that can be used to update
+the parameter value.  This parameter value can be set directly by the
+user, as with any other parameter, or it can be set by feeding data
+into the associated port.  Until the port receives data, the value
+of the parameter is that set by the user.  After the port has received
+data, then its value is that most recently received on the port.
+The value must be obtained by calling getToken().  The
+getExpression() method always returns the user-set expression,
+regardless of whether an override value has been received on the
+input port.  On each call to getToken(), this actor first checks
+to see whether an input has arrived at the associated port
 since the last setExpression(), and if so, returns a token
-read from that port.
-
-If this is placed in a container that does not implement the TypedActor
-interface, then no associated port is created, and it functions
-as an ordinary parameter.  This is useful, for example, if this is
-put in a library, where one would not want the associated port to appear.
+read from that port.  Also, any call to get() on the associated
+port will result in the value of this parameter being updated.
+<p>
+If this is actor is placed in a container that does not implement
+the TypedActor interface, then no associated port is created,
+and it functions as an ordinary parameter.  This is useful,
+for example, if this is put in a library, where one would not
+want the associated port to appear.
 
 @author Edward A. Lee
 @version $Id$
@@ -172,6 +181,39 @@ public class PortParameter extends Parameter {
         }
     }
 
+    /** Set or change the name, and propagate the name change to the
+     *  associated port.  If a null argument is given, then the
+     *  name is set to an empty string.
+     *  Increment the version of the workspace.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container already
+     *   contains an attribute with the proposed name.
+     */
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
+        if (_settingName) return;
+        super.setName(name);
+        if (_port != null) {
+            String oldName = getName();
+            try {
+                _settingName = true;
+                _port._settingName = true;
+                _port.setName(name);
+            } catch (IllegalActionException ex) {
+                super.setName(oldName);
+                throw ex;
+            } catch (NameDuplicationException ex) {
+                super.setName(oldName);
+                throw ex;
+            } finally {
+                _settingName = false;
+                _port._settingName = false;
+            }
+        }
+    }
+
     /** Put a new token in this variable and notify the container and
      *  and value listeners, but override the base class so as not to
      *  erase the current expression.
@@ -218,4 +260,7 @@ public class PortParameter extends Parameter {
 
     // The associated port.
     private ParameterPort _port;
+
+    // Indicator that we are in the midst of setting the name.
+    private boolean _settingName = false;
 }
