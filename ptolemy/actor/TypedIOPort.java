@@ -910,10 +910,10 @@ public class TypedIOPort extends IOPort implements Typeable {
         int compare = TypeLattice.compare(token.getType(),
                 _resolvedType);
         if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    "Run-time type checking failed. Token type: "
-                    + token.getType().toString() + ", port: "
-                    + getFullName() + ", port type: "
+            throw new IllegalActionException(this,
+                    "Run-time type checking failed. Token " +
+                    token + " with type " +
+                    " is incompatible with port type: "
                     + getType().toString());
         }
     }
