@@ -2426,7 +2426,7 @@ else
 fi
 		    	
   	    if test "${CYGPATH:-none}" = "none"; then
-		echo "$ac_t""cygpath not found" 1>&6
+		echo "$ac_t""cygpath not found, no need to adjust" 1>&6
 	    else
 		# If we are under Windows, run cygpath -m to fix up
 		# path
