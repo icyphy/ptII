@@ -24,8 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu) 3/2/98
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+Scheduler is an Attribute, 
 */
 package ptolemy.actor.sched;
 
@@ -53,7 +54,7 @@ when needed. A schedule is called "valid" if is can be used to correctly
 direct the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
 
-@author Jie Liu
+@author Jie Liu, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actor.Director
 @see Scheduler
@@ -99,35 +100,6 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the director into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new director with no container, no pending mutations,
-     *  no topology listeners, and a clone of the original scheduler,
-     *  if one existed.
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     *  @return The new StaticSchedulingDirector.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-	try {
-	    StaticSchedulingDirector newObject = (StaticSchedulingDirector)
-		super.clone(workspace);
-	    if(_scheduler != null) {
-		newObject.setScheduler((Scheduler)_scheduler.clone(workspace));
-	    } else {
-		newObject._scheduler = null;
-	    }
-	    return newObject;
-	} catch (Exception ex) {
-	    throw new CloneNotSupportedException("Clone failed:" +
-                    ex.getMessage());
-	}
-    }
-
     /** Return the scheduler that is responsible for scheduling the
      *  directed actors.
      *  This method is read-synchronized on the workspace.
@@ -171,22 +143,14 @@ public class StaticSchedulingDirector extends Director {
      */
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException {
-        if (scheduler != null && workspace() != scheduler.workspace()) {
-            throw new IllegalActionException(this, scheduler,
-                    "Cannot set scheduler because workspaces are different.");
-        }
         try {
-            workspace().getWriteAccess();
-            // If there was a previous scheduler, we need to reset it.
-            if (_scheduler != null) {
-                _scheduler._makeSchedulerOf(null);
-            }
-            _scheduler = scheduler;
             if (scheduler != null) {
-                scheduler._makeSchedulerOf(this);
+                scheduler.setContainer(this);
+            } else {
+                _setScheduler(null);
             }
-        } finally {
-            workspace().doneWriting();
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("Name collision in setDirector!");
         }
     }
 
@@ -221,6 +185,29 @@ public class StaticSchedulingDirector extends Director {
                     "has no scheduler.");
         }
         return _scheduler.isValid();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Set the local scheduler for execution of this Director.
+     *  This should not be called be directly.  Instead, call setContainer()
+     *  on the scheduler.  This method removes any previous scheduler
+     *  from this container, and caches a local reference to the scheduler
+     *  so that this composite does not need to search its attributes each
+     *  time the scheduler is accessed.
+     *  @param scheduler The Scheduler responsible for execution.
+     *  @exception IllegalActionException If removing the old scheduler
+     *   causes this to be thrown. Should not be thrown.
+     *  @exception NameDuplicationException If removing the old scheduler
+     *   causes this to be thrown. Should not be thrown.
+     */
+    protected void _setScheduler(Scheduler scheduler)
+            throws IllegalActionException, NameDuplicationException {
+
+        invalidateSchedule();
+        _scheduler = scheduler;
+        invalidateSchedule();
     }
 
     ///////////////////////////////////////////////////////////////////

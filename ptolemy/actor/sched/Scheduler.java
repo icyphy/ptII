@@ -24,8 +24,10 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu) 3/2/98
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+Made an Attribute.  Deprecated enumeration methods.
+Caching should move into StaticSchedulingDirector.
 */
 
 package ptolemy.actor.sched;
@@ -69,11 +71,11 @@ Scheduler does perform any mutations, and it is not a topology change
 listener. The director who uses this scheduler should set the validation
 flag accordingly when mutations occur.
 
-@author Jie Liu
+@author Jie Liu, Steve Neuendorffer
 @version $Id$
 */
 
-public class Scheduler extends NamedObj {
+public class Scheduler extends Attribute {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -105,6 +107,24 @@ public class Scheduler extends NamedObj {
         }
     }
 
+    /** Construct a scheduler in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public Scheduler(Director container, String name)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,15 +144,6 @@ public class Scheduler extends NamedObj {
         newObject._valid = false;
         newObject._cachedSchedule = null;
         return newObject;
-    }
-
-    /** Return the container, which is the StaticSchedulingDirector
-     *  for which this is the scheduler.
-     *  @return The StaticSchedulingDirector that this scheduler is
-     *  contained within.
-     */
-    public Nameable getContainer() {
-        return _container;
     }
 
     /** Return the scheduling sequence as an instance of Schedule.
@@ -188,6 +199,7 @@ public class Scheduler extends NamedObj {
      *  @exception NotSchedulableException If the _schedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
+     *  @deprecated Use the getSchedule method instead.
      */
     public Enumeration schedule() throws
             IllegalActionException, NotSchedulableException {
@@ -215,6 +227,78 @@ public class Scheduler extends NamedObj {
             return Collections.enumeration(_cachedSchedule);
         } finally {
             workspace().doneReading();
+        }
+    }
+
+    /** Specify the container.  If the specified container is an instance
+     *  of Director, then this becomes the active scheduler for
+     *  that director.  Otherwise, this is an attribute like any other within
+     *  the container. If the container is not in the same
+     *  workspace as this director, throw an exception.
+     *  If this scheduler is already an attribute of the container,
+     *  then this has the effect only of making it the active scheduler.
+     *  If this scheduler already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then remove it from its container.
+     *  This director is not added to the workspace directory, so calling
+     *  this method with a null argument could result in
+     *  this director being garbage collected.
+     *  <p>
+     *  If this method results in removing this director from a container
+     *  that is a Director, then this scheduler ceases to be the active
+     *  scheduler for that CompositeActor.  Moreover, if the director
+     *  contains any other schedulers, then the most recently added of those
+     *  schedulers becomes the active scheduler.
+     *  <p>
+     *  This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this scheduler and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it.
+     *  @exception NameDuplicationException If the name of this scheduler
+     *   collides with a name already in the container.  This will not
+     *   be thrown if the container argument is an instance of
+     *   CompositeActor.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
+            Nameable oldContainer = getContainer();
+            if (oldContainer instanceof Director
+                    && oldContainer != container) {
+                // Need to remove this scheduler as the active one of the
+                // old container. Search for another scheduler contained
+                // by the composite.  If it contains more than one,
+                // use the most recently added one.
+                Scheduler previous = null;
+                StaticSchedulingDirector castContainer = 
+                    (StaticSchedulingDirector)oldContainer;
+                Iterator schedulers =
+                    castContainer.attributeList(Scheduler.class).iterator();
+                while (schedulers.hasNext()) {
+                    Scheduler altScheduler = (Scheduler)schedulers.next();
+                    // Since we haven't yet removed this director, we have
+                    // to be sure to not just set it to the active
+                    // director again.
+                    if (altScheduler != this) {
+                        previous = altScheduler;
+                    }
+                }
+                castContainer._setScheduler(previous);
+            }
+
+            super.setContainer(container);
+
+            if (container instanceof StaticSchedulingDirector) {
+                // Set cached value in director
+                ((StaticSchedulingDirector)container)._setScheduler(this);
+            }
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
@@ -309,6 +393,7 @@ public class Scheduler extends NamedObj {
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
+     *  @deprecated Use the getSchedule method instead.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
