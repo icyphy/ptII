@@ -59,7 +59,7 @@ public class DEFullAdder extends TypedCompositeActor {
     public DEFullAdder(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
-        this(container, name,0.1);
+        this(container, name, 0.1);
     }
 
     /** Construct a DEFullAdder actor with the specified gate propagation
