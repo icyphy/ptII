@@ -99,6 +99,12 @@ public class Main extends KernelMain {
     public void addTransforms() {
 	super.addTransforms();
        
+        // Set up a watch dog timer to exit after a certain amount of time.
+        // For example, to time out after 5 minutes, or 300000 ms:
+	// -p wjtp.watchDog time:30000
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+                WatchDogTimer.v()));
+        
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ShallowModelTransformer.v(_toplevel)));
