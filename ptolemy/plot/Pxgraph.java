@@ -540,7 +540,9 @@ public class Pxgraph extends Frame {
     /* Dump out html that can be used to redisplay the plot as an applet.
      */  
     private void _html() {
-        Dimension dim = getSize();
+        Dimension dim = size(); // size is deprecated in 1.1, we
+                                // should use getSize(), but getSize
+                                // is not in 1.0.2.        
 
         // Read in the user's CLASSPATH and get the first directory,
         // which should be the location of the Plot classes
