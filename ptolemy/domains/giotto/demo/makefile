@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto/demo
 
-DIRS = 		Hierarchy Legiotto Multimode
+DIRS = 		Hierarchy Multimode
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
