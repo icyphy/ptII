@@ -37,6 +37,11 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCaptureErr] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -47,18 +52,20 @@ if {[string compare test [info procs test]] == 1} then {
 test domains.1.1 {} {
     catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
     # Sometimes it is port, sometimes port2
-    regsub {port[^.]} $errMsg {portXXX} r1
+    regsub -all {port[^.].} $errMsg {portXXX.} r1
     list $r1
-} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in portXXX.PNSDFtest1.Topologia SDF.port. Perhaps you have an unbounded queue?
+} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in portXXX.PNSDFtest1.Topologia SDF.portXXX. Perhaps you have an unbounded queue?
   in .PNSDFtest1.PN Director}}
 
 #############################################
 ####
 #
 test domains-2.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/PNSRTimedtest.xml"} errMsg
+    jdkCaptureErr {
+	catch {createAndExecute "auto/knownFailedTests/PNSRTimedtest.xml"} errMsg
+    } out
     list $errMsg
-} {}
+} {{ptolemy.kernel.util.InternalErrorException: Subtracting a positive infinity from a positive infinity yields a NaN.}}
 
 #############################################
 ####
