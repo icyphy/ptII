@@ -61,8 +61,6 @@ David Hermann, Research in Motion</text></svg></configure>
         </property>
     </entity>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
