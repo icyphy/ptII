@@ -51,7 +51,7 @@ An actor that searches for a color in a Buffer.
 @author Paul Yang, David Lee, James Yeh
 @version $Id$
 @since Ptolemy II 3.0
- */
+*/
 public class ColorFinder extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -142,8 +142,8 @@ public class ColorFinder extends TypedAtomicActor {
                 System.arraycopy(data, yuvFormat.getOffsetV(),
                         VArray, 0, VArray.length);
 
-                for (int x = 0; x < frameWidth; x += 1) {
-                    for (int y = 0; y < frameHeight; y += 1) {
+                for (int x = 0; x < _frameWidth; x += 1) {
+                    for (int y = 0; y < _frameHeight; y += 1) {
                         int yComp = _getYComponent(x, y);
                         int uComp = _getUComponent(x, y);
                         int vComp = _getVComponent(x, y);
@@ -159,7 +159,7 @@ public class ColorFinder extends TypedAtomicActor {
                 }
                 if (_inCount > 0) {
                     double xLocation = (double) _sumX/_inCount;
-                    double yLocation = (double) (frameHeight - _sumY/_inCount);
+                    double yLocation = (double) (_frameHeight - _sumY/_inCount);
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
                     if (_debugging) {
@@ -217,7 +217,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the U band at this pixel*/
     private int _getUComponent(int x, int y) {
-        return _getUComponent((x >> 1) + (y >> 1) * (frameWidth/2));
+        return _getUComponent((x >> 1) + (y >> 1) * (_frameWidth/2));
     }
 
     /** Return the int representing the V band at this pixel*/
@@ -227,7 +227,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the V band at this pixel*/
     private int _getVComponent(int x, int y) {
-        return _getVComponent((x >> 1) + (y >> 1) * (frameWidth/2));
+        return _getVComponent((x >> 1) + (y >> 1) * (_frameWidth/2));
     }
 
 
@@ -238,21 +238,21 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Return the int representing the Y band at this pixel*/
     private int _getYComponent(int x, int y) {
-        return _getYComponent(x + frameWidth * y);
+        return _getYComponent(x + _frameWidth * y);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //FIXME should be parameters and moved to initialize.
-    public int frameWidth = 320;
-    public int frameHeight = 240;
+    // FIXME should be parameters and moved to initialize.
+    private int _frameWidth = 320;
+    private int _frameHeight = 240;
 
     //public YUVFormat videoFormat = new YUVFormat();
-    //FIXME This also should be moved to initialize.
-    private byte[] YArray = new byte[frameWidth * frameHeight];
-    private byte[] UArray = new byte[frameWidth/2 * frameHeight/2];
-    private byte[] VArray = new byte[frameWidth/2 * frameHeight/2];
+    // FIXME This also should be moved to initialize.
+    private byte[] YArray = new byte[_frameWidth * _frameHeight];
+    private byte[] UArray = new byte[_frameWidth/2 * _frameHeight/2];
+    private byte[] VArray = new byte[_frameWidth/2 * _frameHeight/2];
 
     private int _histSize = 256;
     private int _inCount = 0;
