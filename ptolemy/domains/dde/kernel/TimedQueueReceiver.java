@@ -241,6 +241,14 @@ public class TimedQueueReceiver {
 	}
         Event event;
         synchronized(this) {
+	    String name = ((Nameable)getContainer().getContainer()).getName();
+	    if( token instanceof NullToken ) {
+	        System.out.println(name+": Null token placed in "+name+
+			" at time " +time);
+	    } else if( token instanceof Token ) {
+	        System.out.println(name+": Real token placed in "+name+
+			" at time " +time);
+	    }
             _lastTime = time;
             event = new Event(token, _lastTime);
 
@@ -285,13 +293,27 @@ public class TimedQueueReceiver {
      *  oldest queue position; return false otherwise.
      */
     synchronized boolean hasNullToken() {
+	String name = ((Nameable)getContainer().getContainer()).getName();
+	if( _queue.size() > 0 ) {
+	    Event event = (Event)_queue.get(0);
+	    if( event.getToken() instanceof NullToken ) {
+		return true;
+	    }
+	} 
+        return false;
+	/*
+	    System.out.println(name+": hasNullToken() has a size of " 
+		    + _queue.size() );
 	if( _queue.size() <= 0 ) {
 	    return false;
 	} 
+	System.out.println(name+": Checking for NullToken!!!");
 	if( _queue.get(0) instanceof NullToken ) {
+	    System.out.println("NullToken found!!!");
 	    return true;
 	} 
         return false;
+	*/
     }
 
     /** Set the completion time of this receiver.
