@@ -75,7 +75,9 @@ public class AudioSourceSinkDemo extends SDFApplet {
 	try {
 	    AudioSource soundSource = new AudioSource(_toplevel, "soundSource");
 	    // Specify where to get the sound file.
-	    soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
+	    //soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
+	    soundSource.pathName.setToken(new StringToken("3violin1.aiff"));
+	    
             // Read audio data from a local file instread of a URL.
             soundSource.isURL.setToken(new BooleanToken(false));
 	
@@ -85,7 +87,7 @@ public class AudioSourceSinkDemo extends SDFApplet {
 	  
           
           // Set the sampling rate to use.
-          int sampleRate = 8000;
+          int sampleRate = 44100;
 	  soundSink.sampRate.setToken(new IntToken(sampleRate));
 	  
 
