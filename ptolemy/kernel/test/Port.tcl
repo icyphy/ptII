@@ -230,6 +230,48 @@ test Port-5.2 {Test unlink on a relation we are not connected to} {
 ######################################################################
 ####
 #
+test Port-5.3 {Test unlink of port connected multiple times to same relation.} {
+    set p3 [java::new ptolemy.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    # FIXME: Bug in TclBlend: If p3 is set below instead of above,
+    # TclBlend gives an error on Unix machines, but not on NT.
+    # The error is:
+    # wrong # args for calling constructor "ptolemy.kernel.Port"
+    # set p3 [java::new ptolemy.kernel.Port]
+    $p3 setContainer $e1
+    set r1 [java::new ptolemy.kernel.Relation "relation1"]
+    set r2 [java::new ptolemy.kernel.Relation "relation2"]
+    $p1 link $r1
+    $p3 link $r1
+    $p1 link $r2
+    $p3 link $r2
+    $p1 link $r1
+    $p3 link $r1
+    $p1 unlink $r1
+    set result1 [_testPortLinkedRelations $p1 $p3]
+    $p3 unlink $r2
+    set result2 [_testPortLinkedRelations $p1 $p3]
+    $p3 unlink $r1
+    set result3 [_testPortLinkedRelations $p1 $p3]
+
+    # Call unlink on a relation that has already been disconnected.
+    $p3 unlink $r2
+    set result4 [expr {$result3 == [_testPortLinkedRelations $p1 $p3]}]
+
+    $p1 unlink $r2
+    set result5 [_testPortLinkedRelations $p1 $p3]
+
+   list "$result1\n$result2\n$result3\n$result4\n$result5"
+} {{{relation2 relation1} {relation1 relation2 relation1}
+{relation2 relation1} {relation1 relation1}
+{relation2 relation1} relation1
+1
+relation1 relation1}}
+
+######################################################################
+####
+#
 test Port-6.1 {Test linkedRelations} {
     set p1 [java::new ptolemy.kernel.Port]
     set enum [$p1 linkedRelations]
