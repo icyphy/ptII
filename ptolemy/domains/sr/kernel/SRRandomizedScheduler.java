@@ -123,7 +123,7 @@ public class SRRandomizedScheduler extends Scheduler {
         }
 
         CompositeActor compositeActor =
-	    (CompositeActor) (director.getContainer());
+            (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "SRRandomizedScheduler "

@@ -85,7 +85,7 @@ public class SingleTokenDistributor extends Transformer
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-	    output.send(_currentOutputPosition, input.get(0));
+            output.send(_currentOutputPosition, input.get(0));
         }
     }
 
