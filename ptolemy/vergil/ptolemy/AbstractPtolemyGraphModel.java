@@ -203,7 +203,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-	    if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
+	    if(change.getSource() == AbstractPtolemyGraphModel.this) {
                 return;
             }
 	    // This has to happen in the swing thread, because Diva assumes
