@@ -403,7 +403,10 @@ public class Entity extends NamedObj {
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute or port.  In derived classes, this should be
      *  overridden so that the returned name is guaranteed to not conflict
-     *  with any contained object.
+     *  with any contained object. In this implementation, the argument
+     *  is stripped of any numeric suffix, and then a numeric suffix
+     *  is appended and incremented until a name is found that does not
+     *  conflict with a contained attribute or port.
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
@@ -411,6 +414,7 @@ public class Entity extends NamedObj {
         if (prefix == null) {
             prefix = "null";
         }
+        prefix = _stipNumericSuffix(prefix);
         String candidate = prefix;
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null

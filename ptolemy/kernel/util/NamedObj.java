@@ -1150,7 +1150,10 @@ public class NamedObj implements Nameable, Debuggable,
     /** Return a name that is guaranteed to not be the name of any
      *  contained attribute.  In derived classes, this should be overridden
      *  so that the returned name is guaranteed to not conflict with
-     *  any contained object.
+     *  any contained object.  In this implementation, the argument
+     *  is stripped of any numeric suffix, and then a numeric suffix
+     *  is appended and incremented until a name is found that does not
+     *  conflict with a contained attribute.
      *  @param prefix A prefix for the name.
      *  @return A unique name, which will be exactly the prefix if possible,
      *   or the prefix extended by a number.
@@ -1159,6 +1162,7 @@ public class NamedObj implements Nameable, Debuggable,
         if (prefix == null) {
             prefix = "null";
         }
+        prefix = _stipNumericSuffix(prefix);
         String candidate = prefix;
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null) {
@@ -1529,6 +1533,45 @@ public class NamedObj implements Nameable, Debuggable,
             result[1] = name.substring(period + 1);
         }
         return result;
+    }
+
+    /** Return a string that is identical to the specified string except
+     *  that any trailing characters that are numeric are removed.
+     *  @param string The string to strip of its numeric suffix.
+     *  @return A string with no numeric suffix.
+     */
+    protected static String _stipNumericSuffix(String string) {
+        // NOTE: Perhaps it would be more efficient here to create
+        // a HashSet for these numbers and test the last character for
+        // membership.
+        int length = string.length();
+        char[] chars = string.toCharArray();
+        for (int i = length - 1; i >= 0; i--) {
+            char current = chars[i];
+            if (current == '0'
+                    || current == '1'
+                    || current == '2'
+                    || current == '3'
+                    || current == '4'
+                    || current == '5'
+                    || current == '6'
+                    || current == '7'
+                    || current == '8'
+                    || current == '9') {
+                length--;
+            } else {
+                // Found a non-numeric, so we are done.
+                break;
+            }
+        }
+        if (length < string.length()) {
+            // Some stipping occurred.
+            char[] result = new char[length];
+            System.arraycopy(chars, 0, result, 0, length);
+            return new String(result);
+        } else {
+            return string;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

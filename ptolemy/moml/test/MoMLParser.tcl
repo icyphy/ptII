@@ -2434,6 +2434,86 @@ test MoMLParser-9.1 {test namespaces} {
 </entity>
 }
 
+set body {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+  <entity name="b" class="ptolemy.kernel.CompositeEntity"/>
+  <group name="auto">
+    <entity name="b" class="ptolemy.kernel.CompositeEntity">
+      <entity name="c" class="ptolemy.kernel.CompositeEntity"/>
+    </entity>
+  </group>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-9.2 {test namespace with auto naming} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="b" class="ptolemy.kernel.CompositeEntity">
+    </entity>
+    <entity name="b2" class="ptolemy.kernel.CompositeEntity">
+        <entity name="c" class="ptolemy.kernel.CompositeEntity">
+        </entity>
+    </entity>
+</entity>
+}
+
+set body {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+  <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+  <entity name="b" class="ptolemy.kernel.CompositeEntity">
+     <port name="p" class="ptolemy.kernel.ComponentPort"/>
+  </entity>
+  <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+  <link port="b.p" relation="r"/>
+  <group name="auto">
+    <entity name="b" class="ptolemy.kernel.CompositeEntity">
+      <entity name="c" class="ptolemy.kernel.CompositeEntity"/>
+      <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+    <link port="b.p" relation="r"/>
+  </group>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-9.3 {test namespace with auto naming} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <entity name="b" class="ptolemy.kernel.CompositeEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="b2" class="ptolemy.kernel.CompositeEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <entity name="c" class="ptolemy.kernel.CompositeEntity">
+        </entity>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="r2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="b.p" relation="r"/>
+    <link port="b2.p" relation="r2"/>
+</entity>
+}
+
 ######################################################################
 ####
 #

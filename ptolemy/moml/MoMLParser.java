@@ -132,7 +132,14 @@ MoML elements within a group element, as follows:
 The group element is ignored, and just serves to aggregate the MoML
 elements, unless it has a name attribute.  If it has a name attribute,
 then the name becomes a prefix (separated by a colon) of all the names
-of items immediately in the group element.
+of items immediately in the group element. If the value of the name
+attribute is "auto", then the group is treated specially. Each item
+immediately contained by the group (i.e. not deeply contained) will
+be created with its specified name or a modified version of that name
+that does not match a pre-existing object already contained by the
+container.  That is, when name="auto" is specified, each item is
+forced to be created with unique name, rather than possibly matching
+a pre-existing item.
 <p>
 The parse methods throw a variety of exceptions if the parsed
 data does not represent a valid MoML file or if the stream
@@ -260,15 +267,69 @@ public class MoMLParser extends HandlerBase {
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
-        // If we have a non-default namespace, then prepend the namespace.
-        // This needs to be done for every attribute whose value is a name.
-        if (_namespace != DEFAULT_NAMESPACE &&
-                (name.equals("name")
-                        || name.equals("port")
-                        || name.equals("relation")
-                        || name.equals("vertex")
-                        || name.equals("pathTo"))) {
-            value = _namespace + ":" + value;
+        // If the current namespace is _AUTO_NAMESPACE, then look up the
+        // translation for the name. If there is a translation, then
+        // this name has previously been converted in this group.
+        // Otherwise, this name has not been previously converted,
+        // so we convert it now.  To accomplish the conversion, if
+        // we are not at the top level, then the converted name
+        // is the result of calling the container's uniqueName()
+        // method, passing it the specified name.
+        if (_namespace == _AUTO_NAMESPACE
+                && _current != null
+                && (name.equals("name")
+                || name.equals("port")
+                || name.equals("relation")
+                || name.equals("vertex")
+                || name.equals("pathTo"))) {
+            // See whether the name is in the translation table.
+            // Note that the name might be compound, e.g. "Const.output",
+            // in which case, we need to parse it and check to see whether
+            // the first part of it is in the translation table.
+            // NOTE: There is a remaining bug (or feature):
+            // If the name is absolute, then no translation will be
+            // performed.  This may be reasonable behavior.
+            boolean nameSeenAlready = false;
+            if (_namespaceTranslationTable != null) {
+                // If the name contains a period, then it is a compound name.
+                String prefix = value;
+                String suffix = "";
+                // NOTE: Paranoid coding, in case value is null.
+                int period = -1;
+                if (value != null) {
+                    period = value.indexOf(".");
+                }
+                if (period >= 0) {
+                    prefix = value.substring(0, period);
+                    suffix = value.substring(period);
+                }
+                String replacement
+                        = (String)_namespaceTranslationTable.get(prefix);
+                if (replacement != null) {
+                    // Replace name with translation.
+                    value = replacement + suffix;
+                    nameSeenAlready = true;
+                }
+            }
+            if (!nameSeenAlready && name.equals("name")) {
+                // We only convert "name" attributes, not "port" or
+                // "relation", etc.
+                String oldValue = value;
+                value = _current.uniqueName(oldValue);
+                _namespaceTranslationTable.put(oldValue, value);
+            }
+        } else {
+            // If we have a non-default namespace, then prepend the namespace.
+            // This needs to be done for every attribute whose value is a name.
+            if (_namespace != _DEFAULT_NAMESPACE
+                    && _namespace != _AUTO_NAMESPACE
+                    && (name.equals("name")
+                    || name.equals("port")
+                    || name.equals("relation")
+                    || name.equals("vertex")
+                    || name.equals("pathTo"))) {
+                value = _namespace + ":" + value;
+            }
         }
 
         // Apply MoMLFilters here.
@@ -490,7 +551,12 @@ public class MoMLParser extends HandlerBase {
             try {
                 _namespace = (String)_namespaces.pop();
             } catch (EmptyStackException ex) {
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
+            }
+            try {
+                _namespaceTranslationTable = (Map)_namespaceTranslations.pop();
+            } catch (EmptyStackException ex) {
+                _namespaceTranslationTable = null;
             }
 	} else if (
                 elementName.equals("property")
@@ -506,13 +572,27 @@ public class MoMLParser extends HandlerBase {
                 || elementName.equals("relation")
                 || elementName.equals("rendition")
                 || elementName.equals("vertex")) {
+            // The following are done in separate try-catch blocks
+            // to ensure that they are all tried even an exception
+            // occurs in one of them.  This is probably not necessary,
+            // but it is defensive coding.
             try {
                 _current = (NamedObj)_containers.pop();
-                _namespace = (String)_namespaces.pop();
             } catch (EmptyStackException ex) {
                 // We are back at the top level.
                 _current = null;
-                _namespace = DEFAULT_NAMESPACE;
+            }
+            try {
+                _namespace = (String)_namespaces.pop();
+            } catch (EmptyStackException ex) {
+                // We are back at the top level.
+                _namespace = _DEFAULT_NAMESPACE;
+            }
+            try {
+                _namespaceTranslationTable = (Map)_namespaceTranslations.pop();
+            } catch (EmptyStackException ex) {
+                // We are back at the top level.
+                _namespaceTranslationTable = null;
             }
         }
     }
@@ -762,8 +842,9 @@ public class MoMLParser extends HandlerBase {
         _docNesting = 0;
         _externalEntities = new Stack();
 	_modified = false;
-        _namespace = DEFAULT_NAMESPACE;
+        _namespace = _DEFAULT_NAMESPACE;
         _namespaces = new Stack();
+        _namespaceTranslations = new Stack();
         _skipRendition = false;
 	_skipElementIsNew = false;
         _skipElement = 0;
@@ -996,8 +1077,7 @@ public class MoMLParser extends HandlerBase {
                 NamedObj newEntity = _createEntity(
                         className, entityName, source);
                 if (_current != null) {
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 } else if (_toplevel == null) {
                     // NOTE: Used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
@@ -1011,7 +1091,7 @@ public class MoMLParser extends HandlerBase {
                 newEntity.getMoMLInfo().superclass = className;
 
                 _current = newEntity;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("configure")) {
                 _checkClass(_current, Configurable.class,
@@ -1035,11 +1115,10 @@ public class MoMLParser extends HandlerBase {
                     // that if by using a nonvalidating parser elements are
                     // included, then they will be evaluated in the correct
                     // context.
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 }
                 _current = deletedEntity;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deletePort")) {
                 String portName = (String)_attributes.get("name");
@@ -1055,11 +1134,10 @@ public class MoMLParser extends HandlerBase {
                     // that if by using a nonvalidating parser elements are
                     // included, then they will be evaluated in the correct
                     // context.
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 }
                 _current = deletedPort;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deleteProperty")) {
                 String propName = (String)_attributes.get("name");
@@ -1072,11 +1150,10 @@ public class MoMLParser extends HandlerBase {
                     // that if by using a nonvalidating parser elements are
                     // included, then they will be evaluated in the correct
                     // context.
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 }
                 _current = deletedProp;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deleteRelation")) {
                 String relationName = (String)_attributes.get("name");
@@ -1089,11 +1166,10 @@ public class MoMLParser extends HandlerBase {
                     // that if by using a nonvalidating parser elements are
                     // included, then they will be evaluated in the correct
                     // context.
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 }
                 _current = deletedRelation;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("director")) {
                 // NOTE: The director element is deprecated.
@@ -1113,11 +1189,10 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 NamedObj container = _current;
-                _containers.push(_current);
-                _namespaces.push(_namespace);
+                _pushContext();
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
                 // If the container is cloned from something, then
                 // add to it a MoML description of the director, so that
@@ -1144,8 +1219,7 @@ public class MoMLParser extends HandlerBase {
                         className, entityName, source);
                 // NOTE: The entity may be at the top level.
                 if (_current != null) {
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                 } else if (_toplevel == null) {
                     // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
@@ -1153,17 +1227,24 @@ public class MoMLParser extends HandlerBase {
                     _toplevel = newEntity.toplevel();
                 }
                 _current = newEntity;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("group")) {
                 String groupName = (String)_attributes.get("name");
                 if (groupName != null) {
                     // Defining a namespace.
                     _namespaces.push(_namespace);
-                    _namespace = groupName;
+                    _namespaceTranslations.push(_namespaceTranslationTable);
+                    if (groupName.equals("auto")) {
+                        _namespace = _AUTO_NAMESPACE;
+                        _namespaceTranslationTable = new HashMap();
+                    } else {
+                        _namespace = groupName;
+                    }
                 } else {
-                    _namespaces.push(DEFAULT_NAMESPACE);
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespaces.push(_DEFAULT_NAMESPACE);
+                    _namespaceTranslations.push(_namespaceTranslationTable);
+                    _namespace = _DEFAULT_NAMESPACE;
                 }
 
             } else if (elementName.equals("input")) {
@@ -1304,10 +1385,9 @@ public class MoMLParser extends HandlerBase {
                     // this new port will be persistent.
                     _recordNewObject(container, port);
                 }
-                _containers.push(_current);
-                _namespaces.push(_namespace);
+                _pushContext();
                 _current = port;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
 
                 // NOTE: The direction attribute is deprecated, but
                 // supported nonetheless.
@@ -1323,6 +1403,7 @@ public class MoMLParser extends HandlerBase {
                 }
 
             } else if (elementName.equals("property")) {
+                String className = (String)_attributes.get("class");
                 String propertyName = (String)_attributes.get("name");
                 _checkForNull(propertyName,
                         "No name for element \"property\"");
@@ -1344,11 +1425,10 @@ public class MoMLParser extends HandlerBase {
                     } else if (value.trim().toLowerCase().equals("false")) {
                         ((IOPort)_current).setMultiport(false);
                     }
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespace = _DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("output") && isIOPort) {
                     if (value == null
                             || value.trim().toLowerCase().equals("true")) {
@@ -1356,11 +1436,10 @@ public class MoMLParser extends HandlerBase {
                     } else if (value.trim().toLowerCase().equals("false")) {
                         ((IOPort)_current).setOutput(false);
                     }
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespace = _DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("input") && isIOPort) {
                     if (value == null
                             || value.trim().toLowerCase().equals("true")) {
@@ -1368,16 +1447,14 @@ public class MoMLParser extends HandlerBase {
                     } else if (value.trim().toLowerCase().equals("false")) {
                         ((IOPort)_current).setInput(false);
                     }
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     _current =  (Attribute)
-                        _current.getAttribute(propertyName);
-                    _namespace = DEFAULT_NAMESPACE;
+                            _current.getAttribute(propertyName);
+                    _namespace = _DEFAULT_NAMESPACE;
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
                         _current.getAttribute(propertyName);
-                    String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
 			try {
@@ -1465,10 +1542,9 @@ public class MoMLParser extends HandlerBase {
                             _paramsToParse.add(property);
                         }
                     }
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     _current = property;
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespace = _DEFAULT_NAMESPACE;
                 }
 
             } else if (elementName.equals("relation")) {
@@ -1488,8 +1564,7 @@ public class MoMLParser extends HandlerBase {
                 if (relation == null) {
                     // No previous relation with this name.
                     NamedObj newRelation = null;
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     if (newClass == null) {
                         // No classname. Use the newRelation() method.
                         newRelation = container.newRelation(relationName);
@@ -1499,7 +1574,7 @@ public class MoMLParser extends HandlerBase {
                         arguments[1] = relationName;
                         newRelation = _createInstance(newClass, arguments);
                     }
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespace = _DEFAULT_NAMESPACE;
 
                     // If the container is cloned from something, then
                     // add to it a MoML description of the relation, so that
@@ -1515,10 +1590,9 @@ public class MoMLParser extends HandlerBase {
                                 + "\" exists and is not an instance of "
                                 + className);
                     }
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
+                    _pushContext();
                     _current = relation;
-                    _namespace = DEFAULT_NAMESPACE;
+                    _namespace = _DEFAULT_NAMESPACE;
                 }
 
             } else if (elementName.equals("rename")) {
@@ -1609,10 +1683,9 @@ public class MoMLParser extends HandlerBase {
                     _paramsToParse.add(vertex);
                 }
 
-                _containers.push(_current);
-                _namespaces.push(_namespace);
+                _pushContext();
                 _current = vertex;
-                _namespace = DEFAULT_NAMESPACE;
+                _namespace = _DEFAULT_NAMESPACE;
             } else {
                 // Unrecognized element name.  Collect it.
                 if (_unrecognized == null) {
@@ -2456,6 +2529,13 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    // Push the current context.
+    private void _pushContext() {
+        _containers.push(_current);
+        _namespaces.push(_namespace);
+        _namespaceTranslations.push(_namespaceTranslationTable);
+    }
+
     // If an object is deleted from a container, and this is not the
     // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
@@ -2756,6 +2836,9 @@ public class MoMLParser extends HandlerBase {
     // The list of attribute names, in the order they were parsed.
     private List _attributeNameList = new ArrayList(0);
 
+    // The namespace for automatic naming.
+    private static String _AUTO_NAMESPACE = "auto";
+
     // Base for relative URLs.
     private URL _base;
 
@@ -2784,7 +2867,7 @@ public class MoMLParser extends HandlerBase {
     private String _currentDocName;
 
     // The default namespace.
-    private static String DEFAULT_NAMESPACE = "";
+    private static String _DEFAULT_NAMESPACE = "";
 
     // Count of doc tags so that they can nest.
     private int _docNesting = 0;
@@ -2807,10 +2890,16 @@ public class MoMLParser extends HandlerBase {
     private static boolean _modified = false;
 
     // The current namespace.
-    private String _namespace = DEFAULT_NAMESPACE;
+    private String _namespace = _DEFAULT_NAMESPACE;
 
     // The stack of name spaces.
     private Stack _namespaces = new Stack();
+
+    // The current translation table for names.
+    private Map _namespaceTranslationTable = null;
+
+    // The stack of maps for name translations.
+    private Stack _namespaceTranslations = new Stack();
 
     // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();

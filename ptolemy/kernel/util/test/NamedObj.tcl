@@ -461,6 +461,31 @@ test NamedObj-12.1 {Test uniqueName} {
     list $n1 $n2
 } {A A2}
 
+test NamedObj-12.2 {Test uniqueName} {
+    # NOTE: Depends on the previous.
+    set n3 [$a uniqueName A2]
+    set a3 [java::new ptolemy.kernel.util.Attribute $a $n3]
+    list $n3
+} {A3}
+
+test NamedObj-12.3 {Test uniqueName} {
+    # NOTE: Depends on the previous.
+    set a22 [java::new ptolemy.kernel.util.Attribute $a "A22"]
+    set n4 [$a uniqueName A22]
+    set a4 [java::new ptolemy.kernel.util.Attribute $a $n4]
+    list $n4
+} {A4}
+
+test NamedObj-12.4 {Test uniqueName} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set n1 [$a uniqueName ""]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a $n1]
+    set n2 [$a uniqueName "3"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a $n2]
+    list $n1 $n2
+} {{} 2}
+
 ######################################################################
 ####
 #
