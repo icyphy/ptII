@@ -209,6 +209,11 @@ public class DDEDirector extends ProcessDirector {
         } else {
             return;
         }
+
+	if( _completionTime != -5.0 && time > _completionTime ) {
+	    // FIXME: Should TerminateProcessException be thrown here?
+	    return;
+	}
         
         Actor threadActor = ddeThread.getActor();
         if( threadActor != actor ) {
