@@ -125,7 +125,12 @@ public class Director extends NamedObj implements Executable {
      * @return the enumeration of all new actors
      */
     public Enumeration getNewActors() {
-        return _listOfNewActors.elements();
+        synchronized(workspace()) {
+            if (_listOfNewActors == null) {
+                _listOfNewActors = new LinkedList();
+            }
+            return _listOfNewActors.elements();    
+        }
     }
     
     /** Clears all the actors from the list of new actors
