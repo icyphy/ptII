@@ -949,8 +949,8 @@ public class CompositeEntity extends ComponentEntity {
      *  This method overrides the base class to check attributes contained
      *  by the contained entities and relations.
      *  Errors that are triggered by this validation are handled by calling
-     *  handleError().
-     *  @see NamedObj#handleError(NamedObj, IllegalActionException)
+     *  handleModelError().
+     *  @see NamedObj#handleModelError(NamedObj, IllegalActionException)
      */
     public void validateSettables() throws IllegalActionException {
         super.validateSettables();
@@ -962,7 +962,7 @@ public class CompositeEntity extends ComponentEntity {
                 try {
                     ((Settable)entity).validate();
                 } catch (IllegalActionException ex) {
-                    handleError(this, ex);
+                    handleModelError(this, ex);
                 }
             }
             entity.validateSettables();
@@ -974,7 +974,7 @@ public class CompositeEntity extends ComponentEntity {
                 try {
                     ((Settable)relation).validate();
                 } catch (IllegalActionException ex) {
-                    handleError(this, ex);
+                    handleModelError(this, ex);
                 }
             }
             relation.validateSettables();

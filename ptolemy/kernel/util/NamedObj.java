@@ -25,11 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (hyzheng@eecs.berkeley.edu)
 
-FIXME: Downgraded to Yellow: Review needed for
-getModelErrorHandler(), setModelErrorHandler(), and
-validateSettables() methods.
 */
 
 package ptolemy.kernel.util;
@@ -102,6 +99,13 @@ that are performed in a disciplined fashion.  In particular, a
 mutation can be requested via the requestChange() method.
 Derived classes will ensure that the mutation is executed
 at a time when it is safe to execute mutations.
+<p>
+This class supports the notion of a <i>model error</i>, which is an
+exception that is handled by a registered model error handler,
+or passed up the container hierarchy if there is no registered model
+error handler.  This mechanism complements the exception mechanism
+in Java. Instead of unraveling the calling stack to handle exceptions,
+this mechanism passes control up the Ptolemy II hierarchy.
 <p>
 Derived classes should override the _description() method to append
 new fields if there is new information that should be included in the
@@ -967,28 +971,29 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Handle a model error. If a model error handler has been registered
      *  with setModelErrorHandler(), then handling is delegated to that
-     *  handler.  Otherwise, if there is a container, then handling is
-     *  delegated to the container.  If there is no container, then the
-     *  error is ignored.
+     *  handler.  Otherwise, or if the registered error handler declines
+     *  to handle the error by returning false, then if there is a
+     *  container, handling is delegated to the container.
+     *  If there is no container and no handler that agrees to
+     *  handle the error, then return false.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
-     *  @return True, unless the error is ignored, in which case false.
+     *  @return True if the error is handled, false otherwise.
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
-    public boolean handleError(NamedObj context,
+    public boolean handleModelError(NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {
         if (_modelErrorHandler != null) {
-            _modelErrorHandler.handleError(context, exception);
-            return true;
-        } else {
-            ModelErrorHandler container = getContainer();
-            if (container != null) {
-                container.handleError(context, exception);
+            if (_modelErrorHandler.handleModelError(context, exception)) {
                 return true;
             }
+        }
+        ModelErrorHandler container = getContainer();
+        if (container != null) {
+            return container.handleModelError(context, exception);
         }
         return false;
     }
@@ -1174,8 +1179,8 @@ public class NamedObj implements Nameable, Debuggable,
     /** Validate attributes deeply contained by this object if they
      *  implement the Settable interface by calling their validate() method.
      *  Errors that are triggered by this validation are handled by calling
-     *  handleError().
-     *  @see #handleError(NamedObj context, IllegalActionException exception)
+     *  handleModelError().
+     *  @see #handleModelError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
         // This base class contains only attributes, so check those.
@@ -1186,7 +1191,7 @@ public class NamedObj implements Nameable, Debuggable,
                 try {
                     ((Settable)attribute).validate();
                 } catch (IllegalActionException ex) {
-                    handleError(this, ex);
+                    handleModelError(this, ex);
                 }
             }
             attribute.validateSettables();

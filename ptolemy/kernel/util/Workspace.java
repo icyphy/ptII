@@ -494,7 +494,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
      */
-    public boolean handleError(
+    public boolean handleModelError(
             NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {

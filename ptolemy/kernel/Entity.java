@@ -429,8 +429,8 @@ public class Entity extends NamedObj {
      *  This method overrides the base class to check attributes contained
      *  by the contained ports.
      *  Errors that are triggered by this validation are handled by calling
-     *  handleError().
-     *  @see NamedObj#handleError(NamedObj context, IllegalActionException exception)
+     *  handleModelError().
+     *  @see NamedObj#handleModelError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
         super.validateSettables();
@@ -442,7 +442,7 @@ public class Entity extends NamedObj {
                 try {
                     ((Settable)port).validate();
                 } catch (IllegalActionException ex) {
-                    handleError(this, ex);
+                    handleModelError(this, ex);
                 }
             }
             port.validateSettables();

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (hyzheng@eecs.berkeley.edu)
 
 */
 
@@ -33,11 +33,11 @@ package ptolemy.kernel.util;
 //////////////////////////////////////////////////////////////////////////
 //// BasicModelErrorHandler
 /**
-Default model error handler.  A model error is an error that is
+Default model error handler.  A model error is an exception that is
 passed up the Ptolemy II hierarchy for handling until a container with
 a registered error handler is found.  If there is no registered error
-handler, then the error is ignored.  It is like an exception, except
-that instead of unraveling the calling stack, it unravels the Ptolemy II
+handler, then the error is ignored.  It is like throwing an exception, except
+that instead of unraveling the calling stack, it travels up the Ptolemy II
 hierarchy.  This class handles the error by simply throwing the
 exception that has been passed to it.
 
@@ -56,7 +56,7 @@ public class BasicModelErrorHandler implements ModelErrorHandler {
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
      */
-    public boolean handleError(
+    public boolean handleModelError(
             NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {

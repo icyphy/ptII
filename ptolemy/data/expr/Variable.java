@@ -1050,7 +1050,7 @@ public class Variable extends Attribute
                     // This is very confusing code.
                     // Don't mess with it if it works.
                     try {
-                        handleError(this, ex);
+                        handleModelError(this, ex);
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
                         result.add(ex2);
