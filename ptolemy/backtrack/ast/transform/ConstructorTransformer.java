@@ -32,6 +32,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -42,10 +43,12 @@ import org.eclipse.jdt.core.dom.ConstructorInvocation;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 
 //////////////////////////////////////////////////////////////////////////
@@ -122,10 +125,10 @@ public class ConstructorTransformer extends AbstractTransformer
         
         // Record the new constructor to be added.
         String currentClassName = state.getCurrentClass().getName();
-        List constructorList = (List)newConstructors.get(currentClassName);
+        List constructorList = (List)_newConstructors.get(currentClassName);
         if (constructorList == null) {
             constructorList = new LinkedList();
-            newConstructors.put(currentClassName, constructorList);
+            _newConstructors.put(currentClassName, constructorList);
         }
         constructorList.add(newConstructor);
     }
@@ -135,7 +138,19 @@ public class ConstructorTransformer extends AbstractTransformer
      *  @param state
      */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
-        
+        Type type = Type.getType(node);
+        String typeName = type.getName();
+        if (state.getCrossAnalyzedTypes().contains(typeName))
+            // The type needs to be cross-analyzed.
+            _refactor(node);
+        else {
+            List list = (List)_unhandledInstanceCreation.get(typeName);
+            if (list == null) {
+                list = new LinkedList();
+                _unhandledInstanceCreation.put(typeName, list);
+            }
+            list.add(node);
+        }
     }
 
     public void handle(AnonymousClassDeclaration node, 
@@ -150,7 +165,7 @@ public class ConstructorTransformer extends AbstractTransformer
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
         String currentClassName = state.getCurrentClass().getName();
-        List constructorList = (List)newConstructors.get(currentClassName);
+        List constructorList = (List)_newConstructors.get(currentClassName);
         if (constructorList == null && node instanceof TypeDeclaration) {
             // For a class without a constructor, create a dummy constructor.
             AST ast = node.getAST();
@@ -159,19 +174,39 @@ public class ConstructorTransformer extends AbstractTransformer
             constructor.setName(ast.newSimpleName(
                     ((TypeDeclaration)node).getName().getIdentifier()));
             constructor.setBody(ast.newBlock());
+            constructor.setModifiers(Modifier.PUBLIC);
             bodyDeclarations.add(constructor);
             handle(constructor, state);
-            constructorList = (List)newConstructors.get(currentClassName);
+            constructorList = (List)_newConstructors.get(currentClassName);
         }
         if (constructorList != null) {
-            newConstructors.remove(currentClassName);
+            _newConstructors.remove(currentClassName);
             bodyDeclarations.addAll(constructorList);
         }
     }
     
     public void handle(TypeAnalyzerState state) {
-        
+        Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
+        Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
+        while (crossAnalysisIter.hasNext()) {
+            String typeName = (String)crossAnalysisIter.next();
+            List list = (List)_unhandledInstanceCreation.get(typeName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    _refactor((ClassInstanceCreation)nodesIter.next());
+                    nodesIter.remove();
+                }
+            }
+        }
     }
     
-    private Hashtable newConstructors = new Hashtable();
+    private void _refactor(ClassInstanceCreation node) {
+        AST ast = node.getAST();
+        node.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+    }
+    
+    private Hashtable _newConstructors = new Hashtable();
+    
+    private Hashtable _unhandledInstanceCreation = new Hashtable();
 }

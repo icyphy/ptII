@@ -98,6 +98,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
 import ptolemy.backtrack.ast.transform.ConstructorHandler;
+import ptolemy.backtrack.ast.transform.CrossAnalysisHandler;
 import ptolemy.backtrack.ast.transform.HandlerList;
 import ptolemy.backtrack.util.PathFinder;
 
@@ -162,6 +163,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void addCrossAnalyzedType(String fullName) {
         _state.getCrossAnalyzedTypes().add(fullName);
+        if (_handlers.hasCrossAnalysisHandler()) {
+            List handlerList = _handlers.getCrossAnalysisHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                CrossAnalysisHandler handler = 
+                    (CrossAnalysisHandler)handlersIter.next();
+                handler.handle(_state);
+            }
+        }
     }
     
     /** Add an array of names of types to the set of types to be
@@ -172,6 +182,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void addCrossAnalyzedTypes(String[] fullNames) {
         _state.getCrossAnalyzedTypes().addAll(Arrays.asList(fullNames));
+        if (_handlers.hasCrossAnalysisHandler()) {
+            List handlerList = _handlers.getCrossAnalysisHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                CrossAnalysisHandler handler = 
+                    (CrossAnalysisHandler)handlersIter.next();
+                handler.handle(_state);
+            }
+        }
     }
     
     /** End the visit of an anonymous class declaration and close its
@@ -921,6 +940,9 @@ public class TypeAnalyzer extends ASTVisitor {
         } catch (ClassNotFoundException e) {
             throw new ASTClassNotFoundException(currentName.toString());
         }
+        
+        // Add the class to be cross-analyzed.
+        addCrossAnalyzedType(currentClass.getName());
 
         // A class declaration starts a new scope.
         _openScope();

@@ -941,7 +941,7 @@ public class AssignmentTransformer extends AbstractTransformer
         } else {
             // Add a special checkpoint object field.
             FieldDeclaration checkpointField = _createCheckpointField(ast);
-            bodyDeclarations.add(checkpointField);
+            bodyDeclarations.add(0, checkpointField);
         }
     }
     
