@@ -287,8 +287,9 @@ public class Expression extends TypedAtomicActor {
         while (extenders.hasNext()) {
             ScopeExtender extender = (ScopeExtender)extenders.next();
             result = extender.getAttribute(name);
-            if (result != null && result instanceof Variable)
+            if (result != null && result instanceof Variable) {
                 return (Variable)result;
+            }
         }
         return null;
     }
