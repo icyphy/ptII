@@ -198,9 +198,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             } else {
                 System.out.println("ActorTransformerVisitor."
                         + "visitLocalVarDeclNode(): "
-                        + "kind '" + kind + "' is not supported"
-                        + "TYPE_KIND_TOKEN=" + PtolemyTypeIdentifier.TYPE_KIND_TOKEN
-                        + "TYPE_KIND_INT_ARRAY_TOKEN="
+                        + "kind '" + kind + "' is not supported.\n "
+                        + "TYPE_KIND_TOKEN="
+                        + PtolemyTypeIdentifier.TYPE_KIND_TOKEN
+                        + " TYPE_KIND_INT_ARRAY_TOKEN="
                         + PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN
                                    );
             }
