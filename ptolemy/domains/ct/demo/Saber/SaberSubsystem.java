@@ -55,8 +55,8 @@ please avoid using it.
 @version $Id$
 */
 
-public class SaberSubsystem extends CTActor
-    implements IPCInterface, CTDynamicActor{
+public class SaberSubsystem extends TypedAtomicActor
+    implements IPCInterface, CTDynamicActor {
 
     /** Construct the actor. Default implementation has no
      *  input port, no output port. The ports can be added by
@@ -220,9 +220,9 @@ public class SaberSubsystem extends CTActor
     /** emit the output again.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
-        Enumeration outps = outputPorts();
-        while(outps.hasMoreElements()) {
-            TypedIOPort p = (TypedIOPort)outps.nextElement();
+        Iterator outputPorts = outputPortList().iterator();
+        while(outputPorts.hasNext()) {
+            TypedIOPort p = (TypedIOPort)outputPorts.next();
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
             _debug(getFullName() + " port " + p.getName() +
@@ -241,10 +241,12 @@ public class SaberSubsystem extends CTActor
         double now = dir.getCurrentTime();
         double endTime = now + dir.getCurrentStepSize();
         _debug(getFullName() + "endTime: "+endTime);
-        Enumeration inports = inputPorts();
-        while (inports.hasMoreElements()) {
-            IOPort p = (IOPort) inports.nextElement();
-            Parameter pparam = (Parameter)getAttribute(p.getName() + "ToolVar");
+
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort p = (IOPort) inputPorts.next();
+            Parameter pparam = (Parameter)getAttribute(p.getName() +
+                    "ToolVar");
             String ppstr = ((StringToken)pparam.getToken()).stringValue();
             String indata = ((DoubleToken)p.get(0)).stringValue();
             _ps.println("alter /"+ ppstr +" = " + indata);
@@ -295,13 +297,14 @@ public class SaberSubsystem extends CTActor
                 }
             }
         }
-        // get output.
-        Enumeration outports = outputPorts();
+        // Get output.
+        Iterator outputPorts = outputPortList().iterator();
         String outstr = new String();
         int outindex = 0;
-        while(outports.hasMoreElements()) {
-            IOPort p = (IOPort) outports.nextElement();
-            Parameter pparam = (Parameter)getAttribute(p.getName() + "ToolVar");
+        while(outputPorts.hasNext()) {
+            IOPort p = (IOPort) outputPorts.next();
+            Parameter pparam = (Parameter)getAttribute(p.getName() +
+                    "ToolVar");
             String ppstr = ((StringToken)pparam.getToken()).stringValue();
             outstr = outstr + " " + ppstr;
             outindex ++;
@@ -376,10 +379,10 @@ public class SaberSubsystem extends CTActor
             }
         }
         // Output tokens
-        outports = outputPorts();
+        outputPorts = outputPortList().iterator();
         int outi = 0;
-        while(outports.hasMoreElements()) {
-            TypedIOPort p = (TypedIOPort) outports.nextElement();
+        while(outputPorts.hasNext()) {
+            TypedIOPort p = (TypedIOPort) outputPorts.next();
             _outtoken[outi] = new DoubleToken(_outvar[outi]);
             p.broadcast( _outtoken[outi] );
             _outpvalue.put(p, _outtoken[outi]);
