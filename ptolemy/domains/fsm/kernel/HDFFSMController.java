@@ -48,6 +48,7 @@ import ptolemy.domains.fsm.*;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.actor.sched.*;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMController
@@ -331,7 +332,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 LinkedList inports = new LinkedList();
                 //Enumeration ports = getPorts();
 		// Is this right?
-		Enumeration ports = ((CompositeEntity)getContainer()).getPorts();
+		//Enumeration ports = ((CompositeEntity)getContainer()).getPorts();
+		Enumeration ports = Collections.enumeration(((CompositeEntity)getContainer()).portList());
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isInput()) {
@@ -399,7 +401,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             workspace().getReadAccess();
             if(_outputPortsVersion != workspace().getVersion()) {
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = getPorts();
+                Enumeration ports = Collections.enumeration(portList());
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isOutput()) {
@@ -1234,14 +1236,16 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             _inputValueVars.createVariables(inputPorts());
 	    // Add all the input ports of the Controller's container
 	    // to the scope.
-	    _inputStatusVars.createVariables(((CompositeEntity)getContainer()).getPorts());
-	    _inputValueVars.createVariables(((CompositeEntity)getContainer()).getPorts());
+	    //_inputStatusVars.createVariables(((CompositeEntity)getContainer()).getPorts());
+	    _inputStatusVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
+	    //_inputValueVars.createVariables(((CompositeEntity)getContainer()).getPorts());
+	    _inputValueVars.createVariables(Collections.enumeration(((CompositeEntity)getContainer()).portList()));
 	    
         } catch (IllegalActionException ex) {
         } catch (NameDuplicationException ex) {
         }
 	
-        Enumeration states = getEntities();
+        Enumeration states = Collections.enumeration(entityList());
         FSMState state;
 	// Setup the scope associated with each state. The scope
 	// associated with a state consists of all of its refining
@@ -1250,7 +1254,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             state = (FSMState)states.nextElement();
             state.setupScope();
         }
-        Enumeration transitions = getRelations();
+        Enumeration transitions = Collections.enumeration(relationList());
         FSMTransition trans;
 	// Setup the scope associated with each transition. The scope
 	// associated with a transition consists of the union of the
