@@ -593,4 +593,3 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     private Map _fields = new HashMap();
 }
-

@@ -375,4 +375,3 @@ public class ByteToken extends ScalarToken {
     ////                         private variables                 ////
     private byte _value;
 }
-
