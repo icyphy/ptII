@@ -287,7 +287,11 @@ public class MoMLParser extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
-        if (elementName.equals("configure")) {
+	if ( _skipRendition ) {
+	     if (elementName.equals("rendition")) {
+		 _skipRendition = false;
+	     }
+	} else if (elementName.equals("configure")) {
             ((Configurable)_current).configure(
                     _base, _configureSource, _currentCharData.toString());
         } else if (elementName.equals("doc")) {
@@ -312,7 +316,7 @@ public class MoMLParser extends HandlerBase {
             } catch (EmptyStackException ex) {
                 _namespace = DEFAULT_NAMESPACE;
             }
-        } else if (
+	} else if (
                 elementName.equals("property")
                 || elementName.equals("class")
                 || elementName.equals("deleteEntity")
@@ -350,7 +354,7 @@ public class MoMLParser extends HandlerBase {
      *  &AElig;lfred will call this method whenever it encounters
      *  a serious error.  This method simply throws an XmlException.
      *  @param message The error message.
-     *  @param systemId The URI of the tntity that caused the error.
+     *  @param systemId The URI of the entity that caused the error.
      *  @param line The approximate line number of the error.
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
@@ -579,7 +583,10 @@ public class MoMLParser extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         _currentElement = elementName;
         try {
-            // NOTE: The elements are alphabetical below...
+	    if (_skipRendition) {
+		return;
+	    }
+           // NOTE: The elements are alphabetical below...
             // NOTE: I considered using reflection to invoke a set of
             // methods with names that match the element names.  However,
             // since we can't count on the XML parser to enforce the DTD,
@@ -1160,9 +1167,22 @@ public class MoMLParser extends HandlerBase {
 
                 _containers.push(_current);
                 _namespaces.push(_namespace);
-                Class newClass = Class.forName(className, true, _classLoader);
-                _current = _createInstance(newClass, arguments);
-                _namespace = DEFAULT_NAMESPACE;
+		try {
+		    Class newClass = Class.forName(className, true, _classLoader);
+		    _current = _createInstance(newClass, arguments);
+		    _namespace = DEFAULT_NAMESPACE;
+		} catch (NoClassDefFoundError e) {
+		    // If we are running the nightly tests, then we
+		    // have no display, and diva.jar is not in the class
+		    // path, so when we process a rendition, we will
+		    // get errors like:
+		    // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
+		    // The fix is to skip the rest of the rendition.
+		    _skipRendition = true;
+		    _current = (NamedObj)_containers.pop();
+		    _namespace = (String)_namespaces.pop();
+		}
+
 
             } else if (elementName.equals("unlink")) {
                 String portName = (String)_attributes.get("port");
@@ -2015,6 +2035,10 @@ public class MoMLParser extends HandlerBase {
 
     // The parser.
     private XmlParser _parser = new XmlParser();
+
+    // True if we are skipping a rendition body.  Rendition bodies
+    // are skipped if the rendition class was not found.
+    private boolean _skipRendition = false;
 
     // Top-level entity.
     private NamedObj _toplevel = null;
