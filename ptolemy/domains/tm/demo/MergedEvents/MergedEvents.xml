@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 39.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 1, 881, 466}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 1, 881, 468}}">
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -43,6 +43,8 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 245.0">
         </property>
@@ -60,6 +62,8 @@
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{10}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 100.0">
         </property>
@@ -98,143 +102,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-    </entity>
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 180.0">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[539, 350]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[156, 238]">
-        </property>
-        <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 40.0">
-            </property>
-        </property>
-        <port name="u" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 160.0">
-            </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.0}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 165.0">
-            </property>
-            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="output"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
-        </entity>
-        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={557, 479, 445, 266}}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 211]">
-            </property>
-            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 235.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots" stems="yes"/>
-</plot>?>
-            </configure>
-        </entity>
-        <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x + tau*(u-x)">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 235.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="x" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="u" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="tau" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 277.0">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <relation name="Copy1:relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="340.0, 235.0">
-            </vertex>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="69.0, 160.0">
-            </vertex>
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="226.0, 111.0">
-            </vertex>
-        </relation>
-        <link port="u" relation="relation"/>
-        <link port="SampleDelay.input" relation="Copy1:relation14"/>
-        <link port="SampleDelay.output" relation="relation3"/>
-        <link port="TimedPlotter.input" relation="Copy1:relation14"/>
-        <link port="Expression.output" relation="Copy1:relation14"/>
-        <link port="Expression.x" relation="relation3"/>
-        <link port="Expression.u" relation="relation"/>
-        <link port="Expression.tau" relation="relation2"/>
-        <link port="TimeGap.input" relation="relation"/>
-        <link port="TimeGap.output" relation="relation2"/>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -285,17 +152,205 @@
 </plot>?>
         </configure>
     </entity>
+    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 180.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[539, 350]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[156, 238]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+            </property>
+            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 60.0">
+            </property>
+        </property>
+        <port name="u" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 160.0">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={557, 479, 445, 266}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 211]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 235.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.0" max="40.0"/>
+<yRange min="0.0" max="2.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 277.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 235.0">
+            </property>
+            <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 40.0">
+                </property>
+            </property>
+            <port name="port_0" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 235.0">
+                </property>
+            </port>
+            <port name="port_7" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 215.0">
+                </property>
+            </port>
+            <port name="port_8" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 275.0">
+                </property>
+            </port>
+            <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 165.0">
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x + tau*(u-x)">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 235.0">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="x" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="u" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="tau" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="Copy1:relation14" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="340.0, 235.0">
+                </vertex>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="226.0, 111.0">
+                </vertex>
+            </relation>
+            <relation name="relation_7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2_8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port_0" relation="Copy1:relation14"/>
+            <link port="port_7" relation="relation_7"/>
+            <link port="port_8" relation="relation2_8"/>
+            <link port="SampleDelay.input" relation="Copy1:relation14"/>
+            <link port="SampleDelay.output" relation="relation3"/>
+            <link port="Expression.output" relation="Copy1:relation14"/>
+            <link port="Expression.x" relation="relation3"/>
+            <link port="Expression.u" relation="relation_7"/>
+            <link port="Expression.tau" relation="relation2_8"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="69.0, 160.0">
+            </vertex>
+        </relation>
+        <relation name="Copy1:relation14_0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="u" relation="relation"/>
+        <link port="TimedPlotter.input" relation="Copy1:relation14_0"/>
+        <link port="TimeGap.input" relation="relation"/>
+        <link port="TimeGap.output" relation="relation2"/>
+        <link port="typed composite actor.port_0" relation="Copy1:relation14_0"/>
+        <link port="typed composite actor.port_7" relation="relation"/>
+        <link port="typed composite actor.port_8" relation="relation2"/>
+    </entity>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="267.0, 148.0">
         </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Clock.output" relation="relation6"/>
     <link port="PoissonClock.output" relation="relation"/>
@@ -305,8 +360,8 @@
     <link port="Sampler.input" relation="relation11"/>
     <link port="Sampler.output" relation="relation3"/>
     <link port="Sampler.trigger" relation="relation4"/>
-    <link port="typed composite actor.u" relation="relation3"/>
     <link port="Pulse.output" relation="relation11"/>
     <link port="Pulse.trigger" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation11"/>
+    <link port="typed composite actor.u" relation="relation3"/>
 </entity>
