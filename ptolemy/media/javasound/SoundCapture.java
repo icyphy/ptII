@@ -179,7 +179,7 @@ public class SoundCapture {
     }
 
     /** Stop capturing audio. This method should be called when
-     *  no more calls to <i>getSamples()</i. are required, so
+     *  no more calls to <i>getSamples()</i>. are required, so
      *  that the system resources involved in the audio capture
      *  may be freed.
      */

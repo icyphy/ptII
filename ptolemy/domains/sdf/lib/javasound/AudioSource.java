@@ -51,7 +51,9 @@ import ptolemy.domains.sdf.kernel.*;
 /////////////////////////////////////////////////////////////////
 //// AudioSource
 /**
-Sequentially output the samples from an audio source. Possible
+Sequentially output the samples from an audio source. The
+DoubleTokens produced by this actor will be in the range [-1,1].
+Possible
 audio sources include microphone, line-in, a sound file, or
 a URL to a sound file. For the case where the audio source is
 a microphone or line-in, this actor should be fired often enough
@@ -94,6 +96,8 @@ performance.
 The following parameters are relavent to audio capture from
 a sound file, and should be set accordingly:
 <ul>
+<li><i>source</i> should be set to "URL" or "file".
+<li><i>pathName</i> should be set to the name of the file.
 <li><i>channels</i> should be set to desired number of audio 
 channels. The default is 1. Choose 2 only if the sound file
 is known to be stereo. Setting <i>channels</i> to a higher
@@ -112,15 +116,6 @@ only allowed access to files specified by a URL and located
 on the machine from which the applet is loaded. The 
 .java.policy file may be modified to grant applets more
 privleges, if desired.
-<p>
-The following parameters are relavent to audio capture from
-a sound file, and should be set accordingly:
-<ul>
-<li><i>source</i> should be set to "URL" or "file".
-<li><i>pathName</i> should be set to the name of the file.
-<li><i>tokenProductionRate</i> should be set to optimize 
-performance.
-</ul>
 <p>
 Note: Requires Java 2 v1.3.0 RC1 or later.
 @author Brian K. Vogel
