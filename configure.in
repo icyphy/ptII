@@ -455,9 +455,9 @@ if $JAVAC javasoundTest.java ; then
     AC_MSG_RESULT(ok)
     PTJAVASOUND=javasound	
 else
-   AC_MSG_WARN(['$JAVAC javasoundTest.java' failed.  Perhaps you are running
-    under JDK1.2?  javasound is used in actor.lib, but you can probably
-    get away without it.])
+   AC_MSG_WARN(['$JAVAC javasoundTest.java' failed.
+    Perhaps you are running under JDK1.2?
+    javasound is used in actor.lib, but you can probably get away without it.])
 fi
 cd $startdir
 
