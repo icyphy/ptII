@@ -184,12 +184,12 @@ public class AudioSource extends SDFAtomicActor {
 
     /** The name of the file to read from. The path must be a valid
      *  URL. Note that it is possible to load a file from the native
-     *  file system by using the prefix "file:///" instead of "http://". 
-     *  The sound file format is determined from the file extension. 
-     *  For example, "file:///C:/someDir/someFile.wav" will be 
+     *  file system by using the prefix "file:///" instead of "http://".
+     *  The sound file format is determined from the file extension.
+     *  For example, "file:///C:/someDir/someFile.wav" will be
      *  interpretted as a WAVE file.
      *  <p>
-     *  To read data from a sound file,  <i>source</i> must be set 
+     *  To read data from a sound file,  <i>source</i> must be set
      *  to "URL" and <i>pathName</i> must be set a a fully qualified URL.
      *  This parameter will be ignored if audio is captured from
      *  a microphone or line-in (i.e., if <i>source</i> is set to "mic").

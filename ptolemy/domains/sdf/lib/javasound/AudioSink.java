@@ -320,7 +320,7 @@ public class AudioSink extends SDFAtomicActor {
                     _consumptionRate);
 	    //} else if (((StringToken)sink.getToken()).toString() == "speaker") {
 	} else if (sinkStr.equals("speaker")) {
-	
+
 	    // Send audio data to the speaker.
 	    if(_debugging) _debug("AudioSink: initialize(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
