@@ -30,10 +30,10 @@
 ##########################################################################
 
 # Root of Tycho directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 # True source directory
-VPATH =		$(ROOT)/java/ptplot/doc/internals
+VPATH =		$(ROOT)/java/pt/plot/doc/internals
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

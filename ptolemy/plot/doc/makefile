@@ -30,7 +30,7 @@
 ##########################################################################
 
 # Root of Tycho directory
-ROOT =		../../..
+ROOT =		../../../..
 # True source directory
 VPATH =		$(ROOT)/java/pt/doc
 

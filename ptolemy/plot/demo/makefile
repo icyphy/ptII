@@ -30,17 +30,17 @@
 # 						COPYRIGHTENDKEY
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH =	../..
+CLASSPATH =	../../..
 
-TYPACKAGE = 	ptplot.demo
+TYPACKAGE = 	pt.plot.demo
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR =	ptplot/demo
+TYPACKAGE_DIR =	pt.plot/demo
 TYVERSION =	1.1
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
