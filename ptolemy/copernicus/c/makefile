@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II C code generation back-end runtime
+# Makefile for Ptolemy II C code generation back-end
 #
 # @Authors:  Christopher Hylands, Ankush Varma, Shuvra S. Bhattacharyya --
 # based on a file by Thomas M. Parks
@@ -30,45 +30,78 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/c/runtime
+ME =		ptolemy/copernicus/c
+
+DIRS =		test runtime
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
+
+# $PTII/configure looks for Soot and JHDL and sets
+# variables in $PTII/mk/ptII.mk
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	runtime
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	c
+PTCLASSJAR =
 
-DIRS =
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	runtime/runtime.jar
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	$(JSRCS) \
-	array.c \
-	array.h \
-	pccg.h \
-	readme.txt \
-	runtime.c \
-	runtime.h
+# Keep this list alphabetized.
+JSRCS = \
+	CNames.java \
+	CodeFileGenerator.java \
+	CodeGenerator.java \
+	Context.java \
+	CSwitch.java \
+	ExceptionTracker.java \
+	FileHandler.java \
+	HeaderFileGenerator.java \
+	InterfaceFileGenerator.java \
+	JavaToC.java \
+	Main.java \
+	MakeFileGenerator.java \
+	MethodListGenerator.java \
+	RequiredFileGenerator.java
+
+OTHER_FILES_TO_BE_JARED = \
+	compileCommandTemplate.txt \
+	runCommandTemplate.txt
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	README.txt
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "Nothing to be done in this directory"
+	@echo "To run the demo, cd to the 'test/FIR' directory, and run 'runme'"
 
-install: all
+install: all jars
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Leave out the demo for now. Tests are in test/.
+# demo: jclass
+# (cd demo/SimpleAdd; $(MAKE) demo)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
