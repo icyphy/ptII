@@ -163,6 +163,55 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         setToken(token);
     }
 
+    /** Create a guarded communication with a send communication.
+     *  @param guard The guard for the guarded communication statement
+     *   represented by this object.
+     *  @param port The IOPort containing the channel (and thus receiver)
+     *   that this branch will try to rendezvous with.
+     *  @param channel The channel in the IOPort that this branch is
+     *   trying to rendezvous with.
+     *  @param branchID The identification number assigned to this branch
+     *   upon creation by the CSPActor.
+     *  @param token The token this branch is trying to send.
+     *  @exception IllegalActionException If the channel has more
+     *   than one receiver or if the receiver is not of type CSPReceiver.
+     */
+    public ConditionalSend(boolean guard, IOPort port, int channel,
+            int branchID, Token token, ConditionalBranchController cbc) throws IllegalActionException {
+        super(guard, port, branchID, cbc);
+        Receiver[][] receivers;
+        try {
+            port.workspace().getReadAccess();
+            if (!port.isOutput()) {
+                throw new IllegalActionException(port, "ConditionalSend: " +
+                        "tokens only sent from an output port.");
+            }
+            if (channel >= port.getWidth() || channel < 0) {
+                throw new IllegalActionException(port, "ConditionalSend: " +
+                        "channel index out of range.");
+            }
+            receivers = port.getRemoteReceivers();
+            if (receivers == null || receivers[channel] == null) {
+                throw new IllegalActionException(port, "ConditionalSend: " +
+                        "Trying to rendezvous with null receiver");
+            }
+            if (receivers[channel].length != 1) {
+                throw new IllegalActionException(port, "ConditionalSend: " +
+                        "channel " + channel + " does not have exactly" +
+                        " one receiver");
+            }
+            if (!(receivers[channel][0] instanceof CSPReceiver)) {
+                throw new IllegalActionException(port,"ConditionalSend: " +
+                        "channel " + channel + " does not have a receiver " +
+                        "of type CSPReceiver." );
+            }
+            setReceiver( (CSPReceiver)receivers[channel][0] );
+        } finally {
+            port.workspace().doneReading();
+        }
+        setToken(token);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
