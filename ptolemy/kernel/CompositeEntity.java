@@ -52,7 +52,7 @@ of the container entity. Methods that "deeply" traverse the topology
 see right through transparent ports.
 It may be opaque, in which case its ports are opaque and methods
 that "deeply" traverse the topology do not see through them.
-For instance, deepGetEntities() returns the opaque entities
+For instance, deepEntityList() returns the opaque entities
 directly or indirectly contained by this entity.
 <p>
 To add an entity or relation to this composite, call its setContainer() method
