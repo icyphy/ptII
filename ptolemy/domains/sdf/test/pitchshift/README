@@ -18,14 +18,14 @@ java -classpath ".;math.jar" PitchSlider 44100 &
 
 
 Other notes
-This application requires JDK 1.3 beta and at least a Pentium II 300
+This application requires JDK 1.3 beta and at least a Pentium II 400
 MHz class processor to run at 22050 Hz sample rate. 
 44100 Hz performance might be possible on a 600 MHz Pentium III, but I
 have not tried this since I don't have access to such a system.
+If you hear clicks or the sound skips, try increasing the buffer
+size, readWriteDataSizeInFrames, in ProcessAudio.java (for
+PitchSlider), or in ProcessAudioHarmonizer.java (for HarmonizerSlider).
 
-There is currently a large latency of about 1 sec (at 44100 Hz) due to
-an apparent bug in the JDK 1.3 beta. The latency due to my code is
-about 75 msec (at 44100 Hz).
 
 Since the pitch shifting algorithm is pitch-synchronous, a pitch
 detector is used to provide a pitch estimate of the input signal. I am
