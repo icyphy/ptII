@@ -40,6 +40,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -129,7 +130,7 @@ only be chosen after the refinement of its source state is fired.
 @see FSMDirector
 */
 public class FSMActor extends CompositeEntity 
-    implements TypedActor {
+    implements TypedActor, ExplicitChangeContext {
 
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
@@ -338,6 +339,57 @@ public class FSMActor extends CompositeEntity
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return a list of variables that this entity modifies.  The
+     * variables are assumed to have a change context of the given
+     * entity.
+     * @return A list of variables.
+     */
+    public List getModifiedVariables() throws IllegalActionException {
+        List list = new LinkedList();
+        // Collect assignments from FSM transitions
+        for (Iterator states = entityList().iterator();
+             states.hasNext();) {
+            State state = (State)states.next();
+            for (Iterator transitions =
+                     state.outgoingPort.linkedRelationList().iterator();
+                 transitions.hasNext();) {
+                Transition transition = (Transition)transitions.next();
+                for (Iterator actions =
+                         transition.choiceActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+                for (Iterator actions =
+                         transition.commitActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+            }
+        }      
+        return list;
     }
 
     /** Initialize this actor.  Goto initial state.

@@ -221,49 +221,7 @@ public class ModalModel extends CTCompositeActor
      * @return A list of variables.
      */
     public List getModifiedVariables() throws IllegalActionException {
-        List list = new LinkedList();
-        // Collect assignments from FSM transitions
-        for (Iterator states = _controller.entityList().iterator();
-             states.hasNext();) {
-            State state = (State)states.next();
-            for (Iterator transitions =
-                     state.outgoingPort.linkedRelationList().iterator();
-                 transitions.hasNext();) {
-                Transition transition = (Transition)transitions.next();
-                for (Iterator actions =
-                         transition.choiceActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
-                    for (Iterator names = 
-                             action.getDestinationNameList().iterator();
-                         names.hasNext();) {
-                        String name = (String)names.next();
-                        NamedObj object = action.getDestination(name);
-                        if (object instanceof Variable) {
-                            list.add(object);
-                        }
-                    }
-                }
-                for (Iterator actions =
-                         transition.commitActionList().iterator();
-                     actions.hasNext();) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute)actions.next();
-                    
-                    for (Iterator names = 
-                             action.getDestinationNameList().iterator();
-                         names.hasNext();) {
-                        String name = (String)names.next();
-                        NamedObj object = action.getDestination(name);
-                        if (object instanceof Variable) {
-                            list.add(object);
-                        }
-                    }
-                }
-            }
-        }      
-        return list;
+        return _controller.getModifiedVariables();
     }
 
     /** Create a new director for use in this composite.  This base
