@@ -43,18 +43,27 @@ proc PNPrimeTycho { {numberOfCycles 10}} {
 	puts "Please wait while the remote Tcl Blend Process starts up."
 	flush stdout
 	update
-	set jrpc [::tycho::JRPC [::tycho::autoName .jrpc]]
+
+	# Generate a "random" port number. This is awful!
+	set str [clock clicks]
+	set len [string length $str]
+	set portnum 1[string range $str [expr $len-4] end]
+	puts "Portnum = $portnum"
+        update
+	
+	set jrpc [::tycho::JRPC [::tycho::autoName .jrpc] -portnum $portnum]
 	puts "Remote Tcl Blend Process started."
     }
     set initialDAGFileName [::tycho::tmpFileName initial .dag]
     set finalDAGFileName [::tycho::tmpFileName final .dag]
 
-    $jrpc send set initialDAGFileName $initialDAGFileName 
-    $jrpc send set finalDAGFileName $finalDAGFileName 
-    $jrpc send set numberOfCycles $numberOfCycles
-    $jrpc send source \
+    $jrpc send "set initialDAGFileName $initialDAGFileName"
+    $jrpc send "set finalDAGFileName $finalDAGFileName"
+    $jrpc send "set numberOfCycles $numberOfCycles"
+    $jrpc send "source \
 	    [file join $TYCHO java pt domains pn kernel demo \
-	    PNPrimeExample.tcl]
+	    PNPrimeExample.tcl]"
+
     ::tycho::File::openContext $initialDAGFileName
     ::tycho::File::openContext $finalDAGFileName
 
