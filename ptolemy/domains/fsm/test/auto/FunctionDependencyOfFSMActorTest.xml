@@ -54,7 +54,7 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[755, 400]">
         </property>
-        <port name="inMSG" class="ptolemy.apps.superb.sensor.kernel.SensorIOPort">
+        <port name="inMSG" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 100.0">
             </property>
