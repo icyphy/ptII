@@ -32,18 +32,17 @@ package ptolemy.domains.de.kernel;
 //// DESortKey
 /** An event in Discrete Event domain is modeled as an instance of Token and
  *  an instance of DESortKey. DESortKey is an aggregation of time stamp
- *  (double)and depth (long)
+ *  (double) and depth (long)
  *  <p>
  *  In a particular implementation of the global event queue, namely
- *  the CalendarQueue class, methods of the DECQComparator class are used to
- *  perform the sorting and arranging in the CalendarQueue.
+ *  calendar queue, methods of the DECQDirector$DECQComparator class are 
+ *  used to perform the sorting and arranging of events in the calendar queue.
  *  <p>
- *  FIXME: Support for other type of time stamp (e.g. long).
-
-@author Lukito Muliadi
-@version $Id$
-@see DECQComparator
-*/
+ *
+ *  @author Lukito Muliadi
+ *  @version $Id$
+ *  @see DECQComparator
+ */
 public class DESortKey {
 
     /** Construct a DESortKey object with the given time stamp and receiver
@@ -65,7 +64,7 @@ public class DESortKey {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time stamp field of the sort key.
+    /** Return the time stamp field of this sort key.
      *
      * @return The time stamp field.
      */
@@ -73,7 +72,7 @@ public class DESortKey {
         return _timeStamp;
     }
 
-    /** Return the receiver-depth field of the sort key.
+    /** Return the receiver-depth field of this sort key.
      *
      * @return The receiver-depth field.
      */
@@ -85,10 +84,9 @@ public class DESortKey {
     ////                         private variables                 ////
 
 
-    // FIXME: change double to Number ?
-    // _timeStamp
+    // _timeStamp The time stamp of the event.
     private double _timeStamp;
-    // _receiverDepth
+    // _receiverDepth The depth of the receiver receiving the event.
     private long _receiverDepth;
 
 }

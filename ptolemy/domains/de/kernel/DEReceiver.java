@@ -1,4 +1,4 @@
-/* Discrete Event (DE) domain Receiver.
+/* Discrete Event (DE) domain receiver.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -38,15 +38,17 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
-/** An implementation of the Receiver interface for the DE domain.  Tokens
- *  received by this receiver have a time stamp.  If the time stamp is not
- *  explicitly given, then it is assumed to be the current time (which is
+/** An implementation of the ptolemy.actor.Receiver interface for 
+ *  the DE domain.  Tokens received by this receiver are associated with
+ *  time stamps. 
+ *  If the time stamp is not explicitly given, 
+ *  then it is assumed to be the current time (which is
  *  maintained by the director).  The get() method returns only tokens
  *  with time stamps equal to or earlier than the current time. Thus, when
  *  a token is put into the receiver using put(), it does not become
  *  immediately available to the get() method.  Instead, it is sent to
  *  the director to be queued. The director sorts tokens by time stamp.
- *  When the current time advances to the match the time stamp of
+ *  When the current time advances to match the time stamp of
  *  the token, the director inserts the token into the receiver (using
  *  the _triggerEvent() method).  After that point, the token can be
  *  retrieved using get().
@@ -56,8 +58,8 @@ import collections.LinkedList;
  *  stamp. The standard put() method from the Receiver interface implicitly
  *  uses the current time as the time stamp.
  *  <p>
- *  For use by the director, this receiver has a 'depth' field
- *  indicating its depth in the topology.  This is used by the receiver
+ *  For use only by the director, this receiver has a 'depth' field
+ *  indicating its depth in the topology.  This is used by the director
  *  to prioritize firings of actors when dealing with simultaneous events.
  *  Actors containing receivers with a smaller depth are given priority
  *  over actors with a larger depth.
@@ -78,8 +80,9 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Determine whether pending tokens after a firing is allowed by the
-     *  director.
+    /** Specify whether pending tokens (i.e. leftover tokens) after an
+     *  actor firing is allowed in this receiver by the
+     *  director. 
      */
     public void allowPendingTokens(boolean b) {
         _isPendingTokenAllowed = b;
@@ -87,7 +90,9 @@ public class DEReceiver implements Receiver {
 
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver with a time stamp equal to or earlier than
-     *  the current time.  If there is no such token, throw an
+     *  the current time.  Note that there might be multiple such
+     *  tokens in the receiver. In that case, FIFO behaviour is used with
+     *  respect to the put() method. If there is no such token, throw an
      *  exception.
      *
      *  @return A token.
@@ -101,15 +106,15 @@ public class DEReceiver implements Receiver {
         return (Token)_tokens.take();
     }
 
-    /** Return the container.
+    /** Return the IOPort containing this receiver.
      *  @return An instance of IOPort.
      */
     public IOPort getContainer() {
         return _container;
     }
 
-    /** Return the director. Note that the director returned is guaranteed
-     *  to be non-null.
+    /** Return the director that created this receiver. Note that
+     *  the director returned is guaranteed to be non-null.
      *  @return An instance of DEDirector.
      *  @exception IllegalActionException If there is no container port, or
      *   if the port has no container actor, or if the actor has no director,
@@ -169,14 +174,14 @@ public class DEReceiver implements Receiver {
     }
 
 
-    /** Put a token into the receiver with no delay.  I.e., the time stamp
-     *  is equal to the current time (obtained from the director).  Note that
+    /** Put a token into the receiver with no delay. The time stamp
+     *  is equal to the current time (obtained from the DEDirector). Note that
      *  this token does not become immediately available to the get() method.
      *  Instead, the token is queued with the director, and the director
      *  must put the token back into this receiver using the _triggerEvent()
-     *  method in order for the token to become available.
+     *  method in order for the token to become available to the get() method.
      *
-     *  @param token The token to put.
+     *  @param token The token to be put.
      *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException{
@@ -200,9 +205,10 @@ public class DEReceiver implements Receiver {
      *  this token does not become immediately available to the get() method.
      *  Instead, the token is queued with the director, and the director
      *  must put the token back into this receiver using the _triggerEvent()
-     *  method in order for the token to become available.
+     *  method in order for the token to become available to the
+     *  get() method.
      *
-     *  @param token The token to put.
+     *  @param token The token to be put.
      *  @param delay The delay of the token.
      *  @exception IllegalActionException If the delay is negative, or if
      *   there is no director.
@@ -214,7 +220,7 @@ public class DEReceiver implements Receiver {
         dir._enqueueEvent(this, token, dir.getCurrentTime() + delay, _depth);
     }
 
-    /** Set the container.
+    /** Set the IOPort containing this receiver.
      *  @param port The container.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
@@ -225,12 +231,13 @@ public class DEReceiver implements Receiver {
     ////                         protected methods                 ////
 
     /** Return true if this receiver is inside an output port of an opaque
-     *  composite actor (a wormhole). Calling either put() methods on this
+     *  composite actor (a wormhole). Calling the put() method on this
      *  kind of receiver will not result in an event being put into the
      *  global event queue. This is needed, because this receiver is not
      *  really the 'final destination' of the token, rather the containing
      *  CompositeActor will call transferOutput to move the token into its
      *  'final destination'.
+     *  @return True if above condition is satisfied, false otherwise.
      *
      */
     protected boolean _isOCAOutput() {
@@ -256,7 +263,9 @@ public class DEReceiver implements Receiver {
 
     }
 
-    /**
+    /** Return true if pending token is allowed in this receiver by the
+     *  director. Otherwise, return false.
+     *  @return True if pending token is allowed, false otherwise.
      */
     protected boolean _isPendingTokenAllowed() {
         return _isPendingTokenAllowed;
@@ -266,7 +275,10 @@ public class DEReceiver implements Receiver {
     /** Set the depth of this receiver, obtained from the topological
      *  sort.  The depth determines the priority assigned to tokens
      *  with equal time stamps.  A smaller depth corresponds to a
-     *  higher priority.
+     *  higher priority. Only DEDirector should call this method. 
+     *
+     *  @param depth The depth of this receiver, determined from
+     *  topological sort.
      */
     protected void _setDepth(long depth) {
         _depth = depth;
@@ -276,7 +288,7 @@ public class DEReceiver implements Receiver {
      *  Normally, only a director should use this method. It uses it
      *  when its current time matches the time stamp of the token.
      *
-     *  @param token The token to make available.
+     *  @param token The token to made available.
      */
     protected void _triggerEvent(Token token) {
         _tokens.insertLast(token);
@@ -285,7 +297,7 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // _container
+    // _container IOPort containing this receiver.
     private IOPort _container = null;
 
     // _depth: The topological depth associated with this receiver.
@@ -304,8 +316,9 @@ public class DEReceiver implements Receiver {
     // List for storing tokens.  Access with clear(), insertLast(), 
     // and take().
     private LinkedList _tokens = new LinkedList();
-    //private LinkedList _tokendelays = new LinkedList();
 
+    // _isPendingTokenAllowed A flag to determine whether pending
+    // (i.e. leftover) tokens are allowed.
     private boolean _isPendingTokenAllowed = false;
 
 }

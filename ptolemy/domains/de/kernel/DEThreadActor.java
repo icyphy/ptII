@@ -37,7 +37,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEThreadActor
 /**
-A base class for threaded DE domain actor.
+A base class for threaded DE domain actor. EXPERIMENTAL.
 
 @author Lukito Muliadi
 @version $Id$

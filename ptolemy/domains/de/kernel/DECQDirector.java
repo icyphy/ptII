@@ -49,7 +49,7 @@ import java.util.Enumeration;
  *  in this director is aimed at handling simultaneous events intelligently,
  *  so that deterministic behavior can be achieved.
  *  <p>
- *  Input ports in a DE simulation are given instances of DEReceiver.
+ *  Input ports in a DE simulation contain instances of DEReceiver.
  *  When a token is put into a DEReceiver, that receiver enqueues the
  *  event by calling the _enqueueEvent() method of this director.
  *  This director sorts all such events in a global event queue
@@ -68,13 +68,16 @@ import java.util.Enumeration;
  *  should be used whenever an actor introduces time delays between the
  *  inputs and the outputs. When ordinary IOPort is used, the scheduler
  *  assumes, for the purpose of calculating priorities, that the delay
- *  across the actor is zero.
+ *  across the actor is zero. On the other hand, when DEIOPort is used,
+ *  the delay across the actor is assumed to be non-zero, by default. We are
+ *  sorry for this potential confusion, but it is somewhat necessary for
+ *  implementation efficiency in calculating receiver depths.
  *  <p>
  *  Directed loops with no delay actors are not permitted; they would make
- *  impossible to assign priorities.  Such a loop can be broken with an
- *  instance of the Delay actor with its delay set to zero.
+ *  impossible to assign priorities.  Such a loop can be broken by inserting
+ *  an instance of the Delay actor with its delay set to zero.
  *  <p>
- *  On invocation of the prefire() method, this director dequeues
+ *  At the beginning of the fire() method, this director dequeues
  *  the 'appropriate' oldest events (i.e. ones with smallest time
  *  stamp) from the global event queue, and puts those events into
  *  their corresponding receivers. The term 'appropriate' means that
@@ -85,15 +88,20 @@ import java.util.Enumeration;
  *  the choice of the firing actor is determined by the topological depth
  *  of the input ports of the actors.
  *  <p>
- *  In the fire() method, the 'firing actor' is fired (i.e. its fire() method
- *  is invoked). The actor will consume events from
+ *  Next step in the fire() method, the 'firing actor' is fired (i.e. its 
+ *  fire() method is invoked). The actor will consume events from
  *  its input port(s) and will usually produce new events on its output
  *  port(s). These new events will be enqueued in the global event queue
  *  until their time stamps equal the current time.
  *  <p>
  *  A DE domain simulation ends when the time stamp of the oldest events
  *  exceeds a preset stop time. This stopping condition is checked inside
- *  the prefire() method.
+ *  the prefire() method. It could also be ended when the global event queue
+ *  becomes empty, which is the default behaviour. Sometimes, the desired
+ *  behaviour is for the director to wait on an empty queue until another
+ *  thread comes in and put events in it, e.g. wait for button pushes. Invoke
+ *  the stopWhenQueueIsEmpty(boolean) method with <code>false</code> argument
+ *  to achieve this behaviour.
  *  <p>
  *  NOTE: as mentioned before, all oldest events for the 'firing actor'
  *  are dequeued and put into the corresponding receivers. It is thus
@@ -150,14 +158,16 @@ public class DECQDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the one actor identified by the prefire() method as ready to fire.
+    /** Fire the one actor identified by the _prepareActorToFire() method 
+     *  as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
      *  then they will have all been dequeued from the global queue and put
      *  into the corresponding receivers.
      *  <p>
      *  The actor will be fired multiple times until it has consumed all tokens
-     *  in all of its receivers. If the firing actor resulted from a 'pure
-     *  event' then the actor will be fired exactly once.
+     *  in all of its receivers that don't tolerate pending tokens. If the 
+     *  actor firing resulted from a 'pure event' then the actor 
+     *  will be fired exactly once.
      *
      *  @exception IllegalActionException If the firing actor throws it.
      */
@@ -268,14 +278,6 @@ public class DECQDirector extends DEDirector {
 
     }
 
-    /** Return the next future time of the next iterations. This means
-     *  simultaneous iterations will be skipped, and only look at the next
-     *  future time stamp (i.e. not equal to the current time).
-     */
-    public double getNextIterationTime() {
-        return _nextIterationTime;
-    }
-
     /** Set current time to zero, calculate priorities for simultaneous
      *  events, and invoke the initialize() methods of all actors deeply
      *  contained by the container.  To be able to calculate the priorities,
@@ -297,20 +299,16 @@ public class DECQDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
 
-         // FIXME: Something weird going on here with respect to the
-        // order of method invocation.
-
 	// initialize the global event queue.
 	_cQueue = new CalendarQueue(new DECQComparator());
 
 	// initialize the directed graph for scheduling.
 	_dag = new DirectedAcyclicGraph();
-	// FIXME: why current time is started to be 0.0 ???
+
         _currentTime = 0.0;
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
-	// FIXME: _startTimeInitialized is only used for bug catching..
-	// FIXME: It could be removed later...
+
 	_startTimeInitialized = false;
         // Update _dag, the directed graph that indicates priorities.
         _constructDirectedGraph();
@@ -338,7 +336,8 @@ public class DECQDirector extends DEDirector {
 
     }
 
-    /**
+    /** Return false when the base class method return false, else request
+     *  firing from outer domain (if embedded) then return true.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -351,7 +350,6 @@ public class DECQDirector extends DEDirector {
             _requestFiring();
         }
         return true;
-
 
     }
 
@@ -444,20 +442,18 @@ public class DECQDirector extends DEDirector {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    // Invoke the base class prefire() method, and if it returns true,
-    // dequeue the next event from the event queue, advance time to its
-    // time stamp, and mark its destination actor for firing.
+
+    // Dequeue the next event from the event queue, advance time to its
+    // time stamp, and mark the destination actor for firing.
     // If there are multiple events on the queue with the same time
     // stamp that are destined for the same actor, dequeue all of them,
     // making them available in the input ports of the destination actor.
     // The firing actor may be fired repeatedly until all its
-    // receivers are empty.
-    // If the time stamp is greater than the stop time, or there are no
-    // events on the event queue, then return false,
+    // receivers that don't tolerate pending tokens are empty.
+    // If the time stamp is greater than the stop time then return false.
+    // If there are no events on the event queue, and _stopWhenQueueIsEmpty
+    // flag is true (which is set to true by default) then return false,
     // which will have the effect of stopping the simulation.
-
-    // @return True if there is an actor to fire.
-    // @exception IllegalActionException If the base class throws it.
     private boolean _prepareActorToFire() {
         // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
@@ -637,8 +633,6 @@ public class DECQDirector extends DEDirector {
     // directed edges representing zero delay path.  The directed graph
     // is put in the private variable _dag, replacing whatever was there
     // before.
-    // FIXME: this method is too complicated and probably means
-    // there's a flaw in the design.
     private void _constructDirectedGraph() {
         LinkedList portList = new LinkedList();
 
@@ -678,7 +672,7 @@ public class DECQDirector extends DEDirector {
                     if (_dag.contains(after)) {
                         _dag.addEdge(p, after);
                     } else {
-                        // FIXME: Could this exception be triggered by
+                        // Note: Could this exception be triggered by
                         // level-crossing transitions?  In this case,
                         // we need a more reasonable way to handle it.
                         throw new InternalErrorException(
@@ -698,7 +692,7 @@ public class DECQDirector extends DEDirector {
 			    //if (pp != deltaInPort)
 			    _dag.addEdge(p,pp);
                         } else {
-                            // FIXME: Could this exception be triggered by
+                            // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
                             // we need a more reasonable way to handle it.
 			    throw new InternalErrorException(
@@ -723,7 +717,7 @@ public class DECQDirector extends DEDirector {
 			    //if (pp != deltaInPort)
 			    _dag.addEdge(ioPort,pp);
                         } else {
-                            // FIXME: Could this exception be triggered by
+                            // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
                             // we need a more reasonable way to handle it.
 			    throw new InternalErrorException(
@@ -775,7 +769,9 @@ public class DECQDirector extends DEDirector {
 	}
     }
 
-
+    // Request that the container of this director to be refired in the future.
+    // This method is used when the director is embedded inside an opaque
+    // composite actor (i.e. a wormhole in Ptolemy 0.x terminology)
     private void _requestFiring() throws IllegalActionException {
 
         if (DEBUG) {
@@ -800,7 +796,7 @@ public class DECQDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
 
-    // Wrapper for the data to store in the queue.
+    // Wrapper for the data to be stored in the queue.
     private class DEEvent {
 
         // Constructor to use when there is a token and destination receiver.
@@ -836,6 +832,8 @@ public class DECQDirector extends DEDirector {
         public DESortKey key;
     }
 
+    // An implementation of the CQComparator interface for use with
+    // calendar queue with DESortKey as the sort key.
     private class DECQComparator implements CQComparator {
 
 	/** Compare its two argument for order. Return a negative integer,
@@ -851,7 +849,8 @@ public class DECQDirector extends DEDirector {
 	 * @param object2 the second DESortKey argument
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *         argument is less than, equal to, or greater than the second.
-	 * @exception ClassCastException object1 and object2 have to be instances
+	 * @exception ClassCastException object1 and object2 have to be 
+         *         instances
 	 *            of DESortKey
 	 */
 	public int compare(Object object1, Object object2) {
@@ -870,7 +869,7 @@ public class DECQDirector extends DEDirector {
 	    } else {
 		return 0;
 	    }
-    }
+        }
 
 	/** Given a key, a zero reference, and a bin width, return the index of
 	 *  the bin containing the key.
@@ -961,8 +960,6 @@ public class DECQDirector extends DEDirector {
     // FIXME: debug variables
     private boolean _startTimeInitialized = false;
 
-    //
-    private double _nextIterationTime;
 }
 
 

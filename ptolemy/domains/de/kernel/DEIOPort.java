@@ -104,7 +104,12 @@ public class DEIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Specify whether <i>all</i> the receivers contained by this DEIOPort
+     *  are allowed to have pending tokens. This method is usually called
+     *  by an actor that wants to defer getting tokens from a
+     *  particular port. For example, a server actor might decide to not
+     *  get input tokens when it is still busy with processing previous
+     *  input.
      */
     public void allowPendingTokens(boolean b) throws IllegalActionException {
         Receiver[][] recs = getReceivers();
@@ -113,8 +118,6 @@ public class DEIOPort extends TypedIOPort {
                 ((DEReceiver)recs[i][j]).allowPendingTokens(b);
             }
         }
-
-
     }
 
 
@@ -122,7 +125,10 @@ public class DEIOPort extends TypedIOPort {
      *  argument.  The scheduler uses this information to ensure that
      *  if this port and the argument are to receive simultaneous events,
      *  then the event at this port will trigger a firing first (or
-     *  both events might be made visible in the same firing).
+     *  both events might be made visible in the same firing). In other
+     *  words, a firing with no token in this port but with tokens in the
+     *  other port (the one specified in the argument) cannot happen.
+     *
      *  @param otherport Another input port
      *  @exception IllegalActionException If this port or the argument port
      *   is not an input.
@@ -132,14 +138,14 @@ public class DEIOPort extends TypedIOPort {
             throw new IllegalActionException(this,
             "Invalid before relationship.  Must be input before input.");
         }
-        beforeList.insertLast(otherport);
+        _beforeList.insertLast(otherport);
     }
 
     /** Return an enumeration of the other input ports that have lower
      *  priority than this one, as asserted by the before() method.
      */
     public Enumeration beforePorts() {
-        return beforeList.elements();
+        return _beforeList.elements();
     }
 
     /** Broadcast a token to all receivers connected to this output
@@ -222,17 +228,17 @@ public class DEIOPort extends TypedIOPort {
     }
 
     /** Add the specified port to the list of output ports that may
-     *  have zero-delay outputs triggered by this input.
+     *  have zero-delay outputs triggered by this input port.
      *  @param output The output port that may be triggered.
      *  @exception IllegalActionException If this port is not an input,
-     *   or if the argument is not an output.
+     *   or if the argument is not an output port.
      */
     public void triggers(IOPort output) throws IllegalActionException {
         if (!isInput() || !output.isOutput()) {
             throw new IllegalActionException(this,
             "Invalid triggering relationship.  Must be input triggers output.");
         }
-        triggerList.insertLast(output);
+        _triggerList.insertLast(output);
     }
 
     /** Return an enumeration of the output ports that are triggered by
@@ -240,19 +246,19 @@ public class DEIOPort extends TypedIOPort {
      *  an immediate (zero-delay) event at any of these output ports.
      */
     public Enumeration triggersPorts() {
-        return triggerList.elements();
+        return _triggerList.elements();
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // List of ports with lower (FIXME: higher ?) priority than this one.
+    // List of ports with lower priority than this one.
     // I.e., events at this port should be triggered before those at ports
     // in this list.
-    private LinkedList beforeList = new LinkedList();
+    private LinkedList _beforeList = new LinkedList();
 
     // List of ports triggered immediately by this input port.
-    private LinkedList triggerList = new LinkedList();
+    private LinkedList _triggerList = new LinkedList();
 }
 
 

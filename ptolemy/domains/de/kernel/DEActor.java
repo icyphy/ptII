@@ -36,24 +36,21 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
-/**
-A base class for DE domain actor.
-FIXME: actor can access time only in the relative sense, shouldn't we also
-provide ways for actors to access time in the absolute sense.
-FIXME: I think actors can access absolute sense by calling getCurrentTime()
-and then figuring out the necessary delay..
-
-@author Lukito Muliadi
-@version $Id$
-@see Actor
-*/
+/** A base class for DE domain actor. An actor in DE simulation does not
+ *  necessarily derive from this class. This class provides methods to access
+ *  time (since DE is a timed domain) and methods for an actor to reschedule
+ *  itself in the future. Actors specializing in DE domain should derive from
+ *  this class and thus can be written more succintly.
+ *
+ *  @author Lukito Muliadi
+ *  @version $Id$
+ *  @see Actor
+ */
 public class DEActor extends TypedAtomicActor {
 
-    /** Constructor.
+    /** Constructor a DEActor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param value The initial output event value.
-     *  @param step The step size by which to increase the output event values.
      *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -68,7 +65,8 @@ public class DEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /*
+    /** Get the current time from the director.
+     *  @return The current time.
      */
     public double getCurrentTime() throws IllegalActionException {
         DEDirector dir = (DEDirector) getDirector();
@@ -78,7 +76,8 @@ public class DEActor extends TypedAtomicActor {
         return dir.getCurrentTime();
     }
 
-    /*
+    /** Get the start time from the director.
+     *  @return The start time.
      */
     public double getStartTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
@@ -88,7 +87,8 @@ public class DEActor extends TypedAtomicActor {
 	return dir.getStartTime();
     }
 
-    /*
+    /** Get the stop time from the director.
+     *  @return The stop time.
      */
     public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
@@ -97,6 +97,7 @@ public class DEActor extends TypedAtomicActor {
 	}
 	return dir.getStopTime();
     }
+
     /** Schedule this actor to be fired at a specified delay relative
      *  to the current time. If the delay specified is less than zero, then
      *  IllegalActionException will be thrown.
@@ -116,7 +117,8 @@ public class DEActor extends TypedAtomicActor {
     }
 
     /** Schedule this actor to be fired at a specified time in the future.
-     *  If the time is not in the future, then throw an exception.
+     *  If the time is not in the future (i.e. less than the current time), 
+     *  then throw an exception.
      *  @param timeStamp The time stamp at which the actor will be fired.
      *  @exception IllegalActionException If the time stamp is in the past.
      */

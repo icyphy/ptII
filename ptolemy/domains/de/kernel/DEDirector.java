@@ -42,7 +42,24 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// DEDirector
 //
-/** Abstract base class for DE domain director.
+/** Abstract base class for DE domain director. In general, the methods
+ *  provided in this base class are ones that do not depend on the
+ *  implementation of the global event queue. This will enable different
+ *  implementation to be compared in term of efficiency. The bottleneck
+ *  in a typical DE simulator is in the mantainance of the global event
+ *  queue. The 'best' current implementation is the calendar queue
+ *  algorithm which gives us O(1) time in both enqueue and dequeue operation.
+ *  The DECQDirector class, which derives from DEDirector, uses 
+ *  this implementation.
+ *  <p>
+ *  Several of the methods provided in this base class have two versions.
+ *  One that deal with relative time (with regards to the current time) and
+ *  another that deal with absolute time. While it is theoretically equivalent
+ *  to use one or the other, it is practically better to use the one with
+ *  absolute time in case your datas are already in that form. This will
+ *  eliminate unnecessary quantization error, e.g. <i>A-B+B</i>. For example,
+ *  if the current time is 10.0 and the actor need to be refired at time
+ *  20.0, then use fireAt(20.0) rather than fireAfterDelay(10.0). 
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -103,24 +120,6 @@ public abstract class DEDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
-    /** Fire the one actor identified by the prefire() method as ready to fire.
-     *  If there are multiple simultaneous events destined to this actor,
-     *  then they have all been dequeued from the global queue and put into
-     *  the corresponding receivers.
-     *  <p>
-     *  NOTE: Currently, this means that there may be multiple simultaneous
-     *  events in a given receiver.  Since many actors may be written in
-     *  such a way that they do not expect this, this may change in the future.
-     *  I.e., these events may be made visible over multiple firings rather
-     *  than all at once.
-     *
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void fire() throws IllegalActionException {
-      super.fire();
-    }
 
     /** Schedule an actor to be fired after the specified delay. If the delay
      *  argument is equal to zero, then the actor will be refired after all
@@ -190,6 +189,14 @@ public abstract class DEDirector extends Director {
     public double getCurrentTime() {
 	return _currentTime;
     }
+    
+    /** Return the next future time of the next iterations. This means
+     *  simultaneous iterations will be skipped, and only look at the next
+     *  future time stamp (i.e. not equal to the current time).
+     */
+    public double getNextIterationTime() {
+        return _nextIterationTime;
+    }
 
     /** Return the time of the earliest event seen in the simulation.
      *  Before the simulation begins, this is java.lang.Double.MAX_VALUE.
@@ -211,6 +218,7 @@ public abstract class DEDirector extends Director {
 
     /** Return true if this director is embedded inside an opaque composite
      *  actor contained by another composite actor.
+     *  @return True is the above condition is satisfied, false otherwise.
      */
     public boolean isEmbedded() {
         if (getContainer().getContainer() == null) {
@@ -220,7 +228,6 @@ public abstract class DEDirector extends Director {
         }
     }
 
-
     /** Return a new receiver of a type DEReceiver.
      *  @return A new DEReceiver.
      */
@@ -228,7 +235,10 @@ public abstract class DEDirector extends Director {
 	return new DEReceiver();
     }
 
-    /** FIXME: Describe me!
+    /** Return true or false according to the flag _shouldPostfireReturnFalse.
+     *  This flag is set to the appropriate value during the prefire()
+     *  or fire() phase of this director.
+     *  @return False if _shouldPostfireReturnFalse, true otherwise.
      */
     public boolean postfire() throws IllegalActionException {
         if (_shouldPostfireReturnFalse) {
@@ -236,7 +246,6 @@ public abstract class DEDirector extends Director {
         } else {
             return true;
         }
-
     }
 
     /** Set the stop time of the simulation.
@@ -250,10 +259,11 @@ public abstract class DEDirector extends Director {
 
     /** Decide whether the simulation should be stopped when there's no more
      *  events in the global event queue.
-     *  By default, its value is 'true', meaning that the simulation will stop
+     *  By default, the value is 'true', meaning that the simulation will stop
      *  under that circumstances. Setting it to 'false', instruct the director
      *  to wait on the queue while some other threads might enqueue events in
      *  it.
+     *  @param flag The new value for the flag.
      */
     public void stopWhenQueueIsEmpty(boolean flag) {
         _stopWhenQueueIsEmpty = flag;
@@ -264,10 +274,10 @@ public abstract class DEDirector extends Director {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
+     *  @param port The input port from which tokens are transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
-
     // FIXME: Maybe this can be removed and update current time differently...
     public void transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -312,6 +322,9 @@ public abstract class DEDirector extends Director {
      *  when the time stamp of the event is the oldest in the system.
      *  Note that the actor may have no new data at its input ports
      *  when it is fired.
+     *  <p>
+     *  Derived class should implement this method according to the
+     *  implementation of its global event queue.
      *
      *  @param actor The destination actor.
      *  @param time The time stamp of the "pure event".
@@ -327,6 +340,9 @@ public abstract class DEDirector extends Director {
      *  receiver, delay and time stamp. The depth is used to prioritize
      *  events that have equal time stamps.  A smaller depth corresponds
      *  to a higher priority.
+     *  <p>
+     *  Derived class should implement this method according to the
+     *  implementation of its global event queue.
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
@@ -350,24 +366,27 @@ public abstract class DEDirector extends Director {
         return false;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-
-
-    // The time of the earliest event seen in the current simulation.
-    protected double _startTime = Double.MAX_VALUE;
 
     // The current time of the simulation.
     // Firing actors may get the current time by calling getCurrentTime()
     protected double _currentTime = 0.0;
+
+    // Indicate whether the actors (not the director) is initialized.
+    protected boolean _isInitialized = false;
+
+    // The time of the next iteration.
+    protected double _nextIterationTime;
 
     // Set to true when it's time to end the simulation.
     // e.g. The earliest time in the global event queue is greater than
     // the stop time.
     // FIXME: This is a hack :(
     protected boolean _shouldPostfireReturnFalse = false;
+
+    // The time of the earliest event seen in the current simulation.
+    protected double _startTime = Double.MAX_VALUE;
 
     // Decide whether the simulation should be stopped when there's no more
     // events in the global event queue.
@@ -377,9 +396,7 @@ public abstract class DEDirector extends Director {
     // it.
     protected boolean _stopWhenQueueIsEmpty = true;
 
-    // Indicate whether the actors (not the director) is initialized.
-    protected boolean _isInitialized = false;
-
     // The stop time parameter.
     private Parameter _stopTime;
 }
+
