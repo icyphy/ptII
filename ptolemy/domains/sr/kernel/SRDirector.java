@@ -261,7 +261,6 @@ public class SRDirector extends StaticSchedulingDirector {
                 Actor actor = firing.getActor();
                 if (_isIterationAllowed(actor)) {
                     _fireActor(actor);
-                    _realCost++;
                 } else {
                     // The postfire() method of this actor returned false in
                     // a previous iteration, so here, for the benefit of
@@ -568,7 +567,7 @@ public class SRDirector extends StaticSchedulingDirector {
                     boolean allInputsKnownBeforeFiring =
                         _areAllInputsKnown(actor);
                     actor.fire();
-
+                    _realCost++;
                     if (_actorsFired == null) {
                         _actorsFired = new HashSet();
                     }
