@@ -64,6 +64,11 @@ test FilterBackwardCompatibility-1.1 {Const: added an _icon} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
 
+    #$parser addMoMLFilter [java::new ptolemy.moml.filter.AddEditorFactory]
+    #$parser addMoMLFilter [java::new ptolemy.moml.filter.AddIcon]
+    #$parser addMoMLFilter [java::new ptolemy.moml.filter.PortNameChanges]
+    #$parser addMoMLFilter [java::new ptolemy.moml.filter.PropertyClassChanges]
+
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set toplevel [$parser parse $constMoml]
     set newMoML [$toplevel exportMoML]
@@ -400,6 +405,62 @@ test FilterBackwardCompatibility-8.1 {Is a parameter, does not have _editorFacto
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
         </property>
         <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+</entity>
+}}
+
+set annotationMoml  "$header 
+<entity name=\"FilterBackwardCompatibilityEditorFactor\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"0:annotation1\" class=\"ptolemy.kernel.util.Attribute\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"426.0, 80.0\">
+        </property>
+        <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure>
+           <svg>
+           <text x=\"20\" style=\"font-size:14; font-family:sanserif; fill:blue\" y=\"20\">This model shows a nonlinear feedback
+system that exhibits chaotic behavior.
+It is modeled in continuous time. The
+CT director uses a sophisticated
+ordinary differential equation solver
+to execute the model. This particular
+model is known as a Lorenz attractor.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+</entity>
+"
+
+test FilterBackwardCompatibility-9.1 {annotation named annotation1 without a _hideName} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $annotationMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterBackwardCompatibilityEditorFactor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="426.0, 80.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a nonlinear feedback
+system that exhibits chaotic behavior.
+It is modeled in continuous time. The
+CT director uses a sophisticated
+ordinary differential equation solver
+to execute the model. This particular
+model is known as a Lorenz attractor.</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
 </entity>
