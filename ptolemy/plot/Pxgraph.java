@@ -98,10 +98,11 @@ public class Pxgraph extends Frame {
     //	}
     //    }
 
-    // FIXME: handleEvent is deprecated in 1.1, we should use
-    // processEvent(), However, we need to compile under 1.0.2,
-    // so we stick with handleEvent().
     public boolean handleEvent(Event e) {
+	// FIXME: handleEvent is deprecated in 1.1, we should use
+	// processEvent(), However, we need to compile under 1.0.2,
+	// so we stick with handleEvent().
+
         switch (e.id) {
           case Event.WINDOW_ICONIFY:
 	      //stopAnimation();
