@@ -41,14 +41,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-
-set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
-
-######################################################################
-####
-#
 test Vertex-1.1 {Call workspace constructor, exportMoML and toString } {
     set w0 [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
     set v1 [java::new ptolemy.moml.Vertex $w0]
