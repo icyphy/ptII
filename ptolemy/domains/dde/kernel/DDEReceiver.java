@@ -198,7 +198,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    return _hasToken( workspace, director, timeKeeper );
 	}
-	System.out.println("I got here in DDEReceiver.hasToken()");
+        System.out.println("Non-DDEThread call to DDEReceiver.hasToken()");
 	return false;
     }
 
@@ -257,7 +257,7 @@ public class DDEReceiver extends TimedQueueReceiver
 
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
-		System.out.println(name+": about to call notifyAll()");
+		// System.out.println(name+": about to call notifyAll()");
 		if( _readPending ) {
 		    director.removeReadBlock();
 		    _readPending = false;
@@ -335,14 +335,24 @@ public class DDEReceiver extends TimedQueueReceiver
 	String name = ((Nameable)getContainer().getContainer()).getName();
 	timeKeeper.resortRcvrList();
 
+        System.out.println("RcvrTime = " + getRcvrTime() );
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
 	}
+        /*
+        if( getRcvrTime() == IGNORE ) {
+            timeKeeper.updateRcvrList(this);
+            return false;
+        }
+        */
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
+            System.out.println("RcvrTime = "+getRcvrTime()+";   Time Keeper Time = "
+            	+timeKeeper.getNextTime());
 	    return false;
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
 	    // System.out.println("Time is minimum but not unique");
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
+	        // System.out.println("This is not the highest priority receiver!");
                 timeKeeper.updateRcvrList(this);
 		return false;
 	    }
@@ -350,14 +360,20 @@ public class DDEReceiver extends TimedQueueReceiver
         if( super.hasToken() && !_terminate ) {
 	    // System.out.println(name + ": about to call hasNullToken()");
 	    if( hasNullToken() ) {
-		System.out.println(name + ": is discarding a NullToken");
+		// System.out.println(name + ": is discarding a NullToken");
 		super.get();
 		timeKeeper.sendOutNullTokens();
 		return _hasToken(workspace, director, timeKeeper);
 		// FIXME: The following else-if is wrong!
 		// We need next rcvr time not next time keeper time.
 	    } else if ( timeKeeper.getNextTime() == IGNORE ) {
+                System.out.println("Inside of DDEReceiver._hasToken() with IGNORE");
 		super.get();
+                if( !super.hasToken() ) {
+                    System.out.println("IGNORE Token removed - the queue is empty");
+                } else {
+                    System.out.println("IGNORE Token removed - the queue is not empty");
+                }
 		// FIXME: Should we call clearIgnoredTokens() here???
 		return _hasToken(workspace, director, timeKeeper);
 	    } else {
@@ -378,7 +394,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		director.removeReadBlock();
 		_readPending = false;
 	    }
-	    System.out.println(name + ": terminating and ending read block()");
+	    // System.out.println(name + ": terminating and ending read block()");
             throw new TerminateProcessException( getContainer(),
                     "This receiver has been terminated during "
                     + "_hasToken()");
@@ -386,7 +402,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    /*
             director.removeReadBlock();
 	    */
-	    System.out.println(name + ": ending call to read block()");
+	    // System.out.println(name + ": ending call to read block()");
             return _hasToken(workspace, director, timeKeeper);
 	}
     }

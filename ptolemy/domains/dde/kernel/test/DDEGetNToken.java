@@ -117,9 +117,11 @@ public class DDEGetNToken extends DDEGet {
 			    */
 			    _tokens[cnt] = rcvr.get(); 
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime(); 
+                            /*
 			    System.out.println("DDEGetNToken time set to "
 				    + timeKeeper.getCurrentTime() +
 				    " for cnt " +cnt);
+                            */
 			    j = rcvrs[i].length + 1;
 			    finished = true;
 			}

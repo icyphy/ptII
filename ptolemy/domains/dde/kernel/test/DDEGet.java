@@ -50,7 +50,7 @@ DDEThread.
 
 */
 
-public class DDEGet extends DDEActor {
+public class DDEGet extends TypedAtomicActor {
 
     /**
      */

@@ -241,6 +241,7 @@ public class TimedQueueReceiver {
 	}
         Event event;
         synchronized(this) {
+            /*
 	    String name = ((Nameable)getContainer().getContainer()).getName();
 	    if( token instanceof NullToken ) {
 	        System.out.println(name+": Null token placed in "+name+
@@ -249,6 +250,7 @@ public class TimedQueueReceiver {
 	        System.out.println(name+": Real token placed in "+name+
 			" at time " +time);
 	    }
+            */
             _lastTime = time;
             event = new Event(token, _lastTime);
 

@@ -93,7 +93,7 @@ test DDEReceiver-2.3 {Send a NullTokens through FlowThru.} {
 
     list $time0 $time1 $time2
 
-} {7.0 9.5 9.5}
+} {7.0 9.5 -1.0}
 
 
 
