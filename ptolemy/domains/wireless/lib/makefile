@@ -56,9 +56,14 @@ JSRCS = \
 	Locator.java \
 	NodeRandomizer.java \
 	PowerLossChannel.java \
+	TerrainChannel.java \
+	TerrainProperty.java \
+	TransformProperty.java \
 	Triangulator.java \
 	WiredToWireless.java \
 	WirelessToWired.java
+
+
 
 OTHER_FILES_TO_BE_JARED = \
 	actors.xml \
