@@ -72,12 +72,21 @@ if [ -z "$TYCHO" ]; then
     export TYCHO
 fi
 
+windows=no
+if [  "`uname`" =  "CYGWIN32/NT"  ]; then 
+    windows=yes
+fi	
+
 if [ -z "$JAVAHOME" ]; then
     if [ -d "$JAVADEFAULT" ]; then
 	JAVAHOME="$JAVADEFAULT"
 	export JAVAHOME
     else
-	searchfile=javac
+	if [ "$windows" = "yes" ]; then 
+	    searchfile=javac.exe
+	else    
+	    searchfile=javac
+	fi    
 	for i in `echo $PATH | sed -e 's/:/ /g'`
 	do
 	    if [ -x "$i/$searchfile" -a ! -d "$i/$searchfile" ]; then
@@ -103,7 +112,7 @@ if [ -z "$JAVAHOME" ]; then
 
 fi
 
-if [  "`uname`" =  "CYGWIN32/NT"  ]; then 
+if [ "$windows" = "yes" ]; then 
     java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
 else
     java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
