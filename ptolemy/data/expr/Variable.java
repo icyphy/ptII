@@ -1067,9 +1067,10 @@ public class Variable extends Attribute
             _debug("validate");
         }
         invalidate();
-        // Unless the expression is false, the following will have
+        // Unless the expression is null, the following will have
         // been set to true by the invalidate() call above.
-        boolean neededEvaluation = _needsEvaluation;
+        // See note below... this is not used anymore.
+        // boolean neededEvaluation = _needsEvaluation;
         List errors = _propagate();
         if (errors != null && errors.size() > 0) {
             Iterator errorsIterator = errors.iterator();
@@ -1092,7 +1093,15 @@ public class Variable extends Attribute
         // Thus, we do the call here only if _needsEvaluation was false.
         // Generally, this only happens on construction of parameters (?).
         // EAL 6/11/03
-        if (!_isLazy && !neededEvaluation) {
+        // NOTE: Regrettably, this also happens when changing the value
+        // of a parameter from non-null to null.  This erroneously prevents
+        // notification of this change.  So this optimization is invalid.
+        // I believe its intent was to prevent double invocation of this
+        // method for each parameter, once when it is being constructed
+        // and once when it's value is being set.
+        // EAL 9/16/03
+        // if (!_isLazy && !neededEvaluation) {
+        if (!_isLazy) {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 container.attributeChanged(this);
