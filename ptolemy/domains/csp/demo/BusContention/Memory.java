@@ -104,13 +104,13 @@ public class Memory extends CSPActor {
             ConditionalBranch[] branches = new ConditionalBranch[numBranches];
 
             // Receive Branches
-            for( int i=0; i < _numInChannels; i++ ) {
+            for( int i = 0; i < _numInChannels; i++ ) {
                 branches[i] = new
                     ConditionalReceive(true, _input, i, i);
             }
 
             // Send Branches
-            for( int i=0; i < _numOutChannels; i++ ) {
+            for( int i = 0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
                     ConditionalSend(true, _output, i, i+_numInChannels, token);
             }
