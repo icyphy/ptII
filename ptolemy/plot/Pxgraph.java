@@ -139,7 +139,7 @@ grid lines (see <code>-tk</code>).
 <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
 <dd>Background color of the <code>pxgraph</code> window.
 <b>In the Java version, this argument takes hexadecimal color values 
-(<code>fffff</code>), not color names</b>
+(<code>fffff</code>), not color names.</b>
 
 <dt><code>-binary</code>
 <dd>Data files are in binary format.  The <code>-binary</code>
@@ -192,7 +192,7 @@ the values of all known defaults.
 <dd>Foreground color. This color is used to draw all text
 and the normal grid lines in the window.
 <b>In the Java version, this argument takes hexadecimal color values 
-(<code>fffff</code>), not color names</b>
+(<code>fffff</code>), not color names.</b>
 
 <dt><code>-gw</code> <dd>
 Width, in pixels, of normal grid lines.
@@ -320,10 +320,13 @@ Below are some other issues:
 directives inside the file.  This version only supports
 <code>draw</code> and <code>move</code>.
 <li>This version does not support X resources.
+<p>
+For further information about this tool, see the
+<a href="http://ptolemy.eecs.berkeley.edu/java/plot">Java Plot Website</a>.
 
- * @author Christopher Hylands
+ * @author Christopher Hylands (cxh@eecs.berkeley.edu)
  * @version $Id$
- * @see Plot
+ * @see Plot 
  */
 public class Pxgraph extends Frame { 
 
