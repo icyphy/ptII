@@ -72,6 +72,7 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
+	SingletonAttribute.tcl \
 	SingletonConfigurableAttribute.tcl \
 	StringAttribute.tcl \
 	StringUtilities.tcl \
