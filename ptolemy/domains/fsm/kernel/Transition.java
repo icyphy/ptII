@@ -199,9 +199,12 @@ public class Transition extends ComponentRelation {
                 // Associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
                 // FIXME: how to get the error tolerance
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList, 1e-4);
-                // Register the guard expression with the above parse tree evaluator
-                _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
+                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
+                        _relationList, 1e-4);
+                // Register the guard expression with the above parse
+                // tree evaluator
+                _guard.setParseTreeEvaluator( 
+                        (ParseTreeEvaluator) _parseTreeEvaluator);
 
                 _trigger = new Variable(this, "_trigger");
                 // Make the variable lazy since it will often have

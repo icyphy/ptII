@@ -113,13 +113,12 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     public ParseTreeEvaluatorForGuardExpression(
             RelationList relationList, double errorTolerance) {
         if (relationList.isEmpty()) {
-            _construction = true;
+            _constructingRelationList = true;
         } else {
-            _construction = false;
+            _constructingRelationList = false;
         }
         _relationList = relationList;
         _relationIndex = 0;
-        _relationNumber = 0;
         _absentDiscreteVariables = new LinkedList();
         _errorTolerance = errorTolerance;
         _variableCollector = new ParseTreeFreeVariableCollector();
@@ -128,16 +127,29 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the mode of parse tree evaluator to construction mode with mode
-     *  as true, to update mode with mode as false.
-     *  @param mode The mode of the parse tree evaluator.
+    /** Evaluate the parse tree with the specified root node using
+     *  the specified scope to resolve the values of variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The result of evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
+    public ptolemy.data.Token evaluateParseTree(
+            ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException {
+        _relationIndex = 0;
+        return super.evaluateParseTree(node, scope);
+    }
+
+    /** Set the mode of parse tree evaluator.  If the given flag is
+     * true, then the relation list will be populated, based on the
+     * nodes in the parse tree.  If the given flag is false, then the
+     * list will simply be updated with new information
+     * @param mode The mode of the parse tree evaluator.
      */
     public void setEvaluationMode(boolean mode) {
-        _construction = mode;
-        if (mode) {
-            _relationNumber = 0;
-            _relationIndex = 0;
-        }
+        _constructingRelationList = mode;
     }
 
     /** Visit the leaf node. It is evaluated the same way as normal parse tree
@@ -177,18 +189,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // Note usually the usage is "x_isPresent && x"
             _evaluatedChildToken = new BooleanToken(false);
 
-            if (_construction) {
+            if (_constructingRelationList) {
                 _relationList.addRelation(0, 0.0);
-                _relationNumber ++;
             }
 
             // Only increment the relation index but do not update
             // the relation node.
             _relationIndex ++;
-            if (_relationIndex >= _relationNumber) {
-                _relationIndex -= _relationNumber;
-            }
-
+       
             return;
         }
 
@@ -218,17 +226,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
         _difference = 0.0;
 
-        if (_construction) {
+        if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
-            _relationNumber ++;
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
         }
 
         _relationIndex ++;
-        if (_relationIndex >= _relationNumber) {
-            _relationIndex -= _relationNumber;
-        }
     }
 
     /** Visit the logical node. This visitor does not use short-circuit
@@ -313,14 +318,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 // Note usually the usage is "x_isPresent && x == 1.0"
                 _evaluatedChildToken = new BooleanToken(false);
 
-                if (_construction) {
+                if (_constructingRelationList) {
                     _relationList.addRelation(0, 0.0);
-                    _relationNumber ++;
                 }
                 _relationIndex++;
-                if (_relationIndex >= _relationNumber) {
-                    _relationIndex -= _relationNumber;
-                }
+     
                 return;
             }
         }
@@ -403,40 +405,45 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
         _evaluatedChildToken = result;
 
-        if (_construction) {
+        if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
-            _relationNumber ++;
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
         }
 
         _relationIndex++;
-        if (_relationIndex >= _relationNumber) {
-            _relationIndex -= _relationNumber;
-        }
+    
         return;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // the list of discrete variables without values
+
+    // The list of discrete variables without values.
     private LinkedList _absentDiscreteVariables;
-    // flag to indicate the parse tree evaluator in construction mode of update mode
-    private boolean _construction;
-    // the metric for relations
+
+    // Flag to indicate the parse tree evaluator in construction mode
+    // of update mode.
+    private boolean _constructingRelationList;
+
+    // The metric for relations.
     private double _difference;
-    // the error tolerance
+
+    // The error tolerance.
     private double _errorTolerance;
-    // the list to store the relation nodes and leaf nodes with boolean tokens
-    // inside a guard expression
+
+    // The list to store the relation nodes and leaf nodes with
+    // boolean tokens inside a guard expression.
     private RelationList _relationList;
-    // the total number of relations
-    private int _relationNumber;
+    
     // the relation types have 5 integer values with meaning:
     // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
     private int _relationType;
+
     // variable collector
     private ParseTreeFreeVariableCollector _variableCollector;
+
     // private relation node index
     private int _relationIndex;
 }
