@@ -372,6 +372,13 @@ public class MoMLParser extends HandlerBase {
                 Documentation doc
                     = new Documentation(_current, _currentDocName);
                 doc.setValue(_currentCharData.toString());
+            } else {
+                // Empty doc tag.  Remove previous doc element, if
+                // there is one.
+                Attribute previous = _current.getAttribute(_currentDocName);
+                if (previous != null) {
+                    previous.setContainer(null);
+                }
             }
             _currentDocName = null;
         } else if (elementName.equals("group")) {
@@ -1052,49 +1059,71 @@ public class MoMLParser extends HandlerBase {
 			    Class.forName(className, true, _classLoader);
                     }
 
-                    if (property == null) {
-                        // No previously existing attribute with this name.
-                        if (newClass == null) {
-                            newClass = Attribute.class;
-                        }
+                    // If there is a previous property with this name
+                    // (property is not null), then we check that the
+                    // class name of the previous property exactly
+                    // matches the new.  If it does, then we set the
+                    // value of the property.  Otherwise, we try to
+                    // replace it, something that will only work if
+                    // it is a singleton (it might throw
+                    // NameDuplicationException).
+                    boolean createdNew = false;
+                    if (property == null || (className != null &&
+                            !property.getClass().getName().equals(className))) {
+                        // The following will result in a
+                        // NameDuplicationException if there is a previous
+                        // property and it is not a singleton.
+                        try {
+                            // No previously existing attribute with this name,
+                            // or the class name of the previous entity doesn't
+                            // match.
+                            if (newClass == null) {
+                                newClass = Attribute.class;
+                            }
 
-                        // Invoke the constructor.
-                        Object[] arguments = new Object[2];
-                        arguments[0] = _current;
-                        arguments[1] = propertyName;
-                        property = _createInstance(newClass, arguments);
+                            // Invoke the constructor.
+                            Object[] arguments = new Object[2];
+                            arguments[0] = _current;
+                            arguments[1] = propertyName;
+                            property = _createInstance(newClass, arguments);
 
-                        if (value != null) {
-                            if (!(property instanceof Settable)) {
-                                throw new XmlException("Property is not an "
-                                        + "instance of Settable, so can't set value.",
+                            if (value != null) {
+                                if (!(property instanceof Settable)) {
+                                    throw new XmlException("Property is not an "
+                                        + "instance of Settable, "
+                                        + "so can't set the value.",
                                         _currentExternalEntity(),
                                         _parser.getLineNumber(),
                                         _parser.getColumnNumber());
+                                }
+                                Settable settable = (Settable)property;
+                                settable.setExpression(value);
+                                if (property instanceof Variable) {
+                                    // Add to the list of parameters to evaluate
+                                    // in endDocument().
+                                    _paramsToParse.add(property);
+                                }
                             }
-                            Settable settable = (Settable)property;
-                            settable.setExpression(value);
-                            if (property instanceof Variable) {
-                                // Add to the list of parameters to evaluate
-                                // in endDocument().
-                                _paramsToParse.add(property);
-                            }
+                            createdNew = true;
+                        } catch (NameDuplicationException ex) {
+                            // Ignore, so we can try to set the value.
+                            // The createdNew variable will still be false.
                         }
-                    } else {
-                        // Previously existing property with this name.
-                        if (newClass != null) {
-                            // Check that it has the right class.
-                            _checkClass(property, newClass,
-                                    "property named \"" + propertyName
-                                    + "\" exists and is not an instance of "
-                                    + className);
-                        }
+                    }
+                    if (!createdNew) {
+                        // Previously existing property with this name,
+                        // whose class name exactly matches, or the class
+                        // name does not match, but a NameDuplicationException
+                        // was thrown (meaning the attribute was not
+                        // a singleton).
+
                         // If value is null and the property already
                         // exists, then there is nothing to do.
                         if (value != null) {
                             if (!(property instanceof Settable)) {
                                 throw new XmlException("Property is not an "
-                                        + "instance of Settable, so can't set value.",
+                                        + "instance of Settable, "
+                                        + "so can't set the value.",
                                         _currentExternalEntity(),
                                         _parser.getLineNumber(),
                                         _parser.getColumnNumber());
