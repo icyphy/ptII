@@ -101,7 +101,7 @@ public class AddSubtract extends TypedAtomicActor {
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" 
+                + "style=\"fill:white\"/>\n"
                 + "<text x=\"7\" y=\"15\" "
                 + "style=\"font-size:18\">\n"
                 + "+ \n"

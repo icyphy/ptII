@@ -48,7 +48,7 @@ determined by the <i>select</i> input, which is required to be an
 integer between 0 and <i>n</i>-1, where <i>n</i> is the width of the
 <i>input</i> port. Because tokens are immutable, the same Token is
 sent to the output, rather than a copy.  The <i>input</i> port may
-receive Tokens of any type.  
+receive Tokens of any type.
 
 <p> This actor is similar to the Select actor, except that it always
 consumes its input tokens.  Input tokens that are not immediately

@@ -97,7 +97,7 @@ public class SingleTokenDistributor extends Transformer
     /** Update the output position to equal that determined by the most
      *  recent invocation of the fire() method.  The output position is
      *  the channel number of the output port to which the next input
-     *  will be sent.  
+     *  will be sent.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {

@@ -49,9 +49,9 @@ actor, and is used to represent an actor term of a schedule loop. The
 setActor() method is used to create the reference to an actor. The
 getActor() method will return a reference to this actor. <p>
 
-It is more efficient to use this class than to simply maintain a list of 
+It is more efficient to use this class than to simply maintain a list of
 actors since actors will often firing multiple times consecutively.  Using
-this class (and the Schedule data structure in general) greatly reduces the 
+this class (and the Schedule data structure in general) greatly reduces the
 memory requirements of most large schedules.
 
 @author Brian K. Vogel, Steve Neuendorffer

@@ -48,7 +48,7 @@ Output to the <i>output</i> port the value in the array of tokens
 specified by the <i>table</i> parameter at the index specified by the
 <i>input</i> port.  The index must be an integer.  If the index is out
 of range, no token is output.  Despite the name, this actor
-actually looks up values in an array of tokens, not a two dimensional table. 
+actually looks up values in an array of tokens, not a two dimensional table.
 
 <p>LookupTable is different from ArrayElement in that in
 ArrayElement, the array is read in as input, and the index is a parameter,
@@ -126,9 +126,9 @@ public class LookupTable extends Transformer {
     }
 
     /** Consume at most one token from the input port and produce
-     *  the element at the index specified by this token from the 
+     *  the element at the index specified by this token from the
      *  table array on the output port.  If there is no token
-     *  on the input or the token is out of range, then no output 
+     *  on the input or the token is out of range, then no output
      *  is produced.
      *  @exception IllegalActionException If there is no director.
      */

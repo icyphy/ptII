@@ -162,7 +162,7 @@ public class Test extends Sink {
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, indicating that the inputs correctly matched
      *  the values in <i>correctValues</i> and that the test suceeded.
-     * 
+     *
      *  @exception IllegalActionException If an input is missing,
      *   or if its value does not match the required value.
      */

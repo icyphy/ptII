@@ -48,7 +48,7 @@ output port with the integer value of the current count.  At most one
 token will be consumed from each input during each firing.  If a token
 is present on both input ports during any firing, then the increment
 and the decrement will cancel out, and only one output token will be
-produced.  
+produced.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -110,7 +110,7 @@ public class Counter extends TypedAtomicActor {
      *  times in one iteration, then only the input read on the last
      *  invocation in the iteration will affect future outputs of the
      *  counter.
-     * 
+     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

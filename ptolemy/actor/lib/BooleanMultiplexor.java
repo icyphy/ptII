@@ -41,7 +41,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMultiplexor
 /**
-A type polymorphic multiplexor with boolean valued select. 
+A type polymorphic multiplexor with boolean valued select.
 This actor consumes exactly one token from each input port, and sends one
 of the tokens from either <i>trueInput</i> or <i>falseInput</i>
 to the output.  The token sent to the output
@@ -84,7 +84,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     /** Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
-    /** Input for tokens on the false path.  The type can be anything. 
+    /** Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
     /** Input that selects one of the other input ports.  The type is
@@ -112,7 +112,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         boolean flag = ((BooleanToken) select.get(0)).booleanValue();
         Token trueToken = trueInput.get(0);
         Token falseToken = falseInput.get(0);
-            
+
         if(flag) {
             output.send(0, trueToken);
         } else {

@@ -298,7 +298,7 @@ public class Scheduler extends Attribute {
      *  called directly, but is called in turn by the getSchedule()
      *  method.  This method is not synchronized on the workspace, because
      *  the getSchedule() method is.
-     *  
+     *
      *  @return A Schedule of the deeply contained opaque entities
      *  in the firing order.
      *  @exception IllegalActionException If the scheduling algorithm

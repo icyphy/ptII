@@ -26,7 +26,7 @@
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
-(This is similar to Select and BooleanMultiplexor and could be 
+(This is similar to Select and BooleanMultiplexor and could be
 design/code reviewed at the same time.
 */
 
@@ -98,7 +98,7 @@ public class BooleanSelect extends TypedAtomicActor {
     /** Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
-    /** Input for tokens on the false path.  The type can be anything. 
+    /** Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
     /** Input that selects one of the other input ports.  The type is
@@ -132,7 +132,7 @@ public class BooleanSelect extends TypedAtomicActor {
             if (falseInput.hasToken(0)) {
                 output.send(0, falseInput.get(0));
             }
-        }            
+        }
     }
 
     /** Initialize this actor so that the <i>falseInput<i> is read

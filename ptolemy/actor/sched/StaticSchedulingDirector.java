@@ -49,11 +49,11 @@ CompositeActor it belongs to. <p>
 This class does not directly implement a scheduling algorithm, but
 defers to its contained scheduler.  The contained scheduler creates an
 instance of the Schedule class which determines the number of times
-each actor should be fired and their firing order.  This allows new 
+each actor should be fired and their firing order.  This allows new
 scheduling algorithms to be easily created for existing domains.<p>
 
-This class is generally useful for statically scheduled domains where 
-a schedule can be constructed once and used to repeatedly execute the 
+This class is generally useful for statically scheduled domains where
+a schedule can be constructed once and used to repeatedly execute the
 model.  The Scheduler class caches the schedule until the model changes
 so that the schedule does not have to be recomputed.
 
@@ -133,7 +133,7 @@ public class StaticSchedulingDirector extends Director {
             throw new IllegalActionException("Attempted to fire " +
                     "system with no scheduler");
         }
-        // This will throw IllegalActionException if this director 
+        // This will throw IllegalActionException if this director
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator firings = schedule.firingIterator();
@@ -141,12 +141,12 @@ public class StaticSchedulingDirector extends Director {
             Firing firing = (Firing)firings.next();
             Actor actor = (Actor)firing.getActor();
             int iterationCount = firing.getIterationCount();
-            
+
             if(_debugging) {
                 _debug(new FiringEvent(this, actor,
                         FiringEvent.BEFORE_ITERATE));
             }
-            
+
             int returnValue =
                 actor.iterate(iterationCount);
             if (returnValue == COMPLETED) {
@@ -202,8 +202,8 @@ public class StaticSchedulingDirector extends Director {
      *  anymore.  <p>
      *
      *  This base class returns true if all of the actors iterated since
-     *  the last call to prefire returned true.  Subclasses of this 
-     *  director may override this method to perform additional 
+     *  the last call to prefire returned true.  Subclasses of this
+     *  director may override this method to perform additional
      *  domain-specific behavior.
      *  @return True if the Director wants to be fired again in the
      *  future.
@@ -221,7 +221,7 @@ public class StaticSchedulingDirector extends Director {
      *  enclosing model is greater than the current time of this
      *  director, then this base class updates current time to match
      *  that of the enclosing model.  <p>
-     * 
+     *
      *  In this base class, assume that the director is always ready
      *  to be fired, and so return true.  Domain directors should
      *  probably override this method to provide domain-specific

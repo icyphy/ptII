@@ -56,7 +56,7 @@ an array with the elements scaled. The input can be an array of array,
 in which case the elements of the inner most array will be scaled.
 For data types where multiplication is not commutative (such
 as matrices), whether the factor is multiplied on the left is controlled
-by the <i>scaleOnLeft</i> parameter. Setting the parameter to true means 
+by the <i>scaleOnLeft</i> parameter. Setting the parameter to true means
 that the factor is  multiplied on the left, and the input
 on the right. Otherwise, the factor is multiplied on the right.
 
@@ -78,7 +78,7 @@ public class Scale extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         factor = new Parameter(this, "factor", new IntToken(1));
-        scaleOnLeft = new Parameter(this, "scaleOnLeft", 
+        scaleOnLeft = new Parameter(this, "scaleOnLeft",
                 new BooleanToken(true));
 
 	// set the type constraints.
@@ -150,13 +150,13 @@ public class Scale extends Transformer {
     ////                         inner classes                     ////
 
     // This class implements a monotonic function of the type of a
-    // port and a parameter. 
+    // port and a parameter.
     // The function value is determined by:
     // f(portType, paramType) =
     //     UNKNOWN,                  if portType=UNKNOWN
     //     LUB(portType, paramType), if portType is a BaseType
     //     {f(elemType(portType), paramType)}, if portType is an array type.
-    //            
+    //
     // The last case is a recursive one. If portType is an array type, the
     // function value is also an array. The element type of the function value
     // array is the result of a recursive call to this function. This allows
@@ -225,7 +225,7 @@ public class Scale extends Transformer {
          *  @exception IllegalActionException Always thrown.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    throw new IllegalActionException(getClass().getName() 
+	    throw new IllegalActionException(getClass().getName()
                     + ": The type is not settable.");
         }
 
@@ -238,7 +238,7 @@ public class Scale extends Transformer {
 
 	///////////////////////////////////////////////////////////////
 	////                      private inner methods            ////
-	
+
 	// compute the function value based on the types of the port
 	// and the parameter.
 	private Object compute(Type portType, Type paramType) {

@@ -106,7 +106,7 @@ public class NotSchedulableException extends InvalidStateException {
     // JDK1.4 has a Collections.list(Enumeration) method
     // that would be good to use.
     // For suggestions about converting from Enumerations to Lists,
-    // see 
+    // see
     // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
     private static List _list(Enumeration objects) {
         List list = new ArrayList();

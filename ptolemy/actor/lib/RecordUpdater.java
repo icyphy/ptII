@@ -107,7 +107,7 @@ public class RecordUpdater extends TypedAtomicActor {
 
     /** The input port. Its type is constrained to be a RecordType. */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -139,7 +139,7 @@ public class RecordUpdater extends TypedAtomicActor {
         // Pack a HashMap with all of the record entries from
         // the original record and all of the updating ports.
         HashMap outputMap = new HashMap();
-        
+
         RecordToken record = (RecordToken)input.get(0);
         Set recordLabels = record.labelSet();
         for(Iterator i = recordLabels.iterator(); i.hasNext(); ) {
@@ -147,7 +147,7 @@ public class RecordUpdater extends TypedAtomicActor {
             Token value = record.get(name);
             outputMap.put(name,value);
         }
-        
+
         List inputPorts = inputPortList();
 	Iterator iter = inputPorts.iterator();
 	while(iter.hasNext()) {

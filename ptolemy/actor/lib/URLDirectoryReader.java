@@ -260,7 +260,7 @@ public class URLDirectoryReader extends URLReader {
 		    List resultsList = new LinkedList();
 		    for (int i = 0; i < files.length; i++) {
 			String filename = files[i].getName();
-			if (endsWith == null || endsWith.length() == 0 
+			if (endsWith == null || endsWith.length() == 0
 			    || filename.endsWith(endsWith)) {
 			    resultsList.add(source + filename);
 			}
@@ -375,7 +375,7 @@ public class URLDirectoryReader extends URLReader {
 					// here to verify that the target
 					// exists.
 					if (endsWith == null
-					    || endsWith.length() == 0 
+					    || endsWith.length() == 0
 					    || target.endsWith(endsWith)) {
 					    resultsList.add(source
 							    + target);

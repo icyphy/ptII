@@ -87,7 +87,7 @@ public class NonStrictTest extends Test {
     // The Test actor could be extended so that Strictness was a parameter,
     // but that would require some slightly tricky code to handle
     // multiports in a non-strict fashion.  The problem is that if
-    // we have more than one input channel, and we want to handle 
+    // we have more than one input channel, and we want to handle
     // non-strict inputs, then we need to keep track of number of
     // tokens we have seen on each channel.
 

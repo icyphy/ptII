@@ -73,7 +73,7 @@ public class CurrentTime extends TimedSource {
      *  @exception IllegalActionException If send() throws it.
      */
     public void fire() throws IllegalActionException {
-    
+
         // For domain polymorphism getCurrentTime(channel_number) has
         // to be called before get(channel_number)
 
@@ -97,6 +97,6 @@ public class CurrentTime extends TimedSource {
         }
         super.fire();
         output.send(0, new DoubleToken(currentTime));
-        
+
     }
 }

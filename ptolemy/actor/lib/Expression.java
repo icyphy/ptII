@@ -96,12 +96,12 @@ for example if a parameter and a port have the same name, then
 the results are unpredictable.  They will depend on the order
 in which things are defined, which may not be the same in the
 constructor as in the clone method.  This class attempts to
-detect name duplications and throw an exception.  Furthermore, the 
+detect name duplications and throw an exception.  Furthermore, the
 values of the ports are given during the last execution.  It is possible
 to reconnect the ports so that their types change, and enter a legal
 expression (given those types) that is not accepted by this actor.
 Lastly, the connection
-between ports and the expression can be easily broken.  For example, 
+between ports and the expression can be easily broken.  For example,
 removing a port that the expression depends on.
 
 @author Xiaojun Liu, Edward A. Lee

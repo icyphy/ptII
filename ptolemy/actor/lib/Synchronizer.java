@@ -95,7 +95,7 @@ public class Synchronizer extends Transformer {
     }
 
     /** If all of the input channels have at least one token, return
-     *  what the superclass returns (presumably true).  Otherwise return 
+     *  what the superclass returns (presumably true).  Otherwise return
      *  false.
      *  @exception IllegalActionException If there is no director.
      */

@@ -90,7 +90,7 @@ public class WallClockTime extends Source {
         long elapsedTime = System.currentTimeMillis() - _startTime;
         return (((double)elapsedTime)/1000.0);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
