@@ -36,14 +36,14 @@ import ptolemy.graph.*;
 /**
 An InequalityTerm that encapsulate a type.
 This class models a term in an inequality constraint for type resolution.
-It can be used in two ways. First, it can represent the resolved type of
-a TypedIOPort. In this case, the constructor taking a TypedIOPort argument
-should be used. If the type of the TypedIOPort is declared, this type term
-represents a type constant, otherwise, it represents a tyep variable.
-Second, this class can be used to model a type constant not associated
-with a TypedIOPort. In this case, the constructor taking a Class argument
-should be used.<p>
-
+It can be used in two ways. First, it can be used to represent the
+resolved type of a TypedIOPort. In this case, the constructor taking a
+TypedIOPort argument should be used. If the type of the TypedIOPort is
+declared, this type term represents a type constant, otherwise, it
+represents a type variable.  Second, this class can be used to model a
+type constant not associated with a TypedIOPort. In this case, the
+constructor taking a Class argument should be used.
+<p>
 An Inequality constraint can be formed by specifying two TypeTerms.
 
 @author Yuhong Xiong
@@ -151,7 +151,7 @@ public class TypeTerm implements InequalityTerm {
 	}
 
 	throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-		    + "change the value of a type constant.");
+		    + "the value of a type constant.");
     }
 
     ///////////////////////////////////////////////////////////////////
