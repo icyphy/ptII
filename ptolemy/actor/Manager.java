@@ -170,10 +170,6 @@ public final class Manager extends NamedObj {
                 // postfire() returns false.
                 while (_isRunning && _iterate()) {
                     
-                    // finished iteration, remove the write protection
-                    // on the workspace.
-                    workspace().setWriteProtected(false);
-                    
                     try {
                         // if a pause has been requested
                         if(_isPaused) {
@@ -447,7 +443,7 @@ public final class Manager extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private classes                   ////
 
-    private class ManagerExecutionThread extends Thread {
+    private class ManagerExecutionThread extends PtolemyThread {
         
         /** Construct a thread that will call back to the Manager and 
          *  Request a certain number of iterations of execution.
@@ -526,23 +522,23 @@ public final class Manager extends NamedObj {
             
             // Set the appropriate write access, because we're about to
             // go into an interation.
-            if (!_needWriteAccessDuringIteration) {
-                workspace().setWriteProtected(true);
-            } 
-      
-            if (toplevel.prefire()) {
-                toplevel.fire();
-                return toplevel.postfire();
+            try {
+                if (!_needWriteAccessDuringIteration) {
+                    workspace().setReadOnly(true);
+                } 
+                
+                if (toplevel.prefire()) {
+                    toplevel.fire();
+                    return toplevel.postfire();
+                }
+                return false;
+            } finally {
+                if (!_needWriteAccessDuringIteration) {
+                    workspace().setReadOnly(false);
+                } 
             }
-            return false;
         } finally {
             workspace().doneReading();
-            // FIXME: Is this the right place to put the code.
-            // About to leave this _iterate() method, so restore the write
-            // protection.
-            if (!_needWriteAccessDuringIteration) {
-                workspace().setWriteProtected(false);
-            } 
         }
     }
 
