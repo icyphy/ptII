@@ -61,8 +61,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CalendarQueue.java \
+	ConstVariableModelAnalysis.java \
 	CQComparator.java \
 	FIFOQueue.java \
+	FreeVariableModelAnalysis.java \
 	TimedEvent.java
 
 EXTRA_SRCS =	$(JSRCS)
