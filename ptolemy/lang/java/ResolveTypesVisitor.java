@@ -80,7 +80,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         TNLManip.traverseList(this, 
-         TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), 
+         TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY)), 
          node.getDefTypes());
 
         return null;
@@ -122,7 +122,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     protected Object _visitNodeWithEnviron(TreeNode node) {
 
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
 
         TNLManip.traverseList(this, childArgs, node.children());
 
@@ -135,7 +135,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     /** Handle ClassDeclNodes and InterfaceDeclNodes. */
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
 
 	ApplicationUtility.trace("ResolveTypesVisitor:_visitUserTypeNode: " +
 			   node.getName().getIdent() + 

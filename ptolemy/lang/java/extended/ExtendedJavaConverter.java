@@ -116,7 +116,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind1,
+             TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
           ApplicationUtility.error("byte * other type not supported");
@@ -141,7 +141,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind1,
+             TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
           ApplicationUtility.error("short * other type not supported");
@@ -167,7 +167,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind1,
+             TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
           ApplicationUtility.error("int * other type not supported");
@@ -205,7 +205,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind1,
+             TNLManip.addFirst(convertExprToKind(expr1, kind1,
               TypeIdentifier.TYPE_KIND_DOUBLE)));
           }
           ApplicationUtility.error("float * other type not supported");
@@ -227,7 +227,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr2),
-             TNLManip.cons(expr1));
+             TNLManip.addFirst(expr1));
           }
           ApplicationUtility.error("double * other type not supported");
           break;
@@ -242,14 +242,14 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, kind2,
+              TNLManip.addFirst(convertExprToKind(expr2, kind2,
                TypeIdentifier.TYPE_KIND_DOUBLE)));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "multiply"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("complex * other type not supported");
           break;
@@ -260,7 +260,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "multiply"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("fix point * other type not supported");
           break;
@@ -326,7 +326,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("byte / other type not supported");
           break;
@@ -351,7 +351,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("short / other type not supported");
           break;
@@ -376,7 +376,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("int / other type not supported");
           break;
@@ -414,7 +414,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
 
           }
           ApplicationUtility.error("float / other type not supported");
@@ -437,7 +437,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "divide"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("double / other type not supported");
           break;
@@ -452,7 +452,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "scale"), expr1),
-              TNLManip.cons(
+              TNLManip.addFirst(
                new DivNode(new DoubleLitNode("1.0"),
                convertExprToKind(expr2, kind2,
                 TypeIdentifier.TYPE_KIND_DOUBLE))));
@@ -461,7 +461,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "divide"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("complex / other type not supported");
           break;
@@ -472,7 +472,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "divide"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("fix point / other type not supported");
           break;
@@ -640,7 +640,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "add"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("byte + other type not supported");
           break;
@@ -665,7 +665,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "add"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("short + other type not supported");
           break;
@@ -689,7 +689,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
                AbsentTreeNode.instance, "add"), expr2),
-              TNLManip.cons(convertExprToKind(expr1, kind1, kind2)));
+              TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
           ApplicationUtility.error("int + other type not supported");
           break;
@@ -727,7 +727,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "add"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
 
           }
           ApplicationUtility.error("float + other type not supported");
@@ -748,7 +748,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "add"), expr2),
-             TNLManip.cons(convertExprToKind(expr1, kind1, kind2)));
+             TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
           ApplicationUtility.error("double + other type not supported");
           break;
@@ -764,7 +764,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "add"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, kind2, kind1)));
+              TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
           ApplicationUtility.error("complex + other type not supported");
           break;
@@ -775,7 +775,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "add"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("fix point + other type not supported");
           break;
@@ -843,7 +843,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("byte - other type not supported");
           break;
@@ -868,7 +868,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("short - other type not supported");
           break;
@@ -894,7 +894,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"),
                convertExprToKind(expr1, kind1, kind2)),
-              TNLManip.cons(expr2));
+              TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("int - other type not supported");
           break;
@@ -932,7 +932,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"),
                convertExprToKind(expr1, kind1, kind2)),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
 
           }
           ApplicationUtility.error("float - other type not supported");
@@ -954,7 +954,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new ObjectFieldAccessNode(
                new NameNode(AbsentTreeNode.instance, "subtract"),
                convertExprToKind(expr1, kind1, kind2)),
-              TNLManip.cons(expr2));
+              TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("double - other type not supported");
           break;
@@ -970,7 +970,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(new NameNode(
               AbsentTreeNode.instance, "subtract"), expr1),
-              TNLManip.cons(convertExprToKind(expr2, kind2, kind1)));
+              TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
           ApplicationUtility.error("complex - other type not supported");
           break;
@@ -981,7 +981,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(
              new ObjectFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "subtract"), expr1),
-             TNLManip.cons(expr2));
+             TNLManip.addFirst(expr2));
           }
           ApplicationUtility.error("fix point - other type not supported");
           break;
@@ -1134,7 +1134,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1144,7 +1144,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1172,12 +1172,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
-              TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)),
+              TNLManip.addFirst(new CastNode(DoubleTypeNode.instance, expr)),
                AbsentTreeNode.instance);
           }
           break;
@@ -1200,12 +1200,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
-              TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)),
+              TNLManip.addFirst(new CastNode(DoubleTypeNode.instance, expr)),
                AbsentTreeNode.instance);
           }
           break;
@@ -1222,12 +1222,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
-              TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)),
+              TNLManip.addFirst(new CastNode(DoubleTypeNode.instance, expr)),
                AbsentTreeNode.instance);
           }
           break;
@@ -1241,12 +1241,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
-              TNLManip.cons(expr), AbsentTreeNode.instance);
+              TNLManip.addFirst(expr), AbsentTreeNode.instance);
           }
           break;
 
@@ -1256,12 +1256,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
-              TNLManip.cons(expr), AbsentTreeNode.instance);
+              TNLManip.addFirst(expr), AbsentTreeNode.instance);
           }
           break;
 
@@ -1271,7 +1271,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
           }
           break;
@@ -1307,7 +1307,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "valueOf"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1327,21 +1327,21 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new NameNode(AbsentTreeNode.instance, "toLongMatrix"),
              new TypeNameNode(new NameNode(AbsentTreeNode.instance,
               "IntegerMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:
             return new MethodCallNode(new TypeFieldAccessNode(
              new NameNode(AbsentTreeNode.instance, "toDoubleMatrix"),
              new TypeNameNode(new NameNode(AbsentTreeNode.instance,
               "IntegerMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:
             return new MethodCallNode(new TypeFieldAccessNode(
               new NameNode(AbsentTreeNode.instance, "toString"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                "IntegerMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
             // need to add the toComplexMatrix() method to IntegerMatrixMath
@@ -1349,7 +1349,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new NameNode(AbsentTreeNode.instance, "toComplexMatrix"),
              new TypeNameNode(new NameNode(AbsentTreeNode.instance,
               "IntegerMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1360,7 +1360,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "toString"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                "LongMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1371,7 +1371,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "toString"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                "DoubleMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
             // need to add the toComplexMatrix() method to IntegerMatrixMath
@@ -1379,7 +1379,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new NameNode(AbsentTreeNode.instance, "toComplexMatrix"),
              new TypeNameNode(new NameNode(AbsentTreeNode.instance,
               "DoubleMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1390,7 +1390,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "toString"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                "ComplexMatrixMath"))),
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
 
@@ -1401,7 +1401,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new NameNode(AbsentTreeNode.instance, "toString"),
               new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                "FixPointMatrixMath"))), // this class does not exist yet
-             TNLManip.cons(expr));
+             TNLManip.addFirst(expr));
           }
           break;
         }

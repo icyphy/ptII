@@ -77,7 +77,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext c = new NameContext();
         c.environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
 
-        LinkedList childArgs = TNLManip.cons(c);
+        LinkedList childArgs = TNLManip.addFirst(c);
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
@@ -131,7 +131,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Environ newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setParams(TNLManip.traverseList(this, childArgs,
                 node.getParams()));
@@ -156,7 +156,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Environ newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setParams(TNLManip.traverseList(this, childArgs,
                 node.getParams()));
@@ -203,7 +203,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subctx = (NameContext) ctx.clone();
         subctx.environ = new Environ(ctx.environ);
 
-        node.setStmts(TNLManip.traverseList(this, TNLManip.cons(subctx),
+        node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
                 node.getStmts()));
 
         return node;
@@ -232,7 +232,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ctx.clone();
         subCtx.environ = newEnv;
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setStmt((StatementNode) node.getStmt().accept(this, childArgs));
         return node;
@@ -248,7 +248,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.environ = new Environ(ctx.environ);
 
         node.setSwitchBlocks(
-                TNLManip.traverseList(this, TNLManip.cons(subCtx),
+                TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
                         node.getSwitchBlocks()));
 
         return node;
@@ -264,7 +264,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = node;
         subCtx.environ = new Environ(ctx.environ);
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
         node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
         node.setAftStmt((TreeNode) node.getAftStmt().accept(this, childArgs));
 
@@ -277,7 +277,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.environ = new Environ(ctx.environ);
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setInit(TNLManip.traverseList(this, childArgs, node.getInit()));
         subCtx.breakTarget = node;
@@ -331,7 +331,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ctx.clone();
         subCtx.environ = new Environ(ctx.environ);
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setParam((ParameterNode) node.getParam().accept(this, childArgs));
         node.setBlock((BlockNode) node.getBlock().accept(this, childArgs));
@@ -360,7 +360,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
         subCtx.resolveAsObject = true;
 
-        node.setObject((ExprNode) (node.getObject().accept(this, TNLManip.cons(subCtx))));
+        node.setObject((ExprNode) (node.getObject().accept(this, TNLManip.addFirst(subCtx))));
 
         return node;
     }
@@ -378,7 +378,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.resolveAsObject = true;
 
-        LinkedList childArgs = TNLManip.cons(subCtx);
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         // CHECK ME : is this all that needs to be done?
 
@@ -399,7 +399,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
         subCtx.resolveAsObject = false;
 
-        node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
+        node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.addFirst(subCtx)));
 
         return node;
     }
@@ -415,7 +415,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         ctx.environ = decl.getEnviron();
         ctx.currentClass = decl.getDefType();
 
-        LinkedList childArgs = TNLManip.cons(ctx);
+        LinkedList childArgs = TNLManip.addFirst(ctx);
 
         node.setMembers(
                 TNLManip.traverseList(this, childArgs, node.getMembers()));

@@ -166,14 +166,14 @@ public class ASTReflect {
 	    compileUnitNode =
 		new CompileUnitNode(packageName,
 				    /*imports*/ new LinkedList(),
-				    TNLManip.cons(interfaceDeclNode));
+				    TNLManip.addFirst(interfaceDeclNode));
 	} else {
 	    ClassDeclNode classDeclNode =
 		ASTClassDeclNode(myClass);
 	    compileUnitNode =
 		new CompileUnitNode(packageName,
 				    /*imports*/ new LinkedList(),
-				    TNLManip.cons(classDeclNode));
+				    TNLManip.addFirst(classDeclNode));
 	}
 	return compileUnitNode;
     }

@@ -96,7 +96,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         String ident = node.getIdent();
         TreeNode qualifier = node.getQualifier();
         if (qualifier == AbsentTreeNode.instance) {
-            return TNLManip.cons(ident);
+            return TNLManip.addFirst(ident);
         }
 
         List qualPartList =
@@ -106,67 +106,67 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitAbsentTreeNode(AbsentTreeNode node, LinkedList args) {
-        return TNLManip.cons("");
+        return TNLManip.addFirst("");
     }
 
     public Object visitIntLitNode(IntLitNode node, LinkedList args) {
-        return TNLManip.cons(node.getLiteral());
+        return TNLManip.addFirst(node.getLiteral());
     }
 
     public Object visitLongLitNode(LongLitNode node, LinkedList args) {
-        return TNLManip.cons(node.getLiteral());
+        return TNLManip.addFirst(node.getLiteral());
     }
 
     public Object visitFloatLitNode(FloatLitNode node, LinkedList args) {
-        return TNLManip.cons(node.getLiteral());
+        return TNLManip.addFirst(node.getLiteral());
     }
 
     public Object visitDoubleLitNode(DoubleLitNode node, LinkedList args) {
-        return TNLManip.cons(node.getLiteral());
+        return TNLManip.addFirst(node.getLiteral());
     }
 
     public Object visitBoolLitNode(BoolLitNode node, LinkedList args) {
-        return TNLManip.cons(node.getLiteral());
+        return TNLManip.addFirst(node.getLiteral());
     }
 
     public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return TNLManip.cons("'" + node.getLiteral() + '\'');
+        return TNLManip.addFirst("'" + node.getLiteral() + '\'');
     }
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        return TNLManip.cons("\"" + node.getLiteral() + '\"');
+        return TNLManip.addFirst("\"" + node.getLiteral() + '\"');
     }
 
     public Object visitBoolTypeNode(BoolTypeNode node, LinkedList args) {
-        return TNLManip.cons("boolean");
+        return TNLManip.addFirst("boolean");
     }
 
     public Object visitCharTypeNode(CharTypeNode node, LinkedList args) {
-        return TNLManip.cons("char");
+        return TNLManip.addFirst("char");
     }
 
     public Object visitByteTypeNode(ByteTypeNode node, LinkedList args) {
-        return TNLManip.cons("byte");
+        return TNLManip.addFirst("byte");
     }
 
     public Object visitShortTypeNode(ShortTypeNode node, LinkedList args) {
-        return TNLManip.cons("short");
+        return TNLManip.addFirst("short");
     }
 
     public Object visitIntTypeNode(IntTypeNode node, LinkedList args) {
-        return TNLManip.cons("int");
+        return TNLManip.addFirst("int");
     }
 
     public Object visitFloatTypeNode(FloatTypeNode node, LinkedList args) {
-        return TNLManip.cons("float");
+        return TNLManip.addFirst("float");
     }
 
     public Object visitLongTypeNode(LongTypeNode node, LinkedList args) {
-        return TNLManip.cons("long");
+        return TNLManip.addFirst("long");
     }
 
     public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
-        return TNLManip.cons("double");
+        return TNLManip.addFirst("double");
     }
 
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
@@ -179,7 +179,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitVoidTypeNode(VoidTypeNode node, LinkedList args) {
-        return TNLManip.cons("void");
+        return TNLManip.addFirst("void");
     }
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
@@ -404,7 +404,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
-        return TNLManip.cons(";\n");
+        return TNLManip.addFirst(";\n");
     }
 
     public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
@@ -442,7 +442,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitCaseNode(CaseNode node, LinkedList args) {
         if (node.getExpr() == AbsentTreeNode.instance) {
-            return TNLManip.cons("default:\n");
+            return TNLManip.addFirst("default:\n");
         }
 
         return TNLManip.arrayToList(new Object[] {"case ",
@@ -551,11 +551,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitNullPntrNode(NullPntrNode node, LinkedList args) {
-        return TNLManip.cons("null");
+        return TNLManip.addFirst("null");
     }
 
     public Object visitThisNode(ThisNode node, LinkedList args) {
-        return TNLManip.cons("this");
+        return TNLManip.addFirst("this");
     }
 
     public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
@@ -964,7 +964,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     protected List _forInitStringList(List list) {
         int length = list.size();
 
-        if (length <= 0) return TNLManip.cons("");
+        if (length <= 0) return TNLManip.addFirst("");
 
         TreeNode firstNode = (TreeNode) list.get(0);
 

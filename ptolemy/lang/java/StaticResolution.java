@@ -411,10 +411,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             (CompileUnitNode) allPass0ResolvedMap.get(className);
 
         if (loadedAST == null) {
-            loadedAST = JavaParserManip.parseCanonical(filename, false);
+            loadedAST = JavaParserManip.parseCanonical(className, false);
 
             if (loadedAST == null) {
-                ApplicationUtility.error("Couldn't load " + filename);
+                ApplicationUtility.error("Couldn't load " + className);
             }
         }
         return load(loadedAST, pass);
@@ -565,10 +565,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         ClassDeclNode arrayClassNode = new ClassDeclNode(PUBLIC_MOD,
                 new NameNode(AbsentTreeNode.instance, "<array>"),
-                TNLManip.cons(CLONEABLE_TYPE), arrayClassMembers, OBJECT_TYPE);
+                TNLManip.addFirst(CLONEABLE_TYPE), arrayClassMembers, OBJECT_TYPE);
 
         CompileUnitNode arrayCompileUnitNode = new CompileUnitNode(
-                javaLangName, new LinkedList(), TNLManip.cons(arrayClassNode));
+                javaLangName, new LinkedList(), TNLManip.addFirst(arrayClassNode));
 
         // give the CompileUnitNode a dummy name so it can be retrieved
         arrayCompileUnitNode.setProperty(IDENT_KEY, "<array>");

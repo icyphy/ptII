@@ -476,7 +476,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         me.setSuperClass(superClass);
 
         if (implIFace != null) {
-            me.setInterfaces(TNLManip.cons(implIFace));
+            me.setInterfaces(TNLManip.addFirst(implIFace));
         }
 
         Environ myEnviron = me.getEnviron();
