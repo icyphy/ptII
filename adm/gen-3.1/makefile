@@ -513,6 +513,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/attributes \
+	$(REMOTE1PTIIDIST)/ptolemy/kernel/undo \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
