@@ -306,6 +306,131 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         return retval;
     }
 
+    // Convert a token to its underlying java type and return its value
+    // (Object) and type (Class).
+    public static Object convertTokenToJava(ptolemy.data.Token token)
+            throws ptolemy.kernel.util.IllegalActionException {
+        Object[] retval = new Object[2];
+        if (token instanceof DoubleToken) {
+            // Note: Java makes a distinction between the class objects
+            // for double & Double...
+            retval[0] = new Double(((DoubleToken)token).doubleValue());
+            retval[1] = Double.TYPE;
+        } else if (token instanceof IntToken) {
+            retval[0] = new Integer(((IntToken)token).intValue());
+            retval[1] = Integer.TYPE;
+        } else if (token instanceof LongToken) {
+            retval[0] = new Long(((LongToken)token).longValue());
+            retval[1] = Long.TYPE;
+        } else if (token instanceof StringToken) {
+            retval[0] = new String(((StringToken)token).stringValue());
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof BooleanToken) {
+            retval[0] =
+                new Boolean(((BooleanToken)token).booleanValue());
+            retval[1] = Boolean.TYPE;
+        } else if (token instanceof ComplexToken) {
+            retval[0] = ((ComplexToken)token).complexValue();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof FixToken) {
+            retval[0] = ((FixToken)token).fixValue();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof FixMatrixToken) {
+            retval[0] = ((FixMatrixToken)token).fixMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof IntMatrixToken) {
+            retval[0] = ((IntMatrixToken)token).intMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof DoubleMatrixToken) {
+            retval[0] = ((DoubleMatrixToken)token).doubleMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof ComplexMatrixToken) {
+            retval[0] = ((ComplexMatrixToken)token).complexMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof LongMatrixToken) {
+            retval[0] = ((LongMatrixToken)token).longMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof BooleanMatrixToken) {
+            retval[0] = ((BooleanMatrixToken)token).booleanMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof ArrayToken) {
+            // This is frustrating... It would be nice if there
+            // was a Token.getValue() that would return the
+            // token element value in a polymorphic way...
+            if (((ArrayToken)token).getElement(0)
+                instanceof FixToken) {
+                FixPoint[] array = new FixPoint
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((FixToken)((ArrayToken)token)
+                                .getElement(j)).fixValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof IntToken) {
+                int[] array = new int[((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((IntToken)((ArrayToken)token)
+                                .getElement(j)).intValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof LongToken) {
+                long[] array = new long[((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((LongToken)((ArrayToken)token)
+                                .getElement(j)).longValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof DoubleToken) {
+                double[] array = new double
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((DoubleToken)((ArrayToken)token)
+                                .getElement(j)).doubleValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof ComplexToken) {
+                Complex[] array = new Complex
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((ComplexToken)((ArrayToken)token)
+                                .getElement(j)).complexValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof StringToken) {
+                String[] array = new String
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((StringToken)((ArrayToken)token)
+                                .getElement(j)).stringValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof BooleanToken) {
+                boolean[] array = new boolean
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((BooleanToken)((ArrayToken)token)
+                                .getElement(j)).booleanValue();
+                }
+                retval[0] = array;
+            } else {
+                // Bailout if we don't recognize the argument.
+                retval[0] = token;
+            }
+            retval[1] = retval[0].getClass();
+        } else {
+            // Bailout if we don't recognize the argument.
+            retval[0] = token;
+            retval[1] = retval[0].getClass();
+        }
+        return retval;
+    }
+
     public static Class convertTokenTypeToJavaType(Type type)
             throws ptolemy.kernel.util.IllegalActionException {
         try {
@@ -367,50 +492,56 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         try {
         if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
             return BaseType.forClassName(tokenClass.getName());
-        } else if (Class.forName("[Lptolemy.data.Token;").isAssignableFrom(tokenClass)) {
-            return new ArrayType(BaseType.UNKNOWN);
-        } else if (tokenClass.equals(Double.class) ||
-                   tokenClass.equals(Double.TYPE)) {
-            return BaseType.DOUBLE;
+     //    } else if (Class.forName("[Lptolemy.data.Token;").isAssignableFrom(tokenClass)) {
+//             return new ArrayType(BaseType.UNKNOWN);
+        } else if (tokenClass.equals(Boolean.class) ||
+                   tokenClass.equals(Boolean.TYPE)) {
+            return BaseType.BOOLEAN;
         } else if (tokenClass.equals(Integer.class) ||
                    tokenClass.equals(Integer.TYPE)) {
             return BaseType.INT;
         } else if (tokenClass.equals(Long.class) ||
                    tokenClass.equals(Long.TYPE)) {
             return BaseType.LONG;
-        } else if (tokenClass.equals(String.class)) {
-            return BaseType.STRING;
-        } else if (tokenClass.equals(Boolean.class) ||
-                   tokenClass.equals(Boolean.TYPE)) {
-            return BaseType.BOOLEAN;
+        } else if (tokenClass.equals(Double.class) ||
+                   tokenClass.equals(Double.TYPE)) {
+            return BaseType.DOUBLE;
         } else if (tokenClass.equals(Complex.class)) {
             return BaseType.COMPLEX;
         } else if (tokenClass.equals(FixPoint.class)) {
             return BaseType.FIX;
+        } else if (tokenClass.equals(String.class)) {
+            return BaseType.STRING;
+        } else if (tokenClass.equals(Class.forName("[[Z"))) {
+            return BaseType.BOOLEAN_MATRIX;
         } else if (tokenClass.equals(Class.forName("[[I"))) {
             return BaseType.INT_MATRIX;
-        } else if (tokenClass.equals(Class.forName("[[D"))) {
+        } else if (tokenClass.equals(Class.forName("[[J"))) {
+            return BaseType.LONG_MATRIX;
+        }else if (tokenClass.equals(Class.forName("[[D"))) {
             return BaseType.DOUBLE_MATRIX;
         } else if (tokenClass.equals(Class.forName("[[Lptolemy.math.Complex;"))) {
             return BaseType.COMPLEX_MATRIX;
-        } else if (tokenClass.equals(Class.forName("[[J"))) {
-            return BaseType.LONG_MATRIX;
-        } else if (tokenClass.equals(Class.forName("[[Lptolemy.math.FixPoint;"))) {
+        }  else if (tokenClass.equals(Class.forName("[[Lptolemy.math.FixPoint;"))) {
             return BaseType.FIX_MATRIX;
-        } else if (tokenClass.equals(Class.forName("[I"))) {
-            return new ArrayType(BaseType.INT);
-        } else if (tokenClass.equals(Class.forName("[D"))) {
-            return new ArrayType(BaseType.DOUBLE);
-        } else if (tokenClass.equals(Class.forName("[Lptolemy.math.Complex;"))) {
-            return new ArrayType(BaseType.COMPLEX);
-        } else if (tokenClass.equals(Class.forName("[J"))) {
-            return new ArrayType(BaseType.LONG);
-        } else if (tokenClass.equals(Class.forName("[Lptolemy.math.FixPoint;"))) {
-            return new ArrayType(BaseType.FIX);
-        } else if (tokenClass.equals(Class.forName("[Z"))) {
-            return new ArrayType(BaseType.BOOLEAN);
-        } else if (tokenClass.equals(Class.forName("[Ljava.lang.String;"))) {
-            return new ArrayType(BaseType.STRING);
+        } else if (tokenClass.isArray()) {
+            return new ArrayType(convertJavaTypeToTokenType(tokenClass.getComponentType()));
+
+           //  equals(Class.forName("[I"))) {
+//             return new ArrayType(BaseType.INT);
+//         } else if (tokenClass.equals(Class.forName("[D"))) {
+//             return new ArrayType(BaseType.DOUBLE);
+//         } else if (tokenClass.equals(Class.forName("[Lptolemy.math.Complex;"))) {
+//             return new ArrayType(BaseType.COMPLEX);
+//         } else if (tokenClass.equals(Class.forName("[J"))) {
+//             return new ArrayType(BaseType.LONG);
+//         } else if (tokenClass.equals(Class.forName("[Lptolemy.math.FixPoint;"))) {
+//             return new ArrayType(BaseType.FIX);
+//         } else if (tokenClass.equals(Class.forName("[Z"))) {
+//             return new ArrayType(BaseType.BOOLEAN);
+//         } else if (tokenClass.equals(Class.forName("[Ljava.lang.String;"))) {
+//             return new ArrayType(BaseType.STRING);
+//         } else {
         } else {
             throw new IllegalActionException("unrecognized type " 
                     + tokenClass);

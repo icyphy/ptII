@@ -573,26 +573,15 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
             try {
                 times = ((ptolemy.data.ScalarToken)
                     node.jjtGetChild(i).getToken()).intValue();
-            } catch (Exception e) {
+            } catch (IllegalActionException ex) {
                 throw new IllegalActionException(
                         "Only integral power numbers (e.g. 10^3) " +
                         "are allowed. Please check expression and use " +
                         "pow(10,3.5) instead to express non-integer " +
                         "powers.");
             }
-            ptolemy.data.Token factor = result;
-            if(times == 0) {
-                // anything to the zero is one.
-                result = result.one();
-            } else if(times < 0) {
-                throw new IllegalActionException(
-                        "Only positive integral power numbers (e.g. 10^3) " +
-                        "are allowed.");
-            } else {
-                for( int k = 0; k < times - 1; k++ ) {
-                    result = result.multiply(factor);
-                }        
-            }
+
+            result = result.pow(times);
         }
         node.setToken(result);
     }

@@ -56,7 +56,8 @@ public interface ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
-    public ptolemy.data.Token get(String name) throws IllegalActionException;
+    public ptolemy.data.Token get(String name)
+            throws IllegalActionException;
 
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in

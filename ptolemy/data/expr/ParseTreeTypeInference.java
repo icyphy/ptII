@@ -358,7 +358,11 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
      protected boolean _isValidName(String name)
             throws IllegalActionException {
         if(_scope != null) {
-            return (_scope.getType(name) != null);
+            try {
+                return (_scope.getType(name) != null);
+            } catch (Exception ex) {
+                return false;
+            }
         } else {
             return false;
         }

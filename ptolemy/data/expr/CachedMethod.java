@@ -153,6 +153,10 @@ public class CachedMethod {
         return true;
     }
 
+    public ArgumentConversion[] getConversions() {
+        return _conversions;
+    }
+
     /** Return the type of the token that results from an invocation
      *  of this method.  If this method is missing, then an exception
      *  will be thrown.

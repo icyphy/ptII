@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+Added pow() method for integer exponentiation.
 */
 
 package ptolemy.data;
@@ -367,6 +368,38 @@ public class Token implements Serializable {
         throw new IllegalActionException(
                 "Multiplicative identity not supported on "
                 + this.getClass().getName() + ".");
+    }
+
+    /** Returns a token representing the result of multiplying this
+     *  token by itself (on the right) the number of times given by
+     *  the argument.  If the argument is zero, then the result is
+     *  defined to be the result of applying the one() method to this
+     *  token.  The token type returned by this method is the same as
+     *  the type of this token.  Note that the method is different
+     *  from java.lang.Math.pow(), since it returns an integer given
+     *  an integer token type, and is also well defined for matrix
+     *  types.
+     *  @param times The number of times to multiply.
+     *  @return The power.
+     *  @exception IllegalActionException If the token is not
+     *  compatible for this operation, or the given argument is negative.
+     */
+    public ptolemy.data.Token pow(int times)
+            throws IllegalActionException {
+        if(times == 0) {
+            // anything to the zero is one.
+            return one();
+        } else if(times < 0) {
+            throw new IllegalActionException(
+                    "Only positive integral power numbers (e.g. 10^3) " +
+                    "are allowed.");
+        } else {
+            ptolemy.data.Token result = this;
+            for( int k = 0; k < times - 1; k++ ) {
+                result = result.multiply(this);
+            }        
+            return result;
+        }
     }
 
     /** Return a new token whose value is the value of the argument token
