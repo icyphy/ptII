@@ -57,19 +57,22 @@ PTPACKAGE = 	tutorial
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-JSRCS =
+JSRCS = \
+	TutorialApplet1.java \
+	TutorialApplet2.java \
+	TutorialApplet3.java \
+	TutorialApplet4.java
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
 	README \
-	TutorialApplet1.java \
-	TutorialApplet2.java \
-	TutorialApplet3.java \
-	TutorialApplet4.java \
 	TutorialApplet5.java \
 	TutorialApplet6.java \
-	tutorial.htm
+	TutorialApplet1.htm \
+	TutorialApplet2.htm \
+	TutorialApplet3.htm \
+	TutorialApplet4.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -81,8 +84,6 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
-	TutorialApplet.class \
-	TutorialApplet.java
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -92,6 +93,12 @@ install: jclass jars
 
 depend:
 	@echo "no dependencies in this directory"
+
+demo: all
+	appletviewer TutorialApplet1.htm
+	appletviewer TutorialApplet2.htm
+	appletviewer TutorialApplet3.htm
+	appletviewer TutorialApplet4.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

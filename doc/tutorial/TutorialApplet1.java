@@ -8,15 +8,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class PtolemyAppletModel extends TypedCompositeActor {
-    public PtolemyAppletModel(Workspace workspace)
+public class TutorialApplet1 extends TypedCompositeActor {
+    public TutorialApplet1(Workspace workspace)
 	throws IllegalActionException, NameDuplicationException {
 	super(workspace);
 
 	// Create the director
 	DEDirector director = new DEDirector(this, "director");
 	setDirector(director);
-	//director.stopTime.setExpression("10");
+	director.stopTime.setExpression("30.0");
 
 	// Create two actors.
 	Clock clock = new Clock(this,"clock");
