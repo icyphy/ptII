@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
@@ -45,7 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.ArrayList;
@@ -164,93 +162,6 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
-    /** Calculate the current schedule, if necessary, and iterate the
-     *  contained actors in the order given by the schedule. This
-     *  method differes from the fire() method of SDFDirector in that
-     *  this method uses cached schedules when possible. This leads to
-     *  more efficient execution. The cache size to use is set by the
-     *  scheduleCacheSize parameter.
-     *  <p>
-     *  Iterating an actor involves calling the actor's iterate() method,
-     *  which is equivalent to calling the actor's  prefire(), fire() and
-     *  postfire() methods in succession.  If iterate() returns NOT_READY,
-     *  indicating that the actor is not ready to execute, then an
-     *  IllegalActionException will be thrown. The values returned from
-     *  iterate() are recorded and are used to determine the value that
-     *  postfire() will return at the end of the director's iteration.
-     *  @exception IllegalActionException If any actor executed by this
-     *  actor return false in prefire.
-     *  @exception InvalidStateException If this director does not have a
-     *  container.
-     */
-    /*
-      public void fire() throws IllegalActionException {
-          if (_debug_info) {
-              System.out.println(getName() + " : fire() invoked.");
-          }
-          TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-
-          if (container == null) {
-              throw new InvalidStateException("HDFDirector " + getName() +
-              " fired, but it has no container!");
-          } else {
-              if (_debug_info) {
-                  System.out.println(getName() + " : fire(): " +
-                  " Schedule is ");
-                  Schedule tSched = getSchedule();
-                  Iterator tFirings = tSched.firingIterator();
-                  while (tFirings.hasNext()) {
-                      Firing firing = (Firing)tFirings.next();
-                      Actor actor = (Actor)firing.getActor();
-                      System.out.println(" : " +
-                          ((NamedObj)actor).getName() + " ");
-                  }
-              }
-
-              Schedule sched = getSchedule();
-              Iterator firings = sched.firingIterator();
-              while (firings.hasNext()) {
-                  Firing firing = (Firing)firings.next();
-                  Actor actor = (Actor)firing.getActor();
-                  if (_debug_info) {
-                      System.out.println(getName() + " : fire(): " +
-                      " firing actor : " +
-                      ((NamedObj)actor).getName());
-                  }
-                  int iterationCount = firing.getIterationCount();
-
-                  // FIXME: This is a hack. It does not even check if the
-                  // SDF graph contains loops, and may be far from optimal when
-                  // the SDF graph contains non-homogeneous actors. However,
-                  // the default value of vectorizationFactor = 1,
-                  // which should be completely safe for all models.
-                  // TODO: I need to modify the scheduler to generate an
-                  // optimum vectorized schedule. I.e., first try to
-                  // obtain a single appearance schedule. Then, try
-                  // to minimize the number of actor activations.
-                  int factor =
-                      ((IntToken) (vectorizationFactor.getToken())).intValue();
-                  if (factor < 1) {
-                      throw new IllegalActionException(this,
-                          "The supplied vectorization factor is invalid " +
-                          "Valid values consist of positive integers. " +
-                          "The supplied value was: " + factor);
-                  }
-                  int returnVal =
-                      actor.iterate(factor*iterationCount);
-                  if (returnVal == COMPLETED) {
-                      _postfirereturns = _postfirereturns && true;
-                  } else if (returnVal == NOT_READY) {
-                      throw new IllegalActionException(this,
-                          (ComponentEntity) actor, "Actor " +
-                          "is not ready to fire.");
-                  } else if (returnVal == STOP_ITERATING) {
-                      _postfirereturns = false;
-                  }
-              }
-          }
-      }
-*/
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
      *  will attempt to return a cached version of the schedule.
@@ -268,15 +179,11 @@ public class HDFDirector extends SDFDirector {
      *  @exception IllegalActionException If there is a problem getting
      *   the schedule.
      */
-    // Called by getFiringCount(Actor) in HDFDirector
     public Schedule getSchedule() throws IllegalActionException{
-        //System.out.println("get HDF schedule " + this.getFullName());
         Scheduler scheduler = getScheduler();
         Schedule schedule;
-        //return scheduler.getSchedule();
         if (isScheduleValid()) {
             // This will return a the current schedule.
-            //System.out.println("called in HDF getSchedule return new scheduler");
             schedule = ((SDFScheduler)scheduler).getSchedule();
         } else {
             // The schedule is no longer valid, so check the schedule
@@ -313,7 +220,10 @@ public class HDFDirector extends SDFDirector {
                 _scheduleCache = new HashMap();
                 _scheduleKeyList = new ArrayList(cacheSize);
                 _cacheSize = cacheSize;
-                
+                 
+                // When using a schedule from the cache, the external
+                // Rates also need to be updated. So we also need to
+                // cache the external rates. 
                 _externalRatesCache = new TreeMap();
                 _externalRatesKeyList = new ArrayList(cacheSize);
             }
@@ -367,111 +277,58 @@ public class HDFDirector extends SDFDirector {
         return schedule;
     }
     
-    /** Return the firing count of the specified actor in the schedule.
-     *  The specified actor must be director contained by this director.
-     *  Otherwise an exception will occur.
-     *
-     *  @param actor The actor to return the firing count for.
-     *  @exception IllegalActionException If there is a problem computing
-     *   the firing count.
-     */
-    // called by _getFiringsPerSchedulIteration in HDFFSMDirector.
-    // not used anywhere
-    /*
-    public int getFiringCount(Actor actor) throws IllegalActionException {
-        Schedule schedule = getSchedule();
-        Iterator firings = schedule.firingIterator();
-        int occurrence = 0;
-        while (firings.hasNext()) {
-            Firing firing = (Firing)firings.next();
-            Actor actorInSchedule = (Actor)(firing.getActor());
-            String actorInScheduleName =
-                ((Nameable)actorInSchedule).getName();
-            String actorName = ((Nameable)actor).getName();
-            if (actorInScheduleName.equals(actorName)) {
-                // Current actor in the static schedule is
-                // the HDF composite actor containing this FSM.
-                // Increment the occurrence count of this actor.
-                occurrence += firing.getIterationCount();
-            }
-
-            if (_debug_info) {
-                //System.out.println(getName() +
-                //" :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
-                //           ((Nameable)actor).getName());
-                //System.out.println(getName() +
-                //" : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
-                //           occurrence);
-            }
-        }
-        return occurrence;
-    }*/
-    
-    /** Initialize the actors associated with this director, set the
-     *  size of the schedule cache, and then compute the schedule.
-     *  The schedule is computed during initialization so that
-     *  hierarchical opaque composite actors can be scheduled
-     *  properly (since the act of computing the schedule sets the
-     *  rate parameters of the external ports). The order in which
-     *  the actors are initialized is arbitrary.
-     *
+    /** Initialize the actors associated with this director. 
+     *  If this method is called immediatley after preinitialize(), 
+     *  then it will not compute the schedule because it was done
+     *  in preinitialize(). Otherwise it needs to re-compute 
+     *  the schedule in case this director is nested in a refinement
+     *  of FSM and the "reset" in the guard is set to be true.
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler, or if the cache size parameter is not set to
      *  a valid value.
      */
     public void initialize() throws IllegalActionException {
-        //System.out.println("HDF Director initialize");
         super.initialize();
-        SDFScheduler scheduler = (SDFScheduler)getScheduler();
-        getSchedule();
-        int cacheSize =
-            ((IntToken)(scheduleCacheSize.getToken())).intValue();
-        
+        if (_preinitializeFlag) {
+            _preinitializeFlag = false;
+            SDFScheduler scheduler = (SDFScheduler)getScheduler();
+            getSchedule();
+        }    
     }
     
+    /** Preinitialize the actors associated with this director.
+     *  The super class method will compute the schedule. If this
+     *  HDF director is at the top level, then update the number
+     *  of firings per top-level iteration for each actor from the
+     *  top level down to the bottom level.
+     *  @exception IllegalActionException If the super class
+     *  preintialize throws it, or if the updateFiringCount method
+     *  throws it.
+     */
     public void preinitialize() throws IllegalActionException {
         //_scheduleKeyList.clear();
         super.preinitialize();
+        _preinitializeFlag = true;
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null) {
-            //System.out.println(this.getFullName() + " is the top director");
-            //System.out.println(this.getFullName() 
-            //    + " top director is rescheduling.");
-            _directorFiringCount = 1;
             updateFiringCount(1, true);
-        }
-        //LinkedList allActorList = new LinkedList();
-        //for (Iterator entities = container.entityList().iterator();
-          //          entities.hasNext();) {
-            //ComponentEntity entity = (ComponentEntity)entities.next();
-            //if (entity instanceof CompositeActor) {
-                //System.out.println("preinitialize():" + entity.getName() + 
-                //    "is a ModalModel controller.");
-              //  Director director =((CompositeActor)entity).getDirector();
-                //System.out.println("director = " + director.getFullName());
-                //if (director instanceof HDFFSMDirector) {
-                    //System.out.println(" the director is HDFFSM");
-                  //  int firingsPerScheduleIteration =
-                    //((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
-                    //System.out.println("firingsPerScheduleIteration = " +
-                    //    firingsPerScheduleIteration);
-                    //((HDFFSMDirector)director).setFiringsPerScheduleIteration(
-                    //    firingsPerScheduleIteration);   
-                //}
-            //}
-            //allActorList.addLast(entity);
-        //}       
+        } 
     }
     
+    /** Get the HDF schedule since schedule may change in the postfire.
+     *  If this director is at the top level, then update the number of
+     *  firings per top-level iteration for each actor from the top level
+     *  down to the bottom level.
+     *  @exception IllegalActionException If no schedule can be found, or
+     *  if the updateFiringsCount method throws it, or if the super class
+     *  method throws it.
+     */
     public boolean postfire() throws IllegalActionException {
-        //System.out.println(getFullName() + " HDF postfire now!");
         // Get schedule here, no matter if it is the top level.
         getSchedule();
-        //System.out.println(getFullName() + " HDF get new schedule");
         CompositeActor container = (CompositeActor)getContainer();
-        //Director director = container.getDirector();
         Director exeDirector = container.getExecutiveDirector();
         //if ( exeDirector != null
         //    || (! (exeDirector instanceof HDFFSMDirector))
@@ -485,47 +342,23 @@ public class HDFDirector extends SDFDirector {
             //|| (! (exeDirector instanceof HDFFSMDirector))
             //|| (! (exeDirector instanceof HDFDirector))
             ) {
-            //System.out.println(this.getFullName() 
-            //    + " top director is rescheduling.");
-            //invalidateSchedule();
-            //getSchedule();
-            _directorFiringCount = 1;
             updateFiringCount(1, false);
         }
-        //CompositeActor container = (CompositeActor)getContainer();
-        //LinkedList allActorList = new LinkedList();
-        //for (Iterator entities = container.entityList().iterator();
-         //           entities.hasNext();) {
-           // ComponentEntity entity = (ComponentEntity)entities.next();
-           // if (entity instanceof CompositeActor) {
-                //System.out.println(entity.getName() + 
-                //    "is a ModalModel controller.");
-            //    Director director =((CompositeActor)entity).getDirector();
-                //System.out.println("director = " + director.getFullName());
-              //  if (director instanceof HDFFSMDirector) {
-                    //System.out.println(" the director is HDFFSM");
-                //    int firingsPerScheduleIteration =
-                  //  ((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
-                    //System.out.println("firingsPerScheduleIteration = " +
-                    //    firingsPerScheduleIteration);
-                    //((HDFFSMDirector)director).setFiringsPerScheduleIteration(
-                    //    firingsPerScheduleIteration);     
-                //}
-            //}
-            //allActorList.addLast(entity);
-        //}        
-        //System.out.println("SDF postfire");
-        //int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
-        //_iterationCount++;
-        //if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
-        //    _iterationCount = 0;
-        //    return false;
-        //}
         return super.postfire();
     }
     
+    /** Update the number of firings per top-level iteration of
+     *  each actor in the current director.
+     *  @param directorFiringCount The number of firings per
+     *  top-level iteration of the container that contains this
+     *  director.
+     *  @param preinitializeFlag Flag indicating whether this
+     *  method is called in the preinitialize() method.
+     *  @throws IllegalActionException If no schedule can be found,
+     *  or if the updateFiringsCount method in HDFFSMDirector throws it.
+     */
     public void updateFiringCount
-        (int directorFiringCount, boolean preinitialize) 
+        (int directorFiringCount, boolean preinitializeFlag) 
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         Scheduler scheduler = ((SDFDirector)this).getScheduler();
@@ -534,25 +367,17 @@ public class HDFDirector extends SDFDirector {
             ComponentEntity entity = (ComponentEntity)entities.next();
             int firingCount = 
                 ((SDFScheduler)scheduler).getFiringCount(entity);
-            //System.out.println(entity.getName() + " firingCount = "
-            // + firingCount);
-            //int firingCount = getFiringCount((Actor)entity);
             if (entity instanceof CompositeActor) {
-                //System.out.println("preinitialize():" + entity.getName() + 
-                //    "is a ModalModel controller.");
                 Director director =((CompositeActor)entity).getDirector();
                 if (director instanceof HDFFSMDirector) {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFFSMDirector)director)
                         .setFiringsPerScheduleIteration(firingCount);
-                    //System.out.println(director.getFullName() + 
-                    //      " firingPerScheduleIteration set by top HDF = "
-                    //       + firingCount);
-                    ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitialize);  
+                    ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitializeFlag);  
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFDirector)director).
-                        updateFiringCount(firingCount, preinitialize);
+                        updateFiringCount(firingCount, preinitializeFlag);
                 }
             }
         }           
@@ -667,7 +492,10 @@ public class HDFDirector extends SDFDirector {
     private Map _externalRatesCache;
     private List _externalRatesKeyList;
 
-    private int _directorFiringCount = 1;
+    // A flag indicating whether the intialize() method is
+    // called immediately after the preinitialize() method.
+    private boolean _preinitializeFlag;
+    
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
     private boolean _debug_info = false;
