@@ -78,7 +78,8 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-        doc
+        doc \
+	'HuffmanBasic$$Node.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
