@@ -66,7 +66,7 @@ module util {
 	 * methods of Ptolemy II.
 	 */
 	interface CorbaActor {
-		/* Mirror the fire() method of the Ptolemy 
+		/* Mirror the fire() method of Ptolemy II 
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
@@ -84,7 +84,7 @@ module util {
 			raises (CorbaIllegalActionException,
 				CorbaUnknownParamException);
 
-		/* Mirror the initialize() method of the Ptolmey
+		/* Mirror the initialize() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
@@ -138,19 +138,26 @@ module util {
 			raises (CorbaIllegalActionException,
 				CorbaUnknownPortException);
 		
-		/* Mirror the postfire() method of the Ptolmey
+		/* Mirror the postfire() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
 		 */
 		boolean postfire() raises (CorbaIllegalActionException);
 
-		/* Mirror the prefire() method of the Ptolmey
+		/* Mirror the prefire() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
 		 */
 		boolean prefire() raises (CorbaIllegalActionException);
+
+                /* Mirror the preinitialize() method of Ptolmey II
+		 * executable interface.
+		 * @exception CorbaIllegalActionException If the 
+		 *   method is an illegal action of the actor.
+		 */
+		boolean preinitialize() raises (CorbaIllegalActionException);
 		
 		/* Set the value of the specified parameter.
 		 * @param paramName The parameter name.
@@ -168,14 +175,14 @@ module util {
 				CorbaUnknownParamException,
 				CorbaIllegalValueException);
 
-		/*  Mirror the stopFire() method of the Ptolmey
+		/*  Mirror the stopFire() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
 		 */
 		void stopFire() raises (CorbaIllegalActionException);
 	
-		/* Mirror the terminate() method of the Ptolmey
+		/* Mirror the terminate() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
@@ -219,7 +226,7 @@ module util {
 			    	CorbaUnknownPortException,
 				CorbaIndexOutofBoundException);
 
-		/* Mirror the wrapup() method of the Ptolmey
+		/* Mirror the wrapup() method of Ptolemy II
 		 * executable interface.
 		 * @exception CorbaIllegalActionException If the 
 		 *   method is an illegal action of the actor.
