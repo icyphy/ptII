@@ -1393,40 +1393,20 @@ public class Graph implements Cloneable {
      *  this way,  a graph change is registered.
      *  This is an <em>O(n)</em> operation. 
      *  @param node The node whose weight is to be validated.
-     *  @return True if the node weight has changed.
+     *  @return True if the node weight has changed, as determined by the equals
+     *  method.
      *  @exception IllegalStateException if the weight of the given node
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
      */
     public boolean validateWeight(Node node) {
         // FIXME:  @see #validateWeight(Node, Object).
-        boolean weightValueHasChanged = false;
         if (!validNodeWeight(node.getWeight())) {
             throw new IllegalStateException("Invalid weight associated with a "
                     + "node in the graph." +  _nodeDump(node));
         }
-        Iterator weights = _nodeWeightMap.keySet().iterator();
-        boolean removed = false;
-        Object weight = null;
-        List nodes = null;
-        while (weights.hasNext() && !removed) {
-            weight = weights.next();
-            nodes = (List)_nodeWeightMap.get(weight);
-            removed = nodes.remove(node);
-        }  
-        if (removed) {
-            // Note that the weight can change without the weight value,
-            // as referenced here, changing if the change does not affect
-            // comparison under the equals method. 
-            weightValueHasChanged = !weight.equals(node.getWeight());
-            if (nodes.size() == 0) {
-                _nodeWeightMap.remove(weight);
-            }
-        }
+        boolean changed = _removeWeight(node, node.getWeight(), _nodeWeightMap);
         _registerWeight(node);
-        if (weightValueHasChanged) {
-            _registerChange();
-        }
-        return weightValueHasChanged;
+        return changed;
     }
 
     public void validateWeight(Node node, Object oldWeight) {
@@ -1741,6 +1721,44 @@ public class Graph implements Cloneable {
             return newEdges;
         }
     }
+
+    // Given a node (edge), the mapping of weights into nodes (edges), and
+    // a new weight for the node (edge),
+    // remove the current mapping of a weight to the node (edge), if such
+    // a mapping exists, and determine whether the new weight differs from
+    // the previous weight.
+    // @param weightedObject The node or edge.
+    // @param weight The new weight.
+    // @param weightMap The mapping of weights into nodes or edges.
+    // @return True if the weight associated with the node (edge) has
+    // changed as determined by the equals method.
+    private boolean _removeWeight(Object weightedObject, Object weight,
+            HashMap weightMap) {
+        boolean weightValueHasChanged = false;
+        Iterator weights = weightMap.keySet().iterator();
+        boolean removed = false;
+        Object nextWeight = null;
+        List nextList = null;
+        while (weights.hasNext() && !removed) {
+            nextWeight = weights.next();
+            nextList = (List)weightMap.get(nextWeight);
+            removed = nextList.remove(weightedObject);
+        }  
+        if (removed) {
+            // Note that the weight can change without the weight value,
+            // as referenced here, changing if the change does not affect
+            // comparison under the equals method. 
+            weightValueHasChanged = !nextWeight.equals(weight);
+            if (nextList.size() == 0) {
+                weightMap.remove(weight);
+            }
+        }
+        if (weightValueHasChanged) {
+            _registerChange();
+        }
+        return weightValueHasChanged;
+    }
+
 
     // Verify that a node is in the graph.
     // @param The node to verify.
