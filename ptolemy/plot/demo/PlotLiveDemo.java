@@ -37,7 +37,7 @@ import java.applet.Applet;
  * <code>PlotLive</code> class.
  *
  * @author: Edward A. Lee
- * @version: $Id$
+ * @version: @(#)PlotLiveDemo.java	1.9    09/19/97
  */
 public class PlotLiveDemo extends PlotLive {
 
@@ -47,18 +47,25 @@ public class PlotLiveDemo extends PlotLive {
    /** Add points to the plot.  This is called by the base class
      * <code>run()</code> method while live plotting is enabled.
      */
-    public void addPoints() {
-        // Plot 6 points at a time for faster response.
-        for (int i = 0; i < 6; i++) {
-            addPoint(0, Math.sin(Math.PI*_count/25),
-		     Math.cos(Math.PI * _count/100), false);
-            addPoint(0, Math.sin(Math.PI*_count/45),
-		     Math.cos(Math.PI * _count/70), true);
-            addPoint(1, Math.sin(Math.PI*_count/45),
-		     Math.cos(Math.PI * _count/70), !_first);
-            _first = false;
-            _count += 1.0;
-        }
+    public synchronized void addPoints() {
+        // You could plot multiple points at a time here
+        // for faster response, but in our case, we really need
+        // to slow down the response for visual aesthetics.
+        addPoint(0, Math.sin(Math.PI*_count/25),
+                Math.cos(Math.PI * _count/100), false);
+        addPoint(0, Math.sin(Math.PI*_count/45),
+		Math.cos(Math.PI * _count/70), true);
+        addPoint(1, Math.sin(Math.PI*_count/45),
+		Math.cos(Math.PI * _count/70), false);
+        addPoint(2, Math.sin(Math.PI*_count/20),
+                Math.cos(Math.PI * _count/100), false);
+        addPoint(3, Math.sin(Math.PI*_count/50),
+		Math.cos(Math.PI * _count/70), false);
+        _first = false;
+        _count += 1.0;
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {}
     }
 
     /**
@@ -67,7 +74,7 @@ public class PlotLiveDemo extends PlotLive {
     public String getAppletInfo() {
         return "PlotLiveDemo 1.0: Demo of PlotLive.\n" +
 	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-	    "($Id$)";
+	    "(@(#)PlotLiveDemo.java	1.9 09/19/97)";
     }
 
     /** 
@@ -85,9 +92,9 @@ public class PlotLiveDemo extends PlotLive {
         setTitle("Live Plot Demo");
         setYRange(-1,1);
         setXRange(-1,1);
-        setNumSets(2);
-        setMarksStyle("none");
+        setNumSets(4);
         setPointsPersistence(60);
+        setMarksStyle("dots");
         
         // Give the user direct control over starting and stopping.
         makeButtons();
