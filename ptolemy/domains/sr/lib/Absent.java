@@ -104,7 +104,7 @@ public class Absent extends Source {
     ////                     ports and parameters                  ////
 
     /** The type for the output port.  This is a string-valued attribute
-     *  that defaults to "FIXME".
+     *  that defaults to "int".
      */
     public StringAttribute outputType;
 

@@ -52,9 +52,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-// FIXME: Won't need this import.
-import java.util.Collections;
-
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 /**
@@ -177,9 +174,6 @@ public class SRDirector extends Director {
                 if (_isIterationAllowed(actor)) _fireActor(actor);
             }
         } while (!_hasIterationConverged());
-
-        // FIXME is each of these called a phase of actor firings?
-        // global replace
 
         actorIterator = actorList.iterator();
 
@@ -390,7 +384,7 @@ public class SRDirector extends Director {
         List actorList = container.deepEntityList();
 
         // FIXME: this shouldn't happen, just for testing
-        Collections.shuffle(actorList);
+        java.util.Collections.shuffle(actorList);
 
         return actorList;
     }
