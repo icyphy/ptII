@@ -120,7 +120,9 @@ public class CodeFileGenerator extends CodeGenerator {
 
 
         // Generate the code for all of the methods.
-        methods = source.getMethods().iterator();
+        // JDK1.4 under Solaris fails if the next line is iterator()
+        // instead of snapshotIterator()
+        methods = source.getMethods().snapshotIterator();
         while (methods.hasNext()) {
             SootMethod thisMethod = (SootMethod)methods.next();
             String methodCode = new String();
