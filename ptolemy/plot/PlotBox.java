@@ -744,6 +744,15 @@ public class PlotBox extends Applet {
 			       +" "+background+" "+_background);
 
 
+        // Make a button that auto-scales the plot.
+        // NOTE: The button infringes on the title space.
+        // If more buttons are added, we may have to find some other place
+        // for them, like below the legend, stacked vertically.
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        _fillButton = new Button("fill");
+        add(_fillButton);
+	validate();
+
         // Check to see whether a data URL has been given.
         // Need the catch here because applets used as components have
         // no parameters. 
@@ -756,13 +765,6 @@ public class PlotBox extends Applet {
 
 	if (dataurl == null) dataurl = _dataurl;
 	parseFile(dataurl);
-        // Make a button that auto-scales the plot.
-        // NOTE: The button infringes on the title space.
-        // If more buttons are added, we may have to find some other place
-        // for them, like below the legend, stacked vertically.
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
-        _fillButton = new Button("fill");
-        add(_fillButton);
     }
 	
     /**
@@ -1039,6 +1041,15 @@ public class PlotBox extends Applet {
     }
 
     /**
+     * Set the graphics context.
+     */
+    public void setGraphics (Graphics g) {
+	// We need to be able to set the graphics so that we can
+	// substitute in another graphics for printing.
+	graphics = g;
+    }
+
+    /**
      * Control whether the grid is drawn.
      */
     public void setGrid (boolean grid) {
@@ -1251,6 +1262,12 @@ public class PlotBox extends Applet {
             return true;
         }
         return false;
+    }
+
+    /** Set the visibility of the Fill button.
+     */
+    protected void _setButtonsVisibility(boolean vis) {
+	_fillButton.setVisible(vis);
     }
 
     //////////////////////////////////////////////////////////////////////////
