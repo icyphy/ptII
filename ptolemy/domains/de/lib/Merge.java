@@ -55,7 +55,7 @@ merging of input events.
 @author Edward A. Lee
 @version $Id$
 */
-public class Merge extends Transformer implements SequenceActor, TimedActor {
+public class Merge extends DETransformer  {
 
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport.

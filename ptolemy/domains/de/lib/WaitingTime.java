@@ -55,8 +55,7 @@ is acceptable.  The output is always a DoubleToken.
 @author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
-public class WaitingTime extends TypedAtomicActor
-        implements SequenceActor, TimedActor {
+public class WaitingTime extends DEActor {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

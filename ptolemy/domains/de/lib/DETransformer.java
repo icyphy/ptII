@@ -50,8 +50,7 @@ Thus, all the facilities of those classes are available.
 @version $Id$
 */
 
-public abstract class DETransformer extends TypedAtomicActor
-        implements SequenceActor, TimedActor {
+public abstract class DETransformer extends DEActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

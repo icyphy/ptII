@@ -66,8 +66,7 @@ were starting over.
 @version $Id$
 */
 
-public class Sampler extends Transformer
-         implements TimedActor, SequenceActor {
+public class Sampler extends DETransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
