@@ -184,9 +184,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
-        CompositeActor hs = (CompositeActor)getContainer();
+        /*CompositeActor hs = (CompositeActor)getContainer();
         CTDirector dir = (CTDirector)hs.getExecutiveDirector();
-        /*if (tr != null) {
+        if (tr != null) {
             // update current time so that the destination refinement can
             // schedule its firing at the correct time.
             setCurrentTime(dir.getNextIterationTime());
