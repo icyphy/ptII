@@ -68,6 +68,8 @@ public class ODSourceActor extends ODActor {
         
         _refireInPort.link( _refireRelation );
         _refireOutPort.link( _refireRelation );
+        // JFIXME 
+        // System.out.println("Finished linking source actor");
     }
  
     
