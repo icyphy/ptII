@@ -40,7 +40,10 @@
 # then the TYCHO variable should be set to /users/ptdesign/tycho
 #
 # Your JAVAHOME variable should be set to the directory that
-# contains your Java distribution.  Usually this is '/opt/jdk1.1.1'
+# contains your Java distribution.  For example, your .cshrc could contain:
+# setenv JAVAHOME /opt/jdk1.1.4
+#
+# See the Pxgraph class documentation for further instructions.
 #
 # These are the defaults that we use in the script below.
 # If you are installing this script, feel free to edit these
