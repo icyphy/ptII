@@ -43,6 +43,9 @@ include $(CONFIG)
 
 CLASSPATH = ../../..
 
+TCL_SRCS = \
+	testDefs.tcl
+
 JSRCS = \
 	RampApplet.java \
 	SDFPort.java \
@@ -57,8 +60,11 @@ JSRCS = \
 
 JSIMPLE_TESTS = \
 	NamedObj.tcl
+JGRAPHICAL_TESTS = \
+	dummy
 
-EXTRA_SRCS =	$(JSRCS) $(JSIMPLE_TESTS) RampApplet.html ptjdriver
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	$(JGRAPHICAL_TESTS) RampApplet.html ptjdriver
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -83,7 +89,7 @@ test_java: jclass
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(TCL_SRCS) $(ITCL_SRCS) alljtests.tcl
-	CLASSPATH=$(TYCHO)/java $(JTCLSH) alljtests.tcl
+	CLASSPATH=$(CLASSPATH) $(JTCLSH) alljtests.tcl
 
 docs: javadocs
 
