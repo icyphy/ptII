@@ -61,6 +61,12 @@ if [ "$1" = "-c" ]; then
     shift
     fileListingClasses=$1
     shift
+    if [ -f "$fileListingClasses" ]; then
+	echo "File listing is $fileListingClasses."
+    else
+        echo "File listing $fileListingClasses not found...  Inferring."
+	fileListingClasses=""
+    fi
 fi
 
 if [ "$1" = "-main" ]; then
@@ -92,10 +98,9 @@ if [ "$mainClass" = "" ]; then
     done
 fi
 
-if [ "$mainClass" = "" ]; then
+if [ "$mainClass" != "" ]; then
     echo "Main-class: $mainClass" > $manifest
 fi
-
 
 # Generate a list of ptolemy classes to include by running
 # the demo with under java -verbose
@@ -217,6 +222,7 @@ if [ $retval = 0 ]; then
 		    PTJAR_TMPDIR2=ptjar_tmpdir2
 		    rm -rf $PTJAR_TMPDIR2
 		    mkdir $PTJAR_TMPDIR2
+
 		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
 
 		    echo "Possibly copying files from $jarFile"
