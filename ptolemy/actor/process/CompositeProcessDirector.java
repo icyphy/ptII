@@ -245,15 +245,15 @@ public class CompositeProcessDirector extends ProcessDirector {
             CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
             if ( containersContainer == null ) {
-                // Can't use setCurrentTime() here because it forbids
-                // setting time backwards.
-                _currentTime = 0.0;
+                // Use the overridden setCurrentTime() method 
+                // to set time backwards.
+                setCurrentTime(0.0);
             } else {
                 double time =
                     containersContainer.getDirector().getCurrentTime();
-                // Can't use setCurrentTime() here because it forbids
-                // setting time backwards.
-                _currentTime = time;
+                // Use the overridden setCurrentTime() method 
+                // to set time backwards.
+                setCurrentTime(time);
             }
         }
 
@@ -311,6 +311,20 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
         _onFirstIteration = false;
         return true;
+    }
+
+    /** Set a new value to the current time of the model, where
+     *  the new time can be earlier than the current time.
+     *  This overrides the setCurrentTime() in the Director base class.
+     *  The new time may be earlier than the current time.
+     *  @param newTime The new current simulation time.
+     */
+    public void setCurrentTime(double newTime) 
+        throws IllegalActionException {
+        if (_debugging) {
+            _debug("----- Setting current time to " + newTime);
+        }
+        _currentTime = newTime;
     }
 
     /** Stop the input branch controller of this director. This

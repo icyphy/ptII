@@ -747,7 +747,8 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Set the current time of the model under this director.
+    /** Set a new value to the current time of the model, where 
+     *  the new time must be no earlier than the current time.
      *  Derived classes will likely override this method to ensure that
      *  the time is valid.
      *
@@ -1007,9 +1008,6 @@ public class Director extends Attribute implements Executable {
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
-    /** The time resolution of the model. */
-    protected double _timeResolution = 1.0e-10;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1021,4 +1019,7 @@ public class Director extends Attribute implements Executable {
                 + "style=\"fill:green\"/>\n" +
                 "</svg>\n");
     }
+
+    /** The time resolution of the model. */
+    private double _timeResolution = 1.0e-10;
 }
