@@ -121,11 +121,11 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     public String toString() {
         StringBuffer results =
             new StringBuffer(getClass().getName()
-                             + ": Remove or replace classes that are graphical.\n"
-                             + "This filter is used by the nightly build, and\n"
-                             + "can be used to run applets so that files like\n"
-                             + "diva.jar do not need to be downloaded.\n"
-                             + "The following actors are affected:\n"
+                    + ": Remove or replace classes that are graphical.\n"
+                    + "This filter is used by the nightly build, and\n"
+                    + "can be used to run applets so that files like\n"
+                    + "diva.jar do not need to be downloaded.\n"
+                    + "The following actors are affected:\n"
                              );
         Iterator classNames = _graphicalClasses.keySet().iterator();
         while (classNames.hasNext()) {
@@ -135,7 +135,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 results.append(oldClassName + "will be removed\n");
             } else {
                 results.append(oldClassName + "will be replaced by "
-                               + newClassName +"\n");
+                        + newClassName +"\n");
             }
         }
         return results.toString();
@@ -176,8 +176,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
-          // Generated applet from moml/demo/modulation.xml
-          // fails to run if substitute Attribute for AnnotationEditorFactory
+        // Generated applet from moml/demo/modulation.xml
+        // fails to run if substitute Attribute for AnnotationEditorFactory
         // so we set it to null instead.
 
         //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",

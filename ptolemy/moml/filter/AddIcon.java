@@ -163,9 +163,9 @@ public class AddIcon implements MoMLFilter {
     public String toString() {
         StringBuffer results =
             new StringBuffer(getClass().getName()
-                             + ": Add specialized icons that display the value\n"
-                             + "of one of the parameters.\n"
-                             + "The affected actors are:\n"
+                    + ": Add specialized icons that display the value\n"
+                    + "of one of the parameters.\n"
+                    + "The affected actors are:\n"
                              );
         Iterator actors = _actorsThatShouldHaveIcons.keySet().iterator();
         while (actors.hasNext()) {
