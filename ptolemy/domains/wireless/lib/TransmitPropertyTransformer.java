@@ -1,6 +1,6 @@
 /* An actor that transforms transmission properties using another model.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -68,7 +68,7 @@ The channel will call its transformProperties() method for each
 transmission from the registed output port.
 
 <p>FIXME: this is going to be changed to work like RunCompositeActor.
-This actor has a <i>modelFileOrURL<i> parameter that specify a model
+This actor has a <i>modelFileOrURL</i> parameter that specify a model
 used to calculate the properties. When transformProperties() is
 called, it calls the ModelUtilities.executeModel() method to execute
 the specified model and return the (possibly) modified property to the
@@ -137,10 +137,19 @@ public class TransmitPropertyTransformer extends RunCompositeActor
      */
     public TypedIOPort output;
 
+    /** The x/y location of the sender.  The default value is a double
+     *  array of length 2: {0.0, 0.0}
+     */   
     public Parameter senderLocation;
 
+    /** The x/y location of the receiver.  The default value is a double
+     *  array of length 2: {0.0, 0.0}
+     */   
     public Parameter receiverLocation;
 
+    /** The properties of the transformer.  The default value is a 
+     *  record token with value {power = 0.0, range = 0.0}.
+     */
     public Parameter property;
 
     /** The file name or URL of the model that this actor invokes to

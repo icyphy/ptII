@@ -254,7 +254,7 @@ public class CollisionDetector extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** If the specified attribute is <i>SNRThresholdInDB</i>,
-     *  or <i>powerThreshold<i> then
+     *  or <i>powerThreshold</i> then
      *  check that a positive number is given. Otherwise,
      *  defer to the base class.
      *  @param attribute The attribute that changed.
@@ -314,8 +314,8 @@ public class CollisionDetector extends TypedAtomicActor {
      *  and loop through the hashtable to check whether there is collision.
      *  If the current time matches one of the times that we have previously
      *  recorded as the completion time for a transmission, then output the
-     *  received message to the <i>received<i> output port if it is not
-     *  lost to a collision; otherwise, output it to the <i>collided<i>
+     *  received message to the <i>received</i> output port if it is not
+     *  lost to a collision; otherwise, output it to the <i>collided</i>
      *  output port.
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.

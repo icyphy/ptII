@@ -59,7 +59,7 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 /**
 This actor implements the PropertyTransformer interface.
 It register itself with the wireless channel specified by
-the <i>channelName<i> parameter. The channel may call it
+the <i>channelName</i> parameter. The channel may call it
 getProperty() method to get the property.
 
 @author Yang Zhao
@@ -115,8 +115,16 @@ public class TerrainProperty extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The name of the channel.  The default name is "TerrainChannel".
+     */  
     public StringParameter channelName;
 
+    /** The x/y coordinates of ? (FIXME)
+     *  The default value is an array of integer pairs:
+     *  {{0, 0}, {0, 5}, {20, 5}, {20, 0}}
+     *  FIXME: need more info
+     */   
     public Parameter xyPoints;
 
     ///////////////////////////////////////////////////////////////////
