@@ -32,6 +32,7 @@ import java.util.List;
 
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.actor.CompositeActor
    @see ptolemy.actor.AtomicActor
 */
-public interface Actor extends Executable {
+public interface Actor extends Executable, Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
