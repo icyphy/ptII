@@ -193,9 +193,11 @@ test Scheduler-6.2 {Test firingIterator method of Schedule} {
     $scheduler setValid false
     set schedule [$scheduler getSchedule]
     set firingit [$schedule firingIterator]
+    $firingit hasNext
     set firing1 [$firingit next]
     set firing1 [java::cast ptolemy.actor.sched.Firing \
                                  $firing1]
+    $firingit hasNext
     set firing2 [$firingit next]
     set firing2 [java::cast ptolemy.actor.sched.Firing \
                                  $firing2]
@@ -212,42 +214,7 @@ test Scheduler-6.2 {Test firingIterator method of Schedule} {
 ######################################################################
 ####
 #
-test Scheduler-6.3 {Test setIterationCount, getIterationCount method of ScheduleElement} {
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set toplevel [java::new ptolemy.actor.CompositeActor $w]
-    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
-	    $toplevel Director]
-    $toplevel setName Toplevel
-    $toplevel setManager $manager
-    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
-    $director setScheduler $scheduler
-
-    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
-    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
-    $scheduler setValid false
-    set schedule [$scheduler getSchedule]
-    set firingit [$schedule firingIterator]
-    set firing1 [$firingit next]
-    set firing1 [java::cast ptolemy.actor.sched.Firing \
-                                 $firing1]
-    $firing1 setIterationCount 5
-    set firing2 [$firingit next]
-    set firing2 [java::cast ptolemy.actor.sched.Firing \
-                                 $firing2]
-    set actor1 [$firing1 getActor]
-    set actor1 [java::cast ptolemy.actor.AtomicActor \
-                                 $actor1]
-    set actor2 [$firing2 getActor]
-    set actor2 [java::cast ptolemy.actor.AtomicActor \
-                                 $actor2]
-    list [$firing1 getIterationCount] [$firing2 getIterationCount]
-    
-} {5 1}
-
-######################################################################
-####
-#
-test Scheduler-6.4 {Test iterator method of Schedule} {
+test Scheduler-6.3 {Test iterator method of Schedule} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.CompositeActor $w]
     set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
@@ -277,3 +244,407 @@ test Scheduler-6.4 {Test iterator method of Schedule} {
     list [$actor1 getName] [$actor2 getName]
     
 } {A1 A2}
+
+######################################################################
+####
+# This is the schedule in the Schedule.java class documentation.
+test Scheduler-6.4 {Test Schedule.firingIterator} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+    set d [java::new ptolemy.actor.test.TestActor $toplevel D]
+
+    # Construct schedule (1, A, (3, B, C), (2, D)). 
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Firing]
+    set S2 [java::new ptolemy.actor.sched.Schedule]
+    set S3 [java::new ptolemy.actor.sched.Firing]
+    $S add $S1
+    $S add $S2
+    $S add $S3
+    $S1 setActor $a
+    $S2 setIterationCount 3
+    set S2_1 [java::new ptolemy.actor.sched.Firing]
+    set S2_2 [java::new ptolemy.actor.sched.Firing]
+    $S2_1 setActor $b
+    $S2_2 setActor $c
+    $S2 add $S2_1
+    $S2 add $S2_2
+    $S3 setIterationCount 2
+    $S3 setActor $d
+
+    # Test the schedule
+
+    # Test firingIterator
+    set firingIterator [$S firingIterator]
+
+    set firing1 [$firingIterator next]
+    set firing1 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing1]
+    set firing2 [$firingIterator next]
+    set firing2 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing2]
+    set firing3 [$firingIterator next]
+    set firing3 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing3]
+    set firing4 [$firingIterator next]
+    set firing4 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing4]
+    set firing5 [$firingIterator next]
+    set firing5 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing5]
+    set firing6 [$firingIterator next]
+    set firing6 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing6]
+    set firing7 [$firingIterator next]
+    set firing7 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing7]
+    set firing8 [$firingIterator next]
+    set firing8 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing8]
+    set actor1 [$firing1 getActor]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+    set iterationCount1 [$firing1 getIterationCount]
+
+    set actor2 [$firing2 getActor]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+    set iterationCount2 [$firing2 getIterationCount]
+
+    set actor3 [$firing3 getActor]
+    set actor3 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor3]
+    set iterationCount3 [$firing3 getIterationCount]
+
+    set actor4 [$firing4 getActor]
+    set actor4 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor4]
+    set iterationCount4 [$firing4 getIterationCount]
+
+    set actor5 [$firing5 getActor]
+    set actor5 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor5]
+    set iterationCount5 [$firing5 getIterationCount]
+    
+    set actor6 [$firing6 getActor]
+    set actor6 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor6]
+    set iterationCount6 [$firing6 getIterationCount]
+    
+    set actor7 [$firing7 getActor]
+    set actor7 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor7]
+    set iterationCount7 [$firing7 getIterationCount]
+    
+    set actor8 [$firing8 getActor]
+    set actor8 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor8]
+    set iterationCount8 [$firing8 getIterationCount]
+
+    list $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName]
+    
+} {1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D}
+
+######################################################################
+####
+# 
+test Scheduler-6.5 {Test Schedule.firingIterator} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+    set d [java::new ptolemy.actor.test.TestActor $toplevel D]
+
+    # Construct schedule (2, A, (3, B, C), (2, D)). 
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Firing]
+    set S2 [java::new ptolemy.actor.sched.Schedule]
+    set S3 [java::new ptolemy.actor.sched.Firing]
+    $S add $S1
+    $S add $S2
+    $S add $S3
+    $S setIterationCount 2
+    $S1 setActor $a
+    $S2 setIterationCount 3
+    set S2_1 [java::new ptolemy.actor.sched.Firing]
+    set S2_2 [java::new ptolemy.actor.sched.Firing]
+    $S2_1 setActor $b
+    $S2_2 setActor $c
+    $S2 add $S2_1
+    $S2 add $S2_2
+    $S3 setIterationCount 2
+    $S3 setActor $d
+
+    # Test the schedule
+
+    # Test firingIterator
+    set firingIterator [$S firingIterator]
+
+    set firing1 [$firingIterator next]
+    set firing1 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing1]
+    set firing2 [$firingIterator next]
+    set firing2 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing2]
+    set firing3 [$firingIterator next]
+    set firing3 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing3]
+    set firing4 [$firingIterator next]
+    set firing4 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing4]
+    set firing5 [$firingIterator next]
+    set firing5 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing5]
+    set firing6 [$firingIterator next]
+    set firing6 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing6]
+    set firing7 [$firingIterator next]
+    set firing7 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing7]
+    set firing8 [$firingIterator next]
+    set firing8 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing8]
+    set firing9 [$firingIterator next]
+    set firing9 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing9]
+    set firing10 [$firingIterator next]
+    set firing10 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing10]
+    set firing11 [$firingIterator next]
+    set firing11 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing11]
+    set firing12 [$firingIterator next]
+    set firing12 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing12]
+    set firing13 [$firingIterator next]
+    set firing13 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing13]
+    set firing14 [$firingIterator next]
+    set firing14 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing14]
+    set firing15 [$firingIterator next]
+    set firing15 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing15]
+    set firing16 [$firingIterator next]
+    set firing16 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing16]
+    set actor1 [$firing1 getActor]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+    set iterationCount1 [$firing1 getIterationCount]
+
+    set actor2 [$firing2 getActor]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+    set iterationCount2 [$firing2 getIterationCount]
+
+    set actor3 [$firing3 getActor]
+    set actor3 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor3]
+    set iterationCount3 [$firing3 getIterationCount]
+
+    set actor4 [$firing4 getActor]
+    set actor4 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor4]
+    set iterationCount4 [$firing4 getIterationCount]
+
+    set actor5 [$firing5 getActor]
+    set actor5 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor5]
+    set iterationCount5 [$firing5 getIterationCount]
+    
+    set actor6 [$firing6 getActor]
+    set actor6 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor6]
+    set iterationCount6 [$firing6 getIterationCount]
+    
+    set actor7 [$firing7 getActor]
+    set actor7 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor7]
+    set iterationCount7 [$firing7 getIterationCount]
+    
+    set actor8 [$firing8 getActor]
+    set actor8 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor8]
+    set iterationCount8 [$firing8 getIterationCount]
+    set actor9 [$firing9 getActor]
+    set actor9 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor9]
+    set iterationCount9 [$firing1 getIterationCount]
+
+    set actor10 [$firing10 getActor]
+    set actor10 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor10]
+    set iterationCount10 [$firing10 getIterationCount]
+
+    set actor11 [$firing11 getActor]
+    set actor11 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor11]
+    set iterationCount11 [$firing11 getIterationCount]
+
+    set actor12 [$firing12 getActor]
+    set actor12 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor12]
+    set iterationCount12 [$firing12 getIterationCount]
+
+    set actor13 [$firing13 getActor]
+    set actor13 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor13]
+    set iterationCount13 [$firing13 getIterationCount]
+    
+    set actor14 [$firing14 getActor]
+    set actor14 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor14]
+    set iterationCount14 [$firing14 getIterationCount]
+    
+    set actor15 [$firing15 getActor]
+    set actor15 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor15]
+    set iterationCount15 [$firing15 getIterationCount]
+    
+    set actor16 [$firing16 getActor]
+    set actor16 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor16]
+    set iterationCount16 [$firing16 getIterationCount]
+
+
+    list $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName] $iterationCount9 [$actor9 getName] $iterationCount10 [$actor10 getName] $iterationCount11 [$actor11 getName] $iterationCount12 [$actor12 getName] $iterationCount13 [$actor13 getName] $iterationCount14 [$actor14 getName] $iterationCount15 [$actor15 getName] $iterationCount16 [$actor16 getName]
+    
+} {1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D 1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D}
+
+
+######################################################################
+####
+#
+test Scheduler-6.6 {Test Schedule.actorIterator for simple schedule} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    #set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+    #set d [java::new ptolemy.actor.test.TestActor $toplevel D]
+
+    # Construct schedule (4, A)
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Firing]
+    #set S2 [java::new ptolemy.actor.sched.Schedule]
+    #set S3 [java::new ptolemy.actor.sched.Firing]
+    $S add $S1
+    #$S add $S2
+    #$S add $S3
+    $S setIterationCount 4
+    $S1 setActor $a
+    #$S2 setIterationCount 3
+    #set S2_1 [java::new ptolemy.actor.sched.Firing]
+    #set S2_2 [java::new ptolemy.actor.sched.Firing]
+    #$S2_1 setActor $b
+    #$S2_2 setActor $c
+    #$S2 add $S2_1
+    #$S2 add $S2_2
+    #$S3 setIterationCount 2
+    #$S3 setActor $d
+
+    # Test the schedule
+
+    # Test actorIterator
+    set actorIterator [$S actorIterator]
+
+    set actor1 [$actorIterator next]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+
+    set actor2 [$actorIterator next]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+
+    set actor3 [$actorIterator next]
+    set actor3 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor3]
+
+    set actor4 [$actorIterator next]
+    set actor4 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor4]
+    
+
+    list [$actor1 getName] [$actor2 getName] [$actor3 getName] [$actor4 getName]
+    
+} {A A A A}
+
+######################################################################
+####
+# This is the schedule in the Schedule.java class documentation.
+test Scheduler-6.7 {Test Schedule.actorIterator for complex schedule} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+    set d [java::new ptolemy.actor.test.TestActor $toplevel D]
+
+    # Construct schedule (1, A, (3, B, C), (2, D)). 
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Firing]
+    set S2 [java::new ptolemy.actor.sched.Schedule]
+    set S3 [java::new ptolemy.actor.sched.Firing]
+    $S add $S1
+    $S add $S2
+    $S add $S3
+    $S1 setActor $a
+    $S2 setIterationCount 3
+    set S2_1 [java::new ptolemy.actor.sched.Firing]
+    set S2_2 [java::new ptolemy.actor.sched.Firing]
+    $S2_1 setActor $b
+    $S2_2 setActor $c
+    $S2 add $S2_1
+    $S2 add $S2_2
+    $S3 setIterationCount 2
+    $S3 setActor $d
+
+    # Test the schedule
+
+    # Test actorIterator
+    set actorIterator [$S actorIterator]
+
+    set actor1 [$actorIterator next]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+
+    set actor2 [$actorIterator next]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+
+    set actor3 [$actorIterator next]
+    set actor3 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor3]
+
+    set actor4 [$actorIterator next]
+    set actor4 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor4]
+
+    set actor5 [$actorIterator next]
+    set actor5 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor5]
+
+    set actor6 [$actorIterator next]
+    set actor6 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor6]
+
+    set actor7 [$actorIterator next]
+    set actor7 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor7]
+
+    set actor8 [$actorIterator next]
+    set actor8 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor8]
+
+    set actor9 [$actorIterator next]
+    set actor9 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor9]
+
+    list [$actor1 getName] [$actor2 getName] [$actor3 getName] [$actor4 getName] [$actor5 getName] [$actor6 getName] [$actor7 getName] [$actor8 getName] [$actor9 getName]
+    
+} {A B C B C B C D D}

@@ -163,7 +163,7 @@ public abstract class ScheduleElement {
     private int _iterationCount = 1;
     // The parent schedule of this schedule. Null means this schedule
     // has no parent.
-    private ScheduleElement _parent = null;
+    protected ScheduleElement _parent = null;
     // The current version of this schedule.
     private long _scheduleVersion;
 }

@@ -31,6 +31,8 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -136,6 +138,13 @@ public class Schedule extends ScheduleElement {
 	// This list will contain the schedule elements.
 	_schedule = new LinkedList();
 	_firingIteratorVersion = 0;
+	// Default tree depth to use for allocation state arrays
+	// for the firingIterator() method. The arrays will be
+	// dynamically resized as needed. 3 was an arbitrary
+	// choice. Any positive integer will do. The arrays are
+	// only resized while iterating through the first iterator
+	// that was created since the schedule was modified.
+	_treeDepth = 3;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,44 +185,41 @@ public class Schedule extends ScheduleElement {
     }
 
     /** Return the actor invocation sequence of the schedule in the
-     *  form of a sequence of actors. For a valid schedule, all of the
-     *  lowest-level nodes should be an instance of Firing. If the
-     *  schedule is not valid, then the returned iterator will contain
-     *  null elements.
+     *  form of a sequence of actors. All of the lowest-level nodes of
+     *  the schedule should be an instance of Firing. Otherwise an 
+     *  exception will occur at some point in the iteration.
      *  <p>
      *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *  <p>
-     *  Implementation note: This method is optimized to provide fast
-     *  access for the case where the schedule is not modified often.
-     *  The first invocation of this method after a schedule modification
-     *  (this schedule are any of its subschedules are modified) will
-     *  be somewhat time consuming. Subsequent invocations will be fast.
+     *  Implementation note: This method is optimized to be memory
+     *  efficient. It walks the schedule tree structure as the
+     *  iterator methods are invoked.
      *
      *  @return An iterator over a sequence of actors.
      *  @exception ConcurrentModificationException If the
      *   underlying schedule structure is modified while the iterator
      *   is active.
+     *  @exception InternalErrorException If the schedule contains
+     *   any leaf nodes that are not an instance of Firing.
      */
     public Iterator actorIterator() {
 	return new ActorIterator();
     }
 
     /** Return the actor invocation sequence of this schedule in the form
-     *  of a sequence of firings. For a valid schedule, all of the
-     *  lowest-level nodes must be an instance of Firing. If not, then
-     *  the returned iterator will contain null elements. 
+     *  of a sequence of firings. All of the lowest-level nodes of the
+     *  schedule should be an instance of Firing. Otherwise an exception will
+     *  occur at some point in the iteration.
      *  <p>
      *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *  <p>
-     *  Implementation note: This method is optimized to provide fast
-     *  access for the case where the schedule is not modified often.
-     *  The first invocation of this method after a schedule modification
-     *  (this schedule are any of its subschedules are modified) will
-     *  be somewhat time consuming. Subsequent invocations will be fast.
+     *  Implementation note: This method is optimized to be memory
+     *  efficient. It walks the schedule tree structure as the
+     *  iterator methods are invoked.
      *
      *  @return An iterator over a sequence of firings.
      *  @exception ConcurrentModificationException If the
@@ -221,13 +227,7 @@ public class Schedule extends ScheduleElement {
      *   is active.
      */
     public Iterator firingIterator() {
-	if (_firingIteratorVersion != _getVersion()) {
-	    // Note: this is expensive to compute, but hopefully
-	    // the schedule topology will not change too frequently.
-	    _firingList = _createFiringList();
-	    _firingIteratorVersion = _getVersion();
-	}
-	return _firingList.iterator();
+	return new FiringIterator(this);
     }
 
     /** Return the element at the specified position in the list.
@@ -277,35 +277,6 @@ public class Schedule extends ScheduleElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Arrange the Firing nodes of the schedule into a list. This method
-     *  walks the schedule tree and creates a list of the Firings in the
-     *  schedule. Since this method is expensive, it should only be called
-     *  when the schedule version has changed.
-     */
-    private List _createFiringList() {
-	List returnFirings = new LinkedList();
-	// Iterator over the elements directly contained by this
-	// schedule.
-	
-	for (int i = 0; i < getIterationCount(); i++) {
-	    Iterator scheduleItems = _schedule.iterator();
-	    while (scheduleItems.hasNext()) {
-		ScheduleElement scheduleElement =
-		    (ScheduleElement)scheduleItems.next();
-		Iterator firings = scheduleElement.firingIterator();
-		while (firings.hasNext()) {
-		    Firing firing = (Firing)firings.next();
-		    // Add the actor to the list.
-		    returnFirings.add(firing);
-		}
-	    }
-	}
-	return returnFirings;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** An adapter class for iterating over the actors of this
@@ -316,15 +287,9 @@ public class Schedule extends ScheduleElement {
 	/** Construct a ScheduleIterator.
 	 */
 	public ActorIterator() {
-	    if (_firingIteratorVersion != _getVersion()) {
-		// Note: this is expensive to compute, but hopefully
-		// the scedule topology will not change too frequently.
-		_firingList = _createFiringList();
-		_firingIteratorVersion = _getVersion();
-	    }
-	    _firingListSize = _firingList.size();
+	    _advance = true;
+	    _firingIterator = firingIterator();
 	    _currentVersion = _getVersion();
-	    _currentFiringElement = 0;
 	    _currentIteration = 0;
 	}
 
@@ -339,11 +304,48 @@ public class Schedule extends ScheduleElement {
 	    if (_currentVersion != _getVersion()) {
 		throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
-	    } else {
-		if (_currentFiringElement < _firingListSize) {
-		    return true;
+	    } else if (_advance == true) {
+		boolean returnVal;
+		if (_currentFiring == null) {
+		    returnVal = _firingIterator.hasNext();
+		    if (returnVal == true) {
+			_currentFiring = (Firing)_firingIterator.next();
+			_currentActor = _currentFiring.getActor();
+			_currentIteration++;
+			_advance = false;
+			_lastHasNext = true;
+			return _lastHasNext;
+		    } else {
+			_advance = false;
+			_lastHasNext = false;
+			return _lastHasNext;
+		    }
+		} else {
+		    if (_currentIteration < 
+			_currentFiring.getIterationCount()) {
+			_currentIteration++;
+			_advance = false;
+			_lastHasNext = true;
+			return _lastHasNext;
+		    } else {
+			_currentIteration = 0;
+			returnVal = _firingIterator.hasNext();
+			if (returnVal == true) {
+			    _currentFiring = (Firing)_firingIterator.next();
+			    _currentActor = _currentFiring.getActor();
+			    _currentIteration++;
+			    _advance = false;
+			    _lastHasNext = true;
+			    return _lastHasNext;
+			} else {
+			    _advance = false;
+			    _lastHasNext = false;
+			    return _lastHasNext;
+			}
+		    }
 		}
-		return false;
+	    } else {
+		return _lastHasNext;
 	    }
 	}
 
@@ -361,14 +363,8 @@ public class Schedule extends ScheduleElement {
 		throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
 	    } else {
-		Firing firing = (Firing)_firingList.get(_currentFiringElement);
-		_iterationCount = firing.getIterationCount();
-		_currentIteration++;
-		if (_currentIteration >= _iterationCount) {
-		    _currentIteration = 0;
-		    _currentFiringElement++;
-		}
-		return firing.getActor();
+		_advance = true;
+		return _currentActor;
 	    }
 	}
 
@@ -380,12 +376,220 @@ public class Schedule extends ScheduleElement {
 	    throw new UnsupportedOperationException();
 	}
 
+	private Iterator _firingIterator;
+	private Firing _currentFiring;
+	private Actor _currentActor;
 	private long _currentVersion;
-	private int _currentFiringElement;
-	// Number of firings in the firing list.
-	private int _firingListSize;
-	private int _iterationCount;
 	private int _currentIteration;
+	private boolean _advance;
+	private boolean _lastHasNext;
+    }
+
+    /** An adapter class for iterating over the firings of this
+     *  schedule. An exception is thrown if the schedule structure
+     *  changes while this iterator is active. The iterator walks
+     *  the schedule tree as the hasNext() and next() methods are
+     *  invoked, using a small number of state variables.
+     */
+    private class FiringIterator implements Iterator {
+	/** Construct a ScheduleIterator.
+	 */
+	public FiringIterator(Schedule schedule) {
+	    // If _advance is true, then hasNext() can move
+	    // to the next node when invoked.
+	    _advance = true;
+	    _startingVersion = _getVersion();
+	    // state. This is the current position as we walk
+	    // the schedule tree.
+	    _currentNode = schedule;
+	    // The depth of _currentNode in the schedule tree.
+	    // Depth 0 corrosponds to the level of the root node
+	    // of the tree.
+	    _currentDepth = 0;
+	    // These state arrays are dynamically increased
+	    // in size as we deeper into the tree. Their
+	    // length is equal to the number of nesting levels
+	    // in the schedule.
+	    _iterationCounts = new int[_treeDepth];
+	    _horizontalNodePosition = new int[_treeDepth];
+	}
+
+	/** Return true if the iteration has more elements.
+	 *
+	 *  @exception ConcurrentModificationException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @exception InternalErrorException If the schedule contains
+	 *   any leaf nodes that are not an instance of Firing.
+	 *  @return true if the iterator has more elements.
+	 */
+	public boolean hasNext() {
+	    // This code may look messy, but it simply walks the
+	    // schedule tree.
+	    if (_startingVersion != _getVersion()) {
+		throw new ConcurrentModificationException(
+                        "Schedule structure changed while iterator is active.");
+	    } else if (_advance == true) {
+		// Try to go to the next firing node in the tree. Return
+		// false if we fail.
+		if (_currentNode instanceof Firing) {
+		    Schedule scheduleNode = _backTrack(_currentNode);
+		    _currentNode = _findLeafNode(scheduleNode);
+		    if (_currentNode == null) {
+			// There are no more Firings in the tree.
+			_advance = false;
+			_lastHasNext = false;
+			return _lastHasNext;
+		    }
+		} else if (_currentNode instanceof Schedule) {
+		    // This condition should only happen for the first element
+		    // in the iteration.
+		    _currentNode = _findLeafNode((Schedule)_currentNode);
+		     if (_currentNode == null) {
+			 // Throw runtime exeption.
+			 throw new InternalErrorException(
+                             "Encountered a schedule leaf node that is " +
+                             "not an instance of Firing.");
+		    }
+		} else {
+		    // Throw runtime exception.
+		    throw new InternalErrorException(
+                       "Encountered a ScheduleElement that is not an instance " +
+                       "of Schedule or Firing.");
+		}
+		_advance = false;
+		_lastHasNext = true;
+		return _lastHasNext;
+	    } else {
+		return _lastHasNext;
+	    }
+	}
+
+	/** Return the next object in the iteration.
+	 *
+	 *  @exception InvalidStateException If the schedule
+	 *   data structure has changed since this iterator
+	 *   was created.
+	 *  @return the next object in the iteration.
+	 */
+	public Object next() throws NoSuchElementException {
+	    if (!hasNext()) {
+		throw new NoSuchElementException("No element to return.");
+	    } else if (_startingVersion != _getVersion()) {
+		throw new ConcurrentModificationException(
+                        "Schedule structure changed while iterator is active.");
+	    } else {
+		_advance = true;
+		return _currentNode;
+	    }
+	}
+
+	/** Throw an exception, since removal is not allowed. It really
+	 *  dosn't make sense to remove a firing from the firing
+	 *  sequence anyway, since there is not a 1-1 correspondence
+	 *  between the firing in a firing iterator and a firing in the
+	 *  schedule.
+	 */
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+
+	///////////////////////////////////////////////////////////////////
+	////                         private methods                 ////
+
+	/** Start at the specified node in the shedule tree and
+	 *  move up the tree (towards the root node) until we
+	 *  find a node the has children we have not iterated through
+	 *  yet or children that we have not iterated through enough
+	 *  times (not reached the maximum iteration count).
+	 *
+	 *  @param firingNode The starting node to backtrack from.
+	 */
+	private Schedule _backTrack(ScheduleElement firingNode) {
+	    _currentDepth--;
+	    Schedule node = (Schedule)firingNode._parent;
+	    if (node == null) {
+		return null;
+	    } else if (node.size() > 
+		       (++_horizontalNodePosition[_currentDepth+1])) {
+		return node;
+	    } else if ((++_iterationCounts[_currentDepth]) < 
+		       node.getIterationCount()) {
+		_horizontalNodePosition[_currentDepth+1] = 0;
+		return node;
+	    } 
+	    _horizontalNodePosition[_currentDepth+1] = 0;
+	    _iterationCounts[_currentDepth] = 0;
+	    return(_backTrack(node));
+	}
+
+	/** Start at the specified node and move down the tree
+	 *  (away from the root node) until we find the next Firing
+	 *  in the iteration order. Through a runtime exception
+	 *  if we encounter a leaf node that is not an instance of
+	 *  Firing.
+	 *
+	 *  @param node The schedule node to start from.
+	 */
+	private ScheduleElement _findLeafNode(Schedule node) {
+	    // Check if we need to resize the arrays.
+	    if ((_iterationCounts.length-1) <  (_currentDepth+2)) {
+		// Need to resize.
+		int[] temp = new int[_currentDepth+2];
+		for (int i = 0; i < _iterationCounts.length; i++) {
+		    temp[i] = _iterationCounts[i];
+		}
+		_iterationCounts = temp;
+		int[] temp2 = new int[_currentDepth+2];
+		for (int i = 0; i < _horizontalNodePosition.length; i++) {
+		    temp2[i] = _horizontalNodePosition[i];
+		}
+		_horizontalNodePosition = temp2;
+		// Set new max tree depth. Any new iterators will
+		// create state arrays with this length to avoid
+		// needing to resize in the future (provide the
+		// schedule structure is not modified).
+		_treeDepth = _currentDepth+2;
+	    }
+	    if (node == null) {
+		return null;
+	    } else if (node.size() > 
+		       _horizontalNodePosition[_currentDepth + 1]) {
+		_currentDepth++;
+		ScheduleElement nodeElement = 
+		    node.get(_horizontalNodePosition[_currentDepth]);
+		if (nodeElement instanceof Firing) {
+		    return nodeElement; 
+		} else {
+		    return _findLeafNode((Schedule)nodeElement);
+		}
+	    } else if (_iterationCounts[_currentDepth] < 
+		       node.getIterationCount()) {
+		ScheduleElement nodeElement = node.get(0);
+		_currentDepth++;
+		if (nodeElement instanceof Firing) {
+		    return nodeElement; 
+		} else {
+		    return _findLeafNode((Schedule)nodeElement);
+		}
+	    }  else {
+		return null;
+	    }
+	}
+
+	///////////////////////////////////////////////////////////////////
+	////                         private variables                 ////
+
+	private boolean _advance;
+	private boolean _lastHasNext;
+	// The current depth in the schedule tree.
+	private int _currentDepth;
+	private long _startingVersion;
+	// This array contains the iteration counts of schedule elements
+	// indexed by tree depth.
+	// This array will grow to the depth of the schedule tree.
+	private int[] _iterationCounts;
+	private int[] _horizontalNodePosition;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -397,4 +601,7 @@ public class Schedule extends ScheduleElement {
     private List _firingList;
     // The current version of the firing iterator list.
     private long _firingIteratorVersion;
+    // The depth of this schedule tree. This may grow.
+    private int _treeDepth;
+    private ScheduleElement _currentNode;
 }
