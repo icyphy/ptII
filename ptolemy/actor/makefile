@@ -105,6 +105,7 @@ MISC_FILES =	$(DIRS) lib
 OPTIONAL_FILES = \
 	doc \
 	'Manager$$1.class' \
+	'Manager$$2.class' \
 	'Manager$$State.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
