@@ -39,6 +39,7 @@
 # 7) Check for FIXMEs
 # 8) Check for lines with trailing spaces
 # 9) Check the rating
+# 10) Check for bogus spaces around declarations
 
 for file in $@
 do
@@ -204,6 +205,18 @@ do
 	    fi	
 	else
 	    echo "$file: does not have an @AcceptedRating doc tag"
+	fi
+
+	results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( '`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: has extra spaces around '(' in decl (should be foo(int a)"
+	    echo "$results"
+	fi
+
+	results=`egrep '(public|private|protected) .* .*\(' $file | egrep '\){'`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: needs space between ')' and '{' in decl"
+	    echo "$results"
 	fi
 done
 
