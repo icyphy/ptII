@@ -45,6 +45,8 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -192,20 +194,25 @@ public class Expression extends TypedAtomicActor {
                 }
             }
         }
-
-        if(_parseTree == null) {
-            PtParser parser = new PtParser();
-            _parseTree = parser.generateParseTree(
-                    expression.getExpression());
+        Token result;
+        try {
+            if(_parseTree == null) {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(
+                        expression.getExpression());
+            }
+            if(_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            if(_scope == null) {
+                _scope = new VariableScope();
+            }
+            result = _parseTreeEvaluator.evaluateParseTree(
+                    _parseTree, _scope);
+        } catch (IllegalActionException ex) {
+            // Chain exceptions to get the actor that threw the exception.
+            throw new IllegalActionException(this, ex, "Expression invalid.");
         }
-        if(_parseTreeEvaluator == null) {
-            _parseTreeEvaluator = new ParseTreeEvaluator();
-        }
-        if(_scope == null) {
-            _scope = new VariableScope();
-        }
-        Token result = _parseTreeEvaluator.evaluateParseTree(
-                _parseTree, _scope);
 
         if (result == null) {
             throw new IllegalActionException(this,
@@ -258,6 +265,38 @@ public class Expression extends TypedAtomicActor {
                 result = _searchIn(container, name);
                 if (result != null) {
                     return result.getToken();
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
+            }
+            return null;
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            Variable result = null;
+
+            if(name.equals("time")) {
+                return BaseType.DOUBLE;
+            } else if(name.equals("iteration")) {
+                return BaseType.INT;
+            }
+
+            // Check the port names.
+            TypedIOPort port = (TypedIOPort)getPort(name);
+            if(port != null) {
+                return port.getType();
+            }
+                     
+            NamedObj container = (NamedObj)Expression.this;
+            while (container != null) {
+                result = _searchIn(container, name);
+                if (result != null) {
+                    return result.getType();
                 } else {
                     container = (NamedObj)container.getContainer();
                 }
