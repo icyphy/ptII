@@ -149,6 +149,27 @@ public class KernelMain {
     public void initialize(CompositeActor toplevel)
             throws IllegalActionException, NameDuplicationException {
 	_toplevel = toplevel;
+
+	// While we are here, make sure that we are using JDK1.3, not
+	// JDK1.4
+	String javaSpecificationVersion =
+	    System.getProperty("java.specification.version");
+	if (javaSpecificationVersion == null) {
+	    System.err.println("Warning: could not read "
+			       + "'java.specification.version' property. "
+			       + "Soot only work with JDK1.3.1 and earlier");
+	} else {
+	    if ( javaSpecificationVersion.equals("1.4")) {
+		throw new IllegalActionException("Soot only works with JDK "
+						 + "1.3.1 and earlier, "
+						 + "java.specification.version"
+						 + " is '"
+						 + javaSpecificationVersion
+						 + "'");
+	    }
+	}
+
+
 	// If the name of the model is the empty string, change it to
 	// the basename of the file.
 	if (_toplevel.getName().length() == 0) {
