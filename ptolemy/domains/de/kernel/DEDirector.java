@@ -848,8 +848,16 @@ public class DEDirector extends Director {
         // report an actor in the directed cycle.  Probably DirectedGraph
         // should be modified to enable such reporting.
         if (!dag.isAcyclic()) {
+            Object[] cycleNodes = dag.cycleNodes();
+            StringBuffer names = new StringBuffer();
+            for (int i = 0; i < cycleNodes.length; i++) {
+                if (cycleNodes[i] instanceof Nameable) {
+                    if (i > 0) names.append(", ");
+                    names.append(((Nameable)cycleNodes[i]).getFullName());
+                }
+            }
             throw new IllegalActionException(this,
-            "Zero delay loop found.  Cannot prioritize actors.");
+            "Found zero delay loop including: " + names.toString());
         }
         return dag;
     }
