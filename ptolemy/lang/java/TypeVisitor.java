@@ -43,9 +43,6 @@ import ptolemy.lang.java.nodetypes.*;
 /** A JavaVisitor that figures out the types of expressions. This visitor may be run
  *  starting at any expression node.
  *
- *  This visitor attempts to encapsulate all typing policies and is intended to be
- *  overridden to implement different typing policies.
- *
  *  @author Jeff Tsay
  */ 
 public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConstants {
@@ -200,7 +197,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     }
 
     public Object visitComplementNode(ComplementNode node, LinkedList args) {
-        return _setType(node, arithPromoteType(
+        return _setType(node, _typePolicy.arithPromoteType(
          type(node.getExpr())));
     }
 
@@ -237,7 +234,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
            return _setType(node, StaticResolution.STRING_TYPE);
         } 
                                              
-        return _setType(node, arithPromoteType(type1, type2));
+        return _setType(node, _typePolicy.arithPromoteType(type1, type2));
     }
 
     public Object visitMinusNode(MinusNode node, LinkedList args) {
@@ -331,7 +328,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
                }
            }
            
-           return _setType(node, arithPromoteType(thenType, elseType)); 
+           return _setType(node, _typePolicy.arithPromoteType(thenType, elseType)); 
                 
         } else if (_typePolicy.isReferenceType(thenType)) {
            if (_typePolicy.isAssignableFromType(thenType, elseType)) {
@@ -341,7 +338,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
            }
         }
         
-        return _setType(node, arithPromoteType(thenType, elseType));
+        return _setType(node, _typePolicy.arithPromoteType(thenType, elseType));
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
@@ -399,20 +396,20 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     }
     
     public TypeNode _visitUnaryArithNode(UnaryArithNode node) {
-        return _setType(node, arithPromoteType(type(node.getExpr())));
+        return _setType(node, _typePolicy.arithPromoteType(type(node.getExpr())));
     }
 
     public TypeNode _visitIncrDecrNode(IncrDecrNode node) {
-        return _setType(node, arithPromoteType(type(node.getExpr())));
+        return _setType(node, _typePolicy.arithPromoteType(type(node.getExpr())));
     }
 
     public TypeNode _visitBinaryArithNode(BinaryArithNode node) {
-        return _setType(node, arithPromoteType(
+        return _setType(node, _typePolicy.arithPromoteType(
          type(node.getExpr1()), type(node.getExpr2())));
     }
 
     public TypeNode _visitBitwiseNode(BitwiseNode node) {
-        return _setType(node, arithPromoteType(
+        return _setType(node, _typePolicy.arithPromoteType(
          type(node.getExpr1()), type(node.getExpr2())));
     }
 
@@ -448,46 +445,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         " is not an expression, so it does not have a type");
         return null;
     }
-    
-    public TypeNode arithPromoteType(TypeNode type) {
-        switch (_typeID.kind(type)) {
-          case TypeIdentifier.TYPE_KIND_BYTE:      
-          case TypeIdentifier.TYPE_KIND_CHAR:
-          case TypeIdentifier.TYPE_KIND_SHORT:
-          case TypeIdentifier.TYPE_KIND_INT:
-          return IntTypeNode.instance;
-        }
-        return type;   
-    }
-    
-    public TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
-        int kind1 = _typeID.kind(type1);
-        int kind2 = _typeID.kind(type2);
- 
-        if ((kind1 == TypeIdentifier.TYPE_KIND_DOUBLE) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_DOUBLE)) {
-           return DoubleTypeNode.instance;
-        }
-       
-        if ((kind1 == TypeIdentifier.TYPE_KIND_FLOAT) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_FLOAT)) {
-           return FloatTypeNode.instance;
-        }
-
-        if ((kind1 == TypeIdentifier.TYPE_KIND_LONG) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_LONG)) {
-           return LongTypeNode.instance;
-        }
-
-        if ((kind1 == TypeIdentifier.TYPE_KIND_BOOLEAN) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_BOOLEAN)) {     
-           return BoolTypeNode.instance;
-        }
-        return IntTypeNode.instance;
-    }       
-    
-            
-                
+                                       
     /** For nodes that represent field accesses (ObjectFieldAccessNode, 
      *  ThisFieldAccessNode, SuperFieldAccessNode) the type of the 
      *  object that is accessed (e.g., for a node representing FOO.BAR, 
@@ -541,7 +499,6 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         
         return sclass.getDefType();
     }
-
                 
     /** Given a list of expressions, return an array of the corresponding types
      *  of the expressions.

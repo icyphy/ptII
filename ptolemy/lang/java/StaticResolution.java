@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -80,6 +81,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         pass0ResolvedList.clear();                    
     }
 
+    /** Get the default type visitor. */
     public static TypeVisitor getDefaultTypeVisitor() {
         return _defaultTypeVisitor;
     }
@@ -126,22 +128,47 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         
         if (pass == 2) {
            found = (allPass2ResolvedMap.remove(noExtensionFilename) != null);        
+           
+           if (!found) {
+              ApplicationUtility.warn("couldn't invalidate " + noExtensionFilename);
+              Set keySet = allPass2ResolvedMap.keySet();
+              ApplicationUtility.warn("pass 2 resolved files: " + keySet.toString());                                       
+           }           
         } 
         
         if (found || (pass == 1)) {
-           found = (allPass1ResolvedMap.remove(noExtensionFilename) != null);        
+           CompileUnitNode unitNode = (CompileUnitNode) 
+            allPass1ResolvedMap.remove(noExtensionFilename);
+           
+           found = (unitNode != null);        
+           
+           if (found) {
+              PackageDecl pkgDecl = 
+               (PackageDecl) unitNode.getDefinedProperty(PACKAGE_KEY);
+              
+              Environ pkgEnv = pkgDecl.getEnviron();
+              
+              String className = StringManip.rawFilename(noExtensionFilename);
+              
+              ClassDecl classDecl = (ClassDecl) pkgEnv.lookupProper(className,
+               CG_USERTYPE);
+               
+              if (classDecl != null) {
+                 classDecl.invalidate();
+              } else {                 
+                 ApplicationUtility.warn("invalidateCompileUnit(): could not find " +
+                  "ClassDecl associated with class " + className);                                                  
+              }
+           }
         }
     
         if (found || (pass == 0)) {
-           found = (allPass0ResolvedMap.remove(noExtensionFilename) != null);        
+           found = (allPass0ResolvedMap.remove(noExtensionFilename) != null);                
         }
         
         return found;
     }
        
-     
-     
-
     /** Returns a String representation of node, with qualifiers separated by periods,
      *  if node is a NameNode. If node is AbsentTreeNode.instance, return "absent name".
      */
@@ -222,8 +249,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	             ApplicationUtility.error("cannot select " + name.getIdent() +
                   " from non-reference type represented by " + type);
               } else if (type instanceof ArrayTypeNode) {
-                 possibles = ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(name.getIdent(),
-                  categories & (CG_FIELD | CG_METHOD));                  
+                 possibles = ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(
+                  name.getIdent(), categories & (CG_FIELD | CG_METHOD));                  
               } else {
                  // what is this for ???
                  Environ e = JavaDecl.getDecl(type).getEnviron();
@@ -234,8 +261,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext()) {
-           ApplicationUtility.error(name.getIdent() + " undefined in environ " +
-            env.toString());
+           ApplicationUtility.error(name.getIdent() + 
+            " undefined in environ " + env.toString());
         }
 
         JavaDecl d = (JavaDecl) possibles.head();
@@ -582,6 +609,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return node;
     }
 
+    /** Set the default type visitor. This is used to change the type 
+     *  "personality" of the compiler.
+     */
     public static void setDefaultTypeVisitor(TypeVisitor typeVisitor) {
         _defaultTypeVisitor = typeVisitor;
         _defaultTypePolicy = typeVisitor.typePolicy();
@@ -685,7 +715,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
          IntTypeNode.instance, new NameNode(AbsentTreeNode.instance, "length"),
          AbsentTreeNode.instance);
          
-        // clone() method has an empty body for now
+         // clone() method has an empty body for now
         MethodDeclNode arrayCloneNode = new MethodDeclNode(PUBLIC_MOD | FINAL_MOD,
          new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(), 
          new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);

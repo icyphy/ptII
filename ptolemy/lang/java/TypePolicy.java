@@ -53,6 +53,43 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         _typeID = typeID;
     }
         
+    public TypeNode arithPromoteType(TypeNode type) {
+        switch (_typeID.kind(type)) {
+          case TypeIdentifier.TYPE_KIND_BYTE:      
+          case TypeIdentifier.TYPE_KIND_CHAR:
+          case TypeIdentifier.TYPE_KIND_SHORT:
+          case TypeIdentifier.TYPE_KIND_INT:
+          return IntTypeNode.instance;
+        }
+        return type;   
+    }
+    
+    public TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
+        int kind1 = _typeID.kind(type1);
+        int kind2 = _typeID.kind(type2);
+ 
+        if ((kind1 == TypeIdentifier.TYPE_KIND_DOUBLE) ||
+            (kind2 == TypeIdentifier.TYPE_KIND_DOUBLE)) {
+           return DoubleTypeNode.instance;
+        }
+       
+        if ((kind1 == TypeIdentifier.TYPE_KIND_FLOAT) ||
+            (kind2 == TypeIdentifier.TYPE_KIND_FLOAT)) {
+           return FloatTypeNode.instance;
+        }
+
+        if ((kind1 == TypeIdentifier.TYPE_KIND_LONG) ||
+            (kind2 == TypeIdentifier.TYPE_KIND_LONG)) {
+           return LongTypeNode.instance;
+        }
+
+        if ((kind1 == TypeIdentifier.TYPE_KIND_BOOLEAN) ||
+            (kind2 == TypeIdentifier.TYPE_KIND_BOOLEAN)) {     
+           return BoolTypeNode.instance;
+        }
+        return IntTypeNode.instance;
+    }            
+                
     /** Return true if TypeNodes t1 and t2 are identical. */
     public boolean compareTypes(TypeNode t1, TypeNode t2) {
         if (t1 == t2) {  // primitive types, or reference to same type node
@@ -95,7 +132,7 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     }
         
     /** Return true if two methods conflict, i.e. they have the same
-     *  parameter types).
+     *  parameter types.
      */
     public boolean doMethodsConflict(MethodDecl decl1, MethodDecl decl2) {
         Iterator myParamTypesItr =  decl1.getParams().iterator();

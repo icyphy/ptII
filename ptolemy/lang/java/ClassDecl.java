@@ -64,6 +64,18 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _container = container;
     }
 
+    /** Invalidate the class so that its environment and source are re-read
+     *  next time they are needed.
+     */
+    public void invalidate() {
+        removeVisitor(ResolveClassVisitor.visitorClass());        
+        removeVisitor(ResolveInheritanceVisitor.visitorClass());        
+        
+        _environ = null;
+         
+        _source = null;        
+    }
+
     public final boolean hasEnviron() { return true; }
 
     public final Environ getEnviron() {

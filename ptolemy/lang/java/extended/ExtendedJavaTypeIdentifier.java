@@ -46,6 +46,12 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 
     public ExtendedJavaTypeIdentifier() {}
          
+    public boolean isClassKind(int kind) {
+        return (((kind >= TYPE_KIND_COMPLEX) && 
+                 (kind <= TYPE_KIND_FIX_POINT_MATRIX)) ||
+                super.isClassKind(kind));  
+    }         
+         
     /** Return the kind (an integer) of the type. If the type node is a TypeNameNode,
      *  return kindOfTypeNameNode(type).
      */

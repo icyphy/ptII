@@ -104,10 +104,12 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
      *  This method should be called in kind() for TypeNameNodes.
      */
     public int kindOfTypeNameNode(TypeNameNode type) {
-       Decl d = JavaDecl.getDecl((NamedNode) type);
-
-       if (d != null) {
-          if (d.category == CG_INTERFACE) {
+        return kindOfClassDecl((ClassDecl) JavaDecl.getDecl((NamedNode) type));
+    }
+    
+    public int kindOfClassDecl(ClassDecl classDecl) {    
+       if (classDecl != null) {
+          if (classDecl.category == CG_INTERFACE) {
              return TYPE_KIND_INTERFACE;
           } 
        }    

@@ -47,7 +47,12 @@ import ptolemy.lang.java.nodetypes.*;
  */ 
 public class ExtendedJavaConverter extends ReplacementJavaVisitor 
      implements JavaStaticSemanticConstants {
-
+    
+    public ExtendedJavaConverter() {
+        super(TM_CHILDREN_FIRST);
+        _typeID = new ExtendedJavaTypeIdentifier();
+        _typeVisitor = new TypeVisitor(new ExtendedJavaTypePolicy());    
+    }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
         int returnKind = _typeID.kind(_typeVisitor.type(node));
@@ -294,23 +299,76 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         ApplicationUtility.error("DivNode contains one or more unknown types");
         return null;
     }
-
-    /*
-    public Object visitRemNode(RemNode node, LinkedList args) {
-        return _visitBinaryArithNode(node);
-    }
-    */
-
-    public Object visitPlusNode(PlusNode node, LinkedList args) {
-        
     
+    public Object visitRemNode(RemNode node, LinkedList args) {
         ExprNode expr1 = node.getExpr1();
         ExprNode expr2 = node.getExpr2();
         
         int kind1 = _typeID.kind(_typeVisitor.type(expr1));
         int kind2 = _typeID.kind(_typeVisitor.type(expr2));
         
+        switch (kind1) {
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:             
+          ApplicationUtility.error("boolean % other type not supported");          
+          break;
+                    
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind2));
+            return node;            
+          } 
+          ApplicationUtility.error("int % other type not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind1));            
+            return node;
+                        
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            return node;                                                      
+          } 
+          ApplicationUtility.error("long % x not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+          ApplicationUtility.error("double % x not supported");          
+          break;          
+          
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
+          ApplicationUtility.error("complex % x not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:                            
+          ApplicationUtility.error("fix point % x not supported");          
+          break;
+                                                 
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                                     
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:                                      
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
+          ApplicationUtility.error("matrix % x not supported");          
+          break;                              
+        }
+        ApplicationUtility.error("RemNode contains one or more unknown types");
+        return null;            
+    }
+    
+    public Object visitPlusNode(PlusNode node, LinkedList args) {            
+        ExprNode expr1 = node.getExpr1();
+        ExprNode expr2 = node.getExpr2();
         
+        int kind1 = _typeID.kind(_typeVisitor.type(expr1));
+        int kind2 = _typeID.kind(_typeVisitor.type(expr2));
+                
         // support for string concatenation
         // convert expresssions to strings (at most one will actually be changed)       
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_STRING) ||
@@ -326,7 +384,9 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
           switch (kind2) {
             case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
-            return new CandNode(expr1, expr2);                        
+            // convert to XOR
+            return new CandNode(new CorNode(expr1, expr2),
+             new NotNode(new CandNode(expr1, expr2)));                        
           }
           ApplicationUtility.error("boolean + other type not supported");          
           break;
@@ -431,11 +491,134 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         return null; 
     }
 
-/*
+
     public Object visitMinusNode(MinusNode node, LinkedList args) {
-        return _visitBinaryArithNode(node);
+        ExprNode expr1 = node.getExpr1();
+        ExprNode expr2 = node.getExpr2();
+        
+        int kind1 = _typeID.kind(_typeVisitor.type(expr1));
+        int kind2 = _typeID.kind(_typeVisitor.type(expr2));
+                        
+        switch (kind1) {
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN:   
+            // convert to XOR
+            return new CandNode(new CorNode(expr1, expr2),
+             new NotNode(new CandNode(expr1, expr2)));                        
+          }
+          ApplicationUtility.error("boolean - other type not supported");          
+          break;
+                    
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:      
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+            return node;
+                        
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                                                                    
+            node.setExpr1(convertExprToKind(expr1, kind2));
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                          
+            return new MethodCallNode(
+              new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "subtract"), 
+               convertExprToKind(expr1, kind2)),
+              TNLManip.cons(expr2)); 
+          } 
+          ApplicationUtility.error("int - other type not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind1));            
+            return node;
+                        
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG:     
+            return node;                        
+          } 
+          ApplicationUtility.error("long - other type not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
+            node.setExpr2(convertExprToKind(expr2, kind1));
+            return node;
+                                    
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:   
+            return node;
+            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
+            return new MethodCallNode(
+              new ObjectFieldAccessNode(
+               new NameNode(AbsentTreeNode.instance, "subtract"), 
+               convertExprToKind(expr1, kind2)),
+              TNLManip.cons(expr2)); 
+          } 
+          ApplicationUtility.error("double - other type not supported");          
+          break;
+                                        
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:  
+          switch (kind2) {
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:                                    
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE:                     
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:                                                                                                 
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(new NameNode(
+              AbsentTreeNode.instance, "subtract"), expr1),
+              TNLManip.cons(convertExprToKind(expr2, kind1)));                                                  
+          } 
+          ApplicationUtility.error("complex - other type not supported");          
+          break;
+                              
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:                            
+          switch (kind2) {          
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:                        
+            return new MethodCallNode(
+             new ObjectFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "subtract"), expr1),
+             TNLManip.cons(expr2));             
+          } 
+          ApplicationUtility.error("fix point - other type not supported");          
+          break;
+                                                 
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:                 
+          // nothing supported yet
+          break;
+          
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:                                      
+          case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
+          {
+            int returnKind = _typeID.kind(_typeVisitor.type(node));
+          
+            LinkedList methodArgs = new LinkedList();
+            methodArgs.addLast(convertExprToKind(expr1, returnKind));
+            methodArgs.addLast(convertExprToKind(expr2, returnKind));
+                      
+            return new MethodCallNode(
+             new TypeFieldAccessNode(
+              new NameNode(AbsentTreeNode.instance, "subtract"),
+              matrixMathClassForKind(returnKind)),
+             methodArgs);
+          }                                   
+        }
+        ApplicationUtility.error("MinusNode contains one or more unknown types");
+        return null; 
     }
-*/
+
+    public Object visitAssignNode(AssignNode node, LinkedList args) {
+        int returnKind = _typeID.kind(_typeVisitor.type(node));
+        
+        node.setExpr2(convertExprToKind(node.getExpr2(), returnKind));                
+        return node;
+    }
+
     /** Return the TypeNameNode corresponding to the class containing matrix math 
      *  methods for the argument kind.
      */ 
@@ -520,7 +703,31 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return new AllocateNode((TypeNameNode)
               ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(),
               TNLManip.cons(new CastNode(DoubleTypeNode.instance, expr)), 
-               AbsentTreeNode.instance);                              
+               AbsentTreeNode.instance);                      
+                         
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:                    
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:                     
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:                            
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:                                      
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
+            // these are the cases in which dummy values of 0 and 1 are used
+            // when resolving Token.zero(), Token.one(), and Token.oneRight()
+            // they are replaced by a null pointer here
+            System.out.println("found int -> matrix conversion");
+            if (expr.classID() == INTLITNODE_ID) {
+               System.out.println("found literal node in int -> matrix conversion");
+                        
+               IntLitNode intLitExpr = (IntLitNode) expr;
+               
+               String literal = intLitExpr.getLiteral();
+               
+               System.out.println("literal = " + literal);
+               
+               if (literal.equals("0") || literal.equals("1")) {
+                  return new NullPntrNode();               
+               }
+            }
+            break;                    
           }
           break;
 
@@ -663,6 +870,4 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
     protected TypeIdentifier _typeID;
     protected TypeVisitor _typeVisitor;
-
-
 }

@@ -80,8 +80,6 @@ public class TypeUtility implements JavaStaticSemanticConstants {
            return 1 + arrayDimension(((ArrayTypeNode) type).getBaseType()); 
         
         }
-        return 0;
-        
-    
+        return 0;            
     }
 }

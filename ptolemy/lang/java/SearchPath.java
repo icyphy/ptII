@@ -34,7 +34,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+
 import ptolemy.lang.ApplicationUtility;
 
 public class SearchPath extends Vector {
@@ -128,10 +130,13 @@ public class SearchPath extends Vector {
         File file = new File(fullname);
 
         if (file.isFile()) {
-           return file;
-        } else {
-           return null;
-        }
+           try {
+             return file.getCanonicalFile();
+           } catch (IOException ioe) {
+             ApplicationUtility.error("cannot get canonical filename");           
+           }
+        } 
+        return null;
     }
 
     protected void _addPaths(String paths) {
