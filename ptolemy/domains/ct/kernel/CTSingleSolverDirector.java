@@ -61,7 +61,7 @@ The size of the step is determined by the ODE solver as well as
 the breakpoints. After each iteration, the execution control will be
 returned to the manager, where possible mutations are taken care of.
 At the end of the simulation, the postfire() method will return false,
-telling the manager that the simulatin finished.
+telling the manager that the simulation finished.
  
 
 @author Jie Liu
@@ -121,7 +121,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *   at the breakpoint. 
      *   <P>
      *   All the actors are prefired before an iteration is begun. If 
-     *   any one of them returns false, then the iteratin is not 
+     *   any one of them returns false, then the iteration is not 
      *   proceeded, and the function returns.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
@@ -153,7 +153,7 @@ public class CTSingleSolverDirector extends CTDirector {
                 }
             }
         }
-        //chhose ODE solver
+        //choose ODE solver
         setCurrentODESolver(_defaultSolver);
         // prefire all the actors.
         boolean ready = true;
@@ -221,7 +221,7 @@ public class CTSingleSolverDirector extends CTDirector {
             System.out.println("updating parameters");
         }
         updateParameters();
-        // Instanciate ODE solver
+        // Instantiate ODE solver
         if(VERBOSE) {
             System.out.println("instantiating ODE solver"+_solverclass);
         }
@@ -240,9 +240,9 @@ public class CTSingleSolverDirector extends CTDirector {
         super.initialize();
     }
 
-    /** Return false if simulatin stop time is reached.
+    /** Return false if simulation stop time is reached.
      *  Test if the current time is 
-     *  the stop time. If so, return false ( for stop further simulaiton).
+     *  the stop time. If so, return false ( for stop further simulation).
      *  Otherwise, returns true.
      *  @return false If the simulation is finished.
      *  @exception IllegalActionException Never thrown
@@ -274,7 +274,7 @@ public class CTSingleSolverDirector extends CTDirector {
             NSTEP++;
         }
         if(!scheduleValid()) {
-            // mutation occured, redo the schedule;
+            // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
@@ -333,7 +333,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
-    /** Update given paramter. If the parameter does not exist, 
+    /** Update given parameter. If the parameter does not exist, 
      *  throws an exception.
      *  @param param The parameter.
      *  @exception IllegalActionException If the parameter does not exist.
@@ -353,7 +353,7 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     /** Show the statistics of the simulation if needed. The statistics
-     *  includes the number of step simulated, the number of funciton
+     *  includes the number of step simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
      *  and the number of failed steps (due to error control).
      *  

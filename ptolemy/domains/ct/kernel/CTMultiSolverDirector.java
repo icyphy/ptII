@@ -46,7 +46,7 @@ A director that uses multiple ODE solvers. The reason of switching
 solvers is that when abrupt changes in the signal occurs (also called
 breakpoints), the history information is useless for further calculation.
 For ODE solvers that depends on history points, it is essential to switch
-to use low order implecit method
+to use low order implicit method
 with minimum step size to rebuild the history points. For input signals
 that contains Dirac impulses, it is also essential to switch to the 
 impulse backward Euler solver to deal with them.
@@ -122,7 +122,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *   from the breakpoint table.
      *   <P>
      *   All the actors are prefired before an iteration is begun. If 
-     *   any one of them returns false, then the iteratin is not 
+     *   any one of them returns false, then the iteration is not 
      *   proceeded, and the function returns.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
@@ -138,12 +138,12 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         updateStates(); // call postfire on all actors
 
-        //Refine step size ans set ODE Solvers.
+        //Refine step size and set ODE Solvers.
         setCurrentODESolver(_defaultSolver);
         setCurrentStepSize(getSuggestedNextStepSize());
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
-        //chhose ODE solver
+        //choose ODE solver
         // If now is a break point, remove the break point from table;
         if((breakPoints != null) && !breakPoints.isEmpty()) {
             bp = ((Double)breakPoints.first()).doubleValue();
@@ -194,7 +194,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
-     *  It checks if it contianer and its scheduler is correct. 
+     *  It checks if it container and its scheduler is correct. 
      *  Otherwise throw an exception. It then calls _intialize()
      *  method to initialize parameters and times.
      *
@@ -266,7 +266,7 @@ public class CTMultiSolverDirector extends CTDirector {
             NSTEP++;
         }
         if(!scheduleValid()) {
-            // mutation occured, redo the schedule;
+            // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
@@ -310,7 +310,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** Update given paramter. If the parameter does not exist, 
+    /** Update given parameter. If the parameter does not exist, 
      *  throws an exception.
      *  @param param The parameter.
      *  @exception IllegalActionException If the parameter does not exist.
@@ -356,7 +356,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Wrapup the simulation. Show the statistics if needed. The statistics
-     *  includes the number of step simulated, the number of funciton
+     *  includes the number of step simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
      *  and the number of failed steps (due to error control).
      *  
@@ -381,7 +381,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  size to the initial step size. The start time is
      *  set as a breakpoint in the breakpoint table.
      *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instanciated, and the current solver
+     *  system. The ODE solver are instantiated, and the current solver
      *  is set to be the breakpoint solver. The breakpoint table is cleared,
      *  and the start time is set to be the first breakpoint. 
      *  Invalidate the schedule.
@@ -400,7 +400,7 @@ public class CTMultiSolverDirector extends CTDirector {
             System.out.println("updating parameters");
         }
         updateParameters();
-        // Instanciate ODE solvers
+        // Instantiate ODE solvers
         if(VERBOSE) {
             System.out.println("instantiating Defalut ODE solver "+
             _defaultsolverclass);

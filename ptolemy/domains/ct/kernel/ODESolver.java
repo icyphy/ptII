@@ -52,7 +52,7 @@ control related methods. Even for one integration method, the integrator's
 fire() method may depends on the round of fires.  Round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
 may behaves differently under different round. The round can be get by
-the getRound() method. IncrRound method will increase the counter by one,
+the getRound() method. The incrRound() method will increase the counter by one,
 and resetRound() will always reset the counter to 0.
 <P>
 Conceptually, ODE solvers do not maintain simulation parameters,
@@ -129,10 +129,10 @@ public abstract class ODESolver extends NamedObj {
         _round ++ ;
     }
 
-    /** Abstarct method returns the number of auxilary variable number
+    /** Abstract method returns the number of auxiliary variable number
      *  needed by the
      *  integrators when solving the ODE.
-     *  @return The number of auxilary variables 
+     *  @return The number of auxiliary variables 
      */
     public abstract int integratorAuxVariableNumber();
 
@@ -163,7 +163,7 @@ public abstract class ODESolver extends NamedObj {
      *  of the system for the given step size. If it is not succeeded,
      *  the integration step will be restarted after calling 
      *  startOverLastStep() method.
-     *  Different solver may interprete "success" and implement
+     *  Different solver may interpret "success" and implement
      *  startOverLastStep() differently. 
      *
      * @exception IllegalActionException Not thrown in this base
@@ -203,7 +203,7 @@ public abstract class ODESolver extends NamedObj {
 
     /** Abstract method for restarting the last integration step with a
      *  smaller step size.
-     *  The typical operations incolved in this method are resetting
+     *  The typical operations involved in this method are resetting
      *  the currentTime and halving the currentStepSize of the director.
      */
     public abstract void startOverLastStep();

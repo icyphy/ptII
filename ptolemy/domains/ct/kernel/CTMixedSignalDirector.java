@@ -47,8 +47,31 @@ simulation with event-based domains. This director can both serve as
 a top-level director and an embedded director that is contained by
 a composite actor in an event-based domain. If it is a top-level
 director, it acts exactly like a CTMultiSolverDirector. If it is 
-embedded in another domainc, it will run ahead of time and prepare to
-roll back if necessary.s
+embedded in another event-based domain, it will run ahead of the global
+time and prepare to roll back if necessary.
+<P>
+This class has an additional parameter than the CTMultiSolverDirector,
+which is the maximum run ahead of time length (<code>MaxRunAheadLength</code>).
+The default value is 1.0.
+<P>
+The run ahead of time is achieved by the following mechanism.<Br>
+<UL>
+<LI> At the initialize stage of the execution, the director will request
+a fire at the global current time.
+<LI> At each prefire stage the execution, the fire end time is computed
+based on the current time of the executive director t1, the next iteration
+time of the executive director t2, the value of the parameter 
+<code>MaxRunAheadLength</code> t3. The fire end time is t1+min(t2, t3)
+<LI> At the prefire stage, the local current time is compared with the
+current time of the executive director. If the local time is later than 
+the executive director time, then the directed system will rollback to a 
+"known good" state.
+<LI> The "known good" state is the state of the system at the time when
+local time is equal to the current time of the executive director.
+It is saved by during the fire stage of the execution.
+<LI> At the fire stage, the director will stop at the first of the two times,
+the fire end time and the first detected event time.
+</UL>
 
 @author  Jie Liu
 @version $Id$
@@ -65,7 +88,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         _initParameters();
     }
 
-    /** Construct a CTMixedSignalDirectorin the default workspace 
+    /** Construct a CTMixedSignalDirector in the default workspace 
      *  with the given name.
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
@@ -118,10 +141,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     /** Execute the directed (sub)system to the fire end time.
      *  If this is a top-level director, the fire end time if the 
-     *  current time at the begining of the fire() method plus the 
+     *  current time at the beginning of the fire() method plus the 
      *  the step size of one successful step. 
      *  Otherwise, it executes until the one of the following conditions
-     *  is satisfied. 1) The fire end time commputed in the prefire()
+     *  is satisfied. 1) The fire end time computed in the prefire()
      *  method is reached. 2) An event is generated.
      *  It saves the state of the system at the current time of the executive
      *  director as the "known good" state. And run further ahead of time.
@@ -260,13 +283,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Initialize the director parameters (including time) and intialize 
+    /** Initialize the director parameters (including time) and initialize 
      *  all the actors in the container. This
      *  is called exactly once at the start of the entire execution.
-     *  It checks if it has a container and an CTSchedueler. 
+     *  It checks if it has a container and an CTScheduler. 
      *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instanciated, and the current solver
-     *  is set to be the breakpoint solver.The breakpoint table is cleared,
+     *  system. The ODE solver are instantiated, and the current solver
+     *  is set to be the breakpoint solver. The breakpoint table is cleared,
      *  and the start time is set to be the first breakpoint. 
      *  Invalidate the schedule.
      *  If this is the top-level director, 
@@ -276,7 +299,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      *  domain. And it will request a refire at the current time from
      *  the executive director.
      *
-     *  @exception IllegalActionException If this director has no contaienr or
+     *  @exception IllegalActionException If this director has no container or
      *       no scheduler, or thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
@@ -302,7 +325,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         if(!_isTopLevel()) {
             // clear the parameters and make sure the outside domain
             // parameters
-            // overwrite the local parameter (e.g.start time).
+            // overwrite the local parameter (e.g. start time).
             updateParameters();
 
             // this is an embedded director.
@@ -317,7 +340,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
         // update parameter is called in _initialize. But if this is 
         // not a top-level director, the parameter should already be
-        // processed by the code above. So the updateParameters in
+        // processed by the code above. So the updateParameters() in
         // _initialize() will do nothing.
         _initialize();
     }
@@ -351,7 +374,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     /** Returns true always, indicating that the (sub)system is always ready
      *  for one iteration. The schedule is recomputed if there are mutations
-     *  occured after last iteration. Note that mutations can only 
+     *  occurred after last iteration. Note that mutations can only 
      *  occur between iterations in the CT domain.
      *  The parameters are updated.
      *  <P>
@@ -388,7 +411,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             NSTEP++;
         }
         if(!scheduleValid()) {
-            // mutation occured, redo the schedule;
+            // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
@@ -401,7 +424,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         if(!_isTopLevel()) {
             // synchronize time.
             CompositeActor ca = (CompositeActor) getContainer();
-            // ca should have beed checked in isTopLevel()
+            // ca should have beed checked in _isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
             if(DEBUG) {
@@ -469,7 +492,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         _fireEndTime = time;
     }
 
-    /** Update the given parameter. If the parameter is RunAheadLength
+    /** Update the given parameter. If the parameter name is MaxRunAheadLength,
      *  update it. Otherwise pass it to the super class.
      *  @param param The parameter to be updated.
      *  @exception IllegalActionException If thrown by the super class.
@@ -551,7 +574,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return result;
     }
 
-    /**Return true if this is a toplevel director. A syntax suger.
+    /**Return true if this is a top-level director. A syntax sugar.
      */
     protected boolean _isTopLevel() {
         long version = workspace().getVersion();
@@ -573,7 +596,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Rollback the system to a knowGood state. All the actors with
+    /** Rollback the system to a "known good" state. All the actors with
      *  states are called to restore their saved states. The 
      *  current time of the director is set to the time of the "known
      *  good" state.
@@ -617,7 +640,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     /** Initialize parameters in addition to the parameters inherited
      *  from CTMultiSolverDirector. In this class the additional 
-     *  paarameter is the maximum run ahead time length 
+     *  parameter is the maximum run ahead time length 
      *  (<code>MaxRunAheadLength</code>). The default value is 1.0.
      */
     private void _initParameters() {
@@ -644,7 +667,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     // Illustrate if this is the top level director.
     private boolean _isTop;
 
-    // indeicate the first execution.
+    // indicate the first execution.
     private boolean _first;
 
     // The time for the "known good" state.
