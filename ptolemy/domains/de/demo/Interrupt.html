@@ -11,16 +11,29 @@ Demo of DE simulation applet</H1></CENTER>
 
 <H3>
 DE Simulation:</H3>
-The following applet uses Ptolemy II DE domain architecture to simulate a
-queueing system with blocking policy. This particular demo is obtained from
-Ptolemy 0.7.1 DE domain demo.
-<P>
-You can interact with the applet by choosing the stop time of the simulation.
+The following applet uses Ptolemy II DE domain architecture to simulate
+the behaviour of an interruptible processor. Without interrupts, each demand
+takes a fixed minimum service time to serve. With interrupts, the service
+time is increased by the number of interrupt events during the service period
+multiplied by a fixed interrupt service time.
+<p>
+The plot shows the sampled processor output. The input to the processor is
+a sequence of DoubleToken starting at 0.0 at time 0.0 and incremented by 1.0
+every unit time. The output are sampled to model a latched output. If there
+is no loss of events, then the plot is a straight line. Otherwise, there will
+be flag regions. 
+<p>
+Different parameters for the processor model can be chosen. MST (Minimum
+Service Time) indicate the amount of time needed to process an event, if there
+is no interrupt. IST (Interrupt Service Time) is the amount of time needed
+to process an interrupt. Note that the interrupts preempts the inputs. Lambda
+represents the inter-arrival time of the Poisson process modeling the
+interrupt arrival. Lastly, stop time is just the time when simulation stops.
 <P>
 <BR>&nbsp;
 <BR>&nbsp;
 <CENTER>
-<P><APPLET name="AdderApplet"
+<P><APPLET name="InterruptApplet"
    bgcolor=#FAF0E6
    archive="ptolemy/domains/de/demo/clockapplet.jar"
    code=ptolemy.domains.de.demo.InterruptApplet.class
@@ -32,16 +45,14 @@ here.</I>
 <BR></APPLET></CENTER>
 
 <P>This applet is implemented by
-<TT><A HREF="QueueApplet.java">InterruptApplet.java</A></TT>.
+<TT><A HREF="InterruptApplet.java">InterruptApplet.java</A></TT>.
 <P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
 Actor, a
-<A HREF="../lib/DERamp.java">Ramp</A> Actor,
-<A HREF="../lib/FIFOQueue.java">FIFOQueue</A> Actor,
-<A HREF="../lib/DEServer.java">Server</A> Actor,
-<A HREF="../lib/DEPassGate.java">PassGate</A> Actor,
-<A HREF="../lib/DEDelay.java">Delay</A> Actor,
-<A HREF="../lib/TestLevel.java">TestLevel</A> Actor,
-and a <A HREF="../lib/Not.java">Not</A>
+<A HREF="../lib/Ramp.java">Ramp</A> Actor,
+<A HREF="../lib/DEProcessor.java">DEProcessor</A> Actor,
+<A HREF="../lib/InterruptibleServer.java">InterruptibleServer</A> Actor,
+<A HREF="../lib/DESampler.java">DESampler</A> Actor,
+and a <A HREF="../lib/DEPoisson.java">DEPoisson</A>
 Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <BR>
 <MAP Name="ActorsMap">
@@ -78,7 +89,7 @@ Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 	Href="../lib/DEPlot.java">
 </MAP>
 <CENTER>
-<IMG SRC="img/QueueDiagram.gif"
+<IMG SRC="img/Interrupt.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
 <BR>

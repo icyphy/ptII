@@ -72,6 +72,9 @@ public class InterruptApplet extends Applet {
         // Initialization
 
         _stopTimeBox = new TextField("30.0", 10);
+        _mstBox = new TextField("0.9", 10);
+        _istBox = new TextField("0.1", 10);
+        _lambdaBox = new TextField("2.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
         _pauseButton = new Button(" Pause ");
@@ -90,9 +93,16 @@ public class InterruptApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,1));
+        simulationParam.setLayout(new GridLayout(3,2));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
+
+        // Adding MST (minimum service time) in the simulation panel
+        Panel mstPanel = new Panel();
+        simulationParam.add(mstPanel);
+        mstPanel.add(new Label("MST:"));
+        mstPanel.add(_mstBox);
+        // done adding MST
 
         // Adding Stop time in the simulation panel.
         Panel subSimul = new Panel();
@@ -101,10 +111,24 @@ public class InterruptApplet extends Applet {
         subSimul.add(_stopTimeBox);
         // Done adding stop time.
 
+        // Adding IST (interrupt service time) in the simulation panel
+        Panel istPanel = new Panel();
+        simulationParam.add(istPanel);
+        istPanel.add(new Label("IST:"));
+        istPanel.add(_istBox);
+        // done adding IST
+
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
 
+        // Adding lambda (interrupt service time) in the simulation panel
+        Panel lambdaPanel = new Panel();
+        simulationParam.add(lambdaPanel);
+        lambdaPanel.add(new Label("lambda:"));
+        lambdaPanel.add(_lambdaBox);
+        // done adding lambda
+        
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
         controlPanel.add(_pauseButton);
@@ -159,6 +183,11 @@ public class InterruptApplet extends Applet {
 
             sampler.clock.link(r1);
 
+            // setting up parameters.
+            _minimumServiceTime = (Parameter)processor.getAttribute("MST");
+            _interruptServiceTime = (Parameter)processor.getAttribute("IST");
+            _lambda = (Parameter)processor.getAttribute("lambda");
+
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -176,15 +205,23 @@ public class InterruptApplet extends Applet {
     private Manager _manager;
 
     private TextField _stopTimeBox;
+    private TextField _mstBox;
+    private TextField _istBox;
+    private TextField _lambdaBox;
     private double _stopTime = 100.0;
     private Button _goButton;
     private Button _pauseButton;
     private Button _finishButton;
     private Button _terminateButton;
-
+    
 
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
+
+    // Parameters of DEProcessor that we want to change.
+    private Parameter _minimumServiceTime;
+    private Parameter _interruptServiceTime;
+    private Parameter _lambda;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -237,6 +274,39 @@ public class InterruptApplet extends Applet {
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
+                }
+
+                // Set the minimum service time.
+                try {
+                    String s = _mstBox.getText();
+                    Double d = Double.valueOf(s);
+                    _minimumServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid minimum service time: " + 
+                                       ex.getMessage());
+                }
+
+                // Set the interrupt service time.
+                try {
+                    String s = _istBox.getText();
+                    Double d = Double.valueOf(s);
+                    _interruptServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid interrupt service time: " + 
+                                       ex.getMessage());
+                }
+
+                // Set lambda.
+                try {
+                    String s = _lambdaBox.getText();
+                    Double d = Double.valueOf(s);
+                    _lambda.setToken(new DoubleToken(d.doubleValue()));
+                    
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid lambda: " + 
+                                       ex.getMessage());
                 }
 
                 _localDirector.setStopTime(_stopTime);
