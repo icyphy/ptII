@@ -62,7 +62,7 @@ PTCLASSALLJARS = \
 	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
 	MultipleRuns/MultipleRuns.jar \
-	NoisySinewave/NoisySinewave.xml \
+	NoisySinewave/NoisySinewave.jar \
 	OrthogonalCom/OrthogonalCom.jar \
 	RijndaelEncryption/RijndaelEncryption.jar \
 	Sketch/Sketch.jar \
