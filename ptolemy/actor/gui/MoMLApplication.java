@@ -44,14 +44,17 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -314,6 +317,110 @@ public class MoMLApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return a string summarizing the command-line arguments,
+     *  including an configuration directories in ptolemy/configs.
+     *  Some subclasses of this class use configuations from ptolemy/configs.
+     *  For example, if ptolemy/configs/full/configuration.xml exists
+     *  then -full is a legitmate argument.
+     *  @param commandTemplate The form of the command line
+     *  @param commandOptions Command-line options that take arguments.
+     *  @param commandFlags Command-line options that are either present
+     *  or not.
+     *  @return A usage string.
+     *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String)
+     */
+    protected String _configurationUsage(String commandTemplate,
+            String [][] commandOptions,
+            String [] commandFlags) {
+        String result = "Usage: " + commandTemplate + "\n\n"
+            + "Options that take values:\n";
+        int i;
+        // Print any command options from this class first
+        for (i = 0; i < _commandOptions.length; i++) {
+            result += " " + _commandOptions[i][0] +
+                " " + _commandOptions[i][1] + "\n";
+        }
+
+        for (i = 0; i < commandOptions.length; i++) {
+            result += " " + commandOptions[i][0] +
+                " " + commandOptions[i][1] + "\n";
+        }
+
+        result += "\nBoolean flags:\n";
+        // Print any command flags from this class first
+        for (i = 0; i < _commandFlags.length; i++) {
+            result += " " + _commandFlags[i];
+        }
+
+        for (i = 0; i < commandFlags.length; i++) {
+            result += " " + commandFlags[i];
+        }
+
+        try {
+            // Look for configuration directories in ptolemy/configs
+            // This will likely fail if ptolemy/configs is in a jar file
+            // We use a URI here so that we cause call File(URI).
+            URI configurationURI =
+                new URI(specToURL("ptolemy/configs").toExternalForm());
+            File configurationDirectory = new File(configurationURI);
+            ConfigurationFilenameFilter filter =
+                new ConfigurationFilenameFilter();
+            File [] configurationDirectories =
+                configurationDirectory.listFiles(filter);
+            if (configurationDirectories != null) {
+                result += "\nThe following Boolean flags start up using "
+                    + "different configurations:\n";
+                for (i = 0; i < configurationDirectories.length; i++) {
+                    result += " -" + configurationDirectories[i].getName();
+                    String configurationFileName = configurationDirectories[i]
+                        + File.separator
+                        + "configuration.xml";
+                    boolean printDefaultConfigurationMessage = true;
+                    try {
+                        // Read the configuration and get the top level docs
+
+                        // FIXME: this will not work if the configs are
+                        // in jar files.
+
+                        // FIXME: Skip jxta, since it starts up the jxta config
+                        // tools.
+                        if (!configurationDirectories[i]
+                                .getName().equals("jxta")) {
+                            URL specificationURL =
+                                specToURL(configurationFileName);
+                            Configuration configuration =
+                                _readConfiguration(specificationURL);
+                            if (configuration != null
+                                    && configuration.getAttribute("_doc")
+                                    != null
+                                    && configuration.getAttribute("_doc")
+                                    instanceof Documentation
+                                ) {
+                                Documentation doc =
+                                    (Documentation)configuration
+                                    .getAttribute("_doc");
+                                result += "\t" + doc.getValue() + "\n";
+                                printDefaultConfigurationMessage = false;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        //result += "\tCould not read configuration"
+                        //    + "\n" + ex;
+                        //ex.printStackTrace();
+                    }
+                    if (printDefaultConfigurationMessage) {
+                        result += "\tuses "
+                            + configurationFileName + "\n";
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            result += "Warning: Failed to find configuration(s) in "
+                + "ptolemy/configs" + ex;
+        }
+        return result;
+    }
 
     /** Return a default Configuration, or null to do without one.
      *  This configuration will be created before any command-line arguments
@@ -628,7 +735,7 @@ public class MoMLApplication {
     };
 
     /** The command-line options that take arguments. */
-    protected String _commandOptions[][] = {
+    protected  String _commandOptions[][] = {
         {"-class",  "<classname>"},
         {"-<parameter name>", "<parameter value>"},
     };
@@ -644,6 +751,44 @@ public class MoMLApplication {
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Look for directories that contain files named configuration.xml
+     *  and intro.htm.
+     */
+    class ConfigurationFilenameFilter implements FilenameFilter {
+
+        /** Return true if the specified file names a directory
+         *  that contains a file named configuration.xml
+         *  and a file named intro.htm
+         *  @param directory the directory in which the potential
+         *  directory was found.
+         *  @param name the name of the directory or file.
+         *  @return true if the file is a directory that
+         *  contains a file called configuration.xml
+         */
+        public boolean accept(File directory, String name ) {
+            try {
+                File configurationDirectory = new File(directory, name);
+                if (!configurationDirectory.isDirectory()) {
+                    return false;
+                }
+                File configurationFile = new File(configurationDirectory,
+                        "configuration.xml");
+                File introFile = new File(configurationDirectory,
+                        "intro.htm");
+                if (configurationFile.isFile()
+                        && introFile.isFile()) {
+                    return true;
+                }
+            } catch (Exception ex) {
+                return false;
+            }
+            return false;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
