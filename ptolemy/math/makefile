@@ -65,6 +65,10 @@ JSRCS =	Complex.java \
 	FloatMatrixMath.java \
 	FloatUnaryOperation.java \
 	Fraction.java \
+	FractionArrayMath.class \
+	FractionArrayMath.java \
+	FractionMatrixMath.class \
+	FractionMatrixMath.java
 	IntegerArrayMath.java \
 	IntegerBinaryOperation.java \
 	IntegerMatrixMath.java \
