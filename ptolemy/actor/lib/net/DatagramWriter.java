@@ -111,7 +111,6 @@ public class DatagramWriter extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-
         // Ports
 
         remoteAddress = new TypedIOPort(this, "remoteAddress");
@@ -251,9 +250,9 @@ public class DatagramWriter extends TypedAtomicActor {
                         _socket = newSocket;
                     }
                     catch (SocketException ex) {
-                        throw new IllegalActionException(this,
+                        throw new IllegalActionException(this, ex,
                                 "Cannot create socket on the given "
-                                + "local socket number: " + ex.getMessage());
+                                + "local socket number.");
                     }
                 }
             }
@@ -265,9 +264,9 @@ public class DatagramWriter extends TypedAtomicActor {
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, "The default remote "
-                        + "address specifies an unknown host: "
-                        + ex.getMessage());
+                throw new IllegalActionException(this, ex, 
+                        "The default remote "
+                        + "address specifies an unknown host");
             }
 
         } else if (attribute == defaultRemoteSocketNumber) {
@@ -287,7 +286,6 @@ public class DatagramWriter extends TypedAtomicActor {
      *  become the defaults for next time.
      */
     public void fire() throws IllegalActionException {
-
         String address = null;
         for (int jj = 0; jj < remoteAddress.getWidth(); jj++) {
             if (remoteAddress.hasToken(jj)) {
@@ -299,9 +297,9 @@ public class DatagramWriter extends TypedAtomicActor {
                 _address = InetAddress.getByName(address);
             }
             catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, "The input remote "
-                        + "address specifies an unknown host: "
-                        + ex.getMessage());
+                throw new IllegalActionException(this, ex,
+                        "The input remote "
+                        + "address specifies an unknown host");
             }
         }
 
@@ -357,8 +355,6 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
 
-        //System.out.println("initialize() called in " + this);
-
         super.initialize();
         _localSocketNumber =
             ((IntToken)(localSocketNumber.getToken())).intValue();
@@ -374,8 +370,9 @@ public class DatagramWriter extends TypedAtomicActor {
             if (_debugging) _debug("PI A socket is created!!");
         }
         catch (SocketException ex) {
-            throw new IllegalActionException(this, "Cannot create socket on "
-                    + "the specified local socket number: " + ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "Cannot create socket on "
+                    + "the specified local socket number");
         }
 
         String address =
@@ -384,16 +381,14 @@ public class DatagramWriter extends TypedAtomicActor {
             _address = InetAddress.getByName(address);
         }
         catch (UnknownHostException ex) {
-            throw new IllegalActionException(this, "The default remote "
-                    + "address specifies an unknown host: "
-                    + ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "The default remote "
+                    + "address specifies an unknown host");
         }
 
         _remoteSocketNumber =
             ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
         if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
-            //System.out.println(this + " defaultRemoteSocketNumber is "
-            //        + _remoteSocketNumber + " .  Must be in 0..65535.");
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
             throw new IllegalActionException(this, "defaultRemoteSocketNumber"
                     + _remoteSocketNumber
@@ -423,8 +418,6 @@ public class DatagramWriter extends TypedAtomicActor {
             if (_socket != null) {
                 _socket.close();
                 _socket = null;
-            } else {
-                if (_debugging) _debug("Socket was already null in " + this);
             }
         }
     }
