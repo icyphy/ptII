@@ -224,6 +224,7 @@ $(PTII_SRC): $(PTII_FULL)
 	(cd src; \
 		$(TAR) -zxf $(PTII_FULL); cd ptII$(VERSION); \
 		PTII=`pwd` ./configure; make -k clean; \
+		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
