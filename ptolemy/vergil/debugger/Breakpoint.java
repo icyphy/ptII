@@ -41,8 +41,13 @@ import ptolemy.data.*;
 This class implements a breakpoint.  A breakpoint is essentially a boolean
 variable that wishes to pause execution when it evaluates to true.  Note that 
 this class does not actually halt execution.  Instead, an instance of the
-DebugController class inspects for its presence in an actor 
-and acts accordingly.
+DebugController class listens for firing events that are sent from a 
+director and when an actor is executed that contains a breakpoint with a
+name corresponding to the name of a called method, will suspend the executing
+thread.
+
+@see ptolemy.kernel.util.FiringEvent
+@see DebugController
 
 @author  B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$

@@ -46,7 +46,7 @@ This class allows to track some parameters values of an actor
 @version $Id$
 @see Watchers
 */
-public class ActorWatcher implements Nameable, Watchers {
+public class ActorWatcher implements Nameable {
 
     public Vector valueList;
     /** Construct a new watcher with the given target.
