@@ -171,7 +171,7 @@ public class State extends ComponentEntity {
         try {
             workspace().getReadAccess();
             String name = refinementName.getExpression();
-            if (name != null && name != "") {
+            if (name != null && !name.trim().equals("")) {
                 Nameable cont = getContainer();
                 TypedCompositeActor contContainer =
                     (TypedCompositeActor)cont.getContainer();
