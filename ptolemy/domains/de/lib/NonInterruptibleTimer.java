@@ -148,7 +148,7 @@ public class NonInterruptibleTimer extends Timer {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
 
-        // Remove the curent output token from _delayedTokens.
+        // Remove the current output token from _delayedTokens.
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }

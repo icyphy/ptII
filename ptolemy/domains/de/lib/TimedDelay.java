@@ -53,13 +53,13 @@ import ptolemy.kernel.util.Workspace;
    if there is one, and schedule itself to fire again to produce that token
    on the corresponding output channel after the appropriate time delay.
    Note that if the value of delay is 0.0, and there is no output scheduled
-   to produce at the same time the input arrives, the output is procduced
+   to produce at the same time the input arrives, the output is produced
    immediately. Otherwise, the input is produced in the immediately next firing
    at the same model time. If there is no input token, then no output token is
    produced.
    <p>
    Occasionally, this actor is used inside a feedback loop just for scheduling
-   perpose, where the delay parameter is set to zero. This implies that no
+   purpose, where the delay parameter is set to zero. This implies that no
    output token is produced earlier than the time its trigger input arrives.
    Therefore the actor declares that there is a delay between the input
    and the output, and the DE director will leverage this when

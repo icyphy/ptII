@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <p> This class extends Sampler. Unlike its base class, this actor
    can be used to break dependencies in a feedback loop in that
    the input tokens are consumed from the input ports after the outputs
-   are genrated. Another difference is that the Register actor can be
+   are generated. Another difference is that the Register actor can be
    fired when either the trigger port or the input port has a token, while
    the Sampler can only be fired when the trigger port receives a token.
 
@@ -108,7 +108,6 @@ public class Register extends Sampler {
      *  previous input tokens, but the <i>initialValue</i> parameter
      *  has been set, emit the value of the <i>initialValue</i> parameter.
      *  Otherwise, emit nothing.
-     *  Comsume
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

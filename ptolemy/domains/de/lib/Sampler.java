@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
    whereas Inhibit reacts to the absence of it.
 
    <p> This actor is different from the Register actor in that the input
-   tokens are consumed from the input ports before the outputs are genrated.
+   tokens are consumed from the input ports before the outputs are generated.
 
    @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
    @version $Id$
@@ -154,7 +154,7 @@ public class Sampler extends DETransformer {
         return newObject;
     }
 
-    /** Comsume all the tokens in the input ports and record them.
+    /** Consume all the tokens in the input ports and record them.
      *  If there is a token in the <i>trigger</i> port, emit the most
      *  recent token from the <i>input</i> port. If there has been no
      *  input token, but the <i>initialValue</i> parameter has been

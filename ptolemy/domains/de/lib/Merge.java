@@ -131,7 +131,7 @@ public class Merge extends DETransformer  {
                         // event, consume the token from the input channel
                         currentToken = input.get(i);
                     } else {
-                        // Refiring the actor to hanlde the other events
+                        // Refiring the actor to handle the other events
                         // that are still in channels
                         getDirector().fireAtCurrentTime(this);
                     }

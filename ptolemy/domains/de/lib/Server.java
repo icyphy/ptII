@@ -65,12 +65,13 @@ import ptolemy.kernel.util.StringAttribute;
    and <i>output</i>.  The director uses this information for
    assigning priorities to firings.
    <p>
-   Like the TimedDelay actor, the output is produced with a future time
-   stamp (larger than current time by <i>newServiceTime</i>).
-   If the service time is always zero and several event arrrive at the same,
-   the server will output the first available input and queue the other inputs
-   to process in the future microsteps. A service time of zero can be
-   usefully viewed as an infinitesimal service time.
+   Like the TimedDelay actor, the output is produced with a future
+   time stamp (larger than current time by <i>newServiceTime</i>).  If
+   the service time is always zero and several events arrive at the
+   same time, the server will output the first available input and
+   queue the other inputs to process in the future microsteps. A
+   service time of zero can be usefully viewed as an infinitesimal
+   service time.
 
    @see ptolemy.domains.de.lib.TimedDelay
    @see ptolemy.domains.de.lib.VariableDelay
@@ -100,7 +101,7 @@ public class Server extends VariableDelay {
     ////                         public methods                    ////
 
     /** Read the available input token. If the server is not busy,
-     *  begin servicing it. If the delay is 0, output is immediately availabe.
+     *  begin servicing it. If the delay is 0, output is immediately available.
      *  Otherwise, the output available time is delayed by the amount of the
      *  <i>newServiceTime></i> parameter. If the server is busy, check
      *  whether the current service finishes. If so, generate output. Otherwise,
@@ -165,9 +166,9 @@ public class Server extends VariableDelay {
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
 
-        // Remove the curent output token from _delayedTokens.
+        // Remove the current output token from _delayedTokens.
         // NOTE: In this server class, the _delayedTokens can have
-        // at most one token inside (like a processer can execute
+        // at most one token inside (like a processor can execute
         // at most one process at any time.)
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
