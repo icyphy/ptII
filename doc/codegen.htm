@@ -9,28 +9,224 @@
 <h1>Code Generation</h1>
 <p>
 Ptolemy II includes the very beginnings a code generation framework.
-Currently, there are two levels of code generation, shallow and deep.
+Currently, there are three types of code generation, shallow, deep and applet.
+
+ <p>
 Shallow code generation converts a model that has been specified in
 MoML (typically using Vergil) into a Java class definition.  This class
 definition can be used in an applet, which results in faster download
 times because less of the Ptolemy II infrastructure is required
 to execute it. Shallow code generation uses components built into
-the Ptolemy II tree.  Eventually, the process of creating an applet,
-include packaging the requisite code in a jar file, will be more
-automated.
+the Ptolemy II tree.  
+We primarily use shallow code generation as a test bed
+for the code generation facility itself.
+
 <p>
 Deep code generation parses the component definitions (which are
 written in Java), and produces optimized code that does not require
-code from the Ptolemy II tree.  Currently, this only works for some
-models, and only in the SDF domain.  Also, the code generation process,
-as currently implemented, requires vast amounts of memory, and thus
-may not work at all on memory-limited platforms.
+code from the Ptolemy II tree.  Deep code generation has the following
+limitations:
+<menu>
+<li> Deep code generation only works on flat SDF models.  Composite SDF
+models and domains other than SDF are not supported.
+<li> Deep code generation consumes quite a bit of memory.  We usually exec
+the deep code generator as a separate process with the 
+<CODE>-Xmx256</CODE> java command line argument, which sets the
+initial heap size to 256Mb.  Deep code generation may not work on 
+a on memory-limited platforms.
+</menu>
+
+The Applet code generator takes a model and creates HTML files for 
+use as a web based applet.  The applet code generator is discussed
+<a href="#applet">below</a>
+
 <p>
 The implementation here should be viewed as highly preliminary.
 <font color="red">It is likely to fail on all but a few simple test
 cases.</font>  It is at the stage of being a concept demonstration
 only.  We expect it to mature considerably in the near future.
-<p>
+
+
+<h2><a name="deep">Deep Code Generation Demonstration</a></h2>
+Deep code generation is by the most interesting of the code generators
+so we cover it first.
+
+The deep code generator uses <a href="#soot">Soot</a> to analyze a
+model and generate a set of Java .class files.
+
+<ol>
+<li> Open up the
+<a
+href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
+Orthogonal Communication Model</a>
+
+<li> Select View -&gt; Code Generator
+
+<li> Hit the Generate Button
+
+<li> The code generator will invoke an separate java process that
+generates code in 
+<CODE>$PTII/ptolemy/copernicus/cg/OrthogonalCom</CODE> or in
+<CODE>~/FIXME</CODE> and then run it.  Generating the code usually
+takes around 90 seconds on a fast machinen.
+
+</ol>
+
+Things to note:
+<menu>
+<li> After a model is run, Ptolemy II prints out the amount of time
+and memory the model consumed.  Usually, this output goes to standard
+out, which could be hidden if Vergil was started by clicking on an
+icon.  
+ <p>For 20 iterations, the non code generation environment reports"
+<pre>
+661 ms. Memory: 7868K Free: 1569K (20%)  
+</pre>
+ <p>The code generator also prints out time and memory stats:
+<pre>
+OrthogonalCom: Execution stats:           80 ms. Memory: 1984K Free: 1740K (88%)
+</pre>
+From the above, we can see that the code generator runs about 8-9
+times faster and in roughly one quarter of the memory.
+
+<li> Increase the number of iterations in the model by going to the
+graph editor and right clicking on the green SDF Director Icon.
+Run the model, you should see times like:
+<pre>
+2023 ms. Memory: 8440K Free: 2655K (31%)
+</pre>
+
+
+Change the iterations from 20 to 2000 and save the model and then do 
+View -&gt; Code Generator -&gt; Generate.
+ <br>You should see stats like:
+<pre>
+OrthogonalCom: Execution stats:           861 ms. Memory: 1984K Free:
+1524K (77%)
+</pre>
+This indicates that the deep code generation version is roughly 2.3
+times faster than the regular interpreted version.
+
+<li> Soot produces .class files, and we can run a disassembler
+convert the .class files back to .java files.  Unfortunately, there
+are various reasons that the resulting .java files will not compile.
+See the <a href="#disassemblers">Disassemblers</a> section for
+information about disassemblers.
+
+</menu>
+
+
+
+<h2><a name="shallow">Shallow code generation</a></h2>
+
+<h2><a name="applet">Applet code generation</a></h2>
+Ptolemy II can generate the files necessary to run a model as an applet.
+If a model is named <CODE>MyModel</CODE>, and the user selects
+<CODE>foo.bar</CODE> as the package, then saving the model as an
+applet will create a directory called <CODE>$PTII/foo/bar/MyModel</CODE>
+and create the following files for that model:
+<dl>
+<dt> <CODE>makefile</CODE>
+<dd> <CODE>make demo</CODE> will run appletviewer on the HTML files
+
+<dt> <CODE>MyModel.xml</CODE>
+<dd> A local copy of the model
+
+<dt> <CODE>MyModel.htm</CODE>
+<dd> An HTML file containing the code necessary to <CODE>MyModel.xml</CODE>
+
+
+<dt> <CODE>MyModelVergil.htm</CODE>
+<dd> An HTML file containing the code necessary to
+display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet and in text format
+
+</dl>
+
+
+<h2>The code generator user interface</h2>
+Christopher Hylands and Professor Edward A. Lee developed an initial
+draft of a graphical user interface to control code generation.  
+
+ <p>The user interface reads its parameters from a moml file, the
+ default is 
+<a href="../ptolemy/copernicus/kernel/Generator.xml"><CODE>$PTII/ptolemy/copernicus/kernel/Generator.xml</CODE></a>.
+This file lists the parameters, the initial default value
+the documentation for the parameter.
+ <p>The documentation for a parameter is viewable as a tool tip.
+Try moving the mouse over the name of the parameter, a tool
+tip should pop up.
+ <p>There are quite a few different parameters, and parameters
+can refer to each other by name.  The values of some parameters,
+such as the <CODE>modelName</CODE> and <CODE>iterations</CODE>
+are derived from the model itself and not actually settable.
+ <p>There are several buttons:
+<dl>
+
+<dt> <CODE>More Info</CODE>
+<dd> Brings up this file.
+
+<dt> <CODE>Parameters</CODE>
+<dd> Display the name of the parameter, the value, the value
+the parameter evaluates to and the documentation.
+<dt> <CODE>Generate</CODE>
+<dd> Run the code generator.  Note that the 
+<CODE>compile</CODE>, <CODE>show</CODE> and 
+<CODE>run</CODE> checkboxes determine whether code is generated
+shown and run.
+<dt> <CODE>Cancel</CODE>
+<dd> Stop a Generation that is in progress
+<dt> <CODE>Clear</CODE>
+<dd> Clear the output display
+</dl>
+
+<h3>How the user interface works</h3>
+
+The code generator is controlled by a GeneratorAttribute
+that contains parameters read in from the 
+<I>initialParametersURL</I> parameter.  
+
+ <p>When the user hits View -&gt; Code Generator, the model
+is queried and any necessary updates to the Parameters occurs.
+
+ <p>When the user hits the <CODE>Generate</CODE> button, the model is
+again queried and any necessary updates occur.
+
+ <p>Each of the code generators contains template files
+that determine what command is actually run.
+For example, the
+java code generator uses
+<a href="../ptolemy/copernicus/java/compileCommandTemplate.txt"><CODE>$PTII/ptolemy/copernicus/java/compileCommandTemplate.txt</CODE></a>
+to determine what command to run to generate the code and
+<a href="../ptolemy/copernicus/java/runCommandTemplate.txt"><CODE>$PTII/ptolemy/copernicus/java/runCommandTemplate.txt</CODE></a>
+to determine what command to run the generated code.
+The format of the files is fairly straightforward, parameters are
+substituted in and the command is executed.
+
+We use template files
+so that the code generator can be run without requiring the
+<CODE>make</CODE> program.
+
+<h3>User Interface Limitations</h3>
+
+Unfortunately, this UI has many design issues:
+<menu>
+<li> The interface is cluttered because there are many different
+possible parameters to set.  It is fairly easy to make have an
+interface that generates code in a default directory with default
+names.  However, generating code in non-default locations requires
+understanding how the parameter values affect code generation.
+
+<li> The interface uses Ptolemy Parameters so that we can refer 
+to other Parameters by name and use their values.  This means
+that simple strings need to be enclosed in double quotes.
+
+<li> It would be nice if there was an easier way to see what a
+parameter evaluated to.
+
+</menu>
+ 
+<h2>Deep Code Generation History</h2>
+
 Deep code generation parses Java component definitions, and provides
 an API for accessing the abstract syntax tree.  It is possible,
 in principle, to generate implementations in languages other than
@@ -54,7 +250,7 @@ changes in the Ptolemy type system.  More specfically, the type system
 is Yuhong Xiong's area of research, and Jeff's work was not easy to
 extend to deal with ArrayTokens.
 
-<h2>Ptolemy Classic code generation</h2>
+<h3>Ptolemy Classic code generation</h3>
 
 In Ptolemy Classic code generation, each separate platform had a
 separate domain. This was a slight misuse of the domain
@@ -74,7 +270,7 @@ block etc.  This was very time consuming, and tended to have problems,
 since if a bug was fixed in one Ramp actor, the bug needed to be fixed
 in other Ramp actors in each domain.
 
-The Adaptive Computing System (ACS) domain was an effort to work
+ <p>The Adaptive Computing System (ACS) domain was an effort to work
 around this issue, where the interface to each actor was shared
 between multiple implementations.  This helped make it easier to
 switch between different target implementations, since the ACS Ramp
@@ -119,6 +315,7 @@ generation approach, where each actor contains target specific code.
 using a codeblock.
 
 
+
 <h2><a name="soot">Soot</a></h2>
 Another approach we are trying is to use Soot, which is a 
 Java optimization framework that we hope will have a better AST.
@@ -153,7 +350,43 @@ Soot works with byte codes.  A Java decompiler or disassembler
 can help with debugging
 <dl>
 <dt> <CODE>jode</CODE>
-<dd> <a href="http://jode.sourceforge.net/download.php" target="_top">http://jode.sourceforge.net/download.php</a> - Written in Java, but full GPL, so we can't distribute it.
+<dd> <a href="http://jode.sourceforge.net/download.php"
+target="_top">http://jode.sourceforge.net/download.php</a> - Written
+in Java, but full GPL, so we can't distribute it.
+<CODE>$PTII/bin/configure</CODE> looks for jode in 
+<CODE>$PTII/vendors/jode/1.1.1</CODE>, and if it finds it, then
+<CODE>$PTII/bin/jode</CODE> can be used to invoke jode.
+
+<ol>
+<li> Download <a href="http://prdownloads.sourceforge.net/jode/jode-1.1.1.jar"></a>
+and save it as <CODE>$PTII/ptolemy/vendors/jode/1.1.1/jode.jar</CODE>
+
+<li> Rerun configure:
+<pre>
+cd $PTII
+rm config.*
+./configure
+</pre>
+
+<li> Update <CODE>$PTII/bin/jode</CODE>:
+<pre>
+cd $PTII/bin
+make
+
+</pre>
+
+<li> Test it out be decompiling NamedObj:
+<pre>
+$PTII/bin/jode ptolemy.kernel.util.NamedObj
+</pre>
+
+</ol>
+
+ <br>For example, this command will decompile 
+the Main class that is generated by the deep code generator:
+<pre>
+$PTII/bin/jode ptolemy.copernicus.java.cg.OrthogonalCom.Main 
+</pre>
 
 <dt> <CODE>javap</CODE>
 <dd> <a href="http://java.sun.com/j2se/1.3/docs/tooldocs/solaris/javap.html" target="_top"><CODE>http://java.sun.com/j2se/1.3/docs/tooldocs/solaris/javap.html</CODE></a> - Shipped with Sun's JDK.
@@ -178,34 +411,6 @@ Other possibilities:
 <li> <a href="http://bcel.sourceforge.net/" target="_top"><CODE>http://bcel.sourceforge.net/</CODE></a>
 </menu>
 
-
-<h2>The code generator user interface</h2>
-Christopher Hylands and Professor Edward A. Lee developed a user
-interface to control code generation.  
-
-
-<h2>Applet code generation</h2>
-Ptolemy II can generate the files necessary to run a model as an applet.
-If a model is named <CODE>MyModel</CODE>, and the user selects
-<CODE>foo.bar</CODE> as the package, then saving the model as an
-applet will create a directory called <CODE>$PTII/foo/bar/MyModel</CODE>
-and create the following files for that model:
-<dl>
-<dt> <CODE>makefile</CODE>
-<dd> <CODE>make demo</CODE> will run appletviewer on the HTML files
-
-<dt> <CODE>MyModel.xml</CODE>
-<dd> A local copy of the model
-
-<dt> <CODE>MyModel.htm</CODE>
-<dd> An HTML file containing the code necessary to <CODE>MyModel.xml</CODE>
-
-
-<dt> <CODE>MyModelVergil.htm</CODE>
-<dd> An HTML file containing the code necessary to
-display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet and in text format
-
-</dl>
 
 The applet generator uses the soot framework, though in principle a
 shell script could be used instead.  The applet generator reads
