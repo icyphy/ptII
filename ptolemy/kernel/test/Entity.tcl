@@ -1,6 +1,6 @@
 # Tests for the Entity class
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -42,6 +42,10 @@ if {[info procs _testEntityLinkedRelations] == "" } then {
     source testEnums.tcl
 }
 
+if {[info procs enumToFullNames] == "" } then { 
+    source enums.tcl
+}
+
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
@@ -63,23 +67,23 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addPort pt.kernel.Port} connectedPorts {description in
-    t} {equals java.lang.Object} getClass getContainer getF
-    ullName getName {getPort java.lang.String} getPorts has
-    hCode linkedRelations {newPort java.lang.String} notify
-     notifyAll removeAllPorts {removePort pt.kernel.Port} {
-    setName java.lang.String} toString wait {wait long} {wa
-    it long int} workspace
+  methods:       {addParam pt.data.Param} clone connectedPorts {descript
+    ion int} {equals java.lang.Object} getClass getContaine
+    r getFullName getName {getParam java.lang.String} getPa
+    rams {getPort java.lang.String} getPorts hashCode linke
+    dRelations {newPort java.lang.String} notify notifyAll 
+    removeAllPorts {removeParam java.lang.String} {setName 
+    java.lang.String} toString wait {wait long} {wait long 
+    int} workspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.Workspace java.lang.String}
     
-  properties:    class container fullName name ports
+  properties:    class container fullName name params ports
     
   superclass:    pt.kernel.NamedObj
     
 }}
-
 
 ######################################################################
 ####
@@ -127,7 +131,7 @@ test Entity-5.0 {move port from one entity to another} {
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set a [java::new pt.kernel.Port $old foo]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
     list [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $old] \
@@ -143,7 +147,7 @@ test Entity-5.1 {move port without a name from one entity to another} {
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set old [java::new pt.kernel.Entity $w "Old"]
     set a [java::new pt.kernel.Port $old {}]
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
     _testEntityGetPorts $ramp
 } {{{} b}}
@@ -151,27 +155,15 @@ test Entity-5.1 {move port without a name from one entity to another} {
 ######################################################################
 ####
 # 
-test Entity-5.2 {move port without a name twice} {
+test Entity-5.2 {move port twice} {
     set w [java::new pt.kernel.Workspace]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set old [java::new pt.kernel.Entity $w "Old"]
-    set a [java::new pt.kernel.Port $old {}]
-    $ramp addPort $a
-    catch {$ramp addPort $a} msg
-    list $msg
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into container named ".Ramp", which already contains an object with that name.}}
-
-######################################################################
-####
-# 
-test Entity-5.3 {add port with a name twice after construction} {
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set a [java::new pt.kernel.Port]
-    $ramp addPort $a
-    set b [java::new pt.kernel.Port $ramp b]
-    catch {$ramp addPort $b} msg
-    list $msg
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "b" into container named ".Ramp", which already contains an object with that name.}}
+    set a [java::new pt.kernel.Port $old "Port"]
+    $a setContainer $ramp
+    $a setContainer $ramp
+    list [enumToFullNames [$ramp getPorts]] [enumToFullNames [$old getPorts]]
+} {.Ramp.Port {}}
 
 ######################################################################
 ####
@@ -180,9 +172,9 @@ test Entity-6.0 {remove port by name} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort [$ramp getPort a]
+    [$ramp getPort a] setContainer [java::null]
     list [_testEntityGetPorts $ramp] \
             [expr { [$a getContainer] == [java::null] }] \
             [[$b getContainer] getName]
@@ -191,71 +183,21 @@ test Entity-6.0 {remove port by name} {
 ######################################################################
 ####
 # 
-test Entity-6.1 {remove port twice by name} {
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set a [java::new pt.kernel.Port]
-    $a setName a
-    $ramp addPort $a
-    set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort [$ramp getPort a]
-    catch {$ramp removePort [$ramp getPort a]} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: .Ramp: Attempt to remove null port.}}
-
-######################################################################
-####
-# 
 test Entity-6.2 {remove port by reference} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort $a
+    $a setContainer [java::null]
 
-    list [$ramp description [java::field pt.kernel.Nameable PRETTYPRINT]] \
+    list [$ramp description 15] \
             [expr { [$a getContainer] == [java::null] }] \
             [[$b getContainer] getName]
-} {{pt.kernel.Entity {.Ramp}
-pt.kernel.Port {.Ramp.b}
-} 1 Ramp}
-
-######################################################################
-####
-# 
-test Entity-6.3 {remove port twice by reference} {
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set a [java::new pt.kernel.Port]
-    $a setName a
-    $ramp addPort $a
-    set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort $a
-    catch {$ramp removePort $a} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: .Ramp and .a: Attempt to remove a port from an entity that does not contain it.}}
-
-######################################################################
-####
-# 
-test Entity-6.4 {remove an invalid port with no container} {
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set a [java::new pt.kernel.Port]
-    $a setName a
-    set b [java::new pt.kernel.Port $ramp b]
-    catch {$ramp removePort $a} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: .Ramp and .a: Attempt to remove a port from an entity that does not contain it.}}
-
-######################################################################
-####
-# 
-test Entity-6.5 {remove an invalid port with no container and no name} {
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set a [java::new pt.kernel.Port]
-    set b [java::new pt.kernel.Port $ramp b]
-    catch {$ramp removePort $a} msg
-    list $msg
-} {{pt.kernel.IllegalActionException: .Ramp and .: Attempt to remove a port from an entity that does not contain it.}}
+} {{pt.kernel.Entity {.Ramp} ports {
+pt.kernel.Port {.Ramp.b} links {
+}
+}} 1 Ramp}
 
 ######################################################################
 ####
@@ -264,10 +206,9 @@ test Entity-6.6 {remove port twice by reference, then check state} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort $a
-    catch {$ramp {removePort String} a} msg
+    $a setContainer [java::null]
     list [_testEntityGetPorts $ramp] \
             [expr { [$a getContainer] == [java::null] }]
 } {b 1}
@@ -279,7 +220,7 @@ test Entity-6.7 {set the name of a port to null, then check state} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
     $a setName [java::null]
     list [_testEntityGetPorts $ramp] \
@@ -292,7 +233,7 @@ test Entity-6.8 {remove all ports} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
     set result1 [_testEntityGetPorts $ramp]
     $ramp removeAllPorts
@@ -308,9 +249,9 @@ test Entity-6.9 {remove port set in the constructor by reference} {
     set ramp [java::new pt.kernel.Entity "Ramp"]
     set a [java::new pt.kernel.Port]
     $a setName a
-    $ramp addPort $a
+    $a setContainer $ramp
     set b [java::new pt.kernel.Port $ramp b]
-    $ramp removePort $b
+    $b setContainer [java::null]
     list [_testEntityGetPorts $ramp] \
             [expr { [$b getContainer] == [java::null] }] \
             [[$a getContainer] getName]
@@ -332,7 +273,7 @@ test Entity-7.0 {Connect Entities, then remove a port} {
     $in link $arc
 
     # Remove a port
-    $ramp removePort [$ramp getPort "Ramp out"]
+    [$ramp getPort "Ramp out"] setContainer [java::null]
 
     list [_testEntityLinkedRelations $ramp] \
             [_testRelationLinkedPorts $arc]
@@ -347,3 +288,41 @@ test Entity-8.0 {Create new ports} {
     set p2 [$e1 newPort B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
 } {.X.A .X.B {{A B}}}
+
+######################################################################
+####
+# 
+test Entity-9.0 {Test description} {
+    set w [java::new pt.kernel.Workspace W]
+    set e1 [java::new pt.kernel.Entity $w E1]
+    set p1 [$e1 newPort P1]
+    set p2 [$e1 newPort P2]
+    set r1 [java::new pt.kernel.Relation $w R1]
+    $p1 link $r1
+    $p2 link $r1
+    $w description 31
+} {pt.kernel.Workspace {W} elements {
+pt.kernel.Entity {W.E1} ports {
+pt.kernel.Port {W.E1.P1} links {
+pt.kernel.Relation {W.R1}
+}
+pt.kernel.Port {W.E1.P2} links {
+pt.kernel.Relation {W.R1}
+}
+}
+pt.kernel.Relation {W.R1} links {
+pt.kernel.Port {W.E1.P1}
+pt.kernel.Port {W.E1.P2}
+}
+}}
+
+test Entity-9.1 {Test cloning} {
+    # NOTE: Uses system above
+    set e2 [$e1 clone]
+    $e2 description 15
+} {pt.kernel.Entity {W.E1} ports {
+pt.kernel.Port {W.E1.P1} links {
+}
+pt.kernel.Port {W.E1.P2} links {
+}
+}}

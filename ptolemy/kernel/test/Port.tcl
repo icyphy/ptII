@@ -1,6 +1,6 @@
 # Tests for the Port class
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -67,18 +67,20 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       connectedPorts {description int} {equals java.lang.Obje
-    ct} getClass getContainer getFullName getName hashCode 
-    {isLinked pt.kernel.Relation} {link pt.kernel.Relation}
-     linkedRelations notify notifyAll numLinks {setContaine
-    r pt.kernel.Entity} {setName java.lang.String} toString
-     {unlink pt.kernel.Relation} unlinkAll wait {wait long}
-     {wait long int} workspace
+  methods:       {addParam pt.data.Param} clone connectedPorts {descript
+    ion int} {equals java.lang.Object} getClass getContaine
+    r getFullName getName {getParam java.lang.String} getPa
+    rams hashCode {isLinked pt.kernel.Relation} isOpaque {l
+    ink pt.kernel.Relation} linkedRelations notify notifyAl
+    l numLinks {removeParam java.lang.String} {setContainer
+     pt.kernel.Entity} {setName java.lang.String} toString 
+    {unlink pt.kernel.Relation} unlinkAll wait {wait long} 
+    {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}
     
-  properties:    class container fullName name
+  properties:    class container fullName name opaque params
     
   superclass:    pt.kernel.NamedObj
     
@@ -371,11 +373,67 @@ test Port-11.1 {Move Port in and out of the workspace} {
     set p3 [java::new pt.kernel.Port $e1 P3]
     set r1 [enumToFullNames [$w elements]]
     set r2 [enumToFullNames [$e1 getPorts]]
-    $e1 removePort $p2
+    $p2 setContainer [java::null]
     $p3 setContainer [java::null]
     set r3 [enumToFullNames [$w elements]]
     set r4 [enumToFullNames [$e1 getPorts]]
     list $r1 $r2 $r3 $r4
-} {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1 .P3} {}}
+} {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1 .P2 .P3} {}}
 
+######################################################################
+####
+# 
+test Port-12.1 {Test description} {
+    set w [java::new pt.kernel.Workspace]
+    set e1 [java::new pt.kernel.Entity $w E1]
+    set p1 [java::new pt.kernel.Port $e1 P1]
+    set r1 [java::new pt.kernel.Relation $w R1]
+    set r2 [java::new pt.kernel.Relation $w R2]
+    $p1 description 7
+} {pt.kernel.Port {.E1.P1} links {
+}}
 
+test Port-12.2 {Test description} {
+    # NOTE: Builds on previous example.
+    $p1 link $r1
+    $p1 link $r2
+    $p1 description 7
+} {pt.kernel.Port {.E1.P1} links {
+pt.kernel.Relation {.R1}
+pt.kernel.Relation {.R2}
+}}
+
+test Port-12.3 {Test description} {
+    # NOTE: Builds on previous example.
+    $p1 description 6
+} {{.E1.P1} links {
+{.R1}
+{.R2}
+}}
+
+test Port-12.4 {Test description on workspace} {
+    # NOTE: Builds on previous example.
+    $w description 15
+} {pt.kernel.Workspace {} elements {
+pt.kernel.Entity {.E1}
+pt.kernel.Relation {.R1} links {
+pt.kernel.Port {.E1.P1}
+}
+pt.kernel.Relation {.R2} links {
+pt.kernel.Port {.E1.P1}
+}
+}}
+
+######################################################################
+####
+# 
+test Port-13.1 {Test clone} {
+    set w [java::new pt.kernel.Workspace]
+    set e1 [java::new pt.kernel.Entity $w E1]
+    set p1 [java::new pt.kernel.Port $e1 P1]
+    set r1 [java::new pt.kernel.Relation $w R1]
+    $p1 link $r1
+    set p2 [$p1 clone]
+    $p2 description 7
+} {pt.kernel.Port {.P1} links {
+}}

@@ -62,20 +62,21 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addPort pt.kernel.Port} connectedPorts {description in
-    t} {equals java.lang.Object} getClass getContainer getF
-    ullName getName {getPort java.lang.String} getPorts has
-    hCode isAtomic linkedRelations {newPort java.lang.Strin
-    g} notify notifyAll removeAllPorts {removePort pt.kerne
-    l.Port} {setContainer pt.kernel.CompositeEntity} {setNa
-    me java.lang.String} toString wait {wait long} {wait lo
-    ng int} workspace
+  methods:       {addParam pt.data.Param} clone connectedPorts {descript
+    ion int} {equals java.lang.Object} getClass getContaine
+    r getFullName getName {getParam java.lang.String} getPa
+    rams {getPort java.lang.String} getPorts hashCode isAto
+    mic linkedRelations {newPort java.lang.String} notify n
+    otifyAll removeAllPorts {removeParam java.lang.String} 
+    {setContainer pt.kernel.CompositeEntity} {setName java.
+    lang.String} toString wait {wait long} {wait long int} 
+    workspace
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mponentEntity pt.kernel.Workspace}
     
-  properties:    atomic class container fullName name ports
+  properties:    atomic class container fullName name params ports
     
   superclass:    pt.kernel.Entity
     
@@ -125,6 +126,18 @@ test ComponentEntity-5.1 {Create new ports} {
     set p2 [$e1 newPort B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
 } {X.Y.A X.Y.B {{A B}}}
+
+test ComponentEntity-5.2 {Test clone} {
+    set e2 [$e1 clone]
+    $e2 description 31
+} {pt.kernel.ComponentEntity {X.Y} ports {
+pt.kernel.ComponentPort {X.Y.A} links {
+} insidelinks {
+}
+pt.kernel.ComponentPort {X.Y.B} links {
+} insidelinks {
+}
+}}
 
 ######################################################################
 ####

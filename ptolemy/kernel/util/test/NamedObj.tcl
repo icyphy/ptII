@@ -1,6 +1,6 @@
 # Tests for the NamedObj class
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs enumToObjects] == "" } then { 
+     source enums.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -57,16 +61,18 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       {description int} {equals java.lang.Object} getClass ge
-    tContainer getFullName getName hashCode notify notifyAl
-    l {setName java.lang.String} toString wait {wait long} 
-    {wait long int} workspace
+  methods:       {addParam pt.data.Param} clone {description int} {equal
+    s java.lang.Object} getClass getContainer getFullName g
+    etName {getParam java.lang.String} getParams hashCode n
+    otify notifyAll {removeParam java.lang.String} {setName
+     java.lang.String} toString wait {wait long} {wait long
+     int} workspace
     
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
     } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str
     ing}
     
-  properties:    class container fullName name
+  properties:    class container fullName name params
     
   superclass:    java.lang.Object
     
@@ -115,29 +121,13 @@ test NamedObj-2.3 { Check names with dots} {
 
 ######################################################################
 ####
-# 
+# FIXME:  test addParam, removeParam, getParam, getParams
 # test NamedObj-3.1 {Experiment with Parameters} {
 #     set n [java::new pt.kernel.NamedObj]
-#     set paramlist [$n getParamList]
-# 
-#     # Create two ParamTest objects, add them to the NamedObjList
-#     set paramtest1 [java::new pt.kernel.test.ParamTest]
-#     $paramtest1 setName "first param"
-#     $paramtest1 setValue int 42
-# 
-#     set paramtest2 [java::new pt.kernel.test.ParamTest]
-#     $paramtest2 setName "second param"
-#     $paramtest2 setValue int -4
-# 
-#     $paramlist append $paramtest2
-#     $paramlist prepend $paramtest1
-# 
-#     # Get the NamedList again.
-#     set paramlist1a [$n getParamList]
-#     set paramtest1a [$paramlist1a {get String} "first param"]
-#     set paramtest2a [$paramlist1a {get String} "second param"]
-#     list [$paramtest1a getName] [$paramtest1a getValue] \
-# 	    [$paramtest2a getName] [$paramtest2a getValue]
+#     set a1 [java::new pt.data.Param A1 1]
+#     set a2 [java::new pt.data.Param A2 2]
+#     $n addParam $a1
+#     set result [enumToFullNames [$n getParams]]
 # } {{first param} 42 {second param} -4}
 
 ######################################################################
@@ -177,7 +167,6 @@ test NamedObj-6.1 {Test toString} {
     list [$a toString] [$b toString] [$c toString]
 } {{pt.kernel.NamedObj {.}} {pt.kernel.NamedObj {foo.}} {pt.kernel.NamedObj {foo.car}}}
 
-
 ######################################################################
 ####
 # 
@@ -186,25 +175,60 @@ test NamedObj-6.2 {Test description} {
     set a [java::new pt.kernel.NamedObj]
     set b [java::new pt.kernel.NamedObj $n ""]
     set c [java::new pt.kernel.NamedObj $n "car" ]
-    list "[$a description [java::field pt.kernel.Nameable QUIET]]\n\
-	    [$b description [java::field pt.kernel.Nameable QUIET]]\n\
-	    [$c description [java::field pt.kernel.Nameable QUIET]]\n\
-	    [$a description [java::field pt.kernel.Nameable CONTENTS]]\
-	    [$b description [java::field pt.kernel.Nameable CONTENTS]]\
-	    [$c description [java::field pt.kernel.Nameable CONTENTS]]\
-	    [$a description [java::field pt.kernel.Nameable CONNECTIONS]]\
-	    [$b description [java::field pt.kernel.Nameable CONNECTIONS]]\
-	    [$c description [java::field pt.kernel.Nameable CONNECTIONS]]\
-	    [$a description [java::field pt.kernel.Nameable PRETTYPRINT]]\
-	    [$b description [java::field pt.kernel.Nameable PRETTYPRINT]]\
-	    [$c description [java::field pt.kernel.Nameable PRETTYPRINT]]"
+    list "[$a description [java::field pt.kernel.Nameable NAME]]\n\
+	    [$b description [java::field pt.kernel.Nameable NAME]]\n\
+	    [$c description [java::field pt.kernel.Nameable NAME]]\n\
+	    [$n description [java::field pt.kernel.Nameable NAME]]"
+} {{{.}
+ {foo.}
+ {foo.car}
+ {foo}}}
+
+test NamedObj-6.3 {Test description} {
+    set n [java::new pt.kernel.Workspace "foo"]
+    set a [java::new pt.kernel.NamedObj]
+    set b [java::new pt.kernel.NamedObj $n ""]
+    set c [java::new pt.kernel.NamedObj $n "car" ]
+    list "[$a description 3]\n\
+	    [$b description 3]\n\
+	    [$c description 3]\n\
+	    [$n description 3]"
 } {{pt.kernel.NamedObj {.}
  pt.kernel.NamedObj {foo.}
  pt.kernel.NamedObj {foo.car}
- pt.kernel.NamedObj {.}
- pt.kernel.NamedObj {foo.}
- pt.kernel.NamedObj {foo.car}
-    pt.kernel.NamedObj {.}
- pt.kernel.NamedObj {foo.}
- pt.kernel.NamedObj {foo.car}
-}}
+ pt.kernel.Workspace {foo}}}
+
+######################################################################
+####
+# 
+test NamedObj-7.1 {Test clone} {
+    set n [java::new pt.kernel.Workspace "N"]
+    set a [java::new pt.kernel.NamedObj $n "A" ]
+    set b [$a clone]
+    $b description 3
+} {pt.kernel.NamedObj {N.A}}
+
+######################################################################
+####
+# 
+test NamedObj-8.1 {Test params} {
+    set n [java::new pt.kernel.Workspace "N"]
+    set a [java::new pt.kernel.NamedObj $n "A" ]
+    set p [java::new {pt.data.Param pt.kernel.NamedObj java.lang.String java.lang.String} $a "P" 1]
+    $a addParam $p
+    set c [$a getParam "P"]
+    expr {$c == $p}
+} {1}
+
+# NOTE: Builds on previous example.
+test NamedObj-8.2 {Test params} {
+    set q [java::new {pt.data.Param pt.kernel.NamedObj java.lang.String java.lang.String} $a "Q" 2]
+    $a addParam $q
+    enumToFullNames [$a getParams]
+} {N.A.P N.A.Q}
+
+# NOTE: Builds on previous example.
+test NamedObj-8.3 {Test params} {
+    $a removeParam P
+    enumToFullNames [$a getParams]
+} {N.A.Q}

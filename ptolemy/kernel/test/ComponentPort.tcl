@@ -66,22 +66,25 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       connectedPorts deepConnectedPorts deepInsidePorts {desc
-    ription int} {equals java.lang.Object} getClass getCont
-    ainer getFullName getName hashCode insidePorts insideRe
-    lations {isDeeplyConnected pt.kernel.ComponentPort} {is
-    InsideLinked pt.kernel.Relation} {isLinked pt.kernel.Re
-    lation} {liberalLink pt.kernel.Relation} {link pt.kerne
-    l.Relation} linkedRelations notify notifyAll numInsideL
-    inks numLinks {setContainer pt.kernel.Entity} {setName 
-    java.lang.String} toString {unlink pt.kernel.Relation} 
-    unlinkAll wait {wait long} {wait long int} workspace
+  methods:       {addParam pt.data.Param} clone connectedPorts deepConne
+    ctedPorts deepInsidePorts {description int} {equals jav
+    a.lang.Object} getClass getContainer getFullName getNam
+    e {getParam java.lang.String} getParams hashCode inside
+    Ports insideRelations {isDeeplyConnected pt.kernel.Comp
+    onentPort} {isInsideLinked pt.kernel.Relation} {isLinke
+    d pt.kernel.Relation} isOpaque {liberalLink pt.kernel.C
+    omponentRelation} {link pt.kernel.Relation} linkedRelat
+    ions notify notifyAll numInsideLinks numLinks {removePa
+    ram java.lang.String} {setContainer pt.kernel.Entity} {
+    setName java.lang.String} toString {unlink pt.kernel.Re
+    lation} unlinkAll wait {wait long} {wait long int} work
+    space
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
     entPort pt.kernel.Workspace}
     
-  properties:    class container fullName name
+  properties:    class container fullName name opaque params
     
   superclass:    pt.kernel.Port
     
@@ -310,8 +313,6 @@ test ComponentPort-5.1 {Transparent entity} {
             [enumToNames [$p5 deepConnectedPorts]]
 } {{P3 P5} P1 {P1 P5} P5 {P1 P3}}
 
-######################################################################
-#### 
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.2 {numInsideLinks} {
     list [$p1 numInsideLinks] \
@@ -321,10 +322,30 @@ test ComponentPort-5.2 {numInsideLinks} {
             [$p5 numInsideLinks]
 } {0 1 0 1 0}
 
-######################################################################
-#### 
 # NOTE: Uses topology built in 5.1
-test ComponentPort-5.3 {unlinkAll} {
+test ComponentPort-5.3 {test description} {
+    $p2 description 31
+} {pt.kernel.ComponentPort {.E0.E2.P2} links {
+pt.kernel.ComponentRelation {.E0.R1}
+} insidelinks {
+pt.kernel.ComponentRelation {.E0.E2.R2}
+}}
+
+# NOTE: Uses topology built in 5.1
+test ComponentPort-5.4 {test description} {
+    $p2 description 3
+} {pt.kernel.ComponentPort {.E0.E2.P2}}
+
+# NOTE: Uses topology built in 5.1
+test ComponentPort-5.5 {test clone} {
+    set pn [$p2 clone]
+    $pn description 31
+} {pt.kernel.ComponentPort {.P2} links {
+} insidelinks {
+}}
+
+# NOTE: Uses topology built in 5.1
+test ComponentPort-6.0 {unlinkAll} {
     $p2 unlinkAll
     list [enumToNames [$p1 deepConnectedPorts]] \
             [enumToNames [$p2 deepConnectedPorts]] \
