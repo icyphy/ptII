@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -40,7 +40,7 @@ import ptolemy.actor.CompositeActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemoveRelation
-/** 
+/**
 A request to remove a relation.  The execute() method of this request
 unlinks the relation from all ports and sets its container to null.
 
@@ -54,7 +54,7 @@ public class RemoveRelation extends ChangeRequest {
      *  relation to be removed.
      *  @param originator The source of the change request.
      *  @param actor The relatoin to remove.
-     */	
+     */
     public RemoveRelation(Nameable originator, ComponentRelation relation) {
         super(originator, "Remove " + relation.getFullName());
         _relation = relation;
@@ -70,7 +70,7 @@ public class RemoveRelation extends ChangeRequest {
      *  schedule and type resolution may be invalid.
      *  @exception ChangeFailedException If the wrapup() method throws it,
      *   or if the actor is not an instance of ComponentEntity.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         try {
             _relation.unlinkAll();

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Connect
-/** 
+/**
 A request to connect two ports.  When this request is executed, if
 the container of either port implements the Actor interface, then both
 the schedule and the type resolution are invalidated, forcing them to
@@ -55,7 +55,7 @@ public class Connect extends ChangeRequest {
      *  @param originator The source of the change request.
      *  @param port1 The first port.
      *  @param port2 The second port.
-     */	
+     */
     public Connect(Nameable originator, ComponentPort port1,
             ComponentPort port2) {
         super(originator, "Connect port "
@@ -75,7 +75,7 @@ public class Connect extends ChangeRequest {
      *  @exception ChangeFailedException If the container rejects the
      *   connection, for example because it crosses hierarchy levels,
      *   or if the first port has no container.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         try {
             ComponentEntity firstContainer

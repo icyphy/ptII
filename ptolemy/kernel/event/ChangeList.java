@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeList
-/** 
+/**
 A list of change requests to execute all at once.  To ensure that a
 set of changes is executed in one step, between two iterations,
 collect the requested changes in a ChangeList and register that
@@ -51,7 +51,7 @@ public class ChangeList extends ChangeRequest {
      *  The change list is initially empty.
      *  @param originator The source of the change request.
      *  @param description A description of the batch of changes.
-     */	
+     */
     public ChangeList(Nameable originator, String description) {
         super(originator, description);
     }
@@ -60,7 +60,7 @@ public class ChangeList extends ChangeRequest {
     ////                         public methods                    ////
 
     /** Add a change to the list.
-     */	
+     */
     public void add(ChangeRequest change) {
         if (_changes == null) {
             _changes = new LinkedList();
@@ -74,7 +74,7 @@ public class ChangeList extends ChangeRequest {
      *  will have been executed.
      *  @exception ChangeFailedException If any of the change requests
      *   in the list throw it.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         if (_changes != null) {
             Enumeration changes = _changes.elements();

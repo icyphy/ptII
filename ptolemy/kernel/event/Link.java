@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Link
-/** 
+/**
 A request to link a port to a relation.  When this request is executed, if
 the container of the port implements the Actor interface, then both
 the schedule and the type resolution are invalidated, forcing them to
@@ -55,7 +55,7 @@ public class Link extends ChangeRequest {
      *  @param originator The source of the change request.
      *  @param port The port to link.
      *  @param relation The relation to link.
-     */	
+     */
     public Link(Nameable originator, ComponentPort port,
             ComponentRelation relation) {
         super(originator, "Link port "
@@ -74,7 +74,7 @@ public class Link extends ChangeRequest {
      *  type resolution and the schedule, if there is one, are invalid.
      *  @exception ChangeFailedException If the port rejects the
      *   link, for example because it crosses hierarchy levels.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         try {
             _port.link(_relation);

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -37,7 +37,7 @@ import ptolemy.actor.Director;
 
 //////////////////////////////////////////////////////////////////////////
 //// InitializeActor
-/** 
+/**
 A request to initialize an actor.  This class is used for certain
 kinds of mutations where the actor can be created directly (not via
 a queued mutation), but the initialization of the actor must be
@@ -57,7 +57,7 @@ public class InitializeActor extends ChangeRequest {
      *  Nameable interface or a ClassCastException will occur.
      *  @param originator The source of the change request.
      *  @param actor The actor.
-     */	
+     */
     public InitializeActor(Nameable originator, Actor actor) {
         super(originator, "Initialize " + ((Nameable)actor).getFullName());
         _actor = actor;
@@ -71,7 +71,7 @@ public class InitializeActor extends ChangeRequest {
      *  and type resolution may be invalid.
      *  @exception ChangeFailedException If the initialize() method throws
      *   an exception.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         try {
             _actor.initialize();

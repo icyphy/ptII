@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -39,7 +39,7 @@ import ptolemy.actor.Director;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemoveActor
-/** 
+/**
 A request to remove an actor.  The execute() method of this request
 invokes the wrapup() method of the actor, then disconnects it from
 the topology and sets its container to null.
@@ -55,7 +55,7 @@ public class RemoveActor extends ChangeRequest {
      *  Nameable interface or a ClassCastException will occur.
      *  @param originator The source of the change request.
      *  @param actor The actor to remove.
-     */	
+     */
     public RemoveActor(Nameable originator, Actor actor) {
         super(originator, "Remove " + ((Nameable)actor).getFullName());
         _actor = actor;
@@ -70,7 +70,7 @@ public class RemoveActor extends ChangeRequest {
      *  schedule and type resolution may be invalid.
      *  @exception ChangeFailedException If the wrapup() method throws it,
      *   or if the actor is not an instance of ComponentEntity.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         try {
             _actor.wrapup();

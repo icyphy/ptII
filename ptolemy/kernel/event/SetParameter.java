@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -37,7 +37,7 @@ import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// SetParameter
-/** 
+/**
 A request for a parameter value change.  The change is realized via
 the setExpression() method of the Parameter class, followed by getToken()
 (to force evaluation of the expression).
@@ -54,7 +54,7 @@ public class SetParameter extends ChangeRequest {
      *  @param parameter The parameter to change.
      *  @param expression The expression giving the new value of the
      *   parameter.
-     */	
+     */
     public SetParameter(Nameable originator, Parameter parameter,
             String expression) {
         super(originator, "Change value of parameter "
@@ -71,7 +71,7 @@ public class SetParameter extends ChangeRequest {
      *  @see ptolemy.data.expr.Parameter#setExpression
      *  @exception ChangeFailedException If the container of the parameter
      *   rejects the expression.
-     */	
+     */
     public void execute() throws ChangeFailedException {
         // FIXME: Put this back in when getToken() is fixed.
         // try {

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequest
-/** 
+/**
 Abstract base class for change requests.  A change request is any
 modification to a model that might be performed during execution of the
 model, but where there might only be certain phases of execution during
@@ -62,7 +62,7 @@ public abstract class ChangeRequest {
     /** Construct a request with the specified originator and description.
      *  @param originator The source of the change request.
      *  @param description A description of the change request.
-     */	
+     */
     protected ChangeRequest(Nameable originator, String description) {
         _description = description;
         _originator = originator;
@@ -74,19 +74,19 @@ public abstract class ChangeRequest {
     /** Execute the change.  This method is defined in derived classes,
      *  which are specialized to particular changes.
      *  @exception ChangeFailedException If the change fails.
-     */	
+     */
     public abstract void execute() throws ChangeFailedException;
 
     /** Get the description
      *  @return The description of the change.
-     */	
+     */
     public String getDescription() {
         return _description;
     }
 
     /** Get the source of the change request.
      *  @return The source of the change request.
-     */	
+     */
     public Nameable getOriginator() {
         return _originator;
     }
