@@ -161,9 +161,9 @@ import ptolemy.util.StringUtilities;
    "long long" instead.
 
    <ol>
-   <li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root>
-   is the installation root (eg., c:/jdk1.1.7A).
-
+   <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
+    Where <code><i>jdk_root</i></code> is the installation root (eg.,
+   <code>c:/Program Files/Java/jdk1.5.0_01</code>
    <li> Replace the segment:
    </ol>
 
