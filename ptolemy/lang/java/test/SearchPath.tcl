@@ -115,7 +115,7 @@ test SearchPath-1.5 {create a search path with a null propertyName and \
 #
 test SearchPath-2.0 {openSource} {
     set searchPath [java::field ptolemy.lang.java.SearchPath UNNAMED_PATH]
-    set file [$searchPath openSource ReflectTest false]
+    set file [$searchPath openSource ReflectTest]
     set knownFile [java::new java.io.File "ReflectTest.java"]
     set canonicalFile [$file getCanonicalFile] 
     set canonicalKnownFile [$knownFile getCanonicalFile]
@@ -127,7 +127,7 @@ test SearchPath-2.0 {openSource} {
 #
 test SearchPath-2.1 {openSource on not-a-file} {
     set searchPath [java::field ptolemy.lang.java.SearchPath UNNAMED_PATH]
-    set file [$searchPath openSource not-a-file false]
+    set file [$searchPath openSource not-a-file]
      list [java::isnull $file]
 } {1}
 
