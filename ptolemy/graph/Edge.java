@@ -28,18 +28,15 @@
 
 package ptolemy.graph;
 
-//////////////////////////////////////////////////////////////////////////
-//// Edge
+////////////////////////////////////////////////////////////////////////// //
+//Edge
 /**
-A weighted or unweighted edge for a directed or undirected graph.
-Edges are immutable, and should
-normally created only by classes of
-graphs that contain them. The connectivity of edges is specified by
-"source" nodes and "sink" nodes.  A directed edge is directed "from"
-its source node "to" its sink node.  For an undirected edge, the
-source node is simply the first node that was specified when the edge
-was created, and the sink node is the second node.  This convention
-allows undirected edges to later be converted in a consistent manner
+A weighted or unweighted edge for a directed or undirected graph.  The
+connectivity of edges is specified by "source" nodes and "sink" nodes.  A
+directed edge is directed "from" its source node "to" its sink node.  For an
+undirected edge, the source node is simply the first node that was specified
+when the edge was created, and the sink node is the second node.  This
+convention allows undirected edges to later be converted in a consistent manner
 to directed edges, if desired.
 
 <p>On creation of an edge, an arbitrary object can be associated with the edge
@@ -49,6 +46,9 @@ weight of an unweighted edge.
 
 <p>Self-loop edges (edges whose source and sink nodes are identical)
 are allowed.
+
+<p> Edges are immutable: the source node, sink node, and weight of an edge
+cannot be changed. 
 
 @author Shuvra S. Bhattacharyya
 @version $Id$

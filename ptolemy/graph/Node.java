@@ -37,6 +37,8 @@ object that is associated with the node).  We say that a node is
 attempt to access the weight of an unweighted node. Node weights must be
 genuine (non-null) objects.
 
+<p> Nodes are immutable.
+
 @author Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 2.0
