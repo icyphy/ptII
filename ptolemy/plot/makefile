@@ -1,4 +1,4 @@
- Makefile for Java ptplot program
+# Makefile for Java ptplot program
 #
 # @Authors: Christopher Hylands
 #
