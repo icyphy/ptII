@@ -377,10 +377,11 @@ test TimeKeeper-7.1 {Check sendOutNullTokens} {
     $rcvr setCapacity 1
 
     set hasRoom [$rcvr hasRoom]
+    $keeper setCurrentTime 5.0
     $keeper sendOutNullTokens
     set noRoom [$rcvr hasRoom]
 
     set val [$rcvr getRcvrTime]
     
     list $val $hasRoom $noRoom
-} {0.0 1 0}
+} {5.0 1 0}
