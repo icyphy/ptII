@@ -300,18 +300,18 @@ public class CTMultiSolverDirector extends CTDirector {
         _discretePhaseExecution();
     }
 
-    /** Return the ODE solver.
-     *  @return The default ODE solver
-     */
-    public ODESolver getODESolver() {
-        return _defaultSolver;
-    }
-
     /** Return the breakpoint ODE solver.
      *  @return The breakpoint ODE solver.
      */
     public ODESolver getBreakpointSolver() {
         return _breakpointSolver;
+    }
+
+    /** Return the ODE solver.
+     *  @return The default ODE solver
+     */
+    public ODESolver getODESolver() {
+        return _defaultSolver;
     }
 
     /** Initialization after type resolution.
