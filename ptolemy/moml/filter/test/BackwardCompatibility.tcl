@@ -665,7 +665,70 @@ model is known as a Lorenz attractor.</text>
 </entity>
 }}
 
-test BackwardCompatiblity-10.1 {Try running old models, first check that the makefile created the compat/ directory} { 
+
+test BackwardCompatiblity-11.1 {Call toString on all the filters} {
+    set filters [$parser getMoMLFilters]
+    # listToStrings is defined in  util/testsuite/enums.tcl
+    listToStrings $filters
+} {{ptolemy.moml.filter.AddEditorFactory: If a parameter has a _location, then
+add a VisibleParameterEditorFactory named _editorFactory.
+} {ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
+of one of the parameters.
+The affected actors are:
+	ptolemy.actor.lib.Scale
+	ptolemy.actor.lib.Const
+	ptolemy.actor.lib.TrigFunction
+	ptolemy.actor.lib.MathFunction
+	ptolemy.actor.lib.Expression
+} {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
+Below are original class names followed bythe new class names.
+	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
+'annotation1', then add _hideName if necessary.
+} {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
+renamed.
+Below are the actors that are affected, along
+with the old port name and the new port name:	ptolemy.actor.lib.Sleep
+		delay	 -> sleepTime
+	ptolemy.actor.lib.conversions.ComplexToCartesian
+		imag	 -> y
+		real	 -> x
+	ptolemy.actor.lib.conversions.CartesianToComplex
+		imag	 -> y
+		real	 -> x
+} {ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names that have
+been renamed.
+Below are the actors that are affected, along
+with the port name and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.actor.lib.javasound.AudioReader
+		sourceURL	 -> ptolemy.data.expr.Parameter
+	ptolemy.actor.lib.Expression
+		expression	 -> ptolemy.kernel.util.StringAttribute
+	ptolemy.domains.sdf.lib.vq.VQDecode
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.HTVQEncode
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.ImagePartition
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+} {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
+This filter is used by the nightly build, and
+can be used to run applets so that files like
+diva.jar do not need to be downloaded.
+The following actors are affected:
+ptolemy.vergil.toolbox.AnnotationEditorFactorywill be removed
+ptolemy.vergil.basic.NodeControllerFactorywill be removed
+ptolemy.vergil.icon.UpdatedValueIconwill be removed
+ptolemy.vergil.toolbox.VisibleParameterEditorFactorywill be replaced by ptolemy.kernel.util.Attribute
+ptolemy.vergil.icon.AttributeValueIconwill be removed
+ptolemy.vergil.icon.BoxedValueIconwill be removed
+ptolemy.vergil.icon.ValueIconwill be replaced by ptolemy.kernel.util.Attribute
+}}
+
+test BackwardCompatiblity-11.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
 	error "compat directory does not exist.  This could happen\
 		If you do not have access to old Ptolemy II tests"
