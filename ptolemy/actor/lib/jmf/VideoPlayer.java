@@ -55,10 +55,10 @@ import javax.swing.JFrame;
 //// VideoPlayer
 /** An actor that displays a AVI, Quicktime or MPEG video file.
 
-This actor accepts an ObjectToken that contains a DataSource.
-This is typically obtained from the output of the StreamLoader
-actor.  After the model is runned, a window will pop up
-allowing control of playing, rate of playback, and volume control.
+<p>This actor accepts an ObjectToken that contains a DataSource.  This
+is typically obtained from the output of the StreamLoader actor.
+After the model is run, a window will pop up allowing control of
+playing, rate of playback, and volume control.
 
 @author James Yeh
 @version $Id$

@@ -188,7 +188,7 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (_framePositioningControl == null) {
             throw new IllegalActionException(null,
-                    "Failed to get Frame Poisitioning Control");
+                    "Failed to get Frame Positioning Control");
         }
 
         _frameGrabbingControl =

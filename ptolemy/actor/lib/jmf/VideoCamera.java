@@ -144,7 +144,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
     /** This parameter lets the user select the device to use.
      *  Typically this parameter is of no concern and should be left
-     *  at 0.  However, if a computer has more than one useable
+     *  at 0.  However, if a computer has more than one usable
      *  cameras, this parameter can be used to choose amongst them.
      */
     public Parameter deviceNumber;
@@ -215,7 +215,8 @@ public class VideoCamera extends Source implements ControllerListener {
         // an exception.
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
-                    "No video capture devices found by the Java Media Framework.");
+                    "No video capture devices found by the "
+                    + "Java Media Framework.");
         }
 
         // List the devices in the debug window.
@@ -243,12 +244,10 @@ public class VideoCamera extends Source implements ControllerListener {
             _processor = Manager.createProcessor(locator);
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create a processor for the media locator. "
-                    + "Note that you may need to run jmfinit, which is found "
-                    + "in the JMF directory, for example c:/Program Files/"
-                    + "JMF2.1.1/bin.  The orginal exception was: "
-                    + locator);
-        }
+                    "Failed to create a processor for the media locator '"
+                    + locator + "'. Note that you may need to run jmfinit, "
+                    + "which is found in the JMF directory, for example "
+                    + "c:/Program Files/JMF2.1.1/bin); }
 
         // Make this a control listener.
         _processor.addControllerListener(this);
@@ -315,7 +314,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         // NOTE: Can get a visual component (which displays the video)
         // by calling _processor.getVisualComponent(), and a small control
-        // panell with a pause button by calling
+        // panel with a pause button by calling
         // _processor.getControlPanelComponent().
 
         // Start the processor.

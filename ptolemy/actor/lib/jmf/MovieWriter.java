@@ -25,6 +25,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jmf;
@@ -393,6 +395,21 @@ public class MovieWriter extends Sink
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    protected boolean _waitForFileDone() throws IllegalActionException {
+        synchronized(_waitFileSync) {
+            try {
+                while (!_fileDone) {
+                    _waitFileSync.wait();
+                }
+            } catch (Exception e) {
+                throw new IllegalActionException(null, e,
+                        "Failed block the processor until it state"
+                        + " transition completed.");
+            }
+        }
+        return _fileSuccess;
+    }
+
     /** Block until the processor has transitioned to the given state.
      *  @return false if the transition failed.
      */
@@ -411,20 +428,9 @@ public class MovieWriter extends Sink
         return _stateTransitionOK;
     }
 
-    protected boolean _waitForFileDone() throws IllegalActionException {
-        synchronized(_waitFileSync) {
-            try {
-                while (!_fileDone) {
-                    _waitFileSync.wait();
-                }
-            } catch (Exception e) {
-                throw new IllegalActionException(null, e,
-                        "Failed block the processor until it state"
-                        + " transition completed.");
-            }
-        }
-        return _fileSuccess;
-    }
+
+    ///////////////////////////////////////////////////////////////
+    ////                       public inner class              ////
 
     private class ImageDataSource extends PullBufferDataSource {
         public ImageDataSource(int width, int height) {

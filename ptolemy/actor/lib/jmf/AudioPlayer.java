@@ -59,7 +59,7 @@ import javax.swing.JFrame;
    This actor accepts an ObjectToken that contains a DataSource.
    This is typically obtained from the output of the StreamLoader
    actor.  This actor will play Datasources containing a MP3, MIDI, and
-klj   CD Audio file.  After the model is runned, a window will pop up
+   CD Audio file.  After the model is run, a window will pop up
    allowing control of playing, rate of playback, and volume control.
 
    @author James Yeh
