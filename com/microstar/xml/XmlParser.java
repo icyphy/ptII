@@ -1242,7 +1242,7 @@ public class XmlParser {
 	dataBufferAppend(')');
 	break;
       } else if (c != sep) {
-	error("bad separator in content model", c, sep);
+	error("bad separator in content model" , c, "'" + sep + "'");
 	return;
       } else {
 	dataBufferAppend(c);
