@@ -742,6 +742,8 @@ public class Plot extends PlotBox {
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // The y position of the zero line.
             double zeroypos = _lry - (long) ((0-_yMin) * _yscale);
+            if (_lry < zeroypos) zeroypos = _lry;
+            if (_uly > zeroypos) zeroypos = _uly;
             graphics.drawLine((int)xpos, (int)ypos, (int)xpos,
                     (int)zeroypos);
         }
