@@ -164,20 +164,37 @@ public class SDFCodeGenerator extends CompositeActorApplication
          _codeGenClassFactory.createPtolemyTypeIdentifier();
                            
         while (bufferItr.hasNext()) {        
-           BufferInfo bufInfo = (BufferInfo) bufferItr.next();
+           BufferInfo bufferInfo = (BufferInfo) bufferItr.next();
            
            TypeNode dataTypeNode = 
-            typeID.encapsulatedDataType(bufInfo.type);
-            
-           int buffDimension = (bufInfo.width <= 1) ? 1 : 2;
+            typeID.encapsulatedDataType(bufferInfo.type);
+           
+           int bufferWidth = bufferInfo.width;             
+           int bufferDimension = (bufferWidth <= 1) ? 1 : 2;
            
            TypeNode typeNode = TypeUtility.makeArrayType(dataTypeNode,
-            buffDimension);
+            bufferDimension);
+            
+           int bufferLength = bufferInfo.length;
+           
+           LinkedList dimExprList = TNLManip.cons(new IntLitNode(
+            String.valueOf(bufferLength)));
+           
+           if (bufferDimension > 1) {
+              dimExprList.addFirst(new IntLitNode(
+               String.valueOf(bufferWidth)));           
+           } 
+           
+           TypeNode dataBaseTypeNode = TypeUtility.arrayBaseType(dataTypeNode);
+           int dataTypeDims = TypeUtility.arrayDimension(dataTypeNode);
+           
+           AllocateArrayNode allocateArrayNode = new AllocateArrayNode(
+            dataBaseTypeNode, dimExprList, dataTypeDims, AbsentTreeNode.instance);
             
            FieldDeclNode fieldDeclNode = new FieldDeclNode(
-            PUBLIC_MOD | STATIC_MOD, typeNode,
-            new NameNode(AbsentTreeNode.instance, bufInfo.codeGenName),
-            AbsentTreeNode.instance);    
+            PUBLIC_MOD | STATIC_MOD | FINAL_MOD, typeNode,
+            new NameNode(AbsentTreeNode.instance, bufferInfo.codeGenName),
+            allocateArrayNode);    
            
            memberList.add(fieldDeclNode);           
         }        
@@ -226,6 +243,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
               List connectedPortList = port.connectedPortList();
                                            
               String[] bufferNames = new String[inputWidth];
+              int[] bufferLengths = new int[inputWidth];
               
               Receiver[][] receivers = port.getReceivers();
               
@@ -289,6 +307,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                   BufferInfo bufferInfo = 
                    (BufferInfo) _bufferInfoMap.get(outputPort);
                    
+                  bufferLengths[channel] = bufferInfo.length;
+                   
                   if (bufferInfo.width == 1) {
                      bufferNames[channel] = bufferInfo.codeGenName;                  
                   } else {
@@ -305,7 +325,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
                  System.out.println("ch " + ch + ": " + bufferNames[ch]);
               }
               
-              actorInfo.inputInfoMap.put(port, bufferNames);
+              actorInfo.inputBufferNameMap.put(port, bufferNames);
+              actorInfo.inputBufferLengthMap.put(port, bufferLengths);
+              
               
            } // if (port.isInput()) ...                                          
         } // while (portItr.hasNext()) ...                                     

@@ -75,7 +75,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
             IntTypeNode.instance, 
             new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w"),
             new IntLitNode("0"));
-    
+                
            List memberList = retval.getMembers();
             
            memberList.add(readTempField);
@@ -90,24 +90,30 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
         String varName = node.getName().getIdent();
 
         TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
-        
-        if (port.getWidth() > 1) {        
 
-           ExprNode widthExprNode = new IntLitNode(String.valueOf(port.getWidth()));
+        int portWidth = port.getWidth();
         
-           // an array of offsets into the buffer for each channel                
+        if (portWidth > 1) {        
 
+           // an array of offsets (minus 1) into the buffer for each channel                
+
+           ExprNode widthExprNode = new IntLitNode(String.valueOf(portWidth));
+        
+           LinkedList offsetInitList = new LinkedList();
+                      
+           for (int i = 0; i < portWidth; i++) {
+               offsetInitList.addLast(new IntLitNode("-1"));
+           }
+        
            retval.addLast(new FieldDeclNode(PROTECTED_MOD,
             TypeUtility.makeArrayType(IntTypeNode.instance, 1),
             new NameNode(AbsentTreeNode.instance, 
-             "_cg_" + varName + "_offset"),
-            new AllocateArrayNode(IntTypeNode.instance, TNLManip.cons(widthExprNode),
-             0, AbsentTreeNode.instance)));                     
+             "_cg_" + varName + "_offset"), new ArrayInitNode(offsetInitList)));                     
             
            if (port.isInput()) {
               // an array of buffers associated with the input channels
 
-              String[] bufferNames = (String[]) _sdfActorInfo.inputInfoMap.get(port);
+              String[] bufferNames = (String[]) _sdfActorInfo.inputBufferNameMap.get(port);
               
               LinkedList arrayInitList = new LinkedList();
               
@@ -120,22 +126,39 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               TypeNode bufferArrayTypeNode = TypeUtility.makeArrayType(
                (TypeNode) portTypeNode.accept(this, args), 2);
            
-              retval.addLast(new FieldDeclNode(PROTECTED_MOD,
+              retval.addLast(new FieldDeclNode(PROTECTED_MOD | FINAL_MOD,
                bufferArrayTypeNode, new NameNode(AbsentTreeNode.instance,
                 "_cg_" + varName + "_chan_buffer"),
                new ArrayInitNode(arrayInitList)));
-                            
+               
+              // an array of buffer lengths
+            
+              int[] bufferLengths = 
+               (int[]) _sdfActorInfo.inputBufferLengthMap.get(port);
+               
+              LinkedList lengthArrayInitList = new LinkedList();
+              
+              for (int i = 0; i < bufferLengths.length; i++) {
+                  lengthArrayInitList.addLast(
+                   new IntLitNode(String.valueOf(bufferLengths[i])));
+              }
+               
+              retval.addLast(new FieldDeclNode(PROTECTED_MOD | FINAL_MOD,
+               TypeUtility.makeArrayType(IntTypeNode.instance, 1),
+               new NameNode(AbsentTreeNode.instance, 
+                "_cg_" + varName + "_chan_buffer_len"),
+               new ArrayInitNode(lengthArrayInitList)));                            
            }             
                         
         } else {
         
-           // an offset into the buffer               
+           // an offset (minus 1) into the buffer
         
            retval.addLast(new FieldDeclNode(PROTECTED_MOD,
             IntTypeNode.instance,
             new NameNode(AbsentTreeNode.instance, 
              "_cg_" + varName + "_offset"),
-            new IntLitNode("0")));                             
+            new IntLitNode("-1")));                             
         }
         
         return retval;
@@ -171,8 +194,14 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
            firstArg = (ExprNode) methodArgs.get(0);
         }
 
-        if (methodName.equals("get")) {
-           String[] bufferArray = (String[]) _sdfActorInfo.inputInfoMap.get(port);
+        if (methodName.equals("broadcast")) {
+        
+           // FIXME
+        
+        } else if (methodName.equals("get")) {
+           String[] bufferArray = (String[]) _sdfActorInfo.inputBufferNameMap.get(port);
+           int[] bufferLengthArray = 
+            (int[]) _sdfActorInfo.inputBufferLengthMap.get(port);
                   
            if ((bufferArray == null) || (bufferArray.length < 1)) {
               // port is not connected, return 0 since Token is resolved to int
@@ -182,11 +211,11 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
            int channel = -1;
                   
            if (port.getWidth() <= 1) {
-              channel = 0;                  
+              channel = 0;                                
            } else if (firstArg instanceof IntLitNode) { 
               // found a constant port number (it would help if constant folding
               // were done)
-              channel = Integer.parseInt(((IntLitNode) firstArg).getLiteral());
+              channel = Integer.parseInt(((IntLitNode) firstArg).getLiteral());              
            }
                   
            if (channel == -1) {
@@ -200,35 +229,51 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               ArrayAccessNode findBufferNode = new ArrayAccessNode(new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_chan_buffer")), 
                chanAssignNode);
-                      
-              PostIncrNode offsetIncrNode = new PostIncrNode(
-               new ArrayAccessNode(new ObjectNode(
+               
+              // need to do a lookup of the length of the buffer
+              ArrayAccessNode findBufferLengthNode = new ArrayAccessNode(new ObjectNode(
+               new NameNode(AbsentTreeNode.instance, "_cg_" + varName + 
+                "_chan_buffer_len")),
+               new ObjectNode( 
+                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r"))); 
+              
+              // the previous offset
+              ArrayAccessNode offsetNode = new ArrayAccessNode(new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
                new ObjectNode(
-                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r"))));
+                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r")));
+              
+              // update and return the new offset        
+                                                        
+              AssignNode offsetUpdateNode = new AssignNode(
+               offsetNode, new RemNode(new PlusNode(offsetNode,
+                new IntLitNode("1")), findBufferLengthNode));
  
-              return new ArrayAccessNode(findBufferNode, offsetIncrNode);
+              return new ArrayAccessNode(findBufferNode, offsetUpdateNode);
                   
            } else {
               String bufferName = bufferArray[channel];
+              String bufferLengthString = String.valueOf(bufferLengthArray[channel]);              
               
-              ExprNode offsetIncrTargetNode = null;
+              ExprNode offsetNode = null;
               
               if (port.getWidth() > 1) {
-                 offsetIncrTargetNode = new ArrayAccessNode(
+                 offsetNode = new ArrayAccessNode(
                   new ObjectNode(new NameNode(AbsentTreeNode.instance, 
                    "_cg_" + varName + "_offset")), firstArg);
               } else {
-                 offsetIncrTargetNode = new ObjectNode(
+                 offsetNode = new ObjectNode(
                    new NameNode(AbsentTreeNode.instance, 
                    "_cg_" + varName + "_offset"));
               }
 
-              PostIncrNode offsetIncrNode = new PostIncrNode(offsetIncrTargetNode);
+              AssignNode offsetUpdateNode = new AssignNode(
+               offsetNode, new RemNode(new PlusNode(offsetNode,
+                new IntLitNode("1")), new IntLitNode(bufferLengthString)));
                      
               return new ArrayAccessNode(new ObjectNode(
                (NameNode) StaticResolution.makeNameNode("CG_Main." + bufferName)),
-               offsetIncrNode);                  
+               offsetUpdateNode);                  
            }
         } else if (methodName.equals("hasRoom")) {                                                   
            if ((port.getWidth() > 0) && port.isOutput()) {
@@ -246,15 +291,16 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
            BufferInfo bufferInfo = (BufferInfo) _sdfActorInfo.outputInfoMap.get(port);
                   
            if (bufferInfo == null) {
-              // port is not connected
-                     
-              // DANGER, neither of the method arguments to put() will be evaluated
-                     
-              return NullValue.instance;
+              // port is not connected                     
+              // return the arguments which may have side effects                     
+              return methodArgs;
            }
+           
+           String bufferLengthString = String.valueOf(bufferInfo.length);
                               
            if (port.getWidth() > 1) {
-              // assign the channel to a dummy variable to avoid side effects
+           
+               // assign the channel to a dummy variable to avoid side effects
               AssignNode chanAssignNode = new AssignNode(new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w")),
                firstArg);
@@ -262,32 +308,40 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               ObjectNode bufferObjectNode = new ObjectNode(
                (NameNode) StaticResolution.makeNameNode(
                "CG_Main." + bufferInfo.codeGenName));
-                                    
+                                     
               ArrayAccessNode bufferArrayAccessNode = new ArrayAccessNode(
                bufferObjectNode, chanAssignNode);
-                      
-              PostIncrNode offsetIncrNode = new PostIncrNode(
-               new ArrayAccessNode(
-                new ObjectNode(
-                 new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
-                new ObjectNode(
-                 new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w"))));
+                       
+              // the previous offset                       
+              ArrayAccessNode offsetNode = new ArrayAccessNode(
+               new ObjectNode(
+                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
+               new ObjectNode(
+                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w")));
+
+              // update and return the new offset                         
+              AssignNode offsetUpdateNode = new AssignNode(
+               offsetNode, new RemNode(new PlusNode(offsetNode,
+                new IntLitNode("1")), new IntLitNode(bufferLengthString)));
                       
               return new AssignNode(
-               new ArrayAccessNode(bufferArrayAccessNode, offsetIncrNode),
+               new ArrayAccessNode(bufferArrayAccessNode, offsetUpdateNode),
                 (ExprNode) methodArgs.get(1));
-                                                             
+                                                                           
            } else {
               ObjectNode bufferObjectNode = new ObjectNode(
                (NameNode) StaticResolution.makeNameNode(
                 "CG_Main." + bufferInfo.codeGenName));
                      
-              PostIncrNode offsetIncrNode = new PostIncrNode(
-               new ObjectNode(new NameNode(AbsentTreeNode.instance, 
-                "_cg_" + varName + "_offset")));
+              ObjectNode offsetNode = new ObjectNode(
+               new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset"));
+
+              AssignNode offsetUpdateNode = new AssignNode(
+               offsetNode, new RemNode(new PlusNode(offsetNode,
+                new IntLitNode("1")), new IntLitNode(bufferLengthString)));
                      
               return new AssignNode(
-               new ArrayAccessNode(bufferObjectNode, offsetIncrNode),
+               new ArrayAccessNode(bufferObjectNode, offsetUpdateNode),
                (ExprNode) methodArgs.get(1));                                        
            }
         } 
