@@ -74,7 +74,6 @@ proc jdkVersion {} {
 }
 
 # Capture output to System.out
-# Capture output to System.out
 proc jdkCapture {script varName} {
     upvar $varName output
     set stream [java::new java.io.ByteArrayOutputStream]
