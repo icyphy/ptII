@@ -230,7 +230,7 @@ public class Scope {
 
     /** Lookup a decl by name and mask in the current scope and in any
      *  parent scopes, if any.
-     */   
+     */
     public ScopeIterator lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
