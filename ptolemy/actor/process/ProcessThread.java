@@ -138,8 +138,8 @@ public class ProcessThread extends PtolemyThread {
         _debug("-- Starting thread.");
         Workspace workspace = _director.workspace();
         boolean iterate = true;
-        Throwable throwedWhenIterate = null;
-        Throwable throwedWhenWrapup = null;
+        Throwable thrownWhenIterate = null;
+        Throwable thrownWhenWrapup = null;
         try {
             // Initialize the actor.
             _actor.initialize();
@@ -192,36 +192,36 @@ public class ProcessThread extends PtolemyThread {
                 }
             }
         } catch (Throwable t) {
-            throwedWhenIterate = t;
+            thrownWhenIterate = t;
         } finally {
             try {
                 wrapup();
             } catch (IllegalActionException e) {
-                throwedWhenWrapup = e;
+                thrownWhenWrapup = e;
             } finally {
                 // let the director know that this thread stopped
                 _director._decreaseActiveCount();
                 _debug("-- Thread stopped.");
                 boolean rethrow = false;
-                if (throwedWhenIterate instanceof TerminateProcessException) {
+                if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
                     _debug("-- Blocked Receiver call threw TerminateProcessException.");
-                } else if (throwedWhenIterate instanceof IllegalActionException) {
-                    _debug("-- Exception: " + throwedWhenIterate);
+                } else if (thrownWhenIterate instanceof IllegalActionException) {
+                    _debug("-- Exception: " + thrownWhenIterate);
                     _manager.notifyListenersOfException(
-                            (IllegalActionException)throwedWhenIterate);
-                } else if (throwedWhenIterate != null) {
+                            (IllegalActionException)thrownWhenIterate);
+                } else if (thrownWhenIterate != null) {
                     rethrow = true;
                 }
-                if (throwedWhenWrapup instanceof IllegalActionException) {
-                    _debug("-- Exception: " + throwedWhenWrapup);
+                if (thrownWhenWrapup instanceof IllegalActionException) {
+                    _debug("-- Exception: " + thrownWhenWrapup);
                     _manager.notifyListenersOfException(
-                            (IllegalActionException)throwedWhenWrapup);
-                } else if (throwedWhenWrapup != null) {
+                            (IllegalActionException)thrownWhenWrapup);
+                } else if (thrownWhenWrapup != null) {
                     // must be a runtime exception
-                    throw (RuntimeException)throwedWhenWrapup;
+                    throw (RuntimeException)thrownWhenWrapup;
                 } else if (rethrow) {
-                    throw (RuntimeException)throwedWhenIterate;
+                    throw (RuntimeException)thrownWhenIterate;
                 }
             }
         }
