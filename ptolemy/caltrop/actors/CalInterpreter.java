@@ -290,8 +290,6 @@ public class CalInterpreter extends TypedAtomicActor {
         for (Iterator i = parameters.iterator(); i.hasNext();) {
             Parameter a = (Parameter) i.next();
             if (!parNames.contains(a.getName())) {
-                // So that we are allowed to delete this:
-                a.setClassElement(false);
                 a.setContainer(null);
             }
         }
@@ -313,8 +311,6 @@ public class CalInterpreter extends TypedAtomicActor {
                     ((port.isInput() != isInput)
                             || (port.isOutput() != isOutput) ||
                     (port.isMultiport() != ports[i].isMultiport()))) {
-                // So that we are allowed to delete this:
-                port.setClassElement(false);
                 port.setContainer(null);
                 port = null;
             }
@@ -330,8 +326,6 @@ public class CalInterpreter extends TypedAtomicActor {
              i.hasNext();) {
             IOPort p = (IOPort) i.next();
             if (!portNames.contains(p.getName())) {
-                // So that we are allowed to delete this:
-                p.setClassElement(false);
                 p.setContainer(null);
             }
         }

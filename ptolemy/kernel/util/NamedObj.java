@@ -1366,14 +1366,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             // Nothing to do.
             return;
         }
-        // If this object is a class element, then its name cannot
-        // be changed.  EAL 12/03.
-        if (isClassElement()) {
-            throw new IllegalActionException(this,
-            "Cannot change the name to "
-            + name
-            + ". The name is fixed by the class definition.");
-        }
         int period = name.indexOf(".");
         if (period >= 0) {
             throw new IllegalActionException(this,

@@ -219,20 +219,6 @@ public class ComponentEntity extends Entity {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
-        // NOTE: Added to ensure that class elements aren't changed.
-        // EAL 12/03.
-        if (isClassElement() && container != _container) {
-            // To give more meaningful error messages, check whether
-            // the object is being removed.
-            if (container == null) {
-                throw new IllegalActionException(this,
-                "Cannot delete. This entity is part of the class definition.");
-            }
-            throw new IllegalActionException(this,
-                    "Cannot change the container to "
-                    + container.getFullName()
-                    + ". The container is fixed by the class definition.");
-        }
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);

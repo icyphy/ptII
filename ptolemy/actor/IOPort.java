@@ -2297,11 +2297,6 @@ public class IOPort extends ComponentPort {
      *   definition).
      */
     public void setInput(boolean isInput) throws IllegalActionException {
-        if (isClassElement() && isInput != _isInput) {
-            throw new IllegalActionException(this,
-                    "Cannot change whether this port is an input." +
-                    " That property is fixed by the class definition.");
-        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -2330,11 +2325,6 @@ public class IOPort extends ComponentPort {
      *   definition).
      */
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
-        if (isClassElement() && isMultiport != _isMultiport) {
-            throw new IllegalActionException(this,
-                    "Cannot change whether this port is a multiport." +
-                    " That property is fixed by the class definition.");
-        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -2361,11 +2351,6 @@ public class IOPort extends ComponentPort {
      *   definition).
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
-        if (isClassElement() && isOutput != _isOutput) {
-            throw new IllegalActionException(this,
-                    "Cannot change whether this port is an output." +
-                    " That property is fixed by the class definition.");
-        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that

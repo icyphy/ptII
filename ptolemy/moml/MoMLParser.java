@@ -1803,10 +1803,25 @@ public class MoMLParser extends HandlerBase {
                     String direction = (String)_attributes.get("direction");
                     if (direction != null) {
                         IOPort ioport = (IOPort)port;
-                        ioport.setOutput(direction.equals("output")
-                                || direction.equals("both"));
-                        ioport.setInput(direction.equals("input")
-                                || direction.equals("both"));
+                        boolean isOutput = direction.equals("output")
+                                || direction.equals("both");
+                        boolean isInput = direction.equals("input")
+                                || direction.equals("both");
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (alreadyExisted
+                                &&  ioport.isClassElement()
+                                && !_propagating) {
+                            if (ioport.isInput() != isInput
+                                    || ioport.isOutput() != isOutput) {
+                                throw new IllegalActionException(ioport,
+                                    "Cannot change whether this port is " +
+                                    "an input or output. That property is " +
+                                    "fixed by the class definition.");
+                            }
+                        }
+                        ioport.setOutput(isOutput);
+                        ioport.setInput(isInput);
                     }
                 }
 
@@ -1824,11 +1839,12 @@ public class MoMLParser extends HandlerBase {
                 // An xml version of the FSM ABP demo tickled this bug
                 boolean isIOPort = (_current instanceof IOPort);
                 if (propertyName.equals("multiport") && isIOPort) {
+                    // Special properties that affect the behaviour of a port
+
                     // FIXME: UNDO: Consider refactoring these clauses
                     // to remove the duplicate values
                     // The previous value is needed to generate undo MoML
-                    boolean previousValue = false;
-                    // Special properties that affect the behaviour of a port
+
                     IOPort currentIOPort = (IOPort)_current;
 
                     // The mere presense of a named property "multiport"
@@ -1837,13 +1853,37 @@ public class MoMLParser extends HandlerBase {
 
                     // Get the previous value to use when generating the
                     // undo MoML
-                    previousValue = currentIOPort.isMultiport();
-                    if (value == null
-                            || value.trim().toLowerCase().equals("true")) {
+                    boolean previousValue = currentIOPort.isMultiport();
+                    boolean newValue = value == null
+                            || value.trim().toLowerCase().equals("true");
+                    if (newValue) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isMultiport() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "a multiport. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setMultiport(true);
                     } else if (value.trim().toLowerCase().equals("false")) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isMultiport() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "a multiport. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setMultiport(false);
                     }
+
                     _pushContext();
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
@@ -1862,22 +1902,48 @@ public class MoMLParser extends HandlerBase {
                         _undoContext.appendClosingUndoMoML("</property>\n");
                     }
                 } else if (propertyName.equals("output") && isIOPort) {
+                    // Special properties that affect the behaviour of a port
+
                     // FIXME: UNDO: Consider refactoring these clauses
                     // to remove the duplicate values
                     // The previous value is needed to generate undo MoML
-                    boolean previousValue = false;
-                    // Special properties that affect the behaviour of a port
+
                     IOPort currentIOPort = (IOPort)_current;
 
                     // Get the previous value to use when generating the
                     // undo MoML
-                    previousValue = currentIOPort.isOutput();
-                    if (value == null
-                            || value.trim().toLowerCase().equals("true")) {
+                    boolean previousValue = currentIOPort.isOutput();
+                    // Default is "true" if no value is given.
+                    boolean newValue = value == null
+                            || value.trim().toLowerCase().equals("true");
+                    if (newValue) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isOutput() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "an output. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setOutput(true);
                     } else if (value.trim().toLowerCase().equals("false")) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isOutput() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "an output. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setOutput(false);
                     }
+
                     _pushContext();
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
@@ -1896,20 +1962,45 @@ public class MoMLParser extends HandlerBase {
                         _undoContext.appendClosingUndoMoML("</property>\n");
                     }
                 } else if (propertyName.equals("input") && isIOPort) {
+                    // Special properties that affect the behaviour of a port
+
                     // FIXME: UNDO: Consider refactoring these clauses
                     // to remove the duplicate values
                     // The previous value is needed to generate undo MoML
-                    boolean previousValue = false;
-                    // Special properties that affect the behaviour of a port
+
                     IOPort currentIOPort = (IOPort)_current;
 
                     // Get the previous value to use when generating the
                     // undo MoML
-                    previousValue = currentIOPort.isInput();
-                    if (value == null
-                            || value.trim().toLowerCase().equals("true")) {
+                    boolean previousValue = currentIOPort.isInput();
+                    // Default is "true" if no value is given.
+                    boolean newValue = value == null
+                            || value.trim().toLowerCase().equals("true");
+                    if (newValue) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isInput() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "an input. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setInput(true);
                     } else if (value.trim().toLowerCase().equals("false")) {
+                        // If this object is a class element, then its I/O status
+                        // cannot be changed.  EAL 1/04.
+                        if (_current.isClassElement()
+                                && !_propagating 
+                                && ((IOPort)_current).isInput() != newValue) {
+                            throw new IllegalActionException(_current,
+                                    "Cannot change whether this port is " +
+                                    "an input. That property is fixed by " +
+                                    "the class definition.");
+                        }
+
                         ((IOPort)_current).setInput(false);
                     }
                     _pushContext();
@@ -2183,6 +2274,16 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(newName, "No new name for element \"rename\"");
                 if (_current != null) {
                     String oldName = _current.getName();
+                    
+                    // NOTE: Added to ensure that class elements aren't changed.
+                    // EAL 1/04.
+                    if (!oldName.equals(newName) && _current.isClassElement() && !_propagating) {
+                        throw new IllegalActionException(_current,
+                            "Cannot change the name to "
+                            + newName
+                            + ". The name is fixed by the class definition.");
+                    }
+
                     _current.setName(newName);
 
                     // Handle the undo aspect if needed
@@ -2975,6 +3076,13 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
 
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 1/04.
+        if (toDelete.isClassElement() && !_propagating) {
+            throw new IllegalActionException(toDelete,
+                    "Cannot delete. This entity is part of the class definition.");
+        }
+
         // NOTE: not enough to simply record the MoML of the deleted entity
         // as any links connected to its ports will also be deleted.
         if (_undoEnabled && _undoContext.isUndoable()) {
@@ -3050,6 +3158,13 @@ public class MoMLParser extends HandlerBase {
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
+        }
+
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 1/04.
+        if (toDelete.isClassElement() && !_propagating) {
+            throw new IllegalActionException(toDelete,
+                    "Cannot delete. This port is part of the class definition.");
         }
 
         // NOTE: not enough to simply record the MoML of the deleted port
@@ -3135,8 +3250,14 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-        toDelete.setContainer(null);
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 1/04.
+        if (toDelete.isClassElement() && !_propagating) {
+            throw new IllegalActionException(toDelete,
+                    "Cannot delete. This attribute is part of the class definition.");
+        }
 
+        toDelete.setContainer(null);
         return toDelete;
     }
 
@@ -3151,6 +3272,14 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
+
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 1/04.
+        if (toDelete.isClassElement() && !_propagating) {
+            throw new IllegalActionException(toDelete,
+                    "Cannot delete. This relation is part of the class definition.");
+        }
+
         // NOTE: not enough to simply record the MoML of the deleted entity
         // as any links connected to its ports will also be deleted.
         if (_undoEnabled && _undoContext.isUndoable()) {

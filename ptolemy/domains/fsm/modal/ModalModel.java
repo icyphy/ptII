@@ -156,9 +156,6 @@ public class ModalModel extends CTCompositeActor {
             try {
                 if (director != null) {
                     // Delete the old director.
-                    // In case this is a class, in order to be able to
-                    // delete the director, we have to do this.
-                    director.setClassElement(false);
                     director.setContainer(null);
                 }
                 newDirectorClass =

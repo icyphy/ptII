@@ -126,10 +126,6 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute
         if (container != null) {
             previous = container.getAttribute(getName());
             if (previous != null) {
-                // NOTE: Replacing a prior singleton is more like
-                // changing a parameter value, so we ensure that
-                // it is allowed even if the previous is a class element.
-                previous.setClassElement(false);
                 previous.setContainer(null);
             }
         }
