@@ -49,7 +49,7 @@ package.
 <p>There are three ways that classes are read in.
 <ol>
 <li> The class is a System classes (such as java.lang.Object),
-and it is read in using reflection
+and it is read in using reflection.
 <li> The class is a Ptolemy core class (such as ptolemy.kernel.util.NamedObj)
 and it is read in using reflection.
 <li> The class is read in as a filel and parsed.
@@ -66,7 +66,7 @@ auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
 <p>FIXME: This should probably not extend Vector, instead it should
-extend ArrayList, which is not synchronized.
+extend ArrayList, which is not synchronized, see:
 http://www.javasoft.com/docs/books/tutorial/collections/implementations/general.html
 
 @author Jeff Tsay, Christopher Hylands
@@ -78,7 +78,7 @@ public class SearchPath extends Vector {
      *  property, if propertyName is null or does not name a property
      *  then use fallbackPaths.  The value of the property named by
      *  propertyName and the value of fallbackPaths should contain
-     *  a string with pathnames separated by File.separatorChar.
+     *  a string with path names separated by File.separatorChar.
      *  @param propertyName Name of the property to look for.
      *  @param fallbackPaths Path list to use if propertyName can't be found.
      */
@@ -107,7 +107,7 @@ public class SearchPath extends Vector {
      */
     public File openSource(String target) {
 
-	// Convert a Java qualified name into a partial pathname, without the
+	// Convert a Java qualified name into a partial path name, without the
 	// file extension. For example, "ptolemy.lang.java.SearchPath" is
 	// converted to "ptolemy/lang/java/SearchPath" under Unix
         String targetPath = target.replace('.', File.separatorChar);
@@ -122,9 +122,9 @@ public class SearchPath extends Vector {
             if (file.isFile()) {
                 try {
                     file = file.getCanonicalFile();
-                } catch (IOException ioe) {
+                } catch (IOException e) {
                     throw new RuntimeException(
-                            "cannot get canonical filename");
+                            "cannot get canonical filename: " + e);
                 }
                 return file;
             }
@@ -141,7 +141,7 @@ public class SearchPath extends Vector {
         // The number of .class files in the Ptolemy core is 186
         // Determine that the number of .class files in rt.jar with:
         // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
-        // The Collections tutorial suggests a prime number slighly
+        // The Collections tutorial suggests a prime number slightly
         // larger than twice the size of the Set.
         Set classSet = new HashSet(273);
 
@@ -205,13 +205,14 @@ public class SearchPath extends Vector {
 
         return classSet;
     }
+
     /** Return a Set that contains an entry for each class in the
      * system jar file.
      * Note that classes will have entries like java.lang.Object, they
      * will not have extension like .class or .java
      */
     public static Set systemClasses() {
-        // We use classnames because they are . separated,
+        // We use class names because they are . separated,
         // whereas filenames are separated by a platform dependent char.
 
         // Create a HashSet with a size of 10427.
@@ -288,8 +289,8 @@ public class SearchPath extends Vector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Split a String consisting of 0 or more pathnames separated by
-    // File.pathSeparated pathnames, and add them to the Vector of paths.
+    // Split a String consisting of 0 or more path names separated by
+    // File.pathSeparated path names, and add them to the Vector of paths.
     private void _addPaths(String paths) {
         int begin = 0;
 
@@ -313,7 +314,7 @@ public class SearchPath extends Vector {
         } while (end > -1);
     }
 
-    // Return the pathname to the system jar file, usually rt.jar.
+    // Return the path name to the system jar file, usually rt.jar.
     private static File _getSystemJar() {
 	String systemJarPathName =
 	    new String(System.getProperty("java.home") + "/lib/rt.jar");
