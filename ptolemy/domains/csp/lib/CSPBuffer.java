@@ -190,11 +190,12 @@ public class CSPBuffer extends CSPActor {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         private variables                      ////
 
-            // The array storing the buffered Tokens.
-            private Token[] _buffer;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // The array storing the buffered Tokens.
+    private Token[] _buffer;
 
     // The Parameter storing the depth of the buffer.
     private Parameter _depth;
