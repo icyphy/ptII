@@ -177,7 +177,7 @@ System.out.println("finishing Director firing method");
                     try {
                         _eventQueue.take();
                         _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
-                        delayUnblock();
+                        _delayUnblock();
                     } catch (IllegalAccessException e) {
                         throw new IllegalActionException(this, "Inconsistency"+
                                 " in number of actors blocked on delays count"+
@@ -196,7 +196,7 @@ System.out.println("finishing Director firing method");
                                     sametime = false;
                                 } else {
                 System.out.println("undelaying... ");
-                                    delayUnblock();
+                                    _delayUnblock();
                                 }
                             } catch (IllegalAccessException e) {
                                 throw new InternalErrorException(e.toString());
@@ -241,7 +241,7 @@ System.out.println("finishing Director firing method");
     private void _flushAllReceivers(){
         for (int i=0;i<_allRecQueue.size();i++){
              PNQueueReceiver rec = (PNQueueReceiver) _allRecQueue.at(i);
-             rec.flushToken();
+             rec.clear();
         }
     }
 
