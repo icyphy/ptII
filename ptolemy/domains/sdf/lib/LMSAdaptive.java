@@ -125,9 +125,8 @@ public class LMSAdaptive extends FIR {
 	// set type constraints.
 	error.setTypeSameAs(input);
 
-        // FIXME: This should have the same type as the taps.
-        // How to do that?
         tapValues.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+	tapValues.setTypeSameAs(taps);
     }
 
     ///////////////////////////////////////////////////////////////////
