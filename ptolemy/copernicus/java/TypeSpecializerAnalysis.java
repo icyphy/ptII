@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import soot.Body;
 import soot.Local;
 import soot.RefType;
+import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -109,12 +110,21 @@ public class TypeSpecializerAnalysis {
      *  the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
-        // System.out.println("Starting type specialization");
+        if(_debug) System.out.println("Starting type specialization");
+        
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(new JavaTypeLattice());
         //TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
+
+        // Get the variables.
+        //  _collectVariables(theClass, _debug);
+        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+            classes.hasNext();) {
+            SootClass applicationClass = (SootClass)classes.next();
+            _collectVariables(applicationClass, _debug);
+        }
 
         _collectConstraints(theClass, _debug);
 
@@ -158,13 +168,17 @@ public class TypeSpecializerAnalysis {
      *  @param list A list of SootClass.
      */
     public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
-        //  _debug = true;
-        //        System.out.println("Starting type specialization list");
+        if(_debug) System.out.println("Starting type specialization list");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(new JavaTypeLattice());//TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
+        for (Iterator classes = list.iterator();
+             classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            _collectVariables(theClass, _debug);
+        }
         for (Iterator classes = list.iterator();
              classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
@@ -352,9 +366,7 @@ public class TypeSpecializerAnalysis {
         }
     }
 
-    private void _collectConstraints(SootClass entityClass, boolean debug) {
-        if (debug) System.out.println("collecting constraints for " + entityClass);
-        // System.out.println("collecting constraints for " + entityClass);
+    private void _collectVariables(SootClass entityClass, boolean debug) {
         // Loop through all the fields.
         for (Iterator fields = entityClass.getFields().iterator();
              fields.hasNext();) {
@@ -372,29 +384,11 @@ public class TypeSpecializerAnalysis {
                         (InequalityTerm)_objectToInequalityTerm.get(field));
             }
         }
+    }
 
-        // FIXME: we also need the fields that we represent from
-        //
-        SootClass modelClass = ModelTransformer.getModelClass();
-        if(modelClass != null) {
-            for (Iterator fields = modelClass.getFields().iterator();
-                 fields.hasNext();) {
-                SootField field = (SootField)fields.next();
-                // Ignore things that aren't reference types.
-                Type type = field.getType();
-                _createInequalityTerm(debug, field, type, _objectToInequalityTerm);
-                
-                // If the field has been tagged with a more specific type, then
-                // constrain the type more.
-                TypeTag tag = (TypeTag)field.getTag("_CGType");
-                if (tag != null) {
-                    _addInequality(debug, _solver,
-                            new ConstantTerm(tag.getType(), field),
-                        (InequalityTerm)_objectToInequalityTerm.get(field));
-                }
-            }
-        }
-
+    private void _collectConstraints(SootClass entityClass, boolean debug) {
+        if (debug) System.out.println("collecting constraints for " + entityClass);
+      
         // Loop through all the methods.
         for (Iterator methods = entityClass.getMethods().iterator();
              methods.hasNext();) {
@@ -592,9 +586,6 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm firstArgTerm = (InequalityTerm)
                         objectToInequalityTerm.get(
                                 r.getArg(0));
-                    // If we call getElement or arrayValue on an array
-                    // token, then the returned type is the element
-                    // type of the array.
                     ptolemy.data.type.ArrayType arrayType =
                         new ptolemy.data.type.ArrayType(
                                 ptolemy.data.type.BaseType.UNKNOWN);
