@@ -280,6 +280,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         try {
             workspace().getReadAccess();
             String name = initialStateName.getExpression();
+            if (name == null || name.trim().equals("")) {
+                throw new IllegalActionException(this,
+                "No initial state has been specified.");
+            }
             State st = (State)getEntity(name);
             if (st == null) {
                 throw new IllegalActionException(this, "Cannot find "
