@@ -76,9 +76,6 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     /** Constructor.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param value The initial output event value.
-     *  @param step The step size by which to increase the output event values.
-     *
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
