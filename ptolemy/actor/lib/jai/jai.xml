@@ -6,6 +6,20 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
+	<entity name="JAIAffineTransform" class="ptolemy.actor.lib.jai.JAIAffineTransform">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
 	</entity>
 	
@@ -169,6 +183,40 @@
 	  </property>
 	</entity>	
 	<entity name="JAITIFFWriter" class="ptolemy.actor.lib.jai.JAITIFFWriter">
+	</entity>
+	<entity name="JAITranslate" class="ptolemy.actor.lib.jai.JAITranslate">
+	  <property name="interpolationType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="bicubic" value="bicubic"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bicubic2" value="bicubic2"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="bilinear" value="bilinear"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="nearestNeighbor" value="nearestNeighbor"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
+	<entity name="JAITranspose" class="ptolemy.actor.lib.jai.JAITranspose">
+	  <property name="transposeType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="flip antidiagonal" value="flip antidiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="flip diagonal" value="flip diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="flip horizontal" value="flip horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="flip vertical" value="flip vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 90" value="rotate 90"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 180" value="rotate 180"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="rotate 270" value="rotate 270"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	      </property>   
+	  </property>
 	</entity>
       </group>
     ?>

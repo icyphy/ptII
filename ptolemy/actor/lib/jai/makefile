@@ -48,7 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = JAIBMPWriter.java \
+JSRCS = JAIAffineTransform.java \
+	JAIBMPWriter.java \
 	JAIDataCaster.java \
 	JAIDCT.java \
 	JAIDFT.java \
@@ -65,7 +66,9 @@ JSRCS = JAIBMPWriter.java \
 	JAIPolarToComplex.java \
 	JAIPNMWriter.java \
 	JAIScale.java \
-	JAITIFFWriter.java 
+	JAITIFFWriter.java \
+	JAITranslate.java \
+	JAITranspose.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml
