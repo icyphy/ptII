@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
