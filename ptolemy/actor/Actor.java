@@ -41,8 +41,8 @@ functionality in AtomicActor and CompositeActor.
 
 @author Edward A. Lee
 @version $Id$
-@see ptolemy.actors.CompositeActor
-@see ptolemy.actors.AtomicActor
+@see ptolemy.actor.CompositeActor
+@see ptolemy.actor.AtomicActor
 */
 public interface Actor extends Executable {
 
