@@ -53,7 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	DSPApplication.java \
 	FullApplication.java \
-	HyVisionApplication.java \
+	HyVisualApplication.java \
 	PtinyApplication.java \
 	PtinySandboxApplication.java
 
@@ -72,7 +72,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 OTHER_JARS = \
 	DSPApplication.jar \
 	FullApplication.jar \
-	HyVisionApplication.jar \
+	HyVisualApplication.jar \
 	PtinyApplication.jar \
 	PtinySandboxApplication.jar
 
@@ -100,7 +100,7 @@ FullApplication.jar: FullApplication.class
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-HyVisionApplication.jar: HyVisionApplication.class
+HyVisualApplication.jar: HyVisualApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
