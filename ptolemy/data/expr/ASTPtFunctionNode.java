@@ -213,6 +213,14 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     result = method.invoke(nextClass, argValues);
                     foundMethod = true;
                 } catch (Exception  ex) {
+                    // FIXME: really, we should probably be throwing
+                    // an exception here, but we would like to keep
+                    // trying if we get an exception, and we would
+                    // like to have an idea why the error occurred.
+                    // One potential solution would be to save the
+                    // exception and continue looking for methods
+                    // and if we did not find a method that worked
+                    // then throw the exception.
                     System.out.println("Invocation of method " + _funcName +
                             " in " + nextClass.getName() + " threw: " + ex);
                     ex.printStackTrace();
