@@ -60,21 +60,34 @@ public class GRActor extends TypedAtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
+        if (!(getDirector() instanceof GRDirector)) {
+            throw new IllegalActionException(
+                      "GR Actors can only be used under a GR Director");
+        }
         _createModel();
     }
+
 
     public void fire() throws IllegalActionException {
     }
 
     public void makeSceneGraphConnection() throws IllegalActionException {
     }
-
+    
+    
     public void addChild(Node node) throws IllegalActionException {
-        throw new IllegalActionException("3D domain actor" + this +
+        throw new IllegalActionException("GR domain actor" + this +
                 " cannot have children");
     }
-        
 
     protected void _createModel() throws IllegalActionException {
     }
+    
+    protected void _stopRenderer() {
+    }
+    
+    protected void _startRenderer() {
+    }
+    
+    protected static GRActor _root;
 }

@@ -502,7 +502,7 @@ public class GRDirector extends StaticSchedulingDirector {
         _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
         _actorTable.add(grActor);
 
-        _displayActorTable();
+        _debugViewActorTable();
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
@@ -512,8 +512,8 @@ public class GRDirector extends StaticSchedulingDirector {
         receiverIterator = _receiverTable.listIterator();
 
 
-        _displayActorTable();
-        _displayReceiverTable();
+        _debugViewActorTable();
+        _debugViewReceiverTable();
     }
 
 
@@ -538,7 +538,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException if there is a problem in
      *   obtaining the number of initial token for delay actors
      */
-    private void _displayActorTable() throws IllegalActionException {
+    private void _debugViewActorTable() throws IllegalActionException {
         debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
         debug.println("---------------------------------------");
         ListIterator actorIterator = _actorTable.listIterator();
@@ -556,7 +556,7 @@ public class GRDirector extends StaticSchedulingDirector {
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
      */
-    private void _displayReceiverTable() {
+    private void _debugViewReceiverTable() {
         //  -displayReceiverTable-
         debug.print("\nARC RECEIVER table with "+_receiverTable.size());
         debug.println(" unique receivers");
@@ -574,7 +574,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  inside a given named object
      *  @param obj The named object that has a list of attributes
      */
-    private void _displayAttributesList(NamedObj obj)
+    private void _debugViewAttributesList(NamedObj obj)
         {
             List list = obj.attributeList();
             Iterator listIterator = list.iterator();
@@ -591,7 +591,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  inside the composite object
      *  @param obj The composite entity with a list of contained entities.
      */
-    private void _displayEntityList(CompositeEntity obj) {
+    private void _debugViewEntityList(CompositeEntity obj) {
 
         List list = obj.entityList();
     	Iterator listIterator = list.iterator();
@@ -611,7 +611,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  Note: Output ports of actors inside the TypedCompositeActor
      *  container will not be listed.
      */
-    private void _displayContainerOutputPorts() throws IllegalActionException {
+    private void _debugViewContainerOutputPorts() throws IllegalActionException {
 
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -620,8 +620,8 @@ public class GRDirector extends StaticSchedulingDirector {
         while(listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
             debug.println(" ->"+port);
-            _displayPortInsideReceivers(port);
-            //_displayPortRemoteReceivers(port);
+            _debugViewPortInsideReceivers(port);
+            //_debugViewPortRemoteReceivers(port);
         }
         debug.println("\n");
     }
@@ -631,7 +631,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  TypedCompositeActor. The TypedCompositeActor can be transparent
      *  or opaque.
      */
-    private void _displayPortRemoteReceivers(IOPort port) {
+    private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
     	for(int i=0;i<port.getWidth();i++) {
@@ -650,7 +650,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  IMPORTANT: There are no receivers inside transparent
      *             TypedCompositeActors ports
      */
-    private void _displayPortInsideReceivers(IOPort port) throws IllegalActionException {
+    private void _debugViewPortInsideReceivers(IOPort port) throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
     	for(int i=0;i<port.getWidth();i++) {

@@ -1,4 +1,4 @@
-/* The receiver for the CT domain.
+/* The receiver for the GR domain.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (yuhong@eecs.berkeley.edu)
+@ProposedRating red (chf@eecs.berkeley.edu)
+@AcceptedRating red (chf@eecs.berkeley.edu)
 
 */
 

@@ -1,6 +1,6 @@
 /* A Scheduler for the GR domain
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,7 +36,6 @@ import ptolemy.actor.sched.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
-import ptolemy.math.Fraction;
 
 import java.util.*;
 
@@ -59,7 +58,8 @@ public class GRScheduler extends Scheduler {
      */
     public GRScheduler() {
         super();
-        _localMemberInitialize();
+         _firingvector = new TreeMap(new _NamedObjComparator());
+        _firingvectorvalid = true;
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -72,53 +72,12 @@ public class GRScheduler extends Scheduler {
      */
     public GRScheduler(Workspace workspace) {
         super(workspace);
-        _localMemberInitialize();
+         _firingvector = new TreeMap(new _NamedObjComparator());
+        _firingvectorvalid = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor, as supplied by
-     *  by the port's "tokenConsumptionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
-     *  @exception IllegalActionException If the tokenConsumptionRate
-     *   parameter has an invalid expression.
-     */
-    public static int getTokenConsumptionRate(IOPort port)
-            throws IllegalActionException {
-        if(port.isInput()) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-  
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor during each firing,
-     *  as supplied by
-     *  by the port's "tokenProductionRate" Parameter.   If the parameter
-     *  does not exist, then assume the actor is homogeneous and return a
-     *  rate of 1.
-     *  @exception IllegalActionException If the tokenProductionRate
-     *   parameter has an invalid expression.
-     */
-    public static int getTokenProductionRate(IOPort port)
-            throws IllegalActionException {
-        if (port.isOutput()) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /** Initialize the local data members of this object.  */
-    protected void _localMemberInitialize() {
-        _firingvector = new TreeMap(new _NamedObjComparator());
-        _firingvectorvalid = true;
-    }
 
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
@@ -136,9 +95,9 @@ public class GRScheduler extends Scheduler {
      *  schedulable.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-        StaticSchedulingDirector dir =
+        StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
-        CompositeActor ca = (CompositeActor)(dir.getContainer());
+        CompositeActor ca = (CompositeActor)(director.getContainer());
 
         // A linked list containing all the actors
         LinkedList AllActors = new LinkedList();
@@ -170,10 +129,9 @@ public class GRScheduler extends Scheduler {
             if(a instanceof Actor) AllActors.addLast(a);
         }
 
-        // First solve the balance equations
         Map firings = null;
         try {
-            firings = _solveBalanceEquations(AllActors);
+            firings = _solveEquations(AllActors);
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
                     + "rate and initial production parameters.");
@@ -186,31 +144,13 @@ public class GRScheduler extends Scheduler {
             Object actor = Actors.next();
             firings.put(actor, new Integer(1));
         }
-        //_normalizeFirings(firings);
 
         _setFiringVector(firings);
-
-        if (_debugging) {
-            _debug("Firing Vector:");
-            _debug(firings.toString());
-        }
 
         // Schedule all the actors using the calculated firings.
         LinkedList result = _scheduleConnectedActors(AllActors);
 
         _setFiringVector(firings);
-
-        if (_debugging) {
-            _debug("Firing Vector:");
-            _debug(firings.toString());
-        }
-
-        try {
-            _setContainerRates();
-        } catch (IllegalActionException ex) {
-            throw new NotSchedulableException(this, "Check expression of "
-                    + "rate and initial production parameters.");
-        }
 
         setValid(true);
 
@@ -238,59 +178,40 @@ public class GRScheduler extends Scheduler {
     private int _countUnfulfilledInputs(Actor a,
             LinkedList actorList, Map waitingTokens)
             throws IllegalActionException {
-	if (_debugging)
-            _debug("counting unfulfilled inputs for " +
-                    ((Entity) a).getFullName());
         Iterator ainputPorts = a.inputPortList().iterator();
 
-	int inputCount = 0;
-	while(ainputPorts.hasNext()) {
-	    IOPort ainputPort = (IOPort) ainputPorts.next();
-	    if (_debugging) _debug("checking input " +
+    	int inputCount = 0;
+	    while(ainputPorts.hasNext()) {
+	        IOPort ainputPort = (IOPort) ainputPorts.next();
+	        if (_debugging) _debug("checking input " +
                     ainputPort.getFullName());
 
-	    Iterator cports = ainputPort.deepConnectedOutPortList().iterator();
+	        Iterator cports = ainputPort.deepConnectedOutPortList().iterator();
 
-	    boolean isOnlyExternalPort = true;
-	    while(cports.hasNext()) {
-		IOPort cport = (IOPort) cports.next();
-		if(actorList.contains(cport.getContainer()))
-		    isOnlyExternalPort = false;
+	        boolean isOnlyExternalPort = true;
+	        while(cports.hasNext()) {
+		        IOPort cport = (IOPort) cports.next();
+		        if(actorList.contains(cport.getContainer()))
+		            isOnlyExternalPort = false;
+	        }
+
+	        int threshold = 1;
+	        int[] tokens =
+		        (int []) waitingTokens.get(ainputPort);
+
+    	    boolean isAlreadyFulfilled = true;
+	        int channel;
+	        for(channel = 0;
+		        channel < ainputPort.getWidth();
+		        channel++) {
+		        if(tokens[channel] < threshold)
+		            isAlreadyFulfilled = false;
+	        }
+	        if(!isOnlyExternalPort && !isAlreadyFulfilled)
+		        inputCount++;
 	    }
-
-	    int threshold =
-		getTokenConsumptionRate(ainputPort);
-	    if (_debugging) _debug("Threshold = " + threshold);
-	    int[] tokens =
-		(int []) waitingTokens.get(ainputPort);
-
-	    boolean isAlreadyFulfilled = true;
-	    int channel;
-	    for(channel = 0;
-		channel < ainputPort.getWidth();
-		channel++) {
-		if (_debugging) {
-                    _debug("Channel = " + channel);
-                    _debug("Waiting Tokens = " + tokens[channel]);
-                }
-		if(tokens[channel] < threshold)
-		    isAlreadyFulfilled = false;
-	    }
-	    if(!isOnlyExternalPort && !isAlreadyFulfilled)
-		inputCount++;
-	}
-	return inputCount;
+	    return inputCount;
     }
-
-    /** Return the number of firings associated with the Actor.   The
-     *  number of firings is stored in the _firingvector Map, indexed
-     *  by the entity.
-     */
-    private int _getFiringCount(Entity entity) {
-        return 1;
-        //return ((Integer) _firingvector.get(entity)).intValue();
-    }
-
 
     /** Propagate the number of fractional firings decided for this actor
      *  through the specified input port.   Set and verify the fractional
@@ -318,70 +239,54 @@ public class GRScheduler extends Scheduler {
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
 
-        // Calculate over all the output ports of this actor.
-        int currentRate = getTokenConsumptionRate(currentPort);
+        
+        // Compute the rate for the Actor currentPort is connected to
+        Iterator connectedPorts =
+            currentPort.deepConnectedOutPortList().iterator();
 
-        if(currentRate > 0) {
-            // Compute the rate for the Actor currentPort is connected to
-            Iterator connectedPorts =
-                currentPort.deepConnectedOutPortList().iterator();
+        while(connectedPorts.hasNext()) {
+            IOPort connectedPort =
+                (IOPort) connectedPorts.next();
 
-            while(connectedPorts.hasNext()) {
-                IOPort connectedPort =
-                    (IOPort) connectedPorts.next();
+            ComponentEntity connectedActor =
+                (ComponentEntity) connectedPort.getContainer();
 
-                ComponentEntity connectedActor =
-                    (ComponentEntity) connectedPort.getContainer();
+            // currentFiring is the firing that we've already
+            // calculated for currentactor
+            int currentFiring =
+                ((Integer) firings.get(currentActor)).intValue();
 
-                if (_debugging) _debug("Propagating input to " +
-                        connectedActor.getName());
+            // the firing that we think the connected actor should be,
+            // based on currentActor
+            int desiredFiring = currentFiring;
 
-                int connectedRate =
-                    getTokenProductionRate(connectedPort);
-
-                // currentFiring is the firing that we've already
-                // calculated for currentactor
-                Fraction currentFiring =
-                    (Fraction) firings.get(currentActor);
-
-                // the firing that we think the connected actor should be,
-                // based on currentActor
-                Fraction desiredFiring =
-                    currentFiring.multiply(
-                            new Fraction(currentRate, connectedRate));
-
-                // What the firing for connectedActor already is set to.
-                // This should be either 0, or equal to desiredFiring.
-                try {
-                    Fraction presentFiring =
-                        (Fraction) firings.get(connectedActor);
-		    if(presentFiring == null) {
-		    } else if(presentFiring.equals(Fraction.ZERO)) {
-                        // create the entry in the firing table
-                        firings.put(connectedActor, desiredFiring);
-                        // Remove them from remainingActors
-                        remainingActors.remove(connectedActor);
-                        // and add them to the pendingActors.
-                        pendingActors.addLast(connectedActor);
-                    }
-                    else if(!presentFiring.equals(desiredFiring))
-                        throw new NotSchedulableException("Graph is " +
-                                "not schedulable\n" +
-                                "Graph is not " +
-                                "consistent under the GR domain");
+            // What the firing for connectedActor already is set to.
+            // This should be either 0, or equal to desiredFiring.
+            try {
+                int presentFiring =
+                    ((Integer) firings.get(connectedActor)).intValue();
+                if (presentFiring == 0) {
+                    // create the entry in the firing table
+                    firings.put(connectedActor, 
+                                new Integer(desiredFiring) );
+                    // Remove them from remainingActors
+                    remainingActors.remove(connectedActor);
+                    // and add them to the pendingActors.
+                    pendingActors.addLast(connectedActor);
                 }
-                catch (NoSuchElementException e) {
-                    throw new InternalErrorException("GRScheduler: " +
-                            "connectedActor " +
-                            ((ComponentEntity) connectedActor).getName() +
-                            "does not appear in the firings Map");
-                }
-                if (_debugging) {
-                    _debug("New Firing: ");
-                    _debug(firings.toString());
-                }
+                else if( presentFiring != desiredFiring )
+                    throw new NotSchedulableException("Graph is " +
+                            "not schedulable\n" +
+                            "Graph is not " +
+                            "consistent under the GR domain");
+            } catch (NoSuchElementException e) {
+                throw new InternalErrorException("GRScheduler: " +
+                        "connectedActor " +
+                        ((ComponentEntity) connectedActor).getName() +
+                        "does not appear in the firings Map");
             }
         }
+        
     }
 
     /** Propagate the number of fractional firing decided for this actor
@@ -431,79 +336,64 @@ public class GRScheduler extends Scheduler {
             }
         }
 
-        //Calculate over all the output ports of this actor.
-        int currentRate = getTokenProductionRate(currentPort);
 
-        if(currentRate > 0) {
-            // Compute the rate for the Actor currentPort is connected to
-            Iterator connectedPorts =
-                currentPort.deepConnectedInPortList().iterator();
+        // Compute the rate for the Actor currentPort is connected to
+        Iterator connectedPorts =
+            currentPort.deepConnectedInPortList().iterator();
 
-            while(connectedPorts.hasNext()) {
-                IOPort connectedPort =
-                    (IOPort) connectedPorts.next();
+        while(connectedPorts.hasNext()) {
+            IOPort connectedPort =
+                (IOPort) connectedPorts.next();
 
-                ComponentEntity connectedActor =
-                    (ComponentEntity) connectedPort.getContainer();
+            ComponentEntity connectedActor =
+                (ComponentEntity) connectedPort.getContainer();
 
-                if (_debugging) _debug("Propagating output to " +
-                        connectedActor.getName());
+            if (_debugging) _debug("Propagating output to " +
+                    connectedActor.getName());
 
-                int connectedRate =
-                    getTokenConsumptionRate(connectedPort);
+            // currentFiring is the firing that we've already
+            // calculated for currentactor
+            int currentFiring = 
+                   ((Integer) firings.get(currentActor)).intValue();
 
-                // currentFiring is the firing that we've already
-                // calculated for currentactor
-                Fraction currentFiring =
-                    (Fraction) firings.get(currentActor);
+            // the firing that we think the connected actor should be,
+            // based on currentActor
+            int desiredFiring = currentFiring;
 
-                // the firing that we think the connected actor should be,
-                // based on currentActor
-                Fraction desiredFiring =
-                    currentFiring.multiply(
-                            new Fraction(currentRate, connectedRate));
+            // What the firing for connectedActor already is set to.
+            // This should be either 0, or equal to desiredFiring.
+            try {
+                int presentFiring = 
+                   ((Integer) firings.get(connectedActor)).intValue();
 
-                // What the firing for connectedActor already is set to.
-                // This should be either 0, or equal to desiredFiring.
-                try {
-                    Fraction presentFiring =
-                        (Fraction) firings.get(connectedActor);
-
-                    if(presentFiring.equals(Fraction.ZERO)) {
-                        firings.put(connectedActor, desiredFiring);
-                        // Remove them from remainingActors
-                        remainingActors.remove(connectedActor);
-                        // and add them to the pendingActors.
-                        pendingActors.addLast(connectedActor);
-                    }
-                    else if(!presentFiring.equals(desiredFiring))
-                        throw new NotSchedulableException("No solution: " +
-                                "Graph is not schedulable.\n" +
-                                "Graph is not" +
-                                "consistent under the GR domain");
-                }
-                catch (NoSuchElementException e) {
-                    throw new InternalErrorException("GRScheduler: " +
-                            "connectedActor " +
-                            ((ComponentEntity) connectedActor).getName() +
-                            "does not appear in the firings Map");
-                }
-
-                if (_debugging) {
-                    _debug("New Firing: ");
-                    _debug(firings.toString());
-                }
+                if( presentFiring == 0) {
+                    firings.put(connectedActor, 
+                                new Integer(desiredFiring));
+                    // Remove them from remainingActors
+                    remainingActors.remove(connectedActor);
+                    // and add them to the pendingActors.
+                    pendingActors.addLast(connectedActor);
+                } else if(presentFiring != desiredFiring)
+                    throw new NotSchedulableException("No solution: " +
+                            "Graph is not schedulable.\n" +
+                            "Graph is not" +
+                            "consistent under the GR domain");
             }
+            catch (NoSuchElementException e) {
+                throw new InternalErrorException("GRScheduler: " +
+                        "connectedActor " +
+                        ((ComponentEntity) connectedActor).getName() +
+                        "does not appear in the firings Map");
+            }
+
         }
+        
     }
 
     /** Create a schedule for a set of UnscheduledActors.  Given a valid
      *  firing vector, simulate the scheduling of the actors until the
-     *  end of one synchronous dataflow iteration.
-     *  Each actor will appear in the schedule exactly the number of times that
-     *  minimally solves the balance equations and in an order where each
-     *  actor has sufficient tokens on its inputs to fire.   Note that no
-     *  claim is made that this is an optimal solution in any other sense.
+     *  end of one GR iteration.
+     *  Each actor will appear in the schedule once.
      *
      *  @param UnscheduledActors The Actors that need to be scheduled.
      *  @return A LinkedList of the Actors in the order they should fire.
@@ -521,7 +411,7 @@ public class GRScheduler extends Scheduler {
         LinkedList newSchedule = new LinkedList();
 
         // An association between All the input ports in a simulation and an
-	// array of the number of tokens waiting on each relation of that port
+    	// array of the number of tokens waiting on each relation of that port
     	Map waitingTokens = new TreeMap(new _NamedObjComparator());
         Map firingsRemainingVector = new TreeMap(new _NamedObjComparator());
         firingsRemainingVector.putAll(_firingvector);
@@ -645,7 +535,7 @@ public class GRScheduler extends Scheduler {
 		    // times than we thought we should have
 		    // then throw an exception.
 		    // This should never happen.
-		    throw new IllegalStateException("Balance Equation " +
+		    throw new IllegalStateException("Equation " +
                             "solution does not agree with " +
                             "scheduling algorithm");
 
@@ -692,13 +582,9 @@ public class GRScheduler extends Scheduler {
 		}
 	    }
 	}
-        catch (IllegalActionException iae) {
-            // This could happen if we call getTokenConsumptionRate on a
-            // port that isn't a part of the actor.   This probably means
-            // the graph is screwed up, or somebody else is mucking
-            // with it.
+        catch (IllegalActionException exception) {
             throw new InternalErrorException("GR Scheduler Failed " +
-                    "internal consistency check: " + iae.getMessage());
+                    "internal consistency check: " + exception.getMessage());
         } finally {
             if (_debugging) _debug("finishing loop");
 	}
@@ -723,106 +609,7 @@ public class GRScheduler extends Scheduler {
         return newSchedule;
     }
 
-    /** Push the rates calculated for this system up to the contained Actor.
-     *  This allows the container to be properly scheduled if it is
-     *  in a hierarchical system
-     *  @exception IllegalActionException If any called method throws it.
-     */
-    private void _setContainerRates()
-            throws NotSchedulableException, IllegalActionException {
-        Director director = (Director) getContainer();
-        if(director == null)
-            throw new NotSchedulableException("Scheduler must " +
-                    "have a director in order to schedule.");
-
-        CompositeActor container = (CompositeActor) director.getContainer();
-        if(container == null) throw new NotSchedulableException(
-                "The model must be contained within a CompositeActor in " +
-                "order to be scheduled.");
-
-        Iterator ports = container.portList().iterator();
-        while(ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            // Extrapolate the Rates
-            Iterator connectedports = port.insidePortList().iterator();
-            int consumptionRate = 0;
-            int productionRate = 0;
-            //int initProduction = 0;
-            if(connectedports.hasNext()) {
-                IOPort cport = (IOPort) connectedports.next();
-                Entity cactor = (Entity) cport.getContainer();
-                consumptionRate = _getFiringCount(cactor) *
-                    getTokenConsumptionRate(cport);
-                productionRate = _getFiringCount(cactor) *
-                    getTokenProductionRate(cport);
-                //initProduction = _getFiringCount(cactor) *
-                //    getTokenInitProduction(cport);
-                if (_debugging) {
-                    _debug("CPort " + cport.getName());
-                    _debug("consumptionRate = " + consumptionRate);
-                    _debug("productionRate = " + productionRate);
-                    //_debug("initProduction = " + initProduction);
-                }
-            }
-            // All the ports connected to this port must have the same rate
-            while(connectedports.hasNext()) {
-                IOPort cport = (IOPort) connectedports.next();
-                Entity cactor = (Entity) cport.getContainer();
-                int crate = _getFiringCount(cactor) *
-                    getTokenConsumptionRate(cport);
-                if(crate != consumptionRate) throw new NotSchedulableException(
-                        port, cport, "Port " + cport.getName() +
-                        " has an aggregate consumption rate of " + crate +
-                        " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + consumptionRate +
-                        "!");
-                int prate = _getFiringCount(cactor) *
-                    getTokenProductionRate(cport);
-                if(prate != productionRate) throw new NotSchedulableException(
-                        port, cport, "Port " + cport.getName() +
-                        " has an aggregate production rate of " + prate +
-                        " which does not match the computed aggregate rate " +
-                        "of " + port.getName() + " of " + productionRate +
-                        "!");
-                //int initp = _getFiringCount(cactor) *
-                //    getTokenInitProduction(cport);
-                //if(initp != initProduction) throw new NotSchedulableException(
-                //        port, cport, "Port " + cport.getName() +
-                //        " has an aggregate init production of " + initp +
-                //        " which does not match the computed aggregate " +
-                //        "of " + port.getName() + " of " + initProduction +
-                //        "!");
-
-            }
-            if (_debugging) {
-                _debug("Port " + port.getName());
-                _debug("consumptionRate = " + consumptionRate);
-                _debug("productionRate = " + productionRate);
-                //_debug("initProduction = " + initProduction);
-            }
-
-            try {
-                Parameter param;
-                param = (Parameter)port.getAttribute("tokenConsumptionRate");
-                if(param == null)
-                    param = new Parameter(port,"tokenConsumptionRate",
-                            new IntToken(1));
-                param.setToken(new IntToken(consumptionRate));
-                param = (Parameter)port.getAttribute("tokenProductionRate");
-                if(param == null)
-                    param = new Parameter(port,"tokenProductionRate",
-                            new IntToken(1));
-                param.setToken(new IntToken(productionRate));
-                //param = (Parameter)port.getAttribute("tokenInitProduction");
-                //if(param == null)
-                //    param = new Parameter(port,"tokenInitProduction",
-                //            new IntToken(1));
-                //param.setToken(new IntToken(initProduction));
-            } catch (Exception ex) {
-            }
-        }
-    }
-
+    
     /** Set the firing vector, which is a Map associating an Actor
      *  with the number of times that it will fire during an GR iteration.
      *  Every object that this Scheduler is responsible for should have an
@@ -862,14 +649,13 @@ public class GRScheduler extends Scheduler {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens =
 		(int []) waitingTokens.get(inputPort);
-	    int tokenrate =
-		getTokenConsumptionRate(inputPort);
+	    int tokenrate = 1;
 	    for(int channel = 0; channel < inputPort.getWidth(); channel++) {
-		tokens[channel] -= tokenrate;
+		    tokens[channel] -= tokenrate;
 
-		// keep track of whether or not this actor can fire again
-		// immediately
-		if(tokens[channel] < tokenrate) stillReadyToSchedule = false;
+		    // keep track of whether or not this actor can fire again
+		    // immediately
+		    if(tokens[channel] < tokenrate) stillReadyToSchedule = false;
 	    }
 	}
         return stillReadyToSchedule;
@@ -948,7 +734,7 @@ public class GRScheduler extends Scheduler {
 	}
     }
 
-    /** Solve the Balance Equations for the list of connected Actors.
+    /** Solve the Equations for the list of connected Actors.
      *  For each actor, determine the ratio that determines the rate at
      *  which it should fire relative to the other actors for the graph to
      *  be live and operate within bounded memory.   This ratio is known as the
@@ -962,7 +748,7 @@ public class GRScheduler extends Scheduler {
      *  @exception NotSchedulableException If the graph is not connected.
      *  @exception IllegalActionException If any called method throws it.
      */
-    private Map _solveBalanceEquations(List Actors)
+    private Map _solveEquations(List Actors)
             throws NotSchedulableException, IllegalActionException {
 
         // firings contains the Map that we will return.
@@ -988,36 +774,26 @@ public class GRScheduler extends Scheduler {
         Iterator enumActors = remainingActors.iterator();
         while(enumActors.hasNext()) {
             ComponentEntity e = (ComponentEntity) enumActors.next();
-            firings.put(e, Fraction.ZERO);
+            firings.put(e, new Integer(0));
         }
 
         try {
             // Pick an actor as a reference
             Actor a = (Actor) remainingActors.removeFirst();
             // And set it's rate to one per iteration
-            firings.put(a, new Fraction(1));
+            firings.put(a, new Integer(1));
             // And start the list to recurse over.
             pendingActors.addLast(a);
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             // if remainingActors.removeFirst() fails, then we've been given
             // no actors to do anything with, so return an empty Map
             return firings;
         }
 
         while(!done) try {
-            // NOTE: Do not move this debug clause after the removeFirst()
-            // call... that causes an infinite loop!
-            if (_debugging) {
-                _debug("pendingActors: ");
-                _debug(pendingActors.toString());
-            }
+            
             // Get the next actor to recurse over
             Actor currentActor = (Actor) pendingActors.removeFirst();
-            if (_debugging) {
-                _debug("Balancing from " +
-                        ((ComponentEntity) currentActor).getName());
-            }
 
             // traverse all the input and output ports, setting the firings
             // for the actor(s)???? that each port is connected to relative
@@ -1035,11 +811,10 @@ public class GRScheduler extends Scheduler {
                     _propagateOutputPort(currentPort, firings,
                             remainingActors, pendingActors);
             }
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             // Once we've exhausted pendingActors, this exception will be
             // thrown, causing us to terminate the loop.
-	    // FIXME this is a bad way to do this.
+	        // FIXME this is a bad way to do this.
             done = true;
 
             Iterator actors = remainingActors.iterator();
@@ -1065,49 +840,33 @@ public class GRScheduler extends Scheduler {
     // FIXME: Move this functionality to the kernel.
     private int _getChannel(IOPort port, Receiver receiver)
             throws IllegalActionException {
-	int width = port.getWidth();
-	Receiver[][] receivers = port.getReceivers();
-	int channel;
-	if (_debugging) {
-            _debug("-- getting channels on port " + port.getFullName());
-            _debug("port width = " + width);
-            _debug("number of channels = " + receivers.length);
-        }
-	for(channel = 0; channel < receivers.length; channel++) {
-	    int receivernumber;
-	    if (_debugging) {
-                _debug("number of receivers in channel " + channel
-                        + " = " + receivers[channel].length);
-            }
-	    for(receivernumber = 0;
-		receivernumber < receivers[channel].length;
-		receivernumber++)
-		if(receivers[channel][receivernumber] == receiver) {
-                    if (_debugging) {
-                        _debug("-- returning channel number:" + channel);
-                    }
-                    return channel;
+	    int width = port.getWidth();
+    	Receiver[][] receivers = port.getReceivers();
+	    int channel;
+    	for(channel = 0; channel < receivers.length; channel++) {
+	        int receivernumber;
+	        for(receivernumber = 0;
+		        receivernumber < receivers[channel].length;
+		        receivernumber++)
+		        if(receivers[channel][receivernumber] == receiver) {
+                       return channel;
                 }
-	}
-	// Hmm...  didn't find it yet.  Port might be connected on the inside,
-	// so try the inside relations.
-	receivers = port.getInsideReceivers();
-	for(channel = 0; channel < receivers.length; channel++) {
-	    int receivernumber;
-	    if (_debugging) {
-                _debug("number of insidereceivers = "
-                        + receivers[channel].length);
-            }
-	    for(receivernumber = 0;
-		receivernumber < receivers[channel].length;
-		receivernumber++) {
-		if(receivers[channel][receivernumber] == receiver) {
+	    }
+	    // Hmm...  didn't find it yet.  Port might be connected on the inside,
+	    // so try the inside relations.
+	    receivers = port.getInsideReceivers();
+	    for(channel = 0; channel < receivers.length; channel++) {
+	        int receivernumber;
+	        for(receivernumber = 0;
+		        receivernumber < receivers[channel].length;
+		        receivernumber++) {
+		        if(receivers[channel][receivernumber] == receiver) {
                     return channel;
                 }
             }
-	}
+	    }
 
-	throw new InternalErrorException("Receiver not found in the port " +
+    	throw new InternalErrorException("Receiver not found in the port " +
                 port.getFullName());
     }
 
