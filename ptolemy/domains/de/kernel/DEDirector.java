@@ -53,7 +53,7 @@ import java.util.Enumeration;
 // The topological depth of the receivers are static and computed once
 // in the initialization() method. This means that mutations are not
 // currently supported.
-public abstract class DEDirector extends Director {
+public abstract class DEDirector extends Director implements Runnable {
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -169,6 +169,19 @@ public abstract class DEDirector extends Director {
 	return new DEReceiver();
     }
     
+    /** Execute the simulation. This will be the default run method if
+     *  the director is run as a separate thread. Note that
+     *  InvalidStateException is a runtime exception.
+     */
+    public void run() throws InvalidStateException {
+        try {
+            super.go();
+        } catch (KernelException ex) {
+            throw new InvalidStateException(this,
+                    "Execution failed: " + ex.getMessage());
+        }
+    }
+
     /** Set the stop time of the simulation.
      *  @param stopTime The new stop time.
      */

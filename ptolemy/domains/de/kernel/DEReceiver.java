@@ -97,7 +97,7 @@ public class DEReceiver implements Receiver {
     /** Return the container.
      *  @return An instance of IOPort.
      */
-    public Nameable getContainer() {
+    public IOPort getContainer() {
         return _container;
     }
 
