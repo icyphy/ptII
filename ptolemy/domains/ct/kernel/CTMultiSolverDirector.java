@@ -89,6 +89,7 @@ If there are Dirac impulses in the system, the
 a better result.
 <LI>All other parameters are maintained by the CTDirector base class. And the
 two solvers share them.
+</UL>
 
 @author  Jie Liu
 @version $Id$
