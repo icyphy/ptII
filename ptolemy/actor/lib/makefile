@@ -93,6 +93,8 @@ JSRCS = \
 	RandomSource.java \
 	Reader.java \
 	RealTimeDelay.java \
+	RecordAssembler.java \
+	RecordDisassembler.java \
 	Recorder.java \
 	SequenceActor.java \
 	SequenceSource.java \

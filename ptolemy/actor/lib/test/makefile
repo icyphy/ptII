@@ -69,6 +69,8 @@ JSIMPLE_TESTS = \
 	MultiplyDivide.tcl \
 	Pulse.tcl \
 	Ramp.tcl \
+	RecordAssembler.tcl \
+	RecordDisassembler.tcl \
 	Scale.tcl \
 	Sine.tcl \
 	SquareRoot.tcl \
