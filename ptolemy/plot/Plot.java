@@ -526,6 +526,8 @@ public class Plot extends PlotBox {
 
     /**
      * Resize this component. 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public void resize(int width, int height) {
         if (_debug > 8)
@@ -1368,7 +1370,7 @@ public class Plot extends PlotBox {
         //StringReader inp = new StringReader(pxgraphargs);
 
         try {
-            StreamTokenizer stoken = new StreamTokenizer(inp);
+            StreamTokenizer stoken = new StreamTokenizer(inp); // Deprecated.
 
             // We don't want to parse numbers specially, so we reset
             // the syntax and then add back what we want.

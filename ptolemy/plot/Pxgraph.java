@@ -410,6 +410,11 @@ public class Pxgraph extends Frame {
     }
 
 
+    /**
+     * Handle an Action.
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
+     */
     public boolean action(Event e, Object arg) {
         Object target = e.target;
         if (_debug > 20) System.out.println("Pxgraph: action: "+e+" "+target);
@@ -426,7 +431,7 @@ public class Pxgraph extends Frame {
             _about();
             return true;
         } else
-            return super.action (e, arg);
+            return super.action (e, arg); // FIXME: action() is deprecated.
     }
 
     /** Handle an event.
@@ -596,7 +601,7 @@ public class Pxgraph extends Frame {
     /* Dump out html that can be used to redisplay the plot as an applet.
      */  
     private void _html() {
-        Dimension dim = size(); // size is deprecated in 1.1, we
+        Dimension dim = size(); // FIXME: size() is deprecated in 1.1, we
                                 // should use getSize(), but getSize
                                 // is not in 1.0.2.        
 

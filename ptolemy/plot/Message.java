@@ -60,6 +60,11 @@ public class Message extends Frame {
     //      message.show();
     //     }
 
+    /** 
+     * Handle an event.
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
+     */
     public boolean handleEvent(Event event) {
         if (event.id == Event.WINDOW_DESTROY) {
             if (_inapplet) {
@@ -68,9 +73,13 @@ public class Message extends Frame {
                 //System.exit(0);
             }
         }   
-        return super.handleEvent(event);
+        return super.handleEvent(event); // FIXME: handleEvent() is deprecated.
     }
 
+    /** 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
+     */
     public boolean action(Event event, Object arg) {
         dispose();
         return true;

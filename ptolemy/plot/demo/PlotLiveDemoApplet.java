@@ -78,7 +78,7 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
             height = 400;
         }
 
-        _myPlotLiveDemo.resize(width,height);
+        _myPlotLiveDemo.resize(width,height); // FIXME: resize() is deprecated.
         _myPlotLiveDemo.init();
         super.init();
     }
@@ -93,11 +93,13 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 
     /** 
      * Resize the plot.
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public void resize(int width, int height) {
         if (_debug > 8)
             System.out.println("PlotLiveDemoApplet: resize "+width+" "+height);
-        super.resize(width,height);
+        super.resize(width,height); // FIXME: resize() is deprecated.
     }
 
     /** 

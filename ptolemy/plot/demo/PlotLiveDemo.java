@@ -108,13 +108,14 @@ public class PlotLiveDemo extends PlotLive {
          Frame f=new Frame("PlotLiveDemo");
          f.setLayout(new BorderLayout());
          f.setBackground(Color.lightGray);
-         f.resize(400,400);
+         f.resize(400,400);     // FIXME: resize() is deprecated in 1.1,
+         // but we need to compile under 1.0.2 for netscape3.x compatibility.
          pld= new PlotLiveDemo();
          f.add("Center",pld);
          f.pack();
          f.show();
 
-         pld.resize(400,400);
+         pld.resize(400,400);   // FIXME: resize() is deprecated.
          pld.init();
          pld.start();
      }
