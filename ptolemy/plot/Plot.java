@@ -475,6 +475,11 @@ public class Plot extends PlotBox {
                     }
                     setConnected(false);
                     continue;
+                } else if (arg.equals("-o")) {
+                    // -o <output filename>
+                    // _outputFile =  args[i++];
+                    i++;
+                    continue;
                 } else if (arg.equals("-p")) {
                     // -p PixelMarkers Marks: points
                     setMarksStyle("points");
@@ -482,6 +487,9 @@ public class Plot extends PlotBox {
                 } else if (arg.equals("-P")) {
                     // -P LargePixel Marks: dots\n 
                     setMarksStyle("dots");
+                    continue;
+                } else if (arg.equals("-print")) {
+                    // -print is not in the original X11 pxgraph.
                     continue;
                 } else if (arg.equals("-rv")) {
                     setBackground(getColorByName("black"));
@@ -603,7 +611,7 @@ public class Plot extends PlotBox {
             stoken.quoteChar('"');
             stoken.quoteChar('\'');
             int c;
-
+            String partialarg = null;
         out:
             while (true) {
                 c = stoken.nextToken();
@@ -615,14 +623,34 @@ public class Plot extends PlotBox {
                     //System.out.println("Word: " + stoken.sval);
                     if (prependdash) {
                         prependdash = false;
-                        argvector.addElement(new String("-"+stoken.sval));
+                        if (partialarg == null) 
+                            argvector.addElement(new String("-"+stoken.sval));
+                        else
+                            argvector.addElement(new String("-" + partialarg +
+                                    stoken.sval));
                     } else {
-                        argvector.addElement(new String(stoken.sval));
+                        if (partialarg == null) 
+                            argvector.addElement(new String(stoken.sval));
+                        else
+                            argvector.addElement(new String(partialarg + 
+                                    stoken.sval));
                     }
-
+                    partialarg = null;
                     break;
                 case '-':
                     prependdash = true;
+                    break;
+                case '#':
+                case '$':
+                case '%':
+                case '&':
+                    // The above chars can be part of a URL.  For example
+                    // perl scripts use &.  However, we cannot include
+                    // them in the wordChars() range of chars, since
+                    // the single quote is between them and the rest of the
+                    // chars. So we have to process them by hand.
+                    partialarg = ((String)argvector.lastElement()) + (char)c;
+                    argvector.removeElementAt(argvector.size()-1);
                     break;
                 case '"':
                 case '\'':
