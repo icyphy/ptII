@@ -1156,7 +1156,7 @@ public class Query extends JPanel {
         _entryPanel.add(widget);
         _entries.put(name, entry);
         _labels.put(name, label);
-        _previous.put(name, stringValue(name));
+        _previous.put(name, getStringValue(name));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1181,7 +1181,7 @@ public class Query extends JPanel {
     ////                         friendly methods                  ////
 
     /** Notify all registered listeners that something changed for the
-     *  specified entry, if it indeed has changed.  The stringValue()
+     *  specified entry, if it indeed has changed.  The getStringValue()
      *  method is used to check the current value against the previously
      *  notified value, or the original value if there have been no
      *  notifications.
@@ -1190,7 +1190,7 @@ public class Query extends JPanel {
     void _notifyListeners(String name) {
         if (_listeners != null) {
             String previous = (String)_previous.get(name);
-            String newValue = stringValue(name);
+            String newValue = getStringValue(name);
             if (newValue.equals(previous)) {
                 return;
             }
