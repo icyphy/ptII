@@ -140,10 +140,15 @@ public final class Manager extends NamedObj implements Runnable {
      * @exception IllegalActionException if the top level CompositeActor
      *  throws an IllegalActionException while calling finish().
      */
-    public synchronized void finish() throws IllegalActionException {
+    public synchronized void finish() {
         _keepIterating = false;
         _isPaused = false;
-	getToplevel().finish();
+        try {
+            getToplevel().finish();
+        } catch (IllegalActionException ex) {
+            // FIXME: Should do something more sophisticated.
+            throw new InvalidStateException(this, ex.getMessage());
+        }
         if(_simulationThread != null) {
             synchronized(_simulationThread) {
                 _simulationThread.notify();
