@@ -1330,7 +1330,6 @@ public class NamedObj implements
      *  on the list of listeners, do nothing.
      *  @param listener The listener to remove.
      *  @see #addChangeListener(ChangeListener)
-     *  @see #setClassDefinition(boolean)
      *  @see Changeable
      */
     public synchronized void removeChangeListener(ChangeListener listener) {

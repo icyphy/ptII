@@ -130,7 +130,6 @@ public interface Instantiable extends Derivable {
     /** Return true if this object is a class definition, which means that
      *  it can be instantiated.
      *  @return True if this object is a class definition.
-     *  @see #setClassDefinition(boolean)
      */
     public boolean isClassDefinition();
 }

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    to the parent propagate automatically to the children as described
    in the {@link Instantiable} interface.
    <p>
-   Note that the {@link instantiate(NamedObj, String)} permits instantiating
+   Note that the {@link #instantiate(NamedObj, String)} permits instantiating
    an object into a workspace that is different from the one associated with
    this object.  This means that some care must be exercised when propagating
    changes from a parent to a child, since they may be in different workspaces.
@@ -201,7 +201,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
-     *  @see MoMLExportable
+     *  @see ptolemy.kernel.util.MoMLExportable
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -264,7 +264,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
     /** Get the MoML element name. If this is a class definition, then
      *  return "class". Otherwise, defer to the base class.
      *  @return The MoML element name for this object.
-     *  @see MoMLExportable
+     *  @see ptolemy.kernel.util.MoMLExportable
      */
     public String getElementName() {
         if (isClassDefinition()) {
@@ -297,7 +297,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   object, or an empty list if there are no prototypes.
      *  @exception IllegalActionException If a prototype with the right
      *   name but the wrong class is found.
-     *  @see Derivable
+     *  @see ptolemy.kernel.util.Derivable
      */
     public List getPrototypeList()
             throws IllegalActionException {
@@ -323,7 +323,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  <p>
      *  The new object is not a class definition by default (it is an
      *  "instance" rather than a "class").  To make it a class
-     *  definition (a "subclass"), call {@link setClassDefinition(boolean)}
+     *  definition (a "subclass"), call {@link #setClassDefinition(boolean)}
      *  with a <i>true</i> argument.
      *  <p>
      *  In this base class, the container argument is ignored except that
@@ -418,11 +418,6 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
                 " there are subclasses and/or instances.");
             }
             _isClassDefinition = isClass;
-            /*
-            if (isClass) {
-                _elementName = "class";
-            }
-            */
         } finally {
             workspace().doneWriting();
         }
@@ -437,8 +432,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  into the "class" or "extends" attribute of the MoML element
      *  defining this object (depending on whether this is an instance
      *  or a subclass).  This method is called when this object
-     *  is constructed using the {@link #instantiate()} method.
-     *  This method is write synchronized on
+     *  is constructed using the {@link #instantiate(NamedObj, String)}
+     *  method. This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
      *  <p>
