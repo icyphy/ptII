@@ -223,30 +223,32 @@ public class BasePNDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Wait until the detection of a deadlock. If the deadlock is real, then
-     *  return. Else (for an artificial deadlock), handle the deadlock by
-     *  incrementing the capacity of a receiver with the smallest capacity
-     *  amongst the receivers on which a process is blocked on a write.
-     *  The derived directors can override this method to handle other forms
-     *  of deadlock that they define and perform actions accordingly.
-     *  This method is synchronized on the director.
-     *  @exception IllegalActionException Not thrown in this base class. Maybe
-     *  thrown by derived classes.
+    /** Wait until the detection of a deadlock or all threads are stopped. 
+     *  If the deadlock is real, then return. Else (for an artificial 
+     *  deadlock), handle the deadlock by incrementing the capacity of a 
+     *  receiver with the smallest capacity amongst the receivers on which 
+     *  a process is blocked on a write. The derived directors can override 
+     *  this method to handle other forms of deadlock that they define and 
+     *  perform actions accordingly. This method is synchronized on the 
+     *  director. 
+     *  @exception IllegalActionException Not thrown in this base class. 
+     *  May be thrown by derived classes.
      */
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
 	// Wait while no deadlock is detected.
-	while (_readBlockCount != _getActiveActorsCount()) {
+        while ((_readBlockCount != _getActiveActorsCount()) 
+                && !_areAllThreadsStopped() ) {
 	    //In this case, wait until a real deadlock occurs.
 	    synchronized (this) {
-		while (!_isDeadlocked()) {
+		while ( !_isDeadlocked() && !_areAllThreadsStopped() ) {
 		    //Wait until a deadlock is detected.
 		    workspace.wait(this);
 		}
 		//Set this flag as a derived class might use this variable.
 		_notDone = _resolveDeadlock();
 	    }
-	}
+        }
         return;
     }
 
@@ -294,6 +296,8 @@ public class BasePNDirector extends ProcessDirector {
      *  detecting a real deadlock. True is returned to indicate that the
      *  composite actor can start its execution again if it receives data on
      *  any of its input ports.
+     *  NOTE: This method may change in subsequent releases as 
+     *  composite actors in process domains become supported.
      *  @return true to indicate that the composite actor can continue
      *  executing on receiving additional input on its input ports.
      *  @exception IllegalActionException Not thrown in this base class. May be
@@ -323,6 +327,21 @@ public class BasePNDirector extends ProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or are
+     *  blocked.
+     *  @return True if all active threads containing actors controlled
+     *  by this thread have stopped or are blocked; otherwise return false.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+ 	if(_getStoppedProcessesCount() + _readBlockCount + 
+        	_writeBlockCount + _mutationBlockCount 
+                == _getActiveActorsCount()) {
+ 	    return (_getStoppedProcessesCount() != 0);
+ 	}
+ 	return false;
+    }
 
     /** Decrease by 1 the count of active processes under the control of this
      *  director. Also check whether this results in the model arriving at a
@@ -437,9 +456,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
-	if (_isDeadlocked() || _isPaused()) {
-	    notifyAll();
-	}
+	notifyAll();
 	return;
     }
 
@@ -472,9 +489,7 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
-	if (_isDeadlocked() || _isPaused()) {
-	    notifyAll();
-	}
+	notifyAll();
 	return;
     }
 
@@ -511,8 +526,6 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfWriteBlock(PNQueueReceiver receiver) {
 	_writeBlockCount++;
-        // FIXME: is add correct or should it have been addFirst
-        // used to be insertFirst
 	_writeblockedQueues.add(receiver);
         //Inform the listeners
         if (!_processlisteners.isEmpty()) {
@@ -526,9 +539,7 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
-	if (_isDeadlocked() || _isPaused()) {
-	    notifyAll();
-	}
+	notifyAll();
 	return;
     }
 
