@@ -64,10 +64,6 @@
         <doc>Write the value of a string token, one per line, to a text file.</doc>
       </entity>
 
-      <entity name="SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
-        <doc>Gives access to the system clipboard</doc>
-      </entity>
-
       <entity name="URLDirectoryReader"
               class="ptolemy.actor.lib.URLDirectoryReader">
          <doc>Read a directory and output each file or subdirectory</doc>
