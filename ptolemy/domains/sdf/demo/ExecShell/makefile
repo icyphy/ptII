@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	ExecShell.xml
+	ExecShell.xml \
+	RunAllDemos.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -82,7 +83,12 @@ demo: demo_vergil #demo_applet demo_ptolemy
 # 	"$(PTII)/bin/ptolemy" ExecShell.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" ExecShell.xml
+	"$(PTII)/bin/vergil" ExecShell.xml RunAllDemos.xml
+
+test: demo_vergil
+	"${PTII}/bin/ptinvoke" ptolemy.actor.gui.MoMLSimpleApplication \
+		$(ROOT)/ptolemy/actor/lib/test/auto/Exec.xml \
+		$(ROOT)/ptolemy/actor/lib/test/auto/Cat.xml \
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
