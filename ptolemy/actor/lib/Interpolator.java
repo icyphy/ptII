@@ -102,26 +102,27 @@ public class Interpolator extends SequenceSource {
 	// function. But since these parameters are public, other objects
 	// in the system may use them.
 
-	int[][] defIndexes = new int[1][];
-	defIndexes[0] = _interpolation.getIndexes();
-	IntMatrixToken defIndexToken = new IntMatrixToken(defIndexes);
-        indexes = new Parameter(this, "indexes", defIndexToken);
+	int[][] defaultIndexes = new int[1][];
+	defaultIndexes[0] = _interpolation.getIndexes();
+	IntMatrixToken defaultIndexToken = new IntMatrixToken(defaultIndexes);
+        indexes = new Parameter(this, "indexes", defaultIndexToken);
         indexes.setTypeEquals(BaseType.INT_MATRIX);
 
-	double[][] defValues = new double[1][];
-	defValues[0] = _interpolation.getValues();
-	DoubleMatrixToken defValueToken = new DoubleMatrixToken(defValues);
-        values = new Parameter(this, "values", defValueToken);
+	double[][] defaultValues = new double[1][];
+	defaultValues[0] = _interpolation.getValues();
+	DoubleMatrixToken defaultValueToken =
+            new DoubleMatrixToken(defaultValues);
+        values = new Parameter(this, "values", defaultValueToken);
         values.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-	int defOrder = _interpolation.getOrder();
-	IntToken defOrderToken = new IntToken(defOrder);
-        order = new Parameter(this, "order", defOrderToken);
+	int defaultOrder = _interpolation.getOrder();
+	IntToken defaultOrderToken = new IntToken(defaultOrder);
+        order = new Parameter(this, "order", defaultOrderToken);
         order.setTypeEquals(BaseType.INT);
 
-	int defPeriod = _interpolation.getPeriod();
-	IntToken defPeriodToken = new IntToken(defPeriod);
-	period = new Parameter(this, "period", defPeriodToken);
+	int defaultPeriod = _interpolation.getPeriod();
+	IntToken defaultPeriodToken = new IntToken(defaultPeriod);
+	period = new Parameter(this, "period", defaultPeriodToken);
 	period.setTypeEquals(BaseType.INT);
 
         output.setTypeEquals(BaseType.DOUBLE);
