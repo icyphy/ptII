@@ -71,7 +71,8 @@ public class PNSieve extends PNActor {
     public void run() {
         IntToken data;
         try {
-            while(true) {
+            int i;
+            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 Enumeration outports = _input.deepConnectedOutputPorts();
                 while (outports.hasMoreElements()) {
                     PNOutPort outport = (PNOutPort)outports.nextElement();
@@ -99,6 +100,7 @@ public class PNSieve extends PNActor {
                     }
                 }
             }
+            ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchElementException e) {
             System.out.println("Terminating "+ this.getName());
             return;
