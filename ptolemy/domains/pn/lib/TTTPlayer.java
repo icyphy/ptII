@@ -121,28 +121,23 @@ public class TTTPlayer extends AtomicActor {
 			done = true;
 		    }
 		}
-	    }
-	    else if (moves[i][0] + moves[i][1] + moves[i][2] == 2) {
-		//Player on verge of victory.
-		//So go ahead and block him!!
+	    } //Check for diagonal
+	    else if (moves[0][2] + moves[1][1] + moves[2][0] == -2) {
 		for (int j = 0; j < 3; j++) {
-		    if (moves[i][j] == 0) {
-			_col = j;
-			_row = i;
+		    if (moves[j][2-j] == 0) {
+			_row = j;
+			_col = 2-j;
 			i = 3;
 			j = 3;
 			done = true;
-		    } 
+		    }
 		}
-	    } //Check for column sum
-	    else if (moves[0][i] + moves[1][i] + moves[2][i] == 2) {
-		//Comp on verge of victory
-		//So go ahead and win!!
-		//Else player on verge of victory- Block him
+	    } 
+	    else if (moves[0][0] + moves[1][1] + moves[2][2] == -2) {
 		for (int j = 0; j < 3; j++) {
-		    if (moves[j][i] == 0) {
+		    if (moves[j][j] == 0) {
 			_row = j;
-			_col = i;
+			_col = j;
 			i = 3;
 			j = 3;
 			done = true;
@@ -151,23 +146,57 @@ public class TTTPlayer extends AtomicActor {
 	    }
 	}
 	if (done) return;
-	//Check for right diagonal
-	else if (Math.abs(moves[0][0] + moves[1][1] + moves[2][2]) == 2) {
-	    for (int i = 0; i < 3; i++) {
-		if (moves[i][i] == 0) {
-		    _row = i;
-		    _col = i;
-		    done = true;
+	else {
+	    for (int i = 0; i < 2; i++) {
+		if (moves[i][0] + moves[i][1] + moves[i][2] == 2) {
+		    //Player on verge of victory.
+		    //So go ahead and block him!!
+		    for (int j = 0; j < 3; j++) {
+			if (moves[i][j] == 0) {
+			    _col = j;
+			    _row = i;
+			    i = 3;
+			    j = 3;
+			    done = true;
+			} 
+		    }
+		} //Check for column sum
+		else if (moves[0][i] + moves[1][i] + moves[2][i] == 2) {
+		    //Comp on verge of victory
+		    //So go ahead and win!!
+		    //Else player on verge of victory- Block him
+		    for (int j = 0; j < 3; j++) {
+			if (moves[j][i] == 0) {
+			    _row = j;
+			    _col = i;
+			    i = 3;
+			    j = 3;
+			    done = true;
+			}
+		    }
 		}
-	    }
-	} //Check for anti-diagonal
-	else if (Math.abs(moves[0][2] + moves[1][1] + moves[2][0]) == 2) {
-	    for (int i = 0; i < 3; i++) {
-		if (moves[i][2-i] == 0) {
-		    _row = i;
-		    _col = 2-i;
-		    done = true;
-		}
+		else if (moves[0][2] + moves[1][1] + moves[2][0] == 2) {
+		    for (int j = 0; j < 3; j++) {
+			if (moves[j][2-j] == 0) {
+			    _row = j;
+			    _col = 2-j;
+			    i = 3;
+			    j = 3;
+			    done = true;
+			}
+		    }
+		} 
+		else if (moves[0][0] + moves[1][1] + moves[2][2] == 2) {
+		    for (int j = 0; j < 3; j++) {
+			if (moves[j][j] == 0) {
+			    _row = j;
+			    _col = j;
+			    i = 3;
+			    j = 3;
+			    done = true;
+			}
+		    }
+		} 	
 	    }
 	}
 	if (done) return;
