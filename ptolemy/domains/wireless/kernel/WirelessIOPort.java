@@ -209,7 +209,7 @@ public class WirelessIOPort
      *   or if the <i>outsideChannel</i> parameter cannot be evaluated.
      */
     public void broadcast(Token token) throws IllegalActionException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast to wireless channel " + channel.getName() + ": " + token);
@@ -234,7 +234,7 @@ public class WirelessIOPort
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
             
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast array of tokens to wireless channel "
@@ -258,7 +258,7 @@ public class WirelessIOPort
      *   clear().
      */
     public void broadcastClear() throws IllegalActionException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast clear.");
@@ -317,7 +317,7 @@ public class WirelessIOPort
      *   is out of range.
      */
     public boolean hasRoom(int channelIndex) throws IllegalActionException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("hasRoom on channel " + channelIndex + " returns true.");
@@ -340,7 +340,7 @@ public class WirelessIOPort
      */
     public boolean hasRoomInside(int channelIndex)
             throws IllegalActionException {
-        WirelessChannel channel = getInsideChannel();
+        WirelessMedia channel = getInsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("hasRoomInside on channel " + channelIndex + " returns true.");
@@ -357,7 +357,7 @@ public class WirelessIOPort
      *  @exception IllegalActionException If the <i>insideChannel</i> parameter
      *   value cannot be evaluated.
      */
-    public WirelessChannel getInsideChannel() throws IllegalActionException {
+    public WirelessMedia getInsideChannel() throws IllegalActionException {
         if (workspace().getVersion() == _insideChannelVersion) {
             return _insideChannel;
         }
@@ -367,8 +367,8 @@ public class WirelessIOPort
         if (container instanceof CompositeEntity) {
             ComponentEntity entity
                     = ((CompositeEntity)container).getEntity(channelName);
-            if (entity instanceof WirelessChannel) {
-                _insideChannel = (WirelessChannel)entity;
+            if (entity instanceof WirelessMedia) {
+                _insideChannel = (WirelessMedia)entity;
             }
         }
         _insideChannelVersion = workspace().getVersion();
@@ -402,7 +402,7 @@ public class WirelessIOPort
      *  @exception IllegalActionException If the <i>outsideChannel</i> parameter
      *   value cannot be evaluated.
      */
-    public WirelessChannel getOutsideChannel() throws IllegalActionException {
+    public WirelessMedia getOutsideChannel() throws IllegalActionException {
         if (workspace().getVersion() == _outsideChannelVersion) {
             return _outsideChannel;
         }
@@ -415,8 +415,8 @@ public class WirelessIOPort
                 ComponentEntity channel
                         = ((CompositeEntity)containersContainer)
                         .getEntity(channelName);
-                if (channel instanceof WirelessChannel) {
-                    _outsideChannel = (WirelessChannel)channel;
+                if (channel instanceof WirelessMedia) {
+                    _outsideChannel = (WirelessMedia)channel;
                 }
             }
         }
@@ -535,7 +535,7 @@ public class WirelessIOPort
      */
     public List insideSinkPortList() {
         try {
-            WirelessChannel channel = getInsideChannel();
+            WirelessMedia channel = getInsideChannel();
             if (channel != null) {
                 // FIXME: cache this.
                 List result = channel.listeningInputPorts();
@@ -562,7 +562,7 @@ public class WirelessIOPort
      */
     public List insideSourcePortList() {
         try {
-            WirelessChannel channel = getInsideChannel();
+            WirelessMedia channel = getInsideChannel();
             if (channel != null) {
                 // FIXME: Cache this.
                 List result = channel.sendingOutputPorts();
@@ -590,7 +590,7 @@ public class WirelessIOPort
      */
     public int numberOfSinks() {
         try {
-            WirelessChannel channel = getOutsideChannel();
+            WirelessMedia channel = getOutsideChannel();
             if (channel != null) {
                 return sinkPortList().size();
             } else {
@@ -611,7 +611,7 @@ public class WirelessIOPort
      */
     public int numberOfSources() {
         try {
-            WirelessChannel channel = getOutsideChannel();
+            WirelessMedia channel = getOutsideChannel();
             if (channel != null) {
                 return sourcePortList().size();
             } else {
@@ -638,7 +638,7 @@ public class WirelessIOPort
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("send to wireless channel " + channel.getName() + ": " + token);
@@ -666,7 +666,7 @@ public class WirelessIOPort
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast array of tokens to wireless channel "
@@ -691,7 +691,7 @@ public class WirelessIOPort
      *   clear().
      */
     public void sendClear(int channelIndex) throws IllegalActionException {
-        WirelessChannel channel = getOutsideChannel();
+        WirelessMedia channel = getOutsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("send clear.");
@@ -712,7 +712,7 @@ public class WirelessIOPort
      */
     public void sendClearInside(int channelIndex)
             throws IllegalActionException {
-        WirelessChannel channel = getInsideChannel();
+        WirelessMedia channel = getInsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("send clear inside.");
@@ -736,7 +736,7 @@ public class WirelessIOPort
      */
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        WirelessChannel channel = getInsideChannel();
+        WirelessMedia channel = getInsideChannel();
         if (channel != null) {
             if (_debugging) {
                 _debug("send inside to wireless channel " + channel.getName() + ": " + token);
@@ -760,7 +760,7 @@ public class WirelessIOPort
      */
     public List sinkPortList() {
         try {
-            WirelessChannel channel = getOutsideChannel();
+            WirelessMedia channel = getOutsideChannel();
             if (channel != null) {
                 // FIXME: cache this.
                 List result = channel.listeningInputPorts();
@@ -787,7 +787,7 @@ public class WirelessIOPort
      */
     public List sourcePortList() {
         try {
-            WirelessChannel channel = getOutsideChannel();
+            WirelessMedia channel = getOutsideChannel();
             if (channel != null) {
                 // FIXME: Cache this.
                 List result = channel.sendingOutputPorts();
@@ -844,8 +844,8 @@ public class WirelessIOPort
     private Receiver[][] _insideReceivers;
     
     // Cached versions.
-    private WirelessChannel _insideChannel;
+    private WirelessMedia _insideChannel;
     private long _insideChannelVersion = -1L;
-    private WirelessChannel _outsideChannel;
+    private WirelessMedia _outsideChannel;
     private long _outsideChannelVersion = -1L;
 }

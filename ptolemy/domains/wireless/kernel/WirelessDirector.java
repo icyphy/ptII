@@ -187,7 +187,7 @@ public class WirelessDirector extends DEDirector {
             Entity node = (Entity)actors.next();
             
             // Skip channels.
-            if (node instanceof WirelessChannel) {
+            if (node instanceof WirelessMedia) {
                 continue;
             }
             for (int i = 0; i < dimensions; i++) {

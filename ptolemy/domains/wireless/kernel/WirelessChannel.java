@@ -77,7 +77,8 @@ or the transmit() public method.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class WirelessChannel extends TypedAtomicActor {
+public class WirelessChannel extends TypedAtomicActor 
+        implements WirelessMedia {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
