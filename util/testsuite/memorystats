@@ -43,11 +43,11 @@
 awk 'BEGIN {min=99999999}
     NR > 1  {   if ( $0 ~ /ms. Memory:/) {
 		    count++;
-		    sum+= $5;
-		    if ($5 < min) {
-			min = $5
-		    } else if ($5 > max) {
-			max = $5
+		    sum+= $1;
+		    if ($1 < min) {
+			min = $1
+		    } else if ($1 > max) {
+			max = $1
 		    }
                     print $0
                     getline
