@@ -950,6 +950,20 @@ Version 4.0 has the following limitations:
 <h3>Release Limitations</h3>
 <ul>
 
+<li> Some of he documentation has not yet been updated
+<menu>
+<li> The three volume design doc has not yet been updated
+
+<li> The HyVisual document has not yet been updated
+
+<li> The UsingVergil document has not been updated.
+In the interim, see the
+<a href="design/visualsense.pdf">VisualSense</a> document 
+
+<li> The <a href="expressions.htm">Expressions</a> document
+has not yet been updated
+</menu>
+
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
@@ -995,6 +1009,10 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 	applet gets a InterruptedException and pops up a modal dialog
 	box, which freezed the browser.  We are working on a solution.
 
+
+	<li> Applets do not correctly display the TextAttribute,
+	DocumentationAttribute or the TM "Show schedule" icon.
+
 	<li> The Ptolemy II Applets require java 1.4.1_02 or later so
 	as to prevent problems with Windows XP and Radeon displays
 	that causes XP to hang when a Java application is exiting.
@@ -1006,7 +1024,6 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 	<CODE>-Dsun.java2d.noddraw=true</CODE>, but for applets we must
 	require Java 1.4.1_02 or later.  
 	 <br>As a result, the applet html code requires version 1.4.2 or later,
-
 
 	<li>Applets seem to run out of memory after about 82Mb.
 
@@ -1088,11 +1105,6 @@ Attempted to find as a moml class, but got:
 <li> Windows Installer Issues:
  	<ul>
 
-	<li> The Interface to C actors using the Java Native Interface
-	is not available via the Windows Installer (or Web Start).
-	To use the JNI/Ptolemy II interface, you must download 
-	Ptolemy II as source files and compile.
-
 	<li> Sometimes running a model that uses the Matlab interface
 	will cause Ptolemy II to exit.  Usually this occurs if Vergil
 	has been running for a while and then the Matlab interface is loaded.
@@ -1129,10 +1141,26 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 	<li> The Windows task bar shows a 'Launch Anywhere' icon instead
 	of a Vergil Icon.
 
+
+	<li> Some of the dependency issues in the installer have not
+	be resolved.   For example:
+	 <br>documentation requires minimal
+	 <br>full requires minimal
+
+	<li> The Windows installer works best if you are in the 
+	Administrators Windows group.   Otherwise, the Windows installer
+	tends to dump lots of icons on your desktop
 	</ul>
 
 <li> Web Start issues:
 	<ul>
+
+	<li> The Web Start installer does not work with Java 1.5.0-beta.
+	The problem is that the certificate is not recognized.
+
+	<li> The Matlab Wireless demo fails under Web Start.
+	The problem is that the Matlab .m file cannot be found.
+
 	<li> The Python Ptolemizer demo does not work under Web Start,
 	probably because Jython cannot handle loading classes
 	from the Ptolemy II classes. 
@@ -1183,7 +1211,7 @@ European machines that use a comma "1,0" instead of a period "1.1"
 in floating point numbers.
 
 <li> The readFile() parameter function does not work with applets.
-
+Instead, use readResource().
 <!-- If you change the next paragraph update install.htm -->
 
 <li>The Matlab interface works only under Windows and it requires that
@@ -1205,6 +1233,14 @@ he was able to get farther with the recompilation of the Matlab interface.
 
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
 The SerialComm actor will only work under Windows.
+
+
+<li> IterateOverArray has the following problems
+     <menu>
+     <li> Look inside of iterateOverArray does not work.
+     <li> Rename a port inside a port of iterateOverArray, then it does
+          not rename the ports in the higher level.
+     </menu>
 
 </ul>
 
@@ -1254,7 +1290,34 @@ have constraints on their element types can cause problems.
 <li>Debugger not yet integrated.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
+
+<li>If an actor uses a slider, then the actor tree navigator pane
+incorrectly shows the slider as a subitem of the actor.
+
+<li> It seems that if you close a model that has been modified,
+  get prompted to save it, and select save, then the model
+  is saved but not closed.  It should be closed too...
+
+<li> When I select a large number of items from one model, and
+  copy and paste them into a new one, they sometimes all get
+  placed at the origin.  Strangely, if I then auto-place,
+  and then undo, they get their original (correct) placement!
 </ul>
+<h3>Limitatoins in JNI</h3>
+<menu>
+<li> The Interface to C actors using the Java Native Interface
+	is not available via the Windows Installer (or Web Start).
+	To use the JNI/Ptolemy II interface, you must download 
+	Ptolemy II as source files and compile.
+
+
+<li> The JNI user interface does not permit creation of new JNI actors.
+
+<li> JNI will not work with Hierarchical classes, subclasses, and inner
+classes
+
+</menu>
+
 
 <h3>Code Generation Limitations</h3>
 Code Generation limitations are covered on the
