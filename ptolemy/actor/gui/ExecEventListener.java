@@ -34,11 +34,11 @@ package ptolemy.actor.gui;
 //// ExecEventListener
 /**
 An ExecEventListener is a listener for ExecEvents created by actors.
-In general, an object that implements this interface will probably be 
-a front end such as a execution visualization tool for the Ptolemy 
-II system, or an object that is communicating with a front end. The 
-events are issued only when the event actually occurs, not when it 
-is requested. 
+In general, an object that implements this interface will probably be
+a front end such as a execution visualization tool for the Ptolemy
+II system, or an object that is communicating with a front end. The
+events are issued only when the event actually occurs, not when it
+is requested.
 
 @author Mudit Goel, John S. Davis II
 @version $Id$
@@ -46,9 +46,9 @@ is requested.
 
 public interface ExecEventListener {
 
-    /** Called to report that an actor has changed its state. 
+    /** Called to report that an actor has changed its state.
      *  The notion of 'state' is arbitrarily defined by the author
-     *  of the actor. The ExecEvent will contain a reference to the 
+     *  of the actor. The ExecEvent will contain a reference to the
      *  actor corresponding to the process.
      *  @param event An ExecEvent containing a reference to an actor.
      */

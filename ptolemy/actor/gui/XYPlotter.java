@@ -40,10 +40,10 @@ import ptolemy.plot.*;
 import java.awt.Panel;
 
 /** A XY signal plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the inputX and 
+ *  from the Ptolemy plot package as a public member.  Data at the inputX and
  *  input Y, which consist of only one channel, is plotted on this instance.
  *  The horizontal axis is inputX and vertical axis is inputY.
- * 
+ *
  *  @author Jie Liu
  *  @version $Id$
  */
@@ -102,8 +102,8 @@ public class XYPlotter extends Plotter implements Placeable {
     /** Read at most one input from each input port and plot it.
      *  This is done in postfire to ensure that data has settled.
      *  Both input port should have at least one tokens. Otherwise,
-     *  one token will be consumed from the input port that has 
-     *  a token, but nothing will be plotted. 
+     *  one token will be consumed from the input port that has
+     *  a token, but nothing will be plotted.
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      *  @return True if it is OK to continue.

@@ -36,7 +36,7 @@ import ptolemy.actor.*;
 //// ExecEvent
 /**
 /* An event that indicates a change in the state of an actor.
-The event contains two pieces of information:  the actor under the 
+The event contains two pieces of information:  the actor under the
 control of the process and an exception that might be thrown.
 The exception might not be a valid reference.
 

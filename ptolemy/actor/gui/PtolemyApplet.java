@@ -268,7 +268,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The workspace that the applet is built in. Each applet has 
+    /** The workspace that the applet is built in. Each applet has
      *  it own workspace.
      */
     protected Workspace _workspace;
