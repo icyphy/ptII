@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BouncingBallWithoutGR" class="ptolemy.actor.TypedCompositeActor">
+<entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 201]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -64,8 +64,14 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This Continuous Time model uses a Finite State Machine
-and the GR domain to simulate a bouncing ball.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This hybrid system simulates a bouncing ball.
+It illustrates the so-called "Zeno condition,"
+where the time between events gets arbitrarily
+small.  The Stop state in the Ball Model
+prevents simulation difficulties by stopping
+the bouncing when the magnitude of the bounces
+drops below a threshold (try removing this state
+and running the model).</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -78,23 +84,23 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 310}}">
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,298 +113,10 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.264020509825656"/>
-<yRange min="9.027550412032514E-8" max="10.0"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="4.403112767753677E-7" max="10.0"/>
 </plot>?>
         </configure>
-    </entity>
-    <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 205.0">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
-        </property>
-        <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-            <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
-            </property>
-            <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 41.0">
-            </property>
-        </property>
-        <port name="position" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="65.5, 159.0">
-            </property>
-        </port>
-        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
-            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="scalable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="vertical resolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="allow model rotation" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="allow model zooming" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allow model translation" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 219.5">
-            </property>
-            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 0.1, 0.1]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 110.0">
-            </property>
-            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
-            <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 150.0">
-            </property>
-            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="137.0, 179.5">
-            </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 180.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <entity name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 290.0">
-            </property>
-            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Translate3D10" class="ptolemy.domains.gr.lib.Translate3D">
-            <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 310.0">
-            </property>
-            <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="Copy1:Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="-0.65">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 345.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="95.0, 190.0">
-            </vertex>
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="225.0, 160.0">
-            </vertex>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="position" relation="relation"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation12"/>
-        <link port="Sphere3D.sceneGraphOut" relation="relation2"/>
-        <link port="Translate3D.sceneGraphIn" relation="relation2"/>
-        <link port="Translate3D.sceneGraphOut" relation="relation3"/>
-        <link port="Translate3D.yTranslate" relation="relation6"/>
-        <link port="AddSubtract.plus" relation="relation"/>
-        <link port="AddSubtract.minus" relation="relation9"/>
-        <link port="AddSubtract.output" relation="relation6"/>
-        <link port="Const.output" relation="relation9"/>
-        <link port="Box3D.sceneGraphOut" relation="relation11"/>
-        <link port="Translate3D10.sceneGraphIn" relation="relation11"/>
-        <link port="Translate3D10.sceneGraphOut" relation="relation12"/>
-        <link port="Translate3D10.yTranslate" relation="relation4"/>
-        <link port="Copy1:Const.output" relation="relation4"/>
-    </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 205.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-    </entity>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 205.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Ball Model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -415,7 +133,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 130.0">
         </property>
         <port name="position" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -438,6 +156,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
             </property>
             <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 154, 815, 459}}">
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -496,26 +216,6 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(position) &lt; stoppedThreshold &amp;&amp; abs(velocity) &lt; stoppedThreshold">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-            </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
@@ -556,11 +256,31 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
+            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(position) &lt; stoppedThreshold &amp;&amp; abs(velocity) &lt; stoppedThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
             <link port="init.outgoingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation3"/>
-            <link port="free.outgoingPort" relation="relation"/>
             <link port="free.outgoingPort" relation="relation3"/>
+            <link port="free.outgoingPort" relation="relation"/>
             <link port="stop.incomingPort" relation="relation"/>
         </entity>
         <entity name="free" class="ptolemy.vergil.fsm.modal.Refinement">
@@ -568,9 +288,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.0797731163611E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="6.6341314512223E-6">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938024781">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3196838465837">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -773,19 +493,8 @@ falling in a gravitational field.</text></svg></configure>
         <link port="free.bump" relation="bumpRelation"/>
         <link port="free.velocity" relation="velocityRelation"/>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="120.0, 130.0">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter.input" relation="relation2"/>
-    <link port="Animate Ball.position" relation="relation"/>
-    <link port="PeriodicSampler.input" relation="relation2"/>
-    <link port="PeriodicSampler.output" relation="relation3"/>
-    <link port="Scale.input" relation="relation3"/>
-    <link port="Scale.output" relation="relation"/>
-    <link port="Ball Model.position" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="Ball Model.position" relation="relation"/>
 </entity>
