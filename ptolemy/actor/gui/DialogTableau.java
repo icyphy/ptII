@@ -1,6 +1,6 @@
 /* A tableau representing a plot window.
 
- Copyright (c) 2000-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,7 +61,7 @@ can only be one each for the model represented by the effigy, and one each of
 the actors that are part of the model.
 
 @author  Rowland R Johnson
-@version
+@version $Id$
 @since Ptolemy II 3.1
 @see Effigy
 */
@@ -119,13 +119,14 @@ public class DialogTableau extends Tableau {
             while (dialogs.hasNext()) {
                 DialogTableau existingDialog = (DialogTableau) dialogs.next();
                 JFrame dialogJFrame = existingDialog.getFrame();
-                if (dialogJFrame instanceof PortConfigurerDialog) {
-                    PortConfigurerDialog pcd =
-                        (PortConfigurerDialog) dialogJFrame;
-                    if (pcd.getTarget() == target) {
-                        return existingDialog;
-                    }
-                }
+//FIXME: commented out so that nightly build will work
+//                  if (dialogJFrame instanceof PortConfigurerDialog) {
+//                      PortConfigurerDialog pcd =
+//                          (PortConfigurerDialog) dialogJFrame;
+//                      if (pcd.getTarget() == target) {
+//                          return existingDialog;
+//                      }
+//                  }
             }
             // A DialogTableau doesn't exist, so create one.
             DialogTableau newDialog;
@@ -134,13 +135,14 @@ public class DialogTableau extends Tableau {
                     new DialogTableau(
                         effigy,
                         "Configure ports for " + target.getFullName());
-                PortConfigurerDialog pcd =
-                    new PortConfigurerDialog(
-                        newDialog,
-                        parent,
-                        target,
-                        configuration);
-                newDialog.setFrame(pcd);
+//FIXME: commented out so that nightly build will work
+//                  PortConfigurerDialog pcd =
+//                      new PortConfigurerDialog(
+//                          newDialog,
+//                          parent,
+//                          target,
+//                          configuration);
+//                  newDialog.setFrame(pcd);
                 return newDialog;
             } catch (Exception ex) {
                 MessageHandler.error(
@@ -202,9 +204,10 @@ public class DialogTableau extends Tableau {
                 while (dialogs.hasNext()) {
                     PortConfigurerDialog pcd =
                         (PortConfigurerDialog) dialogs.next();
-                    if (pcd.getTarget() == target) {
-                        return pcd.getDialogTableau();
-                    }
+//FIXME: commented out so that nightly build will work
+//                      if (pcd.getTarget() == target) {
+//                          return pcd.getDialogTableau();
+//                      }
                 }
                 DialogTableau dialog = new DialogTableau(effigy, "XXX");
                 return dialog;
