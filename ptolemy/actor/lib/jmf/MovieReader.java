@@ -129,6 +129,9 @@ public class MovieReader extends Source implements ControllerListener {
                                         "JMFMovieReader", null, null));
                         _dataSource = Manager.createDataSource(url);
                     } catch (Exception ex2) {
+                        System.out.println("Failed to save " + url
+                                + " as a temporary file");
+                        ex2.printStackTrace();
                         // Ignore this exception, throw the original. 
                         throw new IllegalActionException(this, ex, "Invalid URL");
                     }
