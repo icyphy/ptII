@@ -221,7 +221,7 @@ public class Location extends SingletonAttribute
         _expression = expression;
         _expressionSet = true;
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        _setModifiedFromClass();
+        setModifiedFromClass(true);
     }
 
     /** Set the location in some cartesian coordinate system, and notify
@@ -236,7 +236,7 @@ public class Location extends SingletonAttribute
         boolean changed = _setLocation(location);
         if (changed) {
             // Make sure the new value is exported in MoML.  EAL 12/03.
-            _setModifiedFromClass();
+            setModifiedFromClass(true);
         }
     }
 

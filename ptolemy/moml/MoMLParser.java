@@ -627,11 +627,35 @@ public class MoMLParser extends HandlerBase {
                 if (_currentCharData.length() > 0
                         && !_currentCharData.equals(previousValue)) {
                     if (previous != null) {
-                        previous.setExpression(_currentCharData.toString());
+                        // If we are propagating, then don't allow this to
+                        // change the doc value if it was previously changed.
+                        // If we are propagating and the doc value was not
+                        // previously changed, then don't allow this to mark
+                        // it changed from class.
+                        // EAL 2/04.
+                        if (_propagating) {
+                            if (!previous.isModifiedFromClass()) {
+                                // Propagating, and value has not been modified.
+                                previous.setExpression(_currentCharData.toString());
+                                // The above will mark it modified, which we don't
+                                // want since this was a propogation, not a local
+                                // modification.
+                                previous.setModifiedFromClass(false);
+                            }
+                        } else {
+                            // Not propagating. Just set the value.
+                            previous.setExpression(_currentCharData.toString());
+                        }
                     } else {
                         Documentation doc
                                 = new Documentation(_current, _currentDocName);
                         doc.setValue(_currentCharData.toString());
+                        // If we are currently propagating, then mark the new
+                        // doc element itself as a class element and restore
+                        // the container to the state it was in before.  EAL 2/04
+                        if (_propagating) {
+                            doc.setClassElement(true);
+                        }
                     }
                 } else {
                     // Empty doc tag.  Remove previous doc element, if
@@ -1516,8 +1540,7 @@ public class MoMLParser extends HandlerBase {
                         // Need to continue undoing and use an end tag
                         _undoContext.appendClosingUndoMoML("</entity>\n");
                         _undoContext.setChildrenUndoable(true);
-                    }
-                    else {
+                    } else {
                         _undoContext.appendUndoMoML("<deleteEntity name=\"" + entityName +
                                 "\" />\n");
                         // Do not need to continue generating undo MoML
@@ -1832,372 +1855,7 @@ public class MoMLParser extends HandlerBase {
                         "No name for element \"property\"");
                 String value = (String)_attributes.get("value");
 
-                // First handle special properties that are not translated
-                // into Ptolemy II attributes.
-                // Note that we have to push something on to the
-                // stack so that we can pop it off later.
-                // An xml version of the FSM ABP demo tickled this bug
-                boolean isIOPort = (_current instanceof IOPort);
-                if (propertyName.equals("multiport") && isIOPort) {
-                    // Special properties that affect the behaviour of a port
-
-                    // FIXME: UNDO: Consider refactoring these clauses
-                    // to remove the duplicate values
-                    // The previous value is needed to generate undo MoML
-
-                    IOPort currentIOPort = (IOPort)_current;
-
-                    // The mere presense of a named property "multiport"
-                    // makes the enclosing port a multiport, unless it
-                    // has value false.
-
-                    // Get the previous value to use when generating the
-                    // undo MoML
-                    boolean previousValue = currentIOPort.isMultiport();
-                    boolean newValue = value == null
-                            || value.trim().toLowerCase().equals("true");
-                    if (newValue) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isMultiport() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "a multiport. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setMultiport(true);
-                    } else if (value.trim().toLowerCase().equals("false")) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isMultiport() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "a multiport. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setMultiport(false);
-                    }
-
-                    _pushContext();
-                    _current =  (Attribute)
-                        _current.getAttribute(propertyName);
-                    _namespace = _DEFAULT_NAMESPACE;
-
-                    // Handle undo
-                    if (_undoEnabled && _undoContext.isUndoable()) {
-                        _undoContext.appendUndoMoML("<property name=\"" +
-                                propertyName +
-                                "\" value=\"");
-                        // Use what was there before.
-                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
-                        // Continue undoing and also use an end tag as a
-                        // property can contain other properties
-                        _undoContext.setChildrenUndoable(true);
-                        _undoContext.appendClosingUndoMoML("</property>\n");
-                    }
-                } else if (propertyName.equals("output") && isIOPort) {
-                    // Special properties that affect the behaviour of a port
-
-                    // FIXME: UNDO: Consider refactoring these clauses
-                    // to remove the duplicate values
-                    // The previous value is needed to generate undo MoML
-
-                    IOPort currentIOPort = (IOPort)_current;
-
-                    // Get the previous value to use when generating the
-                    // undo MoML
-                    boolean previousValue = currentIOPort.isOutput();
-                    // Default is "true" if no value is given.
-                    boolean newValue = value == null
-                            || value.trim().toLowerCase().equals("true");
-                    if (newValue) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isOutput() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "an output. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setOutput(true);
-                    } else if (value.trim().toLowerCase().equals("false")) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isOutput() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "an output. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setOutput(false);
-                    }
-
-                    _pushContext();
-                    _current =  (Attribute)
-                        _current.getAttribute(propertyName);
-                    _namespace = _DEFAULT_NAMESPACE;
-
-                    // Handle undo
-                    if (_undoEnabled && _undoContext.isUndoable()) {
-                        _undoContext.appendUndoMoML("<property name=\"" +
-                                propertyName +
-                                "\" value=\"");
-                        // Use what was there before
-                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
-                        // Continue undoing and also use an end tag as a
-                        // property can contain other properties
-                        _undoContext.setChildrenUndoable(true);
-                        _undoContext.appendClosingUndoMoML("</property>\n");
-                    }
-                } else if (propertyName.equals("input") && isIOPort) {
-                    // Special properties that affect the behaviour of a port
-
-                    // FIXME: UNDO: Consider refactoring these clauses
-                    // to remove the duplicate values
-                    // The previous value is needed to generate undo MoML
-
-                    IOPort currentIOPort = (IOPort)_current;
-
-                    // Get the previous value to use when generating the
-                    // undo MoML
-                    boolean previousValue = currentIOPort.isInput();
-                    // Default is "true" if no value is given.
-                    boolean newValue = value == null
-                            || value.trim().toLowerCase().equals("true");
-                    if (newValue) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isInput() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "an input. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setInput(true);
-                    } else if (value.trim().toLowerCase().equals("false")) {
-                        // If this object is a class element, then its I/O status
-                        // cannot be changed.  EAL 1/04.
-                        if (_current.isClassElement()
-                                && !_propagating 
-                                && ((IOPort)_current).isInput() != newValue) {
-                            throw new IllegalActionException(_current,
-                                    "Cannot change whether this port is " +
-                                    "an input. That property is fixed by " +
-                                    "the class definition.");
-                        }
-
-                        ((IOPort)_current).setInput(false);
-                    }
-                    _pushContext();
-                    _current =  (Attribute)
-                        _current.getAttribute(propertyName);
-                    _namespace = _DEFAULT_NAMESPACE;
-
-                    // Handle undo
-                    if (_undoEnabled && _undoContext.isUndoable()) {
-                        _undoContext.appendUndoMoML("<property name=\"" +
-                                propertyName +
-                                "\" value=\"");
-                        // Use what was there before
-                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
-                        // Continue undoing and also use an end tag as a
-                        // property can contain other properties
-                        _undoContext.setChildrenUndoable(true);
-                        _undoContext.appendClosingUndoMoML("</property>\n");
-                    }
-                } else {
-                    // Ordinary attribute.
-                    NamedObj property = null;
-                    if (_current != null) {
-                        property = (Attribute)_current
-                                .getAttribute(propertyName);
-                    }
-                    Class newClass = null;
-                    if (className != null) {
-                        try {
-                            newClass =
-                                Class.forName(className, true, _classLoader);
-                        } catch (NoClassDefFoundError ex) {
-                            throw new XmlException("Failed to find class '"
-                                    + className + "'",
-                                    _currentExternalEntity(),
-                                    _parser.getLineNumber(),
-                                    _parser.getColumnNumber(), ex);
-                        } catch (SecurityException ex) {
-                            // An applet might throw this.
-                            throw new XmlException("Failed to find class '"
-                                    + className + "'",
-                                    _currentExternalEntity(),
-                                    _parser.getLineNumber(),
-                                    _parser.getColumnNumber(), ex);
-                        }
-                    }
-
-                    // If there is a previous property with this name
-                    // (property is not null), then we check that the
-                    // property is an instance of the specified class.
-                    // If it is, then we set the value of the property.
-                    // Otherwise, we try to replace it, something that
-                    // will only work if it is a singleton (it might throw
-                    // NameDuplicationException).
-                    boolean createdNew = false;
-
-                    // Also need the previous value, if any, to generate undo
-                    // MoML. Also need to know if the property already existed
-                    boolean previouslyExisted = (property != null);
-                    String oldClassName = null;
-                    String oldValue = null;
-                    if (previouslyExisted) {
-                        oldClassName = property.getClass().getName();
-                        if (property instanceof Settable) {
-                            Settable settable = (Settable)property;
-                            oldValue = settable.getExpression();
-                        }
-                    }
-                    // NOTE: This used to use the following code to
-                    // match _exactly_ the specified class, rather
-                    // than checking that it be an instance of it.
-                    // The new behavior is more flexible, because, for
-                    // example, it allows actors to replace parameters
-                    // with a derived class of Parameter.  This was done,
-                    // for example, to replace some instances of Parameter
-                    // with ParameterPort.
-                    // if (property == null || (className != null &&
-                    //      !property.getClass().getName().equals(className))) {
-
-                    if (property == null || (newClass != null
-                            && !newClass.isInstance(property))) {
-                        // The following will result in a
-                        // NameDuplicationException if there is a previous
-                        // property and it is not a singleton.
-                        try {
-                            // No previously existing attribute with this name,
-                            // or the class name of the previous entity doesn't
-                            // match.
-                            if (newClass == null) {
-                                newClass = Attribute.class;
-                            }
-
-                            // Invoke the constructor.
-                            Object[] arguments = new Object[2];
-                            arguments[0] = _current;
-                            arguments[1] = propertyName;
-                            property = _createInstance(newClass, arguments);
-
-                            if (value != null) {
-                                if (property == null) {
-                                    throw new XmlException(
-                                            "Property does not exist: "
-                                            + propertyName
-                                            + "\n",
-                                            _currentExternalEntity(),
-                                            _parser.getLineNumber(),
-                                            _parser.getColumnNumber());
-                                }
-                                if (!(property instanceof Settable)) {
-                                    throw new XmlException(
-                                            "Property cannot be assigned a value: "
-                                            + propertyName
-                                            + "\n",
-                                            _currentExternalEntity(),
-                                            _parser.getLineNumber(),
-                                            _parser.getColumnNumber());
-                                }
-                                Settable settable = (Settable)property;
-                                settable.setExpression(value);
-                                _paramsToParse.add(property);
-                            }
-                            createdNew = true;
-                        } catch (NameDuplicationException ex) {
-                            // Ignore, so we can try to set the value.
-                            // The createdNew variable will still be false.
-                        }
-                    }
-                    if (!createdNew) {
-                        // Previously existing property with this name,
-                        // whose class name exactly matches, or the class
-                        // name does not match, but a NameDuplicationException
-                        // was thrown (meaning the attribute was not
-                        // a singleton).
-
-                        // If value is null and the property already
-                        // exists, then there is nothing to do.
-                        if (value != null) {
-                            if (!(property instanceof Settable)) {
-                                throw new XmlException("Property is not an "
-                                        + "instance of Settable, "
-                                        + "so can't set the value.",
-                                        _currentExternalEntity(),
-                                        _parser.getLineNumber(),
-                                        _parser.getColumnNumber());
-                            }
-                            Settable settable = (Settable)property;
-                            settable.setExpression(value);
-                            _paramsToParse.add(property);
-                        }
-                    }
-                    _pushContext();
-                    _current = property;
-                    _namespace = _DEFAULT_NAMESPACE;
-
-                    // Handle the undo aspect if needed
-                    if (_undoEnabled && _undoContext.isUndoable()) {
-                        if (!previouslyExisted) {
-                            // Need to delete the property in the undo MoML
-                            _undoContext.appendUndoMoML("<deleteProperty name=\"" +
-                                    propertyName + "\" />\n");
-                            // Do not need to continue generating undo MoML
-                            // as the deleteProperty takes care of all
-                            // contained MoML
-                            _undoContext.setChildrenUndoable(false);
-                        }
-                        else {
-                            // Simply generate the same as was there before
-                            // FIXME: this may have subtle issues which may
-                            // require the use of the "createdNew" variable
-                            _undoContext.appendUndoMoML("<property name=\"" +
-                                    property.getName() + "\" ");
-                            _undoContext.appendUndoMoML("class=\"" +
-                                    oldClassName + "\" ");
-                            if (oldValue != null) {
-
-                                // Escape the value for xml so that if
-                                // the property the user typed in was
-                                // a Parameter "foo", we do not have
-                                // problems.  To replicate this,
-                                // create a Const with a value "foo"
-                                // and then change it to 2 and then
-                                // try undo.
-
-                                _undoContext.appendUndoMoML("value=\"" +
-                                        StringUtilities.escapeForXML(oldValue)
-                                        + "\" ");
-                            }
-                            _undoContext.appendUndoMoML(">\n");
-                            // Add the closing element
-                            _undoContext.appendClosingUndoMoML("</property>\n");
-
-                            // Need to continue generating undo MoML as a
-                            // property can have other children
-                            _undoContext.setChildrenUndoable(true);
-                        }
-                    }
-                }
+                _handlePropertyElement(className, propertyName, value);
 
             } else if (elementName.equals("relation")) {
                 String className = (String)_attributes.get("class");
@@ -2771,25 +2429,34 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    // Create a new entity from the specified class name, give
-    // it the specified entity name, and specify that its container
-    // is the current container object.  If the current container
-    // already contains an entity with the specified name and class,
-    // then return that entity.  If the class name matches
-    // a class that has been previously defined (by an absolute
-    // or relative name), then that class is cloned.  Otherwise,
-    // the class name is interpreted as a Java class name and we
-    // attempt to construct the entity.  If instantiating a Java
-    // class doesn't work, then we look for a MoML file on the
-    // classpath that defines a class by this name.  The file
-    // is assumed to be named "foo.xml", where "foo" is the name
-    // of the class.  Moreover, the classname is assumed to have
-    // no periods (since a MoML name does not allow periods,
-    // this is reasonable). If _current is not an instance
-    // of CompositeEntity, then an XML exception is thrown.
-    // The third argument, if non-null, gives a URL to import
-    // to create a reference class from which to instantiate this
-    // entity.
+    /** Create a new entity from the specified class name, give
+     *  it the specified entity name, and specify that its container
+     *  is the current container object.  If the current container
+     *  already contains an entity with the specified name and class,
+     *  then return that entity.  If the class name matches
+     *  a class that has been previously defined in the scope
+     *  (or with an absolute name), then that class is cloned.  Otherwise,
+     *  the class name is interpreted as a Java class name and we
+     *  attempt to construct the entity.  If instantiating a Java
+     *  class doesn't work, then we look for a MoML file on the
+     *  classpath that defines a class by this name.  The file
+     *  is assumed to be named "foo.xml", where "foo" is the name
+     *  of the class.  Moreover, the classname is assumed to have
+     *  no periods (since a MoML name does not allow periods,
+     *  this is reasonable). If _current is not an instance
+     *  of CompositeEntity, then an XML exception is thrown.
+     *  If an object is created and we are propagating, then that
+     *  object is marked as a class element.
+     *  The third argument, if non-null, gives a URL to import
+     *  to create a reference class from which to instantiate this
+     *  entity.
+     * 
+     * @param className
+     * @param entityName
+     * @param source
+     * @return
+     * @throws Exception
+     */
     private NamedObj _createEntity(
             String className, String entityName, String source)
             throws Exception {
@@ -2998,6 +2665,12 @@ public class MoMLParser extends HandlerBase {
             
             // Mark contents as being class elements.  EAL 12/03
             _markContentsClassElements(newEntity);
+            
+            // If we are currently propagating, then mark the new
+            // entity itself as a class element.  EAL 2/04
+            if (_propagating) {
+                newEntity.setClassElement(true);
+            }
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -3025,19 +2698,22 @@ public class MoMLParser extends HandlerBase {
         }
     }
     
-    // Create an instance of the specified class name by finding a
-    // constructor that matches the specified arguments.  The specified
-    // class must be NamedObj or derived, or a ClassCastException will
-    // be thrown.  NOTE: This mechanism does not support instantiation
-    // of inner classes, since those take an additional argument (the
-    // first argument), which is the enclosing class. Static inner
-    // classes, however, work fine.
-    // This method marks the contents of what it creates as class elements,
-    // since they are defined in the Java code of the constructor.
-    // @param newClass The class.
-    // @param arguments The constructor arguments.
-    // @exception Exception If no matching constructor is found, or if
-    //  invoking the constructor triggers an exception.
+    /** Create an instance of the specified class name by finding a
+     *  constructor that matches the specified arguments.  The specified
+     *  class must be NamedObj or derived, or a ClassCastException will
+     *  be thrown.  NOTE: This mechanism does not support instantiation
+     *  of inner classes, since those take an additional argument (the
+     *  first argument), which is the enclosing class. Static inner
+     *  classes, however, work fine.
+     *  This method marks the contents of what it creates as class elements,
+     *  since they are defined in the Java code of the constructor.
+     *  If we are currently propagating, then it also marks the new
+     *  instance itself as a class element.
+     *  @param newClass The class.
+     *  @param arguments The constructor arguments.
+     *  @exception Exception If no matching constructor is found, or if
+     *   invoking the constructor triggers an exception.
+     */
     private NamedObj _createInstance(Class newClass, Object[] arguments)
             throws Exception {
         Constructor[] constructors = newClass.getConstructors();
@@ -3056,6 +2732,11 @@ public class MoMLParser extends HandlerBase {
                 NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
                 // Mark the contents of the new entity as being class elements.
                 _markContentsClassElements(newEntity);
+                // If we are currently propagating, then mark the new
+                // entity itself as a class element.  EAL 2/04
+                if (_propagating) {
+                    newEntity.setClassElement(true);
+                }
                 return newEntity;
             }
         }
@@ -3366,6 +3047,402 @@ public class MoMLParser extends HandlerBase {
         _checkForNull(port, "No port named \"" + portspec
                 + "\" in " + context.getFullName());
         return (ComponentPort)port;
+    }
+
+    /** Create a property and/or set its value.
+     *  @param className The class name field, if present.
+     *  @param propertyName The property name field.
+     *  @param value The value, if present.
+     *  @throws Exception If something goes wrong.
+     */
+    private void _handlePropertyElement(
+            String className,
+            String propertyName,
+            String value)
+            throws Exception {
+        // First handle special properties that are not translated
+        // into Ptolemy II attributes.
+        // Note that we have to push something on to the
+        // stack so that we can pop it off later.
+        // An xml version of the FSM ABP demo tickled this bug
+        boolean isIOPort = (_current instanceof IOPort);
+        if (propertyName.equals("multiport") && isIOPort) {
+            // Special properties that affect the behaviour of a port
+        
+            // FIXME: UNDO: Consider refactoring these clauses
+            // to remove the duplicate values
+            // The previous value is needed to generate undo MoML
+        
+            IOPort currentIOPort = (IOPort)_current;
+        
+            // The mere presense of a named property "multiport"
+            // makes the enclosing port a multiport, unless it
+            // has value false.
+        
+            // Get the previous value to use when generating the
+            // undo MoML
+            boolean previousValue = currentIOPort.isMultiport();
+            boolean newValue = value == null
+                    || value.trim().toLowerCase().equals("true");
+            if (newValue) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isMultiport() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "a multiport. That property is fixed by " +
+                            "the class definition.");
+                }                
+                ((IOPort)_current).setMultiport(true);
+            } else if (value.trim().toLowerCase().equals("false")) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isMultiport() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "a multiport. That property is fixed by " +
+                            "the class definition.");
+                }
+                ((IOPort)_current).setMultiport(false);
+            }
+        
+            _pushContext();
+            _current =  (Attribute)
+                _current.getAttribute(propertyName);
+            _namespace = _DEFAULT_NAMESPACE;
+        
+            // Handle undo
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                _undoContext.appendUndoMoML("<property name=\"" +
+                        propertyName +
+                        "\" value=\"");
+                // Use what was there before.
+                _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                // Continue undoing and also use an end tag as a
+                // property can contain other properties
+                _undoContext.setChildrenUndoable(true);
+                _undoContext.appendClosingUndoMoML("</property>\n");
+            }
+        } else if (propertyName.equals("output") && isIOPort) {
+            // Special properties that affect the behaviour of a port
+        
+            // FIXME: UNDO: Consider refactoring these clauses
+            // to remove the duplicate values
+            // The previous value is needed to generate undo MoML
+        
+            IOPort currentIOPort = (IOPort)_current;
+        
+            // Get the previous value to use when generating the
+            // undo MoML
+            boolean previousValue = currentIOPort.isOutput();
+            // Default is "true" if no value is given.
+            boolean newValue = value == null
+                    || value.trim().toLowerCase().equals("true");
+            if (newValue) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isOutput() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "an output. That property is fixed by " +
+                            "the class definition.");
+                }
+        
+                ((IOPort)_current).setOutput(true);
+            } else if (value.trim().toLowerCase().equals("false")) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isOutput() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "an output. That property is fixed by " +
+                            "the class definition.");
+                }
+        
+                ((IOPort)_current).setOutput(false);
+            }
+        
+            _pushContext();
+            _current =  (Attribute)
+                _current.getAttribute(propertyName);
+            _namespace = _DEFAULT_NAMESPACE;
+        
+            // Handle undo
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                _undoContext.appendUndoMoML("<property name=\"" +
+                        propertyName +
+                        "\" value=\"");
+                // Use what was there before
+                _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                // Continue undoing and also use an end tag as a
+                // property can contain other properties
+                _undoContext.setChildrenUndoable(true);
+                _undoContext.appendClosingUndoMoML("</property>\n");
+            }
+        } else if (propertyName.equals("input") && isIOPort) {
+            // Special properties that affect the behaviour of a port
+        
+            // FIXME: UNDO: Consider refactoring these clauses
+            // to remove the duplicate values
+            // The previous value is needed to generate undo MoML
+        
+            IOPort currentIOPort = (IOPort)_current;
+        
+            // Get the previous value to use when generating the
+            // undo MoML
+            boolean previousValue = currentIOPort.isInput();
+            // Default is "true" if no value is given.
+            boolean newValue = value == null
+                    || value.trim().toLowerCase().equals("true");
+            if (newValue) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isInput() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "an input. That property is fixed by " +
+                            "the class definition.");
+                }
+        
+                ((IOPort)_current).setInput(true);
+            } else if (value.trim().toLowerCase().equals("false")) {
+                // If this object is a class element, then its I/O status
+                // cannot be changed.  EAL 1/04.
+                if (_current.isClassElement()
+                        && !_propagating 
+                        && ((IOPort)_current).isInput() != newValue) {
+                    throw new IllegalActionException(_current,
+                            "Cannot change whether this port is " +
+                            "an input. That property is fixed by " +
+                            "the class definition.");
+                }
+        
+                ((IOPort)_current).setInput(false);
+            }
+            _pushContext();
+            _current =  (Attribute)
+                _current.getAttribute(propertyName);
+            _namespace = _DEFAULT_NAMESPACE;
+        
+            // Handle undo
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                _undoContext.appendUndoMoML("<property name=\"" +
+                        propertyName +
+                        "\" value=\"");
+                // Use what was there before
+                _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                // Continue undoing and also use an end tag as a
+                // property can contain other properties
+                _undoContext.setChildrenUndoable(true);
+                _undoContext.appendClosingUndoMoML("</property>\n");
+            }
+        } else {
+            // Ordinary attribute.
+            NamedObj property = null;
+            if (_current != null) {
+                property = (Attribute)_current
+                        .getAttribute(propertyName);
+            }
+            Class newClass = null;
+            if (className != null) {
+                try {
+                    newClass =
+                        Class.forName(className, true, _classLoader);
+                } catch (NoClassDefFoundError ex) {
+                    throw new XmlException("Failed to find class '"
+                            + className + "'",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber(), ex);
+                } catch (SecurityException ex) {
+                    // An applet might throw this.
+                    throw new XmlException("Failed to find class '"
+                            + className + "'",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber(), ex);
+                }
+            }
+        
+            // If there is a previous property with this name
+            // (property is not null), then we check that the
+            // property is an instance of the specified class.
+            // If it is, then we set the value of the property.
+            // Otherwise, we try to replace it, something that
+            // will only work if it is a singleton (it might throw
+            // NameDuplicationException).
+            boolean createdNew = false;
+        
+            // Also need the previous value, if any, to generate undo
+            // MoML. Also need to know if the property already existed
+            boolean previouslyExisted = (property != null);
+            String oldClassName = null;
+            String oldValue = null;
+            if (previouslyExisted) {
+                oldClassName = property.getClass().getName();
+                if (property instanceof Settable) {
+                    Settable settable = (Settable)property;
+                    oldValue = settable.getExpression();
+                }
+            }
+            // NOTE: This used to use the following code to
+            // match _exactly_ the specified class, rather
+            // than checking that it be an instance of it.
+            // The new behavior is more flexible, because, for
+            // example, it allows actors to replace parameters
+            // with a derived class of Parameter.  This was done,
+            // for example, to replace some instances of Parameter
+            // with ParameterPort.
+            // if (property == null || (className != null &&
+            //      !property.getClass().getName().equals(className))) {
+        
+            if (property == null || (newClass != null
+                    && !newClass.isInstance(property))) {
+                // The following will result in a
+                // NameDuplicationException if there is a previous
+                // property and it is not a singleton.
+                try {
+                    // No previously existing attribute with this name,
+                    // or the class name of the previous entity doesn't
+                    // match.
+                    if (newClass == null) {
+                        newClass = Attribute.class;
+                    }
+        
+                    // Invoke the constructor.
+                    Object[] arguments = new Object[2];
+                    arguments[0] = _current;
+                    arguments[1] = propertyName;
+                    property = _createInstance(newClass, arguments);
+        
+                    if (value != null) {
+                        if (property == null) {
+                            throw new XmlException(
+                                    "Property does not exist: "
+                                    + propertyName
+                                    + "\n",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
+                        }
+                        if (!(property instanceof Settable)) {
+                            throw new XmlException(
+                                    "Property cannot be assigned a value: "
+                                    + propertyName
+                                    + "\n",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
+                        }
+                        Settable settable = (Settable)property;
+                        settable.setExpression(value);
+                        _paramsToParse.add(property);
+                    }
+                    createdNew = true;
+                } catch (NameDuplicationException ex) {
+                    // Ignore, so we can try to set the value.
+                    // The createdNew variable will still be false.
+                }
+            }
+            if (!createdNew) {
+                // Previously existing property with this name,
+                // whose class name exactly matches, or the class
+                // name does not match, but a NameDuplicationException
+                // was thrown (meaning the attribute was not
+                // a singleton).
+        
+                // If value is null and the property already
+                // exists, then there is nothing to do.
+                if (value != null) {
+                    if (!(property instanceof Settable)) {
+                        throw new XmlException("Property is not an "
+                                + "instance of Settable, "
+                                + "so can't set the value.",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
+                    }
+                    Settable settable = (Settable)property;
+                    // If we are propagating, then don't allow this to
+                    // change the parameter value if it was previously changed.
+                    // If we are propagating and the parameter was not
+                    // previously changed, then don't allow this to mark
+                    // it changed from class.
+                    // EAL 2/04.
+                    if (_propagating) {
+                        if (!property.isModifiedFromClass()) {
+                            // Propagating, and value has not been modified.
+                            settable.setExpression(value);
+                            // The above will mark it modified, which we don't
+                            // want since this was a propogation, not a local
+                            // modification.
+                            property.setModifiedFromClass(false);
+                            _paramsToParse.add(property);                            
+                        }
+                    } else {
+                        // Not propagating. Just set the value.
+                        settable.setExpression(value);
+                        _paramsToParse.add(property);
+                    }
+                }
+            }
+            _pushContext();
+            _current = property;
+            _namespace = _DEFAULT_NAMESPACE;
+        
+            // Handle the undo aspect if needed
+            if (_undoEnabled && _undoContext.isUndoable()) {
+                if (!previouslyExisted) {
+                    // Need to delete the property in the undo MoML
+                    _undoContext.appendUndoMoML("<deleteProperty name=\"" +
+                            propertyName + "\" />\n");
+                    // Do not need to continue generating undo MoML
+                    // as the deleteProperty takes care of all
+                    // contained MoML
+                    _undoContext.setChildrenUndoable(false);
+                }
+                else {
+                    // Simply generate the same as was there before
+                    // FIXME: this may have subtle issues which may
+                    // require the use of the "createdNew" variable
+                    _undoContext.appendUndoMoML("<property name=\"" +
+                            property.getName() + "\" ");
+                    _undoContext.appendUndoMoML("class=\"" +
+                            oldClassName + "\" ");
+                    if (oldValue != null) {
+        
+                        // Escape the value for xml so that if
+                        // the property the user typed in was
+                        // a Parameter "foo", we do not have
+                        // problems.  To replicate this,
+                        // create a Const with a value "foo"
+                        // and then change it to 2 and then
+                        // try undo.
+        
+                        _undoContext.appendUndoMoML("value=\"" +
+                                StringUtilities.escapeForXML(oldValue)
+                                + "\" ");
+                    }
+                    _undoContext.appendUndoMoML(">\n");
+                    // Add the closing element
+                    _undoContext.appendClosingUndoMoML("</property>\n");
+        
+                    // Need to continue generating undo MoML as a
+                    // property can have other children
+                    _undoContext.setChildrenUndoable(true);
+                }
+            }
+        }
     }
 
     /**

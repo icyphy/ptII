@@ -395,10 +395,9 @@ public class Port extends NamedObj {
                     _workspace.remove(this);
                 }
                 // We have successfully set a new container for this
-                // object. Ensure that the container is now marked as
-                // not being a class element, and hence will export MoML.
-                // EAL 12/03
-                entity._setModifiedFromClass();
+                // object. Mark it modified to ensure MoML export.
+                // EAL 12/03, 2/04
+                setModifiedFromClass(true);
             }
             if (previousContainer != null) {
                 previousContainer._removePort(this);

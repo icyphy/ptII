@@ -178,7 +178,7 @@ public class Units extends Attribute implements Settable {
             }
         }
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        _setModifiedFromClass();
+        setModifiedFromClass(true);
     }
 
     /** Set the visibility of this attribute.  The argument should be one

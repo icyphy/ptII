@@ -209,7 +209,7 @@ public class StringAttribute extends Attribute implements Settable {
             throws IllegalActionException {
         if (expression != null && !expression.equals(_value)) {
             // Make sure the new value is exported in MoML.  EAL 12/03.
-            _setModifiedFromClass();
+            setModifiedFromClass(true);
         }
 
         _value = expression;

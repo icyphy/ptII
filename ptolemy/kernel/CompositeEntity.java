@@ -1005,6 +1005,16 @@ public class CompositeEntity extends ComponentEntity {
         _containedEntities.append(entity);
     }
 
+    /** Return an iterator over contained objects. In this class,
+     *  this is an iterator over attributes, ports, entities, and
+     *  relations, in that order.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    protected Iterator _containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
     /** Notify this entity that the given entity has been added inside it.
      *  This base class does nothing.   Derived classes may override it to 
      *  do something useful in responds to the notification.
@@ -1202,4 +1212,77 @@ public class CompositeEntity extends ComponentEntity {
 
     /** @serial Flag indicating whether level-crossing connect is permitted. */
     private boolean _levelCrossingConnectAllowed = false;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** This class is an iterator over all the contained objects
+     *  (all instances of NamedObj). In this class, the contained
+     *  objects are attributes first, then ports, then entities,
+     *  then relations.
+     */
+    protected class ContainedObjectsIterator
+            extends Entity.ContainedObjectsIterator {
+
+        /** Return true if the iteration has more elements. 
+         *  In this class, this returns true if there are more
+         *  attributes, ports, entities, or relations.
+         *  @return True if there are more elements.
+         */
+        public boolean hasNext() {
+            if (super.hasNext()) {
+                return true;
+            }
+            if (_entityListIterator == null) {
+                _entityListIterator = entityList().iterator();
+            }
+            if (_entityListIterator.hasNext()) {
+                return true;
+            }
+            if (_relationListIterator == null) {
+                _relationListIterator = relationList().iterator();
+            }
+            return _relationListIterator.hasNext();
+        }
+        
+        /** Return the next element in the iteration.
+         *  In this base class, this is the next attribute or port.
+         *  @return The next attribute or port. 
+         */        
+        public Object next() {
+            if (super.hasNext()) {
+                return super.next();
+            }
+            if (_entityListIterator == null) {
+                _entityListIterator = entityList().iterator();
+            }
+            if (_entityListIterator.hasNext()) {
+                _lastElementWasEntity = true;
+                return _entityListIterator.next();
+            }
+            if (_relationListIterator == null) {
+                _relationListIterator = relationList().iterator();
+            }
+            _lastElementWasRelation = true;
+            return _relationListIterator.next();
+        }
+
+        /** Remove from the underlying collection the last element
+         *  returned by the iterator. 
+         */
+        public void remove() {
+            if (_lastElementWasEntity) {
+                _entityListIterator.remove();
+            } else if (_lastElementWasRelation) {
+                _relationListIterator.remove();
+            } else {
+                super.remove();
+            }
+        }
+
+        private Iterator _entityListIterator = null;
+        private boolean _lastElementWasEntity = false;
+        private boolean _lastElementWasRelation = false;
+        private Iterator _relationListIterator = null;
+    }
 }

@@ -1143,6 +1143,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         return _deferChangeRequests;
     }
 
+    /** Return true if this object is a class element that has been
+     *  modified locally.
+     *  @return True if this object is a class element and it has
+     *   been modified locally.
+     *  @see #setModifiedFromClass(boolean)
+     */
+    public boolean isModifiedFromClass() {
+        return _isClassElement && _modifiedFromClass;
+    }
+
     /** Return true if this object is persistent.
      *  A persistent object has a MoML description that can be stored
      *  in a file and used to re-create the object. A non-persistent
@@ -1338,6 +1348,23 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public void setModelErrorHandler(ModelErrorHandler handler) {
         _modelErrorHandler = handler;
+    }
+
+    /** Specify whether this object has been modified,.  This has an effect
+     *  only if setClassElement() has been called with a true argument.
+     *  In that case, if this method is called with argument true, then this
+     *  object will export MoML despite the fact that it is a class element.
+     *  I.e., call this with true to specify that this class element has been
+     *  modified. To reverse the effect of this call, call it again with
+     *  false argument.
+     *  @param modified True to mark modified.
+     *  @see #setClassElement(boolean)
+     *  @see #isModifiedFromClass()
+     */
+    public void setModifiedFromClass(boolean modified) {
+        if (_isClassElement) {
+            _modifiedFromClass = modified;
+        }
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -1623,6 +1650,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
     
+    /** Return an iterator over contained objects. In this base class,
+     *  this is simply an iterator over attributes.  In derived classes,
+     *  the iterator will also traverse ports, entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    protected Iterator _containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+    
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
@@ -1820,30 +1857,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
     
-    /** Specify that this object has been modified.  This has an effect
-     *  only if setClassElement() has been called with a true argument.
-     *  In that case, if this method is called, then this object will
-     *  export MoML despite the fact that it is a class element. I.e.,
-     *  call this to specify that this class element has been modified.
-     *  To reverse the effect of this call, you need to call setClassElement()
-     *  again with a true argument.  This method will also pass the call
-     *  to its container, if there is one.
-     *  This method is protected because its usage is rather specialized
-     *  and exposing it at the public interface will undoubtedly lead to
-     *  misuse.  To make this available in other packages, simply
-     *  override this method with a call to this superclass method.
-     *  @see #setClassElement(boolean)
-     */
-    protected void _setModifiedFromClass() {
-        if (_isClassElement) {
-            _modifiedFromClass = true;
-            NamedObj container = (NamedObj)getContainer();
-            if (container != null) {
-                container._setModifiedFromClass();
-            }
-        }
-    }
-
     /** Split the specified name at the first period and return the
      *  two parts as a two-element array.  If there is no period, the second
      *  element is null.
@@ -1903,13 +1916,40 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     }
     
     /** Return true if this class should not export a MoML description.
-     *  This will return true if either setPersistent() has been called
-     *  with argument true, or setClassElement() has been called with
-     *  argument true and the class has not been modified.
+     *  This will return true if setPersistent() has been called
+     *  with argument false, or it is a class element that has not
+     *  been modified and all of the objects it contains return true
+     *  on this same method (indicating that none of them needs to
+     *  export MoML).
      *  @return Return true to suppress MoML export.
      */
     protected boolean _suppressMoML() {
-        return !isPersistent() || (_isClassElement && !_modifiedFromClass);
+        if (!isPersistent()) {
+            return true;
+        } else {
+            // Object has not been explicitly declared not persistent.
+            // Suppress MoML only if it is a class element that has
+            // not been locally changed, and that its contained objects
+            // have not been locally changed.
+            if (_isClassElement) {
+                if (_modifiedFromClass) {
+                    return false;
+                }
+                Iterator objects = _containedObjectsIterator();
+                while (objects.hasNext()) {
+                    NamedObj object = (NamedObj)objects.next();
+                    if (!object._suppressMoML()) {
+                        return false;
+                    }
+                }
+                // If we get here, then this object is a class element
+                // that has not been modified, and all its contained
+                // objects have not been modified. In this case,
+                // it is OK to suppress MoML.
+                return true;
+            }
+            return false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2055,5 +2095,45 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             }
             return deferredFrom;
         }
+    }
+    
+    /** This class is an iterator over all the contained objects
+     *  (all instances of NamedObj). In this base class, the contained
+     *  objects are attributes.  In derived classes, they include
+     *  ports, relations, and entities as well.
+     */
+    protected class ContainedObjectsIterator implements Iterator {
+
+        /** Return true if the iteration has more elements. 
+         *  In this base class, this returns true if there are more
+         *  attributes.
+         *  @return True if there are more attributes.
+         */
+        public boolean hasNext() {
+            if (_attributeListIterator == null) {
+                _attributeListIterator = attributeList().iterator();
+            }
+            return _attributeListIterator.hasNext();
+        }
+        
+        /** Return the next element in the iteration.
+         *  In this base class, this is the next attribute.
+         *  @return The next attribute. 
+         */        
+        public Object next() {
+            if (_attributeListIterator == null) {
+                _attributeListIterator = attributeList().iterator();
+            }
+            return _attributeListIterator.next();
+        }
+
+        /** Remove from the underlying collection the last element
+         *  returned by the iterator. 
+         */
+        public void remove() {
+            _attributeListIterator.remove();
+        }
+
+        private Iterator _attributeListIterator = null;
     }
 }

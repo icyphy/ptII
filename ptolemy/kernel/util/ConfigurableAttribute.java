@@ -132,7 +132,7 @@ public class ConfigurableAttribute
         // FIXME: Do we really want to call this right away?
         validate();
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        _setModifiedFromClass();
+        setModifiedFromClass(true);
     }
 
     /** Return the base specified in the most recent call to the

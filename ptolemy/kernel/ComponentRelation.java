@@ -245,10 +245,9 @@ public class ComponentRelation extends Relation {
                 unlinkAll();
             } else {
                 // We have successfully set a new container for this
-                // object. Ensure that the container is now marked as
-                // not being a class element, and hence will export MoML.
-                // EAL 12/03
-                container._setModifiedFromClass();
+                // object. Mark it modified to ensure MoML export.
+                // EAL 12/03, 2/04
+                setModifiedFromClass(true);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.

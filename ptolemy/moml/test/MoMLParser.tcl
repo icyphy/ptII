@@ -2902,3 +2902,138 @@ test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part 
     set uriString [$uri -noconvert toString] 
     $uriString endsWith "ptolemy/moml/test/testdir/testdir2.moml"
 } {1}
+
+######################################################################
+######################################################################
+######################################################################
+######################################################################
+######################################################################
+#### The following tests are checking class mechanisms.
+#
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <entity name="A" class="ptolemy.actor.TypedAtomicActor"/>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.1 {Test adding an entity to the base class.} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel]]
+    set baseClass [$toplevel getEntity {BaseClass}]
+    # NOTE: Have to have the class definition as the context.
+    set change [java::new ptolemy.moml.MoMLChangeRequest $baseClass $baseClass {
+        <entity name="B" class="ptolemy.actor.TypedAtomicActor"/>
+    }]
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    [[java::cast ptolemy.kernel.CompositeEntity [$toplevel getEntity {DerivedClass}]] getEntity {B}] getFullName
+} {.top.DerivedClass.B}
+
+test MoMLParser-20.2 {Make sure the derived class doesn't export the added entity.} {
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.2 {Test adding an entity in the subclass} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name="DerivedClass">
+            <entity name="C" class="ptolemy.actor.TypedAtomicActor"/>
+        </entity>
+    }]
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+        <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.3 {Test adding an entity in the subclass that is already there in the base class} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name="DerivedClass">
+            <entity name="B" class="ptolemy.actor.TypedAtomicActor"/>
+        </entity>
+    }]
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+        <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+        </entity>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}

@@ -517,6 +517,16 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Return an iterator over contained objects. In this base class,
+     *  this is an iterator over attributes and ports.  In derived classes,
+     *  the iterator will also traverse ports, entities, and relations.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    protected Iterator _containedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
     /** Write a MoML description of the contents of this object, which
      *  in this class are the attributes plus the ports.  This method is called
      *  by exportMoML().  Each description is indented according to the
@@ -548,14 +558,6 @@ public class Entity extends NamedObj {
         _portList.remove(port);
     }
     
-    /** Specify that this object has been modified.  This overrides
-     *  the base class only to expose this protected method in this
-     *  package so that other kernel classes can call it.
-     */
-    protected void _setModifiedFromClass() {
-        super._setModifiedFromClass();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -569,4 +571,60 @@ public class Entity extends NamedObj {
     // @serial Cached list of linked relations.
     private transient LinkedList _linkedRelations;
     private transient long _linkedRelationsVersion = -1;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** This class is an iterator over all the contained objects
+     *  (all instances of NamedObj). In this class, the contained
+     *  objects are attributes first, then ports. In derived classes,
+     *  they include relations, and entities as well.
+     */
+    protected class ContainedObjectsIterator
+            extends NamedObj.ContainedObjectsIterator {
+
+        /** Return true if the iteration has more elements. 
+         *  In this base class, this returns true if there are more
+         *  attributes or ports.
+         *  @return True if there are more attributes or ports.
+         */
+        public boolean hasNext() {
+            if (super.hasNext()) {
+                return true;
+            }
+            if (_portListIterator == null) {
+                _portListIterator = portList().iterator();
+            }
+            return _portListIterator.hasNext();
+        }
+        
+        /** Return the next element in the iteration.
+         *  In this base class, this is the next attribute or port.
+         *  @return The next attribute or port. 
+         */        
+        public Object next() {
+            if (super.hasNext()) {
+                return super.next();
+            }
+            if (_portListIterator == null) {
+                _portListIterator = portList().iterator();
+            }
+            _lastElementWasMine = true;
+            return _portListIterator.next();
+        }
+
+        /** Remove from the underlying collection the last element
+         *  returned by the iterator. 
+         */
+        public void remove() {
+            if (_lastElementWasMine) {
+                _portListIterator.remove();
+            } else {
+                super.remove();
+            }
+        }
+
+        private Iterator _portListIterator = null;
+        private boolean _lastElementWasMine = false;
+    }
 }
