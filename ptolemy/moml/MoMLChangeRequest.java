@@ -39,7 +39,10 @@ import java.util.Set;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.Prototype;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -344,7 +347,7 @@ public class MoMLChangeRequest extends ChangeRequest {
             return;
         }
 
-        NamedObj context = (NamedObj)_context;
+        NamedObj context = _context;
         if (context == null) {
             context = _parser.getToplevel();
         }
@@ -388,21 +391,29 @@ public class MoMLChangeRequest extends ChangeRequest {
                         // its container, and then the container of that container,
                         // etc.
                         if (context != _context) {
-                            // Only have to worry about entities
-                            // for now, since only entities can
-                            // participate in deferral mechanisms.
-                            // However, if we later implement parameter
-                            // or port classes, this code will have to
-                            // check them in addition to the call to
-                            // getEntity().  We don't test for this
-                            // being an entity so that if this
-                            // class mechanism is extended to 
-                            // non-entities, we will get a
-                            // ClassCastException here, which
-                            // will make it relatively easy to
-                            // fix.
-                            trueContext = ((CompositeEntity)other)
-                                    .getEntity(relativeName);
+                            // Unfortunately, the true context depends on the
+                            // type of object.
+                            if (_context instanceof ComponentEntity) {
+                                trueContext = ((CompositeEntity)other)
+                                        .getEntity(relativeName);
+                            } else if (_context instanceof Attribute) {
+                                trueContext = other
+                                        .getAttribute(relativeName);
+                            } else if (_context instanceof Port) {
+                                trueContext = ((Entity)other)
+                                        .getPort(relativeName);
+                            } else if (_context instanceof Relation) {
+                                trueContext = ((CompositeEntity)other)
+                                        .getRelation(relativeName);
+                            }
+                            if (trueContext == null) {
+                                throw new InternalErrorException(
+                                "Expected "
+                                + other.getFullName()
+                                + " to contain an entity, attribute, "
+                                + "port, or relation with name "
+                                + relativeName);
+                            }
                         }
                         
                         // It is possible for there to be multiple deferral
@@ -598,8 +609,29 @@ public class MoMLChangeRequest extends ChangeRequest {
                     "Only entities currently support " +
                     "class/instance propagation.");
                 }
-                trueContext = ((CompositeEntity)defersTo)
-                        .getEntity(relativeContextName);
+                // Unfortunately, the true context depends on the
+                // type of object.
+                if (_context instanceof ComponentEntity) {
+                    trueContext = ((CompositeEntity)defersTo)
+                            .getEntity(relativeContextName);
+                } else if (_context instanceof Attribute) {
+                    trueContext = defersTo
+                            .getAttribute(relativeContextName);
+                } else if (_context instanceof Port) {
+                    trueContext = ((Entity)defersTo)
+                            .getPort(relativeContextName);
+                } else if (_context instanceof Relation) {
+                    trueContext = ((CompositeEntity)defersTo)
+                            .getRelation(relativeContextName);
+                }
+                if (trueContext == null) {
+                    throw new InternalErrorException(
+                    "Expected "
+                    + defersTo.getFullName()
+                    + " to contain an entity, attribute, "
+                    + "port, or relation with name "
+                    + relativeContextName);
+                }
             }
             
             if (trueContext == _context) {
@@ -706,7 +738,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     private URL _base;
     
     // Flag to print out information about what's being done.
-    private static boolean _DEBUG = false;
+    private static boolean _DEBUG = true;
     
     // Flag indicating whether propagation is enabled.
     private boolean _enablePropagation = true;
