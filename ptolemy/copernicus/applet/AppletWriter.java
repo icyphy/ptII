@@ -33,6 +33,7 @@ package ptolemy.copernicus.applet;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -42,9 +43,12 @@ import soot.toolkits.scalar.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -142,19 +146,36 @@ public class AppletWriter extends SceneTransformer {
 	// the we will do mkdir $PTII/foo/bar/Bif/
 	_targetPackage = Options.getString(options, "targetPackage");
 
-	// Convert _targetPackage "foo/bar" to _codeBase "../../.."
-	// There is something a little bit strange here, since we
-	// actually create the code in a sub package of _targetPackage
-	// We could rename the targetPackage parameter to parentTargetPackage
-	// but I'd rather keep things uniform with the other generators?
+	// Check to see if the _outputDirectory has the same root
+	// as the _ptIIDirectory.  _outputDirectory is not under
+	// _ptIIDirectory, then we will need to copy jar files around
+	boolean copyJarFiles = false;
+
+	// Convert _targetPackage "foo/bar" to _codeBase
+	// "../../.."  There is something a little bit strange
+	// here, since we actually create the code in a sub
+	// package of _targetPackage We could rename the
+	// targetPackage parameter to parentTargetPackage but I'd
+	// rather keep things uniform with the other generators?
+
 	int start = _targetPackage.indexOf('.');
 	// _codeBase has one more level than _targetPackage.
 	StringBuffer buffer = new StringBuffer("..");
-        while (start != -1) {
+	while (start != -1) {
 	    buffer.append("/..");
-            start = _targetPackage.indexOf('.', start + 1);
-        }
+	    start = _targetPackage.indexOf('.', start + 1);
+	}
 	_codeBase = buffer.toString();
+
+	try {
+	    if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
+		copyJarFiles = true;
+		_codeBase = ".";
+	    }
+	} catch (IOException ex) {
+	    System.out.println("_isSubdirectory threw an exception: " + ex);
+	    ex.printStackTrace();
+	}
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -226,16 +247,6 @@ public class AppletWriter extends SceneTransformer {
                     + modelFileName + "': " + ex);
 	}
 
-
-	// Check to see if the _outputDirectory has the same root
-	// as the _ptIIDirectory.  _outputDirectory is not under
-	// _ptIIDirectory, then we will need to copy jar files around
-	
-	//try {
-	//    File outputDirectoryFile = new File(_outputDirectory);
-	//    File ptIIDirectoryFile = new File(_ptIIDirectory);
-	//}
-
 	// Read in the templates and generate new files.
 
 	// The directory that contains the templates.
@@ -263,6 +274,9 @@ public class AppletWriter extends SceneTransformer {
 				    _outputDirectory + "/"
 				    + _sanitizedModelName
 				    + "Vergil.htm");
+	    if (copyJarFiles) {
+		_copyJarFiles(director);
+	    }
 	} catch (IOException ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
 	    System.err.println("Problem writing makefile or html files:" + ex);
@@ -272,6 +286,129 @@ public class AppletWriter extends SceneTransformer {
 	}
     }
 
+    // Copy jar files into _outputDirectory
+    private void _copyJarFiles(Director director)
+        throws IOException {
+
+	// In the perfect world, we would run tree shaking here, or
+	// look up classes as resources.  However, if we are running
+	// in a devel tree, then the ptII directory will be returned
+	// as the resource when we look up a class, which is not
+	// at all what we want.
+	// appletviewer -J-verbose could be used for tree shaking.
+
+	// We use a HashMap that maps class names to destination jar
+	// files.
+
+        Map classMap = new HashMap();
+        classMap.put("ptolemy.actor.gui.MoMLApplet",
+                     "ptolemy/ptsupport.jar");
+        classMap.put(director.getClass().getName(),
+                     _domainJar);
+        classMap.put("ptolemy.vergil.MoMLViewerApplet",
+                     "ptolemy/vergil/vergilApplet.jar");
+        classMap.put("diva.graph.GraphController",
+                     "lib/diva.jar");
+	// First, we search for the jar file, then we try
+	// getting the class as a resource.
+	// FIXME: we don't handle the case where there are no
+	// individual jar files because the user did not run 'make install'.
+
+        Iterator classNames = classMap.keySet().iterator();
+        while (classNames.hasNext()) {
+            String className = (String)classNames.next();
+
+	    File potentialSourceJarFile =
+		new File(_ptIIDirectory, (String)classMap.get(className));
+	    if (potentialSourceJarFile.exists()) {
+		// Ptolemy II development trees will have jar files
+		// if 'make install' was run. 
+		_copyFile(_ptIIDirectory + File.separator
+			  + (String)classMap.get(className),
+			  _outputDirectory, 
+			  (String)classMap.get(className));
+		
+	    } else {
+		// Under Web Start, the resource that contains a class
+		// will have a mangled name, so we copy the jar file.
+		String classResource =
+		    GeneratorAttribute.lookupClassAsResource(className);
+
+		if (classResource != null) {
+		    System.out.println("AppletWriter: " + classResource
+				       + " " + _outputDirectory
+				       + " "
+				       + (String)classMap.get(className));
+		    _copyFile(classResource, _outputDirectory, 
+				 (String)classMap.get(className));
+		} else {
+		    throw new IOException("Could not find '" + className
+					  + "' as a resource.\n"
+					  + "Try adding this class to the "
+					  + "necessaryClasses parameter"
+					  );
+		}
+	    }
+	}
+    }
+
+    // Copy sourceFile to the destinationFile in destinationDirectory.
+    private void _copyFile(String sourceFileName,
+			      String destinationDirectory,
+			      String destinationFileName )
+	throws IOException {
+	File sourceFile = new File(sourceFileName);
+	if ( !sourceFile.isFile()) {
+	    throw new FileNotFoundException("Could not find '"
+					    + sourceFileName + "'."
+					    + "\nPerhaps you need "
+					    + "to run 'make install'?");
+	}
+
+	File destinationFile = new File(destinationDirectory,
+					    destinationFileName);
+	File destinationParent = new File(destinationFile.getParent());
+	destinationParent.mkdirs();
+
+	System.out.println("AppletWriter: Copying " + sourceFile
+			   + " (" + sourceFile.length()/1024 + "K) to "
+			   + destinationFile);
+
+	// Avoid end of line and localization issues.
+        BufferedInputStream in =
+            new BufferedInputStream(new FileInputStream(sourceFile));
+        BufferedOutputStream out =
+            new BufferedOutputStream(new FileOutputStream(destinationFile));
+	int c;
+	
+	while ((c = in.read()) != -1)
+	    out.write(c);
+
+	in.close();
+	out.close();
+    }
+
+    // Return true if possibleSubdirectory is a subdirectory of parent.
+    private boolean _isSubdirectory(String parent,
+				    String possibleSubdirectory)
+	throws IOException {
+	System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
+			   possibleSubdirectory);
+	File parentFile = new File(parent);
+	File possibleSubdirectoryFile = new File(possibleSubdirectory);
+	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
+	    throw new IOException ("'" + parent + "' or '" 
+				   + possibleSubdirectory + "' is a file, "
+				   + "it should be a directory");
+	}
+	String parentCanonical = parentFile.getCanonicalPath();
+	String possibleSubdirectoryCanonical =
+	    possibleSubdirectoryFile.getCanonicalPath();
+	System.out.println("\n\n_isSubdirectory: \n\t"
+			   + parentCanonical + "\n\t"
+			   + possibleSubdirectoryCanonical);
+	return parentCanonical.startsWith(possibleSubdirectoryCanonical);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
