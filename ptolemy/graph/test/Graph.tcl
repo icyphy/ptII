@@ -386,8 +386,8 @@ test Graph-5.5 {Test self-loop edges ofindividual nodes} {
 ######################################################################
 ####
 # 
-test DirectedGraph-5.6 { neighbors } {
-    set p [java::new ptolemy.graph.DirectedGraph]
+test Graph-5.6 { neighbors } {
+    set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
@@ -416,8 +416,8 @@ test DirectedGraph-5.6 { neighbors } {
 ######################################################################
 ####
 # 
-test DirectedGraph-5.7 { neighbors with duplicate node weights} {
-    set p [java::new ptolemy.graph.DirectedGraph]
+test Graph-5.7 { neighbors with duplicate node weights} {
+    set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
