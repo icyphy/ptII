@@ -30,7 +30,7 @@
     <!-- Use a custom graph editor with a CT director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="CT Director" 
+        <property name="Solver" 
                   class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
@@ -101,8 +101,8 @@ create refinements for the states.</text></svg></configure></property>
       <configure>
         <?moml
           <group>
-  <input source="ptolemy/actor/lib/sources.xml"/>
-  <input source="ptolemy/actor/lib/sinks.xml"/>
+  <input source="ptolemy/actor/lib/timedsources.xml"/>
+  <input source="ptolemy/actor/lib/timedsinks.xml"/>
   <input source="ptolemy/actor/lib/io/io.xml"/>
   <input source="ptolemy/actor/lib/math.xml"/>
   <input source="ptolemy/actor/lib/random.xml"/>
