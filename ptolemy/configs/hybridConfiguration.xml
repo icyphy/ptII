@@ -5,12 +5,12 @@
 
   <!-- Specify the about file to open. -->
   <property name="_about"
-            class="ptolemy.kernel.attributes.FileAttribute"
+            class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/doc/hybridCopyright.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
-            class="ptolemy.kernel.attributes.FileAttribute"
+            class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/doc/hybridHelp.htm"/>
 
   <!-- The directory of open models, each represented by an effigy. -->

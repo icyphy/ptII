@@ -16,12 +16,12 @@
   <doc>Configuration for VisualSense</doc>
   <!-- Specify the about file to open. -->
   <property name="_about"
-            class="ptolemy.kernel.attributes.FileAttribute"
+            class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/visualsense/about.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
-            class="ptolemy.kernel.attributes.FileAttribute"
+            class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/visualsense/help.htm"/>
 
   <!-- The directory of open models, each represented by an effigy. -->
