@@ -56,6 +56,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Add.java \
+	Commutator.java \
 	Const.java \
 	Distributor.java \
 	Ramp.java
