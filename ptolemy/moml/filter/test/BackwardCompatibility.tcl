@@ -723,12 +723,14 @@ This filter is used by the nightly build, and
 can be used to run applets so that files like
 diva.jar do not need to be downloaded.
 The following actors are affected:
+ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory will be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.icon.AttributeValueIcon will be removed
 ptolemy.vergil.icon.ValueIcon will be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.icon.UpdatedValueIcon will be removed
 ptolemy.actor.gui.style.CheckBoxStyle will be removed
 ptolemy.vergil.toolbox.VisibleParameterEditorFactory will be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.icon.BoxedValueIcon will be removed
+ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory will be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.basic.NodeControllerFactory will be removed
 ptolemy.vergil.toolbox.AnnotationEditorFactory will be removed
 }}
