@@ -42,7 +42,7 @@ import ptolemy.data.type.BaseType;
 //// InUnitsOf
 /**
 An actor that converts input tokens to specified units.
-The units are specified by the units parameter, which contains a
+The units are specified by the <i>units</i> parameter, which contains a
 DoubleToken with units. The input tokens and the token in the <i>unit</i>
 parameter must have the same unit category. Otherwise, an exception
 will be thrown in the fire() method. Unit categories include the ones
@@ -51,7 +51,7 @@ ones formed through the base categories, such as length/time (speed),
 and length * length (area). The output token is a DoubleToken without
 units.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Xiaojun Liu, Edward Lee
 @version $Id$
 */
 
@@ -77,14 +77,6 @@ public class InUnitsOf extends Transformer {
 	input.setTypeEquals(BaseType.DOUBLE);
 	output.setTypeEquals(BaseType.DOUBLE);
 	units.setTypeEquals(BaseType.DOUBLE);
-
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" +
-                "<polygon points=\"10,30 50,10 50,30\" "
-                + "style=\"fill:blue\"/>\n" +
-                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
