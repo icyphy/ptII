@@ -131,24 +131,11 @@ public class CircuitTransformer extends SceneTransformer {
 	    //Skip ports; only Entity's are expanded
 	    if (!(cnode.weight() instanceof Entity)) continue;
 
-	    //removeSet.add(cnode);
-  
-	    String className =
-		ActorTransformer.getInstanceClassName((Entity)cnode.weight(),
-						      options);
-	    SootClass entityClass = 
-		Scene.v().loadClassAndSupport(className);
-
-	    CircuitAnalysis analysis=null;
-	    try {
-		analysis =
-		    new CircuitAnalysis((Entity)cnode.weight(), entityClass);
-	    } catch(IllegalActionException e) {
-		throw new RuntimeException(e.toString());
-	    }
-	    DirectedGraph operatorGraph = analysis.getOperatorGraph();
-
-	    replaceMap.put(cnode, operatorGraph);
+	    // Get directed graph of entity (if null, don't replace)
+	    DirectedGraph operatorGraph = 
+		_createEntityGraph((Entity) cnode.weight(), options);
+	    if (operatorGraph != null)
+		replaceMap.put(cnode,operatorGraph);
 
 	}
 
@@ -249,6 +236,31 @@ public class CircuitTransformer extends SceneTransformer {
 	//          } catch (Exception ex) {
 	//              ex.printStackTrace();
 	//          }
+    }
+
+    protected DirectedGraph _createEntityGraph(Entity entity, Map options) {
+	String className = 
+	    ActorTransformer.getInstanceClassName(entity,options);
+
+	String entityClassName = entity.getClass().getName();
+	// skip some classes
+	if (entityClassName.equals("ptolemy.actor.lib.Const") ||
+	    entityClassName.equals("ptolemy.actor.lib.FileWriter"))
+	    return null;
+								 
+	System.out.println("Creating graph for class "+className+
+			   " ("+entityClassName+")");
+	SootClass entityClass = Scene.v().loadClassAndSupport(className);
+
+	CircuitAnalysis analysis=null;
+	try {
+	    analysis =
+		new CircuitAnalysis(entity, entityClass);
+	} catch(IllegalActionException e) {
+	    throw new RuntimeException(e.toString());
+	}
+	DirectedGraph operatorGraph = analysis.getOperatorGraph();
+	return operatorGraph;
     }
 
     /**

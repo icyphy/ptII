@@ -69,6 +69,7 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd.cg
+TARGETPATH = ptolemy/copernicus/jhdl/demo/SimpleAdd/cg
 SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
 MODEL = SimpleAddSystem
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
@@ -78,17 +79,17 @@ SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 # make SOOT_USER_ARGS=-h
 SOOT_USER_ARGS = 
 
+#		-d "$(ROOT)" \
+
 demo: jclass
 	@echo "First we generate SimpleAdd.class"
 	$(JAVA) -Xmx128M -Xms128M \
 		 -classpath "$(CLASSPATH)" \
 		ptolemy.copernicus.jhdl.Main \
 		$(SOURCECLASS) \
-		-d "$(ROOT)" \
 		-p wjtp.at deep,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.clt \
-		targetPackage:$(TARGETPACKAGE)$(ITERATIONS_PARAMETER) \
+		-p wjtp.clt targetPackage:$(TARGETPACKAGE)$(ITERATIONS_PARAMETER) \
 		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
@@ -101,7 +102,6 @@ demo: jclass
 		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
 		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
 		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
-		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
 		-p wjtp.iee enabled \
 		-p wjtp.circuit targetPackage:$(TARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
