@@ -332,3 +332,50 @@ test DoubleArrayStat-6.1.2 {autoCorrelationAt without startlag and endlag} {
     set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelationAt $p1 4 0]
     list $v1 
 } {0.38}
+
+
+####################################################################
+test DoubleArrayStat-7.1 {randomBernoulli} {
+    set a1 [java::call ptolemy.math.DoubleArrayStat randomBernoulli 0.5 100]
+    set a2 [java::call ptolemy.math.DoubleArrayStat randomBernoulli 0.5 100]
+    # 100 randoms should not be the same
+    list [$a1 length] \
+	[$a2 length] \
+	[expr {[string compare [$a1 getrange] [$a2 getrange]] == 0}]
+} {100 100 0}
+
+####################################################################
+test DoubleArrayStat-8.1 {randomExponential} {
+     set a1 [java::call ptolemy.math.DoubleArrayStat randomExponential 0.5 100]
+     set a2 [java::call ptolemy.math.DoubleArrayStat randomExponential 0.5 100]
+     # 100 randoms should not be the same
+     list [$a1 length] \
+	[$a2 length] \
+	[expr {string compare [$a1 getrange] [$a2 getrange] == 0}]
+} {100 100 0}
+
+####################################################################
+test DoubleArrayStat-9.1 {randomPoisson} {
+    set a1 [java::call ptolemy.math.DoubleArrayStat randomPoisson 0.5 100]
+    set a2 [java::call ptolemy.math.DoubleArrayStat randomPoisson 0.5 100]
+    # 100 randoms should not be the same
+    list [$a1 length] \
+	[$a2 length] \
+	[expr {[string compare [$a1 getrange] [$a2 getrange]] == 0}]
+} {100 100 0}
+
+####################################################################
+test DoubleArrayStat-10.1 {randomUniform} {
+    set a1 [java::call ptolemy.math.DoubleArrayStat randomUniform \
+	-1.0 100.0 100]
+    set a2 [java::call ptolemy.math.DoubleArrayStat randomUniform \
+	-1.0 100.0 100]
+    # 100 randoms should not be the same
+    list [$a1 length] \
+	[$a2 length] \
+	[expr {[java::call ptolemy.math.DoubleArrayStat max $a1] <= 100.0}] \
+	[expr {[java::call ptolemy.math.DoubleArrayStat min $a1] >= -1.0}] \
+	[expr {[java::call ptolemy.math.DoubleArrayStat max $a2] <= 100.0}] \
+	[expr {[java::call ptolemy.math.DoubleArrayStat min $a2] >= -1.0}] \
+	[expr {[string compare [$a1 getrange] [$a2 getrange]] == 0}]
+} {100 100 1 1 1 1 0}
