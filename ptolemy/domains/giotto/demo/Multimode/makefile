@@ -41,17 +41,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =
+PTPACKAGE =	Multimode
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS = \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	Controller.xml \
-	Multimode.htm \
 	Multimode.xml \
-	OneMode.xml \
-	$(JSRCS)
+	OneMode.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Multimode.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

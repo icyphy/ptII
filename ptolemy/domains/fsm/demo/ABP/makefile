@@ -53,14 +53,18 @@ JSRCS = \
 	DEMessageSource.java \
 	DETimer.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	ABP.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	ABP.xml \
-	ABPVergil.htm \
 	ConnectComponent.xml \
 	Receiver.xml \
 	SendComponent.xml \
 	SenderController.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	ABP.htm \
+	ABPVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

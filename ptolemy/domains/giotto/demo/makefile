@@ -39,14 +39,16 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE =
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE =	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	Hierarchy/Hierarchy.jar \
+	Multimode/Multimode.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

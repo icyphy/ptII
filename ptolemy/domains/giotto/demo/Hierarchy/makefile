@@ -42,15 +42,18 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	Hierarchy
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS = \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	composite.xml \
-	Hierarchy.htm \
 	Hierarchy.xml \
-	$(JSRCS)
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Hierarchy.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
