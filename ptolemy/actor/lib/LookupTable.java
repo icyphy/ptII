@@ -1,4 +1,4 @@
-/* A lookup table that outputs internally stored data given an index.
+/* A lookup table that outputs internally stored data given an index Parameter.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -44,21 +44,31 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// LookupTable
 /**
-Output to the <i>output</i> port the value in the array specified by the
-<i>data</i> parameter at the index specified by the <i>input</i> parameter.
-All ports are single ports.  The index must be an integer.  If the index is
-out of range, no token is output.
+Output to the <i>output</i> port the value in the array of tokens
+specified by the <i>table</i> parameter at the index specified by the
+<i>input</i> port.  The index must be an integer.  If the index is out
+of range, no token is output.  Despite the name, this actor
+actually looks up values in an array of tokens, not a two dimensional table. 
 
 <p>LookupTable is different from ArrayElement in that in
 ArrayElement, the array is read in as input, and the index is a parameter,
 In LookupTable, the array is a parameter, and the index is read
 in as an input.
 
+<p>Note that there are three similar actors here
+<dl>
+<dt>LookupTable
+<dd>array is a parameter, index is a port.
+<dt>ArrayElement
+<dd>array is a port, index is a parameter
+<dt>Array<i>XXX</i> (not yet developed)
+<dd>array and index are both ports
+</dl>
+
 @see ArrayElement
 
 @author Paul Whitaker
-@version $Id$
-*/
+@version $Id$ */
 
 public class LookupTable extends Transformer {
 
@@ -75,24 +85,23 @@ public class LookupTable extends Transformer {
         super(container, name);
 
         // Set parameters.
-        data = new Parameter(this, "data");
-        data.setExpression("{1, 2, 4, 8, 16}");
+        table = new Parameter(this, "table");
 
 	// Set type constraints.
         input.setTypeEquals(BaseType.INT);
-	data.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-	ArrayType dataType = (ArrayType)data.getType();
-	InequalityTerm elementTerm = dataType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+	table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+	ArrayType tableType = (ArrayType)table.getType();
+	InequalityTerm elemTerm = tableType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The data array that we lookup elements in.
-     *  The initial default value is {1, 2, 4, 8, 16}.
+    /** The table array that we lookup elements in.  This token is
+     *  of type ArrayToken.  This parameter has no initial default value.
      */
-    public Parameter data;
+    public Parameter table;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -108,27 +117,30 @@ public class LookupTable extends Transformer {
 	    throws CloneNotSupportedException {
         LookupTable newObject = (LookupTable)(super.clone(workspace));
 
-        // set the type constraints
-        ArrayType dataType = (ArrayType)data.getType();
-        InequalityTerm elementTerm = dataType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
+        // One of the Parameters contains ArrayTokens, so we need
+	// to handle cloning it.
+        ArrayType tableType = (ArrayType)table.getType();
+        InequalityTerm elemTerm = tableType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elemTerm);
 
         return newObject;
     }
 
     /** Consume at most one token from the input port and produce
-     *  the element at the index specified by this token from the
-     *  data array on the output port.  If there is no token
-     *  on the input or of the token is out of range, then no output
+     *  the element at the index specified by this token from the 
+     *  table array on the output port.  If there is no token
+     *  on the input or the token is out of range, then no output 
      *  is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if(input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)data.getToken();
-            int indexValue = ((IntToken)input.get(0)).intValue();
-            if (indexValue >= 0 && indexValue < token.length()) {
-                output.broadcast(token.getElement(indexValue));
+            ArrayToken token = (ArrayToken)table.getToken();
+	    if (token != null) {
+		int indexValue = ((IntToken)input.get(0)).intValue();
+		if (indexValue >= 0 && indexValue < token.length()) {
+		    output.broadcast(token.getElement(indexValue));
+		}
             }
         }
     }
