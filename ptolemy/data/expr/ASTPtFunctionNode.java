@@ -146,10 +146,16 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 throw new InvalidStateException("ASTPtFunctionNode: " +
                         " recursive call to null parser.");
             }
-            NamedList scope = _parser.getScope();
-            exp = _childTokens[0].toString();
-            ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
-            return tree.evaluateParseTree();
+            if(args == 1 && _childTokens[0] instanceof StringToken) {
+                exp = ((StringToken)_childTokens[0]).stringValue();
+                NamedList scope = _parser.getScope();
+                ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
+                return tree.evaluateParseTree();
+            } else {
+                throw new IllegalActionException("The function \"eval\" is" + 
+                        " reserved for reinvoking the parser, and takes" +
+                        " exactly one String argument.");
+            }
         }
 
         // Do not have a recursive invocation of the parser.
@@ -169,7 +175,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 argValues[i] = new Long(((LongToken)child).longValue());
                 argTypes[i] = Long.TYPE;
             } else if (child instanceof StringToken) {
-                argValues[i] = new String(((StringToken)child).toString());
+                argValues[i] = new String(((StringToken)child).stringValue());
                 argTypes[i] = argValues[i].getClass();
             } else if (child instanceof BooleanToken) {
                 argValues[i] =
@@ -235,8 +241,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     return new DoubleToken(((Double)result).doubleValue());
                 } else if (result instanceof Integer) {
                     return new IntToken(((Integer)result).intValue());
-                } else if (result instanceof Long) {
-                    return new LongToken(((Long)result).longValue());
                 } else if (result instanceof Long) {
                     return new LongToken(((Long)result).longValue());
                 } else if (result instanceof String) {
