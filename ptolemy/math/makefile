@@ -51,6 +51,7 @@ JSRCS = ArrayStringFormat.java \
 	Complex.java \
 	FixPoint.java \
 	Precision.java \
+	Quantizer.java \
 	ExtendedMath.java \
 	Fraction.java \
 	Interpolation.java \

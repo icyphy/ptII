@@ -134,23 +134,8 @@ public final class FixPoint implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Construct a FixPoint with value of zero and a default
-     *  precision.  The default precision is (16/16), i.e. a is
-     *  represented with 16 bits for the integer part and 0 bits for
-     *  the fractional part.
-     *  */
-    public FixPoint() {
- 	_initialize();
-	try {
-	    _precision = new Precision("16/16");
-	} catch (IllegalArgumentException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
- 	_value     = _makeBits( 0.0, _precision );
-    }
-
     /** Construct a FixPoint with a particular precision and a value
-     *  given as a string. The value of this Fixpoint will be rounded
+     *  given as a BigInteger. The value of this Fixpoint will be rounded
      *  to the nearest Fixpoint value given the finite precision. When
      *  the value does not fit the given precision, a rounding error
      *  will occur and the value of the Fixpoint will be saturated to
@@ -159,35 +144,12 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision of this Fixpoint.  
      *  @param value The value that will be represented by
      *  the fixpoint given the finite precision.  */
-    public FixPoint(String precision, String value, Quantize mode ) {
- 	double tmpValue = (Double.valueOf(value)).doubleValue();
+    public FixPoint(Precision precision, BigInteger value ) {
  	_initialize();
-        _mode = mode;
 	try {
-	    _precision = new Precision(precision);          
-	    _value     = _makeBits( tmpValue, _precision );
+	    _precision = precision;          
+	    _value     = new Fixvalue( value );
 	} catch (IllegalArgumentException e ) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
-    }
-
-    /** Construct a FixPoint with a particular precision and
-     *  value. The value of this Fixpoint will be rounded to the
-     *  nearest Fixpoint value given the finite precision. When the
-     *  value does not fit the given precision, a rounding error will
-     *  occur and the value of the Fixpoint will be saturated to the
-     *  largest positive or largest negative value possible given the
-     *  precision.  
-     *  @param precision The precision of the fixpoint.
-     *  @param value The value that will be represented by the fixpoint 
-     *  given the finite precision.  */
-    public FixPoint(String precision, double value, Quantize mode ) {
- 	_initialize();
-        _mode = mode;
-	try {
-	    _precision = new Precision(precision);
-	    _value     = _makeBits( value, _precision );
- 	} catch (IllegalArgumentException e ) {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
@@ -247,14 +209,12 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	// FIXME: Should we use as scale factor (2^fractionBits)/log(10)?
 	BigDecimal dz = dx.divide( dy, 32, BigDecimal.ROUND_HALF_UP );
-
+        
 	// Create a Fixvalue with the additional bits set
-	Fixvalue result = _makeBits( dz.doubleValue(), cp );
-	result.setError( _value.getError() );
-	result.setQuantize( _value.getQuantize() );
+	FixPoint result = Quantizer.round( dz.doubleValue(), cp );
 
-	// return the FixPoint with the correct precision and result
-	return new FixPoint(cp, result);
+        // return the new FixPoint
+	return result;
     }
 
     /** Return the fixvalue in the Fixpoint as a double. 
@@ -277,26 +237,11 @@ public final class FixPoint implements Cloneable, Serializable {
 	return _value.getErrorDescription();
     }
 
-    /** Get a description of the quantization mode of the Fixpoint
-	@return The description of the quantization mode of the
-	Fixpoint
-    */
-    public String getQuantizeDescription() {
-	return _value.getQuantizeDescription();
-    }
-
     /** Returns the precision of the Fixpoint.  
      *  @return the precision of the Fixpoint.
      */
     public Precision getPrecision() {
 	return _precision;
-    }
-
-    /** Returns the quantization mode of the Fixpoint.  
-     *  @return the quantization mode of the Fixpoint.
-     */
-    public Quantize getQuantizeMode() {
-	return _value.getQuantize();
     }
 
     /** Return a new Fixpoint number with value equal to the multiplication
@@ -347,86 +292,6 @@ public final class FixPoint implements Cloneable, Serializable {
   	return "" + doubleValue();
     }
 
-    /** Return a new Fixpoint number scaled to the give precision. To
-     *  fit the new precision, a rounding error can occur. In that
-     *  case the value of the Fixpoint is determined, depending on the
-     *  quanitzation mode selected.  // FIXME Still correct?
-     *  @param newprecision The new precision of the Fixpoint.  
-     *  @return A new Fixpoint with the given precision.  
-     */
-    public FixPoint scaleToPrecision(Precision newprecision ) {
-	Fixvalue newvalue = _scaleBits(_value, _precision, newprecision );
-	return new FixPoint(newprecision, newvalue);
-    }
-
-    /** Return a new Fixpoint number scaled to the give precision
-     *  given as a String. To fit the new precision, a rounding error
-     *  can occur. In that case the value of the Fixpoint is
-     *  determined, depending on the quantization mode selected.
-     *  @param precisionString String that gives the new precision of
-     *  the Fixpoint.  
-     *  @return A new Fixpoint with the given precision.
-     * // FIXME still correct
-    */
-    public FixPoint scaleToPrecision(String precisionString ) {
-	Precision newprecision = new Precision( precisionString );
-	Fixvalue newvalue = _scaleBits(_value, _precision, newprecision);
-	return new FixPoint(newprecision, newvalue);
-    }
-
-
-    /** Set the quantization mode of the Fixpoint.  
-     *  @param mode The quantization mode
-     */
-    public void setQuantizationMode(Quantize mode ) {
-	_value.setQuantize( mode );
-    }
-
-    /** Set the overflow mode of the Fixpoint using a string. Added to
-     *  make testing easier // FIXME still needed?
-     @param name String describing the overflow mode */
-    public void setRounding(String name) {
-	if ( name.compareTo("SATURATE")==0) {
-	    _value.setQuantize( SATURATE );
-	    //System.out.println(" -- SATURATE --");
-	}
-	if ( name.compareTo("ZERO_SATURATE")==0) {
-	    _value.setQuantize( ROUND );
-	    //System.out.println(" -- ZERO SATURATE --");
-	}
-	if ( name.compareTo("TRUNCATE")==0) {
-	    _value.setQuantize( TRUNCATE );
-	    //System.out.println(" -- TRUNCATE --");
-	}
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-
-    /** Indicator that no overflow has occurred */
-    public static final Error OVERFLOW   = new Error("Quantize Occurred");   
-
-    /** Indicator that an overflow has occurred */
-    public static final Error NOOVERFLOW = new Error("No Quantize Occurred");
-
-    /** Indicator that a rounding error has occurred */
-    public static final Error ROUNDING   = new Error("Rounding Occurred");
-
-    /** Indicator to saturate the fixvalue, when an overflow occurs */
-    public static final Quantize SATURATE = new Quantize("Saturate",0);
-
-    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
-    public static final Quantize ROUND    = new Quantize("Round",1);
-
-    /** Indicator to truncate the fixvalue, when an overflow occurs */
-    public static final Quantize TRUNCATE = new Quantize("Truncate",2);
-    
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Return a new Fixpoint number with value equal to the subtraction
      *  of this Fixpoint number and the argument. The operation is
      *  lossless because the precision of the result is changed to
@@ -447,6 +312,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	// return the FixPoint with the correct precision and result
         return new FixPoint(cp, argZ);
     }
+
     /** Prints useful debug information about the Fixpoint. Is used
      *  many for Debug purposes.  */
     public void printFix() {
@@ -457,10 +323,26 @@ public final class FixPoint implements Cloneable, Serializable {
 	System.out.println (" scale Value (10) " + doubleValue() 
 			    + " Precision: " + _precision.toString() );
 	System.out.println (" Errors:     " + _value.getErrorDescription());
-	System.out.println (" Round Mode: " + _value.getQuantizeDescription());
-	System.out.println (" Max value:  " + _findMax( _precision ) );	
-	System.out.println (" Min value:  " + _findMin( _precision ) );
+	// System.out.println (" Max value:  " + _findMax( _precision ) );	
+	// System.out.println (" Min value:  " + _findMin( _precision ) );
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+
+    /** Indicator that no overflow has occurred */
+    public static final Error OVERFLOW   = new Error("Quantize Occurred");   
+
+    /** Indicator that an overflow has occurred */
+    public static final Error NOOVERFLOW = new Error("No Quantize Occurred");
+
+    /** Indicator that a rounding error has occurred */
+    public static final Error ROUNDING   = new Error("Rounding Occurred");    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
 
     /** Return a Fixvalue which fractional part is aligned with the
      *  provided precision. This never involves rounding, but only
@@ -478,7 +360,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	BigInteger arg = (_value.fixvalue).shiftLeft(delta);
 	
 	// return the Fixvalue with aligned value
-	return new Fixvalue( arg, _value.getError(), _value.getQuantize() );
+	return new Fixvalue( arg, _value.getError() );
     }
 
     /** Initialize the Fixpoint */
@@ -487,208 +369,6 @@ public final class FixPoint implements Cloneable, Serializable {
 	_precision = null;
     }    
 
-
-    /** Returns the maximal obtainable value for the given precision 
-	@param p The precision
-	@return The maximal value obtainable for the given precision
-    */
-    private double _findMax(Precision p) 
-    {
-	int ln = p.getNumberOfBits();
-	int ib = p.getIntegerBitLength();
-	double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
-	return tmp;
-    }
-
-    /** Returns the minimal obtainable value for the given precision 
-	@param p The precision
-	@return The minimal value obtainable for the given precision
-    */
-    private double _findMin(Precision p)
-    {
-	int ib = p.getIntegerBitLength();
-	double tmp = -1*Math.pow(2,ib-1);
-	return tmp;
-    }
-
-    /**
-       Return a Fixvalue for the value and precision given. The value is
-       rounded to the nearest value that can be presented with the given
-       precision, possibly introducing quantization errors.  
-       @param value The value for which to create a Fixpoint
-       @param precision The precision of the Fixpoint
-       @return A Fixvalue for the value with a given precision
-    */
-    private Fixvalue _makeBits(double value, Precision precision) {
-	BigInteger tmpValue;
-	int errors = 0;
-
-	double x = value;
-	double maxValue = _findMax(precision);
-	double minValue = _findMin(precision);
-
-	Fixvalue fxv = new Fixvalue();
-
-	// check if 'x' falls within the range of this FixPoint with
-	// given precision
-	if ( x > maxValue ) {
-	    fxv.setError(OVERFLOW);
-	    x = maxValue;
-	}
-	if ( x < minValue ) {
-	    fxv.setError(OVERFLOW);
-	    x = minValue;
-	}
-
-	// determine the scale factor by calculating 2^fractionbitlength
-	// By multiply the given value 'x' with this scale factor, we get
-	// a value of which we drop the fraction part. The integer remaining
-	// will be represented by the BigInteger.
-
-	// Rounding is x - RESOLUTION ( x = negative  -0.9 - 0.25 > 1)
-	// double resolution = Math.pow(2,-(precision.getFractionBitLength()+1));// 
-
-	double resolution = 0;
-	int number = precision.getFractionBitLength();
-
-        switch( _mode.getInteger() ) {
-        case 0: //SATURATE
-            resolution = 0;
-            break;
-
-        case 1: //ROUND
-            resolution = Math.pow(2,-(number+1));
-            break;
-
-        case 2: //TRUNCATE
-            double tmp;
-            resolution = Math.pow(2,-(number+1));
-            tmp = 1/(Math.pow(2,number) + 1.0 / Math.pow(2,number));
-            if ( x >= 0 ) {
-                resolution = 0;
-            } else {
-                resolution = tmp;
-            }
-            break;
-
-        default: // ERROR
-            // throw new Error(" Unknown Quantizer! ");
-            break;
-
-        }
-        
-        BigDecimal multiplier;
-	if ( x >= 0 ) {
-	    multiplier = new BigDecimal( x + resolution );
-	} else {
-	    multiplier = new BigDecimal( x - resolution );
-	}
-	BigDecimal kl = 
-		_twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
-
-	// By going from BigDecimal to BigInteger, remove the fraction
-	// part introducing a quantization error.
-	fxv.fixvalue = new BigInteger( kl.toBigInteger().toByteArray() );
-
-	return fxv;
-    }
-
-    /** Returns a Fixvalue which is a copy of the supplied Fixvalue,
-	but with it's precision scaled from the old precision to the
-	new precision. If the new Fixvalue cannot be contained by the
-	new precision, a rounding error occurs and depending on the
-	quantization mode selected, the appropriate Fixvalue is
-	determined.
-	@param x Fixvalue that needs to be scaled 
-	@param oldprecision The old precision of the Fixvalue 
-	@param newprecision The new precision of the Fixvalue 
-	@return Fixvalue with the desired new precision 
-    */
-    private Fixvalue _scaleBits(Fixvalue x, Precision oldprecision, 
-				Precision newprecision ) {
-
-	int delta, a, b = 0;
-
-	Fixvalue intResult;
-	Fixvalue fractionResult;
-
-	Fixvalue integerPart  = x.getIntegerBits( oldprecision );
-	Fixvalue fractionPart = x.getFractionBits( oldprecision );
-
-	// If the new precision is larger, we pad the current value
-	// with zeros. If it is smaller, we have to remove bits
-	// resulting in rounding/truncation.
-
-	// The handling of the scaling of the integer and fractional
-	// part is different. We first handle the integer part,
-	// followed by the fractional part.
-	a = oldprecision.getIntegerBitLength();
-	b = newprecision.getIntegerBitLength();
-	if (a > b ) {
-	    if ( integerPart.fixvalue.bitLength() <= b ) {
-		delta = 0; 
-	    }
-	    else {
-		delta = a-b;
-		// Because the real bitLength of x can be different
-		// from the bit length given by the precision, we need
-		// to correct the number of bits that really need to
-		// be shifted
-		int correction = a - integerPart.fixvalue.bitLength();
-		delta = delta - correction;
-	    }
-	} else {
-	    // b >= a
-	    delta = 0;
-	}
-	intResult = integerPart.scaleRight(delta);
-	
-	// Check if a Quantize took place
-	if ( intResult.getErrorDescription().compareTo("Quantize Occurred")==0 ) {
-	    // Create a new fractionpart
-	    fractionResult = new Fixvalue();
-	    fractionResult.setError( intResult.getError() );
-
-	    // Check how to resolve the rounding of the fractional part
-	    switch( intResult.getQuantize().getInteger() ) {
-	    case 0: //SATURATE
-		BigInteger tmp = (_twoRaisedTo[newprecision.getFractionBitLength()]).toBigInteger();
-		fractionResult.fixvalue = tmp.subtract( BigInteger.ONE );
-		break;
-	    case 1: //ZERO_SATURATE:
-		fractionResult.fixvalue = BigInteger.ZERO;
-		break;
-	    case 2: // TRUNCATE:
-		a = oldprecision.getFractionBitLength();
-		b = newprecision.getFractionBitLength();    
-		delta = b-a;
-		
-		// truncate the fractional part by shifting it delta positions
-		fractionResult.fixvalue = 
-		    fractionPart.fixvalue.shiftLeft(delta);
-		break;
-	    }
-	} else {
-   
-	    // No Quantize took place, so know check Fractional Part
-	    a = oldprecision.getFractionBitLength();
-	    b = newprecision.getFractionBitLength();    
-	    delta = b-a;
-
-	    // scale the fractional part
-	    fractionResult = fractionPart.scaleLeft(delta);   
-	}
-
-	// Reconstruct a single Fixpoint from the separate integer and
-	// fractional part
-	BigInteger total = 
-	    intResult.fixvalue.shiftLeft(newprecision.getFractionBitLength());
-	total = total.add( fractionResult.fixvalue );
-
-	// Return the Fixvalue cast to the new precision
-	return new Fixvalue( total, fractionResult.getError(), intResult.getQuantize());
-    }
-   
 
     /////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
@@ -699,8 +379,6 @@ public final class FixPoint implements Cloneable, Serializable {
     /** The Fixvalue containing the BigInteger bit string */
     private Fixvalue  _value;
     
-    private Quantize _mode;
-
     //////////////////////////////////////////////////////////////
     /////////                 Innerclass                  ////////
 
@@ -717,7 +395,6 @@ public final class FixPoint implements Cloneable, Serializable {
 	public Fixvalue() {
 	    fixvalue     = BigInteger.ZERO;
 	    _error       = NOOVERFLOW;
-	    _quantize    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
@@ -727,19 +404,16 @@ public final class FixPoint implements Cloneable, Serializable {
 	public Fixvalue(BigInteger value) {
 	    fixvalue     = value;
 	    _error       = NOOVERFLOW;
-	    _quantize    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
             to NOOVERFLOW and the overflow mode to SATURATE.
 	    @param value Set the BigInteger of this Fixvale to value
 	    @param err   The error of this Fixvalue
-	    @param of    The overflow mode of this Fixvalue
 	*/
-	public Fixvalue(BigInteger value, Error err, Quantize of) {
+	public Fixvalue(BigInteger value, Error err) {
 	    fixvalue     = value;
 	    _error       = err;
-	    _quantize    = of;
 	}
 
 	/** Return a new Fixvalue with value equal to the sum of this
@@ -751,7 +425,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
         public Fixvalue add(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.add( aValue.fixvalue );
-	    return new Fixvalue(result, _error, _quantize);
+	    return new Fixvalue(result, _error);
 	}
 
 	/** Return a new Fixvalue with value equal to the
@@ -764,7 +438,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
 	public Fixvalue multiply(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.multiply( aValue.fixvalue );
-	    return new Fixvalue(result, _error, _quantize);
+	    return new Fixvalue(result, _error);
 	}
 
 	/** Return the negated value of this Fixvalue. Uses the negate
@@ -773,76 +447,9 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
  	public Fixvalue negate() {
  	    BigInteger result = fixvalue.negate();
- 	    return new Fixvalue(result, _error, _quantize);
+ 	    return new Fixvalue(result, _error);
 	}
 
-	/** Return a scaled Fixvalue by scaling this fixvalue. Scale
-	 *  the fixvalue bu shifting it delta positions from the
-	 *  righthand side. If delta>0, then the fixvalue is reduced
-	 *  leading to possible rounding. Select on the overflow mode
-	 *  what the final Fixvalue should look like. 
-	 *  @param delta Number of positions the fixvalue is scaled from right.
-	 *  @return A scaled Fixvalue.
-	 */
- 	public Fixvalue scaleRight(int delta) {
-	    Fixvalue result = new Fixvalue(fixvalue, _error, _quantize);
-	    if (delta>0) {
-		result.setError(OVERFLOW);
-		switch( _quantize.getInteger() ) {
-		case 0: //SATURATE
-		    // return all bits to one's
-		    // Determine the new length of BigInteger fixvalue
-		    // and use that to determine the MAX_VALUE
-		    BigInteger tmp = (_twoRaisedTo[(fixvalue.bitLength()-delta)]).toBigInteger();
-		    result.fixvalue = tmp.subtract( BigInteger.ONE );
-		    break;
-		case 1: //ZERO_SATURATE:
-		    // return all bits to zero's
-		    result.fixvalue = BigInteger.ZERO;
-		    break;
-		case 2: //TRUNCATE:
-		    // simply remove the bits that are too much
-		    result.fixvalue = fixvalue.shiftRight( delta );
-		    break;
-		}
-	    }
-	    return result;
-	}
-
-	/** Return a scaled Fixvalue by scaling this fixvalue. Scale
-	 *  the fixvalue by shifting it delta positions from the
-	 *  left hand side. If delta<0, then the fixvalue is reduced in
-	 *  length leading to possible rounding. Select on the basis
-	 *  of the overflow mode what the final Fixvalue should look
-	 *  like.  
-	 *  @param delta Number of positions the fixvalue is
-	 *  scaled from left.  
-	 *  @return A scaled Fixvalue.  
-	 */
- 	public Fixvalue scaleLeft(int delta) {
-	    // copy the previous fixvalue
-	    Fixvalue work = new Fixvalue(fixvalue, _error, _quantize);
-	    Fixvalue result = new Fixvalue();
-
-	    // Delta >0, shift Left
-	    // Delta <0, shift Right
-	    if ( delta < 0) {
-
-		// Check if last delta bits are zero
-		// Because then no rounding takes place
-		for(int i=0;i<-delta;i++){
-		    if ( work.fixvalue.testBit( i ) == true ) {
-			work.setError(ROUNDING);
-		    }
-		}
-		result.fixvalue = work.fixvalue.shiftLeft( delta );
-	    } else {
-		result.fixvalue = work.fixvalue.shiftLeft( delta );
-	    }
-	    result.setError( work.getError() );
-	    result.setQuantize( work.getQuantize() );
-	    return result;
-	}
 
 	/** Return only the fractional part of the Fixvalue. Because
 	 *  the BigInteger does not have a point, we have to supply
@@ -854,7 +461,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	    BigInteger tmp = (_twoRaisedTo[precision.getFractionBitLength()]).toBigInteger();
 	    BigInteger mask = tmp.subtract( BigInteger.ONE );
 	    BigInteger result = fixvalue.and(mask);
-	    return new Fixvalue(result, _error, _quantize);
+	    return new Fixvalue(result, _error);
 	}
 
 	/** Return only the integer part of the Fixvalue. Because
@@ -866,7 +473,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
     	public Fixvalue getIntegerBits(Precision precision) {
 	    BigInteger result = fixvalue.shiftRight(precision.getFractionBitLength());
-	    return new Fixvalue(result, _error, _quantize);
+	    return new Fixvalue(result, _error);
 	}
 
 	/** Return a bit string representation of the Fixvalue. The
@@ -881,32 +488,16 @@ public final class FixPoint implements Cloneable, Serializable {
 	*/
 	public void setError(Error error) { _error = error; }
 
-	/** Set the Quantize mode of the Fixvalue 
-	    @param overflow The overflow mode of the Fixvalue
-	*/
-	public void setQuantize(Quantize overflow) { _quantize = overflow; }
-
 	/** Get the Error condition from the Fixvalue 
 	    @return The error condition of the Fixvalue
 	*/
 	public Error getError() { return _error; }
-
-
-	/** Get the Quantize mode from the Fixvalue 
-	    @return The Quantize mode of the Fixvalue
-	*/
-	public Quantize getQuantize() { return _quantize; }
-
 
 	/** Get a description of the error condition of the Fixvalue 
 	    @return The description of the error condition of the Fixvalue
 	*/
 	public String getErrorDescription() { return _error.getDescription(); }
 
-	/** Get a description of the overflow mode of the Fixvalue 
-	    @return The description of the overflow mode of the Fixvalue
-	*/
-	public String getQuantizeDescription() { return _quantize.getDescription(); }
 
 	/////////////////////////////////////////////////////////////////////
 	////                      private variables                      ////
@@ -916,9 +507,6 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	/** The error condition of the Fixvalue */
 	private Error      _error;
-	
-	/** The Quantize mode of the Fixvalue */
-	private Quantize   _quantize;
     }
 
 
@@ -939,34 +527,6 @@ public final class FixPoint implements Cloneable, Serializable {
 	private String _description;
 	
     }
-
-    /** Instances of this class represent overflow modes of the Fixvalue.
-     */
-    public static class Quantize {
-	// Constructor is private because only Manager instantiates this class.
-	private Quantize(String description, int value) {
-	    _description = description;
-	    _value = value;
-	}
-
-	/** Get a description of the Quantize.
-	 *  @return A description of the Quantize.
-	 */
-	public int getInteger() {
-	    return _value;
-	}
-	
-	/** Get a description of the Quantize.
-	 *  @return A description of the Quantize.
-	 */
-	public String getDescription() {
-	    return _description;
-	}
-	
-	private String _description;
-	private int _value;
-    }
-
 
     //////////////////////
     // static class
