@@ -3116,7 +3116,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (className != null) {
             // A class name is given.
             reference = searchForClass(className, source);
-            if (reference == null) {
+            // If no source is specified and no reference was found,
+            // search for a class definition in context.
+            if (reference == null && source == null) {
                 // Allow the class name to be local in the current context
                 // or defined in scope. Search for a class definition that
                 // matches in the current context.
