@@ -45,6 +45,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.Collections;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
@@ -105,7 +106,7 @@ not included in this director.
 @see ptolemy.domains.dde.kernel.FeedBackDelay
 @see ptolemy.domains.dde.kernel.NullToken
 */
-public class DDEDirector extends ProcessDirector {
+public class DDEDirector extends CompositeProcessDirector {
 
     /** Construct a DDEDirector in the default workspace with
      *  an empty string as its name. The director is added to
@@ -201,7 +202,6 @@ public class DDEDirector extends ProcessDirector {
      *  (by calling the protected method _handleDeadlock()) and return.
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
-     */
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
@@ -240,6 +240,7 @@ public class DDEDirector extends ProcessDirector {
 	    }
         }
     }
+     */
 
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is an instance
@@ -317,9 +318,9 @@ public class DDEDirector extends ProcessDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	_completionTime = -5.0;
-        _internalReadBlocks = 0;
-        _externalReadBlocks = 0;
-        _writeBlocks = 0;
+        // _internalReadBlocks = 0;
+        // _externalReadBlocks = 0;
+        // _writeBlocks = 0;
         _writeBlockedQs = new LinkedList();
         _pendingMutations = false;
     }
@@ -455,46 +456,209 @@ public class DDEDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
+    /**
+     */
+    protected synchronized boolean _resolveInternalDeadlock() 
+	 throws IllegalActionException {
+	if( _writeBlockedQs.size() > 0 ) {
+	    _incrementLowestCapacityPort();
+	    return true;
+	} 
+	return false;
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
+        Iterator rcvrIterator = rcvrs.iterator();
+        while( rcvrIterator.hasNext() ) {
+            DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
+            _actorUnBlocked(rcvr);
+        }
+        notifyAll();
+    }
+
     /** Increment the count of actors blocked on an internal read.
      */
     protected synchronized void _actorBlocked(DDEReceiver rcvr) {
+	/*
         if( rcvr.isReadBlocked() ) {
             if( rcvr.isConnectedToBoundary() ) {
                 _externalReadBlocks++;
             }
             _internalReadBlocks++;
         }
+	*/
         if( rcvr.isWriteBlocked() ) {
 	    if( _writeBlockedQs == null ) {
 	        _writeBlockedQs = new LinkedList();
 	    }
 	    _writeBlockedQs.addFirst(rcvr);
-            _writeBlocks++;
+            // _writeBlocks++;
         }
+	super._actorBlocked(rcvr);
+	notifyAll();
+
+	/*
 	if( _areActorsDeadlocked() ) {
 	    notifyAll();
 	}
+	*/
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorBlocked(LinkedList rcvrs) {
+	Iterator rcvrIterator = rcvrs.iterator();
+	while( rcvrIterator.hasNext() ) {
+	   DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
+	   _actorBlocked(rcvr);
+	}
+	notifyAll();
     }
 
     /** Increment the count of actors blocked on an internal read.
      */
     protected synchronized void _actorUnBlocked(DDEReceiver rcvr) {
+	/*
         if( rcvr.isReadBlocked() ) {
             if( rcvr.isConnectedToBoundary() ) {
                 _externalReadBlocks--;
             }
             _internalReadBlocks--;
         }
+	*/
         if( rcvr.isWriteBlocked() ) {
 	    if( _writeBlockedQs == null ) {
                 // FIXME: throw exception???
 	    }
             _writeBlockedQs.remove(rcvr);
+	    /*
             if( _writeBlocks > 0 ) {
                 _writeBlocks--;
             }
+	    */
+        }
+	super._actorUnBlocked(rcvr);
+	notifyAll();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  package friendly methods                 ////
+
+    /** Return the initial time table of this director.
+     * @return The initial time table of this actor.
+     */
+    Hashtable _getInitialTimeTable() {
+	if( _initialTimeTable == null ) {
+	    _initialTimeTable = new Hashtable();
+	}
+	return _initialTimeTable;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a new ProcessThread of a type compatible with this
+     *  director.
+     * @param actor The actor that the new ProcessThread will
+     *  control.
+     * @param director The director that manages the new
+     *  ProcessThread.
+     * @exception IllegalActionException If an error occurs while
+     *  instantiating the new ProcessThread.
+     */
+    protected ProcessThread _getProcessThread(Actor actor,
+	    ProcessDirector director) throws IllegalActionException {
+	return new DDEThread(actor, director);
+    }
+
+    /** Increment the port capacity's according to Tom Parks'
+     *  algorithm. Select the port with the smallest capacity
+     *  and double the capacity.
+     * @exception IllegalActionException If there is an error
+     *  while attempting to set the capacity of a DDE receiver.
+     */
+    protected void _incrementLowestCapacityPort()
+            throws IllegalActionException {
+	if( _writeBlockedQs == null ) {
+            return;
+	}
+        Collections.sort( _writeBlockedQs,
+                new RcvrCapacityComparator() );
+        DDEReceiver smallestQueue;
+        smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
+
+        if( smallestQueue.getCapacity() <= 0 ) {
+            smallestQueue.setCapacity(1);
+        } else {
+            int cap = smallestQueue.getCapacity();
+            smallestQueue.setCapacity(cap * 2);
+        }
+        _actorUnBlocked( smallestQueue );
+        synchronized( smallestQueue ) {
+            smallestQueue.notifyAll();
         }
     }
+
+    /** Mutate the model that this director controls.
+     */
+    protected void _performMutations() {
+        ;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private double _completionTime = PrioritizedTimedQueue.ETERNITY;
+    // private int _internalReadBlocks = 0;
+    // private int _externalReadBlocks = 0;
+    // private int _writeBlocks = 0;
+    // private LinkedList _extReadBlockedQs;
+    private boolean _pendingMutations = false;
+    private LinkedList _writeBlockedQs;
+    private Hashtable _initialTimeTable;
+
+    // private int _readBlocks = 0;
+    // private int _writeBlocks = 0;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class			   ////
+
+    private class RcvrCapacityComparator implements Comparator {
+
+        /**
+         * @exception ClassCastException If fst and scd are
+         *  not instances of DDEReceiver.
+         */
+        public int compare(Object fst, Object scd) {
+            DDEReceiver first = null;
+            DDEReceiver second = null;
+
+            if( fst instanceof DDEReceiver ) {
+                first = (DDEReceiver)fst;
+            }
+            if( scd instanceof DDEReceiver ) {
+                second = (DDEReceiver)scd;
+            }
+
+            if( first.getCapacity() < second.getCapacity() ) {
+                return 1;
+            } else if( first.getCapacity() > second.getCapacity() ) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+}
 
     /** Increment the count of actors blocked on an internal read.
     protected synchronized void _actorReadBlocked(DDEReceiver rcvr) {
@@ -577,301 +741,3 @@ public class DDEDirector extends ProcessDirector {
         }
     }
      */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                  package friendly methods                 ////
-
-    /** Increment the count of actors blocked on an external read.
-    synchronized void _addExternalReadBlock() {
-        _externalReadBlocks++;
-	if( _areActorsDeadlocked() ) {
-	    notifyAll();
-	}
-    }
-     */
-
-    /** Return the initial time table of this director.
-     * @return The initial time table of this actor.
-     */
-    Hashtable _getInitialTimeTable() {
-	if( _initialTimeTable == null ) {
-	    _initialTimeTable = new Hashtable();
-	}
-	return _initialTimeTable;
-    }
-
-    /** Decrement the count of actors internally blocked on a read.
-    synchronized void _removeInternalReadBlock() {
-        if( _internalReadBlocks > 0 ) {
-            _internalReadBlocks--;
-        }
-    }
-     */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Determine if all of the threads containing actors controlled
-     *  by this director have stopped due to a call of stopFire() or
-     *  because they are blocked on a read or write.
-     * @return True if all active threads containing actors controlled
-     *  by this thread have stopped; otherwise return false.
-    protected synchronized boolean _areActorsStopped() {
-	long threadsStopped = _getStoppedProcessesCount();
-	long actorsActive = _getActiveActorsCount();
-
-	// All threads are stopped due to stopFire()
-	if( threadsStopped > 0 && threadsStopped >= actorsActive ) {
-	    return true;
-	}
-
-	// Some threads are stopped due to stopFire() while others
-	// are blocked waiting to read or write data.
-	if( threadsStopped + _writeBlocks + _externalReadBlocks
-                + _internalReadBlocks >= actorsActive ) {
-	    if( threadsStopped > 0 ) {
-	        return true;
-	    }
-	}
-
-	return false;
-    }
-     */
-
-    /** Return a new ProcessThread of a type compatible with this
-     *  director.
-     * @param actor The actor that the new ProcessThread will
-     *  control.
-     * @param director The director that manages the new
-     *  ProcessThread.
-     * @exception IllegalActionException If an error occurs while
-     *  instantiating the new ProcessThread.
-     */
-    protected ProcessThread _getProcessThread(Actor actor,
-	    ProcessDirector director) throws IllegalActionException {
-	return new DDEThread(actor, director);
-    }
-
-    /** Increment the port capacity's according to Tom Parks'
-     *  algorithm. Select the port with the smallest capacity
-     *  and double the capacity.
-     * @exception IllegalActionException If there is an error
-     *  while attempting to set the capacity of a DDE receiver.
-     */
-    protected void _incrementLowestCapacityPort()
-            throws IllegalActionException {
-	if( _writeBlockedQs == null ) {
-            return;
-	}
-        Collections.sort( _writeBlockedQs,
-                new RcvrCapacityComparator() );
-        DDEReceiver smallestQueue;
-        smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
-
-        if( smallestQueue.getCapacity() <= 0 ) {
-            smallestQueue.setCapacity(1);
-        } else {
-            int cap = smallestQueue.getCapacity();
-            smallestQueue.setCapacity(cap * 2);
-        }
-        _actorUnBlocked( smallestQueue );
-        synchronized( smallestQueue ) {
-            smallestQueue.notifyAll();
-        }
-    }
-
-    /** Check to see if the actors governed by this director are
-     *  deadlocked. Return true in the affirmative and false
-     *  otherwise.
-     * @return True if the actors governed by this director are
-     *  deadlocked; return false otherwise.
-     */
-    protected synchronized boolean _areActorsDeadlocked() {
-        if( _getActiveActorsCount() == _writeBlocks +
-        	_internalReadBlocks + _externalReadBlocks ) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Check to see if the actors governed by this director are
-     *  externally read deadlocked. Return true in the affirmative
-     *  and false otherwise. This method is not synchronized so
-     *  the caller should be.
-     *  @return True if the actors governed by this director are
-     *   externally read deadlocked; return false otherwise.
-     */
-    protected boolean _isExternallyReadDeadlocked() {
-    	if( _areActorsDeadlocked() ) {
-            if( _externalReadBlocks > 0 && _writeBlocks == 0 ) {
-            	return true;
-            }
-        }
-        return false;
-    }
-
-    /** Check to see if the actors governed by this director are
-     *  externally write deadlocked. Return true in the affirmative
-     *  and false otherwise. This method is not synchronized so
-     *  the caller should be.
-     *  @return True if the actors governed by this director are
-     *   externally write deadlocked; return false otherwise.
-     */
-    protected boolean _isExternallyWriteDeadlocked() {
-    	if( _areActorsDeadlocked() ) {
-            if( _writeBlocks > 0 ) {
-            	return true;
-            }
-        }
-        return false;
-    }
-
-    /** Check to see if the actors governed by this director are
-     *  internally deadlocked on a read. Return true in the
-     *  affirmative and false otherwise. This method is not
-     *  synchronized so the caller should be
-     *  @return True if the actors governed by this director are
-     *   internally deadlocked on a read; return false otherwise.
-     */
-    protected boolean _isInternallyReadDeadlocked() {
-    	if( _areActorsDeadlocked() ) {
-            if( _writeBlocks == 0 ) {
-                if( _externalReadBlocks == 0 ) {
-                    /*
-                      System.out.println("#####Deadlock: _internalReadBlocks = "
-                      + _internalReadBlocks);
-                    */
-            	    return true;
-                }
-
-            }
-        }
-        return false;
-    }
-
-    /** Check to see if the actors governed by this director are
-     *  internally deadlocked on a write. Return true in the
-     *  affirmative and false otherwise. This method is not
-     *  synchronized so the caller should be
-     *  @return True if the actors governed by this director are
-     *   internally deadlocked on a write; return false otherwise.
-     */
-    protected boolean _isInternallyWriteDeadlocked() {
-    	if( _areActorsDeadlocked() ) {
-            if( _writeBlocks > 0 ) {
-            	return true;
-            }
-        }
-        return false;
-    }
-
-    /** Mutate the model that this director controls.
-     */
-    protected void _performMutations() {
-        ;
-    }
-
-    /** Return true indicating that this actor is allowed to continue
-     *  execution. Note that transferInputs() modifies its behavior
-     *  based on the existence of an external read deadlock.
-     *  <P>
-     *  NOTE: This method is preliminary and will likely change.
-     *  @return True.
-     */
-    protected boolean _resolveExternalReadDeadlock() throws
-    	    IllegalActionException {
-        if( _pendingMutations ) {
-        }
-        return true;
-    }
-
-    /** Apply an algorithm for resolving an external write deadlock
-     *  and then return true indicating that this actor is allowed
-     *  to continue execution.
-     * @return True to indicate that execution can proceed.
-     */
-    protected boolean _resolveExternalWriteDeadlock() throws
-    	    IllegalActionException {
-
-        _incrementLowestCapacityPort();
-
-        if( _pendingMutations ) {
-        }
-        return true;
-    }
-
-    /** Return false indicating that this director can not resolve
-     *  internal read deadlocks.
-     *  <P>
-     *  NOTE: This method is preliminary and will likely change.
-     * @return False.
-     */
-    protected boolean _resolveInternalReadDeadlock() throws
-    	    IllegalActionException {
-        if( _pendingMutations ) {
-        }
-        return false;
-    }
-
-    /** Apply an algorithm for resolving an internal write deadlock
-     *  and then return true indicating that this actor is allowed
-     *  to continue execution.
-     * @return True to indicate that execution can proceed.
-     */
-    protected boolean _resolveInternalWriteDeadlock() throws
-    	    IllegalActionException {
-
-        _incrementLowestCapacityPort();
-
-        if( _pendingMutations ) {
-        }
-        return true;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private double _completionTime = PrioritizedTimedQueue.ETERNITY;
-    private int _internalReadBlocks = 0;
-    private int _externalReadBlocks = 0;
-    private int _writeBlocks = 0;
-    private boolean _pendingMutations = false;
-    private LinkedList _writeBlockedQs;
-    private Hashtable _initialTimeTable;
-    private LinkedList _extReadBlockedQs;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class			   ////
-
-    private class RcvrCapacityComparator implements Comparator {
-
-        /**
-         * @exception ClassCastException If fst and scd are
-         *  not instances of DDEReceiver.
-         */
-        public int compare(Object fst, Object scd) {
-            DDEReceiver first = null;
-            DDEReceiver second = null;
-
-            if( fst instanceof DDEReceiver ) {
-                first = (DDEReceiver)fst;
-            }
-            if( scd instanceof DDEReceiver ) {
-                second = (DDEReceiver)scd;
-            }
-
-            if( first.getCapacity() < second.getCapacity() ) {
-                return 1;
-            } else if( first.getCapacity() > second.getCapacity() ) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    }
-}

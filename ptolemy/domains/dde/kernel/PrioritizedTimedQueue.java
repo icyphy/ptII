@@ -253,7 +253,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 				  "DDE domain.");
     }
 
-
     /** Put a token on the queue with the specified time stamp and set
      *  the last time value to be equal to this time stamp. If the
      *  queue is empty immediately prior to putting the token on
@@ -269,16 +268,35 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
 	    NamedObj actor = (NamedObj)_container.getContainer();
-	    // NamedObj actor = (NamedObj)getContainer().getContainer();
-	    throw new IllegalArgumentException(actor.getName() +
-		    " - Attempt to set current time in the past.");
+	    throw new IllegalArgumentException(actor.getName() + 
+		    " - Attempt to set current time to the past; time = " 
+                    + time + ". The _lastTime was " + _lastTime);
 	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
 	    NamedObj actor = (NamedObj)_container.getContainer();
-	    // NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time to a" +
-		    " a negative value.");
+		    " a negative value = " + time);
 	}
+
+	/*
+	String containerName = actor.getName();
+	Thread thread = Thread.currentThread();
+	String invokerName = "";
+	if( thread instanceof DDEThread ) {
+	    DDEThread ddeThread = (DDEThread)thread;
+	    invokerName = ((Nameable)ddeThread.getActor()).getName();
+	}
+
+	if( containerName.endsWith("2") || invokerName.endsWith("2") ) {
+	if( token instanceof NullToken ) {
+	    System.out.println(invokerName + " put NullToken into the receiver of " 
+                    + containerName + " at " + time + ". Last time is " + _lastTime);
+	} else {
+	    System.out.println(invokerName + " put RealToken into the receiver of " 
+                    + containerName + " at " + time + ". Last time is " + _lastTime);
+	}
+	}
+	*/
 
 	double _lastTimeCache = _lastTime;
 	double _rcvrTimeCache = _rcvrTime;
