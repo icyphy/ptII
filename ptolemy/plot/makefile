@@ -50,7 +50,7 @@ JSRCS = \
 
 EXTRA_SRCS = $(JSRCS) \
 	BarGraph.html Live.html Marks.html Sinusoids.html index.html \
-	bargraph.plt
+	data.plt bargraph.plt
 
 MISC_FILES = doc test
 
