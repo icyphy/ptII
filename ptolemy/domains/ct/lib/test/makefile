@@ -64,7 +64,8 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # want make checkjunk to barf on them.
 MISC_FILES =	\
 	auto \
-	alljtests.tcl
+	alljtests.tcl \
+	sampling.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
