@@ -231,7 +231,6 @@ public class CSPReceiver implements ProcessReceiver {
      *  TerminateProcessException which will cause it to finish.
      */
     public synchronized void setFinish() {
-        System.out.println(getContainer().getName() + ": receiver finished.");
         _simulationFinished = true;
         _simulationPaused = false; // needed?
     }
