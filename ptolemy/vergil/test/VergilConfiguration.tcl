@@ -47,22 +47,97 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-# NOTE:  All of the following tests use this director,
-# pretty much as a dummy.
-set director [java::new ptolemy.actor.Director]
-set manager [java::new ptolemy.actor.Manager]
+
+# Return memory statistics
+proc memoryStatistics {} {
+    # Ptolemy 1.2 and later has this method
+    #puts "$prefix [java::call ptolemy.actor.Manager timeAndMemory -1]"
+
+    # Ptolemy 1.0.1 does not have Manager.timeAndMemory, so we use this:
+    set runtime [java::call Runtime getRuntime]
+    set totalMemory [expr {[$runtime totalMemory] /1024}]
+    set freeMemory [expr {[$runtime freeMemory] /1024}]
+    set percent [expr { round ( (double($freeMemory) / double($totalMemory)) * 100 )}]
+    return "Memory: ${totalMemory}K Free: ${freeMemory}K ${percent}%"
+
+}
+
+# Print memory statistics, call gc, then print memory statistics
+proc memoryGCmemory {} {
+    puts "Before gc: [memoryStatistics]"
+    java::call System gc    
+    puts "After gc: [memoryStatistics]"
+}
+
+# Expand a configuration
+proc expandConfiguration {configuration} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set loader [[$parser getClass] getClassLoader]
+    
+    set URL [$loader getResource $configuration]
+    puts "URL of configuration being expanded is\n [$URL toString]"
+    set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
+    # force everything to get expanded
+    set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
+    set returnValue [catch {$configuration description} result]
+
+    memoryGCmemory
+
+    # If the test fails, then return result, otherwise, return 0
+    if {$returnValue != 0} {
+	return [list $result]
+    } else {
+	return [list $returnValue]
+    }
+
+}
 
 ######################################################################
 ####
 #
-test VergilConfiguration-1.1 {make sure that everything inside the configuration can be expanded} {
+test VergilConfiguration-1.1 {make sure that everything inside the DSP configuration can be expanded} {
+    expandConfiguration "ptolemy/configs/vergilConfigurationDSP.xml"
+} {0}
+
+######################################################################
+####
+#
+test VergilConfiguration-1.2 {make sure that everything inside the Ptiny configuration can be expanded} {
+    expandConfiguration "ptolemy/configs/vergilConfigurationPtiny.xml"
+} {0}
+
+######################################################################
+####
+#
+test VergilConfiguration-1.3 {make sure that everything inside the Full configuration (with the matlab actors removed) can be expanded} {
+    # Remove the matlab lines from vergilConfiguration.xml
+
     set parser [java::new ptolemy.moml.MoMLParser]
     set loader [[$parser getClass] getClassLoader]
-    
-    set URL [$loader getResource ptolemy/configs/vergilConfiguration.xml]
-    set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
-    # force everything to get expanded
-    set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
-    catch {$configuration description} result
-    list $result
+
+    set URL [$loader getResource "ptolemy/configs/vergilConfiguration.xml"]
+    #puts "URL of vergilConfiguration.xml: [$URL toString]"
+    set inFile [string range [$URL getPath] 1 end]
+    #puts "file name vergilConfiguration.xml: $inFile"
+
+    set infd [open $inFile]
+    set outfd [open vergilConfigurationNoMatlab.xml "w"]
+    while {![eof $infd]} {
+	set linein [gets $infd]
+	regsub -all {.*matlab.*} $linein {} lineout
+	puts $outfd $lineout
+    }
+    close $infd
+    close $outfd
+
+    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlab.xml"
 } {0}
+
+
+######################################################################
+####
+#
+#test VergilConfiguration-1.4 {make sure that everything inside the Full configuration can be expanded} {
+#    expandConfiguration "ptolemy/configs/vergilConfiguration.xml"
+#    # This is a known Failure because of matlab problems
+#} {0} {Known Failure}
