@@ -63,6 +63,17 @@ may impose further constraints by overriding newPort(), _addPort(),
 newRelation(), _addRelation(), and _addEntity().
 <p>
 Derived classes may constrain the container by overriding _checkContainer().
+<P>
+When exporting MoML, instances of this class identify their class name
+as TypedCompositeActor. If a derived class does not change this, then it
+too will be identified as a TypedCompositeActor. To change this in a 
+derived class, put the following line in the constructor
+<pre>
+getMoMLInfo().className = "<i>full class name</i>";
+</pre>
+If you do this, you will probably also want to override _exportMoMLContents()
+to not generate a description of the contents of the composite, since
+they will be already defined in the Java class.
 
 @author Yuhong Xiong
 @version $Id$
@@ -84,6 +95,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      */
     public TypedCompositeActor() {
         super();
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is TypedCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as TypedCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
     }
 
     /** Construct a TypedCompositeActor in the specified workspace with
@@ -97,6 +117,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      */
     public TypedCompositeActor(Workspace workspace) {
 	super(workspace);
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is TypedCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as TypedCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
     }
 
     /** Construct a TypedCompositeActor with a name and a container.
@@ -118,6 +147,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     public TypedCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is TypedCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as TypedCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be TypedCompositeActor.
+        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
     }
 
     ///////////////////////////////////////////////////////////////////
