@@ -187,12 +187,15 @@ public class KeyReader extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == alias) {
+            _updateKeyNeeded = true;
             _alias = alias.getExpression();
         } else if (attribute == fileOrURL) {
+            _updateKeyNeeded = true;
             // Would it be worth checking to see if the URL exists and
             // is readable?
             _url = fileOrURL.asURL();
         } else if (attribute == getPublicKey) {
+            _updateKeyNeeded = true;
             _getPublicKey =
                 ((BooleanToken)getPublicKey.getToken()).booleanValue();
         } else {
@@ -205,67 +208,72 @@ public class KeyReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        _updateKey();
         output.broadcast(new ObjectToken(_key));
     }
 
-    /** Open the KeyStore, look up the Certificate and the PublicKey.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If necessary, update _key by using the values of the 
+     *  alias, fileOrURL and getPublicKey parameters. 
      *  @exception IllegalActionException If the parent class throws it
      *  or if there is a problem with the cryptographic configuration.
      */
-    public void initialize() throws IllegalActionException {
-        attributeChanged(fileOrURL);
-
-        InputStream keyStoreStream;
-        try {
-            // FIXME: this will not work if the input is stdin.
-            // FIXME: FileParameter needs to have a way of getting the
-            // unbuffered stream.
-            keyStoreStream = _url.openStream();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to open " + _url);
-        }
-
-        try {
-            _keyStore.load(keyStoreStream,
-                    storePassword.getExpression().toCharArray());
-            // Add all the aliases as possible choices.
-            for (Enumeration aliases = _keyStore.aliases();
-                 aliases.hasMoreElements() ;) {
-                String aliasName = (String)aliases.nextElement();
-                alias.addChoice(aliasName);
+    private void _updateKey() throws IllegalActionException {
+        if (_updateKeyNeeded) {
+            InputStream keyStoreStream;
+            try {
+                // FIXME: this will not work if the input is stdin.
+                // FIXME: FileParameter needs to have a way of getting the
+                // unbuffered stream.
+                keyStoreStream = _url.openStream();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to open " + _url);
             }
 
-            Certificate certificate = _keyStore.getCertificate(_alias);
-            if (certificate == null) {
-                throw new KeyStoreException("Failed to get certificate "
-                        + "for alias '"
-                        + _alias + "' from  keystore '" + _url + "'");
+            try {
+                _keyStore.load(keyStoreStream,
+                        storePassword.getExpression().toCharArray());
+                // Add all the aliases as possible choices.
+                for (Enumeration aliases = _keyStore.aliases();
+                     aliases.hasMoreElements() ;) {
+                    String aliasName = (String)aliases.nextElement();
+                    alias.addChoice(aliasName);
+                }
+
+                Certificate certificate = _keyStore.getCertificate(_alias);
+                if (certificate == null) {
+                    throw new KeyStoreException("Failed to get certificate "
+                            + "for alias '"
+                            + _alias + "' from  keystore '" + _url + "'");
+                }
+
+                PublicKey publicKey = certificate.getPublicKey();
+                // FIXME: The testsuite needs to test this with an invalid cert.
+                certificate.verify(publicKey);
+
+                if (certificate instanceof X509Certificate) {
+                    signatureAlgorithm.setExpression(
+                            ((X509Certificate)certificate)
+                            .getSigAlgName());
+                } else {
+                    signatureAlgorithm.setExpression(
+                            "Unknown, certificate was not a X509 cert.");
+                }
+
+                if (_getPublicKey) {
+                    _key = publicKey;
+                } else {
+                    _key = _keyStore.getKey(_alias,
+                            keyPassword.getExpression().toCharArray());
+                }
+                _updateKeyNeeded = false;
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to get key store aliases or certificate");
             }
-
-            PublicKey publicKey = certificate.getPublicKey();
-            // FIXME: The testsuite needs to test this with an invalid cert.
-            certificate.verify(publicKey);
-
-            if (certificate instanceof X509Certificate) {
-                signatureAlgorithm.setExpression(
-                        ((X509Certificate)certificate)
-                        .getSigAlgName());
-            } else {
-                signatureAlgorithm.setExpression(
-                        "Unknown, certificate was not a X509 cert.");
-            }
-
-            if (_getPublicKey) {
-                _key = publicKey;
-            } else {
-                _key = _keyStore.getKey(_alias,
-                        keyPassword.getExpression().toCharArray());
-            }
-
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to get key store aliases or certificate");
         }
     }
 
@@ -285,6 +293,11 @@ public class KeyReader extends Source {
     // The PublicKey located in the Certificate.
     private java.security.Key _key;
 
+    // Set to true if one of the parameters changed and we need to
+    // call _updateKey().
+    private boolean _updateKeyNeeded = true;
+
     // The URL of the keystore file.
     private URL _url;
+
 }
