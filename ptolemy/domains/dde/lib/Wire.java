@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.lib;
@@ -98,7 +98,8 @@ public class Wire extends TypedAtomicActor {
 			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
 			    Thread thr = Thread.currentThread();
 			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
+				TimeKeeper kpr =
+                                    ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());
 			    }
 			}
@@ -123,5 +124,4 @@ public class Wire extends TypedAtomicActor {
     public TypedIOPort output;
     public TypedIOPort input;
     private boolean _continueIterations = true;
-
 }
