@@ -36,7 +36,10 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,10 +147,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	    LinkedList result = new LinkedList();
 
-	    Enumeration e = deepGetEntities();
-	    while (e.hasMoreElements()) {
+	    Iterator entities = deepEntityList().iterator();
+	    while (entities.hasNext()) {
 	        // check types on contained actors
-	        TypedActor actor = (TypedActor)e.nextElement();
+	        TypedActor actor = (TypedActor)entities.next();
 		if (actor instanceof TypedCompositeActor) {
 		    result.appendElements(
                             ((TypedCompositeActor)actor).checkTypes());
@@ -155,9 +158,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	        // type check from all the ports on the contained actor
 	        // to the ports that the actor can send data to.
-		Enumeration ports = ((Entity)actor).getPorts();
-		while (ports.hasMoreElements()) {
-		    TypedIOPort srcport = (TypedIOPort)ports.nextElement();
+		Iterator ports = ((Entity)actor).portList().iterator();
+		while (ports.hasNext()) {
+		    TypedIOPort srcport = (TypedIOPort)ports.next();
 		    Receiver[][] receivers = srcport.getRemoteReceivers();
 
 		    Enumeration destPorts = _receiverToPort(receivers);
@@ -168,9 +171,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	    // also need to check connection from the input ports on
 	    // this composite actor to input ports of contained actors.
-	    Enumeration boundaryPorts = getPorts();
-	    while (boundaryPorts.hasMoreElements()) {
-		TypedIOPort srcport = (TypedIOPort)boundaryPorts.nextElement();
+	    Iterator boundaryPorts = portList().iterator();
+	    while (boundaryPorts.hasNext()) {
+		TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
 		Receiver[][] receivers = srcport.deepGetReceivers();
 		Enumeration destPorts = _receiverToPort(receivers);
 	    	result.appendElements(_checkTypesFromTo(srcport, destPorts));
@@ -292,17 +295,17 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             }
 
 	    LinkedList result = new LinkedList();
-	    Enumeration e = deepGetEntities();
-	    while (e.hasMoreElements()) {
+	    Iterator entities = deepEntityList().iterator();
+	    while (entities.hasNext()) {
 	        // collect type constraints from contained actors
-	        TypedActor actor = (TypedActor)e.nextElement();
+	        TypedActor actor = (TypedActor)entities.next();
 	        result.appendElements(actor.typeConstraints());
 
 	        // collect constraints on all the ports in the contained
 		// actor to the ports that the actor can send data to.
-		Enumeration ports = ((Entity)actor).getPorts();
-		while (ports.hasMoreElements()) {
-		    TypedIOPort srcport = (TypedIOPort)ports.nextElement();
+		Iterator ports = ((Entity)actor).portList().iterator();
+		while (ports.hasNext()) {
+		    TypedIOPort srcport = (TypedIOPort)ports.next();
                     Receiver[][] receivers = srcport.getRemoteReceivers();
 
                     Enumeration destPorts = _receiverToPort(receivers);
@@ -313,9 +316,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	    // also need to check connection from the input ports on
             // this composite actor to input ports of contained actors.
-	    Enumeration boundaryPorts = getPorts();
-            while (boundaryPorts.hasMoreElements()) {
-                TypedIOPort srcport = (TypedIOPort)boundaryPorts.nextElement();
+	    Iterator boundaryPorts = portList().iterator();
+            while (boundaryPorts.hasNext()) {
+                TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
                 Receiver[][] receivers = srcport.deepGetReceivers();
                 Enumeration destPorts = _receiverToPort(receivers);
                 result.appendElements(
@@ -323,15 +326,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             }
 
 	    // collect constraints from contained Typeables
-	    Enumeration ports = getPorts();
-	    while (ports.hasMoreElements()) {
-		Typeable port = (Typeable)ports.nextElement();
+	    Iterator ports = portList().iterator();
+	    while (ports.hasNext()) {
+		Typeable port = (Typeable)ports.next();
 		result.appendElements(port.typeConstraints());
 	    }
 
-	    Enumeration attrib = getAttributes();
-	    while (attrib.hasMoreElements()) {
-		Attribute att = (Attribute)attrib.nextElement();
+	    Iterator attributes = attributeList().iterator();
+	    while (attributes.hasNext()) {
+		Attribute att = (Attribute)attributes.next();
 		if (att instanceof Typeable) {
 		    result.appendElements(((Typeable)att).typeConstraints());
 		}
@@ -432,7 +435,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // group of destination ports.  Return an Enumeration of
     // TypedIOPorts that have type conflicts.
     private Enumeration _checkTypesFromTo(TypedIOPort srcport,
-            Enumeration destPorts) {
+            			          Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
 	boolean isUndeclared = srcport.getTypeTerm().isSettable();
@@ -447,7 +450,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    	    // both source/destination ports are declared, check type
 	    	    Type destDeclared = destport.getType();
 		    int compare = TypeLattice.compare(srcDeclared,
-                            destDeclared);
+                            			      destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
 		    	result.insertLast(srcport);
 		    	result.insertLast(destport);
@@ -477,7 +480,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // specified source port to all the ports in a group of destination
     // ports.
     private Enumeration _typeConstraintsFromTo(TypedIOPort srcport,
-            Enumeration destPorts) {
+            				       Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
 	boolean srcUndeclared = srcport.getTypeTerm().isSettable();

@@ -35,7 +35,10 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
@@ -239,7 +242,7 @@ public class Scheduler extends NamedObj {
         StaticSchedulingDirector dir =
             (StaticSchedulingDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
-        return ca.deepGetEntities();
+        return Collections.enumeration(ca.deepEntityList());
     }
 
     ///////////////////////////////////////////////////////////////////

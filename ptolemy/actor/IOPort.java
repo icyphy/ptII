@@ -35,6 +35,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 
+import java.util.Iterator;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import collections.LinkedList;
@@ -300,9 +302,9 @@ public class IOPort extends ComponentPort {
 	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
 
-	    Enumeration allPorts = deepConnectedPorts();
-            while(allPorts.hasMoreElements()) {
-		IOPort port = (IOPort)allPorts.nextElement();
+	    Iterator ports = deepConnectedPortList().iterator();
+            while(ports.hasNext()) {
+		IOPort port = (IOPort)ports.next();
 		if (port.isInput()) {
 		    result.insertLast(port);
 		}
@@ -327,9 +329,9 @@ public class IOPort extends ComponentPort {
 	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
 
-	    for (Enumeration allPorts = deepConnectedPorts();
-                 allPorts.hasMoreElements(); ) {
-		IOPort port = (IOPort)allPorts.nextElement();
+	    Iterator ports = deepConnectedPortList().iterator();
+	    while (ports.hasNext()) {
+		IOPort port = (IOPort)ports.next();
 		if (port.isOutput()) {
 		    result.insertLast(port);
 		}
@@ -889,9 +891,9 @@ public class IOPort extends ComponentPort {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the inside
                 // is an input.
-                Enumeration ports = deepInsidePorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort) ports.nextElement();
+                Iterator ports = deepInsidePortList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isInput()) _isinput = true;
                 }
@@ -930,9 +932,9 @@ public class IOPort extends ComponentPort {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the
                 // inside is an output.
-                Enumeration ports = deepInsidePorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort) ports.nextElement();
+                Iterator ports = deepInsidePortList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isOutput()) _isoutput = true;
                 }

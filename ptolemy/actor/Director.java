@@ -36,6 +36,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 
+import java.util.Iterator;
+
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -166,9 +168,9 @@ public class Director extends NamedObj implements Executable {
         // probably be allowed to occur.
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 if(actor.prefire()) {
                     actor.fire();
                     actor.postfire();
@@ -249,9 +251,9 @@ public class Director extends NamedObj implements Executable {
     public void initialize() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking initialize(): ",
                         ((NamedObj)actor).getFullName());
                 actor.initialize();
@@ -330,9 +332,9 @@ public class Director extends NamedObj implements Executable {
         }
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 // find out which of those actors has a local director.
                 if (actor instanceof CompositeActor &&
                         ((CompositeActor)actor).isOpaque()) {
@@ -423,9 +425,9 @@ public class Director extends NamedObj implements Executable {
                     containersContainer.getDirector().getCurrentTime();
                 _currentTime = time;
 	    }
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking preinitialize(): ",
                 ((NamedObj)actor).getFullName());
                 actor.preinitialize();
@@ -489,9 +491,9 @@ public class Director extends NamedObj implements Executable {
     public void stopFire() {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 actor.stopFire();
             }
         }
@@ -534,9 +536,9 @@ public class Director extends NamedObj implements Executable {
     public void terminate() {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 actor.terminate();
             }
         }
@@ -644,9 +646,9 @@ public class Director extends NamedObj implements Executable {
     public void wrapup() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
                 actor.wrapup();
             }
         }

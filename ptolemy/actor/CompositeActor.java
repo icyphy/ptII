@@ -33,6 +33,8 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+import java.util.Iterator;
+
 import java.util.Enumeration;
 import java.io.IOException;
 import java.io.Writer;
@@ -354,9 +356,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if(_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
                 LinkedList inports = new LinkedList();
-                Enumeration ports = getPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
                         inports.insertLast(p);
                     }
@@ -468,9 +470,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if(_outputPortsVersion != _workspace.getVersion()) {
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = getPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
                         _cachedOutputPorts.insertLast(p);
                     }
@@ -867,9 +869,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            IOPort oneport = (IOPort)ports.nextElement();
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            IOPort oneport = (IOPort)ports.next();
             oneport.createReceivers();
         }
     }

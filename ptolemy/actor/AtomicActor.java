@@ -33,6 +33,8 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+import java.util.Iterator;
+
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -189,9 +191,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 _workspace.getReadAccess();
                 // Update the cache.
                 LinkedList inports = new LinkedList();
-                Enumeration ports = getPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
                         inports.insertLast(p);
                     }
@@ -257,9 +259,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
             try {
                 _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = getPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
+                Iterator ports = portList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
                         _cachedOutputPorts.insertLast(p);
                     }
