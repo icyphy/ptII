@@ -1009,7 +1009,7 @@ test ASTReflect-5.1 {check out methods} {
   {ThrowsList  {}} 
   {Body {AbsentTreeNode {leaf}}} 
   {ReturnType {VoidTypeNode {leaf}}} 
-}   }   }   }
+}}}}
 } {1}
 
 ######################################################################
@@ -1048,8 +1048,8 @@ test ASTReflect-6.1 {check out Anonymous classes} {
 test ASTReflect-7.1 {check out Array Length} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ArrayLength"]
     set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    lcompare [listToStrings $astList] {
-{ {MethodDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {MethodDeclNode { 
   {Modifiers 1} 
   {Name {NameNode { 
          {Ident ack} 
