@@ -29,7 +29,7 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFormatter;
@@ -220,7 +220,7 @@ public class PlotTableauFrame extends TableauFrame {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            String cwd = GUIStringUtilities.getProperty("user.dir");
+            String cwd = StringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }

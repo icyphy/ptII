@@ -35,7 +35,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.gui.MessageHandler;
 
 import java.io.BufferedReader;
@@ -266,7 +266,7 @@ public class Copernicus {
 	    return 0;
 	}
 
-	String [] commands = GUIStringUtilities.tokenizeForExec(command);
+	String [] commands = StringUtilities.tokenizeForExec(command);
 
 	if (commands.length == 0) {
 	    System.out.println("Warning, command was parsed to 0 tokens, "

@@ -42,7 +42,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
@@ -310,7 +310,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 	    // Get user.dir and create a ptII/cg subdir if necessary
             String userDir = 
-		GUIStringUtilities.getProperty("user.dir");
+		StringUtilities.getProperty("user.dir");
 	    if (userDir != null) {
 		ptIIUserDirectoryFile =
 		    new File(userDir + "/ptII/cg");

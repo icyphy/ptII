@@ -489,7 +489,7 @@ public abstract class Top extends JFrame {
             // This will throw a security exception in an applet.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String cwd = GUIStringUtilities.getProperty("user.dir");
+            String cwd = StringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
@@ -615,7 +615,7 @@ public abstract class Top extends JFrame {
             // This will fail with a security exception in applets.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String cwd = GUIStringUtilities.getProperty("user.dir");
+            String cwd = StringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
@@ -643,7 +643,7 @@ public abstract class Top extends JFrame {
             }
 	    // Truncate the name so that dialogs under Web Start on the Mac
 	    // work better.
-            setTitle(GUIStringUtilities.abbreviate(_getName()));
+            setTitle(StringUtilities.abbreviate(_getName()));
             _directory = fileDialog.getCurrentDirectory();
             return _save();
         }
@@ -728,7 +728,7 @@ public abstract class Top extends JFrame {
 
 
         String query = "Save changes to "
-            + GUIStringUtilities.split(_getName()) + "?";
+            + StringUtilities.split(_getName()) + "?";
 
 
         // Show the MODAL dialog

@@ -45,7 +45,7 @@ import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.actor.gui.JNLPUtilities;
 
 import soot.*;

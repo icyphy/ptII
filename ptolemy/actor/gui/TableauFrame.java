@@ -29,7 +29,7 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
@@ -527,7 +527,7 @@ public class TableauFrame extends Top {
             // FIXME: This will probably fail with a security exception in
             // applets.
             String currentWorkingDirectory =
-                GUIStringUtilities.getProperty("user.dir");
+                StringUtilities.getProperty("user.dir");
             if (currentWorkingDirectory != null) {
                 fileDialog.setCurrentDirectory(
                         new File(currentWorkingDirectory));

@@ -39,7 +39,7 @@ import ptolemy.actor.lib.gui.Display;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.*;
 import ptolemy.domains.gr.lib.*;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 
 import java.util.Enumeration;
 
@@ -98,7 +98,7 @@ public class VrmlLoad extends GRPickActor {
 
     	VrmlLoader loader = new VrmlLoader();
     	URL loadUrl = null;
-    	String locString = GUIStringUtilities.getProperty("user.dir") + "\\"+fileName;
+    	String locString = StringUtilities.getProperty("user.dir") + "\\"+fileName;
         System.out.println("location:-->  "+locString);
 
     	Scene scene = null;

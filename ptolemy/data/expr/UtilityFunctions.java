@@ -34,7 +34,7 @@ package ptolemy.data.expr;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
@@ -130,7 +130,7 @@ public class UtilityFunctions {
     public static String findFile(String name) {
         File file = new File(name);
         if (!file.exists()) {
-            String curDir = GUIStringUtilities.getProperty("user.dir");
+            String curDir = StringUtilities.getProperty("user.dir");
             file = new File(curDir, name);
         }
         if (!file.exists()) {
@@ -191,11 +191,11 @@ public class UtilityFunctions {
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
      *  @deprecated Use
-     *  {@link ptolemy.gui.GUIStringUtilities.getProperty(String)}
+     *  {@link ptolemy.util.StringUtilities.getProperty(String)}
      *  instead
      */ 
     public static String getProperty(String propertyName) {
-        return GUIStringUtilities.getProperty(propertyName);
+        return StringUtilities.getProperty(propertyName);
     }
 
     /** FIXME. Placeholder for a function that will return a model.
@@ -222,7 +222,7 @@ public class UtilityFunctions {
      *  @see ptolemy.kernel.util.StringUtilities(String)
      */
     public static StringToken property(String propertyName) {
-        return new StringToken(GUIStringUtilities.getProperty(propertyName));
+        return new StringToken(StringUtilities.getProperty(propertyName));
     }
 
     /** Get the string text contained in the specified file. For

@@ -66,7 +66,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.gui.CancelException;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
@@ -1067,7 +1067,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		// typically an absurd directory inside the O/S installation.
 		// So we use the current directory instead.
 		// FIXME: This will throw a security exception in an applet?
-		String cwd = GUIStringUtilities.getProperty("user.dir");
+		String cwd = StringUtilities.getProperty("user.dir");
 		if (cwd != null) {
 		    chooser.setCurrentDirectory(new File(cwd));
 		}

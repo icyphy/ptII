@@ -32,7 +32,7 @@ package ptolemy.actor.gui;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -179,7 +179,7 @@ public class Tableau extends CompositeEntity {
         if (_title == null) {
             Effigy effigy = (Effigy)getContainer();
 	    // Abbreviate the title to 80 chars for use on the Mac.
-            return GUIStringUtilities.abbreviate(
+            return StringUtilities.abbreviate(
                     effigy.identifier.getExpression());
         } else {
             return _title;
@@ -312,7 +312,7 @@ public class Tableau extends CompositeEntity {
      *  @param title The title to put on the window.
      */
     public void setTitle(String title) {
-        _title = GUIStringUtilities.abbreviate(title);
+        _title = StringUtilities.abbreviate(title);
         if (_frame != null) {
             _frame.setTitle(getTitle());
         }

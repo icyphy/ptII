@@ -251,7 +251,7 @@ public class JTextAreaExec extends JPanel {
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
 		    final String [] commandTokens =
-                        GUIStringUtilities
+                        StringUtilities
                         .tokenizeForExec((String)commands.next());
                     
                     appendJTextArea("About to execute:\n");
