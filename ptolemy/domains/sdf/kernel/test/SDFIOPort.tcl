@@ -72,7 +72,7 @@ test SDFIOPort-1.2 {Construct Ports} {
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $e1 P1]
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $e1 P2]
+    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $e1 P2 true false]
     list [$p1 getFullName] [$p2 getFullName]
 } {..E1.P1 ..E1.P2}
 
