@@ -790,9 +790,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
         // actor/lib/test/auto/ElectronicUnitBase1.xml and others were failing
         // here, so now we check for null.
-        if (object.attributeList() == null) { 
-            System.out.println("ShallowModelTransformer: object.attributeList "
-                    + " == null?, object: " + object);
+        if (object == null || object.attributeList() == null) { 
+            System.out.println("ShallowModelTransformer: Warning: "
+                    + "object == null, or object.attributeList() == null?, "
+                    + "object: " + object);"
         } else { 
             for (Iterator attributes = object.attributeList().iterator();
                  attributes.hasNext();) {
