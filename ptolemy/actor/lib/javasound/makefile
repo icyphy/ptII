@@ -49,8 +49,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AudioSink.java \
-	AudioSource.java \
 	AudioReader.java \
 	AudioWriter.java \
 	AudioCapture.java \
