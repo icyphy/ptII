@@ -431,7 +431,7 @@ public class FixMatrixToken extends MatrixToken {
                 //       + scalar.getPrecision());
                 result[i][j] = result[i][j].multiply(scalar);
                 //   System.out.println("result = " + result[i][j] + ", "
-                /        + result[i][j].getPrecision());
+                //        + result[i][j].getPrecision());
         }
     }
     return new FixMatrixToken(result);
