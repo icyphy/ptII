@@ -91,7 +91,7 @@ public class LiveSoundActor extends TypedAtomicActor
         channels.setTypeEquals(BaseType.INT);
  
         transferSize = new Parameter(this, "transferSize");
-        transferSize.setExpression("128");
+        transferSize.setExpression("1");
         transferSize.setTypeEquals(BaseType.INT);
 
         // Add this class as a listener of live sound change
