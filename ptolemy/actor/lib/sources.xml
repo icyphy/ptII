@@ -43,7 +43,7 @@
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
-<entity name="SketchedSource" class="ptolemy.actor.lib.SketchedSource">
+<entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
 <doc>Create values from a sketch on the screen</doc>
 </entity>
 
