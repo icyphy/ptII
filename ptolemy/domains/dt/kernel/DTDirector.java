@@ -291,9 +291,9 @@ public class DTDirector extends SDFDirector {
 		            } else {
 		                _insideDirector = insideDirector;
    		                _pseudoTimeEnabled = true;
-		                System.out.println("before fire");
+		                debug.println("before fire");
 		                actor.fire();
-		                System.out.println("after fire");
+		                debug.println("after fire");
 		                _pseudoTimeEnabled = false;               
 		            }
 		            
