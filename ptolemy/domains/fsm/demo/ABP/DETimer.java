@@ -53,7 +53,7 @@ public class DETimer extends DEActor {
      *   actor with this name.
      */
     public DETimer(TypedCompositeActor container, String name)
-                throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         expired = new DEIOPort(this, "expired", false, true);
         expired.setTypeEquals(Token.class);
@@ -83,15 +83,15 @@ public class DETimer extends DEActor {
                 _expireTime = -1.0;
             }
 
-//System.out.println("Reset DETimer " + this.getFullName() + 
-//        " to expire at " + _expireTime);
+            //System.out.println("Reset DETimer " + this.getFullName() + 
+            //        " to expire at " + _expireTime);
 
         } else if (Math.abs(getCurrentTime() - _expireTime) < 1e-14) {
             // timer expires
             expired.broadcast(_outToken);
 
-//System.out.println("DETimer " + this.getFullName() + " expires at "
-//        + getCurrentTime());
+            //System.out.println("DETimer " + this.getFullName() + " expires at "
+            //        + getCurrentTime());
 
         }
 

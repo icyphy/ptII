@@ -57,8 +57,8 @@ public class DEChannel extends DEActor {
      *   actor with this name.
      */
     public DEChannel(TypedCompositeActor container, String name,
-                double dropRate, double maxDelay, double minDelay)
-                throws NameDuplicationException, IllegalActionException {
+            double dropRate, double maxDelay, double minDelay)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
         output.setTypeEquals(IntToken.class);
@@ -98,8 +98,8 @@ public class DEChannel extends DEActor {
                 }
             }
 
-//System.out.println("DEChannel " + this.getFullName() + 
-//        " get input message at " + getCurrentTime());
+            //System.out.println("DEChannel " + this.getFullName() + 
+            //        " get input message at " + getCurrentTime());
 
         }
 
@@ -108,8 +108,8 @@ public class DEChannel extends DEActor {
             IntToken msg = (IntToken)_msgs.take();
             output.broadcast(msg);
 
-//System.out.println("DEChannel " + this.getFullName() + 
-//       " sends message at " + getCurrentTime());
+            //System.out.println("DEChannel " + this.getFullName() + 
+            //       " sends message at " + getCurrentTime());
 
             if (_msgs.size() > 0) {
                 // schedule output time
