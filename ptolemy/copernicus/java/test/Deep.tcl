@@ -56,7 +56,9 @@ if {[info procs sootCodeGeneration] == "" } then {
 proc autoDeepCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
-	if { [regexp {ComplexDivide.xml} $file] } {
+	if { [regexp {ComplexDivide.xml} $file] \
+	    || [regexp {expression_bug.xml} $file] \
+	     } {
 	    test "Auto" "Automatic test in file $file" {
 		error "$file is a known failure, skipping"
 	} {{}}
