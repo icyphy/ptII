@@ -69,6 +69,7 @@ JSRCS = \
 	PtolemyApplication.java \
 	PtolemyQuery.java \
 	SequencePlotter.java \
+	SequenceScope.java \
 	SketchedSource.java \
 	TimedPlotter.java \
 	XYPlotter.java

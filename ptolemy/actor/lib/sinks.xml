@@ -17,6 +17,12 @@
 </rendition>
 </entity>
 
+<entity name="SequenceScope" class="ptolemy.actor.gui.SequenceScope">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
 <entity name="SequencePlotter" class="ptolemy.actor.gui.SequencePlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
