@@ -58,6 +58,7 @@ EXTRA_SRCS = $(JSRCS) \
 	BarGraph.htm \
 	Binary.htm \
 	Butterfly.htm \
+	EditablePlot.htm \
 	Endian.htm \
 	ErrorBars.htm \
 	FourierSeries.htm \
@@ -75,6 +76,8 @@ EXTRA_SRCS = $(JSRCS) \
 	errorbars.plt \
 	index.htm \
 	logaxes.plt \
+	plotmlSample.txt \
+	sinusoids.txt \
 	toc.htm
 
 # The data directory contains binary plot files that cannot be checked
