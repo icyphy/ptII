@@ -216,9 +216,10 @@ public class KeyReader extends KeyStoreActor {
      *  or if there is a problem with the cryptographic configuration.
      */
     protected void _updateKey() throws IllegalActionException {
-        // We do this in initialize so that derived classes can
-        // access _keyStore.
         if (_updateKeyNeeded) {
+            // Force the keystore to be reloaded in case another actor
+            // has updated it
+            _loadKeyStoreNeeded = true;
             _loadKeyStore();
             try {
                 if (!_verifyCertificate) {
