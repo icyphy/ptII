@@ -356,7 +356,28 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
 	    histogram.writeFormat(print);
 	    output.write("</plot>?>\n"
                     + _getIndentPrefix(depth) + "</configure>\n");
-	}
+        } else if(_configureSources != null) {
+            // Configuration has been specified, but not yet evaluated.
+            // Save the configuration just as specified.
+            // Note that the bases are lost, since those are presumably
+            // the URL of the file containing the XML.
+            Iterator sources = _configureSources.iterator();
+            Iterator texts = _configureTexts.iterator();
+            while(sources.hasNext()) {
+                String source = (String)sources.next();
+                String text = (String)texts.next();
+                if (source != null && !source.trim().equals("")) {
+                    output.write(_getIndentPrefix(depth)
+                            + "<configure source=\""
+                            + source
+                            + "\">");
+                } else {
+                    output.write(_getIndentPrefix(depth) + "<configure>");
+                }
+                if (text != null) output.write(text);
+                output.write(_getIndentPrefix(depth) + "</configure>");
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
