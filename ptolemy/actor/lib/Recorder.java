@@ -84,11 +84,25 @@ public class Recorder extends Sink {
         return newobj;
     }
 
+    /** Get the latest input for the specified channel (as a string).
+     *  If there has been no record yet for the specified channel,
+     *  then return the string "_", representing "bottom".
+     *  @param channel The input channel for the record is desired.
+     *  @return A string representation of the latest input.
+     */
+    public String getLatest(int channel) {
+        if (_latest == null || channel >= _latest.length) {
+            return(_bottom.stringValue());
+        }
+        return (_latest[channel]).stringValue();
+    }
+
     /** Get the record for the specified channel number.  If in any
      *  firing there is no such channel, or no token was read on that
      *  channel, then a string token with value "_" is returned.
      *  If nothing has been recorded (there have been no firings),
      *  then return an empty enumeration.
+     *  @param channel The input channel for the record is desired.
      *  @return An enumeration of StringToken objects.
      */
     public Enumeration getRecord(int channel) {
@@ -123,6 +137,7 @@ public class Recorder extends Sink {
         super.initialize();
         _records = new LinkedList();
         _timeRecord = new LinkedList();
+        _latest = null;
     }
 
     /** Read at most one token from each input channel and record its value.
@@ -138,6 +153,7 @@ public class Recorder extends Sink {
             }
         }
         _records.insertLast(record);
+        _latest = record;
         _timeRecord.insertLast(new Double(getDirector().getCurrentTime()));
         return true;
     }
@@ -147,6 +163,9 @@ public class Recorder extends Sink {
 
     // A linked list of arrays.
     private LinkedList _records;
+
+    // The most recent set of inputs.
+    StringToken[] _latest;
 
     // A linked list of Double objects, which are times.
     private LinkedList _timeRecord;
