@@ -39,7 +39,7 @@ Interface for objects that can hold tokens. The implementation of this
 interface should support two key methods: put and get. Put is the method
 that put a token in. Get is the method that can get a token out. The order 
 the tokens are stored and the order of retreiving depends on specific
-implementations. In addtion, objects that implement this method are supposed
+implementations. In addition, objects that implement this method are supposed
 to be contained in an IOPort. So the getContainer method is defined.
 
 @author Jie Liu
