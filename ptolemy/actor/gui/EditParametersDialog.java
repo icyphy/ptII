@@ -171,7 +171,7 @@ public class EditParametersDialog extends ComponentDialog
         } else if (buttonPressed().equals("Help")) {
             try {
                 URL doc = getClass().getClassLoader().getResource(
-                        "doc/expression.htm");
+                        "doc/expressions.htm");
                 // Try to use the configuration, if we can.
                 boolean success = false;
                 if (_owner instanceof TableauFrame) {
