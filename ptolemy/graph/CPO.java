@@ -23,10 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
-ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 
 */
 
