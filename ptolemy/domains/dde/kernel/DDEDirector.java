@@ -205,10 +205,10 @@ public class DDEDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_areAllThreadsStopped() && !_isDeadlocked() ) {
+            while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
-            if( _isDeadlocked() ) {
+            if( _areActorsDeadlocked() ) {
                 if( _isInternallyReadDeadlocked() ) {
 
                     _notDone = _resolveInternalReadDeadlock();
@@ -469,7 +469,7 @@ public class DDEDirector extends ProcessDirector {
 	    _writeBlockedQs.addFirst(rcvr);
             _writeBlocks++;
         }
-	if( _isDeadlocked() ) {
+	if( _areActorsDeadlocked() ) {
 	    notifyAll();
 	}
     }
@@ -505,7 +505,7 @@ public class DDEDirector extends ProcessDirector {
         } else {
             _externalReadBlocks++;
         }
-	if( _isDeadlocked() ) {
+	if( _areActorsDeadlocked() ) {
 	    notifyAll();
 	}
     }
@@ -537,7 +537,7 @@ public class DDEDirector extends ProcessDirector {
 	}
 	_writeBlockedQs.addFirst(rcvr);
         _writeBlocks++;
-        if( _isDeadlocked() ) {
+        if( _areActorsDeadlocked() ) {
             notifyAll();
         }
     }
@@ -546,7 +546,7 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the count of actors blocked on a write.
     protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
         _writeBlocks++;
-        if( _isDeadlocked() ) {
+        if( _areActorsDeadlocked() ) {
             notifyAll();
         }
     }
@@ -582,7 +582,7 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the count of actors blocked on an external read.
     synchronized void _addExternalReadBlock() {
         _externalReadBlocks++;
-	if( _isDeadlocked() ) {
+	if( _areActorsDeadlocked() ) {
 	    notifyAll();
 	}
     }
@@ -615,7 +615,7 @@ public class DDEDirector extends ProcessDirector {
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
      */
-    protected synchronized boolean _areAllThreadsStopped() {
+    protected synchronized boolean _areActorsStopped() {
 	long threadsStopped = _getStoppedProcessesCount();
 	long actorsActive = _getActiveActorsCount();
 
@@ -684,7 +684,7 @@ public class DDEDirector extends ProcessDirector {
      * @return True if the actors governed by this director are
      *  deadlocked; return false otherwise.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
         if( _getActiveActorsCount() == _writeBlocks +
         	_internalReadBlocks + _externalReadBlocks ) {
             return true;
@@ -700,7 +700,7 @@ public class DDEDirector extends ProcessDirector {
      *   externally read deadlocked; return false otherwise.
      */
     protected boolean _isExternallyReadDeadlocked() {
-    	if( _isDeadlocked() ) {
+    	if( _areActorsDeadlocked() ) {
             if( _externalReadBlocks > 0 && _writeBlocks == 0 ) {
             	return true;
             }
@@ -716,7 +716,7 @@ public class DDEDirector extends ProcessDirector {
      *   externally write deadlocked; return false otherwise.
      */
     protected boolean _isExternallyWriteDeadlocked() {
-    	if( _isDeadlocked() ) {
+    	if( _areActorsDeadlocked() ) {
             if( _writeBlocks > 0 ) {
             	return true;
             }
@@ -732,7 +732,7 @@ public class DDEDirector extends ProcessDirector {
      *   internally deadlocked on a read; return false otherwise.
      */
     protected boolean _isInternallyReadDeadlocked() {
-    	if( _isDeadlocked() ) {
+    	if( _areActorsDeadlocked() ) {
             if( _writeBlocks == 0 ) {
                 if( _externalReadBlocks == 0 ) {
                     /*
@@ -755,7 +755,7 @@ public class DDEDirector extends ProcessDirector {
      *   internally deadlocked on a write; return false otherwise.
      */
     protected boolean _isInternallyWriteDeadlocked() {
-    	if( _isDeadlocked() ) {
+    	if( _areActorsDeadlocked() ) {
             if( _writeBlocks > 0 ) {
             	return true;
             }
