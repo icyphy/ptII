@@ -114,16 +114,16 @@ WATCH_DOG_TIMEOUT = 	100000
 # change this rule, be sure to run make tests
 compileDemo: $(JCLASS)
 	@echo "generate an applet for '$(MODELPATH)'"
-	$(JAVA) \
+	"$(JAVA)" \
 		-classpath "$(ROOT)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
 		-codeGenerator   '"applet"' \
 		-compile	 true \
-		-java            '"$(JAVA)"' \
+		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-ptIIUserDirectory   '"$(PTII)"' \
+		-ptIIUserDirectory  "`echo '"$(PTII)"' | sed 's@\\\@/@g'`" \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"'
 
@@ -140,7 +140,7 @@ TIMEORTHOCOMM_ITERATIONS = 50000
 timeOrthoCommDemo:
 	@echo "No need to time anything in the applet directory"
 
-APPLETTARGETDIRECTORY = $(TARGETPATH)/$(MODEL)
+APPLETTARGETDIRECTORY = $(TARGETPATH)
 runDemo:
 	@echo "Run the model"
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL).htm
@@ -149,13 +149,13 @@ runDemo:
 # Test writing in a separate directory
 test1: $(JCLASS)
 	@echo "generate an applet for '$(MODELPATH)'"
-	$(JAVA) \
+	"$(JAVA)" \
 		-classpath "$(ROOT)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
 		-codeGenerator   '"applet"' \
 		-compile	 true \
-		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
+		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 true \
 		-ptIIUserDirectory   '"d:/tmp/test directory"' \
