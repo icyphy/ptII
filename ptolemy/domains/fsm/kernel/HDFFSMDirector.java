@@ -86,7 +86,9 @@ all ports with the same name (1 + number of states) to the relation.
 The FSM diagram itself is constructed inside the HDFFSMController.
 To construct the FSM diagram, create an HDFFSMState actor (one
 for each state in the FSM) with the HDFFSMController as its
-container. Use the setInitialState() method of HDFFSMController to
+container. Call the setRefinement() mehtod of HDFFSMState to
+set its refining state actor.
+Use the setInitialState() method of HDFFSMController to
 set the initial state. Create a HDFFSMTransition (one for each transition)
 with the HDFFSMController as its container. The guard expression
 of a transition is set by using the setTriggerCondition() method
@@ -97,7 +99,7 @@ A state transition (possibly back to the current state) will occurr
 if the guard expression evaluates to true.
 <p>
 <h1>Guard expression syntax</h1>
-The guard expressions use the Ptolemy expression language. Currently,
+The guard expressions use the Ptolemy II expression language. Currently,
 the only variables allowed in the guard expressions are variables
 containing tokens transfered through the input and output ports of
 the HDF actor. Following the syntax of [1], if the HDF actor contains
@@ -198,15 +200,12 @@ public class HDFFSMDirector extends FSMDirector {
         return _controller.currentRefinement();
     }
 
-    /** Invoke an iteration on all of the deeply contained actors of the
-     *  container of this Director.  In general, this may be called more
-     *  than once in the same iteration of the Directors container.
-     *  An iteration is defined as multiple invocations of prefire(), until
-     *  it returns true, any number of invocations of fire(),
-     *  followed by one invocation of postfire().
-     *  Notice that we ignore the return value of postfire() in this base
-     *  class.   In general, derived classes will want to do something
-     *  intelligent with the returned value.
+
+    
+    /** Invoke an iteration on the current state's refinement. Update
+     *  the count of the number of times the current state's refinement
+     *  has been fired in the current iteration of the HDF diagram in
+     *  which this FSM is contained.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *

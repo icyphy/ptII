@@ -1,4 +1,4 @@
-/* A FSMTransition connects two FSMStates.
+/* A HDFFSMTransition connects two HDFFSMStates.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -46,8 +46,26 @@ import ptolemy.domains.fsm.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMTransition
 /**
-A FSMTransition connects two FSMStates. It has a trigger event, a trigger
-condition, and a set of trigger actions.
+A HDFFSMTransition connects two HDFFSMStates. It has a trigger
+condition (guard condition). The guard condition is an expression
+in the Ptolemy II expression language. Currently, the only variables
+allowed in the expression are variables containing tokens transfered
+through the input and output ports of the HDF actor refining to
+this FSM. The setTriggerCondition() method is used to set this
+transition's guard expression.
+<p>
+A type B firing [1] is defined as final firing of an HDF actor
+in an iteration of the HDF diagram. Note that in HDF, a different
+schedule is used each time the FSM refining an HDF actor
+changes states. The number of firings per iteration can therefore
+change when the FSM changes state.
+In HDF, transitions can only occurr on type B firings [1]. In the
+current HDF implementation, the guard expression is only evaluated
+on a type B firing, and if true, a state transition will occurr.
+<p>
+Nondeterminant transitions (more than one transition with true valued
+guard expression) are not allowed.
+
 
 @author Brian K. Vogel
 @version $Id$
@@ -141,7 +159,19 @@ public class HDFFSMTransition extends FSMTransition {
     }
 
 
-    /** Set the trigger event of this transition.
+    /** Set the trigger event (guard expression) of this transition.
+     *  The guard expressions use the Ptolemy II expression language. Currently,
+     *  the only variables allowed in the guard expressions are variables
+     *  containing tokens transfered through the input and output ports of
+     *  the HDF actor. Following the syntax of [1], if the HDF actor contains
+     *  an input port called dataIn, then use dataIn$0 in the guard 
+     *  expression to reference the token most recently transfered through
+     *  port dataIn. Use dataIn$1 to reference the next most recent token,
+     *  dataIn$2 to reference the next most recent token, and so on. By
+     *  default, only the most recently transfered token is allowed.
+     *  In order to be able to reference up to the m'th most recently
+     *  transfered token (dataIn$m), call the setGuardTokenHistory()
+     *  method of the director with m as the parameter.
      */
     public void setTriggerEvent(String te) {
 	// _te is a Variable.

@@ -1,4 +1,5 @@
-/* A FSMState is a state in the *charts formalism.
+/* A HDFFSMState is a state in an FSM that refines a heterochronous
+   dataflow actor.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -43,10 +44,25 @@ import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// FSMState
+//// HDFFSMState
 /**
-A FSMState is a state in the *charts formalism. It can be refined by a
-subsystem which is an opaque composite actor.
+A HDFFSMState is a state in an FSM that refines a heterochronous
+dataflow (HDF) actor. An HDFFSMState must be used instead of an FSMState
+when the FSM refines a HDF actor. It must be refined by a subsystem
+which is an opaque composite actor. The association between this state
+and the opaque composite actor representing the subsystem is established
+by calling setRefinement().
+<p>
+Note that instances of HDFFSMState must be contained by an 
+HDFFSMController actor and that instances of the associated
+refining states (an opaque composite actor) must be contained
+by the HDF actor that this FSM refines. A HDF actor refining to an FSM
+should therefore contain an HDFFSMController (containing only
+instances of HDFFSMState and HDFFSMTransition), an HDFFSMDirector,
+and an opaque composite actor (the refining subsystem) for each
+state in the FSM. Each refining subsystem must refine to either
+another FSM, an SDF diagram, or an HDF diagram. There is no
+constraint to the number of levels in the hierarchy.
 
 @author Brian K. Vogel
 @version $Id$
