@@ -629,7 +629,7 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
    /*  Clear the dependencies this Parameter has registered
-    *  with other Parameters. If this is not done a phanton web
+    *  with other Parameters. If this is not done a phantom web
     *  of dependencies may exist which could lead to false
     *  dependency loops being detected. Normally this method is
     *  called with the roor node of the parse tree and recursively

@@ -165,8 +165,8 @@ class ExampleApplet extends java.applet.Applet
     }
 
     /** Handle the event passed to this applet.
-     * The event for the button is catched
-     *  and all othe events are hendled by default.
+     *  The event for the button is cached
+     *  and all other events are handled by default.
      */
     public boolean handleEvent(java.awt.Event event) {
         Object eventTarget = event.target;
