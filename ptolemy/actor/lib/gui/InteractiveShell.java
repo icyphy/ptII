@@ -213,7 +213,7 @@ public class InteractiveShell extends TypedAtomicActor
             }
         }
         if (_stopRequested) {
-            return("stop");
+            return("");
         } else {
             return((String)_outputValues.remove(0));
         }
@@ -363,6 +363,8 @@ public class InteractiveShell extends TypedAtomicActor
         super.wrapup();
         if (_returnFalseInPostfire && _frame != null) {
             _frame.dispose();
+            _frame = null;
+            shell = null;
         } else if (shell != null) {
             shell.setEditable(false);
         }
