@@ -96,10 +96,10 @@ public class RecordType extends StructuredType {
 
             // construct the labels and declared types array
             Object[] labelsObj = _fields.keySet().toArray();
-	    String[] labels = new String[labelsObj.length];
+            String[] labels = new String[labelsObj.length];
             Type[] types = new Type[labelsObj.length];
             for (int i=0; i<labels.length; i++) {
-	        labels[i] = (String)labelsObj[i];
+                labels[i] = (String)labelsObj[i];
                 FieldType fieldType = (FieldType)_fields.get(labels[i]);
                 types[i] = fieldType._declaredType;
             }
@@ -128,15 +128,15 @@ public class RecordType extends StructuredType {
         if ( !isCompatible(t)) {
             throw new IllegalArgumentException("RecordType.convert: " +
                     "Cannot convert the token " + t.toString() +
-		    " to this type " + this.toString());
+                    " to this type " + this.toString());
         }
 
         RecordToken argRecTok = (RecordToken)t;
         Object[] labelsObj = _fields.keySet().toArray();
-	String[] labels = new String[labelsObj.length];
+        String[] labels = new String[labelsObj.length];
         Token[] values = new Token[labelsObj.length];
         for (int i=0; i<labelsObj.length; i++) {
-	    labels[i] = (String)labelsObj[i];
+            labels[i] = (String)labelsObj[i];
             Token orgToken = argRecTok.get(labels[i]);
             FieldType fieldType = (FieldType)_fields.get(labels[i]);
             Type type = fieldType._resolvedType;
@@ -330,18 +330,32 @@ public class RecordType extends StructuredType {
 
     /** Return the string representation of this type. The format is
      *  {<lable>:<type>, <label>:<type>, ...}.
+     *  The record fields are listed in the lexicographical order of the
+     *  labels determined by the java.lang.String.compareTo() method.
      *  @return A String.
      */
     public String toString() {
+        Object[] labelsObj = _fields.keySet().toArray();
+        // order the labels
+        int size = labelsObj.length;
+        for (int i=0; i<size-1; i++) {
+            for (int j=i+1; j<size; j++) {
+                String labeli = (String)labelsObj[i];
+                String labelj = (String)labelsObj[j];
+                if (labeli.compareTo(labelj) >= 0) {
+                    Object temp = labelsObj[i];
+                    labelsObj[i] = labelsObj[j];
+                    labelsObj[j] = temp;
+                }
+            }
+        }
+
+        // construct the string representation of this token.
         String s = "{";
-        Iterator iter = _fields.keySet().iterator();
-        boolean first = true;
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
+        for (int i=0; i<size; i++) {
+            String label = (String)labelsObj[i];
             String type = this.get(label).toString();
-            if (first) {
-                first = false;
-            } else {
+            if (i != 0) {
                 s += ", ";
             }
             s += label + ":" + type;

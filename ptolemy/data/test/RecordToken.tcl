@@ -260,7 +260,7 @@ test RecordToken-7.2 {Test one} {
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
     [$r one] toString
-} {{value2=1.0, value1=1}}
+} {{value1=1, value2=1.0}}
 
 ######################################################################
 ####
@@ -302,5 +302,5 @@ test RecordToken-8.2 {Test zero} {
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
     [$r zero] toString
-} {{value2=0.0, value1=0}}
+} {{value1=0, value2=0.0}}
 
