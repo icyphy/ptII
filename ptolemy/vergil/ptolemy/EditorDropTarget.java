@@ -46,8 +46,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
@@ -168,34 +166,16 @@ public class EditorDropTarget extends DropTarget {
                 // port, etc. This seems awkward.
                 ChangeRequest request = null;
                 if (dropObj instanceof ComponentEntity) {
+
                     // Dropped object is an entity.
-                    // Might be a director...
-                    if (dropObj instanceof Director
-                            && container instanceof CompositeActor) {
-                        // Dropped object is a director.
-                        request = new MoMLChangeRequest(
-                                this, container, moml) {
-                            protected void _execute() throws Exception {
-                                super._execute();
-                                NamedObj newObject = ((CompositeActor)container)
-                                        .getDirector();
-                                if (!newObject.getName().equals(name)) {
-                                    newObject = null;
-                                }
-                                _setLocation(newObject, point);
-                            }
-                        };
-                    } else {
-                        // Dropped object is not a director of an actor
-                        request = new MoMLChangeRequest(
-                                this, container, moml) {
-                            protected void _execute() throws Exception {
-                                super._execute();
-                                NamedObj newObject = container.getEntity(name);
-                                _setLocation(newObject, point);
-                            }
-                        };
-                    }
+                    request = new MoMLChangeRequest(this, container, moml) {
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            NamedObj newObject = container.getEntity(name);
+                            _setLocation(newObject, point);
+                        }
+                    };
+
                 } else if (dropObj instanceof Port) {
 
                     // Dropped object is a port.
