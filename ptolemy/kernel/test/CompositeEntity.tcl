@@ -366,7 +366,7 @@ test CompositeEntity-10.1 {Test multiple relation naming} {
     set ar1 [$a connect $p2 $p1]
     set ar2 [$a connect $p3 $p4]
     list [$ar1 getFullName] [$ar2 getFullName]
-} {.A._R0 .A._R1}
+} {.A._R .A._R2}
 
 ######################################################################
 ####
@@ -386,7 +386,7 @@ test CompositeEntity-10.3 {Create and then remove a transparent port} {
     lappend result [$ar1 getFullName] [$ar2 getFullName]
     $ar2 setContainer [java::null]
     lappend result [$p4 numInsideLinks]
-} {.A._R0 .A._R1 0}
+} {.A._R .A._R2 0}
 
 ######################################################################
 ####
@@ -885,19 +885,14 @@ test CompositeEntity-13.1 {test set name to itself} {
 ######################################################################
 ####
 #
-test CompositeEntity-14.1 {Test _uniqueEntityName} {
-    # _uniqueEntityName is a protected method used in FSM
-    # The class ptolemy.kernel.test.TestCompositeEntity defines a 
-    # public method named uniqueEntityName that calls the protected
-    # method in CompositeEntity for us
+test CompositeEntity-14.1 {Test uniqueName} {
     set a [java::new ptolemy.kernel.test.TestCompositeEntity]
     $a setName A
-    list \
-	    [$a getFullName] \
-	    [$a uniqueEntityName] \
-	    [$a uniqueEntityName] \
-	    [$a getFullName]
-} {.A _E0 _E1 .A}
+    set r1 [list [$a getFullName] [$a uniqueName _E]]
+    java::new ptolemy.kernel.ComponentRelation $a _E
+    set r2 [list [$a uniqueName _E] [$a getFullName]]
+    list $r1 $r2
+} {{.A _E} {_E2 .A}}
 
 ######################################################################
 ####

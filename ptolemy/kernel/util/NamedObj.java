@@ -1027,6 +1027,8 @@ public class NamedObj implements Nameable, Debuggable,
      *   or the prefix extended by a number.
      */
     public String uniqueName(String prefix) {
+        if(prefix == null)
+            prefix = "null";
         String candidate = prefix;
         while(getAttribute(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;

@@ -884,6 +884,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @return A unique name.
      */
     public String uniqueName(String prefix) {
+        if(prefix == null)
+            prefix = "null";
         String candidate = prefix;
         while(getAttribute(candidate) != null
                 || getPort(candidate) != null

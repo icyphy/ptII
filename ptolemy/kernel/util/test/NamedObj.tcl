@@ -454,10 +454,12 @@ test NamedObj-11.6 {Test exportMoML Writer} {
 test NamedObj-12.1 {Test uniqueName} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
-    set a1 [java::new ptolemy.kernel.util.Attribute $a "A0"]
-    set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
-    list [$a uniqueName A] [$a uniqueName A]
-} {A1 A3}
+    set n1 [$a uniqueName A]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a $n1]
+    set n2 [$a uniqueName A]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a $n2]
+    list $n1 $n2
+} {A A2}
 
 ######################################################################
 ####

@@ -327,13 +327,12 @@ test Entity-10.1 {test getAttribute} {
 #
 test Entity-11.1 {uniqueName} {
     set e1 [java::new ptolemy.kernel.Entity]
-    set e2 [java::new ptolemy.kernel.Entity "My Entity"]
-    list [$e1 getName] \
-	    [$e2 getName] \
-	    [$e1 uniqueName [java::null]] \
+    set r1 [list [$e1 uniqueName [java::null]] \
 	    [$e1 uniqueName ""] \
-	    [$e1 uniqueName "myPrefix"] \
-	    [$e2 uniqueName [java::null]] \
-	    [$e2 uniqueName ""] \
-	    [$e2 uniqueName "myPrefix"]
-} {{} {My Entity} null0 1 myPrefix2 null0 1 myPrefix2}
+	    [$e1 uniqueName "myPrefix"]]
+    java::new ptolemy.kernel.Port $e1 myPrefix
+    set r2 [list [$e1 uniqueName [java::null]] \
+	    [$e1 uniqueName ""] \
+	    [$e1 uniqueName "myPrefix"]]
+    list $r1 $r2
+} {{null {} myPrefix} {null {} myPrefix2}}
