@@ -29,16 +29,13 @@ package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -158,96 +155,58 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         
         // FIXME: A rough design.
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        CTExecutionPhase executionPhase = getExecutionPhase();
+        
+        // Use the correct solver
         if (isDiscretePhase()) {
-            setSuggestedNextStepSize(getMinStepSize());
-            if (getExecutionPhase() 
-                == CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE) {
-                super._iterateDiscreteActors(schedule);
-            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.GENERATINGWAVEFORMS_PHASE) {
-                // NOTE: the time a discrete phase execution (waveform phase) 
-                // starts is the same time the iteration time starts.
-                // NOTE: A ct composite actor is also a waveform generator.
-                
-                // FIXME: why update here? should this go to the prefire method?
-                // The time update only happens once!
-                // FIXME: how to make prefire method more useful? do stuff 
-                // as change ODE solver and update time.
-                CompositeActor container = (CompositeActor)getContainer();
-                Director exe = container.getExecutiveDirector();
-                Time time = exe.getModelTime();
-                setModelTime(exe.getModelTime());
-                _setIterationBeginTime(exe.getModelTime());
-                
-                super._iterateWaveformGenerators(schedule);
-            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.CREATINGSTARTINGSTATES_PHASE) {
-                super._createIterationStartingStates();
-            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.GENERATINGEVENTS_PHASE) {
-                super._iterateEventGenerators(schedule);
-            }
+            _setCurrentODESolver(getBreakpointSolver());
         } else {
-            // set the current time to the iteration begin time because the upper
-            // level hierarchy may request refiring with a smaller step size.
-            
-            // FIXME: the embedded director needs to update its current time to
-            // the time iteration begins.
-            // setModelTime(getIterationBeginTime());
-            
-            // The following statement is decomposed into a set of actions with
-            // conditions.
-            // super._continuousPhaseExecution();
-            
-            // Change ODE solver
-            // FIXME: if we do not use isDiscretePhase(), how to change
-            // ODE solver?
             _setCurrentODESolver(getODESolver());
-
-            if (getExecutionPhase() 
-                == CTExecutionPhase.PREFIRINGDYNAMICACTORS_PHASE) {
-                super._prefireDynamicActors();
-            }
-            // instead of resolve states, fire one round.
-            if (getExecutionPhase() 
-                == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
-                getODESolver().fireDynamicActors();
-            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE) {
-                getODESolver().fireStateTransitionActors();
-                // No seperate phase for producing output, because
-                // a CT subsystem needs to produce output if it works
-                // as a state transition actor. 
-                super.produceOutput();
-            }
-//            if (isSolvingStatesPhase()) {
-//                // instead of resolve states, fire one round.
-//                if (isFiringDynamicActorsPhase()) {
-//                    getODESolver().fireDynamicActors();
-//                }
-//                if (isFiringStateTransitionActorsPhase()) {
-//                    getODESolver().fireStateTransitionActors();
-//                    // No seperate phase for producing output, because
-//                    // a CT subsystem needs to produce output if it works
-//                    // as a state transition actor. 
-//                    super.produceOutput();
-//                }
-//            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE) {
-                super.updateContinuousStates();
-            }
-            if (getExecutionPhase() 
-                == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
-                super.fireEventGenerators();
-            }
         }
         
-         
+        if (executionPhase 
+            == CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE) {
+            super._iteratePurelyDiscreteActors(schedule);
+        } else if (executionPhase 
+            == CTExecutionPhase.GENERATINGWAVEFORMS_PHASE) {
+            // NOTE: the time a discrete phase execution (waveform phase) 
+            // starts is the same time the iteration time starts.
+            // NOTE: A ct composite actor is also a waveform generator.
+                
+            // FIXME: why update here? should this go to the prefire method?
+            // The time update only happens once!
+            // FIXME: how to make prefire method more useful? do stuff 
+            // as change ODE solver and update time.
+            CompositeActor container = (CompositeActor)getContainer();
+            Director exe = container.getExecutiveDirector();
+            Time time = exe.getModelTime();
+            setModelTime(exe.getModelTime());
+            _setIterationBeginTime(exe.getModelTime());
+                
+            super._iterateWaveformGenerators(schedule);
+        } else if (executionPhase 
+            == CTExecutionPhase.GENERATINGEVENTS_PHASE) {
+            super._iterateEventGenerators(schedule);
+        } else if (executionPhase 
+            == CTExecutionPhase.PREFIRINGDYNAMICACTORS_PHASE) {
+            super._prefireDynamicActors();
+        } else if (executionPhase 
+            == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
+            getCurrentODESolver().fireDynamicActors();
+        } else if (executionPhase 
+            == CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE) {
+            getCurrentODESolver().fireStateTransitionActors();
+            // No seperate phase for producing output, because
+            // a CT subsystem needs to produce output if it works
+            // as a state transition actor. 
+            super.produceOutput();
+//        } else if (executionPhase 
+//            == CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE) {
+//            super.updateContinuousStates();
+        } else if (executionPhase 
+            == CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE) {
+            super.fireEventGenerators();
+        }
     }
 
     /** Return the current integration step size. This method is final
@@ -459,9 +418,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // whenever a model change happens.
         
         getScheduler().getSchedule();
-        
-        // FIXME: the following method may be masked by HSDirector.
-        super._prefireDynamicActors();
 
         return super.prefire();
     }
@@ -499,6 +455,19 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             throw new InternalErrorException (
                     "Fail to refine step size. " + ex.getMessage());
         }
+    }
+
+    /** Return false if some actors return false from postfire method 
+     *  or the stop is requested.
+     *  @return false if some actor returns false from postfire method or 
+     *  the stop is requested.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (getExecutionPhase() 
+            == CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE) {
+            super.updateContinuousStates();
+            }
+        return _postfireReturns && !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////
