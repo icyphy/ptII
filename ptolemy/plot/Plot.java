@@ -465,8 +465,10 @@ public class Plot extends PlotBox {
 			int datasetnumber = datasetnumberint.intValue();
 			if (datasetnumber >= 0 &&
 			    datasetnumber <= getMaxDataSets()) {
-                                if (_debug > 8) System.out.println("addLegend "
-                                                +datasetnumber + " " + args[i]);
+                                if (_debug > 8) 
+				    System.out.println("Plot: parseArgs: "+
+					       "calling addLegend "+
+                                               +datasetnumber+" "+args[i]);
                                 addLegend(datasetnumber, args[i++]);
                                 continue;
 			}
@@ -1126,13 +1128,13 @@ public class Plot extends PlotBox {
                            "<"+getLegend(0)+">"+
                            "<"+getLegend(1)+"> "+
                            "<"+getLegend(_currentdataset)+">");
-        if (getLegend(_currentdataset).length() == 0) {
+        if (getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
             _firstinset = true;
             _sawfirstdataset = true;
             addLegend(_currentdataset,
-            new String("Dataset "+ _currentdataset));
+		      new String("Dataset "+ _currentdataset));
         }
         if (_firstinset) {
             connected = false;
