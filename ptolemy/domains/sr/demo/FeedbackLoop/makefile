@@ -49,8 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	FeedbackLoop.htm \
-	FeedbackLoop.xml \
-	FeedbackLoopVergil.htm
+	FeedbackLoop.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
