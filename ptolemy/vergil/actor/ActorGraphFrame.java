@@ -243,6 +243,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** The most recent class name for instantiating a class. */
     private String _lastClassName = "ptolemy.actor.lib.Ramp";
 
+    /** The most recent location for instantiating a class. */
+    private String _lastLocation= "";
+
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
@@ -473,6 +476,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             Query query = new Query();
             query.setTextWidth(60);
             query.addLine("class", "Class name", _lastClassName);
+            query.addLine("location", "Location (URL)", _lastLocation);
             ComponentDialog dialog = new ComponentDialog(
                     ActorGraphFrame.this, "Instantiate Entity", query);
             if (dialog.buttonPressed().equals("OK")) {
@@ -484,6 +488,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 NamedObj context = model.getPtolemyModel();
 
                 _lastClassName = query.getStringValue("class");
+                _lastLocation = query.getStringValue("location");
 
                 // Find the root for the instance name.
                 String rootName = _lastClassName;
@@ -496,6 +501,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 Rectangle2D bounds = getVisibleCanvasRectangle();
                 double x = bounds.getWidth()/2.0;
                 double y = bounds.getHeight()/2.0;
+                
+                // If a location is given, construct MoML to
+                // specify a "source".
+                String source = "";
+                if (!(_lastLocation.trim().equals(""))) {
+                    source = " source=\"" + _lastLocation.trim() + "\"";
+                }
 
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
@@ -503,7 +515,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     + rootName
                     + "\" class=\""
                     + _lastClassName
-                    + "\"><property name=\"_location\" "
+                    + "\""
+                    + source
+                    + "><property name=\"_location\" "
                     + "class=\"ptolemy.kernel.util.Location\" value=\""
                     + x
                     + ", "
