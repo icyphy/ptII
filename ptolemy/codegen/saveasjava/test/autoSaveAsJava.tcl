@@ -69,16 +69,33 @@ test MoMLToJava-1.0 {} {
     list [lrange $results 1 4]
 } {{1 2 3 4}}
 
-# Generate code for all the xml files in actor/lib/test/auto
-set autoDirectory [file join $relativePathToPTII ptolemy actor lib test auto]
-puts "############# Running tests in $autoDirectory"
-foreach file [glob $autoDirectory/*.xml] {
-    puts "------------------ testing $file"
-    test "Auto" "Automatic test in file $file" {
-        saveAsJava $file
-        list {}
-    } {{}}
+# Generate code for all the xml files in 
+
+proc autoSaveAsJava {autoDirectory} {
+    foreach file [glob $autoDirectory/*.xml] {
+	puts "------------------ testing $file"
+	test "Auto" "Automatic test in file $file" {
+	    saveAsJava $file
+	    list {}
+	} {{}}
+    }
 }
+
+autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib test auto]
+
+autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib javasound test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains ct lib test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains de lib test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains dt kernel test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains fsm test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains sdf lib test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains sr kernel test auto]
+autoSaveAsJava [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 # Print out stats
 doneTests
