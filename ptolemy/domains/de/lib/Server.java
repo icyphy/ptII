@@ -169,14 +169,14 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        DEDirector dir = (DEDirector)getDirector();
-        if (dir.getCurrentTime() >= _nextTimeFree) {
+        DEDirector director = (DEDirector)getDirector();
+        if (director.getCurrentTime() >= _nextTimeFree) {
             return true;
         } else {
             // Schedule a firing if there is a pending
             // token so it can be served.
             if (input.hasToken(0)) {
-                dir.fireAt(this, _nextTimeFree);
+                director.fireAt(this, _nextTimeFree);
             }
             return false;
         }
