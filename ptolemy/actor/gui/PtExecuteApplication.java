@@ -77,7 +77,7 @@ public class PtExecuteApplication extends MoMLApplication
         // http://developer.java.sun.com/developer/bugParade/bugs/4030718.html
         // However, since we now run with JDK1.4.1, this should not
         // be a problem.
-	super(args);
+.	super(args);
     }
 
     ///////////////////////////////////////////////////////////////////
