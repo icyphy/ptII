@@ -74,11 +74,19 @@ public class RenameConfigurer extends Query
         // be shown on the outside of the composite actor.
         boolean nameShowing = false;
         if (object instanceof Port) {
-            nameShowing = _object.getAttribute("_showName") != null;
+	    // FIXME: There is a bug in diva that results in the
+	    // port name being displayed twice if Show Name is selected.
+	    // John Reekie thinks it is because there is one too many
+	    // Listeners.  So for Ptolemy II 2.0beta, we comment
+	    // this out so that if the object is a port, we 
+	    // do not show the name.
+            //nameShowing = _object.getAttribute("_showName") != null;
         } else {
             nameShowing = _object.getAttribute("_hideName") == null;
+	    addCheckBox("Show name", "Show name", nameShowing);
         }
-        addCheckBox("Show name", "Show name", nameShowing);
+	//addCheckBox("Show name", "Show name", nameShowing);
+
     }
 
     ///////////////////////////////////////////////////////////////////
