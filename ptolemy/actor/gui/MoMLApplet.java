@@ -50,6 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 
@@ -122,7 +123,7 @@ public class MoMLApplet extends PtolemyApplet {
     public String getAppletInfo() {
 	// Include the release and build number to aid in user support.
 	String version = new String("Ptolemy II "
-                + PtolemyApplication.RELEASE_VERSION);
+                + VersionAttribute.CURRENT_VERSION);
 	String build = new String("\n(Build: $Id$)");
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
