@@ -138,6 +138,99 @@ public class CTScheduler extends Scheduler{
         }
     }
 
+    /** Return all the schedules.
+     *  @return All the schedules.
+     */
+    public String description() {
+        String res = new String();
+        Enumeration list;
+        res += "CTSchedule {\n";
+        res += "    arithmaticActors {\n";
+        list = arithmaticActors();
+        try {
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    dynamicActors {\n";
+            list = dynamicActors();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    stateTransitionSSCActors {\n";
+            list = stateTransitionSSCActors();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    outputSSCActors {\n";
+            list = outputSSCActors();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    eventGenerators {\n";
+            list = eventGenerators();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    eventInterpreters {\n";
+            list = eventInterpreters();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";        
+            res += "    statefulActors {\n";
+            list = statefulActors();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    sinkActors {\n";
+            list = sinkActors();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    dynamicActorSchedule {\n";
+            list = dynamicActorSchedule();
+            while(list.hasMoreElements()) {
+            res += "\t" + 
+                ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    stateTransitionSchedule {\n";
+            list = stateTransitionSchedule();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    outputSchedule {\n";
+            list = outputSchedule();
+            while(list.hasMoreElements()) {
+                res += "\t" + 
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "}\n";
+        } catch (IllegalActionException ex) {
+            throw new InvalidStateException(this, 
+                    "Failed to generate CT schedule.");
+        }
+        return res;
+    }
+
     /** Returns an enumeration of dynamic actors. This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -191,29 +284,6 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of error control actors.
-     *  This enumeration is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will be reconstructed and cached.
-     *  This method read-synchronize on the workspace.
-     *  @return An enumeration of error control actors.
-     *  FIXME: Deprecated!
-     *  @deprecated Use stepSizeControlActors instead.
-     *
-    public Enumeration errorControlActors() {
-        try {
-	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
-            }
-            return _ectrl.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
     /** Return an enumeration of step size control (SSC) actors in the 
      *  state and state transition schedule. These are the step size
      *  control actors in the dx/dt=f(x,u,t) equations.
@@ -265,30 +335,6 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of event generator.
-     *  This enumeration is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
-     *  the new version.
-     *  This method read-synchronize on the workspace.
-     *  @return An enumeration of event generator.
-     *  FIXME: deprecated.
-     *  @deprecated Use eventGenerators
-     *
-    public Enumeration eventGenerateActors() {
-        try {
-	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
-            }
-            return _evdct.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
     /** Return an enumeration of event generators.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -348,7 +394,7 @@ public class CTScheduler extends Scheduler{
      *  @exception NotSchedulableException If the system is not schedulable.
      *  FIXME: Deprecated!
      *  @deprecated Use eventGeneratingSchedule()
-     */
+     *
     public Enumeration eventGenerationSchedule()
             throws NotSchedulableException, IllegalActionException {
         try {
@@ -362,56 +408,8 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
+    */
 
-    /** Return an enumeration of the actors in the event generation
-     *  path in the topological order.
-     *  This enumeration is locally cached.
-     *  If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will be reconstructed and cached.
-     *  This method read-synchronizes on the workspace.
-     *  @return An enumeration of the actors in the event generation
-     *  path in the topological order.
-     *  @exception IllegalActionException If the scheduler has no container,
-     *      or the container has no container.
-     *  @exception NotSchedulableException If the system is not schedulable.
-     *
-    public Enumeration eventGeneratingSchedule()
-            throws NotSchedulableException, IllegalActionException {
-        try {
-	    workspace().getReadAccess();
-            if(!valid()) {
-                schedule();
-            }
-            return _eventschedule.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
-    /** Return an enumeration of Memaris actors.
-     *  This enumeration is locally
-     *  cached. If workspace version equals to the cached version,
-     *  then it returns the cached enumeration.
-     *  Otherwise, it will be reconstructed and cached.
-     *  This method read-synchronizes on the workspace.
-     *  @return An enumeration of Memaris actors.
-     *  FIXME: Deprecated!
-     *  @deprecated Use statefulActors() in stead.
-     
-    public Enumeration memarisActors() {
-        try {
-	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
-            }
-            return _memaris.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
     /** Return an enumeration of stateful actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -642,11 +640,16 @@ public class CTScheduler extends Scheduler{
         // _eventschedule = new LinkedList(); //deprecated
         LinkedList _scheList = new LinkedList();
 
-        DirectedAcyclicGraph g =  _toGraph(ca.deepGetEntities());
-        if(!g.isAcyclic()) {
-            throw new NotSchedulableException("Arithmetic loop found.");
-        }
         _classifyActors();
+        DirectedAcyclicGraph g =  _toArithGraph(ca.deepGetEntities());
+        DirectedAcyclicGraph gd = _toGraph(dynamicActors());
+        if(!g.isAcyclic()) {
+            throw new NotSchedulableException("Arithmatic loop found.");
+        }
+        //System.out.println("CTScheduler***********************" +
+        //        "number of edges" + g.getEdgeCount());
+        //System.out.println("CTScheduler***********************" +
+        //        "number of nodes" + g.getNodeCount());          
         // construct an array of dynamic actors.
         int numofdyn = _dynam.size();
         if(numofdyn > 0) {
@@ -658,7 +661,7 @@ public class CTScheduler extends Scheduler{
             }
 
             // Dynamic actors are reverse ordered.
-            Object[] xsort = g.topologicalSort(dynactors);
+            Object[] xsort = gd.topologicalSort(dynactors);
             for(int i=0; i < xsort.length; i++) {
                 Actor a = (Actor)xsort[i];
                 _stateschedule.insertFirst(a);
@@ -772,7 +775,7 @@ public class CTScheduler extends Scheduler{
      *  in this method, so the caller should check.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toGraph(Enumeration actors) {
+    protected DirectedAcyclicGraph _toArithGraph(Enumeration actors) {
         CTDirector dir =(CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
 
@@ -801,6 +804,50 @@ public class CTScheduler extends Scheduler{
                     if(actorlist.includes(s)) {
                         g.addEdge(a, s);
                     }
+                }
+            }
+        }
+	return g;
+    }
+
+    /** Convert the given actors to a directed acyclic graph.
+     *  CTDynamicActors are NOT treated as sinks.
+     *  Each actor
+     *  in the given enumeration is a node in the graph, 
+     *  each link between a pair
+     *  of actors is a edge between the
+     *  corresponding nodes unless the source node is a dynamic actor.
+     *  The presentance of the director and containers is not checked
+     *  in this method, so the caller should check.
+     *  @return A graph representation of the actors.
+     */
+    protected DirectedAcyclicGraph _toGraph(Enumeration actors) {
+        CTDirector dir =(CTDirector)getContainer();
+        CompositeActor ca = (CompositeActor)(dir.getContainer());
+
+        DirectedAcyclicGraph g = new DirectedAcyclicGraph();
+        // Create the nodes.
+        // The actors comes from deepGetEntities, so it is impossible
+        // that one actor can occur twice in the Enumeration. So no
+        // exceptions are catched.
+        LinkedList actorlist = new LinkedList();
+        while (actors.hasMoreElements()) {
+            AtomicActor a = (AtomicActor)actors.nextElement();
+            g.add(a);
+            actorlist.insertLast(a);
+        }
+
+        // Create the edges.
+        Enumeration allactors = actorlist.elements();
+        while (allactors.hasMoreElements()) {
+            Actor a = (Actor) allactors.nextElement();
+ 
+            // Find the successors of a
+            Enumeration successors = _successors(a);
+            while (successors.hasMoreElements()) {
+                Actor s = (Actor) successors.nextElement();
+                if(actorlist.includes(s)) {
+                    g.addEdge(a, s);
                 }
             }
         }
