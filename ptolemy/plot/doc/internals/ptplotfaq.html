@@ -195,6 +195,40 @@ easier to read.
  <p>Note that PlotApplication <B>cannot</B> plot binary data yet, only
 applets and Pxgraph can handle binary data.
 
+ <p>The Java program below shows how to generate a raw binary
+data file with two data points in it. 
+<pre>
+cxh@tycho 25% cat BinaryData.java
+import java.io.*;
+
+class BinaryData {
+    public static void main(String args[]) {
+        try {
+            FileOutputStream fileOutput = new FileOutputStream("binary.plt");
+            DataOutputStream dataOutput = new DataOutputStream(fileOutput);
+            // First pair
+            dataOutput.writeFloat(1);
+            dataOutput.writeFloat(1);
+            // Second pair
+            dataOutput.writeFloat(2);
+            dataOutput.writeFloat(3);
+            dataOutput.close();
+            fileOutput.close();
+        } catch (IOException e) {
+        System.out.println("Failed to open a file: " + e);
+        }
+    }
+}
+cxh@tycho 26% javac BinaryData.java
+cxh@tycho 27% setenv CLASSPATH .
+cxh@tycho 28% java BinaryData
+cxh@tycho 29% od -c binary.plt
+0000000   ? 200  \0  \0   ? 200  \0  \0   @  \0  \0  \0   @   @  \0  \0
+0000020
+cxh@tycho 30% ptplot -binary binary.plt
+
+</pre>
+
 <DT> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
 <DD> Binary data is encoded in different ways on different platforms
 <menu>
