@@ -1215,9 +1215,11 @@ testMatrix negative $types
 ####
 ##  *MatrixMath Test out: xxx[][] orthogonalizeColumns(xxx[][])
 
-## FIXME: Missing Complex[][] orthogonalizeColumns(xxx[][])
+## FIXED (FIXME): Missing Complex[][] orthogonalizeColumns(xxx[][])
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{2.0 - 2.0i 0.19999999999999996 + 0.19999999999999996i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
 	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
 
@@ -1228,9 +1230,11 @@ testMatrix orthogonalizeColumns $types
 ####
 ##  *MatrixMath Test out: xxx[][] orthonormalizeColumns(xxx[][])
 
-## FIXME: Missing Complex[][] orthonormalizeColumns(xxx[][])
+## FIXED (FIXME): Missing Complex[][] orthonormalizeColumns(xxx[][])
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{2.0 - 2.0i 0.19999999999999996 + 0.19999999999999996i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
 	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
 
@@ -1241,25 +1245,29 @@ testMatrix orthonormalizeColumns $types
 ####
 ##  *MatrixMath Test out: xxx[][] orthogonalizeRows(xxx[][])
 
-## FIXME: Missing Complex[][] orthogonalizeRows(xxx[][])
+## FIXED (FIXME): Missing Complex[][] orthogonalizeRows(xxx[][])
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{2.0 - 2.0i 1.0 + 1.0i} {-0.19999999999999996 - 0.19999999999999996i -0.4 + 0.4i}}}] \
 	[list Double double double {{{2.0 -1.0} {0.2 0.4}}}] \
 	[list Float float float {{{2.0 -1.0} {0.2 0.4}}}]]
 
 
 testMatrix orthogonalizeRows $types
 
-
 ######################################################################
 ####
 ##  *MatrixMath Test out: xxx[][] orthonormalizeRows(xxx[][])
 
-## FIXME: Missing Complex[][] orthonormalizeRows(xxx[][])
+## FIXED (FIXME): Missing Complex[][] orthonormalizeRows(xxx[][])
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{0.6324555320336759 - 0.6324555320336759i 0.31622776601683794 + 0.31622776601683794i} {-0.31622776601683783 - 0.31622776601683783i -0.6324555320336759 + 0.6324555320336759i}}}] \
 	[list Double double double {{{0.8944271909999159 -0.4472135954999579} {0.44721359549995787 0.894427190999916}}}] \
 	[list Float float float {{{0.8944272 -0.4472136} {0.4472136 0.89442724}}}]]
+
 
 testMatrix orthonormalizeRows $types
 
