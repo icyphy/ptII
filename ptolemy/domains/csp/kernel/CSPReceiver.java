@@ -165,9 +165,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *    does not support this query.
      */
     public boolean hasRoom(int tokens) {
 	return true;
