@@ -103,7 +103,6 @@ public class EditorIcon extends Attribute {
      * class should never return null, even if the icon has not been properly
      * initialized.
      * @return A new CompositeFigure.
-     * @see diva.canvas.CompositeFigure
      */
     public Figure createFigure() {
 	Figure background = createBackgroundFigure();
