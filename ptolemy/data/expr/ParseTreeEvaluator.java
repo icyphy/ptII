@@ -196,13 +196,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
 
         ASTPtRootNode cloneTree;
-        try {
-            cloneTree = (ASTPtRootNode)node.getExpressionTree().clone();
-        } catch(CloneNotSupportedException ex) {
-            throw new IllegalActionException(null, ex, "Clone failed");
-        }
+       
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        specializer.specialize(cloneTree,
+        cloneTree = specializer.specialize(node.getExpressionTree(),
                 node.getArgumentNameList(), _scope);
 
         // Infer the return type.

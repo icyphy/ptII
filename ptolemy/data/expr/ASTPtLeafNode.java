@@ -102,6 +102,12 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         }
     }
 
+    /** Return a string representation
+     */
+    public String toString() {
+        return super.toString() + ":" + _name;
+    }
+
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)

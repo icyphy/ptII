@@ -112,8 +112,15 @@ public class ExpressionFunction implements FunctionToken.Function {
      *  @param function The function to check congruency against.
      */
     public boolean isCongruent(FunctionToken.Function function) {
-        // FIXME: wrong.  check for congruency of parse trees.
-        // return toString().compareTo(function.toString()) == 0;
+        return toString().compareTo(function.toString()) == 0;
+
+        // FIXME: The above is not terribly nice...  It would be nice
+        // to allow function equivalence under bound variable
+        // renaming.  However, I got stuck trying to implement this,
+        // and decided I didn't want to spend any more time on it...
+        // SN - 4/18/2003
+
+        /**
         if(!(function instanceof ExpressionFunction)) {
             return false;
         }
@@ -133,6 +140,7 @@ public class ExpressionFunction implements FunctionToken.Function {
         }
         return _exprRoot.isCongruent(expressionFunction._exprRoot,
                 renaming); 
+         */
     }
    
     /** Return a string representation of this function.

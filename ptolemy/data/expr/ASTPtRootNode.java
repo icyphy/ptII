@@ -292,7 +292,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      * toString(String), otherwise overriding toString() is probably
      * all you need to do.
      */
-    public String toString() { return PtParserTreeConstants.jjtNodeName[_id]; }
+    public String toString() { return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":" + _ptType + ":" + _ptToken; }
     public String toString(String prefix) { return prefix + toString(); }
 
     /** Traverse this node with the given visitor.

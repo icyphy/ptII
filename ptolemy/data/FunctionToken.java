@@ -136,9 +136,6 @@ public class FunctionToken extends Token {
      */
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
-        // FIXME: This method currently tests for String equality..
-        // In actually, structural equality of functions (under
-        // renaming of bound variables) is probably more appropriate.
         FunctionToken convertedArgument = (FunctionToken)rightArgument;
         return BooleanToken.getInstance(
                 convertedArgument._function.isCongruent(_function));

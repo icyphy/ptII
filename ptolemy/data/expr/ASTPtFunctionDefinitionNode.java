@@ -37,8 +37,11 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.type.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionDefinitionNode
@@ -47,7 +50,18 @@ The parse tree created from function definitions of the form:
 <pre>
     function (x) x + 5
 </pre>
-which defines a function of one argument.
+
+which defines a function of one argument.  The above is assumed to
+have arguments declared of type general.  Monomorphic type-safe
+functions can be declared using syntax like:
+
+<pre>
+   function (x:int) x+5
+</pre>
+
+This declares that the function only takes integer arguments.  The
+return type (in this case integer, since the result of adding 5 to an
+integer is an integer) is inferred automatically.
 
 FIXME: check argument name duplication
 
@@ -100,6 +114,43 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     public ASTPtRootNode getExpressionTree() {
         // The first children are the arguments.
         return (ASTPtRootNode)jjtGetChild(jjtGetNumChildren() - 1);
+    }
+
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        if(!(node instanceof ASTPtFunctionDefinitionNode)) {
+            return false;
+        }
+        ASTPtFunctionDefinitionNode functionNode = 
+            (ASTPtFunctionDefinitionNode)node;
+        
+        // The number of arguments must be the same.
+        if(getArgumentNameList().size() !=
+                functionNode.getArgumentNameList().size()) {
+            return false;
+        }
+        Map newRenaming = new HashMap(renaming);
+
+        Iterator argNames = functionNode.getArgumentNameList().iterator();
+        for(Iterator names = getArgumentNameList().iterator();
+            names.hasNext();) {
+            String name = (String)names.next();
+            String argName = (String)argNames.next();
+            newRenaming.put(name, argName);
+        }
+
+        if(!super.isCongruent(node, newRenaming)) {
+            return false;
+        }
+        return true;
     }
 
     /** Close this node.

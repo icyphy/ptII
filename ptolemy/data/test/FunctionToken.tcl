@@ -115,7 +115,7 @@ test FunctionToken-11.0 {test isCloseTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
     
     list [[$r1 isCloseTo $r1] toString] [[$r1 isCloseTo $r2] toString] [[$r1 isCloseTo $r3] toString]
-} {true true true}
+} {true true false}
 
 test FunctionToken-11.1 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
@@ -123,7 +123,7 @@ test FunctionToken-11.1 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true true true}
+} {true true false}
 
 test FunctionToken-11.2 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x) 4+5"] 
@@ -139,7 +139,7 @@ test FunctionToken-11.3 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+5"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.4 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+5"] 
@@ -163,7 +163,7 @@ test FunctionToken-11.6 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4^5"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true true true}
+} {true true false}
 
 test FunctionToken-11.7 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4&5"] 
@@ -171,7 +171,7 @@ test FunctionToken-11.7 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4&5"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.8 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) x>y"] 
@@ -179,7 +179,7 @@ test FunctionToken-11.8 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) a>b"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.9 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) x&&y"] 
@@ -187,7 +187,7 @@ test FunctionToken-11.9 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) a&&b"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.10 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) {x,y}"] 
@@ -195,7 +195,7 @@ test FunctionToken-11.10 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) {a,b}"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.11 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) {foo=x,bar=y}"] 
@@ -203,7 +203,7 @@ test FunctionToken-11.11 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) {bar=b,foo=a}"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.12 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) x>>y"] 
@@ -211,7 +211,7 @@ test FunctionToken-11.12 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) a>>b"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
 
 test FunctionToken-11.13 {test isEqualTo} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) -x"] 
@@ -219,4 +219,12 @@ test FunctionToken-11.13 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) -a"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true false true}
+} {true false false}
+
+test FunctionToken-11.14 {test isEqualTo} {
+    set r1 [java::new {ptolemy.data.FunctionToken} "function(x:int,y:int) function(z:int) x+y+z"] 
+    set r2 [java::new {ptolemy.data.FunctionToken} "function(x,y) -y"] 
+    set r3 [java::new {ptolemy.data.FunctionToken} "function(a:int,b:int) function(c:int) a+b+c"]
+    
+    list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
+} {true false false}
