@@ -123,7 +123,8 @@ public class TimedDelay extends DETransformer {
     }
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
+     *  base class and then sets the delayTo relation between the input
+     *  and the output of the new actor.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
