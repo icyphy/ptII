@@ -71,16 +71,12 @@ JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
  <p>JavaCC is only necessary if you modify the expression parser in
 <CODE>ptolemy/data/expr</CODE>.
- <p>As of 4/98, Ptolemy II was using JavaCC 0.8pre2.
- <p>Under JDK1.2.1 and JavaCC1.0 under Windows NT4.0, you may
-get a NullPointerException.  The workaround is to either use
-JavaCC 0.8pre2 or install a new JIT available from
-<a href="http://developer.javasoft.com/developer/earlyAccess/jdk12/jit/index.html" target="_top">The Sun Java Developer's Connection.</a> 
+ <p>As of 1/00, Ptolemy II was using JavaCC 1.1
 
  <p>To install JavaCC, follow the instructions below
 <ol>
-<li> Download JavaCC0.8pre1.class from
-<a href="http://www.sun.com/suntest" target="_top"><CODE>http://www.sun.com/suntest</CODE></a>
+<li> Download JavaCC1_1.class from
+<a href="http://www.metamata.com/JavaCC/"><CODE>http://www.metamata.com/JavaCC/</CODE></a>
 
 <li> Set your CLASSPATH to <CODE>.</CODE>
 <pre>
@@ -94,7 +90,7 @@ was downloaded to.
 <li> Run <CODE>java</CODE> on the file.  Note that you should
 <B>not</B> include the <CODE>.class</CODE> suffix in the command line.
 <pre>
-java JavaCC0.8pre2
+java Java1_1
 </pre>
 
 <li> <CODE>$PTII/configure</CODE> looks for JavaCC in
