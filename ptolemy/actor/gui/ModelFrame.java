@@ -162,7 +162,9 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         getContentPane().setBackground(background);
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
-        if (_pane != null) _pane.setBackground(background);
+        if (_pane != null) {
+            _pane.setBackground(background);
+        }
     }
 
     /** Set the associated model. This overrides the base class to add
@@ -173,7 +175,9 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     public void setModel(CompositeActor model) {
         super.setModel(model);
         if (model != null) {
-            if (_pane != null) _pane.setModel(model);
+            if (_pane != null) {
+                _pane.setModel(model);
+            }
             Manager manager = model.getManager();
             if (manager != null) {
                 manager.addExecutionListener(this);
@@ -217,10 +221,10 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         }
         if (_pane != null) {
             _pane.stopRun();
+            // The second argument is supposed to be a button name, but there
+            // is no button that would have triggered this.
+            _pane.windowClosed(this, "");
         }
-        // The second argument is supposed to be a button name, but there
-        // is no button that would have triggered this.
-        _pane.windowClosed(this, "");
         return result;
     }
 
