@@ -587,7 +587,9 @@ fi
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
 PTJACL_JAR=$PTII/lib/ptjacl.jar
-JTCLSH='["$(JAVA)" tcl.lang.Shell]'
+# JTCLSH uses JAVAFLAGS for use with the 
+# vergil/test/VergilConfiguration.tcl test
+JTCLSH='["$(JAVA)" "$(JAVAFLAGS)" tcl.lang.Shell]'
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not present,
@@ -615,7 +617,7 @@ else
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
 		fi
-		JTCLSH='["$(JAVA)" tcl.lang.Shell]'
+		JTCLSH='["$(JAVA)" "$(JAVAFLAGS) tcl.lang.Shell]'
 	fi
     else
 	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
