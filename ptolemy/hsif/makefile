@@ -67,7 +67,11 @@ KRUFT = \
 	data/Thermostat_mid_sl.xml \
 	data/SwimmingPool_mid_sl.xml \
 	data/Thermostat_mid.xml \
-	data/SwimmingPool_mid.xml
+	data/SwimmingPool_mid.xml \
+	Thermostat_moml.xml \
+	SwimmingPool_moml.xml \
+	test/Thermostat_moml.xml \
+	test/SwimmingPool_moml.xml
 
 
 # Files to be included in the jar file
