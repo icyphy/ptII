@@ -246,7 +246,7 @@ public class Prototype extends NamedObj implements Instantiable {
     /** Get the prototype to which this object defers its definition.
      *  @return A prototype or null to indicate that this object does
      *   not defer its definition.
-     *  @see setParent(Instantiable)
+     *  @see #setParent(Instantiable)
      */
     public Instantiable getParent() {
         return _parent;
@@ -371,7 +371,7 @@ public class Prototype extends NamedObj implements Instantiable {
      *  @see #exportMoML(Writer, int)
      *  @exception IllegalActionException If the parent is not an
      *   instance of Prototype.
-     *  @see getParent()
+     *  @see #getParent()
      */
     public void setParent(Instantiable parent) throws IllegalActionException {
         if (parent != null && !(parent instanceof Prototype)) {
