@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="SmoothedPeriodogram" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -112,7 +112,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </port>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
-        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
