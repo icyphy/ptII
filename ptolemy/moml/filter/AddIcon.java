@@ -192,6 +192,14 @@ public class AddIcon implements MoMLFilter {
                 + "<property name=\"displayWidth\" value=\"40\"/>\n"
                 + "</property>\n");
 
+        // In alphabetic order by actor class name.
+        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Expression",
+                "<property name=\"_icon\" "
+                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                + "<property name=\"attributeName\" value=\"expression\"/>\n"
+                + "<property name=\"displayWidth\" value=\"60\"/>\n"
+                + "</property>\n");
+
         String functionIcon =
             "<property name=\"_icon\" "
             + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
