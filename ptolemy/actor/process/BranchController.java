@@ -1,4 +1,5 @@
-/* 
+/* A BranchController manages the execution of a set of branch objects by 
+monitoring whether the branches have blocked. 
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -36,6 +37,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.Token;
 import ptolemy.kernel.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 // Java imports
@@ -46,33 +48,19 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// BranchController
 /**
-A BranchController manages the execution of a set of Branches. The
-BranchController monitors whether the branches have deadlocked and
-whether the iteration of branch executions is over. 
-
-An iteration lasts until no branches are allowed additional communication.
-Based on the BranchController parameters, it is possible that the
-Branches will be allowed indefinite communication implying that 
-iterations will continue into perpetuity. 
-
-If all branches are deadlocked and the iteration is not over, the 
-controller will notify its director by calling the director's 
-_branchBlocked() method.
-
-The BranchController's method isActive() will return true for the 
-duration of the BranchController's life. If isActive() returns false, 
-then isIterationOver() will return true.
-Once isActive() returns false, then the BranchController will die, 
-as will all Branches that it controls, and the BranchController 
-reference should be set to null.
-
-There are several methods of this class that reveal internal state. 
-The names of these methods all begin with the verb "is" or "are" 
-and have boolean return types. These state methods are organized in 
-a partial ordering. A method is considered
-to be "subordinate" with respect to a "dominant" method if the return value
-of the subordinate method is directly impacted by the return value of the
-dominant method. All state methods methods are subordinate to isActive().
+A BranchController manages the execution of a set of branch objects by 
+monitoring whether the branches have blocked. A branch blocks when it is 
+either unable to get data from its producer receiver or put data into its 
+consumer receiver. When a branch blocks, it registers the block with its 
+branch controller by passing the specific receiver that is blocked. If all 
+of a branch controllers branches are blocked, then the branch controller 
+informs the director associated with its containing composite actors. 
+<P>
+Branches are assigned to a branch controller by the director associated 
+with the controller's composite actor via the addBranches() method. This
+method takes an io port and determine's the port's receivers. Branches
+are then instantiated and assigned to the receivers according to whether
+the receivers are producer or consumer receivers. 
 
 
 @author John S. Davis II
@@ -81,9 +69,10 @@ dominant method. All state methods methods are subordinate to isActive().
 
 public class BranchController implements Runnable {
 
-    /** Construct a controller in the specified container, which should
-        be an actor.
-        @param container The parent actor that contains this object.
+    /** Construct a branch controller in the specified composite actor
+     *  container.
+     *
+     *  @param container The parent actor that contains this object.
     */
     public BranchController(CompositeActor container) {
         _parentActor = container;
@@ -91,18 +80,14 @@ public class BranchController implements Runnable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables		   ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Activate the branches that are managed by this Branch
-     *  Controller. This method should be invoked once when
-     *  a BranchController first starts the Branches it controls.
-     *  Invokation of this method will cause the Branches to
-     *  begin iterating. Each iteration will last until all
-     *  branch engagements for that iteration are complete. 
-     *  To begin a subsequent iteration, call startIteration().
+    /** Activate the branches that are managed by this branch
+     *  controller. This method should be invoked once when
+     *  a branch controller first starts the branches it controls.
+     *  Invocation of this method will cause the branches to
+     *  begin transferring tokens between their assigned producer
+     *  and consumer receiver. 
      */
     public void activateBranches() {
         synchronized(this) {
@@ -121,18 +106,18 @@ public class BranchController implements Runnable {
     /** Add branches corresponding to the channels of the port
      *  argument. The port must be contained by the same actor
      *  that contains this controller. If branches corresponding
-     *  to the port have already been added to this controller,
-     *  then an IllegalActionException will be thrown. If the
-     *  input/output polarity of this port does not match that
+     *  to the specified port have already been added to this 
+     *  controller, then an IllegalActionException will be thrown. 
+     *  If the input/output polarity of this port does not match that
      *  of ports for whom branches have been previously added
      *  to this controller, then throw an IllegalActionException.
-     * @param port The port for which branches will be added to this
-     *  controller.
-     * @exception IllegalActionException If branches for the
-     *  port have been previously added to this controller or
-     *  if the port input/output polarity does not match that
-     *  of ports for whom branches were previously add to this
-     *  controller.
+     *  @param port The port for which branches will be added to this
+     *   controller.
+     *  @exception IllegalActionException If branches for the
+     *   port have been previously added to this controller or
+     *   if the port input/output polarity does not match that
+     *   of ports for whom branches were previously add to this
+     *   controller.
      */
     public void addBranches(IOPort port) throws 
             IllegalActionException {
@@ -186,11 +171,10 @@ public class BranchController implements Runnable {
 	}
     }
 
-    /** Terminate abruptly any threads created by this actor. Note that
-     *  this method does not allow the threads to terminate gracefully.
+    /** Deactive the branches assigned to this branch controller.
      */
     public synchronized void deactivateBranches() {
-        System.out.println(_parentName+": branch controller calling deactivate()");
+        // System.out.println(_parentName+": branch controller calling deactivate()");
 	setActive(false);
         Iterator branches = _branches.iterator();
         Branch branch = null;
@@ -208,7 +192,16 @@ public class BranchController implements Runnable {
             }
         }
 	notifyAll();
-        System.out.println(_parentName+": branch controller ending deactivate()");
+        // System.out.println(_parentName+": branch controller ending deactivate()");
+    }
+
+    /** Returned a linked list of the blocked receivers associated
+     *  with this branch controller.
+     *  @return A linked list of the blocked receivers associated 
+     *   with this branch controller.
+     */
+    public LinkedList getBlockedReceivers() {
+	return _blockedReceivers;
     }
 
     /** Return the list of branches controlled by this controller.
@@ -218,18 +211,18 @@ public class BranchController implements Runnable {
         return _branches;
     }
     
-    /** Return the CompositeActor that creates the branch 
-     *  and owns this controller.
-     *  @return The CompositeActor that owns this controller.
+    /** Return the composite actor that contains this branch 
+     *  controller.
+     *  @return The composite actor that contains this controller.
      */
     public CompositeActor getParent() {
         return _parentActor;
     }
 
-    /** Return true if this controller controls one or more branches;
-     *  return false otherwise.
-     * @return True if this controller controls one or more branche;
-     *  return false otherwise.
+    /** Return true if this branch controller controls one or more 
+     *  branches; return false otherwise.
+     *  @return True if this controller controls one or more branches;
+     *   return false otherwise.
      */
     public boolean hasBranches() {
         return _branches.size() > 0;
@@ -243,16 +236,14 @@ public class BranchController implements Runnable {
 	return _isActive;
     }
 
-    /** Return true if all of the branches controlled by this
-     *  controller are stopped and at least one of the branches
-     *  is blocked or if this controller has no branches. Stopped 
-     *  branches are defined as either being blocked or waiting 
-     *  for the next iteration. 
-     * @return True if all branches controlled by this 
-     *  controller are stopped and at least one branch is
-     *  blocked or if there are no branches; return false otherwise.
+    /** Return true if all of the branches assigned to this branch 
+     *  controller are blocked or if this branch controller has no 
+     *  branches; return false otherwise. 
+     *  @return True if all branches controlled by this branch
+     *   controller are blocked or if this branch controller has
+     *   no branches; return false otherwise.
      */
-    public synchronized  boolean isBlocked() {
+    public synchronized boolean isBlocked() {
         if( !hasBranches() ) {
             return true;
         }
@@ -264,7 +255,11 @@ public class BranchController implements Runnable {
         return false;
     }
     
-    /**
+    /** Begin executing the branches associated with this branch
+     *  controller so that they will begin transfering data in
+     *  their assigned channels. If all of the branches become
+     *  blocked then the director associated with this branch
+     *  branch controller is notified.
      */
     public void run() {
     	synchronized(this) {
@@ -286,7 +281,10 @@ public class BranchController implements Runnable {
         }
     }
     
-    /**
+    /** Set this branch controller active if the active parameter is
+     *  true; set this branch controller to inactive otherwise.
+     *  @param active The indicator of whether this branch controller
+     *   will be set active or inactive.  
      */
     public void setActive(boolean active) {
 	_isActive = active;
@@ -296,9 +294,12 @@ public class BranchController implements Runnable {
     ////                         protected methods                 ////
 
     /** Increase the count of branches that are blocked trying to do
-     *  a rendezvous read. If all the enabled branches (for the CIF 
-     *  or CDO currently being executed) are blocked, register this 
-     *  actor as being blocked.
+     *  a read or write and register the receiver instigating the 
+     *  blocked branch. If all the assigned branches are blocked, 
+     *  then this branch controller will be registered as blocked with
+     *  the controlling director. 
+     *  @param rcvr The process receiver that is being registered
+     *   as blocked.
      */
     protected void _branchBlocked(ProcessReceiver rcvr) {
         synchronized(this) {
@@ -308,9 +309,10 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Decrease the count of branches that are read blocked.
-     *  If the actor was previously registered as being blocked, 
-     *  register this actor with the director as no longer being 
+    /** Decrease the count of branches that are read or write blocked
+     *  and note the receiver that is no longer blocked. If the branch
+     *  controller was previously registered as being blocked, register 
+     *  this branch controller with the director as no longer being 
      *  blocked.
      */
     protected void _branchUnBlocked(ProcessReceiver rcvr) {
@@ -326,7 +328,10 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Get the director that controlls the execution of its parent actor.
+    /** Return the director that controls the execution of this 
+     *  branch controller's containing composite actor. 
+     *  @return The composite process director that is associated
+     *   with this branch controller's container.
      */
     private CompositeProcessDirector _getDirector() {
         try {
@@ -334,11 +339,17 @@ public class BranchController implements Runnable {
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-	    throw new TerminateProcessException("Error.");
+	    String name = ((Nameable)getParent()).getName();
+	    throw new TerminateProcessException("Error: " +
+		    name + " contains a branch controller that has a " +
+		    "receiver that does not have a director");
 	}
     }
 
-    /**
+    /** Return true if this branch controller has input ports associated
+     *  with it; return false otherwise.
+     *  @return True if this branch controller has input ports associated
+     *  with it. False otherwise.
      */
     private boolean _hasInputPorts() {
     	if( _ports.size() == 0 ) {
@@ -352,7 +363,10 @@ public class BranchController implements Runnable {
         return false;
     }
     
-    /**
+    /** Return true if this branch controller has output ports associated
+     *  with it; return false otherwise.
+     *  @return True if this branch controller has output ports associated
+     *  with it. False otherwise.
      */
     private boolean _hasOutputPorts() {
     	if( _ports.size() == 0 ) {
@@ -372,7 +386,7 @@ public class BranchController implements Runnable {
     // The number of branches that are blocked
     private int _branchesBlocked = 0;
     
-    // The CompositeActor who owns this controller object.
+    // The CompositeActor that owns this controller object.
     private CompositeActor _parentActor;
 
     private LinkedList _branches = new LinkedList(); 

@@ -1,5 +1,5 @@
 /* A BoundaryDetector determines the topological relationship of a Receiver 
-with respect to composite entity boundaries.
+with respect to boundary ports.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -42,7 +42,7 @@ import java.util.Iterator;
 //// BoundaryDetector
 /**
 A BoundaryDetector determines the topological relationship of a Receiver 
-with respect to composite entity boundaries.
+with respect to boundary ports.
 
 @author John S. Davis II
 @version $Id$

@@ -1,4 +1,5 @@
-/* Interface for receivers in process domains.
+/* A ProcessReceiver is an interface for receivers in the process oriented 
+domains. 
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -39,10 +40,12 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
 /**
-Interface for receivers in the process oriented domains.
-It adds methods to the Receiver interface for setting flags that
+A ProcessReceiver is an interface for receivers in the process oriented 
+domains. It adds methods to the Receiver interface for setting flags that
 indicate whether a termination of the simulation has been requested.
-
+In addition, methods are available to accomodate hierarchical 
+heterogeneity via composite actors. 
+<P>
 In process oriented domains, simulations are normally ended on the
 detection of a deadlock. During a deadlock, processes or the
 corresponding threads are normally waiting on a call to some
@@ -60,10 +63,37 @@ public synchronized void requestFinish() {
     notifyAll();
 }
 </code>
-<p>
+<P>
+<P>
+To accomodate hierarchical heterogeneity, an instantiation of 
+ProcessReceiver must be able to determine its topological location
+with respect to boundary ports. A boundary port is an opaque port 
+that is contained by a composite actor. This ability is enforced 
+with the isConnectedToBoundary(), isConnectedToBoundaryOutside(), 
+isConnectedToBoundaryInside(), isInsideBoundary() and isOutsideBoundary()
+methods. For convenience, the BoundaryDetector class is available to
+to simplify the implementation of these methods.
+<P>
+Blocking reads and writes are accomodated via the get(Branch)
+and put(Token, Branch) methods. In cases where a branch attempts
+to get data from or put data into a process receiver, it calls,
+respectively, these methods by passing itself as an argument.
+The process receiver then knows to register any blocks with
+the branch rather than with a director as is occurs in non-composite
+cases.
+<P>
+Note that it is not necessary for an implementation of ProcessReceiver to 
+be used in the ports of an opaque composite actor. It is perfectly fine 
+for a ProcessReceiver implementation to be used in the ports of an atomic 
+actor. In such cases the get() and put() methods are called without the 
+use of a branch object. If blocking reads or writes occur they are 
+registered with the controlling director without the need for a branch 
+or branch controller.
+
 
 @author Neil Smyth, Mudit Goel, John S. Davis II
 @version $Id$
+@see ptolemy.actor.process.BoundaryDetector
 
 */
 public interface ProcessReceiver extends Receiver {
@@ -71,7 +101,14 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Get a token from this receiver and pass in a branch object as
+     *  an argument. This method can accomodate blocking reads at the
+     *  boundary of composite actors. If the branch argument is not
+     *  null it is assumed that the receiver is at or connected to 
+     *  the boundary of a composite actor and any blocks are 
+     *  registered with the branch. If the branch is null than the
+     *  receiver is not associated with a composite actor boundary
+     *  and blocks are registered with a director.
      */
     public Token get(Branch controllingBranch); 
 
@@ -126,7 +163,11 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isConnectedToBoundaryOutside();
 
-    /** 
+    /** Return true if this receiver is a consumer receiver. A process
+     *  receiver is a consumer receiver if it is connected to a 
+     *  boundary port.
+     *  @return True if this is a consumer receiver; return 
+     *   false otherwise.
      */
     public boolean isConsumerReceiver(); 
 
@@ -164,28 +205,43 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isOutsideBoundary();
     
-    /** 
+    /** Return true if this receiver is a producer receiver. A process
+     *  receiver is a producer receiver if it is contained on the
+     *  inside or outside of a boundary port.
+     *  @return True if this is a producer receiver; return false 
+     *   otherwise.
      */
     public boolean isProducerReceiver(); 
 
     /** Determine if this receiver is read blocked.
+     *  @return True if this receiver is read blocked; return 
+     *   false otherwise.
      */
     public boolean isReadBlocked();
     
     /** Determine if this receiver is write blocked.
+     *  @return True if this receiver is write blocked; return 
+     *   false otherwise.
      */
     public boolean isWriteBlocked();
-
-    /** Reset the local flags of this receiver. Use this method when
-     *  restarting execution.
-     */
-    public void reset();
 
     /** Set a local flag requesting that the simulation be finished.
      */
     public void requestFinish();
     
-    /** 
+    /** Reset the local flags of this receiver. Use this method when
+     *  restarting execution.
+     */
+    public void reset();
+
+    /** Put a token into this receiver and pass in a branch object as
+     *  an argument. This method can accomodate blocking writes at the
+     *  boundary of composite actors. If the branch argument is not
+     *  null it is assumed that the receiver is at or connected to 
+     *  the boundary of a composite actor and any blocks are 
+     *  registered with the branch. If the branch is null than the
+     *  receiver is not associated with a composite actor boundary
+     *  and blocks are registered with a director.
      */
     public void put(Token token, Branch controllingBranch); 
 

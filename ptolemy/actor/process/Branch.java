@@ -1,6 +1,5 @@
-/* A Branch serves as a proxy for a BranchController by transfer tokens
-between the producer receiver and the consumer receiver to which it
-is assigned. 
+/* A Branch transfers tokens through a channel that crosses a composite 
+actor boundary. 
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,46 +39,57 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 /**
-A Branch serves as a proxy for a BranchController by transfer tokens
-between the producer receiver and the consumer receiver to which it
-is assigned. The execution of a Branch is controlled by a 
-BranchController in that a BranchController can deny a Branch permission 
-to get or put data in the receiver. 
-
-An iteration of a Branch lasts until the BranchController notifies
-the Branch that the current iteration is done. Such notification 
-occurs via a TerminateBranchException that is thrown as soon as a
-Branch determines that isIterationOver() returns true. Until an
-iteration is over, a Branch will indefinitely attempt to get and
-put data to the receivers it controls. This may result in the
-Branch blocking on a read or write, only to be awakened by a
-TerminateBranchException.
-
-Once an iteration has ended, a Branch will immediately begin a new
-iteration unless isActive() returns false. The method isActive()
-will return true for the duration of the Branch's life. If 
-isActive() returns false, then isIterationOver() will return true.
-Once isActive() returns false, then the Branch will die, as will
-the thread (BranchThread) controlling the Branch, and the Branch
-reference should be set to null.
-
-
+A Branch transfers tokens through a channel that crosses a composite 
+actor boundary. Branch implements the Runnable class and the execution 
+of a branch object is controlled by an instantiation of the 
+BranchController class. Each branch object is assigned two receiver 
+objects and each of these receiver objects must implement the 
+ProcessReceiver class. One of the assigned receivers is referred to as 
+the producer receiver (the channel source) and the other is referred to 
+as the consumer receiver (the channel destination). 
+<P>
+During its execution a branch attempts to get data from the producer 
+receiver and put data in the consumer receiver. The communication 
+semantics of the producer receiver get() method are dependent upon the 
+model of computation associated with the producer receiver. In cases 
+where a blocking read occurs, the producer receiver registers the block 
+with the calling branch leading to a blocked branch. So that the producer 
+receiver knows which branch to register the block with, a branch always 
+invokes the receiver's get() method by passing itself as an argument. 
+A blocked branch registers the block with the branch controller that it 
+is assigned to. 
+<P>
+Putting data in a consumer receiver is symmetrically analogous to getting 
+data from a producer receiver. In cases where a blocking write occurs, 
+the consumer receiver registers the block with the calling branch leading 
+to a blocked branch. So that the consumer receiver knows which branch to 
+register the block with, a branch always invokes the receiver's put() 
+method by passing itself as an argument. 
+ 
 @author John S. Davis II
 @version $Id$
 */
 
 public class Branch implements Runnable {
 
-    /** Construct a Branch object.
-     * @deprecated Use this constructor for testing purposes only.
+    /** Construct a branch object with a branch controller.
+     * 
+     *  @param cntlr The branch controller assigned to this branch.
+     *  @deprecated Use this constructor for testing purposes only.
      */
-    // public Branch() throws 
     public Branch(BranchController cntlr) throws 
     	    IllegalActionException {
         _controller = cntlr;
     }
  
-    /** Construct a Branch object.
+    /** Construct a branch object with a producer receiver, a consumer 
+     *  receiver and a branch controller.
+     * 
+     *  @param prodRcvr The producer receiver assigned to this branch.
+     *  @param consRcvr The consumer receiver assigned to this branch.
+     *  @param cntlr The branch controller assigned to this branch.
+     *  @exception IllegalActionException If the receivers assigned to
+     *   this branch are null or improperly configured.
      */
     public Branch(ProcessReceiver prodRcvr, ProcessReceiver consRcvr, 
 	    BranchController cntlr) throws IllegalActionException {
@@ -90,8 +100,9 @@ public class Branch implements Runnable {
             	    + "receivers of this branch are null.");
         }
         if( !prodRcvr.isProducerReceiver() ) {
-            throw new IllegalActionException("Not producer "
-            	    + "receiver");
+	    String name = ((Nameable)consRcvr.getContainer()).getName();
+            throw new IllegalActionException("Receiver: " + name + 
+		    " Not producer receiver");
         }
 	_prodRcvr = prodRcvr;
         
@@ -107,18 +118,16 @@ public class Branch implements Runnable {
     ////                         public methods                    ////
 
     /** Return the consumer receiver that this branch puts data into.
-     *  A consumer receiver is defined as being a receiver whose  
-     *  containing port is connected to a boundary port.
-     * @return The consumer receiver that this branch puts data into.
-     * @see ptolemy.actor.process.BoundaryDetector
+     * 
+     *  @return The consumer receiver that this branch puts data into.
+     *  @see ptolemy.actor.process.BoundaryDetector
      */
     public ProcessReceiver getConsReceiver() {
         return _consRcvr;
     }
 
     /** Return the producer receiver that this branch gets data from.
-     *  A producer receiver is defined as being a receiver that is
-     *  contained in a boundary port.
+     * 
      * @return The producer receiver that this branch gets data from.
      * @see ptolemy.actor.process.BoundaryDetector
      */
@@ -126,11 +135,8 @@ public class Branch implements Runnable {
         return _prodRcvr;
     }
 
-    /** Boolean indicating if this branch is still alive. If it is false, it
-     *  indicates another conditional branch was able to rendezvous before
-     *  this branch, and this branch should stop trying to rendezvous with
-     *  its receiver and terminate. If it is true, the branch should
-     *  continue trying to rendezvous.
+    /** Return true if this branch is active. 
+     * 
      *  @return True if this branch is still alive.
      */
     public boolean isActive() {
@@ -138,7 +144,12 @@ public class Branch implements Runnable {
     }
 
     /** Register that the receiver controlled by this branch
-     *  is blocked.
+     *  is blocked. The blocked receiver, either the producer
+     *  or consumer receiver (but not both) are passed as an
+     *  argument according to which one is blocked.
+     * 
+     *  @param rcvr The receiver assigned to this branch that
+     *   is blocked.
      */
     public void registerRcvrBlocked(ProcessReceiver rcvr) {
     	if( !_rcvrBlocked ) {
@@ -148,7 +159,10 @@ public class Branch implements Runnable {
     }
 
     /** Register that the receiver controlled by this branch
-     *  is no longer blocked.
+     *  is no longer blocked. 
+     *
+     *  @param rcvr The receiver assigned to this branch for 
+     *   which a block is being removed. 
      */
     public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
     	if( _rcvrBlocked ) {
@@ -157,34 +171,35 @@ public class Branch implements Runnable {
         }
     }
 
-    /** Transfer a single token between the producer receiver and 
-     *  the consumer receiver. If a TerminateBranchException is
-     *  thrown, then reset this receiver and return. 
-     *  FIXME: Can we optimize this?
+    /** Repeatedly transfer a single token between the producer 
+     *  receiver and the consumer receiver as long as the branch
+     *  is active or until a TerminateProcessException is thrown. 
+     *  NOTE: This method could probably be more efficient.
      */
     public void run() {
         try {
             setActive(true);
             while( isActive() ) {
                 transferToken();
-                /*
-            	Token token = _prodRcvr.get(this); 
-                _consRcvr.put(token, this);
-                */
             }
         } catch( TerminateProcessException e ) {
             return;
         }
     }
     
-    /** Set a flag indicating this branch should fail.
-     *  @param value Boolean indicating whether this branch is still alive.
+    /** Set a flag indicating this branch is no longer active.
+     * 
+     *  @param value A boolean indicating whether this branch is 
+     *   still active.
      */
     public void setActive(boolean value) {
         _active = value;
     }
 
-    /**
+    /** Transfer a single token from the producer receiver to the
+     *  consumer receiver. If either the producer receiver or
+     *  consumer receiver is null then return without attempting
+     *  token transfer.
      */
     public void transferToken() {
         if( _prodRcvr == null ) {
@@ -196,29 +211,16 @@ public class Branch implements Runnable {
         _consRcvr.put(token, this);
     }
     
-    /** FIXME
-    public void wrapup() throws IllegalActionException {
-    }
-     */
-    
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Has another branch successfully rendezvoused? If so, then _active
-    // is set to false. Otherwise, this branch still can potentially
-    // rendezvous. _active remains true until it is no longer possible
-    // for this branch to successfully rendezvous.
     private boolean _active = false;
-
-    // The controller of this thread is trying to perform a conditional
-    // rendezvous for.
     private BranchController _controller;
     private ProcessReceiver _prodRcvr;
     private ProcessReceiver _consRcvr;
-    
     private boolean _rcvrBlocked = false;
 
 }

@@ -63,7 +63,7 @@ should be called before starting this thread.
 In process oriented domains, the director needs to keep a count of the
 number of active processes in the system. This is used for detection of
 deadlocks, termination, and possibly some other reasons. For this two
-methods _increaseActiveCount() and _decreaseActiveCount() are defined
+methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
 in the ProcessDirector. _increaseActiveCount() is called on the director
 from the constructor of this class and the _decreaseActiveCount() method
 is called at the end of the run() method, i.e. before the thread terminates.
@@ -131,25 +131,27 @@ public class ProcessThread extends PtolemyThread {
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
-                   /*
+	    /*
 	} catch( InterruptedException e) {
             _manager.notifyListenersOfException(e);
-                   */
+	    */
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
             try {
-                System.out.println(_name+" calling wrapup");
+                // System.out.println(_name+" calling wrapup");
  		wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
+	    /*
             String name = ((Nameable)_actor).getName();
             System.out.println(name+": has called _decreaseActiveCount on "
             + _director.getName() + "; there are "
             + _director._getActiveActorsCount()+" active actors in "
             + _director.getName() +".");
+	    */
         }
     }
 
@@ -159,7 +161,7 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
-        System.out.println(_name+" called stopThread");
+        // System.out.println(_name+" called stopThread");
 	_threadStopRequested = true;
     }
 
