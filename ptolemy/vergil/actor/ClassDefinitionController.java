@@ -37,6 +37,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -127,7 +128,10 @@ public class ClassDefinitionController extends ActorController {
         }
         moml.append("<group name=\"auto\">");
         // FIXME: Can we adjust the location here?
-        if (object.isClassDefinition()) {
+        // NOTE: This controller is expected to be used
+        // only for class definitions, which must be instances
+        // of Prototype, so this cast should be safe.b
+        if (((Prototype)object).isClassDefinition()) {
             if (subclass) {
                 moml.append("<class name=\""
                         + "SubclassOf"

@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.shallow;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -36,14 +42,13 @@ import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
@@ -52,7 +57,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
 import soot.Body;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -76,12 +80,6 @@ import soot.jimple.StringConstant;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -680,20 +678,20 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
      */
     // FIXME: duplicate with MoMLWriter.
     private static NamedObj _findDeferredInstance(NamedObj object) {
-        System.out.println("findDeferred = " + object.getFullName());
+        // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
+        boolean isClass = false;
+        if (object instanceof Prototype) {
+            deferredObject = ((Prototype)object).getDeferTo();
+            isClass = ((Prototype)object).isClassDefinition();
+        }
         NamedObj.MoMLInfo info = object.getMoMLInfo();
-        if (info.deferTo != null) {
-            deferredObject = info.deferTo;
-            // System.out.println("object = " + object.getFullName());
-            //System.out.println("deferredDirectly = " + deferredObject);
-            //(new Exception()).printStackTrace(System.out);
-        } else if (info.className != null) {
+        if (deferredObject == null && info.className != null) {
             try {
                 // First try to find the local moml class that
                 // we extend
                 String deferredClass;
-                if (info.elementName.equals("class")) {
+                if (isClass) {
                     deferredClass = info.superclass;
                 } else {
                     deferredClass = info.className;

@@ -216,7 +216,7 @@ test MoMLUndoChangeRequest-5.1 {getDeferredToParent} {
     set e3 [java::new ptolemy.actor.TypedCompositeActor $toplevel E3]
 
     # FIXME: not sure if this is right?	
-    $e3 setDeferMoMLDefinitionTo $toplevel
+    $e3 setDeferTo $toplevel
 
     set r1 [expr {[java::call \
 	    ptolemy.moml.MoMLChangeRequest getDeferredToParent [java::null]] \

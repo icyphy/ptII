@@ -30,7 +30,13 @@
 package ptolemy.copernicus.java;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
@@ -41,16 +47,15 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Expression;
-import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.ComponentEntity;
@@ -59,6 +64,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -67,14 +73,11 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
-import soot.Body;
 import soot.BooleanType;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
@@ -89,14 +92,18 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
-import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
-import soot.jimple.*;
+import soot.jimple.AssignStmt;
+import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
 import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
 
 
@@ -1498,18 +1505,18 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     public static NamedObj _findDeferredInstance(NamedObj object) {
         //  System.out.println("findDeferred =" + object.getFullName());
         NamedObj deferredObject = null;
+        boolean isClass = false;
+        if (object instanceof Prototype) {
+            deferredObject = ((Prototype)object).getDeferTo();
+            isClass = ((Prototype)object).isClassDefinition();
+        }
         NamedObj.MoMLInfo info = object.getMoMLInfo();
-        if (info.deferTo != null) {
-            deferredObject = info.deferTo;
-            // System.out.println("object = " + object.getFullName());
-            // System.out.println("deferredDirectly = " + deferredObject);
-            //(new Exception()).printStackTrace(System.out);
-        } else if (info.className != null) {
+        if (deferredObject == null && info.className != null) {
             try {
                 // First try to find the local moml class that
                 // we extend
                 String deferredClass;
-                if (info.elementName.equals("class")) {
+                if (isClass) {
                     deferredClass = info.superclass;
                 } else {
                     deferredClass = info.className;

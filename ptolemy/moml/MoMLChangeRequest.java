@@ -32,9 +32,14 @@ package ptolemy.moml;
 
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -142,6 +147,42 @@ public class MoMLChangeRequest extends ChangeRequest {
         _base = base;
     }
 
+    /** Construct a mutation request to be executed in the specified context
+     *  that is a propagated change request from a previous change request.
+     *  The context is typically a Ptolemy II container, such as an entity,
+     *  within which the objects specified by the MoML code will be placed.
+     *  If the top-level containing the specified context has a
+     *  ParserAttribute, then the parser associated with that attribute
+     *  is used.  Otherwise, a new parser is created, and set to be the
+     *  top-level parser.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion(), although there
+     *  is severe risk of deadlock when doing that.
+     *  @param originator The originator of the change request.
+     *  @param context The context in which to execute the MoML.
+     *  @param request The mutation request in MoML.
+     *  @param base The URL relative to which external references should
+     *   be resolved.
+     *  @param propagator The original change request that triggered
+     *   this propagating change request.
+     */
+    private MoMLChangeRequest(
+            Object originator,
+            NamedObj context, 
+            String request, 
+            URL base, 
+            MoMLChangeRequest propagator) {
+        super(originator, request);
+        _context = context;
+        _base = base;
+        _propagator = propagator;
+        _propagating = true;
+        _undoable = propagator._undoable;
+        _mergeWithPreviousUndo = propagator._mergeWithPreviousUndo;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -180,8 +221,10 @@ public class MoMLChangeRequest extends ChangeRequest {
     public static NamedObj getDeferredToParent(NamedObj object) {
         if (object == null) {
             return null;
+        } else if (!(object instanceof Prototype)) {
+            return getDeferredToParent((NamedObj)object.getContainer());
         } else {
-            List deferList = object.getMoMLInfo().deferredFrom;
+            List deferList = ((Prototype)object).getDeferredFrom();
             if (deferList != null && deferList.size() > 0) {
                 return object;
             } else {
@@ -293,13 +336,24 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (!_enablePropagation) {
             return;
         }
-        NamedObj context = _context;
+
+        NamedObj context = (NamedObj)_context;
         if (context == null) {
             context = _parser.getToplevel();
         }
+        
+        if (_propagator == null) {
+            _propagator = this;
+        }
 
         while(context != null) {
-            List othersList = context.getMoMLInfo().deferredFrom;
+            if (!(context instanceof Prototype)) {
+                // This level can't possibly defer.
+                // Continue to the next level up.
+                context = (NamedObj)context.getContainer();
+                continue;
+            }
+            List othersList = ((Prototype)context).getDeferredFrom();
             if (othersList != null) {
 
                 Iterator others = othersList.iterator();
@@ -307,18 +361,83 @@ public class MoMLChangeRequest extends ChangeRequest {
                     WeakReference reference = (WeakReference)others.next();
                     NamedObj other = (NamedObj)reference.get();
                     if (other != null) {
+                        
+                        if (_DEBUG) {
+                            System.out.println("+++++++ Propagating to "
+                                    + other.getFullName());
+                        }
+
+                        // It is possible for there to be multiple deferral
+                        // paths to the same context.  This ensures that
+                        // change request will not be executed twice in the
+                        // same context.
+                        if (_propagator._propagatedContexts == null) {
+                            _propagator._propagatedContexts = new HashSet();
+                        } else {
+                            // We may have done this already.  Check this
+                            // by finding the object that will be affected by
+                            // this propagation.  To do that, note that                            
+                            // the variable "context" starts out equal to "_context",
+                            // the context of this change request, but then becomes
+                            // its container, and then the container of that container,
+                            // etc.
+                            if (context != _context
+                                    && (other instanceof CompositeEntity)) {
+                                String trueContextName
+                                        = _context.getName(context);
+                                // Only have to worry about entities
+                                // for now, since only entities can
+                                // participate in deferral mechanisms.
+                                // However, if we later implement parameter
+                                // or port classes, this code will have to
+                                // check them in addition to the call to
+                                // getEntity().
+                                ComponentEntity trueContext
+                                        = ((CompositeEntity)other)
+                                        .getEntity(trueContextName);
+                                if (trueContext != null) {
+                                    if (_propagator._propagatedContexts
+                                            .contains(trueContext)) {
+                                        // Skip this context. We've done it already.
+                                        if (_DEBUG) {
+                                            System.out.println(
+                                                    "------- Cancelling propagation to "
+                                                    + other.getFullName());
+                                        }
+                                        continue;
+                                    }
+                                    _propagator._propagatedContexts.add(trueContext);
+                                }
+                            } else {
+                                // There isn't a more specific context, so we
+                                // check on the "other" context.
+                                if (_propagator._propagatedContexts.contains(other)) {
+                                    // Skip this context. We've done it already.
+                                    if (_DEBUG) {
+                                        System.out.println(
+                                                "------- Cancelling propagation to "
+                                                + other.getFullName());
+                                    }
+                                    continue;
+                                }
+                                _propagator._propagatedContexts.add(other);
+                            }
+                        }
+                        
                         // Create new MoML for the new context, if it is different.
                         String moml = getDescription();
+                        
                         if (context != _context) {
+                            String elementName = _context.getMoMLElementName();
                             // Surround the MoML with an appropriate context.
                             moml = "<"
-                                    + _context.getMoMLInfo().elementName
+                                    + elementName
                                     + " name=\""
                                     + _context.getName(context)
                                     + "\">"
                                     + getDescription()
                                     + "</"
-                                    + _context.getMoMLInfo().elementName
+                                    + elementName
                                     + ">";
                         }
                         // Make the request by queueing a new change request.
@@ -330,13 +449,9 @@ public class MoMLChangeRequest extends ChangeRequest {
                                 getSource(),
                                 other,              // context
                                 moml,               // MoML code
-                                _base);
-                        // Let the parser know that we are propagating
-                        // changes, so that it does not need to record them
-                        // using MoMLAttribute.
-                        newChange._propagating = true;
-                        newChange._undoable = _undoable;
-                        newChange._mergeWithPreviousUndo = _mergeWithPreviousUndo;
+                                _base,
+                                _propagator);
+
                         other.requestChange(newChange);
                     }
                 }
@@ -364,9 +479,17 @@ public class MoMLChangeRequest extends ChangeRequest {
     // The parser given in the constructor.
     private MoMLParser _parser;
     
+    // Set of contexts into which this change request has already
+    // propagated.
+    private Set _propagatedContexts = null;
+    
     // Indicator of whether this request is the result of a
     // propagating change.
     private boolean _propagating = false;
+    
+    // The original change request that triggered this one, or
+    // null if there is none.
+    private MoMLChangeRequest _propagator = null;
 
     // Flag indicating whether to report to the handler registered
     // with the parser.

@@ -39,6 +39,7 @@ import java.util.List;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -437,8 +438,11 @@ public class Configuration extends CompositeEntity {
 
         // If the entity defers its MoML definition to another,
         // then open that other, unless this is a class extending another.
-        NamedObj deferredTo = entity.getMoMLInfo().deferTo;
-        String elementName = entity.getMoMLInfo().elementName;        
+        Prototype deferredTo = null;
+        if (entity instanceof Prototype) {
+            deferredTo = ((Prototype)entity).getDeferTo();
+        }
+        String elementName = entity.getMoMLElementName();        
         if (deferredTo != null
                 && (elementName == null || !elementName.equals("class"))) {
             entity = deferredTo;

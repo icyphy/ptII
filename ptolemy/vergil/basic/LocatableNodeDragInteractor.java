@@ -178,7 +178,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         undoMoml.append("<group>\n");
         
         if (context != toplevel) {
-            String bracket = "<" + toplevel.getMoMLInfo().elementName
+            String bracket = "<" + toplevel.getMoMLElementName()
                     + " name=\"" + toplevel.getName(context) + "\">";
             moml.append(bracket);
             undoMoml.append(bracket);
@@ -207,7 +207,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             oldLocation[1] = newLocation[1] + transform[1];
             // Create the MoML, wrapping the new location attribute
             // in an element refering to the container
-            String containingElementName = element.getMoMLInfo().elementName;
+            String containingElementName = element.getMoMLElementName();
             String elementToMove = "<" + containingElementName + " name=\"" +
                     element.getName() + "\" >\n";
             moml.append(elementToMove);
@@ -215,7 +215,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             
             // NOTE: use the moml info element name here in case the
             // location is a vertex
-            String momlInfo = ((NamedObj)locatable).getMoMLInfo().elementName;
+            String momlInfo = ((NamedObj)locatable).getMoMLElementName();
             moml.append("<" + momlInfo + " name=\"" +
                     locatable.getName() + "\" value=\"" + newLocation[0] + ", " +
                     newLocation[1] + "\" />\n");
@@ -226,7 +226,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             undoMoml.append("</" + containingElementName + ">\n");
         }
         if (context != toplevel) {
-            String bracket = "</" + toplevel.getMoMLInfo().elementName + ">";
+            String bracket = "</" + toplevel.getMoMLElementName() + ">";
             moml.append(bracket);
             undoMoml.append(bracket);
         }

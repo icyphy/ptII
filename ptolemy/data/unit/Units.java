@@ -110,7 +110,7 @@ public class Units extends Attribute implements Settable {
                 + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(
-            _getIndentPrefix(depth) + "</" + getMoMLInfo().elementName + ">\n");
+            _getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get the expression for this attribute.

@@ -49,7 +49,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
@@ -287,12 +286,14 @@ public class EditorDropTarget extends DropTarget {
 
                 // Create the MoML command.
                 StringBuffer moml = new StringBuffer();
+                String elementName = container.getMoMLElementName();
                 moml.append("<group>");
                 if (container != context) {
-                    moml.append("<");
-                    moml.append(container.getMoMLInfo().elementName);
-                    moml.append(" name=\""
-                            + container.getName(context) + "\">\n");
+                    moml.append("<"
+                            + elementName
+                            + " name=\""
+                            + container.getName(context)
+                            + "\">\n");
                 }
                 /* Removed by EAL (9/28/03), which means the MoML import
                  * element is no longer supported.
@@ -320,9 +321,7 @@ public class EditorDropTarget extends DropTarget {
                 */
                 moml.append(dropObj.exportMoML(name));
                 if (container != context) {
-                    moml.append("</");
-                    moml.append(container.getMoMLInfo().elementName);
-                    moml.append(">");
+                    moml.append("</" + elementName + ">");
                 }
                 moml.append("</group>");
 

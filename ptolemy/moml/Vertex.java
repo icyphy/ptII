@@ -69,7 +69,7 @@ public class Vertex extends Location {
      */
     public Vertex(Workspace workspace) {
         super(workspace);
-        getMoMLInfo().elementName = "vertex";
+        _elementName = "vertex";
     }
 
     /** Construct an attribute with the given name and position.
@@ -83,7 +83,7 @@ public class Vertex extends Location {
     public Vertex(Relation container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        getMoMLInfo().elementName = "vertex";
+        _elementName = "vertex";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ public class Vertex extends Location {
 
         output.write(_getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name
                 // + "\" class=\""
@@ -145,7 +145,7 @@ public class Vertex extends Location {
                 + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
 
 

@@ -193,7 +193,7 @@ public class Parameter extends Variable {
 
         output.write(_getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name
                 + "\" class=\""
@@ -203,7 +203,7 @@ public class Parameter extends Variable {
                 + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
     
     /** Get choices.

@@ -39,6 +39,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyTableauFactory;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -193,7 +194,10 @@ public class SingleWindowConfiguration extends Configuration {
 
         // If the entity defers its MoML definition to another,
         // then open that other.
-        NamedObj deferredTo = entity.getMoMLInfo().deferTo;
+        Prototype deferredTo = null;
+        if (entity instanceof Prototype) {
+            deferredTo = ((Prototype)entity).getDeferTo();
+        }
         if (deferredTo != null) {
             entity = deferredTo;
         }

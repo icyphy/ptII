@@ -137,7 +137,7 @@ public class ValueIcon extends XMLIcon {
         }
         output.write(_getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name
                 + "\" class=\""
@@ -145,7 +145,7 @@ public class ValueIcon extends XMLIcon {
                 + "\">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
 
     ///////////////////////////////////////////////////////////////////

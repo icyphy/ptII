@@ -62,6 +62,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -291,7 +292,11 @@ public class MoMLParser extends HandlerBase {
         // we are not at the top level, then the converted name
         // is the result of calling the container's uniqueName()
         // method, passing it the specified name.
+        // The auto namespace is disabled while propogating, since
+        // this would otherwise just result in chaotic names for
+        // propagated changes.
         if (_namespace == _AUTO_NAMESPACE
+                && !_propagating
                 && _current != null
                 && (name.equals("name")
                         || name.equals("port")
@@ -1137,7 +1142,7 @@ public class MoMLParser extends HandlerBase {
             candidate = _searchForEntity(name);
             if (candidate != null) {
                 // Check that it's a class.
-                if (candidate.getMoMLInfo().elementName.equals("class")) {
+                if (candidate.isClassDefinition()) {
                     // Check that its source matches.
                     String candidateSource = candidate.getMoMLInfo().source;
 
@@ -1407,18 +1412,17 @@ public class MoMLParser extends HandlerBase {
                     }
                 }
                 if (!existedAlready) {
-                    NamedObj.MoMLInfo info = newEntity.getMoMLInfo();
-                    info.elementName = "class";
-
+                    ((Prototype)newEntity).setClassDefinition(true);
                     // Adjust the classname and superclass of the object.
+                    NamedObj.MoMLInfo info = newEntity.getMoMLInfo();
                     info.className = newEntity.getFullName();
                     info.superclass = className;
                 } else {
                     // If the object is not already a class, then convert
                     // it to one.
                     if (!previous.isClassDefinition()) {
+                        previous.setClassDefinition(true);
                         NamedObj.MoMLInfo info = previous.getMoMLInfo();
-                        info.elementName = "class";
                         info.superclass = info.className;
                         info.className = previous.getFullName();
                     }
@@ -2031,15 +2035,16 @@ public class MoMLParser extends HandlerBase {
                     // subclasses and instances and propagate the
                     // change to the name of the
                     // object they refer to.
-                    if (_current.isClassDefinition()) {
+                    if ((_current instanceof Prototype)
+                            && ((Prototype)_current).isClassDefinition()) {
                         List deferredFrom
-                                = _current.getMoMLInfo().deferredFrom;
+                                = ((Prototype)_current).getDeferredFrom();
                         if (deferredFrom != null) {
                             Iterator deferrers = deferredFrom.iterator();
                             while (deferrers.hasNext()) {
                                 WeakReference reference
                                         = (WeakReference)deferrers.next();
-                                NamedObj deferrer = (NamedObj)reference.get();
+                                Prototype deferrer = (Prototype)reference.get();
                                 if (deferrer != null) {
                                     // Got a live one.
                                     // Need to determine whether the name is
@@ -2436,9 +2441,9 @@ public class MoMLParser extends HandlerBase {
      *  already contains an entity with the specified name and class,
      *  then return that entity.  If the class name matches
      *  a class that has been previously defined in the scope
-     *  (or with an absolute name), then that class is cloned.  Otherwise,
-     *  the class name is interpreted as a Java class name and we
-     *  attempt to construct the entity.  If instantiating a Java
+     *  (or with an absolute name), then that class is instantiated.
+     *  Otherwise, the class name is interpreted as a Java class name
+     *  and we attempt to construct the entity.  If instantiating a Java
      *  class doesn't work, then we look for a MoML file on the
      *  classpath that defines a class by this name.  The file
      *  is assumed to be named "foo.xml", where "foo" is the name
@@ -2641,7 +2646,7 @@ public class MoMLParser extends HandlerBase {
         } else {
             // Extending a previously defined entity.  Check to see that
             // it was defined to be a class.
-            if (!reference.getMoMLInfo().elementName.equals("class")) {
+            if (!reference.isClassDefinition()) {
                 throw new XmlException("Attempt to extend an entity that "
                         + "is not a class: " + reference.getFullName(),
                         _currentExternalEntity(),
@@ -2649,20 +2654,9 @@ public class MoMLParser extends HandlerBase {
                         _parser.getColumnNumber());
             }
 
-            // Clone it into the workspace of the container, if there is one,
-            // or the workspace of the reference if not.
-            ComponentEntity newEntity = null;
-            if (container == null) {
-                newEntity = (ComponentEntity)
-                    reference.clone(reference.workspace());
-            } else {
-                newEntity = (ComponentEntity)
-                    reference.clone(container.workspace());
-            }
-
-            // Set up the new object to defer its MoML definition
-            // to the original class.
-            newEntity.setDeferMoMLDefinitionTo(reference);
+            // Instantiate it.
+            ComponentEntity newEntity = (ComponentEntity)reference.instantiate(
+                    container, entityName);
             
             // The original reference object may have had a URIAttribute,
             // but the new one should not. The clone would have copied
@@ -2687,27 +2681,12 @@ public class MoMLParser extends HandlerBase {
                 newEntity.setClassElement(true);
             }
 
-            // Set the name of the clone.
-            // NOTE: The container is null, so there will be no
-            // name conflict here.  If we were to set the name after
-            // setting the container, we could get a spurious name conflict
-            // when we set the container.
-            newEntity.setName(entityName);
-
             // Set the class name as specified in this method call.
-            // This overrides what NamedObj does.  The reason we want to
-            // do that is that NamedObj uses the full name of the object
+            // This overrides what Prototype does.  The reason we want to
+            // do that is that Prototype uses the name of the object
             // that we cloned as the classname.  But this may not provide
             // enough information to instantiate the class.
             newEntity.getMoMLInfo().className = className;
-
-            // Set the container of the clone.
-            newEntity.setContainer(container);
-
-            // The master may have an entity name "class" (or "model"?), and
-            // that name will be cloned, so we need to change this.
-            // It may get changed back if we are inside a "class" element.
-            newEntity.getMoMLInfo().elementName = "entity";
 
             return newEntity;
         }
@@ -3397,6 +3376,10 @@ public class MoMLParser extends HandlerBase {
                     // it changed from class.
                     // EAL 2/04.
                     if (_propagating) {
+                        // FIXME: This is not really sufficient.
+                        // The property may have been modified from class
+                        // in an intermediate subclass, and this will not
+                        // show up as a false from isModifiedFromClass().
                         if (!property.isModifiedFromClass()) {
                             // Propagating, and value has not been modified.
                             settable.setExpression(value);
@@ -4117,7 +4100,7 @@ public class MoMLParser extends HandlerBase {
         }
         if (candidate != null) {
             // Check that it's a class.
-            if (candidate.getMoMLInfo().elementName.equals("class")) {
+            if (candidate.isClassDefinition()) {
                 // Check that its source matches.
                 String candidateSource = candidate.getMoMLInfo().source;
 

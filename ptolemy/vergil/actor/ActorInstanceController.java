@@ -32,6 +32,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.event.ActionEvent;
 
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -104,7 +105,9 @@ public class ActorInstanceController extends ActorController {
                         + "\">");
             }
             // Assumes MoML parser will convert to class.
-            if (!object.isClassDefinition()) {
+            // NOTE: This cast should be safe because this controller is
+            // used for actors.
+            if (!((Prototype)object).isClassDefinition()) {
                 moml.append("<class name=\""
                         + object.getName()
                         + "\"/>");

@@ -329,7 +329,7 @@ public class EditorIcon extends Attribute {
         }
         output.write(_getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name
                 + "\" class=\""
@@ -338,7 +338,7 @@ public class EditorIcon extends Attribute {
                 + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
     
     /** Return the container of this object, if there is one, or

@@ -2774,15 +2774,13 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.14 {check that instance of a class defer to a common obj} {
+test MoMLParser-14.1 {check that instance of a class defer to a common obj} {
     $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
     set a [$toplevel getEntity b]
     set b [$toplevel getEntity b]
-    if [expr "\"[java::field [$b getMoMLInfo] deferTo]\"==\"[java::field [$a getMoMLInfo] deferTo]\""] {list {same}} {list {do not defer to the same master}}
-    [java::field [$b getMoMLInfo] deferTo] equals \
-            [java::field [$a getMoMLInfo] deferTo]
+    [$b getDeferTo] equals [$a getDeferTo]
 } {1}
 
 ######################################################################
