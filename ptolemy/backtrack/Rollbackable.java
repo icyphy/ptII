@@ -45,5 +45,5 @@ public interface Rollbackable {
 
     public void $RESTORE(long timestamp, boolean trim);
     
-    public void $SET$CHECKPOINT(Checkpoint checkpoint);
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 }
