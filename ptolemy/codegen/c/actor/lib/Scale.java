@@ -45,8 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Scale extends CCodeGeneratorHelper {
 
-    /** FIXME
-     *
+    /** Construct a helper with the given ptolemy.actor.lib.Scale actor.
+     *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);

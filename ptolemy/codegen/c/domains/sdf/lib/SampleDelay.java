@@ -52,8 +52,9 @@ A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 
 public class SampleDelay extends CodeGeneratorHelper {
 
-    /** FIXME
-     * @param actor
+    /** Construct a helper with the given 
+     *  ptolemy.domains.sdf.lib.SampleDelay actor.
+     *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.
      */
     public SampleDelay(ptolemy.domains.sdf.lib.SampleDelay actor) {
         super(actor);
@@ -62,20 +63,30 @@ public class SampleDelay extends CodeGeneratorHelper {
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
+    /** Generate the fire code of the SampleDelay actor.
+     *  @param stream The string buffer to which the fire code of the
+     *   SampleDelay actor is appended to.
+     */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
         stream.append(processCode("$ref(output) = $ref(input);\n"));
     }
-    
-    
-    /**  
+
+    /** Generate the initialize code for the SampleDelay actor by
+     *  declaring the initial values of the sink channels of the
+     *  output port of the SampleDelay actor.
+     *  @return The generated initialize code for the SampleDelay actor.
+     *  @exception IllegalActionException If the base class throws it,
+     *   or if the "bufferSize" attribute of the relation connected to
+     *   the SampleDelay output port is not defined, or if the initial
+     *   outputs of the SampleDelay actor is not defined.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
         StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor =
             (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-        List relations = actor.linkedRelationList();
+        List relations = actor.output.linkedRelationList();
         Relation relation = (Relation) relations.get(0);
         Variable bufferSizeToken
                 = (Variable) relation.getAttribute("bufferSize");

@@ -45,9 +45,9 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Repeat extends CCodeGeneratorHelper {
 
-    /** FIXME
+    /** Construct a helper with the given ptolemy.actor.lib.Scale actor.
+     *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
-
     public Repeat(ptolemy.domains.sdf.lib.Repeat actor) {
         super(actor);
     }
@@ -55,7 +55,11 @@ public class Repeat extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void  generateFireCode(StringBuffer stream)
+    /** Generate the fire code of the Repeat actor.
+     *  @param stream The string buffer to which the generated fire code of
+     *   the Repeat actor is appended to.
+     */
+    public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
         ptolemy.domains.sdf.lib.Repeat actor =

@@ -95,6 +95,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create the channel map, which is associated with this helper object.
+     *  A key of the map is an IOPort of the actor. The corresponding value
+     *  is an array of Channel objects. The i-th channel object corresponds
+     *  to the i-th channel of that IOPort. This method is used to maintain
+     *  a hashmap of channels of the actor. The channel objects in the map
+     *  is used to keep track of the offsets in their buffer.
+     */
     public void createChannelMap() {
         Set ioPortsSet = new HashSet();
         ioPortsSet.addAll(((Actor) _component).inputPortList());
@@ -151,7 +158,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return ((Integer) _bufferSizes.get(port)).intValue();
     }
 
-    /** Get the channel object given the port and channel number.
+    /** Get the channel object in the channel hashmap given the port
+     *  and channel number.
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The channel Object.
@@ -172,9 +180,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** Get the offset in the buffer of a given channel to which a token
-     *  should be put.
-     *  @param channel The given channel.
-     *  @return The offset in the buffer of a given port to which a token
+     *  should be put. The channel is given by its containing port and
+     *  the channel number in that port.
+     *  @param port The given port.
+     *  @param channelNumber The given channel number.
+     *  @return The offset in the buffer of a given channel to which a token
      *   should be put.
      */
     public int getOffset(IOPort port, int channelNumber) {
@@ -361,12 +371,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
 
-    /** Return a list of channel objects that are the sink input ports
-     *  given an output port and a given channel.
+    /** Return a list of channel objects that are the sink input ports given
+     *  an output port and a given channel. Note the returned channels are
+     *  newly created objects and therefore not associated with the helper
+     *  class.
      *  @param outputPort The given output port.
      *  @param channelNumber The given channel number.
-     *  @return The list of channel objects that are the sink input ports
-     *   of the given output port and channel.
+     *  @return The list of channel objects that are the sink channels
+     *   of the given output channel.
      */
     public List getSinkChannels(IOPort outputPort, int channelNumber) {
 
@@ -547,7 +559,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
 
-    /** Reset the offsets of all ports of the associated actor to the
+    /** Reset the offsets of all channels of the associated actor to the
      *  default value of 0.
      */
     public void resetOffsets() {
@@ -622,14 +634,28 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** The associated component. */
     private NamedObj _component;
 
-    // Number of firings already fired. The default value is 0.
-    //private int _firingCount;
+    /** A hashmap that keeps track of the bufferSizes of each port of the
+     *  actor. This info is used in variable declaration.
+     */
     private HashMap _bufferSizes = new HashMap();
-
-    // Total number of firings per iteration. The default value is 1.
-    //private int _firingsPerIteration;
-    private HashMap _offsets = new HashMap();
     
+    // FIXME
+    /** A hashmap that keeps track of the buuferSizes of each channel of
+     *  the actor. This info is used in fire method. 
+     */
+    private HashMap _bufferSizesPerChannel  = new HashMap();
+
+    /** A hashmap that keeps track of the offsets of each channel of
+     *  the actor.
+     */
+    private HashMap _offsets = new HashMap();
+
+    /** A hashmap that maintains an array of channel objects for each
+     *  port of the actor. A key of the hashmap is an IOPort of the actor.
+     *  The corresponding value is an array of Channel objects. The i-th
+     *  Channel object in the array correponds to the i-th channel of that
+     *  port.
+     */
     private HashMap _channels = new HashMap();
 
     // A set of parameters that have been referenced.
