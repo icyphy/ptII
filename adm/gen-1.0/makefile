@@ -880,12 +880,14 @@ INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
 # DOC is last so that we can get the bits and piecs out of app/doc
+# Run with:
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm installshield_app
 installshield_app: installshield $(INSTALLSHIELD_APP) \
-	$(INSTALLSHIELD_CODEDOC) \
-	$(INSTALLSHIELD_DESIGNDOC) \
-	$(INSTALLSHIELD_EXPERIMENTAL) \
-	$(INSTALLSHIELD_PTINY) \
-	$(INSTALLSHIELD_DOC) \
+			$(INSTALLSHIELD_CODEDOC) \
+			$(INSTALLSHIELD_DESIGNDOC) \
+			$(INSTALLSHIELD_EXPERIMENTAL) \
+			$(INSTALLSHIELD_PTINY) \
+			$(INSTALLSHIELD_DOC)
 
 installshield:
 	if [ ! -d $@ ]; then 
@@ -902,7 +904,7 @@ clean_installshield:
 	$(INSTALLSHIELD_PTINY)
 
 
-$(INSTALLSHIELD_APP): #$(PTII_SRC)
+$(INSTALLSHIELD_APP): $(PTII_SRC)
 	@echo "#"
 	@echo "# Building $@"
 	(cd $(INSTALLSHIELD_SRC); \
@@ -915,7 +917,7 @@ $(INSTALLSHIELD_PTINY):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
-	 mkdir -p $@/doc/img
+	 mkdir -p $@/doc/img $@doc/design
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
 		$(INSTALLSHIELD_APP)/doc/acks.htm \
@@ -925,6 +927,11 @@ $(INSTALLSHIELD_PTINY):
 	 -mv $(INSTALLSHIELD_APP)/doc/img/ptIIplanet.gif \
 		$(INSTALLSHIELD_APP)/doc/img/PtolemyIISmall.gif \
 		$@/doc/img
+	 # FIXME: ideally, we should include a pdf viewer or the html version
+	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil.pdf \
+		$@/doc/design
+	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil \
+		$@/doc/design
 	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
 		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
@@ -938,11 +945,10 @@ $(INSTALLSHIELD_PTINY):
 		$@/ptolemy/domains/$$domain/lib; \
 	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo/ \
 		$@/ptolemy/domains/$$domain; \
-	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/lib/$$domainentities.jar \
+	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/lib/$${domain}entities.xml \
 		$@/ptolemy/domains/$$domain/lib; \
 	 done
 	# FIXME: we should find this in the jar file?
-	 -mkdir $@/ptolemy/domains/sdf/lib 
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
 		$@/ptolemy/domains/sdf/lib 
 	 -mkdir -p $@/doc/codeDoc
@@ -969,7 +975,7 @@ $(INSTALLSHIELD_PTINY):
 		$@/ptolemy/actor/lib/conversions
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/Sinewave.xml \
 		$@/ptolemy/actor/lib/conversions
-	 -mkdir $@/ptolemy/plot \
+	 -mkdir $@/ptolemy/plot
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/plot/plotapplication.jar \
 		$@/ptolemy/plot
 
@@ -1034,7 +1040,7 @@ ptiny.xml: ptII.xml ptiny.xsl
 		-xsl ptiny.xsl \
 		-saveas $@
 
-# Run this with:
+# Run this on doppler with:
 # rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
 unixPtiny.xml: ptiny.xml
 	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
