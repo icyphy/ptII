@@ -19,7 +19,7 @@
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
         <property name="CT Director" 
-                  class="ptolemy.domains.ct.kernel.CTDirector">
+                  class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
