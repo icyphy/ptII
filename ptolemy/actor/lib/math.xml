@@ -29,7 +29,7 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="log" value="log"
 	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="remainder" value="remainder"
+            <property name="modulo" value="modulo"
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="sign" value="sign"
 	              class="ptolemy.kernel.util.StringAttribute"/>
