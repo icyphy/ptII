@@ -103,7 +103,8 @@ ISJAVA_SRC = ptplot.isj
 EXTRA_SRCS = $(JSRCS) \
 	$(ISJAVA_SRC) \
 	copyright.txt \
-	index.htm
+	index.htm \
+	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test img #bean
