@@ -93,6 +93,7 @@ OPTIONAL_JSRCS = \
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
+	JJPtParserCalls.class \
 	PtParser.java \
 	PtParser.jj
 
