@@ -401,7 +401,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are tranfered.
+     *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port)
             throws IllegalActionException {
