@@ -86,7 +86,7 @@ public class DEReceiver implements Receiver {
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens.
      */
-    public Token get() throws NoTokenException {
+    public Token get() {
         if(_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
@@ -117,7 +117,7 @@ public class DEReceiver implements Receiver {
             // Cache is invalid.  Reconstruct it.
             Actor actor = (Actor)port.getContainer();
             if (actor != null) {
-                Director dir = actor.getDirector();
+                Director dir = actor.getExecutiveDirector();
                 if (dir != null) {
                     if (dir instanceof DEDirector) {
                         _director = (DEDirector)dir;
@@ -165,18 +165,15 @@ public class DEReceiver implements Receiver {
      *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException{
-        
+
         try {
-            // The DEDirector.enqueueEvent() method throws
-            // IllegalActionException when the delay argument is less
-            // than zero.
-            getDirector().enqueueEvent(this, token, 0.0, _depth);
+            this.put(token, 0.0);
         } catch (IllegalActionException e) {
             // Can't happen.
             e.printStackTrace();
             throw new InternalErrorException("enqueueEvent with delay "+
                     "argument = 0 shouldn't throw an exception." + 
-                    " : " + e.getMessage());
+                    " : " + e.getMessage()); 
         }
         
     }
@@ -196,18 +193,75 @@ public class DEReceiver implements Receiver {
      */
     public void put(Token token, double delay) 
             throws NoRoomException, IllegalActionException{
-        getDirector().enqueueEvent(this, token, delay, _depth);
+        
+        if (_isOCAOutput()) {
+            
+            _tokens.insertFirst(token);
+            _tokendelays.insertFirst(new Double(delay));
+            
+        } else {
+                
+            getDirector().enqueueEvent(this, token, delay, _depth);
+        }
     }
 
     /** Set the container.
      *  @param port The container.
      */
-    public void setContainer(IOPort port) {
+    public void setContainer(IOPort port) throws IllegalActionException {
         _container = port;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Return the time delay associated with the token obtained using
+     *  the get() method. This method should only be called by the
+     *  transferOutputs() method of DEDirector.
+     *
+     *  @exception NoTokenException the token delay list is empty.
+     */
+    protected double _getTokenDelay() {
+        if(_tokendelays.isEmpty()) {
+            throw new NoTokenException(getContainer(),
+                    "No more tokens in the DE receiver.");
+        }
+        return ((Double)_tokendelays.take()).doubleValue();
+    }
+
+
+
+    /** Return true if this receiver is inside an output port of an opaque
+     *  composite actor (a wormhole). Calling either put() methods on this
+     *  kind of receiver will not result in an event being put into the
+     *  global event queue. This is needed, because this receiver is not
+     *  really the 'final destination' of the token, rather the containing
+     *  CompositeActor will call transferOutput to move the token into its
+     *  'final destination'.
+     *  
+     */
+    protected boolean _isOCAOutput() {
+
+        // FIXME: try to cache the result of this operation, since it's
+        // called so many times.
+
+        if (_container == null) {
+            throw new InternalErrorException("This can't happen!! " + 
+                    "This receiver does not have a container ???");
+        }
+        if (!_container.isOutput()) {
+            return false;
+        }
+        Nameable compositeActor = _container.getContainer();
+        if (! (compositeActor instanceof CompositeActor)) {
+            return false;
+        }
+        if (!((CompositeActor)compositeActor).isOpaque()) {
+            return false;
+        }
+        return true;
+        
+    }
 
     /** Set the depth of this receiver, obtained from the topological
      *  sort.  The depth determines the priority assigned to tokens
@@ -246,9 +300,5 @@ public class DEReceiver implements Receiver {
 
     // List for storing tokens.  Access with clear(), insertFirst(), take().
     private LinkedList _tokens = new LinkedList();
+    private LinkedList _tokendelays = new LinkedList();
 }
-
-
-
-
-

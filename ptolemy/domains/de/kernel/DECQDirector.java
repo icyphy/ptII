@@ -114,7 +114,7 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
     
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -177,6 +177,7 @@ public class DECQDirector extends DEDirector {
 
         // FIXME: Provide a mechanism for listening for events.
         if (DEBUG) {
+            System.out.print(getFullName() + ":");
             System.out.println("Enqueue event for actor: " +
                                ((Entity)actor).description(FULLNAME)+
                                " at time " + (_currentTime + delay) +
@@ -213,10 +214,12 @@ public class DECQDirector extends DEDirector {
         DESortKey key = new DESortKey(_currentTime + delay, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         if (DEBUG) {
+            System.out.print(getFullName()+":");
             System.out.println("Enqueue event for port: " +
-                               receiver.getContainer().description(FULLNAME)+
-                               " at time " + (_currentTime + delay) +
-                               " .");
+                    receiver.getContainer().description(FULLNAME)+
+                    " on actor: " + ((Entity)event.actor).description(FULLNAME) + 
+                    " at time " + (_currentTime + delay) +
+                    " .");
         }
 
         _cQueue.put(key, event);
@@ -234,34 +237,92 @@ public class DECQDirector extends DEDirector {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
-		
-	// Repeatedly fire the actor until it doesn't have any more filled 
-	// receivers. In the case of 'pure event' the actor is fired once.
-	// 
-	boolean refire = false;
-        
-	do {
+
+        if (DEBUG) {
+            System.out.println("Prefiring actor: " + 
+                    ((Entity)_actorToFire).description(FULLNAME)+
+                    " at time: " +
+                    _currentTime + 
+                    " and returns ....");
+            System.out.println("<<<");
+        }
+
+
+        if (_actorToFire.prefire()) {
+            
             if (DEBUG) {
-                System.out.println("Firing actor: " +
-                        ((Entity)_actorToFire).description(FULLNAME)+
-                        " at time: " +
-                        _currentTime);
+                System.out.println(">>>");
+                System.out.println("Well... it returned true.");
             }
-	    _actorToFire.fire();
-	    // check _filledReceivers to see if there's any receivers left
-	    // that's not emptied.
-	    refire = false;
-	    Enumeration enum = _filledReceivers.elements();
-	    while (enum.hasMoreElements()) {
-		DEReceiver r = (DEReceiver)enum.nextElement();
-		if (r.hasToken()) {
-		    refire = true;
-                    break;
-		}
-	    }
-	} while (refire);
+
+            // Repeatedly fire the actor until it doesn't have any more filled 
+            // receivers. In the case of 'pure event' the actor is fired once.
+            // 
+            boolean refire = false;
+            
+            do {
+                if (DEBUG) {
+                    System.out.println("Firing actor: " +
+                    ((Entity)_actorToFire).description(FULLNAME)+
+                    " at time: " +
+                    _currentTime);
+                }
+                _actorToFire.fire();
+                // check _filledReceivers to see if there's any receivers left
+                // that's not emptied.
+                refire = false;
+                Enumeration enum = _filledReceivers.elements();
+                while (enum.hasMoreElements()) {
+                    DEReceiver r = (DEReceiver)enum.nextElement();
+                    if (r.hasToken()) {
+                        refire = true;
+                        break;
+                    }
+                }
+            } while (refire);
+            if (!_actorToFire.postfire()) {
+                _shouldPostfireReturnFalse = true;
+            }
+        } else {
+            if (DEBUG) {
+                System.out.println(">>>");
+                System.out.println("Well... it returned false.");
+            }
+            _shouldPostfireReturnFalse = true;
+        }
+    
     }
 
+    /** 
+     *
+     *  @param delay The delay, relative to the current time.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    public void fireAfterDelay(Actor a, double delay) 
+            throws IllegalActionException {
+        // Check if the actor is in the composite actor containing this
+        // director. FIXME.
+
+
+        // If this actor has input ports, then the depth is set to be
+        // one higher than the max depth of the input ports.
+        // If this actor has no input ports, then the depth is set to
+        // to be zero.
+        long maxdepth = -1;
+        Enumeration iports = a.inputPorts();
+        while (iports.hasMoreElements()) {
+            IOPort p = (IOPort) iports.nextElement();
+            Receiver[][] r = p.getReceivers();
+            if (r == null) continue;
+            DEReceiver rr = (DEReceiver) r[0][0];
+            if (rr._depth > maxdepth) {
+                maxdepth = rr._depth;
+            }
+        }
+        this.enqueueEvent(a, delay, maxdepth+1);
+    }
+
+        
     /** Set current time to zero, calculate priorities for simultaneous
      *  events, and invoke the initialize() methods of all actors deeply
      *  contained by the container.  To be able to calculate the priorities,
@@ -310,7 +371,27 @@ public class DECQDirector extends DEDirector {
         super.initialize();
         // Set the depth field of the receivers.
         _computeDepth();
+
+        // Request a firing to the outer director if the queue is not empty.
+        if (isEmbedded() && !_cQueue.isEmpty()) {
+            _requestFiring();
+        }
         
+    }
+
+    /** 
+     */
+    public boolean postfire() throws IllegalActionException {
+        
+        if (!super.postfire()) {
+            System.out.println("Returning false in postfire()");
+            return false;
+        } else if (isEmbedded() && !_cQueue.isEmpty()) {
+            _requestFiring();
+        }
+        return true;
+
+
     }
 
     /** Invoke the base class prefire() method, and if it returns true,
@@ -329,6 +410,8 @@ public class DECQDirector extends DEDirector {
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean prefire() throws IllegalActionException {
+
+
 	// During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
                
@@ -373,9 +456,16 @@ public class DECQDirector extends DEDirector {
 			_startTimeInitialized = true;
 		    }
 
-                    if (_currentTime > _stopTime) {
+                    if (_currentTime > _stopTime && !isEmbedded()) {
 			// The stopping condition is met.
+                        // Note that, if this director is embedded then
+                        // he doesn't determine the stopping condition, rather
+                        // outer director should do that...
+                        // FIXME: might be wrong approach
                         _shouldPostfireReturnFalse = true;
+                        System.out.println("Stopping time is met " + 
+                                "in DECQDirector.prefire() of " + 
+                                getFullName() + ".");
 			return false;
 		    }
 
@@ -450,6 +540,7 @@ public class DECQDirector extends DEDirector {
             }
         }
         if (_actorToFire == null) {
+            System.out.println("No actor to fire anymore");
             _shouldPostfireReturnFalse = true;
         } else {
             _shouldPostfireReturnFalse = false;
@@ -602,6 +693,28 @@ public class DECQDirector extends DEDirector {
 	}
     }
     
+
+    private void _requestFiring() throws IllegalActionException {
+
+        if (DEBUG) {
+            System.out.println(getFullName() + " requests firing from " + 
+                               ((CompositeActor)getContainer()).getExecutiveDirector().getFullName());
+        }
+
+        DESortKey sortkey = null;
+
+        try {
+            sortkey = (DESortKey)_cQueue.getNextKey();
+        } catch (IllegalAccessException e) {
+            throw new IllegalActionException(e.getMessage());
+        }
+        double nextRefire = sortkey.timeStamp();
+        
+        // enqueue a refire for the container of this director.
+        ((CompositeActor)getContainer()).getExecutiveDirector().fireAfterDelay((Actor)getContainer(), nextRefire - getCurrentTime());
+        
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
 

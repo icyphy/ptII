@@ -70,6 +70,7 @@ public class Ramp extends TypedAtomicActor {
         _step = new Parameter(this, "step", new DoubleToken(step));
         // create an output port
         output = new TypedIOPort(this, "output", false, true);
+        output.makeMultiport(true);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
         input.setDeclaredType(Token.class);

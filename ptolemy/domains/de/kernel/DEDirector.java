@@ -163,6 +163,19 @@ public abstract class DEDirector extends Director {
 	return _stopTime;
     }
 
+    /** Return true if this director is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     */
+    public boolean isEmbedded() {
+        if (getContainer().getContainer() == null) {
+            return false;
+        } else {
+            return true;
+        }
+        
+    }
+
+
     /** Return a new receiver of a type DEReceiver.
      *  @return A new DEReceiver.
      */
@@ -187,6 +200,90 @@ public abstract class DEDirector extends Director {
     public void setStopTime(double stopTime) {
 	this._stopTime = stopTime;
     }
+
+
+
+    /** Transfer data from an input port of the container to the
+     *  ports it is connected to on the inside.  The port argument must
+     *  be an opaque input port.  If any channel of the input port
+     *  has no data, then that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     */
+    public void transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferInputs: port argument is not an opaque input port.");
+        }
+        Receiver[][] insiderecs = port.deepGetReceivers();
+        for (int i=0; i < port.getWidth(); i++) {
+            if (port.hasToken(i)) {
+                try {
+                    Token t = port.get(i);
+                    if (insiderecs != null && insiderecs[i] != null) {
+                        for (int j=0; j < insiderecs[i].length; j++) {
+                            DEReceiver deRec = 
+                                (DEReceiver)insiderecs[i][j];
+
+                            Actor container = (Actor)getContainer();
+                            double outsideCurrTime = container.getExecutiveDirector().getCurrentTime();
+
+                            deRec.put(t, outsideCurrTime - _currentTime);
+                        }
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(
+                            "Director.transferInputs: Internal error: " +
+                            ex.getMessage());
+                }
+            }
+        }
+    }
+
+    /** Transfer data from an output port of the container to the
+     *  ports it is connected to on the outside.  The port argument must
+     *  be an opaque output port.  If any channel of the output port
+     *  has no data, then that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     */
+    public void transferOutputs(IOPort port) throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferOutputs: port argument is not an opaque output port.");
+        }
+        Receiver[][] insiderecs = port.getInsideReceivers();
+        if (insiderecs != null) {
+            for (int i=0; i < insiderecs.length; i++) {
+                if (insiderecs[i] != null) {
+                    for (int j=0; j < insiderecs[i].length; j++) {
+                        if (insiderecs[i][j].hasToken()) {
+                            try {
+                                DEReceiver deRec
+                                    = (DEReceiver)insiderecs[i][j];
+                                Token t = deRec.get();
+                                double d = deRec._getTokenDelay();
+                                // FIXME: I don't think it's necessary
+                                // that the following cast will always valid.
+                                ((DEIOPort)port).send(i,t,d);
+                            } catch (NoTokenException ex) {
+                                throw new InternalErrorException(
+                                        "Director.transferOutputs: " +
+                                        "Internal error: " +
+                                        ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

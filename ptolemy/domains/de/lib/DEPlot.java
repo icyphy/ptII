@@ -95,8 +95,10 @@ public class DEPlot extends DEActor {
     public void initialize() throws IllegalActionException {
 
         _plot.clear(false);
-
-        // FIXME: Should create and maintain a legend
+	
+	for (int i = 0; i < input.getWidth(); i++) {
+	  _plot.addLegend(i, "Data " + i);
+	}
 
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until

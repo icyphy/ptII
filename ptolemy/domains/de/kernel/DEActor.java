@@ -111,18 +111,8 @@ public class DEActor extends TypedAtomicActor {
         // one higher than the max depth of the input ports.
         // If this actor has no input ports, then the depth is set to
         // to be zero.
-        long maxdepth = -1;
-        Enumeration iports = this.inputPorts();
-        while (iports.hasMoreElements()) {
-            IOPort p = (IOPort) iports.nextElement();
-            Receiver[][] r = p.getReceivers();
-            if (r == null) continue;
-            DEReceiver rr = (DEReceiver) r[0][0];
-            if (rr._depth > maxdepth) {
-                maxdepth = rr._depth;
-            }
-        }
-        dir.enqueueEvent(this, delay, maxdepth+1);
+        
+        dir.fireAfterDelay(this, delay);
     }
 
 
@@ -147,11 +137,11 @@ public class DEActor extends TypedAtomicActor {
 		    }
 		}
 	    }
-	    
-	    
+	    	    
 	}
     } 
     */
+
   ///////////////////////////////////////////////////////////////////
   ////                         private variables                 ////
   
