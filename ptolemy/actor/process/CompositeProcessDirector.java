@@ -333,6 +333,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public void stopInputBranchController() {
         Workspace workspace = workspace();
+        if( _inputBranchController == null ) {
+            // This happens under DDE Zeno under IE 5 with Java Plug-in 1.3
+            return;
+        }
         if( !_inputBranchController.hasBranches() ) {
             return;
         }
@@ -351,6 +355,9 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public void stopOutputBranchController() {
         Workspace workspace = workspace();
+        if( _outputBranchController == null) {
+            return;
+        }
         if( !_outputBranchController.hasBranches() ) {
             return;
         }
