@@ -62,7 +62,7 @@ JSRCS = \
 	DominatorCFG.java \
 	IntervalChain.java \
 	IntervalDFG.java \
-	MapList.java \
+	IntervalBlockDirectedGraph.java \
 	BDFGToJHDLCircuit.java \
 	BinaryMuxNode.java
 

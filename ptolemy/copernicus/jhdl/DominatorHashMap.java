@@ -234,7 +234,7 @@ public class DominatorHashMap extends HashMap {
 		if (n==_root)
 		    continue;
 //    		System.out.println("Dominators for block "+
-//    				   ((Block)n.weight()).getIndexInMethod());
+//    				   ((Block)n.getWeight()).getIndexInMethod());
 		Vector nDominators = (Vector) get(n);
 		// Loop through predecessors of n
 		Vector intersection=null;

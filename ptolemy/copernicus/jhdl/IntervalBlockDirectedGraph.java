@@ -53,208 +53,163 @@ import soot.jimple.internal.JimpleLocal;
 import soot.toolkits.graph.Block;
 
 import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.soot.*;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 import ptolemy.graph.Node;
 import ptolemy.graph.Edge;
 
-//////////////////////////////////////////////////////////////////////////
-//// SootASTVisitor
-/**
- * The graph that is manipuated is the graph associated with
- * the root.
- **/
-public class IntervalDFG extends BlockDataFlowGraph {
+public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
-    public IntervalDFG(IntervalChain ic) throws JHDLUnsupportedException {
-	this(ic,null);
-    }
-
-    /**
-     * This constructor will create a DFG from the given IntervalChain.
-     * The constructor will also merge all of the children into a single
-     * combined DFG.
-     *
-     * @param requiredDefinitions This is a Collection of Value objects
-     * that must be defined for IntervalDFGs further in the tree. This
-     * list of definitions is used to decide which assignment statements
-     * (i.e. definitions) must be made available for subsequent blocks.
-     **/
-    public IntervalDFG(IntervalChain ic, Collection requiredDefinitions) 
+    public IntervalBlockDirectedGraph(IntervalChain ic) 
 	throws JHDLUnsupportedException {
 
 	// Create DFG from the Block object associated with the root
 	// Node of the given IntervalChain
 	super((Block) ic.getRoot().getWeight());
 	_ic = ic;
-	
-	_processChain(requiredDefinitions);
+	_processChain();
     }
 
-    protected void _processChain(Collection requiredDefinitions) 
-	throws JHDLUnsupportedException {
-
-	// 1. Create graph for next interval
-	// 2. Deterimine defintions for this Node
-	// 3. Merge children of fork Nodes
-	// 4. Update definitions of this Node
-	// 5. Merge next interval into this graph
+    protected void _processChain() throws JHDLUnsupportedException {
 
 	// 1. Create graph for next inverval in chain if there is one.
 	//    (This algorithm works bottom up so that all required
 	//     definitions downstream are known before upstream
 	//     DFGs are constructed).
-	//    Any definitions required at this Node should be required
-	//    for any Nodes further down the chain.
 	IntervalChain nextChain = _ic.getNext();
 	if (nextChain != null)
-	    _next = new IntervalDFG(nextChain,requiredDefinitions);
+	    _next = new IntervalBlockDirectedGraph(nextChain);
 	else
 	    _next = null;
 
-	// 2. Determine the required definitions for the children
-	//    of this Node. 
-	//    The required definitions for the children are initialized
-	//    with the requiredDefinitions passed in AND by
-	//    the definitions required by the next Interval in the 
-	//    Chain.
-	Collection childrenDefinitions = new UniqueVector();
-	if (_next == null) 
-	    childrenDefinitions.addAll(requiredDefinitions);
-	else
-	    childrenDefinitions.addAll(_next.getRequiredDefinitions());
 
-	_requiredDefinitions = new UniqueVector();
-	_requiredDefinitions.addAll(childrenDefinitions);
-
-	// 3. Create DFGs for each of the children associated with a merge
-	//    and merge the DFG with this DFG.
-
-	// A simple Fork/Join construct. Create DFGs for children and
-	// merge with parent.
-	if (_ic.isSimpleMerge()) {
-
-	    // - Create a DFG for each child associated with this fork.
-	    // - Update the required definitions for this Node based on
-	    //   definitions required by each child. 
-	    // - Merge each DFG in a serial fashion (children DFGs are
-	    //   not multiplexed here).
-	    
-	    // key=IntervalChain root Node, Value=IntervalChain
-	    Map children = _ic.getChildren();
-	    // key=Value, Value=Node
-	    ValueMap rootVM = new ValueMap(_locals,_instanceFieldRefs);
-
-	    // key=IntervalDFG, Value=child LValues (key=value,value=Node)
-	    HashMap childrenValueMaps = new HashMap(children.size());
-
-	    for (Iterator i = children.values().iterator();i.hasNext();) {
-		IntervalChain childInterval = (IntervalChain) i.next();
-		IntervalDFG childDFG = 
-		    new IntervalDFG(childInterval,childrenDefinitions);
-		_requiredDefinitions.addAll(childDFG.getRequiredDefinitions());
-
-		_valueMap = (ValueMap) rootVM.clone();
-		mergeSerial(childDFG);
-		childrenValueMaps.put(childDFG,_valueMap);
-	    }
-
-	    _valueMap = rootVM;
-
-	    if (children.values().size() == 1) {
-		// Only one branch. Merge the root graph with
-		// the branch graph.
-
-		Iterator i = childrenValueMaps.keySet().iterator();
-		IntervalDFG childDFG = (IntervalDFG) i.next();
-		ValueMap childMap = (ValueMap) childrenValueMaps.get(childDFG);
-		
-		for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
-		    Value origv = (Value) i.next();
-		    Node n = (Node) childMap.getDefs().get(origv);
-//  		    System.out.println("New def="+n+" id="+
-//  				       System.identityHashCode(n));
-		    if (isRequired(origv)) {
-//  			System.out.println("def needed");
-			Node childn = childMap.getLast(origv);
-			Node parentn = getOrCreateNode(origv);
-  			_multiplexNodes(childDFG,childn,parentn);
-			//System.out.println("Multiplexing node "+childn);
-		    }
-		}
-	    } else if (children.values().size() == 2) {
-
-		// Two branches. Merge all of their outputs.		
-		// Obtain the defintions defined by both children
-		Iterator i = childrenValueMaps.keySet().iterator();
-		IntervalDFG child1DFG = (IntervalDFG) i.next();
-		IntervalDFG child2DFG = (IntervalDFG) i.next();
-		ValueMap child1Map = (ValueMap) childrenValueMaps.get(child1DFG);
-		ValueMap child2Map = (ValueMap) childrenValueMaps.get(child2DFG);
-
-		// Iterate through all of child1Values
-		for (i=child1Map.getDefs().keySet().iterator();i.hasNext();) {
-		    Value origv = (Value) i.next();
-		    if (isRequired(origv)) {
-			Node child1n = (Node) child1Map.getDefs().get(origv);
-			if (child2Map.getDefs().containsKey(origv)) {
-			    Node child2n = (Node) child2Map.getDefs().get(origv);
-			    _multiplexNodes(child1DFG,child1n,child2n);
-			} else {
-			    Node parentn = getOrCreateNode(origv);
-			    _multiplexNodes(child1DFG,child1n,parentn);
-			}
-		    }
-		}
-		// Iterate through all of child2Values
-		for (i=child2Map.getDefs().keySet().iterator();i.hasNext();) {
-		    Value origv = (Value) i.next();
-		    if (isRequired(origv) && 
-			!child1Map.getDefs().containsKey(origv)) {
-			Node child2n = (Node) child2Map.getDefs().get(origv);
-			Node parentn = getOrCreateNode(origv);
-			_multiplexNodes(child2DFG,child2n,parentn);
-//  			System.out.println("Multiplexing node from parent "+
-//  					   child2n);
-		    }
-		}
-	    } else {
-		// A switch.
-		throw new JHDLUnsupportedException("Switches not yet supported");
-	    }
-	}
-	if (_ic.isSpecialMerge()) {
+	// 2. Merge Children Nodes
+	if (_ic.isSimpleMerge())
+	    simpleMerge();
+	else if (_ic.isSpecialMerge()) {
 	    throw new JHDLUnsupportedException("Special Nodes not yet supported");
 	}	
 
-	// add required definitions of this node
-	Vector newDefs = new Vector();
-	// Get simple input definitions
-	for (Iterator i=sourceNodes().iterator();i.hasNext();)
-	    newDefs.add( ((Node) i.next()).getWeight() );
-	for (Iterator i=getInstanceFieldRefInputDefinitions().iterator();
-	     i.hasNext();)
-	    newDefs.add( ((Node) i.next()).getWeight() );
-	_requiredDefinitions.addAll(newDefs);
-
-//  	System.out.print(_ic.toShortString()+" defs=");
-	for (Iterator i=_requiredDefinitions.iterator();i.hasNext();) {
-	    Object o=i.next();
-//  	    System.out.print(o+" ("+System.identityHashCode(o)+") ");
-	}
-	//System.out.println();
-
-	// Connect previously created chain to this node
+	// 3. Connect previously created chain to this node
 	if (_next != null) { 
-	    //DEBUG=true; System.out.println("*** Serial Merge ***");
   	    mergeSerial(_next);
-	    //DEBUG=false;
 	}
+
     }
 
-    /** returns new lValues **/
-    public void mergeSerial(IntervalDFG dfg) {
+    protected void simpleMerge() throws JHDLUnsupportedException {
 
+	// key=IntervalChain root Node, Value=IntervalChain
+	Map children = _ic.getChildren();
+
+	// Save the ValueMap for the current Graph (i.e. pre-merge)
+	// TODO
+
+	// Iterate over the children:
+	// - merge the child
+	// - save the ValueMap for the control path 
+	// key=IntervalBlockDirectedGraph, Value=ValueMap
+	HashMap childrenValueMaps = new HashMap(children.size());
+
+	for (Iterator i = children.values().iterator();i.hasNext();) {
+	    IntervalChain childInterval = (IntervalChain) i.next();
+	    IntervalBlockDirectedGraph childDFG = 
+		new IntervalBlockDirectedGraph(childInterval);	    
+	    mergeSerial(childDFG);
+	    // Need to save new ValueMap
+	    // _valueMap = childrenValueMaps.put(childDFG,_valueMap);
+	}
+
+	// Restore _valueMap
+	//_valueMap = rootVM;
+
+	if (children.values().size() == 1) {
+	    // merge root w/child
+	} else if (children.values().size() == 2) {
+	    // merge two children
+	} else {
+	    // A switch.
+	    throw new JHDLUnsupportedException("Switches not yet supported");
+	    // merge switch targets
+	}
+
+	/*
+	// - Create a DFG for each child associated with this fork.
+	// - Update the required definitions for this Node based on
+	//   definitions required by each child. 
+	// - Merge each DFG in a serial fashion (children DFGs are
+	//   not multiplexed here).
+	
+	
+	if (children.values().size() == 1) {
+	    // Only one branch. Merge the root graph with
+	    // the branch graph.
+	    
+	    Iterator i = childrenValueMaps.keySet().iterator();
+	    IntervalBlockDirectedGraph childDFG = (IntervalBlockDirectedGraph) i.next();
+	    ValueMap childMap = (ValueMap) childrenValueMaps.get(childDFG);
+	    
+	    for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
+		Value origv = (Value) i.next();
+		Node n = (Node) childMap.getDefs().get(origv);
+		//  		    System.out.println("New def="+n+" id="+
+		//  				       System.identityHashCode(n));
+		if (isRequired(origv)) {
+		    //  			System.out.println("def needed");
+		    Node childn = childMap.getLast(origv);
+		    Node parentn = getOrCreateNode(origv);
+		    _multiplexNodes(childDFG,childn,parentn);
+		    //System.out.println("Multiplexing node "+childn);
+		}
+	    }
+	} else if (children.values().size() == 2) {
+	    
+	    // Two branches. Merge all of their outputs.		
+	    // Obtain the defintions defined by both children
+	    Iterator i = childrenValueMaps.keySet().iterator();
+	    IntervalBlockDirectedGraph child1DFG = (IntervalBlockDirectedGraph) i.next();
+	    IntervalBlockDirectedGraph child2DFG = (IntervalBlockDirectedGraph) i.next();
+	    ValueMap child1Map = (ValueMap) childrenValueMaps.get(child1DFG);
+	    ValueMap child2Map = (ValueMap) childrenValueMaps.get(child2DFG);
+	    
+	    // Iterate through all of child1Values
+	    for (i=child1Map.getDefs().keySet().iterator();i.hasNext();) {
+		Value origv = (Value) i.next();
+		if (isRequired(origv)) {
+		    Node child1n = (Node) child1Map.getDefs().get(origv);
+		    if (child2Map.getDefs().containsKey(origv)) {
+			Node child2n = (Node) child2Map.getDefs().get(origv);
+			_multiplexNodes(child1DFG,child1n,child2n);
+		    } else {
+			Node parentn = getOrCreateNode(origv);
+			_multiplexNodes(child1DFG,child1n,parentn);
+		    }
+		}
+	    }
+	    // Iterate through all of child2Values
+	    for (i=child2Map.getDefs().keySet().iterator();i.hasNext();) {
+		Value origv = (Value) i.next();
+		if (isRequired(origv) && 
+		    !child1Map.getDefs().containsKey(origv)) {
+		    Node child2n = (Node) child2Map.getDefs().get(origv);
+		    Node parentn = getOrCreateNode(origv);
+		    _multiplexNodes(child2DFG,child2n,parentn);
+		    //  			System.out.println("Multiplexing node from parent "+
+		    //  					   child2n);
+		}
+	    }
+	} else {
+	    // A switch.
+	    throw new JHDLUnsupportedException("Switches not yet supported");
+	}
+	*/
+    }
+    
+    /** returns new lValues **/
+    public void mergeSerial(IntervalBlockDirectedGraph dfg) {
+	/*
 	// temporary hashmap between old nodes & new. 
 	// Used when connecting edges
 	HashMap nodeMap = new HashMap(); 
@@ -307,6 +262,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		    _valueMap.addNewDef(snk);
 	    }
 	}	
+	*/
     }
 
     public Node addNode(Node n) {
@@ -322,8 +278,12 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return n;
     }
 
+    /* This method will find a Node in the current graph that should
+     * drive the Node n in the passed in dfg. If there is no Node 
+     * in the current graph that with the Value as that of n, null
+     * is returned (i.e. no driver)
+     */
     protected Node findNodeDriver(BlockDataFlowGraph dfg, Node n) {
-	
 	Object weight = n.getWeight();
 	if (weight instanceof Local) {
 	    if (dfg.inputEdges(n).size() == 0) {
@@ -343,34 +303,15 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
     public IntervalChain getIntervalChain() { return _ic; }
 
-    /*
-    public boolean isValueDefined(Value v) {
-	if (_requiredDefinitions.contains(v))
-	    return true;	
-	if (v instanceof InstanceFieldRef) {	    
-	    InstanceFieldRef d = 
-		getMatchingInstanceFieldRef((InstanceFieldRef)v,
-					    _requiredDefinitions);
-	    if (d != null)
-		return true;
-	}
-	return false;
-    }
-    */
-
-    public Collection getRequiredDefinitions() {
-	return _requiredDefinitions;
-    }
-
     public String toBriefString() {
 	return _ic.toShortString();
     }
 
     
-    protected Node _multiplexNodes(IntervalDFG child1DFG, 
+    protected Node _multiplexNodes(IntervalBlockDirectedGraph child1DFG, 
 				   Node child1,
 				   Node child2) {
-	
+	/*
 	Value value = (Value) child1.getWeight();
 
 	// Get the edges associated with the original CFG.
@@ -400,10 +341,13 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	// _addSimpleNode, _addInstanceField
 	addEdge(muxNode,newValueNode);
 	return newValueNode;
+	*/
+	return null;
     }
     
     /** move to higher level **/
     public Node getOrCreateNode(Value v) throws JHDLUnsupportedException {
+	/*
 	Node newNode = _valueMap.getLast(v);
 	if (DEBUG)
 	    System.out.println("newNode = "+newNode+" value="+v+
@@ -420,14 +364,17 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    }
 	}
 	return newNode;
+	*/
+	return null;
     }
 
     public boolean isRequired(Value v) {
-	if (_requiredDefinitions.contains(v))
+	/*
+	if (_completeRequiredDefinitions.contains(v))
 	    return true;
 	if (v instanceof InstanceFieldRef) {
 	    InstanceFieldRef vifr = (InstanceFieldRef) v;
-	    for (Iterator i=_requiredDefinitions.iterator();i.hasNext();) {
+	    for (Iterator i=_completeRequiredDefinitions.iterator();i.hasNext();) {
 		Object o = i.next();
 		if (o instanceof InstanceFieldRef) {
 		    InstanceFieldRef oifr = (InstanceFieldRef) o;
@@ -437,6 +384,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 		}
 	    }
 	}
+	*/
 	return false;
     }
 
@@ -455,7 +403,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return ifs;
     }
 
-    public boolean isTrueNode(IntervalDFG cidfg) {
+    public boolean isTrueNode(IntervalBlockDirectedGraph cidfg) {
 
 	DirectedAcyclicCFG graph = _ic.getGraph();	
 	IfStmt ifs = getIfStmt();
@@ -489,17 +437,19 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return nodes;
     }
 
-    public static IntervalDFG createIntervalDFG(String args[]) 
+    public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(String args[]) 
 	throws JHDLUnsupportedException {
 	IntervalChain ic = IntervalChain.createIntervalChain(args,true);
-	return new IntervalDFG(ic);
+	return new IntervalBlockDirectedGraph(ic);
     }
+
+    public static boolean DEBUG=false;
 
     public static void main(String args[]) {
 	//BlockDataFlowGraph.DEBUG=true;
-	IntervalDFG im = null;
+	IntervalBlockDirectedGraph im = null;
 	try {
-	    im = createIntervalDFG(args);	
+	    im = createIntervalBlockDirectedGraph(args);	
 	} catch (JHDLUnsupportedException e) {
 	    e.printStackTrace();
 	    System.exit(1);
@@ -515,13 +465,8 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     protected IntervalChain _ic;
-    protected IntervalDFG _next;
+    protected IntervalBlockDirectedGraph _next;
 
-    /**
-     * This contains a Vector of Value objects. A definition for each
-     * Value in this list is *required* further up the tree.
-     **/
-    protected Collection _requiredDefinitions;
 
     protected ValueMap _valueMap;
 }
@@ -582,11 +527,3 @@ class ValueMap {
     public Map newDefs;
 }
 
-/*
-  
-  - get snapshot of definitions before mergining.
-  - use copy of snapshot before each iteration
-    (multiple copies for each branch)
-  - come up with own addNode method that updates these value maps
-
- */

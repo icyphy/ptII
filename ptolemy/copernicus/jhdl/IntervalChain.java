@@ -1,4 +1,4 @@
-/* 
+/* An interval within a control flow graph.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -41,6 +41,22 @@ import ptolemy.graph.Node;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// IntervalChain
+/**
+This class represents an interval within a control-flow graph. While
+there are several definitions for an Interval, this class will define
+an Interval as a directed, acyclic control flow graph with one
+entry point (root) and one exit point (sink). Since control flow
+graphs are not naturally organized as Intervals, the control flow
+graph may be modified by adding nodes where appropriate to identify and
+separate such Intervals.
+
+
+@author Mike Wirthlin
+@version $Id$
+@since Ptolemy II 2.0
+*/
 public class IntervalChain {
 
     public IntervalChain(DominatorCFG graph) throws IllegalActionException {
