@@ -578,7 +578,7 @@ public final class Manager extends NamedObj implements Runnable {
             }
 
             // Set the appropriate write access, because we're about to
-            // go into an interation.
+            // go into an iteration.
             try {
                 if (!_needWriteAccessDuringIteration) {
                     workspace().setReadOnly(true);

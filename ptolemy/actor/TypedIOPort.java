@@ -230,7 +230,7 @@ public class TypedIOPort extends IOPort {
 
 		// farType might be "Token", since the base class Token
 		// does not have a convert method, the convert method
-		// should only be invoked if the token being tranported
+		// should only be invoked if the token being transported
 		// is not an instance of farType.
 	        if (farType.isInstance(token)) {
                     farRec[channelindex][j].put(token);

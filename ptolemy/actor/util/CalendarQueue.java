@@ -105,7 +105,7 @@ public class CalendarQueue {
 
         _cqComparator = comparator;
         // initialization is already done using
-        // field initialiation during the
+        // field initialization during the
         // declaration of variables
     }
 
