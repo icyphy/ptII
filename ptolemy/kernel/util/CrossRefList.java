@@ -241,7 +241,7 @@ public final class CrossRefList implements Serializable  {
     // Class CrossRef.
     // Objects of this type form the elements of the list.
     // They occur in pairs, one in each list at each end of a link.
-    private class CrossRef implements Serializable{
+    protected class CrossRef implements Serializable{
         
         protected CrossRef _far;
         
@@ -249,9 +249,9 @@ public final class CrossRefList implements Serializable  {
         
         private CrossRef _previous;
         
-        private CrossRef() { this(null); }
+        public CrossRef() { this(null); }
         
-        private CrossRef(CrossRef spouse) {
+        public  CrossRef(CrossRef spouse) {
             _far = spouse;
             if(_size > 0) {
                 _previous = _lastNode;
