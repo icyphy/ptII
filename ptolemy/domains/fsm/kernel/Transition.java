@@ -273,7 +273,7 @@ public class Transition extends ComponentRelation {
                 _relationList.destroy();
                 // Reconstruct the relation list.
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setEvaluationMode(true);
+                    .setConstructionMode(true);
             }
         }
         if (attribute == triggerExpression) {
@@ -473,7 +473,7 @@ public class Transition extends ComponentRelation {
         try {
             if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setEvaluationMode(true);
+                    .setConstructionMode(false);
             }
             FSMActor fsmActor = (FSMActor)getContainer();
             if(_guardParseTree == null) {

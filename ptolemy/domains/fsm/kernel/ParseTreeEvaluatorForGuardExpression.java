@@ -147,7 +147,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      * list will simply be updated with new information
      * @param mode The mode of the parse tree evaluator.
      */
-    public void setEvaluationMode(boolean mode) {
+    public void setConstructionMode(boolean mode) {
         _constructingRelationList = mode;
     }
 
@@ -377,15 +377,18 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                  _difference = 0.0;
              } 
         } else {
-            // If the operator is not about equal or notEqual relations.
+            // If the operator is neither about equal nor notEqual relations.
             if (!((leftToken instanceof ScalarToken) &&
                     (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException(
                         "The " + operator.image +
                         " operator can only be applied between scalars.");
             }
+
             ScalarToken leftScalar = (ScalarToken)leftToken;
             ScalarToken rightScalar = (ScalarToken)rightToken;
+
+            // A relation needs strictly satisfied. 
             if (operator.kind == PtParserConstants.GTE) {
                 result = leftScalar.isLessThan(rightScalar).not();
             } else if (operator.kind == PtParserConstants.GT) {
@@ -400,6 +403,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                         leftToken.getClass().getName() + " and " +
                         rightToken.getClass().getName());
             }
+            
             if (((BooleanToken) result).booleanValue()) {
                 _relationType = 1;
             } else {
