@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	QR
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS = \
 	QRCompileApplet.java \
 	StreamToMatrix.java \
@@ -69,14 +73,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass QRCompile.jar
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all 
 
-PTAUXJAR = QRCompile.jar
-
-demo: QRCompile.jar
+demo: 
 	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.html
 
 show: QRcompile.class
@@ -85,7 +87,7 @@ show: QRcompile.class
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = QRCompile.jar
+KRUFT = $(PTCLASSJAR)
 
 # Jar file for the Applet
 QRCompile.jar: $(JSRCS) $(JCLASS) makefile
