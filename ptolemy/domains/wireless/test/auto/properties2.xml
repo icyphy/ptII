@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="properties2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {65, -2, 815, 468}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, -2, 815, 468}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
@@ -55,13 +55,6 @@
         <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
     </entity>
@@ -131,14 +124,14 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="WirelessToWired.properties" relation="relation2"/>
-    <link port="WirelessToWired.data" relation="relation"/>
+    <link port="WirelessToWired.payload" relation="relation5"/>
     <link port="Ramp.output" relation="relation7"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation3"/>
@@ -148,6 +141,6 @@
     <link port="RecordAssembler.range" relation="relation4"/>
     <link port="WiredToWireless.payload" relation="relation7"/>
     <link port="WiredToWireless.properties" relation="relation6"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
     <link port="NonStrictTest2.input" relation="relation2"/>
 </entity>
