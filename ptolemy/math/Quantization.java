@@ -52,7 +52,7 @@ The way in which <i>precision</i> is realised is a sub-class
 responsibility. The standard fixed point binary functionality using a
 Precision is provided by FixPointQuantization.
 <p>
-This abstract  class is designed to support specification of required
+This abstract class is designed to support specification of required
 numeric behavior through use of the yet-to-be-written FloatingQuantization
 and FixedQuantization classes. Knowledge of the required numeric behavior,
 rather than precise specification of an exact implementation, provides an
@@ -100,7 +100,14 @@ that its value is set in the constructor and cannot then be modified.
 @see Rounding
 */
 public abstract class Quantization implements Cloneable, Serializable {
-    // Default implemntations suit the typical
+    
+    /** Construct a Quantization with the given precision, overflow
+     *  strategy, and rounding strategy.
+     */
+    public Quantization(Overflow overflow, Rounding rounding) {
+        _overflow = overflow;
+        _rounding = rounding;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -117,10 +124,10 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  @return True if the quantizations are equal.
      */
     public boolean equals(Object object) {
-            if (object instanceof Quantization) {
+        if (object instanceof Quantization) {
             Quantization other = (Quantization)object;
             if (_overflow.equals(other._overflow)
-             && _rounding.equals(other._rounding)) {
+                    && _rounding.equals(other._rounding)) {
                 return true;
             }
         }
@@ -139,7 +146,7 @@ public abstract class Quantization implements Cloneable, Serializable {
 
     /** Return the overflow bit-truth.
      *  @return True if overflow must occur at the <i>maximum</i> and
-     *  <i>minimum</i> values, false if greater range is acceptable..
+     *  <i>minimum</i> values, false if greater range is acceptable.
      */
     public boolean getExactOverflow() {
         return false;
@@ -285,44 +292,6 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  @return A string representing this quantization.
      */
     public abstract String toString();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected constructor                ////
-
-    /** Construct a Quantization with specified overflow and rounding.
-     *
-     *  @param overflow The overflow.
-     *  @param rounding The rounding.
-     */
-    protected Quantization(Overflow overflow, Rounding rounding) {
-        _overflow = overflow;
-        _rounding = rounding;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                 ////
-
-    /** Define the overflow strategy during construction.
-     *
-     *  @param string The string representing the overflow strategy.
-     *  @exception IllegalArgumentException If the overflow strategy
-     *   is not known.
-     */
-    protected void constructOverflow(String string)
-            throws IllegalArgumentException {
-        _overflow = Overflow.getName(string);
-    }
-
-    /** Define the rounding strategy during construction.
-     *
-     *  @param string The string representing the rounding strategy.
-     *  @exception IllegalArgumentException If the rounding strategy
-     *   is not known.
-     */
-    protected void constructRounding(String string)
-            throws IllegalArgumentException {
-        _rounding = Rounding.getName(string);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                 ////
