@@ -41,7 +41,8 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
 /**
-A token that contains a FixPoint.
+A token that contains an instance of a FixPoint.
+
 <p>
 @author Bart Kienhuis
 @see ptolemy.data.Token
@@ -53,32 +54,31 @@ A token that contains a FixPoint.
 
 public class FixToken extends ScalarToken {
 
-    /** Construct a FixToken with for the supplied FixPoint value
-     *  @param value a FixPoint value
+    /** Construct a FixToken with the supplied FixPoint value.
+     *  @param value A FixPoint value.
      */
     public FixToken(FixPoint value) {
 	_value = value;
     }
 
-    /** Construct a FixToken with a value given as a String and a
-     *  precision given as a String. Since FixToken uses a finite
-     *  number of bits to represent a value, quantization errors may
-     *  occur. This constructor uses the <i>Round</i> quantization
-     *  method of class Quantizer, which means that a FixToken is
-     *  produced which value is nearest to the value that can be
-     *  presented with the given precision.
+    /** Construct a FixToken with a value given as a double and a
+     *  precision. Since FixToken uses a finite number of bits to
+     *  represent a value, quantization errors and overflow may
+     *  occur. This constructor uses the <i>Quantizer.round</i> method
+     *  of class Quantizer, which means that a FixToken is produced
+     *  with a value nearest to the value that can be presented with
+     *  the given precision.
      *
-     *  @param value the value that needs to be converted into a FixToken
-     *  @param precision the precision of the FixToken.  
+     *  @param value the value that needs to be converted into a FixToken.
+     *  @param precision the precision of the FixToken.
      *  @exception IllegalArgumentException If the format of the 
-     *  precision string is incorrect 
+     *  precision string is incorrect.
      *  @see ptolemy.math.Quantizer
      */
-    public FixToken(double value, String precision)
+    public FixToken(double value, Precision precision)
             throws IllegalArgumentException {
         try {
-            Precision precisionObject = new Precision( precision );
-            _value = Quantizer.round(value, precisionObject);
+            _value = Quantizer.round(value, precision);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -91,10 +91,10 @@ public class FixToken extends ScalarToken {
      *  errors may occur. This constructor uses the <i>Round</i>
      *  quantization method of class Quantizer, which means that a
      *  FixToken is produced which value is nearest to the value that
-     *  can be presented with the given precision.
+     *  can be represented with the given precision.
      *
      *  @param value the value that needs to be converted into a
-     *  FixToken
+     *  FixToken.
      *  @param numberOfBits total number of bits available for the
      *  FixToken.
      *  @param integerBits the number of integer bits available for
@@ -117,12 +117,13 @@ public class FixToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a FixToken containing the absolute value of the
+    /** Return a new FixToken containing the absolute value of the
      *  value of this token.
-     *  @return a FixToken.
+     *
+     *  @return A FixToken.
      */
     public ScalarToken absolute() {
-	return new FixToken(_value.absolute());
+	return new FixToken(_value.abs());
     }
 
     /** Return a new token whose value is the sum of this token
@@ -180,10 +181,11 @@ public class FixToken extends ScalarToken {
         return add(token);
     }
 
-    /** Return the fix point value of this token as a double. The
-     *  conversion from a fix point to a double is not lossless, and
+    /** Return the fixed point value of this token as a double. The
+     *  conversion from a fixed point to a double is not lossless, and
      *  the doubleValue() cannot be used. Therefore an explicit lossy
-     *  conversion method is provided,
+     *  conversion method is provided.
+     *
      *  @return A double.
      */
     public double convertToDouble() {
@@ -230,7 +232,7 @@ public class FixToken extends ScalarToken {
      *  @param dividend The token to be divided by the value of this Token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than FixToken;
+     *   token is not lower than FixToken.
      */
     public Token divideReverse(Token dividend)
 	    throws IllegalActionException {
@@ -246,15 +248,15 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-    /** Return the value of this token as a Fixpoint.
-     *  @return A Fixpoint
+    /** Return the value of this token as a FixPoint.
+     *  @return A FixPoint.
      */
     public FixPoint fixValue() {
         return _value;
     }
 
     /** Return the type of this token.
-     *  @return BaseType.FIX
+     *  @return BaseType.FIX.
      */
     public Type getType() {
 	return BaseType.FIX;
@@ -268,7 +270,7 @@ public class FixToken extends ScalarToken {
      *  @param token The token to test equality of this token with.
      *  @return BooleanToken indicating whether the values are equal.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be compared with this Token.
+     *  not of a type that can be compared with this Token.
      */
     public BooleanToken isEqualTo(Token token)
             throws IllegalActionException {
@@ -293,8 +295,9 @@ public class FixToken extends ScalarToken {
         }
     }
 
-    /** Check if the value of this token is strictly less than that of the
-     *  argument token.
+    /** Check whether the value of this token is strictly less than
+     *  that of the argument token.
+     *
      *  @param arg A ScalarToken.
      *  @return A BooleanToken with value true if this token is strictly
      *   less than the argument.
@@ -363,7 +366,7 @@ public class FixToken extends ScalarToken {
      *  and the argument. The type of the specified token must
      *  be lower than FixToken.
      *
-     *  @param token The token to multiply this Token to.
+     *  @param token The token with which to multiply this Token.
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than FixToken.
@@ -384,45 +387,21 @@ public class FixToken extends ScalarToken {
     }
 
     /** Returns a new Token representing the multiplicative identity
-     *  with the same precision as the current FixToken.
+     *  with the same precision as this FixToken.
      *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
-        return new FixToken( 1.0, _value.getPrecision().toString() );
+        return new FixToken( 1.0, _value.getPrecision() );
     }
 
-    /**  Scale the fix point value to the give precision. To fit the
-     *  new precision, a rounding error may occur. In that case the
-     *  value of the Fixpoint is determined, depending on the overflow
-     *  mode selected. The following quantization modes are supported
-     *  in case an overflow occurs.
-     *
-     *  <ul> 
-     *
-     * <li> mode = 0, <b>Saturate</b>: The fix point value is set,
-     * depending on its sign, equal to the Maximum or Minimum value
-     * possible with the new given precision.  
-     *
-     * <li> mode = 1, <b>Zero Saturate</b>: The fix point value is set
-     * equal to zero.  
-     *
-     * </ul>
-     *
-     * @param newprecision The new precision of the Fixpoint.
-     * @param mode The oveflow mode.
-     * @return A new Fixpoint with the given precision.
-     */
-    public FixToken scaleToPrecision(Precision newprecision, int mode ) {
-        return new FixToken( _value.scaleToPrecision(newprecision, mode) );
-    }
-
-    /** Return a new Token whose value is the value of the argument token
-     *  subtracted by the value of this token. The type of the
+    /** Return a new Token whose value is the value of the argument
+     *  token subtracted from the value of this token. The type of the
      *  specified token must be such that either it can be converted
      *  to the type of this token, or the type of this token can be
      *  converted to the type of the specified token, without loss of
      *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
+     *  above two types that allows lossless conversion from the
+     *  other.
      *
      *  @param token A FixToken.
      *  @return A new FixToken.
@@ -473,12 +452,14 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return the value of this token as a string that can be parsed
-     *  by the expression language to recover a token with the same value.
-     *  @return A String representing a function call to the static function 
-     *  "fix".  The first argument is the decimal value, the second is the 
-     *  total number of bits and the third is the number of bits for the
-     *  integer portion.  For more information about these arguments, see 
-     *  the three argument constructor. 
+     *  by the expression language to recover a token with the same
+     *  value. The "fix" keyword indicates it is a FixToken. The first
+     *  argument is the decimal value, the second is the total number
+     *  of bits and the third is the number of bits for the integer
+     *  portion. For more information about these arguments, see the
+     *  three argument constructor.
+     *
+     *  @return A String representing of this Token.
      */
     public String toString() {
         Precision precision = _value.getPrecision();
@@ -487,15 +468,18 @@ public class FixToken extends ScalarToken {
             "," + precision.getIntegerBitLength() + ")";
     }
 
-    /** Returns a new token representing the additive identity with the
-     *  same precision as the current FixToken.
+    /** Return a new token representing the additive identity with
+     *  the same precision as this FixToken.  
+     *
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
-        return new FixToken( 0.0, _value.getPrecision().toString() );
+        return new FixToken( 0.0, _value.getPrecision() );
     }
 
-    /** Print the content of this FixToken: Debug Function */
+    /** Print the content of this FixToken: This is used for debugging
+     *  only.
+     */
     public void print() {
         _value.printFix();
     }

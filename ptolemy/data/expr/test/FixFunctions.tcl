@@ -53,12 +53,12 @@ if {[string compare test [info procs test]] == 1} then {
 test FixFunctions-1.0 {Check Fix method for a single FixPoint} {
     set parser [java::new ptolemy.data.expr.PtParser]
 
-    set tree [$parser generateParseTree "fix(5.34, 10, 2)"]
+    set tree [$parser generateParseTree "fix(5.34, 10, 4)"]
     set res [$tree evaluateParseTree]
     set value [$res toString]
 
     list $value
-} {fix(1.99609375,10,2)}
+} {fix(5.34375,10,4)}
 
 test FixFunctions-1.1 {Check Fix method for a array of FixPoints} {
     set parser [java::new ptolemy.data.expr.PtParser]
@@ -75,6 +75,19 @@ fix(0.375,10,2), fix(0.375,10,2), fix(0.1796875,10,2),\
 fix(0.0,10,2), fix(-0.0390625,10,2)]}}
 
 test FixFunctions-2.0 {Check quantize method, returning an array of FixPoints} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+
+    set tree [$parser generateParseTree "quantize(5.34, 10, 4)" ]
+
+    #$tree displayParseTree " "
+    set res [$tree evaluateParseTree]
+
+    set value [$res toString]
+    list $value
+
+} {5.34375}
+
+test FixFunctions-2.1 {Check quantize method, returning an array of FixPoints} {
     set parser [java::new ptolemy.data.expr.PtParser]
 
     set tree [$parser generateParseTree "quantize(\[ -.040609, -.001628,\
