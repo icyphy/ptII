@@ -185,10 +185,10 @@ public class TypedIOPort extends IOPort {
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
-     *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalArgumentException If the port is not an output,
+     *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range, or if the token to be sent cannot
      *   be converted to the resolved type of this IOPort.
+     *  @exception NoRoomException If there is no room in the receiver.
      */
     public void send(int channelindex, Token token)
             throws IllegalActionException, NoRoomException {
