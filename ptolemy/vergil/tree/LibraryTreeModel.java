@@ -31,6 +31,8 @@
 package ptolemy.vergil.tree;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.LibraryMarkerAttribute;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
 
@@ -46,7 +48,10 @@ import javax.swing.tree.TreePath;
 
 A tree model for the Vergil library panel.  This is a singleton
 class that represents a list of top-level composite entities, each
-of which is a library.
+of which is a library.  A composite entity that contains an instance
+of LibraryMarkerAttribute is treated as a sublibrary.  A composite
+entity without such an attribute is treated as an atomic entity.
+<p>
 It is designed for use with JTree, which renders the hierarchy.
 A list of top-level composite entities is used instead a single
 top-level composite entity to get around the restrictions in Ptolemy II
@@ -153,7 +158,17 @@ public class LibraryTreeModel extends EntityTreeModel {
         if (parent == _root) {
             return _directory.size();
         } else {
-            return super.getChildCount(parent);
+            if (parent instanceof NamedObj) {
+                List markers = ((NamedObj)parent)
+                        .attributeList(LibraryMarkerAttribute.class);
+                if (markers.size() > 0) {
+                    return super.getChildCount(parent);
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -165,7 +180,17 @@ public class LibraryTreeModel extends EntityTreeModel {
         if (parent == _root) {
             return _directory.indexOf(child);
         } else {
-            return super.getIndexOfChild(parent, child);
+            if (parent instanceof NamedObj) {
+                List markers = ((NamedObj)parent)
+                        .attributeList(LibraryMarkerAttribute.class);
+                if (markers.size() > 0) {
+                    return super.getIndexOfChild(parent, child);
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
         }
     }
 
@@ -177,7 +202,17 @@ public class LibraryTreeModel extends EntityTreeModel {
         if (object == _root) {
             return false;
         } else {
-            return super.isLeaf(object);
+            if (object instanceof NamedObj) {
+                List markers = ((NamedObj)object)
+                        .attributeList(LibraryMarkerAttribute.class);
+                if (markers.size() > 0) {
+                    return super.isLeaf(object);
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
         }
     }
 

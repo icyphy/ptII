@@ -64,7 +64,8 @@ JSRCS = \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
 	PtolemyQuery.java \
-	TopDebugListener.java
+	TopDebugListener.java \
+	WindowAttribute.java
 
 EXTRA_SRCS =	$(JSRCS)
 

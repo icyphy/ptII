@@ -34,8 +34,11 @@ import ptolemy.actor.Configurable;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.LibraryMarkerAttribute;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.data.StringToken;
@@ -57,7 +60,8 @@ specified via the configure() method.  The MoML is evaluated
 lazily; i.e. it is not actually evaluated until there is a request
 for its contents, via a call to getEntity(), numEntities(),
 entityList(), or any related method. You can also force evaluation
-of the MoML by calling populate().
+of the MoML by calling populate().  This object contains an
+attribute of class LibraryMarkerAttribute, to mark it as a library.
 <p>
 The configure method can be given a URL or MoML text or both.
 If it is given MoML text, that text will normally be wrapped in a
@@ -105,6 +109,11 @@ public class TypedActorLibrary
      */
     public TypedActorLibrary() {
         super();
+        try {
+            new LibraryMarkerAttribute(this, uniqueName("_marker"));
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** Construct a library in the specified workspace with
@@ -116,6 +125,11 @@ public class TypedActorLibrary
      */
     public TypedActorLibrary(Workspace workspace) {
 	super(workspace);
+        try {
+            new LibraryMarkerAttribute(this, uniqueName("_marker"));
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
     }
 
     /** Construct a library with the given container and name.
@@ -129,6 +143,7 @@ public class TypedActorLibrary
     public TypedActorLibrary(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        new LibraryMarkerAttribute(this, uniqueName("_marker"));
     }
 
     ///////////////////////////////////////////////////////////////////

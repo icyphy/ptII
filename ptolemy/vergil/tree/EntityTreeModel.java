@@ -48,9 +48,8 @@ import javax.swing.tree.TreePath;
 A tree model for Ptolemy II objects. This class makes it easy to
 view ptolemy models in a JTree, which renders the hierarchy.
 This base class handles only composite entities and their contained
-entities.  Derived classes represent more of the Ptolemy II model.
-
-FIXME: More information.
+entities.  Derived classes represent more (or less)
+of the Ptolemy II model.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
