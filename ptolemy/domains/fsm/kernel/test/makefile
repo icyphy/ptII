@@ -57,6 +57,7 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	FSMActor.tcl \
+	FSM-ConstVariableModelAnalysis.tcl \
 	FSMDirector.tcl \
 	HSDirector.tcl \
 	InterfaceAutomaton.tcl \
