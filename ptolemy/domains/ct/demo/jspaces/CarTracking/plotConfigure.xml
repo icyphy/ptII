@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+  <xLabel>time</xLabel>
+  <yLabel>values</yLabel>
+  <xRange min="0" max="100"/>
+  <yRange min="-1" max="100"/>
+  <noGrid/>
+</plot>
