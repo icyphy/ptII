@@ -46,7 +46,7 @@ proc saveAsJava {model} {
     set modelName [string range $javaFile \
 	    0 [expr {[string length $javaFile]-6}]]
     exec javac -classpath $relativePathToPTII $javaFile
-    return [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
+    return [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class "CG$modelName" ]
 }
 
 
