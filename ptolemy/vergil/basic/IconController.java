@@ -95,10 +95,12 @@ public class IconController extends ParameterizedNodeController {
                     // require write access to the workspace), and specify
                     // to it what the container will eventually be. Then
                     // we queue a change request to make that the container.
-                    final EditorIcon icon = new XMLIcon(object.workspace(), "_icon");
+                    // FIXME: Doesn't work... end up getting two figures per actor...
+                    final EditorIcon icon = new XMLIcon(object, "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
+                    /* FIXME
                     ChangeRequest request = new ChangeRequest(this,
                             "Set the container of a new XMLIcon.") {
                          // NOTE: The KernelException should not be thrown, but
@@ -113,6 +115,7 @@ public class IconController extends ParameterizedNodeController {
                     };
                     request.setPersistent(false);
                     object.requestChange(request);
+                    */
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();
                     result = icon.createFigure();
