@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>Vergil Web Start Download</title>
+<SCRIPT LANGUAGE="Javascript"> 
+	var javawsInstalled = 0; 
+	isIE = "false"; 
+
+        if (navigator.mimeTypes && navigator.mimeTypes.length) { 
+        	x = navigator.mimeTypes['application/x-java-jnlp-file']; 
+                if (x) javawsInstalled = 1; 
+        } else { 
+                isIE = "true"; 
+        } 
+
+        function insertLink(url, name) { 
+        	if (javawsInstalled) { 
+                	document.write("<li> <a href=" + url + ">"  + name + "</a>"); 
+                } else { 
+                	document.write("You need to <a href=http://java.sun.com/cgi-bin/javawebstart-platform.sh?>Install Web Start from Sun</a> before installing <a href=" + url + ">"  + name + "</a>"); 
+                } 
+        } 
+ </SCRIPT> 
+</head>
+<body>
+<h1>Vergil Web Start Download</h1>	
+<a href="http://java.sun.com/products/javawebstart/">Web Start</a>
+is a product from Sun that uses the Web to download applications.
+
+
+<menu>
+<SCRIPT LANGUAGE="Javascript"> 
+
+
+             <!-- 
+             insertLink("../vergil.jnlp", 
+                        "Vergil (Full Runtime) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilPtiny.jnlp", 
+                        "Vergil (Ptiny version) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilDSP.jnlp", 
+                        "Vergil (DSP only) Web Start Download"); 
+             // --> 
+
+</SCRIPT> 
+</menu>
+</body>
+</html>
