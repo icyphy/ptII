@@ -56,12 +56,16 @@ public class TypeLattice {
      *  first argument is lower than, equal to, higher than, or
      *  incomparable with that of the second in the type hierarchy,
      *  respectively.
-     *  @param t1 a Token.
-     *  @param t2 a Token.
+     *  @param token1 a Token.
+     *  @param token2 a Token.
      *  @return An integer.
      */
-    public static int compare(Token t1, Token t2) {
-	return compare(t1.getType(), t2.getType());
+    public static int compare(Token token1, Token token2) {
+        if (token1==null || token2==null) {
+	    throw new IllegalArgumentException("TypeLattice.compare: " +
+	        "one or both of the argument tokens is null.");
+	}
+	return compare(token1.getType(), token2.getType());
     }
 
     /** Compare two types in the type lattice.
@@ -70,12 +74,16 @@ public class TypeLattice {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
      *  is lower than, equal to, higher than, or incomparable with the
      *  second argument in the type hierarchy, respectively.
-     *  @param t1 an instance of Type.
-     *  @param t2 an instance of Type.
+     *  @param type1 an instance of Type.
+     *  @param type2 an instance of Type.
      *  @return An integer.
      */
-    public static int compare(Type t1, Type t2) {
-	return _lattice.compare(t1, t2);
+    public static int compare(Type type1, Type type2) {
+        if (type1==null || type2==null) {
+	    throw new IllegalArgumentException("TypeLattice.compare: " +
+	        "one or both of the argument types is null.");
+	}
+	return _lattice.compare(type1, type2);
     }
 
     /** Return the an instance of CPO representing the infinite type
