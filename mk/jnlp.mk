@@ -253,6 +253,31 @@ FULL_JNLP_JARS = \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
 
+#######
+# VisualSense
+#
+# Jar files that will appear in a VisualSense only JNLP Ptolemy II Runtime.
+# ct, fsm, de, sdf
+
+# FIXME: experimentalDomains.jar also includes wireless.jar
+# Jar files that are only used in JNLP
+VISUAL_SENSE_ONLY_JNLP_JARS = \
+	doc/design/visualsense.jar \
+	doc/codeDocVisualSense.jar \
+	ptolemy/domains/wireless/wireless.jar \
+	ptolemy/domains/wireless/demo/demo.jar
+
+
+VISUAL_SENSE_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
+
+VISUAL_SENSE_JNLP_JARS =	\
+	$(VISUAL_SENSE_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(PTINY_ONLY_JNLP_JARS) \
+	$(VISUAL_SENSE_ONLY_JNLP_JARS)
+
+
 #########
 
 # All the JNLP Jar files except the application jars,
@@ -262,6 +287,7 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(CORE_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
+	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS)
 
@@ -295,8 +321,12 @@ KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp vergilHyVisual.jnlp \
-	vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
+JNLPS =	vergilDSP.jnlp \
+	vergilHyVisual.jnlp \
+	vergilPtiny.jnlp \
+	vergilPtinySandbox.jnlp \
+	vergilVisualSense.jnlp \
+	vergil.jnlp 
 
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
@@ -470,6 +500,43 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
 
+
+# Web Start: VisualSense version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(VISUAL_SENSE_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
+		cp -p $(VISUAL_SENSE_MAIN_JAR) \
+			`dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(VISUAL_SENSE_MAIN_JAR) \
+		$(VISUAL_SENSE_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(VISUAL_SENSE_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(VISUAL_SENSE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
+	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
+	"$(PTJAVA_DIR)/bin/jarsigner" \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
 vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)

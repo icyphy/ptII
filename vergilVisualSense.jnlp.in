@@ -8,7 +8,7 @@
      it will appear in the desktop icon
 -->
 <jnlp codebase="@PTII_LOCALURL@"
-      href="@PTII_LOCALURL@/vergilHyVisual.jnlp"> 
+      href="@PTII_LOCALURL@/vergilVisualSense.jnlp"> 
   <information>
 	  <title>VisualSense @PTVERSION@</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
