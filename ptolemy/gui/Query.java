@@ -54,7 +54,7 @@ Here is one example of creating a query with a radio button:
     query.addRadioButtons("radio", "Radio buttons", options, "water");
 </pre>
 
-@author  Edward A. Lee, Manda Sutijono
+@author  Edward A. Lee, Manda Sutijono, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.3
 */
