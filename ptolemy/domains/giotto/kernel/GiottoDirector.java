@@ -563,6 +563,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         try {
                             if (insideReceivers[i][j].isKnown()) {
                                 if (insideReceivers[i][j].hasToken()) {
+                                    if (_debugging) _debug(getName(),
+                                            "transferring output from " + port.getName() +
+                                            " to channel " + i);
                                     Token t = ((GiottoReceiver) insideReceivers[i][j]).remove();
                                     port.send(i, t);
                                     wasTransferred = true;
@@ -584,7 +587,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public double getPeriod() {
 	//In ptolemy model, for simulation, time is double with unit Second
-	// however, for giotto code, we need integer and its unit is microSecond
+	// however, for giotto code, we need integer and its unit is milliSecond
 	return _periodValue * 1000;
     }
 
