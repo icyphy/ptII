@@ -356,3 +356,17 @@ proc sleep {seconds} {
     }
 }
 
+############################################################################
+#### cast
+# The java::cast command is not present in Tcl Blend 1.0, but it is
+# present in 1.1.
+# If it is not present, then create a dummy proc so the tests will work
+# under Tcl Blend 1.0
+#
+if {"[info command java::cast]" != "::java::cast"} {
+    proc java::cast {type object} {
+        return $object
+    }
+}
+
+
