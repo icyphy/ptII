@@ -100,7 +100,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return super.getDeclaredOptions() + " targetPackage debug";
     }
 
     /** Given an object in the model, return the first object above it
@@ -138,6 +138,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
+        _debug = Options.getBoolean(options, "debug");
         _entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
         _classToObjectMap = new HashMap();
@@ -156,7 +157,9 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-
+            if(_debug)
+                System.out.println("Replacing entity calls in " + method);
+        
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             
             CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
@@ -182,6 +185,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                     (Local)r.getBase(),
                                     unit, localDefs);
                         box.setValue(newFieldRef); 
+                        if(_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
                                        PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
@@ -189,7 +193,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                             Jimple.v().newStaticFieldRef((SootField)
                                     _entityToFieldMap.get(_model));
                         box.setValue(newFieldRef);
-                    } else if (r.getMethod().getSubSignature().equals(
+                        if(_debug) System.out.println("replacing " + unit);
+                   } else if (r.getMethod().getSubSignature().equals(
                                        PtolemyUtilities.getEntityMethod.getSubSignature())) {
                         Value nameValue = r.getArg(0);
                         if (Evaluator.isValueConstantValued(nameValue)) {
@@ -203,6 +208,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                         (Local)r.getBase(), name,
                                         unit, localDefs);
                             box.setValue(newFieldRef); 
+                            if(_debug) System.out.println("replacing " + unit);
                         } else {
                             String string = "Entity cannot be " +
                                 "statically determined";
@@ -237,7 +243,6 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
-        System.out.println("object = " + object);
         if (object != null) {
             // Then we are dealing with a getContainer call on one of the
             // classes we are generating.
@@ -267,7 +272,6 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
-        System.out.println("object = " + object);
         if (object != null) {
             // Then we are dealing with a getEntity call on one of the
             // classes we are generating.
@@ -365,6 +369,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
     private CompositeActor _model;
     private Map _options;
+    private boolean _debug;
     private static Map _entityToFieldMap;
     private static Map _fieldToEntityMap;
     private Map _classToObjectMap;
