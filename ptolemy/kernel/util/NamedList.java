@@ -23,10 +23,11 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
 @ProposedRating Red (eal@eecs.berkeley.edu)
 
-NOTE: This class should probably implement a bit more,
-leveraging the underlying LinkedList class. E.g., it should be
+NOTE: This class should probably leverage better
+the underlying LinkedList class. E.g., it should be
 capable of returning an enumeration sorted alphabetically by name.
 This is the reason for a Red rating.
 */
@@ -71,7 +72,8 @@ public class NamedList implements Cloneable {
     }
 
     /** Copy constructor.  Create a copy of the specified list, but
-     *  with no container.
+     *  with no container. This is useful to permit enumerations over
+     *  a queue while the queue continues to be modified.
      */	
     public NamedList(NamedList model) {
         _namedlist = new LinkedList();
@@ -127,46 +129,23 @@ public class NamedList implements Cloneable {
         return null;
     }
 
-    /** Get an element by index. Valid indexes are 0 through size()-1.
-     *  @param index The index of the desired element.
-     *  @exception NoSuchElementException The index is out of range.
-     *  @return The specified element.
-     */
-    public Nameable get(int index) throws NoSuchElementException {
-	return (Nameable)_namedlist.at(index);
-    }
-
     /** Enumerate the elements of the list.
      *  @see collections.LinkedList#elements()
-     *  @return An enumeration of elements in the list. 
+     *  @return An enumeration of Nameable objects. 
      */
     public CollectionEnumeration getElements() {
         return _namedlist.elements();
     }
    
-    /** Get the index of the specified element.
-     *  @param obj A reference to the desired element.
-     *  @return The index of the desired element, or -1 if it not on the list.
-     */
-    public int getIndexOf(Nameable obj) {
-        return _namedlist.firstIndexOf(obj);
-    }
-
-    /** Get the index of the element with the specified name.
-     *  @param name The name of the desired element.
-     *  @return The index of the desired element, or -1 if it not on the list.
-     */
-    public int getIndexOf(String name) {
+    /** Return true if the specified object is on the list.
+     *  @param element
+     */	
+    public boolean includes(Nameable element) {
         CollectionEnumeration enum = _namedlist.elements();
-        int count = 0;
         while( enum.hasMoreElements() ) {
-            Nameable obj = (Nameable)enum.nextElement();
-            if( name.equals(obj.getName()) ) {
-                return count;
-            }
-            count += 1;
+            if (element == enum.nextElement()) return true;
         }
-        return -1;
+        return false;
     }
 
     /** Insert a new element after an element with the specified name.
@@ -180,32 +159,9 @@ public class NamedList implements Cloneable {
      */
     public void insertAfter(String name, Nameable element) 
             throws IllegalActionException, NameDuplicationException {
-        int index = getIndexOf(name);
+        int index = _getIndexOf(name);
         if (index == -1) append(element);  // name doesn't exist in list
-        else insertAt((index+1), element); // name exists in list
-    }
-
-    /** Add an element at the specified position index in the list.
-     *  The element is inserted just prior to that element that currently
-     *  has the specified position index.
-     *  @param index Where to insert the new element.
-     *  @param element The element to insert.
-     *  @exception IllegalActionException Element to insert has no name.
-     *  @exception NameDuplicationException Element to insert has a
-     *   name that coincides with one already on the list.
-     */
-    public void insertAt(int index, Nameable element)
-            throws IllegalActionException, NameDuplicationException {
-        if( element.getName() == null ) {
-            throw new IllegalActionException(_container,
-                    _nullNameExceptionString);
-	} else {
-	    if (get(element.getName()) == null) {
-	        _namedlist.insertAt(index, element);
-		return;
-	    }
-	}
-        throw new NameDuplicationException(_container, element);
+        else _insertAt((index+1), element); // name exists in list
     }
 
     /** Insert a new element before an element with the specified name.
@@ -219,9 +175,9 @@ public class NamedList implements Cloneable {
      */
     public void insertBefore(String name, Nameable element) 
             throws IllegalActionException, NameDuplicationException {
-        int index = getIndexOf(name);
+        int index = _getIndexOf(name);
         if (index == -1) prepend(element);// name doesn't exist in list
-        else insertAt(index, element);    // name exists in the list
+        else _insertAt(index, element);    // name exists in the list
     }
 
     /** Get the last element.
@@ -294,6 +250,52 @@ public class NamedList implements Cloneable {
      */
     protected Object clone() { 
         return new NamedList(this); 
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private methods                          ////
+
+    /*  Get the index of the element with the specified name.
+     *  This is private because the
+     *  interface to this class does not include the notion of indexes.
+     *  @param name The name of the desired element.
+     *  @return The index of the desired element, or -1 if it not on the list.
+     */
+    public int _getIndexOf(String name) {
+        CollectionEnumeration enum = _namedlist.elements();
+        int count = 0;
+        while( enum.hasMoreElements() ) {
+            Nameable obj = (Nameable)enum.nextElement();
+            if( name.equals(obj.getName()) ) {
+                return count;
+            }
+            count += 1;
+        }
+        return -1;
+    }
+
+    /*  Add an element at the specified position index in the list.
+     *  The element is inserted just prior to that element that currently
+     *  has the specified position index.  This is private because the
+     *  interface to this class does not include the notion of indexes.
+     *  @param index Where to insert the new element.
+     *  @param element The element to insert.
+     *  @exception IllegalActionException Element to insert has no name.
+     *  @exception NameDuplicationException Element to insert has a
+     *   name that coincides with one already on the list.
+     */
+    private void _insertAt(int index, Nameable element)
+            throws IllegalActionException, NameDuplicationException {
+        if( element.getName() == null ) {
+            throw new IllegalActionException(_container,
+                    _nullNameExceptionString);
+	} else {
+	    if (get(element.getName()) == null) {
+	        _namedlist.insertAt(index, element);
+		return;
+	    }
+	}
+        throw new NameDuplicationException(_container, element);
     }
 
     //////////////////////////////////////////////////////////////////////////

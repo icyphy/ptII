@@ -62,55 +62,28 @@ test NamedList-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedList
   fields:        
-  methods:       {append pt.kernel.Nameable} {equals java.lang.Object} f
-    irst {get int} {get java.lang.String} getClass getEleme
-    nts {getIndexOf java.lang.String} {getIndexOf pt.kernel
-    .Nameable} hashCode {insertAfter java.lang.String pt.ke
-    rnel.Nameable} {insertAt int pt.kernel.Nameable} {inser
-    tBefore java.lang.String pt.kernel.Nameable} last notif
-    y notifyAll {prepend pt.kernel.Nameable} {remove java.l
-    ang.String} {remove pt.kernel.Nameable} removeAll size 
-    toString wait {wait long} {wait long int}
-    
-  constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Name
-    able} {pt.kernel.NamedList pt.kernel.NamedList}
-    
-  properties:    class elements {{}}
-    
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {append pt.kernel.Nameable} first {get java.lang.String} getElements {includes pt.kernel.Nameable} {insertAfter java.lang.String pt.kernel.Nameable} {insertBefore java.lang.String pt.kernel.Nameable} last {prepend pt.kernel.Nameable} {remove pt.kernel.Nameable} {remove java.lang.String} removeAll size {_getIndexOf java.lang.String}
+  constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Nameable} {pt.kernel.NamedList pt.kernel.NamedList}
+  properties:    elements class
   superclass:    java.lang.Object
-    
 }}
 
 ######################################################################
 ####
 # 
-test NamedList-2.1 {Construct a list, call getIndexOf and get} {
+test NamedList-2.1 {Construct a list, call get} {
     set dir [java::new pt.kernel.NamedList]
     set n1 [java::new pt.kernel.NamedObj "n1"]
     set n2 [java::new pt.kernel.NamedObj "n2"]
     set n3 [java::new pt.kernel.NamedObj "n3"]
     $dir prepend $n1
-    set result1 [list [$dir {getIndexOf String} n1] \
-	    [expr {$n1 == [$dir {get String} "n1"]}]]
+    set result1 [expr {$n1 == [$dir get "n1"]}]
     $dir prepend $n2
     $dir prepend $n3
-    set result2 [list [$dir {getIndexOf String} n1] \
-	    [expr {$n1 == [$dir {get String} n1]}]]
-    set result3 [list [$dir {getIndexOf String} n3] \
-	    [expr {$n3 == [$dir {get String} n3]}]]
+    set result2 [expr {$n1 == [$dir get n1]}]
+    set result3 [expr {$n3 == [$dir get n3]}]
     list $result1 $result2 $result3
-} {{0 1} {2 1} {0 1}}
-
-######################################################################
-####
-# 
-test NamedList-3.1 {Test getIndexOf} {
-    set dir [java::new pt.kernel.NamedList]
-    catch {$dir {getIndexOf String} ""} errMsg1
-    catch {$dir {getIndexOf String} {}} errMsg2
-    catch {$dir {getIndexOf String} foo} errMsg3
-    list $errMsg1 $errMsg2 $errMsg3
-} {-1 -1 -1}
+} {1 1 1}
 
 ######################################################################
 ####
@@ -120,36 +93,14 @@ test NamedList-4.1 {Test insertAt and last} {
     set n1 [java::new pt.kernel.NamedObj "n1"]
     set n2 [java::new pt.kernel.NamedObj "n2"]
     set n3 [java::new pt.kernel.NamedObj "n3"]
-    $dir insertAt 0 $n1
-    $dir insertAt 0 $n2 
-    $dir insertAt 0 $n3 
-    list [$dir {getIndexOf String} n1] \
-	    [$dir {getIndexOf String} n2] \
-	    [$dir {getIndexOf String} n3] \
+    $dir prepend $n1
+    $dir prepend $n2 
+    $dir prepend $n3 
+    list [[$dir get n1] getName]\
+	    [[$dir get n2] getName] \
+	    [[$dir get n3] getName] \
             [[$dir last] getName]
-} [list 2 1 0 n1]
-
-######################################################################
-####
-# 
-test NamedList-4.2 {insertAt with duplicate names} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n1"]
-    $dir insertAt 0 $n1
-    catch {$dir insertAt 0 $n2} errMsg4
-    list $errMsg4
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
-
-######################################################################
-####
-# 
-test NamedList-4.3 {insertAt with a node with a null name and test first} {
-    set dir [java::new pt.kernel.NamedList]
-    set n0 [java::new pt.kernel.NamedObj]
-    $dir insertAt 0 $n0
-    list [expr {$n0 == [$dir first]}] [expr {$n0 == [$dir {get String} {}]}]
-} [list 1 1]
+} [list n1 n2 n3 n1]
 
 ######################################################################
 ####
@@ -162,10 +113,8 @@ test NamedList-5.1 {Test prepend} {
     $dir prepend $n1
     $dir prepend $n2 
     $dir prepend $n3 
-    list [$dir {getIndexOf String} n1] \
-	    [$dir {getIndexOf String} n2] \
-	    [$dir {getIndexOf String} n3]
-} {2 1 0}
+    _testEnums getElements $dir
+} {{n3 n2 n1}}
 
 ######################################################################
 ####
@@ -212,10 +161,8 @@ test NamedList-6.1 {Test insertAfter} {
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
-    list [$dir {getIndexOf String} n1] \
-	    [$dir {getIndexOf String} n2] \
-	    [$dir {getIndexOf String} n3]
-} {0 1 2}
+    _testEnums getElements $dir
+} {{n1 n2 n3}}
 
 ######################################################################
 ####
@@ -255,34 +202,6 @@ test NamedList-6.4 {insertAfter with two nodes with a null names} {
 ######################################################################
 ####
 # 
-test NamedList-7.1 {Test getIndexOf} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
-    $dir prepend $n1
-    $dir insertAfter [$n1 getName] $n2
-    $dir insertAfter [$n2 getName] $n3
-    catch {$dir {getIndexOf String} "not a node"} errMsg1
-    list [$dir {getIndexOf String} n1] \
-	    [$dir {getIndexOf String} n2] \
-	    [$dir {getIndexOf String} n3] \
-	    $errMsg1
-} {0 1 2 -1}
-
-######################################################################
-####
-# 
-test NamedList-7.2 {getIndexOf with a node with a null name} {
-    set dir [java::new pt.kernel.NamedList]
-    set n0 [java::new pt.kernel.NamedObj]
-    $dir insertAt 0 $n0
-    list [$dir {getIndexOf String} {}]
-} {0}
-
-######################################################################
-####
-# 
 test NamedList-8.1 {Test remove} {
     set dir [java::new pt.kernel.NamedList]
     set n1 [java::new pt.kernel.NamedObj "n1"]
@@ -291,24 +210,15 @@ test NamedList-8.1 {Test remove} {
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
-    set result1 [list [$dir {getIndexOf String} n1] \
-	    [$dir {getIndexOf String} n2] \
-	    [$dir {getIndexOf String} n3]]
+    set result1 [_testEnums getElements $dir]
     $dir {remove String} n2
-    set result2 [list [$dir {getIndexOf String} n1] \
-	    [catch {$dir {getIndexOf String} n2}] \
-	    [$dir {getIndexOf String} n3]]
+    set result2 [_testEnums getElements $dir]
     $dir {remove pt.kernel.Nameable} $n3
-    set result3 [list [$dir {getIndexOf String} n1] \
-	    [catch {$dir {getIndexOf String} n2}] \
-	    [catch {$dir {getIndexOf String} n3}]]
+    set result3 [_testEnums getElements $dir]
     $dir {remove String} n1
-    set result4 [list [catch {$dir {getIndexOf String} n1}] \
-	    [catch {$dir {getIndexOf String} n2}] \
-	    [catch {$dir {getIndexOf String} n3}]]
-
+    set result4 [_testEnums getElements $dir]
     list $result1 $result2 $result3 $result4
-} {{0 1 2} {0 0 1} {0 0 0} {0 0 0}}
+} {{{n1 n2 n3}} {{n1 n3}} n1 {{}}}
 
 ######################################################################
 ####
