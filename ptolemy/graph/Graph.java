@@ -28,8 +28,11 @@
 
 package ptolemy.graph;
 
-//import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Graph 
@@ -445,6 +448,29 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Assign to each node a unique integer identifier between 0 and
+     *  <em>N</em>-1, where <em>N</em> is the number of nodes
+     *  currently in the graph. The identifier assigned to a node can
+     *  be accessed by using the {@link #_getNodeId(Object)} method. In
+     *  general, if the set of graph nodes is changed, then the {@link
+     *  #_enumerateNodes()} method must be re-invoked before node
+     *  identifiers are accessed.  The identifiers are recomputed in
+     *  this method only if the node set has changed since the last
+     *  invocation of the method.
+     */
+    protected void _enumerateNodes() {
+        // _enumerateNodes would be private except we refer to it with
+        // javadoc link tags.
+        if (_recomputeIdentifiers) {
+            _nodeIdTable.clear();
+            int i;
+            for (i=0; i<_nodes.size(); i++) {
+                _nodeIdTable.put(_nodes.get(i), new Integer(i));
+            }
+           _recomputeIdentifiers = false;
+        }
+    }
+
     /** Return a node in the graph given the node identifer.
      *  The node set of the graph should not have changed since the
      *  last invocation of {@link #_enumerateNodes()} (otherwise, the
@@ -508,27 +534,6 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    //  Assign to each node a unique integer identifier between 
-    //  0 and <em>N</em>-1, where <em>N</em> is 
-    //  the number of nodes currently in the graph. The identifier
-    //  assigned to a node can be accessed by using the 
-    //  {@link #getNodeId(Object)} method. In general, if the set of
-    //  graph nodes is changed, then the {@link #enumerateNodes()}
-    //  method must be re-invoked before node identifiers are accessed. 
-    //  The identifiers are recomputed in this method only if the
-    //  node set has changed since the last invocation of the method.
-    //
-    private void _enumerateNodes() {
-        if (_recomputeIdentifiers) {
-            _nodeIdTable.clear();
-            int i;
-            for (i=0; i<_nodes.size(); i++) {
-                _nodeIdTable.put(_nodes.get(i), new Integer(i));
-            }
-           _recomputeIdentifiers = false;
-        }
-    }
-
     // Remove an object from an ArrayList if it exists in the list.
     // Return null if the object is not in the list to begin with, or
     // return the object that was removed.
@@ -541,14 +546,12 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The data structure storing the edges of this graph.
-     *  Each entry in this ArrayList is an {@link Edge}.
-     */
+    // The data structure storing the edges of this graph.
+    // Each entry in this ArrayList is an {@link Edge}.
     private ArrayList _edges;
 
-    /** The data structure storing the nodes of this graph.
-     *  Each entry in this ArrayList is a {@link Node}.
-     */
+    // The data structure storing the nodes of this graph.
+    // Each entry in this ArrayList is a {@link Node}.
     private ArrayList _nodes;
 
     // Translation from node to node ID. The keys of this HashMap

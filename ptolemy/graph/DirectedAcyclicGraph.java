@@ -310,7 +310,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         int size = getNodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
-            indeg[i] = _getNode(i).inputEdgeCount(); 
+            indeg[i] = _getNode(i).inputEdgeCount();
         }
         Object[] result = new Object[size];
         boolean finished = false;
