@@ -97,6 +97,21 @@ public class AddSubtract extends TypedAtomicActor {
 	minus = new TypedIOPort(this, "minus", true, false);
 	minus.setMultiport(true);
 	output = new TypedIOPort(this, "output", false, true);
+
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" 
+                + "<text x=\"7\" y=\"15\" "
+                + "style=\"font-size:18\">\n"
+                + "+ \n"
+                + "</text>\n"
+                + "<text x=\"7\" y=\"27\" "
+                + "style=\"font-size:18\">\n"
+                + "_ \n"
+                + "</text>\n"
+                + "</svg>\n");
+
     }
 
     ///////////////////////////////////////////////////////////////////
