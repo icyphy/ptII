@@ -95,10 +95,14 @@ import diva.graph.GraphEvent;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
+import diva.graph.GraphEvent;
 import diva.graph.MutableGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.graph.layout.LayoutTarget;
+
+import diva.util.xml.*;
+import java.io.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -147,6 +151,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -324,6 +329,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	_layoutAction = new LayoutAction();
 	_saveInLibraryAction = new SaveInLibraryAction();
 	_importLibraryAction = new ImportLibraryAction();
+
+        _saveAsSVGAction = new SaveAsSVGAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -546,6 +553,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
+        diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveAsSVGAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
     }
@@ -652,6 +660,7 @@ public abstract class GraphFrame extends PtolemyFrame
     protected Action _pasteAction;
     protected JMenu _graphMenu;
     protected Action _layoutAction;
+    protected Action _saveAsSVGAction;
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
 
@@ -735,6 +744,66 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
+    private class SaveAsSVGAction extends AbstractAction {
+	public SaveAsSVGAction() {
+	    super("Save As SVG");
+	    putValue("tooltip", "Save as an SVG graphic");
+        }
+	public void actionPerformed(ActionEvent e) {
+            JFileChooser fileDialog = new JFileChooser();
+            fileDialog.setDialogTitle("Save as SVG");
+            if (_directory != null) {
+                fileDialog.setCurrentDirectory(_directory);
+            } else {
+                // The default on Windows is to open at user.home, which is
+                // typically an absurd directory inside the O/S installation.
+                // So we use the current directory instead.
+                // FIXME: This will probably fail with a security exception in
+                // applets.
+                String cwd = System.getProperty("user.dir");
+                if (cwd != null) {
+                    fileDialog.setCurrentDirectory(new File(cwd));
+                }
+            }
+            int returnVal = fileDialog.showSaveDialog(GraphFrame.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                
+                try {
+                    URL newURL = file.toURL();
+                    String newKey = newURL.toExternalForm();
+                    if (file.exists()) {
+                        // Ask for confirmation before overwriting a file.
+                        String query = "Overwrite " + file.getName() + "?";
+                        // Show a MODAL dialog
+                        int selected = JOptionPane.showOptionDialog(
+                                GraphFrame.this,
+                                query,
+                                "Overwrite file?",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                null,
+                                null);
+                        
+                        if (selected == 1) {
+                            return;
+                        }
+                    }
+                    
+                    _directory = fileDialog.getCurrentDirectory();
+                    FileWriter writer = new FileWriter(file);
+                    ptolemy.vergil.toolbox.SVGWriter svgwriter =
+                        new ptolemy.vergil.toolbox.SVGWriter(writer);
+                    svgwriter.write(_jgraph);
+                    
+                } catch (Exception ex) {
+                    MessageHandler.error("Save as SVG failed", ex);
+                }
+            }
+        }        
+    }
+            
     private class SaveInLibraryAction extends AbstractAction {
 	public SaveInLibraryAction() {
 	    super("Save In Library");
@@ -747,14 +816,12 @@ public abstract class GraphFrame extends PtolemyFrame
 		PtolemyEffigy effigy =
 		    (PtolemyEffigy)getTableau().getContainer();
 		NamedObj object = effigy.getModel();
-		if(object == null) return;
 		StringWriter buffer = new StringWriter();
 		object.exportMoML(buffer, 1);
 		Configuration configuration =
 		    (Configuration)effigy.toplevel();
 		NamedObj library = configuration.getEntity("actor library");
-		if(library == null) return;
-		ChangeRequest request =
+                ChangeRequest request =
 		    new MoMLChangeRequest(this, library, buffer.toString());
 		library.requestChange(request);
 	    } catch (IOException ex) {
@@ -905,7 +972,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    }
 	}
     };
-
+        
     // A layout algorithm for laying out ptolemy graphs.  Since our edges
     // are undirected, this layout algorithm turns them into directed edges
     // aimed consistently. i.e. An edge should always be "out" of an
@@ -1065,7 +1132,7 @@ public abstract class GraphFrame extends PtolemyFrame
  	    }
 	}
     }
-
+        
     private class DeletionListener implements ActionListener {
 	/**
 	 * Delete any nodes or edges from the graph that are currently
