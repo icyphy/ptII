@@ -2127,6 +2127,12 @@ public class PlotBox extends Panel {
         // we could end up calling setXORMode, being interrupted
         // and having setPaintMode() called in another method.
 
+        // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
+        // not work on mouse drags, thus we have to use this variable
+        // to determine whether we are actually zooming. It is used only
+        // in _zoomBox, since calling this method is properly masked.
+        _zooming = false;
+
         Graphics graphics = getGraphics();
 
         boolean handled = false;
@@ -2209,6 +2215,11 @@ public class PlotBox extends Panel {
         // box properly.  If this method is not synchronized, then
         // we could end up calling setXORMode, being interrupted
         // and having setPaintMode() called in another method.
+
+        // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
+        // not work on mouse drags, thus we have to use this variable
+        // to determine whether we are actually zooming.
+        if (!_zooming) return;
 
         Graphics graphics = getGraphics();
 
@@ -2298,6 +2309,7 @@ public class PlotBox extends Panel {
         if (x < _ulx) x = _ulx;
         _zoomx = x;
         _zoomy = y;
+        _zooming = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2377,6 +2389,7 @@ public class PlotBox extends Panel {
     private transient boolean _zoomin = false;
     private transient boolean _zoomout = false;
     private transient boolean _drawn = false;
+    private transient boolean _zooming = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -2408,9 +2421,13 @@ public class PlotBox extends Panel {
 
     public class DragListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
+            // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
+            // not work on mouse drags.  It does work on MouseListener
+            // methods, so those methods set a variable _zooming that
+            // is used by _zoomBox to determine whether to draw a box.
+            // if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
                 PlotBox.this._zoomBox(event.getX(), event.getY());
-            }
+            // }
         }
         public void mouseMoved(MouseEvent event) {
         }
