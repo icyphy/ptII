@@ -45,8 +45,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
-
-//import ptolemy.domains.hdf.kernel.HDFFSMDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -473,12 +471,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getWriteAccess();
-            Director director = getDirector();
+            //Director director = getDirector();
             Transition tr = new Transition(this, name);
-            // FIXME: FSM should not depend on hdf
-            //if (director instanceof HDFFSMDirector){
-            //    (tr.preemptive).setVisibility(Settable.NONE);
-            //}
+            if (_HDFFSMActor){
+                (tr.preemptive).setVisibility(Settable.NONE);
+            }
             return tr;
         } finally {
             workspace().doneWriting();
@@ -572,6 +569,31 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
+    }
+
+    /** Set the HDFFSMActor flag.
+     *  @param flag Indicator that whether the FSMActor is under a
+     *  HDFFSMDirector.
+     */
+    public void setHDFFSMActor (boolean flag) {
+        _HDFFSMActor = flag;
+    }
+
+    /** Set the total number of firings of the modal model in the
+     *  current iteration.
+     *  @param firings The number of firings of the modal model in
+     *  the current iteration.
+     */
+    public void setFiringsPerIteration(int firings) {
+        _firingsPerIteration = firings;
+    }
+
+    /** Set the number of firings so far in the current iteration.
+     *  @param firings The number of firings that the modal model
+     *  has fired in the current iteration. 
+     */
+    public void setFiringsSoFar(int firings) {
+        _firingsSoFar = firings;
     }
 
     /** Request that execution of the current iteration stop as soon
@@ -1049,7 +1071,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getDirector();
-        // FIXME: FSM should not depend on hdf
         //if (director instanceof HDFFSMDirector) {
         //    _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
         //    _firingsPerScheduleIteration = 
@@ -1099,7 +1120,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 System.out.println(port.getFullName() + " port rate = " + portRate);
             }
             if (_firingsSoFar == 0 && channel == 0) {
-                Token[][] a_of_p = new Token[width][portRate * _firingsPerScheduleIteration];
+                Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
                 _hdfArrays.put(port, a_of_p);
             }
             int index = portRate * _firingsSoFar;
@@ -1132,7 +1153,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
             // The "portName_isPresent" is true only if there are 
             // enough tokens. FIXME.
-            if (index == portRate * _firingsPerScheduleIteration && index > 0) {
+            if (index == portRate * _firingsPerIteration && index > 0) {
                 Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 shadowVariables[channel][1].setToken(a_of_p[channel][index - 1]);
@@ -1401,15 +1422,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // Set to true to enable debugging.
     private boolean _debug_info = false;
     //private boolean _debug_info = true;
+
+    // A flag indicating whether the controller 
+    // is under an HDFFSMDirector.
+    private boolean _HDFFSMActor = false;
     
     // Firing counts for HDF/SDF. 
     // For other domains, _firingsPerScheduleIteration will always be 1
     // and _firingsSoFar will always be 0.
     private int _firingsSoFar = 0;
-    private int _firingsPerScheduleIteration = 1;
+    private int _firingsPerIteration = 1;
     
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _hdfArrays;
+
 }
