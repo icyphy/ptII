@@ -152,6 +152,22 @@ bin_install_dir:
 		mkdir -p "$(BIN_INSTALL_DIR)"; \
 	fi
 
+# Quickly attempt to build the tree
+fast:
+	-@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making fast in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) fast ;\
+			) \
+		    fi ; \
+		done ; \
+		echo "Now compiling with 'CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) *.java' in `pwd`"; \
+		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) *.java; \
+	fi
+
 # Install links for scripts in $PTOLEMY/bin and $TYCHO/bin
 tybin_install:
 	-if [ "x$(EXTRA_SRCS)" != "x" ]; then \
