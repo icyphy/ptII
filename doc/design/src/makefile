@@ -86,7 +86,10 @@ OPTIONAL_FILES = \
 	title.fm \
 	type.fm
 
-all: wmwork/Output/introduction.html
+WPUBLISH_OUTPUT_DIR = Output
+DESIGNDOC =	/users/ptII/doc/design/src
+
+all: $(WPUBLISH_OUTPUT_DIR)/introduction.html
 install: all
 design.pdf: $(wildcard $(DESIGNDOC)/*.fm)
 	-chmod g+w $^
@@ -102,15 +105,21 @@ CHARS=	alpha.gif \
 	logicand.gif \
 	lt_equal.gif 
 
-support_htmls:	wmwork/Output/index.html wmwork/Output/support/bottom.gif \
-		wmwork/Output/idx.html wmwork/Output/content.html wmwork/Output/search.html
-	-mkdir wmwork/Output/chars
+
+	$(WPUBLISH_OUTPUT_DIR)/index.html \
+	$(WPUBLISH_OUTPUT_DIR)/support/bottom.gif \
+	$(WPUBLISH_OUTPUT_DIR)/idx.html \
+	$(WPUBLISH_OUTPUT_DIR)/content.html \
+	$(WPUBLISH_OUTPUT_DIR)/search.html
+
+support_htmls:	
+	-mkdir $(WPUBLISH_OUTPUT_DIR)/chars
 	for file in $(CHARS); \
 	do \
-		cp /usr/tools/tools2/www/quadralay/lib/chars/$$file wmwork/Output/chars; \
+		cp /usr/tools/tools2/www/quadralay/lib/chars/$$file $(WPUBLISH_OUTPUT_DIR)/chars; \
 	done
 
-wmwork/Output/introduction.html: $(wildcard $(DESIGNDOC)/*.fm) support_htmls
+$(WPUBLISH_OUTPUT_DIR)/introduction.html: $(wildcard $(DESIGNDOC)/*.fm) support_htmls
 
 	@if [ `whoami` != "ptuser" ]; then \
 		echo "wpbatch only works for ptuser"; \
@@ -122,28 +131,28 @@ wmwork/Output/introduction.html: $(wildcard $(DESIGNDOC)/*.fm) support_htmls
 			/users/ptdesign/public_html/java/design.wdt; \
 	fi
 
-wmwork/Output/index.html:
+$(WPUBLISH_OUTPUT_DIR)/index.html:
 	rm -f $@
-	(cd wmwork/Output; ln -s title.html index.html)
+	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s title.html index.html)
 
 
-wmwork/Output/bottom.gif:
-	-cp -f /users/ptdesign/doc/lib/buttons/* wmwork/Output
+$(WPUBLISH_OUTPUT_DIR)/bottom.gif:
+	-cp -f /users/ptdesign/doc/lib/buttons/* $(WPUBLISH_OUTPUT_DIR)/Output
 
-wmwork/Output/support/bottom.gif:
-	-mkdir wmwork/Output/support
-	-cp -f /users/ptdesign/doc/lib/support/* wmwork/Output/support
+$(WPUBLISH_OUTPUT_DIR)/support/bottom.gif:
+	-mkdir $(WPUBLISH_OUTPUT_DIR)/support
+	-cp -f /users/ptdesign/doc/lib/support/* $(WPUBLISH_OUTPUT_DIR)/support
 
 
-wmwork/Output/idx.html:
+$(WPUBLISH_OUTPUT_DIR)/idx.html:
 	rm -f $@
-	(cd wmwork/Output; ln -s designix.html idx.html)
+	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s designix.html idx.html)
 
-wmwork/Output/content.html:
+$(WPUBLISH_OUTPUT_DIR)/content.html:
 	rm -f $@
-	(cd wmwork/Output; ln -s designtoc.html content.html)
+	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s designtoc.html content.html)
 
-wmwork/Output/search.html:
+$(WPUBLISH_OUTPUT_DIR)/search.html:
 	echo "<html>" >> $@
 	echo "<head>" >> $@
 	echo "<title>Search</title>" >> $@
@@ -157,4 +166,3 @@ wmwork/Output/search.html:
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
 
-DESIGNDOC=/users/ptII/doc/design/src
