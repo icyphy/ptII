@@ -689,15 +689,16 @@ public class NamedObj implements Nameable, Debuggable,
             output.write(">\n");
         }
 
-        if (depth == 0) {
-            // Add the version.
-            output.write(_getIndentPrefix(depth+1)
-                    + "<property name=\"_createdBy\" " 
-                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-                    + "value=\""
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + "\"/>\n");
-	}
+//          if (depth == 0) {
+//              // Add the version.
+//              output.write(_getIndentPrefix(depth+1)
+//                      + "<property name=\"_createdBy\" " 
+//                      + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+//                      + "value=\""
+//                      + VersionAttribute.CURRENT_VERSION.getExpression()
+//                      + "\"/>\n");
+//  	}
+
 
         if (getMoMLInfo().deferTo == null) {
             _exportMoMLContents(output, depth + 1);
