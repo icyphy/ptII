@@ -1,0 +1,2 @@
+#!/bin/sh
+glimpse -y -H /users/ptII static | grep -v private | grep java | grep -v apps | grep -v corba | grep -v /com/ | grep -v /lang/java | grep -v codegen | grep -v Corba | grep -v demo | grep -v /cg/ | sed 's@/export/maury/maury1/ptII/@@'
