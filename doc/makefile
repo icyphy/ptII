@@ -57,6 +57,7 @@ UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
 	codegen.htm \
+	default.css \
 	webStartHelp.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm
@@ -68,7 +69,6 @@ EXTRA_SRCS = \
 	buttons.htm \
 	contents.css \
 	contentsheader.htm \
-	default.css \
 	docbody.htm \
 	docbuttons.htm \
 	docs.htm \
