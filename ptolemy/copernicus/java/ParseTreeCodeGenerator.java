@@ -998,6 +998,12 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
          _nodeToLocal.put(node, resultLocal);
     }
 
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node) 
+            throws IllegalActionException {
+        throw new IllegalActionException("Cannot generate code" + 
+                " for function definitions!");
+    }
+
     public void visitLeafNode(ASTPtLeafNode node) 
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
