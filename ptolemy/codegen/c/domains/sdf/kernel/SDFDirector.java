@@ -28,7 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.c.domains.sdf.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -109,29 +111,20 @@ public class SDFDirector extends Director {
                     helperObject.generateFireCode(code);
                     // FIXME: Each time fire an actor, increase the offset of
                     // each of its port by the port rate.
-                    Iterator inputPorts = actor.inputPortList().iterator();
-                    while (inputPorts.hasNext()) {
-                        IOPort inputPort = (IOPort) inputPorts.next();
+                    Set inputAndOutputPortsList = new HashSet();
+                    inputAndOutputPortsList.addAll(actor.inputPortList());
+                    inputAndOutputPortsList.addAll(actor.outputPortList());
+                    Iterator inputAndOutputPorts = inputAndOutputPortsList.iterator();
+                    while (inputAndOutputPorts.hasNext()) {
+                        IOPort port = (IOPort) inputAndOutputPorts.next();
                         int offset = ((CodeGeneratorHelper) helperObject)
-                                .getOffset(inputPort);
+                                .getOffset(port);
                         // FIXME: temporarily we don't consider cyclic buffer.
                         //offset = offset + DFUtilities.getRate(inputPort);
-                        offset = (offset + DFUtilities.getRate(inputPort))
-                                % ((CodeGeneratorHelper) helperObject).getBufferSize(inputPort);
+                        offset = (offset + DFUtilities.getRate(port))
+                                % ((CodeGeneratorHelper) helperObject).getBufferSize(port);
                         ((CodeGeneratorHelper) helperObject)
-                                .setOffset(inputPort, offset);
-                    }
-                    // FIXME: Some day I am going to add input ports and output ports together.
-                    Iterator outputPorts = actor.outputPortList().iterator();
-                    while (outputPorts.hasNext()) {
-                        IOPort outputPort = (IOPort) outputPorts.next();
-                        int offset = ((CodeGeneratorHelper) helperObject)
-                                .getOffset(outputPort);
-                        //offset = offset + DFUtilities.getRate(outputPort);
-                        offset = (offset + DFUtilities.getRate(outputPort))
-                                % ((CodeGeneratorHelper) helperObject).getBufferSize(outputPort);
-                        ((CodeGeneratorHelper) helperObject)
-                                .setOffset(outputPort, offset);
+                                .setOffset(port, offset);
                     }
                 }
             }
@@ -160,19 +153,15 @@ public class SDFDirector extends Director {
             Actor actor = (Actor) actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
             // Set the buffer size for each port of this actor.
-            Iterator inputPorts = actor.inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-                int bufferSize = getBufferSize(inputPort);
+            Set inputAndOutputPortsList = new HashSet();
+            inputAndOutputPortsList.addAll(actor.inputPortList());
+            inputAndOutputPortsList.addAll(actor.outputPortList());
+            Iterator inputAndOutputPorts = inputAndOutputPortsList.iterator();
+            while (inputAndOutputPorts.hasNext()) {
+                IOPort port = (IOPort) inputAndOutputPorts.next();
+                int bufferSize = getBufferSize(port);
                 ((CodeGeneratorHelper) helperObject)
-                        .setBufferSize(inputPort, bufferSize);
-            }
-            Iterator outputPorts = actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-                int bufferSize = getBufferSize(outputPort);
-                ((CodeGeneratorHelper) helperObject)
-                        .setBufferSize(outputPort, bufferSize);
+                        .setBufferSize(port, bufferSize);
             }
             // Set the offset of each port of this actor to be 0.
             ((CodeGeneratorHelper)helperObject).resetOffsets();
