@@ -176,3 +176,22 @@ test ComplexMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{1.0 + 2.0i 3.0 - 4.0i -4.9 - 6.0i} {-7.0 + 8.0i -0.25 + 0.4i -4.9 - 6.0i} {3.0 - 4.0i 1.0 + 2.0i -0.25 + 0.4i}}}
 } {}
+
+
+####################################################################
+test ComplexMatrixMath-5.9.0 {conjugate } {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+		    conjugate $m3]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{1.0 - 2.0i 3.0 + 4.0i -4.9 + 6.0i} {-7.0 - 8.0i -0.25 - 0.4i -4.9 + 6.0i} {3.0 + 4.0i 1.0 - 2.0i -0.25 - 0.4i}}}
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.9.1 {conjugate with 0x0 matrix} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+		    conjugate $m23]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 + 6.0i 1.0 - 2.0i 3.0 + 4.0i} {-0.25 - 0.4i -7.0 - 8.0i 3.0 + 4.0i}}}
+} {}
