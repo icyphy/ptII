@@ -31,7 +31,6 @@ import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
 import java.util.Enumeration;
-//import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
@@ -53,8 +52,8 @@ public class PNInterleave extends PNActor{
     public PNInterleave(CompositeActor container, String name)
              throws NameDuplicationException {
         super(container, name);
-        _input0 = newInPort(this, "input0");
-        _input1 = newInPort(this, "input1");
+        _input = newInPort(this, "input");
+        _input.makeMultiplex(true);
         _output = newOutPort(this, "output");
     }
 
@@ -71,17 +70,13 @@ public class PNInterleave extends PNActor{
         setCycles(((PNCompositeActor)getContainer()).getCycles());
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration ports = getPorts();
-		while (ports.hasMoreElements()) {
-		    PNPort nextPort = (PNPort)ports.nextElement();
-                    if (nextPort.isInput()) {
-                        Enumeration relations = nextPort.linkedRelations();
-                        while (relations.hasMoreElements()) {
-                            IORelation relation = (IORelation)relations.nextElement();
-                            data = readFrom((PNInPort)nextPort, relation);
-                            writeTo(_output, data[0]);
-                            System.out.println(this.getName()+" writes "+((IntToken)data[0]).intValue()+" to "+_output.getName());
-                        }
+                Enumeration relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation relation = (IORelation)relations.nextElement();
+                    data = readFrom(_input, relation);
+                    for (int j=0; j<data.length; j++) {
+                        writeTo(_output, data[j]);
+                        System.out.println(this.getName()+" writes "+((IntToken)data[j]).intValue()+" to "+_output.getName());
                     }
                 }
             }
@@ -98,8 +93,7 @@ public class PNInterleave extends PNActor{
     ////                         private variables                        ////
 
     // Input ports 
-    private PNInPort _input0;
-    private PNInPort _input1;
+    private PNInPort _input;
     // Output port 
     private PNOutPort _output;
 
