@@ -48,7 +48,7 @@ import javax.media.jai.RenderedOp;
 /**
    Crop an image, given a point of origin, and the dimensions to crop. In
    most images (those that have not been translated or transformed under
-   simlar operations) have their origin, (0,0), at the top left corner.
+   simlar operations) have their origin, (0, 0), at the top left corner.
 
    @author James Yeh
    @version $Id$

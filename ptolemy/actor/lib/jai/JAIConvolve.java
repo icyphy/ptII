@@ -101,7 +101,7 @@ public class JAIConvolve extends Transformer {
                     count = count + 1;
                 }
             }
-            _filter = new KernelJAI(width,height,floatArray);
+            _filter = new KernelJAI(width, height, floatArray);
         } else {
             super.attributeChanged(attribute);
         }
