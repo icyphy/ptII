@@ -206,7 +206,7 @@ public class AccelerLinearizer extends TypedAtomicActor
      */
     public void attributeChnaged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaP) {
-            String taps = ((StringToken)paramAlphaP.getToken()).toString();
+            String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
             if(stokens.countTokens() < 5) {
@@ -218,7 +218,7 @@ public class AccelerLinearizer extends TypedAtomicActor
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
             
-            taps = ((StringToken)paramAlphaA.getToken()).toString();
+            taps = ((StringToken)paramAlphaA.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;
             if(stokens.countTokens() < 3) {

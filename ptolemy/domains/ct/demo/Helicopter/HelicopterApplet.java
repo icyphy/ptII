@@ -237,9 +237,9 @@ public class HelicopterApplet extends CTApplet {
             suboutVz.link(rSubOutVz);
 
             sub.connect(subinAction, hscInAct);
-            hscInPz.link(rSubPz);
-            hscInV.link(rSubOutV);
-            hscInR.link(rSubOutR);
+            //hscInPz.link(rSubPz);
+            //hscInV.link(rSubOutV);
+            //hscInR.link(rSubOutR);
             Iterator entities = sub.entityList().iterator();
             while(entities.hasNext()) {
                 Entity ent = (Entity)entities.next();
@@ -736,6 +736,7 @@ public class HelicopterApplet extends CTApplet {
             _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
             super._go();
+            //System.out.println(_toplevel.exportMoML());
         } catch (Exception ex) {
             report(ex);
         }

@@ -200,7 +200,7 @@ public class HoverLinearizer extends TypedAtomicActor
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaP) {
-            String taps = ((StringToken)paramAlphaP.getToken()).toString();
+            String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
             int tokencount = stokens.countTokens();

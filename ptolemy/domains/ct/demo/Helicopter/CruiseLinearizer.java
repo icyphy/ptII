@@ -207,7 +207,7 @@ public class CruiseLinearizer extends TypedAtomicActor
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaP) {
-            String taps = ((StringToken)paramAlphaP.getToken()).toString();
+            String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
             if(stokens.countTokens() < 5) {
@@ -219,7 +219,7 @@ public class CruiseLinearizer extends TypedAtomicActor
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
             
-            taps = ((StringToken)paramAlphaV.getToken()).toString();
+            taps = ((StringToken)paramAlphaV.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;
             if(stokens.countTokens() < 4) {

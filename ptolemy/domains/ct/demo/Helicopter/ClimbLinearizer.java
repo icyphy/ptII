@@ -201,7 +201,7 @@ public class ClimbLinearizer extends TypedAtomicActor
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaV) {
-            String taps = ((StringToken)paramAlphaV.getToken()).toString();
+            String taps = ((StringToken)paramAlphaV.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
             if(stokens.countTokens() < 4) {
