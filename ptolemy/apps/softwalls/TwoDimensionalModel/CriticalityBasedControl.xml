@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CriticalityBasedControl2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 667]">
+<entity name="CriticalityBasedControl" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 355]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-6, -6]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-2, 7]">
     </property>
     <property name="initial_x" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -345,8 +345,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Plane Trajectory</title>
@@ -355,8 +354,7 @@
 <xRange min="0.0" max="1.8959571960077226"/>
 <yRange min="0.0" max="5.03280476527584"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="criticality" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="385.0, 115.0">
         </property>
@@ -690,8 +688,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Plane Heading</title>
@@ -700,8 +697,7 @@
 <xRange min="0.0" max="66.30000000000051"/>
 <yRange min="1.0888248427350984E-15" max="2.2582392217132035"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="malicious_pilot" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="400.0, 275.0">
         </property>
@@ -781,8 +777,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Criticality (in Seconds to Wall)</title>
@@ -791,8 +786,7 @@
 <xRange min="0.0" max="66.30000000000051"/>
 <yRange min="2.2477112265219086" max="21.718471805300318"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="bias_control" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="490.0, 160.0">
         </property>
@@ -947,8 +941,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Pilot Control, Bias, and Combined (theta-dot)</title>
@@ -957,8 +950,7 @@
 <xRange min="0.0" max="66.30000000000051"/>
 <yRange min="-0.3141592653589793" max="0.47123889803846897"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.moml.Location" value="635.0, 210.0">
         </property>
