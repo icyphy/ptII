@@ -149,7 +149,8 @@ public class IIR extends Transformer {
             // user entered and just use 1.
 	    _denominator[0] = 1.0;
 	} else {
-	    super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
+            return;
         }
 	// Initialize filter state.
 	if ((_numerator != null) && (_denominator != null)) {
