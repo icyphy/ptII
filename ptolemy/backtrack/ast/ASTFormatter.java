@@ -1860,3 +1860,5 @@ public class ASTFormatter extends ASTVisitor {
      *  followed by "catch", "finally" and so on.
      */
     private boolean _newLineAfterBlock = true;
+}
+
