@@ -551,11 +551,20 @@ display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet 
 </dl>
 
 <p><a name="appletDemo">Below is a simple demonstration:</a>
+
+The OrthogonalCom model generates prints output to 
+standard out, so when this model is run as an applet, the output
+will appear in the Java Plugin console.  Instead, we generate
+an applet for the Butterfly model, which will generate display
+a nice plot.  Note that the Butterfly model uses the Expression
+actor so that while we cannot use deep code generation on
+the Butterfly actor, we can generate an applet for this model.
+
 <ol>
 <li> Open up the
 <a
-href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
-Orthogonal Communication Model</a>
+href="../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml">SDF
+Butterfly Model</a>
 
 <li> Select View -&gt; Code Generator
 
@@ -565,7 +574,8 @@ Orthogonal Communication Model</a>
 
 <li> The code generator will invoke an separate java process that
 generates code in 
-<CODE>$PTII/ptolemy/copernicus/<b>applet</b>/cg/OrthogonalCom</CODE>
+<CODE>$PTII/ptolemy/copernicus/<b>applet</b>/cg/Butterfly</CODE>
+
 </ol>
 
 If you would like to generate an applet in a directory outside
@@ -765,6 +775,18 @@ so that the code generator can be run without requiring the
 
 Unfortunately, this UI has many design issues:
 <ul>
+<li> The UI uses a GeneratorAttribute to manage the values of the
+various settings for the code generator.  When you select
+View -&gt; Code Generator, the GeneratorAttribute is added to
+the model, which may require that the model be saved - even though
+the user has not set any of the code generator settings yet.
+<br>If the code generator is run on a model, and the GeneratorAttribute
+is added to the model, then if the model is saved and then
+opened in the Ptiny version of Ptolemy II (that does not include the
+code generator),  then a dialog will pop up about 
+how the GeneratorAttribute is not present.
+
+
 <li> The interface is cluttered because there are many different
 possible parameters to set.  It is fairly easy to make have an
 interface that generates code in a default directory with default
