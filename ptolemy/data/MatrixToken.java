@@ -112,5 +112,22 @@ public abstract class MatrixToken extends Token {
      *  @return An integer representing the number of rows.
      */
     public abstract int getRowCount();
+
+    /** Return a new Token representing the right multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimension is the same as the number of columns of
+     *  the matrix contained in this token.
+     *  The implementation in this base class just throws an
+     *  exception. This method should be overriden in the subclass
+     *  when the right multiplicative identity exists.
+     *  @return A new Token containing the right multiplicative identity.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     */
+    public Token oneRight()
+	    throws IllegalActionException {
+	throw new IllegalActionException("Right multiplicative identity " +
+		"not supported on " + getClass().getName() + " objects.");
+    }
 }
 
