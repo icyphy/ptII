@@ -871,7 +871,11 @@ public class ComponentPort extends Port {
                 Iterator enum = insideRelationList().iterator();
                 while (enum.hasNext()) {
                     Relation rel = (Relation)enum.next();
-                    result += rel._description(detail, indent+1, 2) + "\n";
+                    if (rel != null) {
+                        result += rel._description(detail, indent+1, 2) + "\n";
+                    } else {
+                        result += _getIndentPrefix(indent+1) + "null\n";
+                    }
                 }
                 result += _getIndentPrefix(indent) + "}";
             }

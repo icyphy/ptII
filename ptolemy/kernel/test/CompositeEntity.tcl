@@ -37,6 +37,9 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
@@ -959,23 +962,31 @@ test CompositeEntity-19.0 {test changeListeners} {
     set l1 [java::new ptolemy.kernel.event.StreamChangeListener $s1]
     set l2 [java::new ptolemy.kernel.event.StreamChangeListener $s2]
     $e1 addChangeListener $l1
-    $e1 addChangeListener $l2 
-    
+    $e1 addChangeListener $l2
+
     set p1 [java::new ptolemy.kernel.Port]
     set c1 [java::new ptolemy.kernel.event.PlacePort $e1 $p1 $e1]
     $e1 notifyChangeListeners $c1
-    list [$s1 toString] [$s2 toString]
+    set result "[$s1 toString][$s2 toString]"
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $result "\n" fixedResult
+    list $fixedResult
 } {{Place port . in container .
-} {Place port . in container .
+Place port . in container .
 }}
 
 test CompositeEntity-19.1 {test changeListeners} {
     $e1 addChangeListener $l1
     $e1 removeChangeListener $l1
     $e1 notifyChangeListeners $c1
-    list [$s1 toString] [$s2 toString]
+    set result "[$s1 toString][$s2 toString]"
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $result "\n" fixedResult
+    list $fixedResult
 } {{Place port . in container .
-} {Place port . in container .
+Place port . in container .
 Place port . in container .
 }}
 
@@ -1036,8 +1047,8 @@ test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p1" relation="r" index="1"/>
-    <link port="e2.p2" relation="r" index="1"/>
+    <link port="p1" relation="r" insertAt="1"/>
+    <link port="e2.p2" relation="r" insertAt="1"/>
 </model>
 }
 
@@ -1065,7 +1076,7 @@ test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p1" relation="r2"/>
-    <link port="p1" relation="r1" index="2"/>
+    <link port="p1" relation="r1" insertAt="2"/>
 </model>
 }
 
@@ -1086,7 +1097,7 @@ test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
     </relation>
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p1" relation="r1" index="1"/>
+    <link port="p1" relation="r1" insertAt="1"/>
 </model>
 }
 

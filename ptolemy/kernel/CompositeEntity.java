@@ -944,7 +944,7 @@ public class CompositeEntity extends ComponentEntity {
                             + port.getName()
                             + "\" relation=\""
                             + relationName
-                            + "\" index=\""
+                            + "\" insertAt=\""
                             + index
                             + "\"/>\n");
                 } else {
@@ -998,7 +998,7 @@ public class CompositeEntity extends ComponentEntity {
                             + port.getName()
                             + "\" relation=\""
                             + relationName
-                            + "\" index=\""
+                            + "\" insertAt=\""
                             + index
                             + "\"/>\n");
                     } else {

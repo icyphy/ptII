@@ -404,3 +404,16 @@ test CrossRefList-7.4 {unlink by index in the middle} {
     $ca {unlink int} 1
     _testCrossRefListGetLinks $ca $cd
 } {{C D B} A}
+
+######################################################################
+####
+#
+test CrossRefList-8.0 {link first at 0 then at 2} {
+    set a [java::new ptolemy.kernel.util.NamedObj A]
+    set ca [java::new ptolemy.kernel.util.CrossRefList $a]
+    set b [java::new ptolemy.kernel.util.NamedObj B]
+    set cb [java::new ptolemy.kernel.util.CrossRefList $b]
+    $ca link $cb
+    $ca insertLink 2 $cb
+    _testCrossRefListGetLinks $ca $cb
+} {{B java0x0 B} {A A}}

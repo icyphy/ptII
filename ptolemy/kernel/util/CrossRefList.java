@@ -377,11 +377,26 @@ public final class CrossRefList implements Serializable  {
                 // First chaining step is special, setting "previous" to
                 // get us started.
                 CrossRef previous = _headNode;
-                if (previous == null && index > 0) previous = new CrossRef();
+                if (previous == null && index > 0) {
+                    // List is empty.
+                    previous = new CrossRef();
+                    _headNode = previous;
+                    _lastNode = previous;
+                }
                 int ind = 1;
                 while (ind++ < index) {
-                    if (previous == null) previous = new CrossRef();
-                    else previous = previous._next;
+                    // previous cannot possibly be null here.
+                    if (previous._next == null) {
+                        // We are off the end of the list.
+                        CrossRef newref = new CrossRef();
+                        previous._next = newref;
+                        newref._previous = previous;
+                        _lastNode = newref;
+                        previous = newref;
+                    } else {
+                        // There is an entry in the list.
+                        previous = previous._next;
+                    }
                 }
                 // Now we are assured that there are at least index-1 entries
                 // in the list.
