@@ -36,6 +36,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.ParserAttribute;
 import ptolemy.util.StringUtilities;
 
 import java.awt.Dimension;
@@ -284,6 +285,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 } else {
                     newModel = new TypedCompositeActor(new Workspace());
                 }
+
+		// The model should have a parser associated with it
+		// so that undo works.
+
+		// Checking to see if there already is a _parser attribute
+		// might be overkill, but it is safer.
+		ParserAttribute parserAttribute = (ParserAttribute)
+		    newModel.getAttribute("_parser",
+					  ParserAttribute.class);
+		if (parserAttribute == null) {
+		    parserAttribute =
+			new ParserAttribute(newModel, "_parser");
+		    MoMLParser parser = new MoMLParser();
+		    parserAttribute.setParser(parser);
+		}
+		    
                 // The name might be "blank" which is confusing.
                 // Set it to an empty string.  On Save As, this will
                 // be changed to match the file name.
