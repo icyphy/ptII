@@ -45,6 +45,24 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 
+JCLASS = \
+	1.class \
+	2.class \
+	3.class \
+	4.class \
+	MalformedPatternException.class \
+	MatchResult.class \
+	Pattern.class \
+	PatternCompiler.class \
+	PatternMatcher.class \
+	PatternMatcherInput.class \
+	Perl5Compiler.class \
+	Perl5Debug.class \
+	Perl5Matcher.class \
+	Perl5Pattern.class \
+	Perl5StreamInput.class \
+	Util.class
+
 # Include rules for directories that don't have subdirectories
 include $(ROOT)/mk/ptno-compile.mk
 
