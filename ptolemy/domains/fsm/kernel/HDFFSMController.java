@@ -241,7 +241,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      *
      */
     public void fire() throws IllegalActionException {
-	System.out.println("FSMController: fire()");
+	if (_debugging) _debug("FSMController: fire()");
 
 	// Increment current firing count. This is the number of
 	// times the current refining HDF actor has been fired
@@ -270,7 +270,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
             // Fire the refinement.
             if (currentRefinement() != null) {
-		System.out.println("FSMController:  fire(): firing current refinment");
+		if (_debugging) _debug("FSMController:  fire(): firing current refinment");
                 currentRefinement().fire();
             }
 
@@ -278,9 +278,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             Enumeration nonPreTrans = _currentState.getNonPreemptiveTrans();
             while (nonPreTrans.hasMoreElements()) {
                 trans = (FSMTransition)nonPreTrans.nextElement();
-		System.out.println("FSMController:  fire(): transistion name: " + trans.getFullName());
+		if (_debugging) _debug("FSMController:  fire(): transistion name: " + trans.getFullName());
                 if (trans.isEnabled()) {
-		    System.out.println("FSMController:  fire(): transition enabled");
+		    if (_debugging) _debug("FSMController:  fire(): transition enabled");
                     if (_takenTransition != null) {
                         // Nondeterminate transition!
                         //System.out.println("Nondeterminate transition!");
@@ -299,7 +299,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             // do not change state, that's done in postfire()
         }
 	    */
-	System.out.println("FSMController:  fire(): finished");
+	if (_debugging) _debug("FSMController:  fire(): finished");
     }
 
 
@@ -450,7 +450,6 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      *
      */
     public void preinitialize() throws IllegalActionException {
-	System.out.println("HDFFSMController: preinitialize() called from?");
         try {
             _createReceivers();
             setupScope();
@@ -917,19 +916,18 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         Enumeration inports = inputPorts();
 	//Enumeration inports = ((CompositeEntity)getContainer()).inputPorts();
         IOPort port;
-	System.out.println("***************************");
         while (inports.hasMoreElements()) {
             port = (IOPort)inports.nextElement();
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
 
-                    System.out.println("HDFSMController: _setInputVars(): Port " + port.getFullName() + " has token.");
+                    if (_debugging) _debug("HDFSMController: _setInputVars(): Port " + port.getFullName() + " has token.");
 
                     _inputStatusVars.setVarValue(port.getName(), PRESENT);
                     _inputValueVars.setVarValue(port.getName(), port.get(0));
                 } else {
 
-                    System.out.println("HDFSMController: _setInputVars(): Port " + port.getFullName() + " has no token.");
+                    if (_debugging) _debug("HDFSMController: _setInputVars(): Port " + port.getFullName() + " has no token.");
 
                     _inputStatusVars.setVarValue(port.getName(), ABSENT);
                 }

@@ -215,7 +215,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public void fire() throws IllegalActionException {
         // _controller must not be null
-	if (_debugging) _debug("HDFFSMDirector: fire()");
+	//if (_debugging) _debug("HDFFSMDirector: fire()");
 	if (_controller != null) {
 	    _controller.fire();
 	} else {
@@ -249,7 +249,7 @@ public class HDFFSMDirector extends FSMDirector {
      *   container or one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-	if (_debugging) _debug("HDFFSMDirector: initialize()");
+	//if (_debugging) _debug("HDFFSMDirector: initialize()");
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
             Enumeration allActors = container.deepGetEntities();
@@ -258,15 +258,15 @@ public class HDFFSMDirector extends FSMDirector {
                 if (actor == _controller) {
                     continue;
                 } else {
-		    if (_debugging) _debug("HDFFSMDirector: initialize(): " +
-			      "initializing " +
-					   ((NamedObj)actor).getFullName());
+		    //if (_debugging) _debug("HDFFSMDirector: initialize(): " +
+		    //"initializing " +
+		    //		   ((NamedObj)actor).getFullName());
                     actor.initialize();
                 }
             }
-	    if (_debugging) _debug("HDFFSMDirector: initialize(): " +
-			      "initializing " + 
-				   ((NamedObj)_controller).getFullName());
+	    //if (_debugging) _debug("HDFFSMDirector: initialize(): " +
+	    //      "initializing " + 
+	    //		   ((NamedObj)_controller).getFullName());
             _controller.initialize();
         }
         
@@ -359,7 +359,7 @@ public class HDFFSMDirector extends FSMDirector {
 	    Enumeration containPorts = container.getPorts();
 	    while (containPorts.hasMoreElements()) {
 		TypedIOPort aPort = (TypedIOPort)containPorts.nextElement();
-		if (_debugging) _debug("guard: port name:" + aPort.getName());
+		//if (_debugging) _debug("guard: port name:" + aPort.getName());
 		// Array to store queue of tokens to be used in evaluating
 		// the state transition guard expression.
 
@@ -376,8 +376,8 @@ public class HDFFSMDirector extends FSMDirector {
 		    // and value?
 		    Token tempToken = new IntToken(0);
 		    guardTokenArray.put(tempToken);
-		    if (_debugging) _debug("guard: puting temparary " +
-					   " token in guardTokenArray");
+		    //if (_debugging) _debug("guard: puting temparary " +
+				//	   " token in guardTokenArray");
 		}
 
 		// Create a mapping from the current port's name to
@@ -400,13 +400,13 @@ public class HDFFSMDirector extends FSMDirector {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                if (_debugging) _debug("Invoking preinitialize(): ",
-                ((NamedObj)actor).getFullName());
+                //if (_debugging) _debug("Invoking preinitialize(): ",
+                //((NamedObj)actor).getFullName());
                 actor.preinitialize();
             }
         }
 
-        if (_debugging) _debug("Finished preinitialize().");
+        //if (_debugging) _debug("Finished preinitialize().");
     }
 
 
@@ -415,7 +415,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public void setController(HDFFSMController ctrl)
             throws IllegalActionException {
-	if (_debugging) _debug("HDFFSMDirector: setController()");
+	//if (_debugging) _debug("HDFFSMDirector: setController()");
 	// Check that _controller is not already set.
 	if (_controller == null) {
 	    if (getContainer() == null) {
@@ -503,9 +503,10 @@ public class HDFFSMDirector extends FSMDirector {
         boolean trans = false;
         Entity refine = (Entity)_controller.currentRefinement();
 	if (refine == null) {
-		    if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is null!");
+		    throw new IllegalActionException(this,
+			 "transferInputs: current refinement is null.");
 	} else {
-	     if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is not null, full name is: " + refine.getFullName());
+	     //if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is not null, full name is: " + refine.getFullName());
 	}
 
         IOPort p;
@@ -538,21 +539,21 @@ public class HDFFSMDirector extends FSMDirector {
 		guardTokenArray.put(t);
 
 
-		if (_debugging) _debug("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
-		if (_debugging) _debug("HDFFSMDirector: transferInputs(): input port's token: " + t.toString());
+		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
+		//if (_debugging) _debug("HDFFSMDirector: transferInputs(): input port's token: " + t.toString());
 		
-		if (_debugging) _debug("HDFFSMDirector: transferInputs(): caled on port: " + port.getName());
+		
 		if (_controller == null) {
-		    System.out.println("HDFFSMDirector: transferInputs():_controller is null!!!");
+		    throw new IllegalActionException(this,
+		      "_controller is null.");
 		} else if (refine == null) {
-		    if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is null!");
+		    throw new IllegalActionException(this,
+		      "Current refinement is null.");
 		} else {
-		    for (Enumeration e = refine.getPorts() ; e.hasMoreElements() ;) {
-			if (_debugging) _debug("HDFFSMDirector: transferInputs(): Next port contained by current refinement: " + e.nextElement());
-		    }
+		    //for (Enumeration e = refine.getPorts() ; e.hasMoreElements() ;) {
+		    //System.out.println("HDFFSMDirector: transferInputs(): Next port contained by current refinement: " + e.nextElement());
+		    //}
 		}
-		// End of debug stuff.
-		
 
 		// ************ FIXME ***************
 		/* This is stupid. This assumes that the name of the
@@ -567,13 +568,10 @@ public class HDFFSMDirector extends FSMDirector {
 
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
-                    //if (rec.hasToken()) {
-		    //  rec.get();
-                    //}
-		    if (_debugging) _debug("HDFFSMDirector: transferInputs(): Put a token in the current refining state");
+                    
+		    //if (_debugging) _debug("HDFFSMDirector: transferInputs(): Put a token in the current refining state");
                     rec.put(t);
                 } else {
-		    if (_debugging) _debug("HDFFSMDirector: transferInputs(): Oh darn. FAILED to put a token in the current refining state");
 		    throw new IllegalActionException(this, port, "Director.transferInputs: Can't access input port the current refining state. Note that the name of a refining states port is constrained to be the same as the name of the input port (of the TypedComposite actor that represents an FSM) to which it is connected.");
 		}
                 trans = true;
@@ -639,7 +637,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
 
-	if (_debugging) _debug("HDFFSMDirector: transferOutputs(): caled on port: " + port.getName());
+	//if (_debugging) _debug("HDFFSMDirector: transferOutputs(): caled on port: " + port.getName());
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not an opaque output port.");
@@ -683,9 +681,8 @@ public class HDFFSMDirector extends FSMDirector {
                 if (p != null) {
                     Receiver rec = (p.getInsideReceivers())[0][0];
                     rec.put(t);
-		    if (_debugging) _debug("HDFFSMDirector: transferOutputs(): Put a token in the compisite actor's (containing this director) output port");
+		    //if (_debugging) _debug("HDFFSMDirector: transferOutputs(): Put a token in the compisite actor's (containing this director) output port");
                 } else {
-		    if (_debugging) _debug("HDFFSMDirector: transferInputs(): Oh darn. FAILED to put a token in the current refining state");
 		    throw new IllegalActionException(this, port, "Director.transferOutputs: Can't access an output port (of the container of the current refining state) connected to the currect refining state's output port. Note that the name of a refining states port is constrained to be the same as the name of the output port (of the TypedComposite actor that represents an FSM) to which it is connected.");
 		}
                 trans = true;
@@ -788,7 +785,7 @@ public class HDFFSMDirector extends FSMDirector {
 		Integer iInt = new Integer(i);
 		String guardName = port.getName() + "$" + iInt.toString();
 		
-		if (_debugging) _debug("guard: with guard name:" + guardName);
+		//if (_debugging) _debug("guard: with guard name:" + guardName);
 		
 		guardVarArray[i] = new Variable(this, guardName);
 	    }

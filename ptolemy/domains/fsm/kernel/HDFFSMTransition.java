@@ -118,7 +118,7 @@ public class HDFFSMTransition extends FSMTransition {
 
         if (_teSet) {
 
-            System.out.println("HDFFSMTransition: isEnabled(): Testing trigger event of " + this.getFullName());
+            if (_debugging) _debug("HDFFSMTransition: isEnabled(): Testing trigger event of " + this.getFullName());
 
             _te.getToken();
 	    /*
@@ -129,14 +129,14 @@ public class HDFFSMTransition extends FSMTransition {
         }
         if (_tcSet) {
 
-            System.out.println("HDFFSMTransition: isEnabled(): Testing condition of " + this.getFullName());
+            if (_debugging) _debug("HDFFSMTransition: isEnabled(): Testing condition of " + this.getFullName());
 
             _tc.getToken();
             if (((BooleanToken)_tc.getToken()).booleanValue() == false) {
                 return false;
             }
         }
-	System.out.println("HDFFSMTransition: isEnabled(): returning TRUE");
+	if (_debugging) _debug("HDFFSMTransition: isEnabled(): returning TRUE");
         return true;
     }
 
@@ -180,7 +180,7 @@ public class HDFFSMTransition extends FSMTransition {
      *  number of guard tokens (largest n in dataIn$n).
      */
     public void setupScope() throws NameDuplicationException, IllegalActionException {
-	System.out.println("HDFFSMTransition: setupScope()");
+	if (_debugging) _debug("HDFFSMTransition: setupScope()");
 	HDFFSMController ctrl = (HDFFSMController)getContainer();
 	HDFFSMDirector direct = ((HDFFSMDirector)ctrl.getDirector());
 	//directorGuard = direct.guardVarArray[0];
@@ -207,7 +207,7 @@ public class HDFFSMTransition extends FSMTransition {
         } else {
 	    //throw new IllegalActionException((HDFFSMController)getContainer(), this,
 	    //      "The guard variable is null");
-	    System.out.println("The guard variable list is null");
+	    if (_debugging) _debug("The guard variable list is null");
 	}
     }
 
