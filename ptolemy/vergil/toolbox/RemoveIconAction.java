@@ -42,6 +42,9 @@ import ptolemy.vergil.icon.XMLIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ConfigureAction
 /** Action to remove a custom icon.
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
  */
 public class RemoveIconAction extends FigureAction {
 

@@ -54,6 +54,10 @@ import diva.canvas.interactor.GrabHandle;
    This is a bounds manipulator supporting resizable icons.
    It records the new size when the mouse is released, and supports
    snap to grid.
+
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class AttributeBoundsManipulator extends BoundsManipulator {
 
