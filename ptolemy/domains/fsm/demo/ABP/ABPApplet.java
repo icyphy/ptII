@@ -59,7 +59,7 @@ import javax.swing.BoxLayout;
 /**
 An applet that uses Ptolemy II FSM and DE domains.
 
-@author Steve Neuendorffer, Lukito Muliadi
+@author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 */
 public class ABPApplet extends DEApplet implements QueryListener {
@@ -67,10 +67,8 @@ public class ABPApplet extends DEApplet implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the string "regular", then set the
-     *  variable that controls whether bus arrivals will be regular
-     *  or Poisson.  If the argument is anything else, update the
-     *  parameters of the model from the values in the query boxes.
+    /** Update the parameters of the model from the values in the query
+     *  boxes.
      *  @param name The name of the entry that changed.
      */
     public void changed(String name) {
@@ -79,7 +77,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
                 (new DoubleToken(_query.doubleValue("forwardRate")));
             _backward.dropRate.setToken
                 (new DoubleToken(_query.doubleValue("backwardRate")));
-            
+
             _go();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -126,7 +124,8 @@ public class ABPApplet extends DEApplet implements QueryListener {
             _plot = new TimedPlotter(_toplevel, "Plot");
  
             // sender - a hierarchical FSM
-            TypedCompositeActor sender = new TypedCompositeActor(_toplevel, "Sender");
+            TypedCompositeActor sender =
+                    new TypedCompositeActor(_toplevel, "Sender");
             // create ports
             TypedIOPort sdrRequest = (TypedIOPort)sender.newPort("request");
             sdrRequest.setInput(true);
@@ -156,27 +155,35 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sdrMonitor.setOutput(true);
             sdrMonitor.setTypeEquals(BaseType.INT);
 
-            // sender's top level controller
-            DEFSMActor ctrl = new DEFSMActor(sender, "Controller");
-            // controller has no port, only listen to its refinements
-            // controller's states and transitions
-            FSMState ctrlConnecting = new FSMState(ctrl, "Connecting");
-            FSMState ctrlDead = new FSMState(ctrl, "Dead");
-            FSMState ctrlSending = new FSMState(ctrl, "Sending");
-            ctrl.setInitialState(ctrlConnecting);
-            FSMTransition ctrlTr1 =
-                ctrl.createTransition(ctrlConnecting, ctrlSending);
-            ctrlTr1.setTriggerEvent("next");
-            FSMTransition ctrlTr2 =
-                ctrl.createTransition(ctrlConnecting, ctrlDead);
-            ctrlTr2.setTriggerEvent("error");
+            // sender's mode controller
+            FSMActor ctrl = new FSMActor(sender, "Controller");
+
+            TypedIOPort ctrlNext = (TypedIOPort)ctrl.newPort("next");
+            ctrlNext.setInput(true);
+            ctrlNext.setTypeEquals(BaseType.GENERAL);
+            TypedIOPort ctrlError = (TypedIOPort)ctrl.newPort("error");
+            ctrlError.setInput(true);
+            ctrlError.setTypeEquals(BaseType.GENERAL);
+
+            State ctrlConnecting = new State(ctrl, "Connecting");
+            State ctrlDead = new State(ctrl, "Dead");
+            State ctrlSending = new State(ctrl, "Sending");
+            ctrl.initialStateName.setToken(new StringToken("Connecting"));
+            Transition ctrlTr1 = new Transition(ctrl, "ctrlTr1");
+            ctrlConnecting.outgoingPort.link(ctrlTr1);
+            ctrlSending.incomingPort.link(ctrlTr1);
+            ctrlTr1.guard.setExpression("next_S");
+            Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
+            ctrlConnecting.outgoingPort.link(ctrlTr2);
+            ctrlDead.incomingPort.link(ctrlTr2);
+            ctrlTr2.guard.setExpression("error_S");
 
             // sender's director
             FSMDirector sdrDir = new FSMDirector(sender, "SenderDirector");
-            sdrDir.setController(ctrl);
+            sdrDir.controllerName.setToken(new StringToken("Controller"));
 
             // submachine refining sender's connecting state
-            DEFSMActor connect = new DEFSMActor(sender, "Connect");
+            FSMActor connect = new FSMActor(sender, "Connect");
             // ports
             TypedIOPort conRequest = (TypedIOPort)connect.newPort("request");
             conRequest.setInput(true);
@@ -200,48 +207,98 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conExpired.setInput(true);
             conExpired.setTypeEquals(BaseType.GENERAL);
             // connect's states and transitions
-            FSMState conInit = new FSMState(connect, "Init");
-            FSMState conWait = new FSMState(connect, "Wait");
-            FSMState conSucc = new FSMState(connect, "Success");
-            FSMState conFail = new FSMState(connect, "Fail");
-            connect.setInitialState(conInit);
-            FSMTransition conTr1 = connect.createTransition(conInit, conWait);
-            conTr1.setTriggerEvent("request");
-            conTr1.addTriggerAction("pktOut", "-1");
-            conTr1.addTriggerAction("setTimer", TIME_OUT);
-            conTr1.addLocalVariableUpdate("count", "5");
-            FSMTransition conTr2 = connect.createTransition(conWait, conSucc);
-            conTr2.setTriggerEvent("ack");
-            conTr2.setTriggerCondition("ack == -1");
-            conTr2.addTriggerAction("next", null);
-            conTr2.addTriggerAction("setTimer", RESET);
-            FSMTransition conTr3 = connect.createTransition(conWait, conFail);
-            conTr3.setTriggerEvent("!ack & expired");
-            conTr3.setTriggerCondition("count == 0");
-            conTr3.addTriggerAction("error", null);
-            FSMTransition conTr4 = connect.createTransition(conWait, conFail);
-            conTr4.setTriggerEvent("ack & expired");
-            conTr4.setTriggerCondition("(ack != -1) && (count == 0)");
-            conTr4.addTriggerAction("error", null);
-            FSMTransition conTr5 = connect.createTransition(conWait, conWait);
-            conTr5.setTriggerEvent("!ack & expired");
-            conTr5.setTriggerCondition("count != 0");
-            conTr5.addTriggerAction("pktOut", "-1");
-            conTr5.addTriggerAction("setTimer", TIME_OUT);
-            conTr5.addLocalVariableUpdate("count", "count - 1");
-            FSMTransition conTr6 = connect.createTransition(conWait, conWait);
-            conTr6.setTriggerEvent("ack & expired");
-            conTr6.setTriggerCondition("(ack != -1) && (count != 0)");
-            conTr6.addTriggerAction("pktOut", "-1");
-            conTr6.addTriggerAction("setTimer", TIME_OUT);
-            conTr6.addLocalVariableUpdate("count", "count - 1");
+            State conInit = new State(connect, "Init");
+            State conWait = new State(connect, "Wait");
+            State conSucc = new State(connect, "Success");
+            State conFail = new State(connect, "Fail");
+            connect.initialStateName.setToken(new StringToken("Init"));
+            Transition conTr1 = new Transition(connect, "conTr1");
+            conInit.outgoingPort.link(conTr1);
+            conWait.incomingPort.link(conTr1);
+            conTr1.guard.setExpression("request_S");
+            BroadcastOutput conTr1Act1 =
+                    new BroadcastOutput(conTr1, "conTr1Act1");
+            conTr1Act1.portName.setToken(new StringToken("pktOut"));
+            conTr1Act1.expression.setToken(new StringToken("-1"));
+            BroadcastOutput conTr1Act2 =
+                    new BroadcastOutput(conTr1, "conTr1Act2");
+            conTr1Act2.portName.setToken(new StringToken("setTimer"));
+            conTr1Act2.expression.setToken(new StringToken(TIME_OUT));
+            SetVariable conTr1Act3 =
+                    new SetVariable(conTr1, "conTr1Act3");
+            conTr1Act3.variableName.setToken(new StringToken("count"));
+            conTr1Act3.expression.setToken(new StringToken("5"));
+            Transition conTr2 = new Transition(connect, "conTr2");
+            conWait.outgoingPort.link(conTr2);
+            conSucc.incomingPort.link(conTr2);
+            conTr2.guard.setExpression("(ack_S ? ack_V : 0) == -1");
+            BroadcastOutput conTr2Act1 =
+                    new BroadcastOutput(conTr2, "conTr2Act1");
+            conTr2Act1.portName.setToken(new StringToken("next"));
+            conTr2Act1.expression.setToken(new StringToken("true"));
+            BroadcastOutput conTr2Act2 =
+                    new BroadcastOutput(conTr2, "conTr2Act2");
+            conTr2Act2.portName.setToken(new StringToken("setTimer"));
+            conTr2Act2.expression.setToken(new StringToken(RESET));
+            Transition conTr3 = new Transition(connect, "conTr3");
+            conWait.outgoingPort.link(conTr3);
+            conFail.incomingPort.link(conTr3);
+            conTr3.guard.setExpression("!ack_S && expired_S && count == 0");
+            BroadcastOutput conTr3Act1 =
+                    new BroadcastOutput(conTr3, "conTr3Act1");
+            conTr3Act1.portName.setToken(new StringToken("error"));
+            conTr3Act1.expression.setToken(new StringToken("true"));
+            Transition conTr4 = new Transition(connect, "conTr4");
+            conWait.outgoingPort.link(conTr4);
+            conFail.incomingPort.link(conTr4);
+            conTr4.guard.setExpression("(ack_S ? ack_V : -1) != -1 && "
+                    + "expired_S && count == 0");
+            BroadcastOutput conTr4Act1 =
+                    new BroadcastOutput(conTr4, "conTr4Act1");
+            conTr4Act1.portName.setToken(new StringToken("error"));
+            conTr4Act1.expression.setToken(new StringToken("true"));
+            Transition conTr5 = new Transition(connect, "conTr5");
+            conWait.outgoingPort.link(conTr5);
+            conWait.incomingPort.link(conTr5);
+            conTr5.guard.setExpression("!ack_S && expired_S && count != 0");
+            BroadcastOutput conTr5Act1 =
+                    new BroadcastOutput(conTr5, "conTr5Act1");
+            conTr5Act1.portName.setToken(new StringToken("pktOut"));
+            conTr5Act1.expression.setToken(new StringToken("-1"));
+            BroadcastOutput conTr5Act2 =
+                    new BroadcastOutput(conTr5, "conTr5Act2");
+            conTr5Act2.portName.setToken(new StringToken("setTimer"));
+            conTr5Act2.expression.setToken(new StringToken(TIME_OUT));
+            SetVariable conTr5Act3 =
+                    new SetVariable(conTr5, "conTr5Act3");
+            conTr5Act3.variableName.setToken(new StringToken("count"));
+            conTr5Act3.expression.setToken(new StringToken("count - 1"));
+            Transition conTr6 = new Transition(connect, "conTr6");
+            conWait.outgoingPort.link(conTr6);
+            conWait.incomingPort.link(conTr6);
+            conTr6.guard.setExpression("(ack_S ? ack_V : -1) != -1 "
+                    + "&& expired_S && count != 0");
+            BroadcastOutput conTr6Act1 =
+                    new BroadcastOutput(conTr6, "conTr6Act1");
+            conTr6Act1.portName.setToken(new StringToken("pktOut"));
+            conTr6Act1.expression.setToken(new StringToken("-1"));
+            BroadcastOutput conTr6Act2 =
+                    new BroadcastOutput(conTr6, "conTr6Act2");
+            conTr6Act2.portName.setToken(new StringToken("setTimer"));
+            conTr6Act2.expression.setToken(new StringToken(TIME_OUT));
+            SetVariable conTr6Act3 =
+                    new SetVariable(conTr6, "conTr6Act3");
+            conTr6Act3.variableName.setToken(new StringToken("count"));
+            conTr6Act3.expression.setToken(new StringToken("count - 1"));
             // create the local variable
-            connect.addLocalVariable("count", new IntToken(0));
+            Variable conCount = new Variable(connect, "count");
+            conCount.setTypeEquals(BaseType.INT);
+            conCount.setToken(new IntToken(0));
             // set connect to be ctrlConnecting's refinement
-            ctrlConnecting.setRefinement(connect);
+            ctrlConnecting.refinementName.setToken(new StringToken("Connect"));
 
             // the submachine refining sender's sending state
-            DEFSMActor send = new DEFSMActor(sender, "Send");
+            FSMActor send = new FSMActor(sender, "Send");
             // create ports
             TypedIOPort sendMsgIn = (TypedIOPort)send.newPort("msgIn");
             sendMsgIn.setInput(true);
@@ -265,64 +322,166 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sendMonitor.setOutput(true);
             sendMonitor.setTypeEquals(BaseType.INT);
             // the states and transitions
-            FSMState s0 = new FSMState(send, "0");
-            FSMState s1 = new FSMState(send, "1");
-            send.setInitialState(s0);
-            FSMTransition sendTr1 = send.createTransition(s0, s0);
-            sendTr1.setTriggerEvent("msgIn");
-            sendTr1.addTriggerAction("pktOut", "msgIn*2");
-            sendTr1.addTriggerAction("monitor", "0");
-            sendTr1.addTriggerAction("setTimer", TIME_OUT);
-            sendTr1.addLocalVariableUpdate("trying", "true");
-            sendTr1.addLocalVariableUpdate("msg", "msgIn");
-            FSMTransition sendTr2 = send.createTransition(s0, s0);
-            sendTr2.setTriggerEvent("!ack & expired");
-            sendTr2.setTriggerCondition("trying");
-            sendTr2.addTriggerAction("pktOut", "msg*2");
-            sendTr2.addTriggerAction("monitor", "0");
-            sendTr2.addTriggerAction("setTimer", TIME_OUT);
-            FSMTransition sendTr3 = send.createTransition(s0, s0);
-            sendTr3.setTriggerEvent("ack & expired");
-            sendTr3.setTriggerCondition("trying && (ack != 0)");
-            sendTr3.addTriggerAction("pktOut", "msg*2");
-            sendTr3.addTriggerAction("monitor", "0");
-            sendTr3.addTriggerAction("setTimer", TIME_OUT);
-            FSMTransition sendTr4 = send.createTransition(s0, s1);
-            sendTr4.setTriggerEvent("ack");
-            sendTr4.setTriggerCondition("trying && (ack == 0)");
-            sendTr4.addTriggerAction("setTimer", RESET);
-            sendTr4.addTriggerAction("next", null);
-            sendTr4.addLocalVariableUpdate("trying", "false");
-            FSMTransition sendTr5 = send.createTransition(s1, s1);
-            sendTr5.setTriggerEvent("msgIn");
-            sendTr5.addTriggerAction("pktOut", "msgIn*2 + 1");
-            sendTr5.addTriggerAction("monitor", "1");
-            sendTr5.addTriggerAction("setTimer", TIME_OUT);
-            sendTr5.addLocalVariableUpdate("trying", "true");
-            sendTr5.addLocalVariableUpdate("msg", "msgIn");
-            FSMTransition sendTr6 = send.createTransition(s1, s1);
-            sendTr6.setTriggerEvent("!ack & expired");
-            sendTr6.setTriggerCondition("trying");
-            sendTr6.addTriggerAction("pktOut", "msg*2 + 1");
-            sendTr6.addTriggerAction("monitor", "1");
-            sendTr6.addTriggerAction("setTimer", TIME_OUT);
-            FSMTransition sendTr7 = send.createTransition(s1, s1);
-            sendTr7.setTriggerEvent("ack & expired");
-            sendTr7.setTriggerCondition("trying && (ack != 1)");
-            sendTr7.addTriggerAction("pktOut", "msg*2 + 1");
-            sendTr7.addTriggerAction("monitor", "1");
-            sendTr7.addTriggerAction("setTimer", TIME_OUT);
-            FSMTransition sendTr8 = send.createTransition(s1, s0);
-            sendTr8.setTriggerEvent("ack");
-            sendTr8.setTriggerCondition("trying && (ack == 1)");
-            sendTr8.addTriggerAction("setTimer", RESET);
-            sendTr8.addTriggerAction("next", null);
-            sendTr8.addLocalVariableUpdate("trying", "false");
+            State s0 = new State(send, "0");
+            State s1 = new State(send, "1");
+            send.initialStateName.setToken(new StringToken("0"));
+            Transition sendTr1 = new Transition(send, "sendTr1");
+            s0.outgoingPort.link(sendTr1);
+            s0.incomingPort.link(sendTr1);
+            sendTr1.guard.setExpression("msgIn_S");
+            BroadcastOutput sendTr1Act1 =
+                    new BroadcastOutput(sendTr1, "sendTr1Act1");
+            sendTr1Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr1Act1.expression.setToken(new StringToken("msgIn_V*2"));
+            BroadcastOutput sendTr1Act2 =
+                    new BroadcastOutput(sendTr1, "sendTr1Act2");
+            sendTr1Act2.portName.setToken(new StringToken("monitor"));
+            sendTr1Act2.expression.setToken(new StringToken("0"));
+            BroadcastOutput sendTr1Act3 =
+                    new BroadcastOutput(sendTr1, "sendTr1Act3");
+            sendTr1Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr1Act3.expression.setToken(new StringToken(TIME_OUT));
+            SetVariable sendTr1Act4 =
+                    new SetVariable(sendTr1, "sendTr1Act4");
+            sendTr1Act4.variableName.setToken(new StringToken("trying"));
+            sendTr1Act4.expression.setToken(new StringToken("true"));
+            SetVariable sendTr1Act5 =
+                    new SetVariable(sendTr1, "sendTr1Act5");
+            sendTr1Act5.variableName.setToken(new StringToken("msg"));
+            sendTr1Act5.expression.setToken(new StringToken("msgIn_V"));
+            Transition sendTr2 = new Transition(send, "sendTr2");
+            s0.outgoingPort.link(sendTr2);
+            s0.incomingPort.link(sendTr2);
+            sendTr2.guard.setExpression("!ack_S && expired_S && trying");
+            BroadcastOutput sendTr2Act1 =
+                    new BroadcastOutput(sendTr2, "sendTr2Act1");
+            sendTr2Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr2Act1.expression.setToken(new StringToken("msgIn_V*2"));
+            BroadcastOutput sendTr2Act2 =
+                    new BroadcastOutput(sendTr2, "sendTr2Act2");
+            sendTr2Act2.portName.setToken(new StringToken("monitor"));
+            sendTr2Act2.expression.setToken(new StringToken("0"));
+            BroadcastOutput sendTr2Act3 =
+                    new BroadcastOutput(sendTr2, "sendTr2Act3");
+            sendTr2Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr2Act3.expression.setToken(new StringToken(TIME_OUT));
+            Transition sendTr3 = new Transition(send, "sendTr3");
+            s0.outgoingPort.link(sendTr3);
+            s0.incomingPort.link(sendTr3);
+            sendTr3.guard.setExpression("(ack_S ? ack_V : 0) != 0 "
+                    + "&& expired_S && trying");
+            BroadcastOutput sendTr3Act1 =
+                    new BroadcastOutput(sendTr3, "sendTr3Act1");
+            sendTr3Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr3Act1.expression.setToken(new StringToken("msgIn_V*2"));
+            BroadcastOutput sendTr3Act2 =
+                    new BroadcastOutput(sendTr3, "sendTr3Act2");
+            sendTr3Act2.portName.setToken(new StringToken("monitor"));
+            sendTr3Act2.expression.setToken(new StringToken("0"));
+            BroadcastOutput sendTr3Act3 =
+                    new BroadcastOutput(sendTr3, "sendTr3Act3");
+            sendTr3Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr3Act3.expression.setToken(new StringToken(TIME_OUT));
+            Transition sendTr4 = new Transition(send, "sendTr4");
+            s0.outgoingPort.link(sendTr4);
+            s1.incomingPort.link(sendTr4);
+            sendTr4.guard.setExpression("(ack_S ? ack_V : -1) == 0 "
+                    + "&& trying");
+            BroadcastOutput sendTr4Act1 =
+                    new BroadcastOutput(sendTr4, "sendTr4Act1");
+            sendTr4Act1.portName.setToken(new StringToken("setTimer"));
+            sendTr4Act1.expression.setToken(new StringToken(RESET));
+            BroadcastOutput sendTr4Act2 =
+                    new BroadcastOutput(sendTr4, "sendTr4Act2");
+            sendTr4Act2.portName.setToken(new StringToken("next"));
+            sendTr4Act2.expression.setToken(new StringToken("true"));
+            SetVariable sendTr4Act3 =
+                    new SetVariable(sendTr4, "sendTr4Act3");
+            sendTr4Act3.variableName.setToken(new StringToken("trying"));
+            sendTr4Act3.expression.setToken(new StringToken("false"));
+            Transition sendTr5 = new Transition(send, "sendTr5");
+            s1.outgoingPort.link(sendTr5);
+            s1.incomingPort.link(sendTr5);
+            sendTr5.guard.setExpression("msgIn_S");
+            BroadcastOutput sendTr5Act1 =
+                    new BroadcastOutput(sendTr5, "sendTr5Act1");
+            sendTr5Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr5Act1.expression.setToken(new StringToken("msgIn_V*2+1"));
+            BroadcastOutput sendTr5Act2 =
+                    new BroadcastOutput(sendTr5, "sendTr5Act2");
+            sendTr5Act2.portName.setToken(new StringToken("monitor"));
+            sendTr5Act2.expression.setToken(new StringToken("1"));
+            BroadcastOutput sendTr5Act3 =
+                    new BroadcastOutput(sendTr5, "sendTr5Act3");
+            sendTr5Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr5Act3.expression.setToken(new StringToken(TIME_OUT));
+            SetVariable sendTr5Act4 =
+                    new SetVariable(sendTr5, "sendTr5Act4");
+            sendTr5Act4.variableName.setToken(new StringToken("trying"));
+            sendTr5Act4.expression.setToken(new StringToken("true"));
+            SetVariable sendTr5Act5 =
+                    new SetVariable(sendTr5, "sendTr5Act5");
+            sendTr5Act5.variableName.setToken(new StringToken("msg"));
+            sendTr5Act5.expression.setToken(new StringToken("msgIn_V"));
+            Transition sendTr6 = new Transition(send, "sendTr6");
+            s1.outgoingPort.link(sendTr6);
+            s1.incomingPort.link(sendTr6);
+            sendTr6.guard.setExpression("!ack_S && expired_S && trying");
+            BroadcastOutput sendTr6Act1 =
+                    new BroadcastOutput(sendTr6, "sendTr6Act1");
+            sendTr6Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr6Act1.expression.setToken(new StringToken("msgIn_V*2+1"));
+            BroadcastOutput sendTr6Act2 =
+                    new BroadcastOutput(sendTr6, "sendTr6Act2");
+            sendTr6Act2.portName.setToken(new StringToken("monitor"));
+            sendTr6Act2.expression.setToken(new StringToken("1"));
+            BroadcastOutput sendTr6Act3 =
+                    new BroadcastOutput(sendTr6, "sendTr6Act3");
+            sendTr6Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr6Act3.expression.setToken(new StringToken(TIME_OUT));
+            Transition sendTr7 = new Transition(send, "sendTr7");
+            s1.outgoingPort.link(sendTr7);
+            s1.incomingPort.link(sendTr7);
+            sendTr7.guard.setExpression("(ack_S ? ack_V : 1) != 1 "
+                    + "&& expired_S && trying");
+            BroadcastOutput sendTr7Act1 =
+                    new BroadcastOutput(sendTr7, "sendTr7Act1");
+            sendTr7Act1.portName.setToken(new StringToken("pktOut"));
+            sendTr7Act1.expression.setToken(new StringToken("msgIn_V*2+1"));
+            BroadcastOutput sendTr7Act2 =
+                    new BroadcastOutput(sendTr7, "sendTr7Act2");
+            sendTr7Act2.portName.setToken(new StringToken("monitor"));
+            sendTr7Act2.expression.setToken(new StringToken("1"));
+            BroadcastOutput sendTr7Act3 =
+                    new BroadcastOutput(sendTr7, "sendTr7Act3");
+            sendTr7Act3.portName.setToken(new StringToken("setTimer"));
+            sendTr7Act3.expression.setToken(new StringToken(TIME_OUT));
+            Transition sendTr8 = new Transition(send, "sendTr8");
+            s1.outgoingPort.link(sendTr8);
+            s0.incomingPort.link(sendTr8);
+            sendTr8.guard.setExpression("(ack_S ? ack_V : -1) == 1 "
+                    + "&& trying");
+            BroadcastOutput sendTr8Act1 =
+                    new BroadcastOutput(sendTr8, "sendTr8Act1");
+            sendTr8Act1.portName.setToken(new StringToken("setTimer"));
+            sendTr8Act1.expression.setToken(new StringToken(RESET));
+            BroadcastOutput sendTr8Act2 =
+                    new BroadcastOutput(sendTr8, "sendTr8Act2");
+            sendTr8Act2.portName.setToken(new StringToken("next"));
+            sendTr8Act2.expression.setToken(new StringToken("true"));
+            SetVariable sendTr8Act3 =
+                    new SetVariable(sendTr8, "sendTr8Act3");
+            sendTr8Act3.variableName.setToken(new StringToken("trying"));
+            sendTr8Act3.expression.setToken(new StringToken("false"));
             // create the local variables
-            send.addLocalVariable("trying", new BooleanToken(false));
-            send.addLocalVariable("msg", new IntToken(0));
+            Variable sendFlag = new Variable(send, "trying");
+            sendFlag.setTypeEquals(BaseType.BOOLEAN);
+            sendFlag.setToken(BooleanToken.FALSE);
+            Variable msgCount = new Variable(send, "msg");
+            msgCount.setTypeEquals(BaseType.INT);
+            msgCount.setToken(new IntToken(0));
             // set to be ctrlSending's refinement
-            ctrlSending.setRefinement(send);
+            ctrlSending.refinementName.setToken(new StringToken("Send"));
 
             // connect sender's components
             TypedIORelation sdrR1 =
@@ -354,6 +513,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sdrNext.link(sdrR6);
             conNext.link(sdrR6);
             sendNext.link(sdrR6);
+            ctrlNext.link(sdrR6);
             TypedIORelation sdrR7 =
                 (TypedIORelation)sender.newRelation("msgIn");
             sdrMsgIn.link(sdrR7);
@@ -362,9 +522,13 @@ public class ABPApplet extends DEApplet implements QueryListener {
                 (TypedIORelation)sender.newRelation("monitor");
             sdrMonitor.link(sdrR8);
             sendMonitor.link(sdrR8);
+            TypedIORelation sdrR9 =
+                (TypedIORelation)sender.newRelation("error");
+            conError.link(sdrR9);
+            ctrlError.link(sdrR9);
 
             // the receiver FSM
-            DEFSMActor receiver = new DEFSMActor(_toplevel, "Receiver");
+            FSMActor receiver = new FSMActor(_toplevel, "Receiver");
             // ports
             TypedIOPort recPktIn = (TypedIOPort)receiver.newPort("pktIn");
             recPktIn.setInput(true);
@@ -376,37 +540,70 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recMsgOut.setOutput(true);
             recMsgOut.setTypeEquals(BaseType.INT);
             // states and transitions
-            FSMState recInit = new FSMState(receiver, "Init");
-            FSMState recS0 = new FSMState(receiver, "S0");
-            FSMState recS1 = new FSMState(receiver, "S1");
-            receiver.setInitialState(recInit);
-            FSMTransition recTr1 = receiver.createTransition(recInit, recInit);
-            recTr1.setTriggerEvent("pktIn");
-            recTr1.setTriggerCondition("pktIn == -1");
-            recTr1.addTriggerAction("ack", "-1");
-            FSMTransition recTr2 = receiver.createTransition(recInit, recS1);
-            recTr2.setTriggerEvent("pktIn");
-            recTr2.setTriggerCondition("(pktIn%2) == 0");
-            recTr2.addTriggerAction("ack", "0");
-            recTr2.addTriggerAction("msgOut", "pktIn/2");
-            FSMTransition recTr3 = receiver.createTransition(recS1, recS1);
-            recTr3.setTriggerEvent("pktIn");
-            recTr3.setTriggerCondition("(pktIn%2) == 0");
-            recTr3.addTriggerAction("ack", "0");
-            FSMTransition recTr4 = receiver.createTransition(recS1, recS0);
-            recTr4.setTriggerEvent("pktIn");
-            recTr4.setTriggerCondition("(pktIn%2) == 1");
-            recTr4.addTriggerAction("ack", "1");
-            recTr4.addTriggerAction("msgOut", "pktIn/2");
-            FSMTransition recTr5 = receiver.createTransition(recS0, recS0);
-            recTr5.setTriggerEvent("pktIn");
-            recTr5.setTriggerCondition("(pktIn%2) == 1");
-            recTr5.addTriggerAction("ack", "1");
-            FSMTransition recTr6 = receiver.createTransition(recS0, recS1);
-            recTr6.setTriggerEvent("pktIn");
-            recTr6.setTriggerCondition("(pktIn%2) == 0");
-            recTr6.addTriggerAction("ack", "0");
-            recTr6.addTriggerAction("msgOut", "pktIn/2");
+            State recInit = new State(receiver, "Init");
+            State recS0 = new State(receiver, "S0");
+            State recS1 = new State(receiver, "S1");
+            receiver.initialStateName.setToken(new StringToken("Init"));
+            Transition recTr1 = new Transition(receiver, "recTr1");
+            recInit.outgoingPort.link(recTr1);
+            recInit.incomingPort.link(recTr1);
+            recTr1.guard.setExpression("(pktIn_S ? pktIn_V : 0) == -1");
+            BroadcastOutput recTr1Act1 =
+                    new BroadcastOutput(recTr1, "recTr1Act1");
+            recTr1Act1.portName.setToken(new StringToken("ack"));
+            recTr1Act1.expression.setToken(new StringToken("-1"));
+            Transition recTr2 = new Transition(receiver, "recTr2");
+            recInit.outgoingPort.link(recTr2);
+            recS1.incomingPort.link(recTr2);
+            recTr2.guard.setExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+            BroadcastOutput recTr2Act1 =
+                    new BroadcastOutput(recTr2, "recTr2Act1");
+            recTr2Act1.portName.setToken(new StringToken("ack"));
+            recTr2Act1.expression.setToken(new StringToken("0"));
+            BroadcastOutput recTr2Act2 =
+                    new BroadcastOutput(recTr2, "recTr2Act2");
+            recTr2Act2.portName.setToken(new StringToken("msgOut"));
+            recTr2Act2.expression.setToken(new StringToken("pktIn_V/2"));
+            Transition recTr3 = new Transition(receiver, "recTr3");
+            recS1.outgoingPort.link(recTr3);
+            recS1.incomingPort.link(recTr3);
+            recTr3.guard.setExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+            BroadcastOutput recTr3Act1 =
+                    new BroadcastOutput(recTr3, "recTr3Act1");
+            recTr3Act1.portName.setToken(new StringToken("ack"));
+            recTr3Act1.expression.setToken(new StringToken("0"));
+            Transition recTr4 = new Transition(receiver, "recTr4");
+            recS1.outgoingPort.link(recTr4);
+            recS0.incomingPort.link(recTr4);
+            recTr4.guard.setExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
+            BroadcastOutput recTr4Act1 =
+                    new BroadcastOutput(recTr4, "recTr4Act1");
+            recTr4Act1.portName.setToken(new StringToken("ack"));
+            recTr4Act1.expression.setToken(new StringToken("1"));
+            BroadcastOutput recTr4Act2 =
+                    new BroadcastOutput(recTr4, "recTr4Act2");
+            recTr4Act2.portName.setToken(new StringToken("msgOut"));
+            recTr4Act2.expression.setToken(new StringToken("pktIn_V/2"));
+            Transition recTr5 = new Transition(receiver, "recTr5");
+            recS0.outgoingPort.link(recTr5);
+            recS0.incomingPort.link(recTr5);
+            recTr5.guard.setExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
+            BroadcastOutput recTr5Act1 =
+                    new BroadcastOutput(recTr5, "recTr5Act1");
+            recTr5Act1.portName.setToken(new StringToken("ack"));
+            recTr5Act1.expression.setToken(new StringToken("1"));
+            Transition recTr6 = new Transition(receiver, "recTr6");
+            recS0.outgoingPort.link(recTr6);
+            recS1.incomingPort.link(recTr6);
+            recTr6.guard.setExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+            BroadcastOutput recTr6Act1 =
+                    new BroadcastOutput(recTr6, "recTr6Act1");
+            recTr6Act1.portName.setToken(new StringToken("ack"));
+            recTr6Act1.expression.setToken(new StringToken("0"));
+            BroadcastOutput recTr6Act2 =
+                    new BroadcastOutput(recTr6, "recTr6Act2");
+            recTr6Act2.portName.setToken(new StringToken("msgOut"));
+            recTr6Act2.expression.setToken(new StringToken("pktIn_V/2"));
 
             // connect the top level system
             TypedIORelation sysR1 =
