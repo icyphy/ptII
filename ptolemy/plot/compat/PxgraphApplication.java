@@ -102,7 +102,7 @@ public class PxgraphApplication extends PlotApplication {
      */
     public static void main(String args[]) {
         try {
-            PlotApplication plot = new PxgraphApplication(new Plot(), args);
+            new PxgraphApplication(new Plot(), args);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -149,7 +149,7 @@ public class PxgraphApplication extends PlotApplication {
      */
     protected int _parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-        int i = 0, j, argumentsRead;
+        int i = 0, argumentsRead;
         String arg;
         String title = "Ptolemy plot, pxgraph version";
 

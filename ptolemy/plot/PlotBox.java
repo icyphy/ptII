@@ -3264,7 +3264,6 @@ public class PlotBox extends JPanel implements Printable {
         // Ignore if there is no graphics object to draw on.
         if (graphics == null) return;
 
-        boolean handled = false;
         if ((_zoomin == true) && (_drawn == true)){
             if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
@@ -3298,7 +3297,6 @@ public class PlotBox extends JPanel implements Printable {
                     else setYRange(b, a);
                 }
                 repaint();
-                handled = true;
             }
         } else if ((_zoomout == true) && (_drawn == true)){
             // Erase previous rectangle.
@@ -3324,11 +3322,8 @@ public class PlotBox extends JPanel implements Printable {
             // if (newy2 < _yBottom) newy2 = _yBottom;
             zoom(newx2, newy2, newx1, newy1);
             repaint();
-
-            handled = true;
         } else if (_drawn == false){
             repaint();
-            handled = true;
         }
         _drawn = false;
         _zoomin = _zoomout = false;

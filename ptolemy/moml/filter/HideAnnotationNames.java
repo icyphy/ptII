@@ -129,7 +129,7 @@ public class HideAnnotationNames implements MoMLFilter {
             _currentlyProcessingAnnotation = false;
             _currentAnnotationFullName = null;
             try {
-                Parameter hideName = new Parameter(container, "_hideName");
+                new Parameter(container, "_hideName");
             } catch (NameDuplicationException ex) {
                 // Ignore, the container already has a _hideName.
                 // The Network model has this problem.

@@ -163,7 +163,7 @@ public class AddEditorFactory implements MoMLFilter {
                 // Do not call parse(moml) here, since that method
                 // will fail if we are in an applet because it tries
                 // to read user.dir
-                NamedObj icon = _parser.parse(null, moml);
+                _parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse\n"

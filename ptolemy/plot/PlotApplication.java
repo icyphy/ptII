@@ -206,7 +206,7 @@ public class PlotApplication extends PlotFrame {
      */
     public static void main(String args[]) {
         try {
-            PlotApplication plot = new PlotApplication(new Plot(), args);
+            new PlotApplication(new Plot(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
@@ -269,7 +269,7 @@ public class PlotApplication extends PlotFrame {
      */
     protected int _parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-        int i = 0, j, argumentsRead;
+        int i = 0, argumentsRead;
         String arg;
         String title = "Ptolemy plot";
 
