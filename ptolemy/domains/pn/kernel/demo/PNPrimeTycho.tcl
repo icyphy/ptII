@@ -30,14 +30,70 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+#if {[info procs fullName2HTML] == ""} then {
+    source [file join $TYCHO java pt kernel test description.tcl]
+#}
+
 # This is the Tycho side of the PNPrime Demo.
 # We start up the JRPC daemon and then run the PNPrime demo
 # in a remote Tcl Blend process.
 # The remote process writes the dag files out and then
-# the local Tycho process views them
-
+# the local Tycho process views them.
+#
 proc PNPrimeTycho { {numberOfCycles 10}} {
     global TYCHO
+    global jrpc
+    startJRPCIfNecessary
+    set initialDAGFileName [::tycho::tmpFileName initial .dag]
+    set finalDAGFileName [::tycho::tmpFileName final .dag]
+
+    $jrpc send "set initialDAGFileName $initialDAGFileName"
+    $jrpc send "set finalDAGFileName $finalDAGFileName"
+    $jrpc send "set numberOfCycles $numberOfCycles"
+    puts [$jrpc send "source \
+	    [file join $TYCHO java pt domains pn kernel demo \
+	    PNPrimeExample.tcl]"]
+
+    # Get the current Universe so we can inspect Entities and Relations
+    # in the DAG.
+    setCurrentUniverse [$jrpc send getCurrentUniverse]
+
+    ::tycho::File::openContext $initialDAGFileName
+    ::tycho::File::openContext $finalDAGFileName
+
+    file delete $initialDAGFileName
+    file delete $finalDAGFileName    
+}
+
+
+proc ExampleSystemTycho {} {
+    global TYCHO
+    global jrpc
+    startJRPCIfNecessary
+    set DAGFileName [::tycho::tmpFileName exampleSystem .dag]
+
+    puts [$jrpc send "source \
+	    [file join $TYCHO java pt kernel test ExampleSystem.tcl]"]
+
+    $jrpc send {eval setCurrentUniverse $e0}
+
+
+    # Get the current Universe so we can inspect Entities and Relations
+
+    # in the DAG.
+
+    setCurrentUniverse [$jrpc send getCurrentUniverse]
+
+    $jrpc send {set description [eval $e0 description 4]}
+
+    $jrpc send "description2DAG \"Example System\" $DAGFileName \$description"
+
+    ::tycho::File::openContext $DAGFileName
+
+    file delete $DAGFileName
+}
+
+proc startJRPCIfNecessary {} {
     global jrpc
     if ![info exists jrpc] {
 	puts "Please wait while the remote Tcl Blend Process starts up."
@@ -54,19 +110,4 @@ proc PNPrimeTycho { {numberOfCycles 10}} {
 	set jrpc [::tycho::JRPC [::tycho::autoName .jrpc] -portnum $portnum]
 	puts "Remote Tcl Blend Process started."
     }
-    set initialDAGFileName [::tycho::tmpFileName initial .dag]
-    set finalDAGFileName [::tycho::tmpFileName final .dag]
-
-    $jrpc send "set initialDAGFileName $initialDAGFileName"
-    $jrpc send "set finalDAGFileName $finalDAGFileName"
-    $jrpc send "set numberOfCycles $numberOfCycles"
-    puts [$jrpc send "source \
-	    [file join $TYCHO java pt domains pn kernel demo \
-	    PNPrimeExample.tcl]"]
-
-    ::tycho::File::openContext $initialDAGFileName
-    ::tycho::File::openContext $finalDAGFileName
-
-    file delete $initialDAGFileName
-    file delete $finalDAGFileName    
 }
