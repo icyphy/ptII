@@ -164,7 +164,7 @@ $(PTII_SRC): $(PTIIDIST)
 	$(COMPRESS) $(basename $@)
 	mv $(basename $@).bak $(basename $@)
 	chmod g+w $@ $(basename $@)
-	chgrp ptolemy $@ $(basename $@)
+	-chgrp ptolemy $@ $(basename $@)
 	ls -l $@ $(basename $@)
 
 $(PTII_SRC_SPLIT):: $(PTII_SRC)
@@ -378,7 +378,6 @@ remote1distjavadocs:
 # $PTII/doc/makefile in two places so that we automatically generate docs.
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
-# sdf/codegen should be run after lang and codegen
 # dt/kernel should be run after sdfes
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
@@ -431,12 +430,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/com/JLex \
-	$(REMOTE1PTIIDIST)/ptolemy/lang \
-	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
-	$(REMOTE1PTIIDIST)/ptolemy/lang/java/tree \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -1024,11 +1017,7 @@ $(INSTALLSHIELD_DOC):
 $(INSTALLSHIELD_EXPERIMENTAL):
 	@echo "#"
 	@echo "# Building $@"
-	 mkdir -p $@/ptolemy $@/ptolemy/domains/sdf
-	 mv $(INSTALLSHIELD_APP)/ptolemy/codegen $@/ptolemy
-	 mv $(INSTALLSHIELD_APP)/ptolemy/lang $@/ptolemy
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/codegen \
-		$@/ptolemy/domains/sdf
+	 mkdir -p $@/ptolemy
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dde $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dt $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains

@@ -46,6 +46,7 @@ ptolemy/apps
 ptolemy/automata
 ptolemy/filter/*
 ptolemy/filter
+ptolemy/codegen
 ptolemy/com
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
@@ -69,6 +70,7 @@ ptolemy/domains/pbo
 ptolemy/domains/rtos
 ptolemy/domains/rtp
 ptolemy/domains/sc
+ptolemy/domains/sdf/codegen
 ptolemy/domains/sdf/demo/FixPointSystem
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
@@ -79,6 +81,7 @@ ptolemy/math/filter
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
+ptolemy/lang
 ptolemy/plot/adm
 ptolemy/schematic
 ptolemy/system
