@@ -114,7 +114,8 @@ public class Const extends TypedAtomicActor {
      *  set to type IntToken with value 1.
      */
     // FIXME: it may be better to set the default value for
-    // paramters in the constructor.
+    // paramters in the constructor. But this requires support
+    // for parameter type change.
     public Enumeration typeConstraints() {
 	if (value.getToken() == null) {
 	    value.setToken(new IntToken(1));
