@@ -47,7 +47,9 @@ import ptolemy.data.*;
 */
 public class BusContentionDemo {
 
-    /**
+    /** Construct a BusContentionDemo object.
+     * @exception IllegalActionException If there are problems.
+     * @exception NameDuplicationException If there are problems.
      */
     public BusContentionDemo()
             throws IllegalActionException, NameDuplicationException {
@@ -69,7 +71,10 @@ public class BusContentionDemo {
         _proc3 = new Processor( _topLevelActor, "proc3", 3 );
     }
 
-    /**
+    /** Construct a BusContentionDemo object with the specified
+     *  BusContentionGraphic.
+     * @exception IllegalActionException If there are problems.
+     * @exception NameDuplicationException If there are problems.
      */
     public BusContentionDemo(BusContentionGraphic bcg)
             throws IllegalActionException, NameDuplicationException {
@@ -82,7 +87,7 @@ public class BusContentionDemo {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Start the BusContention demo.
      * @exception IllegalActionException If there are problems
      * @exception IllegalStateException If there are problems
      * @exception NameDuplicationException If there are problems
@@ -95,10 +100,9 @@ public class BusContentionDemo {
         demo.run();
     }
 
-    /**
+    /** Instantiate all ports in the model and connect them
+     *  as appropriate.
      * @exception IllegalActionException If there are problems
-     * @exception IllegalStateException If there are problems
-     * @exception NameDuplicationException If there are problems
      */
     public void makeConnections() throws IllegalActionException {
         // Set up ports, relation
@@ -165,10 +169,7 @@ public class BusContentionDemo {
         // System.out.println("Width of input port is " + width);
     }
 
-    /**
-     * @exception IllegalActionException If there are problems
-     * @exception IllegalStateException If there are problems
-     * @exception NameDuplicationException If there are problems
+    /** Execute the model by calling the manager's run method.
      */
     public void run() {
 
