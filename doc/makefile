@@ -53,6 +53,7 @@ REALCLEAN_STUFF =
 ALLJSRCS = 		ptplot/*.java \
 			pt/kernel/*.java \
 			pt/actors/*.java \
+			pt/data/*.java \
 			pt/domains/pn/kernel/*.java \
 			pt/domains/ct/kernel/*.java \
 			pt/domains/pn/stars/*.java \
@@ -63,6 +64,7 @@ all: codeDoc/tree.html
 codeDoc/tree.html: ../ptplot/*.java \
 			../pt/kernel/*.java \
 			../pt/actors/*.java \
+			../pt/data/*.java \
 			../pt/domains/pn/kernel/*.java \
 			../pt/domains/ct/kernel/*.java \
 			../pt/domains/pn/stars/*.java \
