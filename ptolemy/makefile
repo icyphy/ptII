@@ -52,5 +52,9 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Files in this directory
+MISC_FILES = \
+	PtolemyII.ptml
+
 # Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+include $(ROOT)/mk/ptcommon.mk
