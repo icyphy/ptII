@@ -72,16 +72,21 @@ OPTIONAL_FILES = \
 	html \
 	src \
 	usingVergil \
-	usingVergil.pdf
+	usingVergil.pdf \
+	visualsense.pdf
+
 
 # Other jars to make, used by 'make jars'
-OTHER_JARS = hyvisual.jar
+OTHER_JARS = hyvisual.jar visualsense.jar
 
 all: suball
 install: all jars $(OTHER_JARS)
 
 hyvisual.jar: hyvisual.pdf
 	(cd $(ROOT); "$(JAR)" -cvf $(ME)/$@ $(ME)/hyvisual.pdf)
+
+visualsense.jar: visualsense.pdf
+	(cd $(ROOT); "$(JAR)" -cvf $(ME)/$@ $(ME)/visualsense.pdf)
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
