@@ -326,6 +326,11 @@ public class FSMState extends ComponentEntity {
         return trans;
     }
 
+    /** Add all of the ports of this state's refining actor to the
+     *  scope. Here, the scope refers to the scope of variables 
+     *  which can be used as part of a guard expression or action
+     *  of a state transition.
+     */
     protected void setupScope() {
         try {
             if (_localStatusVars != null) {
@@ -339,8 +344,16 @@ public class FSMState extends ComponentEntity {
                         LOCAL_INPUT_STATUS_VAR_LIST);
                 _localValueVars = new VariableList(this,
                         LOCAL_INPUT_VALUE_VAR_LIST);
+		/* Add the ports of this state's refining actor to
+		 * the scope.
+		 */
                 _localStatusVars.createVariables(_refinement.outputPorts());
+		_localStatusVars.createVariables(_refinement.inputPorts());
+		/* Add the ports of this state's refining actor to
+		 * the scope.
+		 */
                 _localValueVars.createVariables(_refinement.outputPorts());
+		_localValueVars.createVariables(_refinement.inputPorts());
             } else {
                 _localStatusVars = null;
                 _localValueVars = null;
@@ -381,16 +394,24 @@ public class FSMState extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The name of the outgoing port. */
+    /** The name of the outgoing port.  */
     public static final String OUTGOING_PORT = "Outgoing";
 
     /** The name of the incoming port. */
     public static final String INCOMING_PORT = "Incoming";
 
-    /** The name of the local status variable list. */
+    /** The name of the local status variable list.
+     *  This attribute contains a VariableList with Variables
+     *  with the names of all of the ports contained by the actor
+     *  that refines this state.
+     */
     public static final String LOCAL_INPUT_STATUS_VAR_LIST = "LocalStatusVars";
 
-    /** The name of the local value variable list. */
+    /** The name of the local value variable list.
+     *  This attribute contains a VariableList with Variables
+     *  with the names of all of the ports contained by the actor
+     *  that refines this state.
+     */
     public static final String LOCAL_INPUT_VALUE_VAR_LIST = "LocalValueVars";
 
     ///////////////////////////////////////////////////////////////////
