@@ -39,6 +39,9 @@ if {[info procs jdkCapture] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
 
+if {[info procs saveAsJava] == "" } then {
+    source [file join $PTII util testsuite saveAsJava.tcl]
+}
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -47,39 +50,11 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 
-# Generate java code for a model.  The model argument names a .xml
-# file which will be interpreted as a relative pathname
-# (MoMLParser.parse() forces this)
-proc saveAsJava {model} {
-    global relativePathToPTII
-    set MoMLToJava [java::new ptolemy.codegen.saveasjava.MoMLToJava]
-    $MoMLToJava convert $model
-
-    # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file
-    set builtinClasspath [java::call System getProperty "java.class.path"]
-    set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$builtinClasspath
-    set modelName [file rootname [file tail $model]]
-    exec javac -classpath $relativePathToPTII $modelName.java
-    return [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName] 
-}
 
 test MoMLToJava-1.0 {} {
     set results [saveAsJava rampFileWriter.xml]
     list [lrange $results 1 4]
 } {{1 2 3 4}}
-
-# Generate code for all the xml files in 
-
-proc autoSaveAsJava {autoDirectory} {
-    foreach file [glob $autoDirectory/*.xml] {
-	puts "------------------ testing $file"
-	test "Auto" "Automatic test in file $file" {
-	    saveAsJava $file
-	    list {}
-	} {{}}
-    }
-}
 
 autoSaveAsJava [file join $relativePathToPTII ptolemy actor lib test auto]
 

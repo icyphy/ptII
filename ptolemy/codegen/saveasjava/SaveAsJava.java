@@ -30,6 +30,7 @@
 
 package ptolemy.codegen.saveasjava;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -46,7 +47,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// SaveAsJava
 /**
@@ -177,10 +177,13 @@ class SaveAsJava {
             } else {
                 nameToSanitize = ((NamedObj)object).getName(toplevel);
             }
-            // FIXME: Only replacing dots, spaces and colons for now.
+
+            // FIXME: Only replacing dots, spaces, commas and colons for now.
             name = nameToSanitize.replace('.', '_');
             name = name.replace(' ', '_');
+            name = name.replace(',', '_');
             name = name.replace(':', '_');
+
 
             // If the name begins with a number, add a leading _
             switch (name.charAt(0)) {
@@ -199,21 +202,10 @@ class SaveAsJava {
             default:
                 break;
             }
+
 	    // Replace "=" with "Equals"
-	    if (name.indexOf('=') != -1) {
-		StringTokenizer tokenizer =
-		    new StringTokenizer(name, "=", true);
-		StringBuffer nameBuffer = new StringBuffer();
-		while (tokenizer.hasMoreTokens()) {
-		    String token = tokenizer.nextToken();
-		    if (token.equals("=")) {
-			nameBuffer.append("Equals");
-		    } else {
-			nameBuffer.append(token);
-		    }
-		}
-		name = nameBuffer.toString();
-	    } 
+	    name = StringUtilities.substitute(name, "=", "Equals");
+
             _nameMap.put(object, name);
         }
         return name;
@@ -458,7 +450,8 @@ class SaveAsJava {
     ////                         private methods                   ////
 
     /** Given a string, replace all quotation marks with escaped
-     *  quotation marks, and all backslashes with double backslashes.
+     *  quotation marks, all backslashes with double backslashes,
+     *  and all \n characters with "\n + ".
      *  This is because the Java compiler interprets quotation marks
      *  as closing the string, and backslashes as escaping special
      *  characters.
@@ -468,6 +461,11 @@ class SaveAsJava {
     private static String _escapeQuotes(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
         string = StringUtilities.substitute(string, "\"", "\\\"");
+	String lineSeparator = System.getProperty("line.separator");
+	// Convert line Separators to "\n + "
+        string =
+	    StringUtilities.substitute(string, "\n",
+				       "\"" + lineSeparator + " + \""); 
         return string;
     }
 
