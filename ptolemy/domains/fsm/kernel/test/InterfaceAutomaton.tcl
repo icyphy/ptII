@@ -235,6 +235,10 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="probability" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c;">
