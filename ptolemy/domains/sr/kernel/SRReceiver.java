@@ -80,7 +80,7 @@ until the director calls the reset() method at the beginning of the next
 iteration, which resets the receiver to have unknown status.  There is no way
 for an actor to reset a receiver to have unknown status.
 
-@author Paul Whitaker
+@author Paul Whitaker, contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
@@ -124,14 +124,35 @@ public class SRReceiver extends Mailbox {
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
-        // FIXME: Mailbox.hasToken(int) does not check call isKnown()
-        // but this class does?  Why?  Should we override hasToken(int)? 
         if (isKnown()) {
             return super.hasToken();
         } else {
             throw new UnknownTokenException(getContainer(),
                     "hasToken() called on SRReceiver with unknown state.");
         }
+    }
+
+    /** Return true if the argument is 1 and this mailbox is not empty,
+     *  and otherwise return false.
+     *  If the receiver has unknown status, this method will throw
+     *  an UnknownTokenException, which is a RuntimeException so it
+     *  need not be declared explicitly.
+     *  @param numberOfTokens The number of tokens to get from the receiver.
+     *  @return True if the argument is 1 and this mailbox is not empty.
+     *  Return false if the argument is 2 or more.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     *  @since Ptolemy II 2.1  
+     */
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
+        if (!isKnown()) {
+            throw new UnknownTokenException(getContainer(),
+                    "hasToken(" + numberOfTokens
+                    + ") called on SRReceiver with unknown state.");
+        }
+        return super.hasToken(numberOfTokens);
     }
 
     /** Return true if this receiver has known state, that is, the token in

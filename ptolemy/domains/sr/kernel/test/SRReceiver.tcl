@@ -58,8 +58,8 @@ proc _testReceiver {receiver} {
     # token to put
     set token [java::new ptolemy.data.StringToken foo]
 
-    # Should return false (0), since no token has yet been put.
-    set result1 [$receiver hasToken 1]
+    # Unlike SDF, which would return false (0), SR should throw an error
+    catch {$receiver hasToken 1} result1
 
     # Now put a token.
     $receiver {put ptolemy.data.Token} $token
@@ -78,7 +78,7 @@ test SRReceiver-1.1 {Check put and hasToken} {
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set r1 [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
     list [_testReceiver $r1]
-} {{0 1 0}}
+} {{{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.} 1 0}}
 
 ######################################################################
 ####
@@ -94,22 +94,25 @@ test SRReceiver-2.1 {Check put and get and hasToken} {
     # token to put
     set token [java::new ptolemy.data.StringToken foo]
 
-    # Should return false (0), since no token has yet been put.
-    set result1 [$receiver hasToken 1]
+    # Unlike SDF, which will return false (0), SR will throw an exception
+    catch {$receiver hasToken} result1
+    catch {$receiver hasToken 1} result1_1
 
     # Now put a token.
     $receiver {put ptolemy.data.Token} $token
 
     # Should return true (1), since there is now a token in
     # the receiver.
-    set result2 [$receiver hasToken 1]
+    set result2 [$receiver hasToken]
+    set result2_1 [$receiver hasToken 1]
     
     # Now get the token, but don't remove it from the receiver.
     set receivedToken [$receiver get]
 
     # Should return true (1), since there is still a token in
     # the receiver.
-    set result3 [$receiver hasToken 1]
+    set result3 [$receiver hasToken]
+    set result3_1 [$receiver hasToken 1]
 
     # Now get the token, and remove it from the receiver.
     set receivedToken2 [$receiver get]
@@ -117,10 +120,13 @@ test SRReceiver-2.1 {Check put and get and hasToken} {
     # SDFReceiver returns false (0), since there is no longer a token in
     # the receiver.
     # However, SRReceiver returns true (1) here.
-    set result4 [$receiver hasToken 1]
+    set result4 [$receiver hasToken]
+    set result4_1 [$receiver hasToken 1]
 
-    list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString]
-} {0 1 1 1 {"foo"} {"foo"}}
+    list $result1 $result1_1 $result2 $result2_1 \
+	    $result3 $result3_1 $result4 $result4_1 \
+	    [$receivedToken toString] [$receivedToken2 toString]
+} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken() called on SRReceiver with unknown state.} {ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.} 1 1 1 1 1 1 {"foo"} {"foo"}}
 
 
 test SRReceiver-2.2 {Check put and get and hasToken with more than 1 token in the queue} {
@@ -136,16 +142,16 @@ test SRReceiver-2.2 {Check put and get and hasToken with more than 1 token in th
     set token [java::new ptolemy.data.StringToken foo]
     set token2 [java::new ptolemy.data.StringToken bar]
 
-    # Should return false (0), since no token has yet been put.
-    set result1 [$receiver hasToken 1]
+    # Unlike SDF, which will return false (0), SR will throw an exception
+    catch {$receiver hasToken 1} result1
 
     # Now put a token.
     $receiver {put ptolemy.data.Token} $token
 
     # Now put another token, which will fail
-    catch {$receiver {put ptolemy.data.Token} $token2} result1
-    list $result1
-} {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot receive two tokens that differ.}}
+    catch {$receiver {put ptolemy.data.Token} $token2} result2
+    list $result1 $result2
+} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.} {ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot receive two tokens that differ.}}
 
 
 test SRReceiver-2.3 {check hasToken in an unknown state} {
@@ -153,8 +159,29 @@ test SRReceiver-2.3 {check hasToken in an unknown state} {
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
     catch {$receiver hasToken} result1
-    list $result1
-} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken() called on SRReceiver with unknown state.}}
+    catch {$receiver hasToken 1} result2
+    list $result1 $result2
+} {{ptolemy.domains.sr.kernel.UnknownTokenException: hasToken() called on SRReceiver with unknown state.} {ptolemy.domains.sr.kernel.UnknownTokenException: hasToken(1) called on SRReceiver with unknown state.}}
+
+test SRReceiver-2.4 {check hasToken with a non-positive} {
+
+    set director [java::new ptolemy.domains.sr.kernel.SRDirector]
+    set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
+    # tokens to put
+    set token [java::new ptolemy.data.StringToken foo]
+
+    $receiver {put ptolemy.data.Token} $token
+    set result1 [$receiver hasToken]
+    set result1_1 [$receiver hasToken 1]
+
+    catch {$receiver hasToken -1} result2
+    catch {$receiver hasToken 0} result3
+    set result4 [$receiver hasToken 1]
+    # Should return false 
+    set result5 [$receiver hasToken 2]
+
+    list $result1 $result1_1 $result2 $result3 $result4 $result5
+} {1 1 {java.lang.IllegalArgumentException: hasToken() requires a positive argument.} {java.lang.IllegalArgumentException: hasToken() requires a positive argument.} 1 0}
 
 
 ######################################################################
