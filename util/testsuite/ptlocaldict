@@ -4,6 +4,7 @@ Applets
 Appletviewer
 Arial
 BNeD
+Banerjea
 Beamformer
 Bicheng
 Bilung
@@ -14,6 +15,7 @@ COPYRIGHTENDKEY
 CSF
 CSP
 Claudius
+Cloneable
 Codesign
 Cygwin
 Dataflow
@@ -74,8 +76,11 @@ Shang
 Sinopoli
 Smyth
 Solaris
-TU
+Tcl
 Tobias
+Toplevel
+Toplogy
+TU
 U
 UCB
 UML
@@ -93,14 +98,17 @@ applet
 applets
 appletviewer
 autoconf
+behaviour
 berkeley
 bgcolor
 blockquote&gt
 cellpadding
 cellspacing
+checkbox
 checkjunk
 chown
 colspan
+containees
 cshrc
 csp
 cxh
@@ -120,6 +128,7 @@ h1
 h2
 h3
 h4
+hashtable
 href
 hspace
 htaccess
@@ -143,6 +152,7 @@ javasoft
 jdk
 jindent
 johnr
+lang
 liuj
 lmuliadi
 majordomo
