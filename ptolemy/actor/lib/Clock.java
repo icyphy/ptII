@@ -45,7 +45,7 @@ import java.util.Enumeration;
 //// Clock
 /**
 This actor produces a periodic signal, a generalized square wave
-that sequences through <i>N</i> levels with arbitrary duty cycles
+that sequences through <i>N</i> output values with arbitrary duty cycles
 and period.  It has various uses.  Its simplest use in the DE domain
 is to generate a sequence of events at regularly spaced
 intervals.  In CT, it can be used to generate a square wave.
@@ -73,11 +73,16 @@ is 2.0.
 The actor uses the fireAt() method of the director to request
 firing at the beginning of each period plus each of the offsets.
 It may in addition fire at any time in response to a trigger
-input.  On such firings, it simply repeats the most recent output.
-Thus, the trigger, in effect, asks the actor what its current
-output value is. Some domains, such as CT, may also fire the actor at
-other times, without requiring a trigger input.  Again, the actor
-simply repeats the previous output.
+input.  On such firings, it simply repeats the most recent output
+(or a new output value, if the time is suitable.) Thus, the trigger,
+in effect, asks the actor what its current output value is. If a
+trigger happens at the same time as a fireAt() event, the output
+will be a new value, and it is up to the director to determine
+whether this actor will be fired once or twice.
+Some directors, such as those in CT, may also fire the actor at
+other times, without requiring a trigger input.  This is because
+that CT may compute the behavior of a system at any time.
+Again, the actor simply repeats the previous output.
 Thus, the output can be viewed as samples of the clock waveform,
 where the time of each sample is the time of the firing that
 produced it.  If the actor fires before the first offset has
@@ -85,16 +90,18 @@ been reached, then a zero token of the same type as those in
 the <i>values</i> matrix is produced.
 <p>
 The clock waveform is a square wave (in the sense that transitions
-between levels are discrete and signal is piecewise constant),
+between levels are discrete and the signal is piecewise constant),
 with <i>N</i> levels, where <i>N</i> is the length of the <i>values</i>
 parameter.  Changes between levels occur at times
-<i>nP</i> + <i>o<sub>i < /sub></i> where <i>n</i> is any nonnegative integer,
+<i>nP</i> + <i>o<sub>i </sub></i> where <i>n</i> is any nonnegative integer,
 <i>P</i> is the period, and <i>o<sub>i < /sub></i> is an entry
 in the <i>offsets</i> vector.
 <p>
 The type of the output can be any token type that has a corresponding
 matrix token type.  The type is inferred from the type of the
 <i>values</i> parameter.
+<p>
+This actor is a timed source, the untimed version is Pulse.
 
 @author Edward A. Lee
 @version $Id$
@@ -152,8 +159,11 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the offsets parameter, check that the array
-     *  is nondecreasing and has the right dimension.
+    /** If the argument is the <i>offsets</i> parameter, check that the
+     *  array is nondecreasing and has the right dimension; if the
+     *  argument is <i>period</i>, check that it is positive. Other
+     *  sanity checks with <i>period</i> and <i>values</i> are done in
+     *  the fire() method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative, or it is not a row vector.
@@ -219,7 +229,6 @@ public class Clock extends TimedSource {
      */
     public Object clone(Workspace ws) {
         Clock newobj = (Clock)super.clone(ws);
-        newobj.offsets = (Parameter)newobj.getAttribute("offsets");
         try {
             newobj.offsets = (Parameter)newobj.getAttribute("offsets");
             newobj.attributeChanged(newobj.offsets);
@@ -298,8 +307,8 @@ public class Clock extends TimedSource {
 
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
-     *   or if the values parameter is not a row vector, or if the fireAt()
-     *   method is not supported by the director.
+     *   or if the <i>values</i> parameter is not a row vector, or if the
+     *   fireAt() method of the director throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -314,8 +323,7 @@ public class Clock extends TimedSource {
         _phase = 0;
     }
 
-    /** Update the state of the actor to the correspond to that tentatively
-     *  computed in the most recent firing and schedule the next firing,
+    /** Update the state of the actor and schedule the next firing,
      *  if appropriate.
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing.
