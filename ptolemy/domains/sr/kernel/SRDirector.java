@@ -486,9 +486,9 @@ public class SRDirector extends StaticSchedulingDirector {
         // Default is a NonStrictFSMDirector, while FSMDirector is also 
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = 
+        defaultSuggestions[1] = 
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
     
