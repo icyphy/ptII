@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Fermenter" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StaticUnits" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -50,18 +50,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {391, 127, 948, 815}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {42, 1, 948, 763}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 691]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{366.5, 345.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{366.5, 327.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of static unit system.&#10;  This is a model of the growth process in a fermenter. There are three&#10;submodels; 1) growth models the number of cells being produced as a&#10;function of the current number of cells and the vat temperature,&#10;2) HeatProduction models the amount of heat produced (in calories) as&#10;a function of the amount of work done (in joules), and 3) HeatExchanger&#10;models the removal of heat from the vat as a function of the rate at&#10;which water flows through the cooling jacket around the vat.&#10;  Some of the units constraints in the model are inconsistent. See the&#10;red notes. The UnitsConstraint Solver can be used to discover, and&#10;analyse these inconsistencies. (Right mouse-click and select&#10;UnitsConstraint Solver).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 445.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 435.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -85,7 +85,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 660.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 625.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -423,7 +423,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 175.0">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
+        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
