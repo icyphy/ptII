@@ -166,7 +166,7 @@ System.out.println("finishing Director firing method");
 
                 }
 
-                System.out.println("done waitting ");
+                System.out.println("done waiting ");
                 setNextIter(false);
 
                 // Continue only if the next iteration flag is set.
