@@ -34,9 +34,7 @@
 # 2) Report lines longer than 80 chars
 # 3) Report public methods and variables after private or protected ones
 # 4) Make sure that each file includes a copyright, @version and @author
-# 4) Make sure that each file includes a copyright, @since Ptolemy II 2.0
 # 5) Make sure that @author and @version are not @author: and @version:
-# 5) Make sure that @author and @since Ptolemy II 2.0
 # 6) Check for spaces after commas
 # 7) Check for FIXMEs
 # 8) Check for lines with trailing spaces
@@ -118,7 +116,6 @@ do
 
 	# Look for lines longer than 80 chars
 	$awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
-	$awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@since Ptolemy II 2.0
 
 	# Look for public statements after private etc.
         $awk '$1 == "public" {sawpublic=1
@@ -164,7 +161,6 @@ do
 
 	# Check that certain keywords exist
 	words="@version @author Copyright Regents"
-	words="@since Ptolemy II 2.0
 	for word in $words
 	do
 	  egrep -s $word $file > /dev/null
@@ -175,15 +171,12 @@ do
 	done
 
 	# Look for @version: or @author:
-	# Look for @since Ptolemy II 2.0
 	$awk '$0 ~ /@author:/ {
 	    print FILENAME": Remove trailing : from @author:"
 	    print $0
 	}
 	$0 ~ /@version:/ {
-	$0 ~ /@since Ptolemy II 2.0
 	    print FILENAME": Remove trailing : from @version:"
-	    print FILENAME": Remove trailing : from @since Ptolemy II 2.0
 	    print $0
 	}
 	$0 ~/@returns/ {
