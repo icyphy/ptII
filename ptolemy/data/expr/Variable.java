@@ -280,6 +280,7 @@ public class Variable extends Attribute implements Typeable {
         newvar._scope = null;
         newvar._scopeVersion = -1;
 
+	// set _declaredType and _varType
 	if (_declaredType instanceof StructuredType &&
 					!_declaredType.isConstant()) {
 	    newvar._declaredType =
