@@ -1,7 +1,7 @@
 /*
  * File: ../../../ptolemy/actor/corba/util/CorbaActor.java
  * From: CorbaActor.idl
- * Date: Tue Jul 27 13:54:19 1999
+ * Date: Wed Jul 28 17:18:28 1999
  *   By: idltojava Java IDL 1.2 Aug 11 1998 02:00:18
  */
 
@@ -15,7 +15,13 @@ public interface CorbaActor
     void initialize()
         throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     boolean hasData(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException;
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException;
+    boolean hasParameter(String paramName)
+;
+    boolean hasPort(String portName, boolean isInput, boolean isOutput, boolean isMultiport)
+;
+    void setPortWidth(String portName, short width)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException;
     boolean postfire()
         throws ptolemy.actor.corba.util.CorbaIllegalActionException;
     boolean prefire()

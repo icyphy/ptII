@@ -1,7 +1,7 @@
 /*
  * File: ../../../ptolemy/actor/corba/util/_CorbaActorImplBase.java
  * From: CorbaActor.idl
- * Date: Tue Jul 27 13:54:19 1999
+ * Date: Wed Jul 28 17:18:28 1999
  *   By: idltojava Java IDL 1.2 Aug 11 1998 02:00:18
  */
 
@@ -24,14 +24,17 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
       _methods.put("getParameter", new java.lang.Integer(1));
       _methods.put("initialize", new java.lang.Integer(2));
       _methods.put("hasData", new java.lang.Integer(3));
-      _methods.put("postfire", new java.lang.Integer(4));
-      _methods.put("prefire", new java.lang.Integer(5));
-      _methods.put("setParameter", new java.lang.Integer(6));
-      _methods.put("stopFire", new java.lang.Integer(7));
-      _methods.put("terminate", new java.lang.Integer(8));
-      _methods.put("transferInput", new java.lang.Integer(9));
-      _methods.put("transferOutput", new java.lang.Integer(10));
-      _methods.put("wrapup", new java.lang.Integer(11));
+      _methods.put("hasParameter", new java.lang.Integer(4));
+      _methods.put("hasPort", new java.lang.Integer(5));
+      _methods.put("setPortWidth", new java.lang.Integer(6));
+      _methods.put("postfire", new java.lang.Integer(7));
+      _methods.put("prefire", new java.lang.Integer(8));
+      _methods.put("setParameter", new java.lang.Integer(9));
+      _methods.put("stopFire", new java.lang.Integer(10));
+      _methods.put("terminate", new java.lang.Integer(11));
+      _methods.put("transferInput", new java.lang.Integer(12));
+      _methods.put("transferOutput", new java.lang.Integer(13));
+      _methods.put("wrapup", new java.lang.Integer(14));
      }
     // DSI Dispatch call
     public void invoke(org.omg.CORBA.ServerRequest r) {
@@ -126,12 +129,105 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
                             r.except(_except);
                             return;
               }
+              catch (ptolemy.actor.corba.util.CorbaIndexOutofBoundException e1) {
+                            org.omg.CORBA.Any _except = _orb().create_any();
+                            ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.insert(_except, e1);
+                            r.except(_except);
+                            return;
+              }
+              catch (ptolemy.actor.corba.util.CorbaUnknownPortException e2) {
+                            org.omg.CORBA.Any _except = _orb().create_any();
+                            ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e2);
+                            r.except(_except);
+                            return;
+              }
               org.omg.CORBA.Any __result = _orb().create_any();
               __result.insert_boolean(___result);
               r.result(__result);
               }
               break;
-           case 4: // ptolemy.actor.corba.util.CorbaActor.postfire
+           case 4: // ptolemy.actor.corba.util.CorbaActor.hasParameter
+              {
+              org.omg.CORBA.NVList _list = _orb().create_list(0);
+              org.omg.CORBA.Any _paramName = _orb().create_any();
+              _paramName.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
+              _list.add_value("paramName", _paramName, org.omg.CORBA.ARG_IN.value);
+              r.params(_list);
+              String paramName;
+              paramName = _paramName.extract_string();
+              boolean ___result;
+                            ___result = this.hasParameter(paramName);
+              org.omg.CORBA.Any __result = _orb().create_any();
+              __result.insert_boolean(___result);
+              r.result(__result);
+              }
+              break;
+           case 5: // ptolemy.actor.corba.util.CorbaActor.hasPort
+              {
+              org.omg.CORBA.NVList _list = _orb().create_list(0);
+              org.omg.CORBA.Any _portName = _orb().create_any();
+              _portName.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
+              _list.add_value("portName", _portName, org.omg.CORBA.ARG_IN.value);
+              org.omg.CORBA.Any _isInput = _orb().create_any();
+              _isInput.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
+              _list.add_value("isInput", _isInput, org.omg.CORBA.ARG_IN.value);
+              org.omg.CORBA.Any _isOutput = _orb().create_any();
+              _isOutput.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
+              _list.add_value("isOutput", _isOutput, org.omg.CORBA.ARG_IN.value);
+              org.omg.CORBA.Any _isMultiport = _orb().create_any();
+              _isMultiport.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
+              _list.add_value("isMultiport", _isMultiport, org.omg.CORBA.ARG_IN.value);
+              r.params(_list);
+              String portName;
+              portName = _portName.extract_string();
+              boolean isInput;
+              isInput = _isInput.extract_boolean();
+              boolean isOutput;
+              isOutput = _isOutput.extract_boolean();
+              boolean isMultiport;
+              isMultiport = _isMultiport.extract_boolean();
+              boolean ___result;
+                            ___result = this.hasPort(portName, isInput, isOutput, isMultiport);
+              org.omg.CORBA.Any __result = _orb().create_any();
+              __result.insert_boolean(___result);
+              r.result(__result);
+              }
+              break;
+           case 6: // ptolemy.actor.corba.util.CorbaActor.setPortWidth
+              {
+              org.omg.CORBA.NVList _list = _orb().create_list(0);
+              org.omg.CORBA.Any _portName = _orb().create_any();
+              _portName.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_string));
+              _list.add_value("portName", _portName, org.omg.CORBA.ARG_IN.value);
+              org.omg.CORBA.Any _width = _orb().create_any();
+              _width.type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_short));
+              _list.add_value("width", _width, org.omg.CORBA.ARG_IN.value);
+              r.params(_list);
+              String portName;
+              portName = _portName.extract_string();
+              short width;
+              width = _width.extract_short();
+              try {
+                            this.setPortWidth(portName, width);
+              }
+              catch (ptolemy.actor.corba.util.CorbaIllegalActionException e0) {
+                            org.omg.CORBA.Any _except = _orb().create_any();
+                            ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.insert(_except, e0);
+                            r.except(_except);
+                            return;
+              }
+              catch (ptolemy.actor.corba.util.CorbaUnknownPortException e1) {
+                            org.omg.CORBA.Any _except = _orb().create_any();
+                            ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.insert(_except, e1);
+                            r.except(_except);
+                            return;
+              }
+              org.omg.CORBA.Any __return = _orb().create_any();
+              __return.type(_orb().get_primitive_tc(org.omg.CORBA.TCKind.tk_void));
+              r.result(__return);
+              }
+              break;
+           case 7: // ptolemy.actor.corba.util.CorbaActor.postfire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               r.params(_list);
@@ -150,7 +246,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__result);
               }
               break;
-           case 5: // ptolemy.actor.corba.util.CorbaActor.prefire
+           case 8: // ptolemy.actor.corba.util.CorbaActor.prefire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               r.params(_list);
@@ -169,7 +265,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__result);
               }
               break;
-           case 6: // ptolemy.actor.corba.util.CorbaActor.setParameter
+           case 9: // ptolemy.actor.corba.util.CorbaActor.setParameter
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               org.omg.CORBA.Any _paramName = _orb().create_any();
@@ -209,7 +305,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__return);
               }
               break;
-           case 7: // ptolemy.actor.corba.util.CorbaActor.stopFire
+           case 10: // ptolemy.actor.corba.util.CorbaActor.stopFire
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               r.params(_list);
@@ -227,7 +323,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__return);
               }
               break;
-           case 8: // ptolemy.actor.corba.util.CorbaActor.terminate
+           case 11: // ptolemy.actor.corba.util.CorbaActor.terminate
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               r.params(_list);
@@ -245,7 +341,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__return);
               }
               break;
-           case 9: // ptolemy.actor.corba.util.CorbaActor.transferInput
+           case 12: // ptolemy.actor.corba.util.CorbaActor.transferInput
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               org.omg.CORBA.Any _portName = _orb().create_any();
@@ -296,7 +392,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__return);
               }
               break;
-           case 10: // ptolemy.actor.corba.util.CorbaActor.transferOutput
+           case 13: // ptolemy.actor.corba.util.CorbaActor.transferOutput
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               org.omg.CORBA.Any _portName = _orb().create_any();
@@ -337,7 +433,7 @@ public abstract class _CorbaActorImplBase extends org.omg.CORBA.DynamicImplement
               r.result(__result);
               }
               break;
-           case 11: // ptolemy.actor.corba.util.CorbaActor.wrapup
+           case 14: // ptolemy.actor.corba.util.CorbaActor.wrapup
               {
               org.omg.CORBA.NVList _list = _orb().create_list(0);
               r.params(_list);

@@ -1,7 +1,7 @@
 /*
  * File: ../../../ptolemy/actor/corba/util/CorbaUnknownPortExceptionHelper.java
  * From: CorbaActor.idl
- * Date: Tue Jul 27 13:54:19 1999
+ * Date: Wed Jul 28 17:18:28 1999
  *   By: idltojava Java IDL 1.2 Aug 11 1998 02:00:18
  */
 

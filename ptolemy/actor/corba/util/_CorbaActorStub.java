@@ -1,7 +1,7 @@
 /*
  * File: ../../../ptolemy/actor/corba/util/_CorbaActorStub.java
  * From: CorbaActor.idl
- * Date: Tue Jul 27 13:54:19 1999
+ * Date: Wed Jul 28 17:18:28 1999
  *   By: idltojava Java IDL 1.2 Aug 11 1998 02:00:18
  */
 
@@ -76,7 +76,7 @@ public class _CorbaActorStub
    }
     //	    Implementation of ::util::CorbaActor::hasData
     public boolean hasData(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException {
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaIndexOutofBoundException, ptolemy.actor.corba.util.CorbaUnknownPortException {
            org.omg.CORBA.Request r = _request("hasData");
            r.set_return_type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
            org.omg.CORBA.Any _portName = r.add_in_arg();
@@ -84,6 +84,8 @@ public class _CorbaActorStub
            org.omg.CORBA.Any _portIndex = r.add_in_arg();
            _portIndex.insert_short(portIndex);
            r.exceptions().add(ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.type());
+           r.exceptions().add(ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.type());
+           r.exceptions().add(ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.type());
            r.invoke();
            java.lang.Exception __ex = r.env().exception();
            if (__ex instanceof org.omg.CORBA.UnknownUserException) {
@@ -91,10 +93,68 @@ public class _CorbaActorStub
                if (__userEx.except.type().equals(ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.type())) {
                    throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.extract(__userEx.except);
                }
+               if (__userEx.except.type().equals(ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.type())) {
+                   throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.extract(__userEx.except);
+               }
+               if (__userEx.except.type().equals(ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.type())) {
+                   throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.extract(__userEx.except);
+               }
            }
            boolean __result;
            __result = r.return_value().extract_boolean();
            return __result;
+   }
+    //	    Implementation of ::util::CorbaActor::hasParameter
+    public boolean hasParameter(String paramName)
+ {
+           org.omg.CORBA.Request r = _request("hasParameter");
+           r.set_return_type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
+           org.omg.CORBA.Any _paramName = r.add_in_arg();
+           _paramName.insert_string(paramName);
+           r.invoke();
+           boolean __result;
+           __result = r.return_value().extract_boolean();
+           return __result;
+   }
+    //	    Implementation of ::util::CorbaActor::hasPort
+    public boolean hasPort(String portName, boolean isInput, boolean isOutput, boolean isMultiport)
+ {
+           org.omg.CORBA.Request r = _request("hasPort");
+           r.set_return_type(org.omg.CORBA.ORB.init().get_primitive_tc(org.omg.CORBA.TCKind.tk_boolean));
+           org.omg.CORBA.Any _portName = r.add_in_arg();
+           _portName.insert_string(portName);
+           org.omg.CORBA.Any _isInput = r.add_in_arg();
+           _isInput.insert_boolean(isInput);
+           org.omg.CORBA.Any _isOutput = r.add_in_arg();
+           _isOutput.insert_boolean(isOutput);
+           org.omg.CORBA.Any _isMultiport = r.add_in_arg();
+           _isMultiport.insert_boolean(isMultiport);
+           r.invoke();
+           boolean __result;
+           __result = r.return_value().extract_boolean();
+           return __result;
+   }
+    //	    Implementation of ::util::CorbaActor::setPortWidth
+    public void setPortWidth(String portName, short width)
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException, ptolemy.actor.corba.util.CorbaUnknownPortException {
+           org.omg.CORBA.Request r = _request("setPortWidth");
+           org.omg.CORBA.Any _portName = r.add_in_arg();
+           _portName.insert_string(portName);
+           org.omg.CORBA.Any _width = r.add_in_arg();
+           _width.insert_short(width);
+           r.exceptions().add(ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.type());
+           r.exceptions().add(ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.type());
+           r.invoke();
+           java.lang.Exception __ex = r.env().exception();
+           if (__ex instanceof org.omg.CORBA.UnknownUserException) {
+               org.omg.CORBA.UnknownUserException __userEx = (org.omg.CORBA.UnknownUserException) __ex;
+               if (__userEx.except.type().equals(ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.type())) {
+                   throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.extract(__userEx.except);
+               }
+               if (__userEx.except.type().equals(ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.type())) {
+                   throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.extract(__userEx.except);
+               }
+           }
    }
     //	    Implementation of ::util::CorbaActor::postfire
     public boolean postfire()

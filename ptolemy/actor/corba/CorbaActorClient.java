@@ -194,6 +194,7 @@ public class CorbaActorClient extends TypedAtomicActor {
               args[i] = st.nextToken();
         }
         try {
+            try {
             // start the ORB
             ORB orb = ORB.init(args, null);
             //get the root naming context
@@ -208,7 +209,41 @@ public class CorbaActorClient extends TypedAtomicActor {
             _remoteActor = 
                 ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                         ncRef.resolve(path));
-        } catch (Exception ex) {
+            } catch (UserException ex) {
+                throw new IllegalActionException(this,
+                        " initialize ORB failed." + ex.getMessage());
+            }
+            //check the corespondence of parameters and ports.
+            Enumeration atts = getAttributes();
+            while (atts.hasMoreElements()) {
+                Attribute att = (Attribute)atts.nextElement();
+                if (!_remoteActor.hasParameter(att.getName())) {
+                    throw new IllegalActionException(this,
+                            "Parameter: " + att.getName() +
+                            " not found on the remote side.");
+                }
+            }
+            Enumeration ports = getPorts();
+            while (ports.hasMoreElements()) {
+                IOPort p = (IOPort)ports.nextElement();
+                if (!_remoteActor.hasPort(p.getName(),
+                        p.isInput(), p.isOutput(), p.isMultiport())) {
+                    throw new IllegalActionException(this,
+                            "Port: " + p.getName() +
+                            " not found on the remote side" +
+                            " or has wrong type.");
+                }
+                try {
+                    _remoteActor.setPortWidth(p.getName(), 
+                            (short)p.getWidth());
+                } catch (UserException ex) {
+                    throw new IllegalActionException(this,
+                            "Port: " + p.getName() +
+                            " does not support width " + p.getWidth());
+                }
+                    
+            }         
+        } catch (SystemException ex) {
             throw new IllegalActionException(this,
                     "CORBA set up faliar"+ex.getMessage());
         }
