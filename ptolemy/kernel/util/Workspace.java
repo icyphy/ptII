@@ -493,8 +493,6 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
      *  @since Ptolemy II 2.1
-     *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh)
      */
     public boolean handleModelError(
             NamedObj context,
