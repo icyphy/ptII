@@ -43,7 +43,6 @@ if {[string compare test [info procs test]] == 1} then {
 test StockQuote-1.1 {test clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
 
-
     set stock [java::new ptolemy.actor.lib.jspaces.demo.Stock.StockQuote $e0 stock]
 
     set newObject [java::cast ptolemy.actor.lib.jspaces.demo.Stock.StockQuote [$stock clone]]
@@ -51,7 +50,7 @@ test StockQuote-1.1 {test clone} {
     set tickerVal [[$newTicker getToken] toString]
 
     list $tickerVal
-} {YHOO}
+} {{"YHOO"}}
 
 # The following tests are commented out because they depend on the stock
 # price of YHOO and AOL
@@ -59,23 +58,39 @@ test StockQuote-1.1 {test clone} {
 ######################################################################
 #### Test fire
 #
-# test StockQuote-2.1 {get price of YHOO} {
-#     set e0 [sdfModel 5]
-#     set stock [java::new ptolemy.actor.lib.jspaces.demo.Stock.StockQuote $e0 stock]
-#     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-#     $e0 connect \
-#             [java::field [java::cast ptolemy.actor.lib.Source $stock] output] \
-#             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-#     [$e0 getManager] execute
-#     enumToTokenValues [$rec getRecord 0]
-# } {54 54 54 54 54}
-# 
-# test StockQuote-2.2 {get price of Lucent} {
-#     set symbol [getParameter $stock ticker]
-#     $symbol setExpression {"AOL"}
-#     [$e0 getManager] execute
-#     enumToTokenValues [$rec getRecord 0]
-# } {71 71 71 71 71}
+test StockQuote-2.1 {get price of YHOO} {
+    set e0 [sdfModel 5]
+    set stock [java::new ptolemy.actor.lib.jspaces.demo.Stock.StockQuote $e0 stock]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $stock] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    set stockPrices [enumToTokenValues [$rec getRecord 0]]
+    set firstPrice [lindex $stockPrices 0]
+    set lastPrice [lindex $stockPrices 4]
+    # The price should be between 10 and 100 and the first and last price
+    # should not be different by more than 10
+    list [expr {$firstPrice > 10}] \
+	    [expr {$firstPrice < 100}] \
+    	    [expr {$firstPrice - $lastPrice > -10}] \
+    	    [expr {$firstPrice - $lastPrice < 10}]
+} {1 1 1 1}
+
+test StockQuote-2.2 {get price of Lucent} {
+    set symbol [getParameter $stock ticker]
+    $symbol setExpression {"AOL"}
+    [$e0 getManager] execute
+    set stockPrices [enumToTokenValues [$rec getRecord 0]]
+    set firstPrice [lindex $stockPrices 0]
+    set lastPrice [lindex $stockPrices 4]
+    # The price should be between 10 and 100 and the first and last price
+    # should not be different by more than 10
+    list [expr {$firstPrice > 10}] \
+	    [expr {$firstPrice < 100}] \
+    	    [expr {$firstPrice - $lastPrice > -10}] \
+    	    [expr {$firstPrice - $lastPrice < 10}]
+} {1 1 1 1}
 
 ######################################################################
 #### Use bogus ticker
