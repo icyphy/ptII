@@ -169,7 +169,7 @@ public class ActorTransformer extends SceneTransformer {
         //         if(composite.getDirector() instanceof ptolemy.domains.fsm.kernel.HSDirector) {
 //                     _createModalModel((FSMActor)entity, newClassName, options);
 //                 } else {
-                    _createCompositeActor(composite, newClassName, options);
+                    createCompositeActor(composite, newClassName, options);
                     //      }
             } else if(entity instanceof Expression) {
                 _createExpressionActor((Expression)entity, newClassName, options);
@@ -340,11 +340,12 @@ public class ActorTransformer extends SceneTransformer {
         // We need to put something here before folding so that
         // the folder can deal with it.
         SootMethod initMethod = entityInstanceClass.getInitMethod();
-        JimpleBody body = Jimple.v().newBody(initMethod);
-        initMethod.setActiveBody(body);
-        // return void
-        body.getUnits().add(Jimple.v().newReturnVoidStmt());
-        
+        {
+            JimpleBody body = Jimple.v().newBody(initMethod);
+            initMethod.setActiveBody(body);
+            // return void
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
         SootClass theClass = (SootClass)entityInstanceClass;
         SootClass superClass = theClass.getSuperclass();
         while (superClass != PtolemyUtilities.objectClass &&
@@ -355,8 +356,10 @@ public class ActorTransformer extends SceneTransformer {
             superClass = theClass.getSuperclass();
         }
                 
-        // Go through all the initialization code and removing any
-        // parameter initialization code.
+        // Go through all the initialization code and remove any old
+        // parameter initialization code.  This has to happen after
+        // class folding so that all of the parameter initialization
+        // is available, but before we add the correct initialization.
         // FIXME: This needs to look at all code that is reachable
         // from a constructor.
         _removeAttributeInitialization(theClass);
@@ -374,29 +377,44 @@ public class ActorTransformer extends SceneTransformer {
                 model.getFullName() + "." + entity.getName(),
                 classEntity, classEntity, tempCreatedSet);
     
-        // replace the previous dummy body
-        // for the initialization method with a new one.
-        body = Jimple.v().newBody(initMethod);
-        initMethod.setActiveBody(body);
-        body.insertIdentityStmts();
-        Chain units = body.getUnits();
-        Local thisLocal = body.getThisLocal();
-        
-        // Initialize attributes that already exist in the class.
-        _initializeAttributes(body, entity, thisLocal,
-                entity, thisLocal, entityInstanceClass, tempCreatedSet);
-        
-        // Create and initialize ports
-        _initializePorts(body, thisLocal, entity,
-                thisLocal, entity, entityInstanceClass, tempCreatedSet);
-        
-        // return void
-        units.add(Jimple.v().newReturnVoidStmt());
-        
+        {
+            // replace the previous dummy body
+            // for the initialization method with a new one.
+            JimpleBody body = Jimple.v().newBody(initMethod);
+            initMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+            
+            // create attributes for those in the class
+            _createAttributes(body, entity, thisLocal,
+                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+            
+            // Create and initialize ports
+            _initializePorts(body, thisLocal, entity,
+                    thisLocal, entity, entityInstanceClass, tempCreatedSet);
+            
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+        }
+               
         // Remove super calls to the executable interface.
         // FIXME: This would be nice to do by inlining instead of
         // special casing.
         _implementExecutableInterface(entityInstanceClass);
+
+        {
+            // Add code to the beginning of the preinitialize method that
+            // initializes the attributes.
+  
+            SootMethod method = theClass.getMethodByName("preinitialize");
+            JimpleBody body = (JimpleBody)method.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+            _initializeAttributesBefore(body, insertPoint, 
+                    entity, body.getThisLocal(),
+                    entity, body.getThisLocal(), 
+                    entityInstanceClass);
+        }
         
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
@@ -415,7 +433,7 @@ public class ActorTransformer extends SceneTransformer {
 
     // Populate the given class with code to create the contents of
     // the given entity.
-    private static EntitySootClass _createCompositeActor(
+    public static EntitySootClass createCompositeActor(
             CompositeActor entity, String newClassName, Map options) {
         // FIXME: what about subclasses of CompositeActor?
         //  String className = entity.getClass().getName();
@@ -448,6 +466,18 @@ public class ActorTransformer extends SceneTransformer {
         // return void
         units.add(Jimple.v().newReturnVoidStmt());
         
+        // Reinitialize the hierarchy, since we've added classes.
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        
+        // Inline all methods in the class that are called from
+        // within the class.
+        _inlineLocalCalls(entityInstanceClass);
+        
+        // Remove the __CGInit method.  This should have been
+        // inlined above.
+        entityInstanceClass.removeMethod(
+                entityInstanceClass.getInitMethod());
+
         return entityInstanceClass;
     }
 
@@ -479,7 +509,7 @@ public class ActorTransformer extends SceneTransformer {
             
             // Populate...
             // Initialize attributes that already exist in the class.
-            _initializeAttributes(body, entity, thisLocal,
+            _createAttributes(body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, tempCreatedSet);
             
             // Create and initialize ports
@@ -622,6 +652,22 @@ public class ActorTransformer extends SceneTransformer {
             LocalSplitter.v().transform(body, "at.ls");
         }
 
+        {
+            SootMethod preinitializeMethod = new SootMethod("preinitialize",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            entityInstanceClass.addMethod(preinitializeMethod);
+            JimpleBody body = Jimple.v().newBody(preinitializeMethod);
+            preinitializeMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            
+            Stmt insertPoint = Jimple.v().newReturnVoidStmt();
+            body.getUnits().add(insertPoint);
+            _initializeAttributesBefore(body, insertPoint, 
+                    entity, body.getThisLocal(),
+                    entity, body.getThisLocal(), 
+                    entityInstanceClass);
+        }
+
         // Remove super calls to the executable interface.
         // FIXME: This would be nice to do by inlining instead of
         // special casing.
@@ -676,7 +722,7 @@ public class ActorTransformer extends SceneTransformer {
             // Populate...
             // Initialize attributes that already exist in the class.
             //  System.out.println("initializing attributes");
-            _initializeAttributes(body, entity, thisLocal,
+            _createAttributes(body, entity, thisLocal,
                     entity, thisLocal, entityInstanceClass, tempCreatedSet);
             
             // Create and initialize ports
@@ -712,6 +758,22 @@ public class ActorTransformer extends SceneTransformer {
                 entityInstanceClass.addField(field);
                 nameToField.put(name + "_isPresent", field);       
             }
+        }
+
+        {
+            SootMethod preinitializeMethod = new SootMethod("preinitialize",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            entityInstanceClass.addMethod(preinitializeMethod);
+            JimpleBody body = Jimple.v().newBody(preinitializeMethod);
+            preinitializeMethod.setActiveBody(body);
+            body.insertIdentityStmts();
+            
+            Stmt insertPoint = Jimple.v().newReturnVoidStmt();
+            body.getUnits().add(insertPoint);
+            _initializeAttributesBefore(body, insertPoint, 
+                    entity, body.getThisLocal(),
+                    entity, body.getThisLocal(), 
+                    entityInstanceClass);
         }
 
         // Add a field to keep track of the current state.
@@ -1538,11 +1600,275 @@ public class ActorTransformer extends SceneTransformer {
     }
 
     // This is similar to ModelTransformer.createFieldsForAttributes,
+    // except that all attributes are created, even those that
+    // have already been created.
+    public static void _createAttributes(JimpleBody body,
+            NamedObj context, Local contextLocal,
+            NamedObj namedObj, Local namedObjLocal,
+            SootClass theClass, HashSet createdSet) {
+
+        //   System.out.println("initializing attributes in " + namedObj);
+
+        // Check to see if we have anything to do.
+        if(namedObj.attributeList().size() == 0) return;
+
+        
+        Type variableType = RefType.v(PtolemyUtilities.variableClass);
+
+        // A local that we will use to set the value of our
+        // settable attributes.
+        Local attributeLocal = Jimple.v().newLocal("attribute",
+                PtolemyUtilities.attributeType);
+        body.getLocals().add(attributeLocal);
+	Local settableLocal = Jimple.v().newLocal("settable",
+                PtolemyUtilities.settableType);
+	body.getLocals().add(settableLocal);
+	Local variableLocal = Jimple.v().newLocal("variable",
+                variableType);
+	body.getLocals().add(variableLocal);
+ 
+        /*    NamedObj classObject = _findDeferredInstance(namedObj);
+              System.out.println("Class object for " + namedObj.getFullName());
+              System.out.println(classObject.exportMoML());
+        */
+
+        for (Iterator attributes = namedObj.attributeList().iterator();
+             attributes.hasNext();) {
+	    Attribute attribute = (Attribute)attributes.next();
+
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistence?
+            if (attribute instanceof Variable &&
+                    !(attribute instanceof Parameter)) {
+                continue;
+            }
+
+            // Ignore frame sizes and locations.  They aren't really
+            // necessary in the generated code, I don't think.
+            if (attribute instanceof SizeAttribute ||
+                attribute instanceof LocationAttribute ||
+                attribute instanceof LibraryAttribute ||
+                attribute instanceof TableauFactory) {
+                continue;
+            }
+
+            String className = attribute.getClass().getName();
+            Type attributeType = RefType.v(className);
+            String attributeName = attribute.getName(context);
+            String fieldName = ModelTransformer.getFieldNameForAttribute(
+                    attribute, context);
+
+            Local local;
+            if (createdSet.contains(attribute.getFullName())) {
+                //     System.out.println("already has " + attributeName);
+                // If the class for the object already creates the
+                // attribute, then get a reference to the existing attribute.
+                // Note that if the class creates the attribute, but
+                // doesn't also create a field for it, that we will
+                // fail later when we try to replace getAttribute
+                // calls with references to fields.
+                // if (theClass.declaresFieldByName(fieldName)) {
+                    local = attributeLocal;
+                    body.getUnits().add(Jimple.v().newAssignStmt(
+                            attributeLocal,
+                            Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                    PtolemyUtilities.getAttributeMethod,
+                                    StringConstant.v(attributeName))));
+              //   } else {
+//                     System.out.println("Warning: " + theClass + " does " +
+//                             "not declare a field " + fieldName);
+//                     // FIXME: Try to analyze the constructor to set
+//                     // the field.  This is nontrivial.
+//                     // For the moment, we skip this case.
+//                     continue;
+//                 }
+            } else {
+                //System.out.println("creating " + attribute.getFullName());
+                // If the class does not create the attribute,
+                // then create a new attribute with the right name.
+                local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
+                        namedObjLocal, attribute.getName());
+                // System.out.println("created local");
+                Attribute classAttribute =
+                    (Attribute)ModelTransformer._findDeferredInstance(attribute);
+                ModelTransformer.updateCreatedSet(namedObj.getFullName() + "."
+                        + attribute.getName(),
+                        classAttribute, classAttribute, createdSet);
+            }
+            
+            // System.out.println("creating new field");
+            // Create a new field for the attribute, and initialize
+            // it to the the attribute above.
+            SootUtilities.createAndSetFieldFromLocal(body, local,
+                    theClass, attributeType, fieldName);
+            
+            _createAttributes(body, context, contextLocal,
+                    attribute, local, theClass, createdSet);
+        }
+    }
+
+    // This is similar to ModelTransformer.createFieldsForAttributes,
+    // except that all attributes are initialized, even those that
+    // have already been created.
+    public static void _initializeAttributesBefore(
+            JimpleBody body, Stmt insertPoint,
+            NamedObj context, Local contextLocal,
+            NamedObj namedObj, Local namedObjLocal,
+            SootClass theClass) {
+
+        //   System.out.println("initializing attributes in " + namedObj);
+
+        // Check to see if we have anything to do.
+        if(namedObj.attributeList().size() == 0) return;
+
+        
+        Type variableType = RefType.v(PtolemyUtilities.variableClass);
+
+        // A local that we will use to set the value of our
+        // settable attributes.
+        Local attributeLocal = Jimple.v().newLocal("attribute",
+                PtolemyUtilities.attributeType);
+        body.getLocals().add(attributeLocal);
+	Local settableLocal = Jimple.v().newLocal("settable",
+                PtolemyUtilities.settableType);
+	body.getLocals().add(settableLocal);
+	Local variableLocal = Jimple.v().newLocal("variable",
+                variableType);
+	body.getLocals().add(variableLocal);
+ 
+        /*    NamedObj classObject = _findDeferredInstance(namedObj);
+              System.out.println("Class object for " + namedObj.getFullName());
+              System.out.println(classObject.exportMoML());
+        */
+
+        for (Iterator attributes = namedObj.attributeList().iterator();
+             attributes.hasNext();) {
+	    Attribute attribute = (Attribute)attributes.next();
+
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistence?
+            if (attribute instanceof Variable &&
+                    !(attribute instanceof Parameter)) {
+                continue;
+            }
+
+            // Ignore frame sizes and locations.  They aren't really
+            // necessary in the generated code, I don't think.
+            if (attribute instanceof SizeAttribute ||
+                attribute instanceof LocationAttribute ||
+                attribute instanceof LibraryAttribute ||
+                attribute instanceof TableauFactory) {
+                continue;
+            }
+
+            String className = attribute.getClass().getName();
+            Type attributeType = RefType.v(className);
+            String attributeName = attribute.getName(context);
+            String fieldName = ModelTransformer.getFieldNameForAttribute(
+                    attribute, context);
+
+            Local local = attributeLocal;
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
+                            attributeLocal,
+                            Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                    PtolemyUtilities.getAttributeMethod,
+                                    StringConstant.v(attributeName))),
+                    insertPoint);
+            
+            if (attribute instanceof Variable) {
+                // If the attribute is a parameter, then set its
+                // token to the correct value.
+                
+                Token token = null;
+                try {
+                    token = ((Variable)attribute).getToken();
+                } catch (IllegalActionException ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+
+                if (token == null) {
+                    throw new RuntimeException("Calling getToken() on '"
+                            + attribute + "' returned null.  This may occur "
+                            + "if an attribute has no value in the moml file");
+                }
+
+                Local tokenLocal = 
+                    PtolemyUtilities.buildConstantTokenLocal(body,
+                        insertPoint, token, "token");
+                        
+		// cast to Variable.
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                variableLocal,
+                                Jimple.v().newCastExpr(
+                                        local,
+                                        variableType)),
+                        insertPoint);
+                
+		// call setToken.
+                body.getUnits().insertBefore(
+          
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.variableSetTokenMethod,
+                                        tokenLocal)),
+                        insertPoint);
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.validateMethod)),
+                        insertPoint);
+                
+            } else if (attribute instanceof Settable) {
+                // If the attribute is settable, then set its
+                // expression.
+                
+		// cast to Settable.
+		body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                settableLocal,
+                                Jimple.v().newCastExpr(
+                                        local,
+                                        PtolemyUtilities.settableType)),
+                        insertPoint);
+                String expression = ((Settable)attribute).getExpression();
+
+		// call setExpression.
+		body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        settableLocal,
+                                        PtolemyUtilities.setExpressionMethod,
+                                        StringConstant.v(expression))),
+                        insertPoint);
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        settableLocal,
+                                        PtolemyUtilities.validateMethod)),
+                        insertPoint);
+	    }
+
+            // FIXME: configurable??
+            // recurse so that we get all parameters deeply.
+            _initializeAttributesBefore(body, insertPoint,
+                    context, contextLocal,
+                    attribute, local, theClass);
+	}
+    }
+
+    // This is similar to ModelTransformer.createFieldsForAttributes,
     // except that all attributes are initialized, even those that
     // have already been created.
     public static void _initializeAttributes(JimpleBody body,
-            NamedObj context,
-            Local contextLocal, NamedObj namedObj, Local namedObjLocal,
+            NamedObj context, Local contextLocal,
+            NamedObj namedObj, Local namedObjLocal,
             SootClass theClass, HashSet createdSet) {
 
         //   System.out.println("initializing attributes in " + namedObj);

@@ -174,9 +174,16 @@ public class ModelTransformer extends SceneTransformer {
         System.out.println("ModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
+	_entityLocalMap = new HashMap();
+	_portLocalMap = new HashMap();
+
         // Create a class for the model
         String modelClassName = getModelClassName(_model, options);
 
+        _modelClass = ActorTransformer.createCompositeActor(
+                _model, modelClassName, options);
+    }
+        /*
         EntitySootClass modelClass =
             new EntitySootClass(
                     PtolemyUtilities.compositeActorClass, modelClassName,
@@ -221,7 +228,7 @@ public class ModelTransformer extends SceneTransformer {
         // Since we've added classes and methods, update the hierarchy
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
-
+         */
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
