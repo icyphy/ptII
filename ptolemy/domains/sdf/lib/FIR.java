@@ -167,13 +167,13 @@ public class FIR extends SDFTransformer {
      *  @param attribute The attribute that changed.
      */
     public void attributeChanged(Attribute attribute)
-             throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == interpolation) {
             IntToken token = (IntToken)(interpolation.getToken());
             _interp = token.intValue();
             if (_interp <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid interpolation: " + _interp + ". Must be positive.");
+                        "Invalid interpolation: " + _interp + ". Must be positive.");
             }
             output.setTokenProductionRate(_interp);
             Director director = getDirector();
@@ -186,7 +186,7 @@ public class FIR extends SDFTransformer {
             _dec = token.intValue();
             if (_dec <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid decimation: " + _interp + ". Must be positive.");
+                        "Invalid decimation: " + _interp + ". Must be positive.");
             }
             input.setTokenConsumptionRate(_dec);
             Director director = getDirector();
@@ -199,7 +199,7 @@ public class FIR extends SDFTransformer {
             _decPhase = token.intValue();
             if (_decPhase < 0) {
                 throw new IllegalActionException(this,
-                "Invalid decimation: " + _interp + ". Must be nonnegative.");
+                        "Invalid decimation: " + _interp + ". Must be nonnegative.");
             }
             _reinitializeNeeded = true;
         } else if (attribute == taps) {
@@ -294,13 +294,13 @@ public class FIR extends SDFTransformer {
         else return false;
     }
 
-   /** Perform domain-specific initialization by calling the
-    *  initialize(Actor) method of the director. The director may
-    *  reject the actor by throwing an exception if the actor is
-    *  incompatible with the domain.
-    *  Set a flag that reinitializes the data buffer at the first firing.
-    *  @exception IllegalActionException If the superclass throws it.
-    */
+    /** Perform domain-specific initialization by calling the
+     *  initialize(Actor) method of the director. The director may
+     *  reject the actor by throwing an exception if the actor is
+     *  incompatible with the domain.
+     *  Set a flag that reinitializes the data buffer at the first firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         // must be sure to throw away the old data buffer.
