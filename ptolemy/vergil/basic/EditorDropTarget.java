@@ -117,7 +117,7 @@ public class EditorDropTarget extends DropTarget {
      *  a drop onto an instance of NamedObj results in that NamedObj
      *  containing the dropped object.  If the argument is true, then
      *  reenable the feature.  The feature is enabled by default.
-     *  @param enable False to disable the drop into feature.
+     *  @param enabled False to disable the drop into feature.
      */
     public void setDropIntoEnabled(boolean enabled) {
         _dropIntoEnabled = enabled;
