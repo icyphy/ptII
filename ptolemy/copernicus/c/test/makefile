@@ -67,18 +67,19 @@ JSIMPLE_TESTS = \
     Arrays.tcl\
     Cases.tcl \
     CommandLine.tcl \
-    CountDown.tcl \
     Exceptions.tcl\
     FIR2.tcl \
     FIRSingle.tcl \
+    LinkedListTest.tcl \
     InnerField.tcl \
     InnerLocal.tcl \
+    InstanceOfTest.tcl \
+    Interface1.tcl \
     ObjectSingle.tcl \
-    printInt.tcl \
+    PrintStreamTest.tcl \
     RightShift.tcl \
     Simple.tcl \
-    SimpleSingle.tcl \
-    Terp.tcl 
+    SimpleSingle.tcl
 
 # Disabled tests:
 #   FIR.tcl

@@ -57,92 +57,16 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test Exceptions-1.1 {Generate all required files for Exceptions.java} {
 
-    set outputDir testOutput/Exceptions.out
     set className Exceptions
-    set lib $outputDir/j2c_lib
+    set outputDir testOutput/$className
+    set output [generateC $className]
     
-    # Adds the .java suffix after a space.
-    set javaFile [concat $className ".java"]
-    # Remove that space.
-    regsub " " $javaFile "" javaFile
-
-    regsub ".java" $javaFile ".class"  classFile
-    regsub ".java" $javaFile ".c"      cFile
-    regsub ".java" $javaFile ".h"      hFile
-    regsub ".java" $javaFile "_i.h"    iFile
-    regsub ".java" $javaFile ".o"      oFile
-    regsub ".java" $javaFile ".make"   makeFile
-    regsub ".java" $javaFile ".mk"     mkFile
-    regsub ".java" $javaFile ".exe"    exeFile
-    regsub ".java" $javaFile "_main.c" mainCFile
-    regsub ".java" $javaFile "_main.o" mainOFile
-
-    # Remove the .out directory if it exists.
-    if {[file isdirectory $outputDir]} {
-	file delete -force $outputDir
-    }
-    
-    # Create the output directory.
-    file mkdir $outputDir
-
-    # Remove the directory for auto-generated natives.
-    if {[file isdirectory "natives"]} {
-	file delete -force "natives"
-    }
-    # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file
-    set builtinClasspath [java::call System getProperty "java.class.path"]
-    set rtjar [java::call System getProperty "sun.boot.class.path"]
-    set classpath .[java::field java.io.File\
-            pathSeparator]$builtinClasspath[java::field java.io.File\
-            pathSeparator]$rtjar
-
-    # Generate the .class file. This is not needed for built-in classes
-    # like java.lang.Object.
-    exec javac $javaFile
-    
-    set args [java::new {String[]} 4 \
-        [list \
-        $classpath \
-        "-lib" \
-        $lib \
-        $className \
-        ]]
-
-    set errors $className-err.txt
-
-    # Generate the code.
-    # Catch errors on the first pass to prevent memory overruns.
-    if {[catch {exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
-        $classpath -lib $lib $className}]} {
-        
-        exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
-            $classpath -lib $lib $className
-    }
-                
-   
-    exec make depend -s -f $makeFile
-    #This creates the .mk file.
-    # Under Unix, ar might print to stderr, which exec usually interprets
-    # as an error, so we use the -stderrok flag so that exec does not error 
-    exec -stderrok make -s -f $mkFile
-
-    # Move all generated files to the output directory.
-    file rename -force \
-         $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
-            $mkFile $exeFile $classFile $outputDir 
-    
+    # Move all extra files.
+    cd ../..
     foreach i "[glob {*Exception*.[cho]}] [glob {*Exception*.class}]" {
         file rename -force $i $outputDir
     }
 
-    # Run the automatically generated executible.
-    cd $outputDir
-
-    # The nightly build does not have . in the path, so we use ./ here.
-    set exeFile ".[java::call System getProperty file.separator]$exeFile"
-    set output [exec $exeFile]
-    
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output
     regsub -all "

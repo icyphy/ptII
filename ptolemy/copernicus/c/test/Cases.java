@@ -68,6 +68,27 @@ public class Cases {
             default:
             System.out.println("Invalid entry.");
         }
+
+        choice = 1729;
+
+        // Selects an appropriate message.
+        switch(choice) {
+            case 4:
+            System.out.println("Today is Thursday.");
+            break;
+
+            case 5:
+            System.out.println("Today is Friday.");
+            break;
+
+            case 1729:
+            System.out.println("Today is Saturday.");
+            break;
+
+            default:
+            System.out.println("Invalid entry.");
+        }
+
     }
 }
 

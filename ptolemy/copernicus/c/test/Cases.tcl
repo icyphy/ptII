@@ -52,7 +52,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test Cases-1.1 {Generate all required files for Cases.java} {
     set className Cases
     set output [generateC $className]
-    
+     
     # Check if the output is correct.
     # Solaris needs the -classpath .
     set template [exec java -classpath . $className]

@@ -51,15 +51,14 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test CommandLine-1.1 {Generate all required files for CommandLine.java} {
 
-    set className Cases
+    set className CommandLine
     set commandLineArgs "a b c d"
 
-    set output [generateC $className $commandLineArgs]
-    
-    # Check if the output is correct.
     # Solaris needs the -classpath .
+    set output [generateC $className $commandLineArgs]
     set template [exec java -classpath . $className $commandLineArgs]
-    
+        
+    # Check if the output is correct.    
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
     regsub -all "
