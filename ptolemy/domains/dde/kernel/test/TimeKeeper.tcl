@@ -49,6 +49,12 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 ####
+# Global Variables 
+set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+
+######################################################################
+####
 #
 test TimeKeeper-2.1 {hasMinRcvrTime - No simultaneous Events} {
     
@@ -125,7 +131,7 @@ test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
     set tok [java::new ptolemy.data.Token]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr1 put $tok -1.0
+    $rcvr1 put $tok $globalEndTime
 
     set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
     $rcvr2 put $tok 5.0
@@ -142,9 +148,20 @@ test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
     $keeper updateRcvrList $rcvr3
     set time3 [$keeper getNextTime]
 
-    list [$keeper hasMinRcvrTime] $time1 $time2 $time3
+    set val 1
+    if { $time1 != $globalEndTime } {
+	set val 0
+    } 
+    if { $time2 != 5.0 } {
+	set val 0
+    } 
+    if { $time3 != 5.0 } {
+	set val 0
+    } 
 
-} {1 -1.0 5.0 5.0}
+    list [$keeper hasMinRcvrTime] $val
+
+} {1 1}
 
 ######################################################################
 ####
@@ -160,7 +177,7 @@ test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
     set tok [java::new ptolemy.data.Token]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr1 put $tok -1.0
+    $rcvr1 put $tok $globalEndTime
     set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
     $rcvr2 put $tok 5.0
     set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
@@ -187,9 +204,14 @@ test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
     $keeper updateRcvrList $rcvr6
     set time6 [$keeper getNextTime]
 
-    list [$keeper hasMinRcvrTime] $time1 $time2 $time3 $time4 $time5 $time6
+    set val 1
+    if { $time1 != $globalEndTime } {
+	set val 0
+    }
 
-} {1 -1.0 5.0 5.0 5.0 5.0 5.0}
+    list [$keeper hasMinRcvrTime] $val $time2 $time3 $time4 $time5 $time6
+
+} {1 1 5.0 5.0 5.0 5.0 5.0}
 
 ######################################################################
 ####
@@ -361,8 +383,6 @@ test TimeKeeper-7.1 {Check sendOutNullTokens} {
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
-
-    #$topLevel setDirector $dir
 
     set outPort [java::new ptolemy.actor.TypedIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.actor.TypedIOPort $act2 "input" true false]
