@@ -49,7 +49,8 @@ import ptolemy.util.MessageHandler;
     @Pt.ProposedRating Red (hyzheng)
     @Pt.AcceptedRating Red (hyzheng)
 */
-public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
+public class FunctionDependencyOfModalModel 
+    extends FunctionDependencyOfCompositeActor {
 
     /** Construct a FunctionDependency in the given container.
      *  @param container The container has this FunctionDependency object.
@@ -59,7 +60,7 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                      protected methods                   ////
 
     /** Get a list of refinements of the current state for function
      *  dependency calculation.
@@ -69,7 +70,7 @@ public class FunctionDependencyOfModalModel extends FunctionDependencyOfComposit
         LinkedList entities = new LinkedList();
         try {
             Actor[] actors =
-                ((ModalModel)_container).getController().
+                ((ModalModel)getContainer()).getController().
                 currentState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {

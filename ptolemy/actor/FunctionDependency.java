@@ -35,27 +35,40 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency
-/** A FunctionDependency is an abstract class that describes the function
-    dependence relation between the inputs and outputs of an actor.
+/** A FunctionDependency is an abstract class that describes the internal 
+    function dependency relation between the external visible input and 
+    output ports of an actor. 
+    <p>
+    An output port is dependent on an input of the same actor if the token 
+    inside the receiver of the output port has the same tag with that of 
+    the token inside the input port receiver, or in other words, these tokens
+    are generated in the same firing. This class does not talk about the 
+    possible dependency relation between the ports from outside of the actor. 
     <p> 
-    It contains a port-graph including the ports of both the container
-    and the contained actors (if any). The detailed implementation of how to
-    construct the graph is undefined but left to subclasses.
+    This class uses two graphs to describe the dependency relation, where 
+    the nodes corespond to the ports 
+    of the actor and the edges indicate the dependency relationship between 
+    ports. The edges have directions, indicating the destination port depends
+    on the source port but not the other way. 
+    <p> 
+    The first graph is an <i>abstract</i> graph, which only includes the
+    external visible ports of the actor as nodes. The other graph is an 
+    <i>detailed</i> graph, which not only includes the external visible ports 
+    but also the internal ports of the contained actors. It the actor is an
+    atomic actor, there is no difference between these two graphs. For an 
+    composite actor, the abstract graph is part of the detailed graph. 
     <p>
-    A pair of ports, input and output, are declared dependent if the current
-    value of output depends on the current value of the input. Otherwise, it is
-    independent. So, for TimedDelay, the input and output are independent. While
-    for AddSubtract, the output port is dependent on both the plus and minus
-    inputs. Another instance of independent input and output pair may happen
-    in a composite actor, where the input and output are not related.
-    <p>
-    To check if the port graph has cycles, use the getCycleNodes() method.
-    The method returns an array of IOPorts in cycles. If there is no cycle, the
-    returned array is empty.
+    The implementation of how to construct a detailed or an abstract graph is 
+    left undefined and the subclasses need to implement the protected 
+    method _constructDetailedPortGraph. See the 
+    {@link FunctionDependencyOfAtomicActor}, 
+    {@link FunctionDependencyOfCompositeActor} for example implementations. 
 
     @see FunctionDependencyOfAtomicActor
     @see FunctionDependencyOfCompositeActor
@@ -70,198 +83,207 @@ import ptolemy.kernel.util.NamedObj;
 public abstract class FunctionDependency {
 
     /** Construct a FunctionDependency object for the given container.
-     *  @param container The container has this FunctionDependency object.
+     *  @param container The container.
      */
     public FunctionDependency(Actor container) {
         // Only actors have function dependencies.
-        // Other entities, such as the State, do not.
+        // Other entities, such as a State, do not.
         _container = container;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an abstract port graph reflecting the function dependency
+    /** Return an abstract port graph representing the function dependency
      *  information. The port graph includes only the container ports but not
      *  those of contained actors. This information is used to construct the 
      *  function dependency for the upper level container of this container. 
      *  <p>
      *  The validity of the FunctionDependency object is checked at the
      *  beginning of this method.
-     *  @return an abstract port graph reflecting the function dependency
+     *  @return An abstract port graph reflecting the function dependency
      *  information that excludes the internal ports.
-     *  @see #getDetailedPortsGraph
+     *  @see #getDetailedPortGraph
      */
-    public DirectedGraph getAbstractPortsGraph() {
-        validate();
-        // construct a new directed graph
-        _abstractPortsGraph = new DirectedGraph();
-
-        // add inputs and outputs of the container to the graph.
-        Iterator inputs = _container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            _abstractPortsGraph.addNodeWeight(inputs.next());
-        }
-        Iterator outputs = _container.outputPortList().listIterator();
-        while (outputs.hasNext()) {
-            _abstractPortsGraph.addNodeWeight(outputs.next());
-        }
-
-        // connect the input to output if there is a dependency between them
-        inputs = _container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            IOPort inputPort = (IOPort) inputs.next();
-            Collection reachableOutputs =
-                _directedGraph.reachableNodes(_directedGraph.node(inputPort));
-            outputs = _container.outputPortList().listIterator();
-            while (outputs.hasNext()) {
-                IOPort outputPort = (IOPort) outputs.next();
-                if (reachableOutputs.
-                        contains(_directedGraph.node(outputPort))) {
-                    _abstractPortsGraph.addEdge(inputPort, outputPort);
-                    // To assign weight to an edge, use the following 
-                    // statements. 
-                    // _abstractPortsGraph.addEdge(inputPort, outputPort,
-                    // new Integer(1));
-                }
-            }
-        }
-
-        return _abstractPortsGraph;
+    public DirectedGraph getAbstractPortGraph() {
+        _validate();
+        return _abstractPortGraph;
+    }
+    
+    /** Get the container.
+     *  @return The container.
+     */
+    public Actor getContainer() {
+        return _container;
     }
 
-    /** If there is a cycle loop in the port graph of this FunctionDependency
-     *  object, return the nodes (ports) in the cycle loop. If there are
-     *  multiple cycles, all the nodes will be returned. If there is no
-     *  cycle, an empty array is returned. The type of the returned nodes is
-     *  IOPort.
+    /** Return a detailed port graph representing the function dependency
+     *  information. The port graph includes both the container ports and
+     *  those of contained actors (if any). This information is used
+     *  by a director to construct a schedule.
      *  <p>
      *  The validity of the FunctionDependency object is checked at the
      *  beginning of this method.
-     *  @return An array contains the IOPorts in the cycles.
-     *  @see #validate()
+     *  @return A detailed port graph reflecting the input output dependency
+     *  information that includes the internal ports.
+     *  @see #getAbstractPortGraph
      */
-    public Object[] getCycleNodes() {
-        validate();
-        return _directedGraph.cycleNodes();
+    public DirectedGraph getDetailedPortGraph() {
+        _validate();
+        return _detailedPortGraph;
+    }
+
+    /** Get the output ports that depend on the given input port.
+     *  @param inputPort The given input port.
+     *  @return A set of output ports that depend on the input.
+     */
+    //  FIXME: This will be removed when the DEDirector redesign finishes.
+    public Set getDependentOutputPorts(IOPort inputPort) {
+        _validate();
+        Collection reachableOutputs =
+            _abstractPortGraph.reachableNodes(
+            _abstractPortGraph.node(inputPort));
+        Set dependentOutputPorts = new HashSet();
+        Iterator outputs = reachableOutputs.iterator();
+        while (outputs.hasNext()) {
+            Node node = (Node)outputs.next();
+            dependentOutputPorts.add(node.getWeight());
+        }
+        return dependentOutputPorts;
     }
 
     /** Get the input ports on which the given output port is dependent.
      *  @param outputPort The given output port.
-     *  @return a set of input ports.
+     *  @return A set of input ports.
      */
-    public Set getDependentInputPorts(IOPort outputPort) {
-        validate();
-        Set dependentInputs = new HashSet();
-
-        // force to construct an abstractPortsGraph
-        if (_abstractPortsGraph == null) {
-            getAbstractPortsGraph();
+    public Set getInputPortsDependentOn(IOPort outputPort) {
+        _validate();
+        Collection backwardReachableInputs =
+            _abstractPortGraph.backwardReachableNodes(
+            _abstractPortGraph.node(outputPort));
+        Set dependentInputPorts = new HashSet();
+        Iterator inputs = backwardReachableInputs.iterator();
+        while (inputs.hasNext()) {
+            Node node = (Node)inputs.next();
+            dependentInputPorts.add(node.getWeight());
         }
-
-        Object[] backReachableInputs =
-            _abstractPortsGraph.backwardReachableNodes(outputPort);
-        int arrayLength = backReachableInputs.length;
-        for (int i = 0; i < arrayLength; i++) {
-            dependentInputs.add(backReachableInputs[i]);
-        }
-        
-        return dependentInputs;
+        return dependentInputPorts;
     }
 
-    /** Return a detailed port graph reflecting the function dependency
-     *  information. The port graph includes both the container ports and
-     *  those of contained actors (if any). This information is used
-     *  by the local director to construct schedule.
-     *  <p>
-     *  The validity of the FunctionDependency object is checked at the
-     *  beginning of this method.
-     *  @return a detailed port graph reflecting the input output dependency
-     *  information that includes the internal ports.
-     *  @see #getAbstractPortsGraph
-     */
-    public DirectedGraph getDetailedPortsGraph() {
-        validate();
-        return _directedGraph;
-    }
-
-    /** Get the independent outputs of the given input port.
-     *  @param inputPort The given input port.
-     *  @return a set of output ports that are independent of the input.
-     */
-    //  FIXME: This will be removed when the DEDirector redesign finishes.
-    public Set getIndependentOutputPorts(IOPort inputPort) {
-        validate();
-        Set independentOutputPorts = new HashSet();
-        Collection reachableOutputs =
-            _directedGraph.reachableNodes(_directedGraph.node(inputPort));
-        Iterator outputs = _container.outputPortList().listIterator();
-        while (outputs.hasNext()) {
-            IOPort outputPort = (IOPort) outputs.next();
-            if (!reachableOutputs.contains(_directedGraph.node(outputPort))) {
-                independentOutputPorts.add(outputPort);
-            }
-        }
-        return independentOutputPorts;
-    }
-
-    /** Make the FunctionDependency object invalid. Note that the
-     *  FunctionDependency
-     *  object is used to help a director to construct a valid schedule.
-     *  When a model changes, e.g. the topology change, the director has
-     *  to reconstruct the FunctionDependency object and schedule. So
-     *  this method is called to force a reconstruction.
-     *  @see ptolemy.domains.de.kernel.DEDirector
-     */
-    public void invalidate() {
-        _directedGraphVersion = -1;
-    }
-
-    /** Check the validity of the FunctionDependency object. 
-     *  If it is invalid, reconstruct it. Otherwise, do nothing.
-     */
-    public void validate() {
-        long workspaceVersion =
-            ((NamedObj)_container).workspace().getVersion();
-        if (_directedGraphVersion != workspaceVersion) {
-            // FIXME: get read access of the workspace?
-            _constructDirectedGraph();
-            _directedGraphVersion = workspaceVersion;
-        }
-        // FIXME: the current design of the version control is
-        // to synchronize with the workspace. It is based on the
-        // assumption that only the topology change increases the 
-        // workspace version. However, the assumption may not be
-        // always true. Consequently, this method may be called 
-        // but unnecessarily
-    }
+//    /** Make the FunctionDependency object invalid. Note that the
+//     *  FunctionDependency
+//     *  object is used to help a director to construct a valid schedule.
+//     *  When a model changes, e.g. the topology change, the director has
+//     *  to reconstruct the FunctionDependency object and schedule. So
+//     *  this method is called to force a reconstruction.
+//     *  @see ptolemy.domains.de.kernel.DEDirector
+//     */
+//    public void invalidate() {
+//        // FIXME: question about whether this method is necessary.
+//        // If there exist some cases that some changes make the schedule
+//        // and the funciton dependency invalid but not increase the
+//        // workspace version, this method is necessary. It has to be
+//        // public. 
+//        // FIXME: how about the invalidateSchedule method in DEDirector?
+//        _functionDependencyVersion = -1;
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
+
+    /** Construct an abstract port graph from a detailed port graph by 
+        excluding the internal ports. This method is abstract and the 
+        subclasses should give the detalied implementation.
+     */
+    protected abstract void _constructAbstractPortGraph();
 
     /** Construct a directed graph with the nodes representing input and
      *  output ports, and directed edges representing dependencies.
      *  This method is left undefined and the subclasses provide
      *  the detailed implementation.
      */
-    protected abstract void _constructDirectedGraph();
+    protected abstract void _constructDetailedPortGraph();
 
+    /** Check the validity of the FunctionDependency object. 
+     *  If it is invalid, reconstruct it. Otherwise, do nothing.
+     */
+    protected void _validate() {
+        Workspace workspace = ((NamedObj)_container).workspace();
+        long workspaceVersion = workspace.getVersion();
+        if (_functionDependencyVersion != workspaceVersion) {
+            try {
+                workspace.getReadAccess();
+                _constructFunctionDependency();
+                _functionDependencyVersion = workspaceVersion;
+            } finally {
+                workspace.doneReading();
+            }
+        }
+        // FIXME: the current design of the version control is
+        // to synchronize with the workspace. It is based on the
+        // assumption that only the topology change increases the 
+        // workspace version. However, the assumption may not be
+        // always true. Consequently, this method may be called 
+        // but unnecessarily.
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                      private methods                      ////
+    
+    // Construct both an abstract and detailed port graph.
+    private void _constructFunctionDependency() {
+        _initializeDirectedGraphs();
+        // firstly construct the detailed port graph,
+        // then the abstract graph.
+        _constructDetailedPortGraph();
+        _constructAbstractPortGraph();
+    }
+    
+    /** Initialize the directed graphs by adding the ports of the 
+     *  container.
+     */
+    private void _initializeDirectedGraphs() {
+        // construct new directed graphs
+        _detailedPortGraph = new DirectedGraph();
+        _abstractPortGraph = new DirectedGraph();
 
-    /** The container of this IODependency object. */
-    protected Actor _container;
+        // include all the ports of the container
+        // as nodes in the graphs
+        Iterator inputs = _container.inputPortList().listIterator();
+        while (inputs.hasNext()) {
+            IOPort input = (IOPort)inputs.next();
+            _detailedPortGraph.addNodeWeight(input);
+            _abstractPortGraph.addNodeWeight(input);
+        }
+        Iterator outputs = _container.outputPortList().listIterator();
+        while (outputs.hasNext()) {
+            IOPort output = (IOPort)outputs.next();
+            _detailedPortGraph.addNodeWeight(output);
+            _abstractPortGraph.addNodeWeight(output);
+        }
+    }
 
-    /** The directed graph of the input and output ports. */
-    protected DirectedGraph _directedGraph;
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected variables                    ////
 
     /** The abstract directed graph of the input and output ports. */
-    protected DirectedGraph _abstractPortsGraph;
+    protected DirectedGraph _abstractPortGraph;
+
+    /** The detailed directed graph of the input and output ports. */
+    protected DirectedGraph _detailedPortGraph;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
+//    /** The abstract directed graph of the input and output ports. */
+//    private DirectedGraph _abstractPortGraph;
+
+    /** The container of this FunctionDependency object. */
+    private Actor _container;
+
+//    /** The detailed directed graph of the input and output ports. */
+//    private DirectedGraph _detailedPortGraph;
+
     // The version of the FunctionDependency.
-    private long _directedGraphVersion = -1;
+    private long _functionDependencyVersion = -1;
 }

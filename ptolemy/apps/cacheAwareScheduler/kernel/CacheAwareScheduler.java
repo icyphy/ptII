@@ -43,6 +43,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FunctionDependency;
+import ptolemy.actor.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -966,14 +967,16 @@ public class CacheAwareScheduler extends SDFScheduler {
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the FunctionDependency also needs recalculation.
-        functionDependency.invalidate();
+        // functionDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = functionDependency.getCycleNodes();
+        Object[] cycleNodes = 
+            ((FunctionDependencyOfCompositeActor)functionDependency)
+                .getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -1013,16 +1016,17 @@ public class CacheAwareScheduler extends SDFScheduler {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
-                Set notDirectlyDependentPorts = 
-                    functionDependency.getIndependentOutputPorts(inputPort);
+                Set directlyDependentOutputPorts = 
+                    functionDependency.getDependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    if (notDirectlyDependentPorts != null && 
-                        notDirectlyDependentPorts.contains(outputPort)) {
+                    if (directlyDependentOutputPorts != null && 
+                        !directlyDependentOutputPorts.contains(
+                            outputPort)) {
                         // Skip the port without direct dependence.
                         continue;
                     }

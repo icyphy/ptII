@@ -39,8 +39,8 @@ import ptolemy.graph.DirectedGraph;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
 /** An instance of FunctionDependencyOfFSMActor describes the function
-    dependence relation of an FSM actor. It contains a port graph
-    including the container ports only.
+    dependence relation of an FSM actor. Both the abstract and detailed 
+    port graph include the container ports only, and they are the same.
     <p>
     For an FSM actor, all the input ports and output ports are dependent.
 
@@ -61,65 +61,37 @@ public class FunctionDependencyOfFSMActor extends FunctionDependency {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    /** Return an abstract port graph reflecting the function dependency
-     *  information. The port graph includes only the container ports. 
-     *  This information is used to contruct the function dependency of 
-     *  the upper level container. 
-     *  <p>For FSM actors, there is no difference
-     *  between this method and the getDetailedPortsGraph() method.
-     *  <p>
-     *  The validity of the FunctionDependency object is checked at the
-     *  beginning of this method.
-     *  @return an abstract port graph reflecting the function dependency
-     *  information that excludes the internal ports.
-     *  @see #getDetailedPortsGraph
+    ////                       protected methods                   ////
+
+    /** Construct an abstract port graph from a detailed port graph by 
+        excluding the internal ports. For FSM actor, the abstract
+        graph is the same with the detailed graph.
      */
-    public DirectedGraph getAbstractPortsGraph() {
-        validate();
-        // If the container is an FSM actor,
-        // there is no difference between the getAbstractPortsGraph
-        // and getDetailedPortsGraph methods.
-        _abstractPortsGraph = _directedGraph;
-        return _abstractPortsGraph; 
+    protected void _constructAbstractPortGraph() {
+        //DirectedGraph abstractPortGraph = getAbstractPortGraph();
+        //abstractPortGraph = getDetailedPortGraph();
+        _abstractPortGraph = _detailedPortGraph;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                    ////
-
+    
     /** Construct a directed graph with the nodes representing input and
      *  output ports, and directed edges representing dependencies.
      */
-    protected void _constructDirectedGraph() {
-
-        // FIXME: the following code can be shared with atomic and 
-        // composite function dependencies.
-       
-        // get a new directed graph
-        _directedGraph = new DirectedGraph();
-
-        // First, include all the ports as nodes in the graph.
-
-        // get all the inputs and outputs of the container
-        Iterator inputs = _container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            _directedGraph.addNodeWeight(inputs.next());
-        }
-        Iterator outputs = _container.outputPortList().listIterator();
-        while (outputs.hasNext()) {
-            _directedGraph.addNodeWeight(outputs.next());
-        }
+    protected void _constructDetailedPortGraph() {
+        // local variables setup
+        FSMActor container = (FSMActor)getContainer();
+        //DirectedGraph detailedPortGraph = getDetailedPortGraph();
+        DirectedGraph detailedPortGraph = _detailedPortGraph;
 
         // Construct a fully connected ports graph
         // that the inputs and outputs are all directly dependent.
 
-        inputs = _container.inputPortList().listIterator();
+        Iterator inputs = container.inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
-            outputs = _container.outputPortList().listIterator();
+            Iterator outputs = container.outputPortList().listIterator();
             while (outputs.hasNext()) {
                 // connected the inputs and outputs
-                _directedGraph.addEdge(inputPort, outputs.next());
+                detailedPortGraph.addEdge(inputPort, outputs.next());
             }
         }
     }

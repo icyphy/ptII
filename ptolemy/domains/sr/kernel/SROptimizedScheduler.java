@@ -32,6 +32,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FunctionDependency;
+import ptolemy.actor.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -143,7 +144,9 @@ public class SROptimizedScheduler extends Scheduler {
         FunctionDependency functionDependency =
             compositeActor.getFunctionDependencies();
 
-        Object[] cycleNodes = functionDependency.getCycleNodes();
+        Object[] cycleNodes = 
+            ((FunctionDependencyOfCompositeActor)functionDependency)
+            .getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -161,7 +164,7 @@ public class SROptimizedScheduler extends Scheduler {
         }
 
         DirectedAcyclicGraph dependencyGraph =
-            functionDependency.getDetailedPortsGraph().toDirectedAcyclicGraph();
+            functionDependency.getDetailedPortGraph().toDirectedAcyclicGraph();
 
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());
