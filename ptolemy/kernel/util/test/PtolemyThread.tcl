@@ -48,15 +48,34 @@ if {[info procs enumToObjects] == "" } then {
 #
 test PtolemyThread-1.1 {Test the constructor} {
     set pthread1 [java::new ptolemy.kernel.util.PtolemyThread]
-    set null [java::null]
-    set pthread2 [java::new ptolemy.kernel.util.PtolemyThread $null $null nameString]
-    
-    set readDepth1 [$pthread1 getReadDepth]
-    set readDepth2 [$pthread2 getReadDepth]
 
-    list $readDepth1 $readDepth2
+    set thread [java::new Thread]
+    set pthread2 [java::new ptolemy.kernel.util.PtolemyThread \
+	    $thread]
+    set pthread3 [java::new ptolemy.kernel.util.PtolemyThread \
+	    $thread "pthread2"] 
+
+    set pthread4 [java::new ptolemy.kernel.util.PtolemyThread \
+	    "pthread4"] 
+
+    set threadGroup [java::new ThreadGroup "ptThreadGroup"]
+    set pthread5 [java::new ptolemy.kernel.util.PtolemyThread \
+	    $threadGroup $thread]
+    set pthread6 [java::new ptolemy.kernel.util.PtolemyThread \
+	    $threadGroup $thread "pthread6"]
+    set pthread7 [java::new ptolemy.kernel.util.PtolemyThread \
+	    $threadGroup "pthread7"]
+
+    set threads [list $pthread1 $pthread2 $pthread3 \
+	    $pthread4 $pthread5 $pthread6 $pthread7]
     
-} {0 0}
+    set results {}
+    foreach thread $threads {
+	lappend results [list [$thread getReadDepth] \
+		[$thread getName]]
+    }
+    list $results [$threadGroup activeCount]
+} {{{0 Thread-0} {0 Thread-2} {0 pthread2} {0 pthread4} {0 Thread-3} {0 pthread6} {0 pthread7}} 3}
 
 
 
