@@ -64,6 +64,7 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	IntParam.java \
 	IntToken.java \
+	NullToken.java \
 	ObjectToken.java \
 	ObservableParameter.java \
 	Param.java \
