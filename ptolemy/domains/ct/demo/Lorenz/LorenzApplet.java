@@ -36,7 +36,8 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.actor.*;
-import ptolemy.actor.util.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
@@ -77,14 +78,14 @@ public class LorenzApplet extends CTApplet {
         _query = new Query();
         _query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
-        _query.line("stopT", "Stop Time", "50.0", 10);
-        _query.line("sigma", "Sigma", "10.0", 10);
-        _query.line("lamda", "Lamda", "25.0", 10);
-        _query.line("b", "b", "2.0", 10);
+        _query.addLine("stopT", "Stop Time", "50.0");
+        _query.addLine("sigma", "Sigma", "10.0");
+        _query.addLine("lamda", "Lamda", "25.0");
+        _query.addLine("b", "b", "2.0");
 
         Panel runcontrols = new Panel();
         controlpanel.add("East",runcontrols);
-        runcontrols.add(_createRunControls(1));
+        runcontrols.add(_createRunControls(2));
 
         //System.out.println("Construct the model");
         // Creating the model.

@@ -38,7 +38,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.actor.*;
-import ptolemy.actor.util.*;
+import ptolemy.gui.Query;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
@@ -82,9 +82,9 @@ public class SigmaDeltaApplet extends CTApplet {
         _query = new Query();
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
-        _query.line("stopT", "Stop Time", "15.0", 10);
-        _query.line("sample", "Sample Rate", "0.02", 10);
-        _query.line("feedback", "Feedback Gain", "-20.0", 10);
+        _query.addLine("stopT", "Stop Time", "15.0");
+        _query.addLine("sample", "Sample Rate", "0.02");
+        _query.addLine("feedback", "Feedback Gain", "-20.0");
 
         Panel runcontrols = new Panel();
         controlpanel.add("East",runcontrols);

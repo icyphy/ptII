@@ -54,8 +54,10 @@ JSIMPLE_TESTS = \
 	Average.tcl \
 	Bernoulli.tcl \
 	Clock.tcl \
+	Commutator.tcl \
 	Const.tcl \
 	Cosine.tcl \
+	Distributor.tcl \
 	Expression.tcl \
 	Gaussian.tcl \
 	Maximum.tcl \

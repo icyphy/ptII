@@ -33,6 +33,7 @@ package ptolemy.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.lang.IllegalArgumentException;
 import javax.swing.*;
 
 import collections.LinkedList;
@@ -57,12 +58,41 @@ public class Query extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create an on-off check box.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defvalue Default value (true for on).
+     */
+    public void addCheckBox(String name, String label, boolean defvalue) {
+        // FIXME: Background color needs to be set.
+        JLabel lbl = new JLabel(label + ": ");
+        JRadioButton checkbox = new JRadioButton(); 
+        checkbox.addItemListener(new CheckBoxListener(name));
+        checkbox.setSelected(defvalue);
+        _addPair(lbl, checkbox);
+        _entries.put(name, checkbox);
+    }
+
+    /** Create a single-line entry box with the specified name, label, and
+     *  default value.  To control the width of the box, call setTextWidth()
+     *  first.  To ensure uniformity, a colon and a space are appended
+     *  to the end of the label.
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
+     *  @param label The label to attach to the entry.
+     *  @param defvalue Default value to appear in the entry box.
+     */
+    public void addLine(String name, String label, String defvalue) {
+        JLabel lbl = new JLabel(label + ": ");
+        JTextField entryBox = new JTextField(defvalue, _width);
+        entryBox.addActionListener(new LineListener(name));
+        _addPair(lbl, entryBox);
+        _entries.put(name, entryBox);
+    }
+
     /** Add a listener.  The changed() method of the listener will be
      *  called when any of the entries is changed.  Note that "line"
-     *  entries only trigger this call when Return is pressed.  Moreover,
-     *  you may wish to interpret such an event to mean more than just
-     *  that this entry has changed.  The user may expect, for example,
-     *  for Return to trigger the execution of a model.
+     *  entries only trigger this call when Return is pressed.
      */
     public void addQueryListener(QueryListener listener) {
         if(_listeners == null) _listeners = new LinkedList();
@@ -70,32 +100,35 @@ public class Query extends Panel {
     }
 
     /** Get the current value in the entry with the given name
-     *  and return as a boolean.  If the value of the entry is not
-     *  a boolean, then throw an exception.  A boolean entry is created
-     *  with the onoff() method.
-     *  @return The value currently in the entry as a boolean.
+     *  and return as a boolean.  If the entry is not a checkbox,
+     *  then throw an exception.
+     *  @return The state of the checkbox.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
-     *  @exception NumberFormatException If the value of the entry cannot
-     *   be converted to a boolean.  This is a runtime exception, so it
+     *  @exception IllegalArgumentException If the entry is not a
+     *   radio button.  This is a runtime exception, so it
      *   need not be declared explicitly.
-     *
-     *
-     *  FIXME: Changed Checkbox to JRadioButton, and getState() to isSelected()
      */
     public boolean booleanValue(String name)
-            throws NoSuchElementException, NumberFormatException {
-        JRadioButton result = (JRadioButton)(_entries.get(name));
+            throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
             name + " \" in the query box.");
         }
-        return (new Boolean(result.isSelected())).booleanValue();
+        if (result instanceof JRadioButton) {
+            return ((JRadioButton)result).isSelected();
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a radio button, and hence does not have "
+            + "a boolean value.");
+        }
     }
 
     /** Get the current value in the entry with the given name
-     *  and return as a double value.  If the value of the entry is not
+     *  and return as a double value.  If the entry is not a line,
+     *  then throw an exception.  If the value of the entry is not
      *  a double, then throw an exception.
      *  @return The value currently in the entry as a double.
      *  @exception NoSuchElementException If there is no item with the
@@ -104,23 +137,30 @@ public class Query extends Panel {
      *  @exception NumberFormatException If the value of the entry cannot
      *   be converted to a double.  This is a runtime exception, so it
      *   need not be declared explicitly.
-     *
-     *
-     *  FIXME: Changed TextField to JTextField
+     *  @exception IllegalArgumentException If the entry is not a
+     *   line.  This is a runtime exception, so it
+     *   need not be declared explicitly.
      */
     public double doubleValue(String name)
-            throws NoSuchElementException, NumberFormatException {
-        JTextField result = (JTextField)(_entries.get(name));
+            throws IllegalArgumentException, NoSuchElementException,
+            NumberFormatException {
+        Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
+            name + " \" in the query box.");
         }
-        return (new Double(result.getText())).doubleValue();
+        if (result instanceof JTextField) {
+            return (new Double(((JTextField)result).getText())).doubleValue();
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a text line, and hence cannot be converted to "
+            + "a double value.");
+        }
     }
 
     /** Get the current value in the entry with the given name
-     *  and return as an integer.  If the value of the entry is not
-     *  an integer, then throw an exception.
+     *  and return as an integer.  If the entry is not a line or
+     *  a slider, then throw an exception.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -128,86 +168,36 @@ public class Query extends Panel {
      *  @exception NumberFormatException If the value of the entry cannot
      *   be converted to an integer.  This is a runtime exception, so it
      *   need not be declared explicitly.
-     *     
-     *
-     *  Changed TextField to JTextField
+     *  @exception IllegalArgumentException If the entry is not a
+     *   line or a slider.  This is a runtime exception, so it
+     *   need not be declared explicitly.
      */
     public int intValue(String name)
-            throws NoSuchElementException, NumberFormatException {
-        JTextField result = (JTextField)(_entries.get(name));
+            throws IllegalArgumentException, NoSuchElementException,
+            NumberFormatException {
+        Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
-                    name + " \" in the query box.");
+            name + " \" in the query box.");
         }
-        return (new Integer(result.getText())).intValue();
+        if (result instanceof JTextField) {
+            return (new Integer(((JTextField)result).getText())).intValue();
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a text line or slider, and hence "
+            + "cannot be converted to "
+            + "an integer value.");
+        }
     }
 
-    /** Create a single-line entry box with the specified name, label, and
-     *  default value.  The width will be the default width.
-     *  @param name The name used to identify the entry (when accessing
-     *   the entry).
-     *  @param label The label to attach to the entry.
-     *  @param defvalue Default value to appear in the entry box.
-     */
-    /*    public void line(String name, String label, String defvalue) {
-          line(name, label, defvalue, DEFAULT_ENTRY_WIDTH);
-          } */
-
-    /** Create a single-line entry box with the specified name, label,
-     *  default value, and width.
-     *  @param name The name used to identify the entry (when accessing
-     *   the entry).
-     *  @param label The label to attach to the entry.
-     *  @param defvalue Default value to appear in the entry box.
+    /** Specify the preferred width to be used for entry boxes created
+     *  in using addLine().  If this is called multiple times, then
+     *  only the largest value specified actually affects the layout.
      *
-     *
-     *  Renamed line to addLine, and merged with line method from above.
-     *  Removed width parameter, and instead used new, private variable, 
-     *  set by SetTextWidth.
-     *  Changed Label to JLabel and TextField to JTextField
-*/
-    public void addLine(String name, String label, String defvalue) {
-        JLabel lbl = new JLabel(label);
-        JTextField entryBox = new JTextField(defvalue, _width);
-        entryBox.addActionListener(new LineListener(name));
-        _addPair(lbl, entryBox);
-        _entries.put(name, entryBox);
-    }
-
-    /** Sets width value.
-     *  @param characters The new width value.
-     *
-     *
-     *  New method
+     *  @param characters The preferred width.
      */
     public void setTextWidth(int characters) {
         _width = characters;
-    }
-
-    /** Create an option menu.
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param choices The choices for the user to choose from.
-     *  @param default
-     */
-
-    /** Create an on-off check box.
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param defvalue Default value (true for on).
-     *
-     *     
-     *  Renamed onoff to addCheckBox.
-     *  Changed Label to JLabel, Checkbox to JRadioButton, and setState 
-     *  to setSelected
-*/
-    public void addCheckBox(String name, String label, boolean defvalue) {
-        JLabel lbl = new JLabel(label);
-        JRadioButton checkbox = new JRadioButton(); 
-        checkbox.addItemListener(new OnOffListener(name));
-        checkbox.setSelected(defvalue);
-        _addPair(lbl, checkbox);
-        _entries.put(name, checkbox);
     }
 
     /** Get the current value in the entry with the given name,
@@ -216,17 +206,31 @@ public class Query extends Panel {
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
-     *     
-     *
-     *  Changed TextField to JTextField
-*/
+     *  @exception IllegalArgumentException If the entry type does not
+     *   have a string representation (this should not be thrown).
+     */
     public String stringValue(String name) throws NoSuchElementException {
-        JTextField result = (JTextField)(_entries.get(name));
+        Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
-        return result.getText();
+        // Surely there is a better way to do this...
+        // This has to be updated each time a new entry type is added.
+        if (result instanceof JTextField) {
+            return ((JTextField)result).getText();
+        } else if (result instanceof JRadioButton) {
+            JRadioButton radioButton = (JRadioButton)result;
+            if (radioButton.isSelected()) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else {
+            throw new IllegalArgumentException("Query class cannot generate"
+            + " a string representation for entries of type "
+            + result.getClass());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -240,11 +244,9 @@ public class Query extends Panel {
     /** Add a label and a widget to the panel.
      *  @param label The label.
      *  @param widget The interactive entry to the right of the label.
-     *     
-     *
-     *  Changed Label to JLabel
-*/
+     */
     protected void _addPair(JLabel label, Component widget) {
+        // FIXME: Surely there is a better layout manager in swing...
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
@@ -283,9 +285,10 @@ public class Query extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The hashtable of items in the query
     private Hashtable _entries = new Hashtable();
 
-    // new variable
+    // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
 
     ///////////////////////////////////////////////////////////////////
@@ -304,10 +307,10 @@ public class Query extends Panel {
         private String _name;
     }
 
-    /** Listener for "onoff" entries.
+    /** Listener for "CheckBox" entries.
      */
-    class OnOffListener implements ItemListener {
-        public OnOffListener(String name) {
+    class CheckBoxListener implements ItemListener {
+        public CheckBoxListener(String name) {
             _name = name;
         }
 
@@ -317,5 +320,4 @@ public class Query extends Panel {
         }
         private String _name;
     }
-
 }

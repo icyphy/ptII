@@ -40,7 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.de.gui.DEApplet;
@@ -97,9 +98,10 @@ public class InspectionApplet extends DEApplet {
         try {
             _query = new Query();
             _query.addQueryListener(new ParameterListener());
-            _query.line("busmean", "Bus mean interarrival time", "1.0");
-            _query.line("passmean", "Passenger mean interarrival time", "1.0");
-            _query.onoff("regular", "Regular bus arrivals", false);
+            _query.addLine("busmean", "Bus mean interarrival time", "1.0");
+            _query.addLine("passmean",
+                    "Passenger mean interarrival time", "1.0");
+            _query.addCheckBox("regular", "Regular bus arrivals", false);
             add(_query);
 
             // The 2 argument requests a go and stop button.

@@ -27,7 +27,6 @@
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
-// FIXME: This is the wrong place for this.
 package ptolemy.gui;
 
 import java.util.EventListener;
@@ -41,8 +40,13 @@ Listener interface for changes in the query box.
 @version $Id$
 */
 public interface QueryListener extends EventListener {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Called to notify that one of the entries has changed.
      *  The name of the entry is passed as an argument.
+     *  @param name The name of the entry.
      */
     public abstract void changed(String name);
 }

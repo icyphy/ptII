@@ -56,9 +56,11 @@ JSRCS = \
 	Average.java \
 	Bernoulli.java \
 	Clock.java \
+	Commutator.java \
 	Const.java \
 	Cosine.java \
 	CurrentTime.java \
+	Distributor.java \
 	Expression.java \
 	FileWrite.java \
 	Gaussian.java \

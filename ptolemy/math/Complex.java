@@ -295,7 +295,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return true if either the real or imaginary part is infinite.
-     *  This is determined by the isInfinite method of the java.lang.Double
+     *  This is determined by the isInfinite() method of the java.lang.Double
      *  class.
      *  @return True if this is infinite.
      */
@@ -304,8 +304,8 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return true if either the real or imaginary part is NaN.  NaN means
-     *  not a number, per the IEEE floating point standard.
-     *  This is determined by the isNaN method of the java.lang.Double
+     *  "not a number," per the IEEE floating point standard.
+     *  This is determined by the isNaN() method of the java.lang.Double
      *  class.
      *  @return True if this is NaN.
      */
@@ -401,7 +401,7 @@ public class Complex implements Cloneable, Serializable {
                 magnitude * Math.sin(angle));
     }
 
-    /** Return a new complex number with value <em>z<sup>y</sup></em>
+    /** Return a new complex number with value <em>z <sup>y</sup></em>
      *  where <em>z</em> is this complex number and <em>y</em> is the
      *  argument, a double.
      *  @param y A double.

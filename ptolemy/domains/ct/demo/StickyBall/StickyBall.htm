@@ -20,7 +20,7 @@ applet is displayed on a XGA screen-->
 	the third is for Netscape Communicator
  -->
 <OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
- width=700 height=500
+ width=700 height=350
  name="StickyMasses"
  codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
 <PARAM NAME=CODE VALUE=ptolemy.domains.ct.demo.StickyBall.StickyBallApplet.class>
@@ -48,7 +48,7 @@ applet is displayed on a XGA screen-->
 	ptolemy/domains/ct/ct.jar,
 	ptolemy/domains/ct/demo/StickyBall/StickyBall.jar"
  name="StickyBall"
- width=700 height=500
+ width=700 height=350
  background="#faf0e6"
  defaultiterations="10"
  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
@@ -62,8 +62,8 @@ applet is displayed on a XGA screen-->
 This applet models two (sticky) masses on a flat frictionless table. 
 As shown in Figure 1.
 Each of the masses is attached to a spring with distinct spring constant.
-So if both balls are free, they will keep swing back and forth. 
-However, if the two balls hit each other, they will stick together.
+So if both balls are free, they will swing back and forth. 
+However, if the two balls hit each other, they stick together.
 The stickiness is assumed to be exponentially decaying after they
 hit, and the decay speed is controlled by the parameter "Stickiness Decay"
 So after a while, they will separate.

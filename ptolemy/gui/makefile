@@ -31,7 +31,7 @@
 
 ME =		ptolemy/gui
 
-DIRS = 		#test doc demo
+DIRS = 		demo
 
 # Root of the Java directory
 ROOT =		../..

@@ -69,7 +69,7 @@ public class SetParameter extends ChangeRequest {
     ////                         public methods                    ////
 
     /** Execute the change by calling the setExpression() method of the
-     *  parameter.
+     *  parameter, followed by getToken() (to force evaluation).
      *  @see ptolemy.data.expr.Parameter#setExpression
      *  @exception ChangeFailedException If the container of the parameter
      *   rejects the expression.

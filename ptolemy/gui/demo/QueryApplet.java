@@ -23,8 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -41,29 +41,31 @@ Applet demonstrating the Query class.
 @version $Id$
 @see ptolemy.gui.Query
 */
-public class QueryApplet extends Applet {
+public class QueryApplet extends Applet implements QueryListener {
+
     /** Constructor.
      */	
     public QueryApplet() {
         _query = new Query();
         add(_query);
-        _query.addLine("line", "Line:", "xxx");
+        _query.addCheckBox("check", "Check", true);
+        _query.setTextWidth(20);
+        _query.addLine("line1", "Line", "xxx");
+        _query.addLine("line2", "Another", "yyy");
+        _query.addLine("line3", "Yet Another", "");
+        _query.addQueryListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
+    /** Called to notify that one of the entries has changed.
+     *  The name of the entry is passed as an argument.
+     *  @param name The name of the entry.
+     */
+    public void changed(String name) {
+        showStatus("Changed " + name + " to: " + _query.stringValue(name));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -39,7 +39,8 @@ import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.util.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.TimedPlotter;
 import ptolemy.actor.*;
@@ -70,11 +71,11 @@ public class StickyBallApplet extends CTApplet {
         _query = new Query();
         _query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
-        _query.line("sticky", "Stickiness Decay", "-1.0", 10);
+        _query.addLine("sticky", "Stickiness Decay", "-1.0");
 
         try {
-            // The 1 argument requests only a go button.
-            add(_createRunControls(1));
+            // The 2 argument requests a go and stop button.
+            add(_createRunControls(2));
 
             // the top level composite actor
             _toplevel.setName("HybridSystem");
@@ -357,21 +358,21 @@ public class StickyBallApplet extends CTApplet {
             ctIncDir.MinStepSize.setToken(new DoubleToken(1e-5));
             
             StringToken tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             ctIncDir.BreakpointODESolver.setToken(tok);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             ctIncDir.ODESolver.setToken(tok);
 
             // CT embedded director 2  parameters
             ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
             ctDecDir.MinStepSize.setToken(new DoubleToken(1e-5));
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             ctDecDir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             ctDecDir.ODESolver.setToken(tok);
 
             // CT director parameters
@@ -379,7 +380,7 @@ public class StickyBallApplet extends CTApplet {
             topdir.MinStepSize.setToken(new DoubleToken(1e-5));
             topdir.MaxStepSize.setToken(new DoubleToken(0.3));
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             topdir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
