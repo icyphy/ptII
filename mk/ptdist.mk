@@ -111,7 +111,7 @@ ISJAVA = /users/ptII/vendors/installshield/isjava25/bin/isjava
 # The fixtmpdist rule should be defined in the calling makefile
 dists: sources install distsfiles
 # We split up the dists rule to aid in debugging
-distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) isjavadists
+distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) #isjavadists
 
 # This name is a little too close to distclean
 distsclean:
@@ -139,7 +139,7 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "dummy" | \
-		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n")}' \
+		awk '{printf("adm\nSCCS\nRCS\nCVS\n*.tar.gz\n*[0-9].zip\n*.~*\n*Build_Output\n*.buildinstaller*\n")}' \
 			> $@; \
 	fi
 
