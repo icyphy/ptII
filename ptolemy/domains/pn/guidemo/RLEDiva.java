@@ -65,7 +65,7 @@ copatible browser or requires a jdk1.2 plugin.
 @version $Id$
 */
 
-public class RLEDiva extends PtolemyApplet implements Runnable {
+public class RLEDiva extends PNApplet implements Runnable {
 
 
     /** The mapping from Ptolemy actors to graph nodes
@@ -108,22 +108,9 @@ public class RLEDiva extends PtolemyApplet implements Runnable {
 
         // Process the background parameter.
         super.init();
-        // Initialization
-        _goButton = new Button("Go");
-        // The applet has two panels, stacked vertically
-        setLayout(new BorderLayout());
-        // Adding a control panel in the applet panel.
-        Panel controlPanel = new Panel();
-        add(controlPanel, "Center");
-        // Done adding a control panel.
-
-        // Adding go button in the control panel.
-        controlPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());
-        // Done adding go button
 
         // Construct the Ptolemy kernel topology
-        CompositeActor compositeActor = constructPtolemyModel();
+        constructPtolemyModel();
 	
         // Construct the graph representing the PN topology
         GraphModel model = constructThreadGraph();
@@ -138,16 +125,15 @@ public class RLEDiva extends PtolemyApplet implements Runnable {
         }
 	
         // Add the process state listener
-        BasePNDirector pnDir = (BasePNDirector) compositeActor.getDirector();
-        pnDir.addProcessListener(new StateListener(
+        //BasePNDirector dir = (BasePNDirector) compositeActor.getDirector();
+        _director.addProcessListener(new StateListener(
 		(GraphPane) jgraph.getCanvasPane()));
 	
         // Run the model
 	System.out.println("Connections made");
-        Parameter p = (Parameter)pnDir.getAttribute("Initial_queue_capacity");
+        Parameter p = (Parameter)_director.getAttribute(
+		"Initial_queue_capacity");
         p.setToken(new IntToken(10));
- 	//compositeActor.getManager().run();
-        //System.out.println("Bye World\n");
 	return;
     }
 
@@ -201,76 +187,55 @@ public class RLEDiva extends PtolemyApplet implements Runnable {
 
     /** Construct the Ptolemy system
      */
-    public CompositeActor constructPtolemyModel () {
-	CompositeActor c1 = new CompositeActor();
-	Manager manager = new Manager();
-        // FIXME FIXME FIXME
+    public void constructPtolemyModel () {
         try {
-            c1.setManager(manager);
-
-            BasePNDirector local = new BasePNDirector("Local");
-            c1.setDirector(local);
-            //myUniverse.setCycles(Integer.parseInt(args[0]));
-
-            a1 = new PNImageSource(c1, "A1");
- 
-            //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-            //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
-            String filename = 
-                "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
-            try {
-                FileInputStream fis = new FileInputStream(filename);
-                a1.read(fis);
-            } catch (FileNotFoundException e) {
-                System.err.println("FileNotFoundException: "+ e.toString());
-            }
-            //p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
-            a2 = new MatrixUnpacker(c1, "A2");
-            a3 = new RLEncoder(c1, "A3");
-            a4 = new RLDecoder(c1, "A4");
-            a5 = new MatrixPacker(c1, "A5");
-            a6 = new PNImageSink(c1, "A6");
+            a1 = new PNImageSource(_toplevel, "ImageReader");
+            a2 = new MatrixUnpacker(_toplevel, "Unpacker");
+            a3 = new RLEncoder(_toplevel, "Encoder");
+            a4 = new RLDecoder(_toplevel, "Decoder");
+            a5 = new MatrixPacker(_toplevel, "Packer");
+            a6 = new PNImageSink(_toplevel, "Sink");
             Parameter p1 = (Parameter)a6.getAttribute("Output_file");
             p1.setToken(new StringToken("/tmp/image.pbm"));
-            a7 = new ImageDisplay(c1, "dispin");
+            a7 = new ImageDisplay(_toplevel, "InputDisplay");
             p1 = (Parameter)a7.getAttribute("FrameName");
             p1.setToken(new StringToken("InputImage"));
-            a8 = new ImageDisplay(c1, "dispout");
+            a8 = new ImageDisplay(_toplevel, "OutputDisplay");
             p1 = (Parameter)a8.getAttribute("FrameName");
             p1.setToken(new StringToken("OutputImage"));
 
             IOPort portin = (IOPort)a1.getPort("output");
             IOPort portout = (IOPort)a2.getPort("input");
-            ComponentRelation rel = c1.connect(portin, portout);
+            ComponentRelation rel = _toplevel.connect(portin, portout);
             (a7.getPort("image")).link(rel);
 
             portin = (IOPort)a2.getPort("output");
             portout = (IOPort)a3.getPort("input");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin =(IOPort) a2.getPort("dimensions");
             portout = (IOPort)a3.getPort("dimensionsIn");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin = (IOPort)a3.getPort("dimensionsOut");
             portout = (IOPort)a4.getPort("dimensionsIn");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin = (IOPort)a3.getPort("output");
             portout = (IOPort)a4.getPort("input");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin = (IOPort)a4.getPort("dimensionsOut");
             portout = (IOPort)a5.getPort("dimensions");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin = (IOPort)a4.getPort("output");
             portout = (IOPort)a5.getPort("input");
-            c1.connect(portin, portout);
+            _toplevel.connect(portin, portout);
 
             portin = (IOPort)a5.getPort("output");
             portout = (IOPort)a6.getPort("input");
-            rel = c1.connect(portin, portout);        
+            rel = _toplevel.connect(portin, portout);        
             (a8.getPort("image")).link(rel);
 
 	    String dataurlspec = getParameter("imageurl");
@@ -294,7 +259,7 @@ public class RLEDiva extends PtolemyApplet implements Runnable {
         catch (Exception e) {
             throw new RuntimeException(e.toString());
         }
-        return c1;
+        return;
     }
 
 
@@ -312,7 +277,7 @@ public class RLEDiva extends PtolemyApplet implements Runnable {
         window.setLocation(100, 100);
         window.setVisible(true);
 
-        // Make sure we ahve the right renders and then
+        // Make sure we have the right renders and then
         // display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
         GraphView gv = gp.getGraphView();
