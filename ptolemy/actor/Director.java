@@ -1,6 +1,6 @@
 /* A Director governs the execution of a CompositeActor.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -100,7 +100,7 @@ Thus, the prefire() method repeatedly performs mutations and initializations
 until there are no more mutations to perform.
 
 @author Mudit Goel, Edward A. Lee
-@version $Id$
+@version @(#)Director.java	1.37	09/11/98
 */
 public class Director extends NamedObj implements Executable {
 
@@ -469,10 +469,10 @@ public class Director extends NamedObj implements Executable {
      *  @exception NameDuplicationException If the iterate() method throws
      *   it (while performing mutations).
      */
-    public void run()
+    public void go()
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
-        run(-1);
+        go(-1);
     }
 
     /** Invoke initialize(), then invoke iterate() the specified number
@@ -490,7 +490,7 @@ public class Director extends NamedObj implements Executable {
      *  @exception NameDuplicationException If the iterate() method throws
      *   it (while performing mutations).
      */
-    public void run(int iterations)
+    public void go(int iterations)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         try {
