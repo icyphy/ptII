@@ -54,10 +54,12 @@ JSRCS = \
 	ExecEvent.java \
 	ExecEventListener.java \
 	HistogramPlotter.java \
+	ParameterEditor.java \
 	Placeable.java \
 	Plotter.java \
 	Print.java \
 	PtolemyApplet.java \
+	PtolemyQuery.java \
 	SequencePlotter.java \
 	SketchedSource.java \
 	TimedPlotter.java\

@@ -42,7 +42,9 @@ import ptolemy.kernel.util.*;
 /**
 This class provides a method to create a mapping from a Query entry to
 a Variable. The Variable will be automatically set each time the 
-corresponding Query enty changes.
+corresponding Query entity changes. To use this class, first add an entry to
+the query, and then use the attachParameter method in this class 
+to associate that variable with a 
 
 @author Brian K. Vogel
 @version $Id$
