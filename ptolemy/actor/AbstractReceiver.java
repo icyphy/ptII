@@ -79,6 +79,18 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract Token get();
 
+    /** Get an array of tokens from this receiver. Note that the thrown exception
+     *  is a runtime exception.
+     *  @param tokenArray A Token array that will contain the requested
+     *   tokens when this method returns.
+     *  @exception NoTokenException If there is no token.
+     */
+    public void get(Token[] tokenArray) {
+	for (int i = 0; i < tokenArray.length; i++) {
+	    tokenArray[i] = get();
+	}
+    }
+
     /** Return the container of this receiver, or null if there is none.
      *  @return The IOPort containing this receiver.
      */
@@ -148,6 +160,18 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception NoRoomException If the receiver is full.
      */
     public abstract void put(Token token);
+
+    /** Put an array of tokens into this receiver. Note that the thrown 
+     *  exception is a runtime exception, therefore the caller is not 
+     *  required to catch it.
+     *  @param tokenArray The token array to put into this receiver.
+     *  @exception NoRoomException If the token cannot be put.
+     */
+    public void put(Token[] tokenArray) {
+	for (int i = 0; i < tokenArray.length; i++) {
+	    put(tokenArray[i]);
+	}
+    }
     
     /** Set the container.
      *  @param port The IOPort containing this receiver.
