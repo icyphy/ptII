@@ -279,9 +279,10 @@ public class TransformProperty extends TypedAtomicActor
     }
 
     /** Invoke the execution of the specified model and return the result.
-     * @param args A set of attributes of the specified model.
-     * @param resultLabels Labels of the returned result.
-     * @return The execution result.
+     * @param properties The transform properties.
+     * @param sender The sending port.
+     * @param destination The receiving port.
+     * @return The modified transform properties.
      * @exception IllegalActionException If failed to execute the model. 
      */
     public RecordToken getProperty(RecordToken properties, 
@@ -307,14 +308,6 @@ public class TransformProperty extends TypedAtomicActor
                              properties };
             RecordToken args = new RecordToken(labels, value);
             
-            /*
-            double dx = p2[0] - p1[0];
-            double dy = p2[1] - p1[1];
-            double r = Math.sqrt(dx*dx + dy*dy);
-            double theta = Math.acos(dx/r);
-            if (dy < 0 ) {
-                theta = 2*Math.PI - theta;
-            } */
             RecordToken results;
             String[] resultLabels = {"Properties"}; 
             try {
