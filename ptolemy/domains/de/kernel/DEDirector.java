@@ -423,25 +423,27 @@ public class DEDirector extends Director {
             } while (refire);
 
             // Check whether the next time stamp is equal to current time.
-            if(!_eventQueue.isEmpty()) {
-                DEEvent next = _eventQueue.get();
-                // If the next event is in the future, proceed to postfire().
-                if (next.timeStamp() > getCurrentTime()) {
-                    break;
-                } else if (next.timeStamp() < getCurrentTime()) {
-                    throw new InternalErrorException(
-                            "fire(): the time stamp of the next event " 
-                            + next.timeStamp() + " is smaller than the "
-                            + "current time " + getCurrentTime() + " !");
-                }
-            } else {
-                // The queue is empty, proceed to postfire().
-                break;
-            }
+            synchronized(_eventQueue/**/) {
+		if(!_eventQueue.isEmpty()) {
+		    DEEvent next = _eventQueue.get();
+		    // If the next event is in the future, proceed to postfire().
+		    if (next.timeStamp() > getCurrentTime()) {
+			break;
+		    } else if (next.timeStamp() < getCurrentTime()) {
+			throw new InternalErrorException(
+			        "fire(): the time stamp of the next event " 
+                                + next.timeStamp() + " is smaller than the "
+                                + "current time " + getCurrentTime() + " !");
+		    }
+		} else {
+		    // The queue is empty, proceed to postfire().
+		    break;
+		}
+	    }
         }
     }
 
-    /** Schedule an actor to be fired at the specified time.
+    /** Schedule an actor to be fired at the specified (ABSOLUTE) time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
@@ -449,14 +451,58 @@ public class DEDirector extends Director {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
 
-        // NOTE: This does not check whether the actor is in the
-        // composite actor containing this
-        // director. I.e. the specified actor is under this director
-        // responsibility. This error would be fairly hard to make,
-        // so we don't check for it here.
+	synchronized(_eventQueue/**/) {
+	    // NOTE: This does not check whether the actor is in the
+	    // composite actor containing this
+	    // director. I.e. the specified actor is under this director
+	    // responsibility. This error would be fairly hard to make,
+	    // so we don't check for it here.
 
-        // Set the depth equal to the depth of the actor.
-        _enqueueEvent(actor, time);
+	    // Set the depth equal to the depth of the actor.
+	    _enqueueEvent(actor, time);
+	    _eventQueue/**/.notifyAll();
+        }
+    }
+
+    /** Schedule an actor to be fired at the CURRENT time.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If the specified time is in the past.
+     */
+    public void fireAtCurrentTime(Actor actor)
+            throws IllegalActionException {
+
+        synchronized(_eventQueue/**/) {
+	    // NOTE: This does not check whether the actor is in the
+	    // composite actor containing this
+	    // director. I.e. the specified actor is under this director
+	    // responsibility. This error would be fairly hard to make,
+	    // so we don't check for it here.
+
+	    // Set the depth equal to the depth of the actor.
+	    _enqueueEvent(actor, getCurrentTime());
+	    _eventQueue/**/.notifyAll();
+	}
+    }
+
+    /** Schedule an actor to be fired at the specified RELETIVE time.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If the specified time is in the past.
+     */
+    public void fireAtReletiveTime(Actor actor, double time)
+            throws IllegalActionException {
+	synchronized(_eventQueue/**/) {
+	    // NOTE: This does not check whether the actor is in the
+	    // composite actor containing this
+	    // director. I.e. the specified actor is under this director
+	    // responsibility. This error would be fairly hard to make,
+	    // so we don't check for it here.
+
+	    // Set the depth equal to the depth of the actor.
+	    _enqueueEvent(actor, time + getCurrentTime());
+	    _eventQueue/**/.notifyAll();
+	}
     }
 
     /** Return the event queue.
@@ -795,9 +841,9 @@ public class DEDirector extends Director {
      */
     public void stopFire() {
         if (_eventQueue != null) {
-            synchronized(getContainer()/*Was _eventQueue*/) {
+            synchronized(_eventQueue/*Was _eventQueue*/) {
                 _stopRequested = true;
-                getContainer()/*Was _eventQueue*/.notifyAll();
+                _eventQueue/*Was _eventQueue*/.notifyAll();
             }
         }
         super.stopFire();
@@ -838,7 +884,7 @@ public class DEDirector extends Director {
      *  which will have the effect of stopping the simulation.
      *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
      *  stall the current thread by calling wait() on the 
-     *  getContainer()(Was _eventQueue)
+     *  _eventQueue(Was this, _eventQueue again before that)
      *  until there are events available.  If _synchronizeToRealTime
      *  is true, then this method may suspend the calling thread using
      *  Object.wait(long) to let elapsed real time catch up with the
@@ -874,7 +920,7 @@ public class DEDirector extends Director {
                         _debug("Queue is empty. Waiting for input events.");
                     }
                     Thread.currentThread().yield();
-                    synchronized(getContainer()/*Was _eventQueue*/) {
+                    synchronized(_eventQueue/*Was _eventQueue*/) {
                         try {
                             // FIXME: If the manager gets a change request
                             // during this wait, the change request will
@@ -882,7 +928,7 @@ public class DEDirector extends Director {
                             // wait.  This can lead to deadlock if the UI
                             // waits for the change request to complete
                             // (which it typically does).
-                            getContainer()/*Was _eventQueue*/.wait();
+                            _eventQueue/*Was _eventQueue*/.wait();
                         } catch (InterruptedException e) {
                             // If the wait is interrupted, then stop waiting.
                             break;
@@ -925,9 +971,9 @@ public class DEDirector extends Director {
                                 _debug("Waiting for real time to pass: "
                                         + timeToWait);
                             }
-                            synchronized(getContainer()/*Was _eventQueue*/) {
+                            synchronized(_eventQueue/*Was _eventQueue*/) {
                                 try {
-                                    getContainer()/*Was _eventQueue*/.wait(timeToWait);
+                                    _eventQueue/*Was _eventQueue*/.wait(timeToWait);
                                 } catch (InterruptedException ex) {
                                     // Continue executing.
                                 }
@@ -939,26 +985,28 @@ public class DEDirector extends Director {
                 // Consume the event from the queue.  The event must be
                 // obtained here, since a new event could have been injected 
                 // into the queue while the queue was waiting.
-                currentEvent = (DEEvent) _eventQueue.take();
-                currentTime = currentEvent.timeStamp();
-                actorToFire = currentEvent.actor();
+		synchronized(_eventQueue/**/) {
+		    currentEvent = (DEEvent) _eventQueue.take();
+		    currentTime = currentEvent.timeStamp();
+		    actorToFire = currentEvent.actor();
+   
+		    if (_disabledActors != null &&
+			_disabledActors.contains(actorToFire)) {
+			// This actor has requested that it not be fired again.
+			if (_debugging) _debug("Skipping actor: ",
+		            ((Nameable)actorToFire).getFullName());
+			actorToFire = null;
+			continue;
+		    }
 
-                if (_disabledActors != null &&
-                        _disabledActors.contains(actorToFire)) {
-                    // This actor has requested that it not be fired again.
-                    if (_debugging) _debug("Skipping actor: ",
-                            ((Nameable)actorToFire).getFullName());
-                    actorToFire = null;
-                    continue;
-                }
-
-                // Advance current time.
-                try {
-                    setCurrentTime(currentTime);
-                } catch (IllegalActionException ex) {
-                    // Thrown if time moves backwards.
-                    throw new InternalErrorException(this, ex, null);
-                }
+		    // Advance current time.
+		    try {
+			setCurrentTime(currentTime);
+		    } catch (IllegalActionException ex) {
+			// Thrown if time moves backwards.
+			throw new InternalErrorException(this, ex, null);
+		    }
+		}
 
                 currentDepth = currentEvent.depth();
                 _microstep = currentEvent.microstep();
