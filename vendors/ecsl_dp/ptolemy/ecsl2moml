@@ -234,7 +234,8 @@ awk 'BEGIN {
     # FIXME
     map["Goto"] = "ptolemy.actor.lib.Stop"
     map["Ground"] = "ptolemy.actor.lib.Discard"
-    map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
+    #map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
+    map["Integrator"] = "vendors.ecsl_dp.ptolemy.IntegratorComposite"
     map["Logic"] = "ptolemy.actor.lib.logic.LogicFunction"
     map["Merge"] = "ptolemy.domains.de.lib.Merge"
     # FIXME: should be Minimum or Maximum 
@@ -254,6 +255,7 @@ awk 'BEGIN {
     map["Sin"] = "ptolemy.actor.lib.TrigFunction"
     # FIXME Leave off sampleTime, convert integers to doubles
     map["Step"] = "ptolemy.domains.ct.lib.ContinuousClock"
+    #map["Step"] = "vendors.ecsl_dp.ptolemy.Step"
     map["Sum"] = "ptolemy.actor.lib.Accumulator"
     map["Switch"] = "ptolemy.actor.lib.Switch"
     map["Terminator"] = "ptolemy.actor.lib.Stop"
@@ -274,6 +276,19 @@ awk 'BEGIN {
            }
        }
 
+       # Get the value of the position field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /osition=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       split(position, p, ",")
+       x = substr(p[1], 2, length(p[1])) / 2.4
+       y = substr(p[2], 1, length(p[2]) - 1) / 2.4
+
        # Get the value of the BlockType field
        blockType=""
        nf = split($0, f, "\"")   
@@ -285,6 +300,8 @@ awk 'BEGIN {
        }
        indent = substr($0, 0, index($0,"<") - 1)  
        print indent "<entity name=\"" name "\" class=\"" map[blockType] "\">"
+       print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
+       print indent "     </property>"
     } else if ($1 ~ /<\/Primitive>/) {
         print indent "</entity>"
     } else {
@@ -321,6 +338,14 @@ $0 ~ /<entity/ {
                break;
            }
        }
+       # Remap names like In1 to input
+       if (name ~ /^In[0-9]*$/) {
+           name="input"
+       }
+
+       if (name ~ /^Out[0-9]*$/) {
+           name="output"
+       }
 
        # Get the value of the dstLine field
        dstLine=""
@@ -345,6 +370,8 @@ $0 ~ /<entity/ {
        # has a dstLine field
        if ($1 ~ /<OutputPort/) {
            relation = dstLine
+       } else {
+           relation = srcLine
        }
 
        indent = substr($0, 0, index($0,"<") - 1)  
@@ -364,7 +391,14 @@ $0 ~ /<entity/ {
 
  
        longName = containerStack[containerCount] "." name
-       links[longName] = relation
+       if (length(links[longName]) == 0) { 
+           links[longName] = relation
+       } else {
+           # Already have a relation for this longName
+           links[longName] = links[longName] " " relation
+       }
+
+       print "xxxx: (" links[longName] ") " longName " " relation 
 
        # Second, we handle the case where OutputPort 
        # has a dstLine field _and_ a srcLine field
@@ -403,7 +437,7 @@ $1 ~ /<\/entity>/ {
               print indent "<link port=\"" link "\" relation=\"" relation "\"/>" 
           } else {
               nf = split(relation, relations, " ") 
-              for(i = 1; i < nf; i++) {
+              for(i = 1; i <= nf; i++) {
               print indent "<link port=\"" link "\" relation=\"" relations[i] "\"/>" 
               }
           }
