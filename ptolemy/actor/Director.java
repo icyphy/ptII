@@ -254,9 +254,11 @@ public class Director extends NamedObj implements Executable {
                     // inform all listeners
                     // FIXME the listeners should probably be attached to
                     // the graph, not the director
-                    Enumeration listeners = _mutationListeners.elements();
-                    while (listeners.hasMoreElements()) {
-                        m.update((MutationListener)listeners.nextElement());
+                    if (_mutationListeners != null) {
+                        Enumeration listeners = _mutationListeners.elements();
+                        while (listeners.hasMoreElements()) {
+                            m.update((MutationListener)listeners.nextElement());
+                        }
                     }
                 }
                 // Clear the mutations
