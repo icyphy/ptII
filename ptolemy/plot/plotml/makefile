@@ -70,7 +70,9 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'EditablePlotMLApplet$$ChoiceListener.class' \
+	'EditablePlotMLApplication$$SelectListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
