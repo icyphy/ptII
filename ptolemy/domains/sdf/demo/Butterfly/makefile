@@ -46,12 +46,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Butterfly.java \
-	Butterfly.xml \
 	ButterflyApplet.java \
 	ButterflyApplication.java
 
 EXTRA_SRCS = \
 	Butterfly.htm \
+	Butterfly.xml \
 	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
