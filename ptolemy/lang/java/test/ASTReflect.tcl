@@ -1146,7 +1146,8 @@ test ASTReflect-14.1 {check out } {
                }}} 
   }}}} 
 }}}
-} {1}
+} {1} {KNOWN_FAILURE: This tests fails under JDK1.2.2 because Class.getPackage() always returns null}
+
 ######################################################################
 ####
 #
