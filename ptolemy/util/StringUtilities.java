@@ -106,6 +106,22 @@ public class StringUtilities {
         return string;
     }
 
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    public static String getIndentPrefix(int level) {
+	if (level <= 0) {
+	    return "";
+	}
+        StringBuffer result = new StringBuffer("");
+        for (int i = 0; i < level; i++) {
+            result.append("    ");
+        }
+        return result.toString();
+    }
+
     /** Return the preferences directory, creating it if necessary.
      *  @return A string naming the preferences directory.  The last
      *  character of the string will have the file.separator character
