@@ -502,8 +502,8 @@ test ComplexToken-13.0 {Test convert from BooleanToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type complex because the type of the token is higher or incomparable with the given type.}}
 
-test ComplexToken-13.1 {Test convert from ByteToken} {
-    set t [java::new {ptolemy.data.ByteToken byte} 1]
+test ComplexToken-13.1 {Test convert from UnsignedByteToken} {
+    set t [java::new {ptolemy.data.UnsignedByteToken byte} 1]
     set msg {}
     set result {}
     catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg

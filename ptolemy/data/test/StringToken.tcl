@@ -231,8 +231,8 @@ test StringToken-13.0 {Test convert from BooleanToken} {
     list $msg
 } {{"false"}}
 
-test StringToken-13.1 {Test convert from ByteToken} {
-    set t [java::new {ptolemy.data.ByteToken byte} 1]
+test StringToken-13.1 {Test convert from UnsignedByteToken} {
+    set t [java::new {ptolemy.data.UnsignedByteToken byte} 1]
     set msg {}
     set result {}
     catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
