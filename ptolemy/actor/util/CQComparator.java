@@ -32,11 +32,11 @@ import collections.*;
 //////////////////////////////////////////////////////////////////////////
 //// CQComparator
 /**
-This interface extends Comparator interface which defines
+This interface extends the Comparator interface which defines
 int compare(Object, Object) method. The extension defines these
-additional two methods:
+two additional methods:
 <ul>
-<li> int quantize(Object key, Object zeroReference, Object binWidth)
+<li> long getBinIndex(Object key, Object zeroReference, Object binWidth)
 <li> Object getBinWidth(Object[] keyArray)
 </ul>
 <p>
@@ -45,7 +45,8 @@ CalendarQueue instances, because it doesn't contain any state information.
 
 @author Lukito Muliadi
 @version $Id$
-@see CalendarQueue, collections.Comparator
+@see CalendarQueue
+@see collections.Comparator
 */
 
 public interface CQComparator extends Comparator{
@@ -53,29 +54,31 @@ public interface CQComparator extends Comparator{
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Given key, zero reference, and bin width, return the index of the
-        bin containing the key.
+    /** Given a key, a zero reference, and a bin width, return the index of 
+     *  the bin containing the key.
      *  This operation is conceptually equivalent to:
-     *  (key-zeroReference) / binWidth,
+     *  <i>(key-zeroReference) / binWidth</i>,
      *  where the division is an integer division
      *  <p>
-     *  Class
-     * @param key an object representing the sort key
-     * @param zeroReference an object representing the zero reference
-     * @param binWidth an object representing the bin width
-     * @return the index of the bin
-     * @exception ClassCastException illegal arguments' types.
+     *  Classes that implement this interface will in general need to
+     *  perform a downcast on the arguments (of type Object) to the
+     *  appropriate user defined classes. If the arguments are not of 
+     *  appropriate type, the implementation should throw a 
+     *  ClassCastException.
+     * @param key an object representing the sort key.
+     * @param zeroReference an object representing the zero reference.
+     * @param binWidth an object representing the bin width.
+     * @return The index of the bin.
+     * @exception ClassCastException Incompatible argument type.
      */
-    public int getBinIndex(Object key, Object zeroReference, Object binWidth);
+    public long getBinIndex(Object key, Object zeroReference, Object binWidth);
 
     /** Given an array of objects, return the bin width.
-     * @param sortableArray array of Sortable objects
-     * @return an object representing bin width
-     * @exception ClassCastException illegal argument's type.
+     * @param keyArray the array of key objects.
+     * @return The bin width.
+     * @exception ClassCastException Incompatible argument type.
      */
-    public Object getBinWidth(Object[] objectArray);
-
-
+    public Object getBinWidth(Object[] keyArray);
 }
 
 

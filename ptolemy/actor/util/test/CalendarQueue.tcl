@@ -58,9 +58,9 @@ if {[string compare test [info procs test]] == 1} then {
 #  class:         pt.actor.util.CalendarQueue
 #  fields:        
 #  methods:       {equals java.lang.Object} getClass getNextKey getP
-#    reviousPriority hashCode {includesEntry java.lang.Objec
+#    reviousPriority hashCode {includes java.lang.Objec
 #    t pt.actor.util.Sortable} notify notifyAll {put java.lang.Ob
-#    ject pt.actor.util.Sortable} {removesEntry java.lang.Object 
+#    ject pt.actor.util.Sortable} {remove java.lang.Object 
 #    pt.actor.util.Sortable} size take toString wait {wait long} 
 #    {wait long int}
 #    
@@ -89,8 +89,9 @@ test CalendarQueue-2.1 {Construct an empty queue and check defaults} {
 # 
 test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
     set queue [java::new pt.actor.util.CalendarQueue $comparator]
-    list [expr { [$queue take] == [java::null]}]
-} {1}
+    catch {[$queue take]} msg1
+    list $msg1
+} {{java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.}}
 
 ######################################################################
 ######################################################################
@@ -128,6 +129,20 @@ set p14 [java::new {Double double} 1002.2 ]
 set p15 [java::new {Double double} 1002.3 ]
 set p16 [java::new {Double double} 1002.4 ]
 set p1again [java::new {Double double} 0.0 ]
+
+######################################################################
+####
+# 
+test CalendarQueue-3.0 {Put 4 datas in the queue and do a single take} {
+    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    $queue put $p4 $n1
+    $queue put $p2 $n2
+    $queue put $p3 $n3
+    $queue put $p1 $n4
+    list [$queue getNextKey] \
+	   [[$queue take] getName] \
+	    [$queue getPreviousKey]
+} {0.0 n4 0.0}
 
 ######################################################################
 ####
@@ -301,7 +316,8 @@ test CalendarQueue-3.5 {Tests interleaved put and take} {
 #
 test CalendarQueue-4.1 {Tests the getNextKey method} {
     set queue [java::new pt.actor.util.CalendarQueue $comparator]
-    set mylist [expr { [$queue getNextKey] == [java::null]}]
+    catch {[$queue getNextKey]} msg1
+    set mylist $msg1
 
     $queue put $p1 $n5
     lappend mylist [$queue getNextKey]
@@ -352,19 +368,19 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
 	    [$queue getNextKey] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey] 
-} {1 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
+} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
 
 
 
 ######################################################################
 ####
 #
-test CalendarQueue-5.1 {Tests removesEntry and includesEntry method} {
+test CalendarQueue-5.1 {Tests remove and includes method} {
     set queue [java::new pt.actor.util.CalendarQueue $comparator]
     $queue put $p1 $n5
     $queue put $p2 $n4
     set mylist [list [$queue getNextKey] \
-	    [$queue removesEntry $p1 $n5] \
+	    [$queue remove $p1 $n5] \
 	    [$queue getNextKey] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey]]
@@ -372,30 +388,32 @@ test CalendarQueue-5.1 {Tests removesEntry and includesEntry method} {
     $queue put $p2 $n3
     $queue put $p5 $n7
     $queue put $p3 $n8
-    lappend mylist [$queue removesEntry $p2 $n3] \
-	    [$queue removesEntry $p2 $n3] \
-	    [$queue removesEntry $p3 $n7]
+    lappend mylist [$queue remove $p2 $n3] \
+	    [$queue remove $p2 $n3] \
+	    [$queue remove $p3 $n7]
     $queue put $p2 $n3
-    lappend mylist [$queue includesEntry $p2 $n3] \
+    lappend mylist [$queue includes $p2 $n3] \
 	    [[$queue take] getName] \
 	    [[$queue take] getName] \
-	    [[$queue take] getName] \
-	    [expr {[$queue take] == [java::null]}] \
-	    [expr {[$queue getNextKey] == [java::null]}]
+	    [[$queue take] getName]
+    catch {[$queue take]} msg1
+    catch {[$queue getNextKey]} msg2
+    lappend mylist $msg1 $msg2
 	    
 
     
     
-} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 1 1}
+} {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
 ####
 #
 test CalendarQueue-5.2 {Comprehensive tests of everything} {
     set queue [java::new pt.actor.util.CalendarQueue $comparator]
-    set mylist [list [expr {[$queue getNextKey] == [java::null]}] \
-	    [expr {[$queue take] == [java::null]}] \
-	    [expr {[$queue getPreviousKey] == [java::null]}]]
+    catch {[$queue getNextKey]} msg1
+    catch {[$queue take]} msg2
+    catch {[$queue getPreviousKey]} msg3
+    set mylist [list $msg1 $msg2 $msg3]
     
 
     $queue put $p1 $n5;# queue size should get doubled here, becomes 4
@@ -406,7 +424,7 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 
     $queue put $p5 $n2  
     lappend mylist [$queue getNextKey] \
-	    [$queue removesEntry $p5 $n2]
+	    [$queue remove $p5 $n2]
 
     # This sequence of take would half the queue size to 4
     lappend mylist [$queue getNextKey] \
@@ -415,10 +433,11 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 	    [$queue getNextKey] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey] \
-	    [$queue size] \
-	    [expr {[$queue take] == [java::null]}] \
-	    [expr {[$queue getNextKey] == [java::null]}] \
-	    [$queue removesEntry $p2 $n4]
+	    [$queue size]
+    catch {[$queue take]} msg1
+    catch {[$queue getNextKey]} msg2
+    lappend mylist $msg1 $msg2 \
+	    [$queue remove $p2 $n4]
     
     $queue put $p2 $n4
     $queue put $p6 $n8
@@ -426,9 +445,9 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     $queue put $p3 $n11  
     $queue put $p9 $n1
 
-    lappend mylist [$queue removesEntry $p3 $n4] \
-	    [$queue includesEntry $p2 $n4] \
-	    [$queue removesEntry $p6 $n8] \
+    lappend mylist [$queue remove $p3 $n4] \
+	    [$queue includes $p2 $n4] \
+	    [$queue remove $p6 $n8] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey] \
 	    [[$queue take] getName] \
@@ -436,9 +455,10 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey] \
 	    [[$queue take] getName] \
-	    [$queue getPreviousKey] \
-	    [expr {[$queue take] == [java::null]}] \
-	    [expr {[$queue getPreviousKey] == [java::null]}]
+	    [$queue getPreviousKey]
+    catch {[$queue take]} msg1
+    catch {[$queue getPreviousKey]} msg2
+    lappend mylist $msg1 $msg2
     
     $queue put $p7 $n3
     $queue put $p10 $n16
@@ -454,7 +474,7 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 	    [$queue getNextKey] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey] 
-} {1 1 1 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 1 1 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 1 1 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
+} {{java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
 
 
 ######################################################################
@@ -464,8 +484,9 @@ test CalendarQueue-6.1 {Tests identical entry} {
     set queue [java::new pt.actor.util.CalendarQueue $comparator]
     $queue put $p1 $n5
     $queue put $p1 $n5
+
     set mylist [list [$queue getNextKey] \
-	    [$queue removesEntry $p1 $n5] \
+	    [$queue remove $p1 $n5] \
 	    [$queue getNextKey] \
 	    [[$queue take] getName] \
 	    [$queue getPreviousKey]]
@@ -473,18 +494,19 @@ test CalendarQueue-6.1 {Tests identical entry} {
     $queue put $p1 $n5
     $queue put $p1 $n5
     $queue put $p1 $n5
-    lappend mylist [$queue removesEntry $p2 $n3] \
-	    [$queue removesEntry $p2 $n3] \
-	    [$queue removesEntry $p3 $n7]
+    lappend mylist [$queue remove $p2 $n3] \
+	    [$queue remove $p2 $n3] \
+	    [$queue remove $p3 $n7]
     $queue put $p1 $n5
-    lappend mylist [$queue includesEntry $p2 $n3] \
+    lappend mylist [$queue includes $p2 $n3] \
 	    [[$queue take] getName] \
 	    [[$queue take] getName] \
 	    [[$queue take] getName] \
-	    [[$queue take] getName] \
-	    [expr {[$queue getNextKey] ==[java::null]}]
+	    [[$queue take] getName]
+    catch {[$queue getNextKey]} msg1
+    lappend mylist $msg1
     
-} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 1}
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
 ####

@@ -1,4 +1,5 @@
-/* A sample implementation of CQComparator class using Double as sort key
+/* A sample implementation of the CQComparator interface using 
+   Double to represent sort key.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -27,14 +28,13 @@
 
 package pt.actor.util;
 
-//import pt.data.*;
-//import java.io.Serializable;
-//import java.util.Enumeration;
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleCQComparator
 /**
-A sample implementation of Sortable interface using time stamp as sort key
+This class implements CQComparator interface. It uses Double for the sort
+key. Therefore, all arguments passed to its methods have to be of type Double
+( or Double[] for the getBinWidth() method ). If violated, 
+a ClassCastException will be thrown.
 
 @author Lukito Muliadi
 @version $Id$
@@ -49,12 +49,12 @@ public class DoubleCQComparator implements CQComparator{
      *  equal to, or greater than the second.
      *  <p>
      *  Both arguments have to be instances of Double, otherwise a
-     *  ClassCastException exception will be thrown.
+     *  ClassCastException will be thrown.
      * @param object1 the first Double argument
      * @param object2 the second Double argument
      * @return a negative integer, zero, or a positive integer as the first
      *         argument is less than, equal to, or greater than the second.
-     * @exception ClassCastException object1 and object2 has to be instances
+     * @exception ClassCastException object1 and object2 have to be instances
      *            of Double
      */
     public int compare(Object object1, Object object2) {
@@ -71,41 +71,40 @@ public class DoubleCQComparator implements CQComparator{
         }
     }
 
-    /** Given a Double key, a Double zero reference, and a Double
-        bin width, return the index of the bin containing that key.
+    /** Given a key, a zero reference, and a bin width, return the index of 
+     *  the bin containing the key.
      *  <p>
-     *  If the arguments are not instances of the aforementioned types, 
-     *  then a ClassCastException will be thrown.
-     * 
-     *  @param key the Double key
-     *  @param zeroReference the Double zero reference.
-     *  @param binWidth the width of the CalendarQueue bin
-     *  @return the index of the bin containing that key, according to the
-     *          zero reference, and bin width.
-     *  @exception ClassCastException key, zeroReference, and binWidth have
-     *             to be instances of Double.
+     *  If the arguments are not instances of Double, then a 
+     *  ClassCastException will be thrown.
+     *  @param key the key
+     *  @param zeroReference the zero reference.
+     *  @param binWidth the width of the bin
+     *  @return The index of the bin containing the key, according to the
+     *          zero reference, and the bin width.
+     *  @exception ClassCastException Arguments need to be instances of 
+     *          Double.
      */
-    public int getBinIndex(Object key, Object zeroReference, Object binWidth) {
+    public long getBinIndex(Object key, Object zeroReference, Object binWidth) {
         Double a = (Double) key;
         Double w = (Double) binWidth;
         Double zero = (Double) zeroReference;
 
-        return (int)((a.doubleValue() - zero.doubleValue())/w.doubleValue());
+        return (long)((a.doubleValue() - zero.doubleValue())/w.doubleValue());
     }
 
 
     /** Given an array of Double objects, find the appropriate bin 
-     *  width. By appropriate, the bin width is chosen such that on average
+     *  width. By 'appropriate', the bin width is chosen such that on average
      *  the number of entry in all non-empty bins is equal to one.
      *  If the argument is null, return the default bin width which is 1.0
-     *  in this particular case.
+     *  for this implementation.
      *  <p>
      *  If the argument is not an instance of Double[], then a
      *  ClassCastException will be thrown.
      *
-     *  @param keyArray : an array of Double objects.
-     *  @return SortBinWidth object representing quantization bin width 
-     *  @exception ClassCastException keyArray has to be an array of Double
+     *  @param keyArray an array of Double objects.
+     *  @return The bin width.
+     *  @exception ClassCastException keyArray need to be an array of Double.
      *
      */
     public Object getBinWidth(Object[] keyArray) {
@@ -136,11 +135,6 @@ public class DoubleCQComparator implements CQComparator{
         
     }
 }
-
-
-
-
-
 
 
 
