@@ -213,6 +213,8 @@ public class Poisson extends TimedSource {
 
         _tentativeCurrentOutputIndex = _currentOutputIndex;
 
+        output.send(0, _getValue(_tentativeCurrentOutputIndex));
+
         // In case current time has reached or crossed a boundary to the
         // next output, update it.
         if (currentTime >= _nextFiringTime) {
@@ -223,7 +225,7 @@ public class Poisson extends TimedSource {
             _boundaryCrossed = true;
         }
 
-        output.send(0, _getValue(_tentativeCurrentOutputIndex));
+       
     }
 
     /** Schedule the first firing at time zero and initialize local variables.
@@ -233,6 +235,7 @@ public class Poisson extends TimedSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
+        _currentOutputIndex = 0;
         double currentTime = getDirector().getCurrentTime();
         _nextFiringTime = currentTime;
         getDirector().fireAt(this, currentTime);
