@@ -541,6 +541,10 @@ public class Manager extends NamedObj implements Runnable {
      *  iterations, this method also calls stopFire() on the top-level
      *  composite actor, requesting that directors in such domains
      *  return from their fire() method as soon as practical.
+     *  When the model is idle (initialize() has not yet been
+     *  invoked), carry out the change request immediately. That is,
+     *  this method will block until the change request has been
+     *  processed.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
@@ -551,6 +555,27 @@ public class Manager extends NamedObj implements Runnable {
         _changeRequests.add(change);
         CompositeActor container = (CompositeActor) getContainer();
         container.stopFire();
+	// If the model is idle (i.e., initialize() has not yet been
+	// invoked), then process the queued change requests right now.
+	if (_state == IDLE) {
+	    try {
+		_processChangeRequests();
+	    } catch (IllegalActionException e) {
+		// FIXME: Don't catch. requestChange() should
+		// throw IllegalActionException. I am not making
+		// this change right now, since it might break
+		// a lot of code.
+		System.err.println("Manager: Error proccessing " +
+				   "change request" + e);
+	    } catch (ChangeFailedException e) {
+		// FIXME: Don't catch. requestChange() should
+		// throw IllegalActionException. I am not making
+		// this change right now, since it might break
+		// a lot of code.
+		System.err.println("Manager: Error proccessing " +
+				   "change request" + e);
+	    }
+	}
     }
 
     /** Queue an initialization request.
