@@ -10,18 +10,79 @@
 <h1>Performance</h1>
 <menu>
 <li> <a href="#remoteresources">Remote resources</a>
+
+<li> <a href="#profiling">Profiling</a>
 </menu>
 
-<p>
+<h2><a name="profiling">Profiling</a></h2>
+In JDK1.1, <CODE>java -prof</CODE> creates a <CODE>java.prof</CODE>
+file that contains columns for:
+	<menu>
+	<li> # of calls
+	<li> method called
+	<li> called by
+	<li> time spent
+	</menu>
+To sort by time, use the following:
+<pre>
+sort -r +82 &lt; java.prof &gt; java.sort
+</pre>
+ <p>In JDK1.2, try
+<pre>
+java -Xrunhprof:help
+</pre>
 
-<h2><a name="#remoteresources">Remote resources</a></h2>
+<h2>Simple timing</h2>
+One simple way to time a run is to modify
+the <CODE>run()</CODE> method in ptolemy.actor.Manager so that
+<CODE>System.out.println(new Date()).getTime())</CODE> is called
+at the start and the end of the <CODE>run()</CODE> method.
+
+ <p>You may also need to include the following at the top with the other
+import statements.
+<pre>
+import java.util.Date;
+</pre>
+
+
+<h2><a name="remoteresources">Remote resources</a></h2>
+
+<h3>Commercial Profilers</h3>
+<menu>
+<li> <a href="http://www.klg.com/jprobe">JProbe</a>
+
+<li> <a href="http://www.optimizeit.com">Optimizeit</a>
+
+<li> <a href="http://www.metrowerks.com">Metrowerks</a>
+
+<li> Java Workshop
+
+<li> Quantify
+</menu>
+
+<h3>Java and Optimization</h3>
 
 <menu>
-<li> <A HREF="http://cm.bell-labs.com/cm/cs/who/bwk/interps/pap.html">Kernighan Scripting Benchmark paper</A>
-<li> <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/tclblend/scriptperf/index.html">Ptolemy Group Scripting Benchmark paper</a>
-<li> <A HREF="http://www.cs.cmu.edu/~jch/java/">CMU Java optimization page</A>
-<li> <a href="http://www.javaworld.com/javaworld/jw-09-1998/jw-09-speed.html">Javaworld article</a>
+<li> <a href="http://www.javaworld.com/javaworld/jw-09-1998/jw-09-speed.html" target="_top"> September 1998 Javaworld article</a>
+<li> <a href="http://www.javaworld.com/javaworld/jw-04-1997/jw-04-optimize.html" target="_top">March 1997 Javaworld article</a> - includes a benchmark applet
+<li> <a href="http://www.javasoft.com/docs/books/tutorial/essential/system/garbage.html" target="_top">JavaSoft Tutorial garbage collection information</a>
+<li> <A HREF="http://www.cs.cmu.edu/~jch/java/" target="_top">CMU Java optimization page</A>
+</menu>
 
+
+<h3>Benchmarks</h3>
+
+<menu>
+
+<li> <a href="http://dir.yahoo.com/Computers_and_Internet/Programming_Languages/Java/Benchmarks/" target="_top">Yahoo Java Benchmarks</a>
+
+</menu>
+
+<h3>Scripting and Java</h3>
+
+<menu>
+<li> <A HREF="http://cm.bell-labs.com/cm/cs/who/bwk/interps/pap.html" target="_top">Kernighan Scripting Benchmark paper</A>
+<li> <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/tclblend/scriptperf/index.html" target="_top">Ptolemy Group Scripting Benchmark paper</a>
 </menu>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
