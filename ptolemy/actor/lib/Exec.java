@@ -199,8 +199,8 @@ public class Exec extends TypedAtomicActor {
             command.update();
 
             if (_process == null
-                || ((StringToken)command.getToken()).stringValue()
-                                                       != _oldCommandValue) {
+                    || ((StringToken)command.getToken()).stringValue()
+                    != _oldCommandValue) {
                 // If the command changed, we restart
                 _terminateProcess();
                 _exec();
@@ -213,7 +213,7 @@ public class Exec extends TypedAtomicActor {
                     && input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
                 if ((line = ((StringToken)input.get(0)).stringValue())
-                            != null) {
+                        != null) {
                     if (_debugging) {
                         _debug("Exec: Input: '" + line + "'");
                     }
@@ -316,7 +316,7 @@ public class Exec extends TypedAtomicActor {
     // Execute a command, set _process to point to the subprocess
     // and set up _errorGobbler and _outputGobbler.
     private void _exec() throws IllegalActionException {
-       try {
+        try {
             _stopFireRequested = false;
 
             if (_process != null) {
@@ -438,7 +438,7 @@ public class Exec extends TypedAtomicActor {
     private class _StreamReaderThread extends Thread {
 
         _StreamReaderThread(InputStream inputStream, String name) {
-             this(inputStream, name, null);
+            this(inputStream, name, null);
         }
 
         _StreamReaderThread(InputStream inputStream, String name,
@@ -576,7 +576,7 @@ public class Exec extends TypedAtomicActor {
             while (_stringBuffer.length() == 0
                     && !_stopRequested
                     && !_stopFireRequested
-                   && !_appendCalled ) {
+                    && !_appendCalled ) {
                 try {
                     if (_debugging) {
                         _debug("Exec: _blockingGetAndReset: wait() loop " + _appendCalled );
