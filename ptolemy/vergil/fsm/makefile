@@ -96,7 +96,8 @@ OPTIONAL_FILES = \
 	'TransitionController$$1.class' \
 	'TransitionController$$LinkDropper.class' \
 	'TransitionController$$LinkRenderer.class' \
-	'TransitionController$$LinkTarget.class'
+	'TransitionController$$LinkTarget.class' \
+	'TransitionController$$LookInsideAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
