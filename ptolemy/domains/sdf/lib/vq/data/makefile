@@ -1,10 +1,10 @@
-# Makefile for SDF domain VQ actors library
+# Makefile for SDF domain VQ actors data directory
 #
 # @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/lib/vq
+ME =		ptolemy/domains/sdf/lib/vq/data
 
-DIRS =		test data
+DIRS =		seq
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,41 +43,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vq
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	data
 
-JSRCS = \
-	HTVQEncode.java \
-	ImageContrast.java \
-	ImageDisplay.java \
-	ImagePartition.java \
-	ImageSequence.java \
-	ImageUnpartition.java \
-	PSNR.java \
-	VQDecode.java
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		seq/seq.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	sdfvqentities.xml
+	usc_hvq_s5.dat
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) data
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ImageDisplay$$_PictureFrame.class' \
-	'ImageDisplay$$1.class'
+	doc
+
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jars
-
+install: all jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

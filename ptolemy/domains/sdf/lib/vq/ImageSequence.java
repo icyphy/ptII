@@ -40,6 +40,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -173,7 +174,13 @@ public class ImageSequence extends Source {
                 _debug("file = " + fileName + "\n");
 
                 if (fileName != null) {
-                    URL dataurl = getClass().getResource(fileName);
+		    URL dataurl = getClass().getClassLoader()
+			.getResource(fileName);
+		    if (dataurl == null) {
+			throw new FileNotFoundException("Failed to find '"
+							+ fileName + "' as "
+							+ "a resource");
+		    }
                     source = dataurl.openStream();
                 }
 

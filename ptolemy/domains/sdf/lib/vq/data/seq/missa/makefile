@@ -1,10 +1,10 @@
-# Makefile for SDF domain VQ actors library
+# Makefile for SDF domain VQ actors data seq missa directory
 #
 # @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/lib/vq
+ME =		ptolemy/domains/sdf/lib/vq/data/seq/missa
 
-DIRS =		test data
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,41 +43,58 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vq
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	missa
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	HTVQEncode.java \
-	ImageContrast.java \
-	ImageDisplay.java \
-	ImagePartition.java \
-	ImageSequence.java \
-	ImageUnpartition.java \
-	PSNR.java \
-	VQDecode.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	sdfvqentities.xml
+	missa000.qcf \
+	missa001.qcf \
+	missa002.qcf \
+	missa003.qcf \
+	missa004.qcf \
+	missa005.qcf \
+	missa006.qcf \
+	missa007.qcf \
+	missa008.qcf \
+	missa009.qcf \
+	missa010.qcf \
+	missa011.qcf \
+	missa012.qcf \
+	missa013.qcf \
+	missa014.qcf \
+	missa015.qcf \
+	missa016.qcf \
+	missa017.qcf \
+	missa018.qcf \
+	missa019.qcf \
+	missa020.qcf \
+	missa021.qcf \
+	missa022.qcf \
+	missa023.qcf \
+	missa024.qcf \
+	missa025.qcf \
+	missa026.qcf \
+	missa027.qcf \
+	missa028.qcf \
+	missa029.qcf
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) data
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ImageDisplay$$_PictureFrame.class' \
-	'ImageDisplay$$1.class'
+	doc
+
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jars
-
+install: all jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
