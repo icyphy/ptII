@@ -232,7 +232,9 @@ public class InlinePortTransformer extends SceneTransformer {
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            if (stmt.containsInvokeExpr()) {
+            if (!stmt.containsInvokeExpr()) {
+                continue;
+            }
                 ValueBox box = stmt.getInvokeExprBox();
                 Value value = stmt.getInvokeExpr();
                 if (value instanceof InstanceInvokeExpr) {
@@ -305,7 +307,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                         if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.portClass)) {
+                                PtolemyUtilities.componentPortClass)) {
                             // If we are invoking a method on a port
                             // class, then attempt to get the constant
                             // value of the port.
@@ -437,7 +439,6 @@ public class InlinePortTransformer extends SceneTransformer {
                             }
                         }
                     }
-                }
             }
         }
         return doneSomething;
@@ -460,7 +461,9 @@ public class InlinePortTransformer extends SceneTransformer {
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            if (stmt.containsInvokeExpr()) {
+            if (!stmt.containsInvokeExpr()) {
+                continue;
+            }
                 ValueBox box = stmt.getInvokeExprBox();
                 Value value = stmt.getInvokeExpr();
                 if (value instanceof InstanceInvokeExpr) {
@@ -533,7 +536,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                         if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.portClass)) {
+                                PtolemyUtilities.componentPortClass)) {
                             // If we are invoking a method on a port
                             // class, then attempt to get the constant
                             // value of the port.
@@ -650,7 +653,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
                             }
                         }
-                    }
+       
                 }
             }
         }

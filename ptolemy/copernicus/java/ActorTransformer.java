@@ -198,23 +198,23 @@ public class ActorTransformer extends SceneTransformer {
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
-                Unit unit = (Unit)units.next();
-                Iterator boxes = unit.getUseBoxes().iterator();
-                while (boxes.hasNext()) {
-                    ValueBox box = (ValueBox)boxes.next();
-                    Value value = box.getValue();
-                    if (value instanceof SpecialInvokeExpr) {
-                        SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                        if (PtolemyUtilities.executableInterface.declaresMethod(
+                Stmt stmt = (Stmt)units.next();
+                if (!stmt.containsInvokeExpr()) {
+                    continue;
+                }
+                ValueBox box = stmt.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof SpecialInvokeExpr) {
+                    SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+                    if (PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
-                            boolean isNonVoidMethod =
-                                r.getMethod().getName().equals("prefire") ||
-                                r.getMethod().getName().equals("postfire");
-                            if (isNonVoidMethod && unit instanceof AssignStmt) {
-                                box.setValue(IntConstant.v(1));
-                            } else {
-                                body.getUnits().remove(unit);
-                            }
+                        boolean isNonVoidMethod =
+                            r.getMethod().getName().equals("prefire") ||
+                            r.getMethod().getName().equals("postfire");
+                        if (isNonVoidMethod && stmt instanceof AssignStmt) {
+                            box.setValue(IntConstant.v(1));
+                        } else {
+                            body.getUnits().remove(stmt);
                         }
                     }
                 }
@@ -228,7 +228,7 @@ public class ActorTransformer extends SceneTransformer {
         // from TypedAtomicActor, we need to implement all of these methods.
         if (!theClass.declaresMethodByName("preinitialize")) {
             SootMethod method = new SootMethod("preinitialize",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -237,7 +237,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("initialize")) {
             SootMethod method = new SootMethod("initialize",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -246,7 +246,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("prefire")) {
             SootMethod method = new SootMethod("prefire",
-                    new LinkedList(), BooleanType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, BooleanType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -256,7 +256,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("fire")) {
             SootMethod method = new SootMethod("fire",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -265,7 +265,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("postfire")) {
             SootMethod method = new SootMethod("postfire",
-                    new LinkedList(), BooleanType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, BooleanType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -275,7 +275,7 @@ public class ActorTransformer extends SceneTransformer {
         }
         if (!theClass.declaresMethodByName("wrapup")) {
             SootMethod method = new SootMethod("wrapup",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
             method.setActiveBody(body);
@@ -296,19 +296,20 @@ public class ActorTransformer extends SceneTransformer {
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
-                if (stmt.containsInvokeExpr()) {
-                    InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                    // Avoid inlining recursive methods.
-                    if (r.getMethod() != method && 
-                         r.getMethod().getDeclaringClass().equals(theClass)) {
-                        // FIXME: What if more than one method could be called?
-                        SiteInliner.inlineSite(r.getMethod(), stmt, method);
-                    }
-                    // Inline other NamedObj methods here, too..
-
-                    // FIXME: avoid inlining method calls 
-                    // that don't have tokens in them 
+                if (!stmt.containsInvokeExpr()) {
+                    continue;
                 }
+                InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
+                // Avoid inlining recursive methods.
+                if (r.getMethod() != method && 
+                        r.getMethod().getDeclaringClass().equals(theClass)) {
+                    // FIXME: What if more than one method could be called?
+                    SiteInliner.inlineSite(r.getMethod(), stmt, method);
+                }
+                // Inline other NamedObj methods here, too..
+                
+                // FIXME: avoid inlining method calls 
+                // that don't have tokens in them 
             }
         }
     }
@@ -412,6 +413,8 @@ public class ActorTransformer extends SceneTransformer {
                     entity, body.getThisLocal(),
                     entity, body.getThisLocal(), 
                     entityInstanceClass);
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
         }
         
         {
@@ -433,6 +436,8 @@ public class ActorTransformer extends SceneTransformer {
                     entity, body.getThisLocal(), 
                     entityInstanceClass, 
                     notConstantAttributeList);
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
         }
         
         // Reinitialize the hierarchy, since we've added classes.
@@ -562,7 +567,7 @@ public class ActorTransformer extends SceneTransformer {
         // populate the fire method.
         {
             SootMethod fireMethod = new SootMethod("fire",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(fireMethod);
             JimpleBody body = Jimple.v().newBody(fireMethod);
             fireMethod.setActiveBody(body);
@@ -587,7 +592,7 @@ public class ActorTransformer extends SceneTransformer {
                     // Create an if statement.
                     // 
                     Local portLocal = Jimple.v().newLocal("port",
-                            PtolemyUtilities.portType);
+                            PtolemyUtilities.componentPortType);
                     body.getLocals().add(portLocal);
                     SootField portField = entityInstanceClass.getFieldByName(
                             StringUtilities.sanitizeName(name));
@@ -647,7 +652,7 @@ public class ActorTransformer extends SceneTransformer {
             // send the computed token
             String name = "output";
             Local portLocal = Jimple.v().newLocal("port",
-                    PtolemyUtilities.portType);
+                    PtolemyUtilities.componentPortType);
             body.getLocals().add(portLocal);
 
             SootField portField = entityInstanceClass.getFieldByName(name);
@@ -673,7 +678,7 @@ public class ActorTransformer extends SceneTransformer {
 
         {
             SootMethod preinitializeMethod = new SootMethod("preinitialize",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(preinitializeMethod);
             JimpleBody body = Jimple.v().newBody(preinitializeMethod);
             preinitializeMethod.setActiveBody(body);
@@ -685,6 +690,8 @@ public class ActorTransformer extends SceneTransformer {
                     entity, body.getThisLocal(),
                     entity, body.getThisLocal(), 
                     entityInstanceClass);
+            LocalNameStandardizer.v().transform(body, "at.lns");
+            LocalSplitter.v().transform(body, "at.ls");
         }
 
         // Remove super calls to the executable interface.
@@ -781,7 +788,7 @@ public class ActorTransformer extends SceneTransformer {
 
         {
             SootMethod preinitializeMethod = new SootMethod("preinitialize",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(preinitializeMethod);
             JimpleBody body = Jimple.v().newBody(preinitializeMethod);
             preinitializeMethod.setActiveBody(body);
@@ -807,7 +814,7 @@ public class ActorTransformer extends SceneTransformer {
         {
             System.out.println("create initialize()");
             SootMethod initializeMethod = new SootMethod("initialize",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(initializeMethod);
             JimpleBody body = Jimple.v().newBody(initializeMethod);
             initializeMethod.setActiveBody(body);
@@ -835,7 +842,7 @@ public class ActorTransformer extends SceneTransformer {
         {
             System.out.println("create fire()");
             SootMethod fireMethod = new SootMethod("fire",
-                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, VoidType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(fireMethod);
             JimpleBody body = Jimple.v().newBody(fireMethod);
             fireMethod.setActiveBody(body);
@@ -860,7 +867,7 @@ public class ActorTransformer extends SceneTransformer {
                     // Create an if statement.
                     // 
                     Local portLocal = Jimple.v().newLocal("port",
-                            PtolemyUtilities.portType);
+                            PtolemyUtilities.componentPortType);
                     body.getLocals().add(portLocal);
                     SootField portField = entityInstanceClass.getFieldByName(
                             StringUtilities.sanitizeName(name));
@@ -1161,7 +1168,7 @@ public class ActorTransformer extends SceneTransformer {
         {
             System.out.println("create postfire()");
             SootMethod postfireMethod = new SootMethod("postfire",
-                    new LinkedList(), BooleanType.v(), Modifier.PUBLIC);
+                    Collections.EMPTY_LIST, BooleanType.v(), Modifier.PUBLIC);
             entityInstanceClass.addMethod(postfireMethod);
             JimpleBody body = Jimple.v().newBody(postfireMethod);
             postfireMethod.setActiveBody(body);
@@ -1267,7 +1274,7 @@ public class ActorTransformer extends SceneTransformer {
                 if(destination instanceof TypedIOPort) {
                     // send the computed token
                     Local portLocal = Jimple.v().newLocal("port",
-                            PtolemyUtilities.portType);
+                            PtolemyUtilities.componentPortType);
                     body.getLocals().add(portLocal);
                     
                     SootField portField = 
@@ -1576,43 +1583,45 @@ public class ActorTransformer extends SceneTransformer {
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
-                if (stmt.containsInvokeExpr()) {
-                    InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                    // This is steve...
-                    // This is steve gacking at the ugliest code
-                    // he's written in a while.   See steve gack.
-                    // gack steve, gack.
-                    // This is Christopher.
-                    // This is Christopher gacking on Steve's code
-                    // gack Christopher, gack.
-                    if (r.getMethod().getName().equals("attributeChanged") ||
-                            r.getMethod().getName().equals("setExpression") ||
-                            r.getMethod().getName().equals("setToken") ||
+                if (!stmt.containsInvokeExpr()) {
+                    continue;
+                }
+                InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
+                // This is steve...
+                // This is steve gacking at the ugliest code
+                // he's written in a while.   See steve gack.
+                // gack steve, gack.
+                // This is Christopher.
+                // This is Christopher gacking on Steve's code
+                // gack Christopher, gack.
+                if (r.getMethod().getName().equals("attributeChanged") ||
+                        r.getMethod().getName().equals("setExpression") ||
+                        r.getMethod().getName().equals("setToken") ||
+                        r.getMethod().getName()
+                        .equals("setTokenConsumptionRate") ||
+                        r.getMethod().getName()
+                        .equals("setTokenProductionRate") ||
                             r.getMethod().getName()
-                            .equals("setTokenConsumptionRate") ||
-                            r.getMethod().getName()
-                            .equals("setTokenProductionRate") ||
-                            r.getMethod().getName()
-                            .equals("setTokenInitProduction")) {
-                        body.getUnits().remove(stmt);
-                    }
-                    if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
-                        SootClass variableClass =
-                            r.getMethod().getDeclaringClass();
-                        SootMethod constructorWithoutToken =
-                            variableClass.getMethod(
-                                    PtolemyUtilities.variableConstructorWithoutToken.getSubSignature());
-                        // Replace the three-argument
+                        .equals("setTokenInitProduction")) {
+                    body.getUnits().remove(stmt);
+                }
+                if (r.getMethod().getSubSignature().equals(
+                            PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
+                    SootClass variableClass =
+                        r.getMethod().getDeclaringClass();
+                    SootMethod constructorWithoutToken =
+                        variableClass.getMethod(
+                                PtolemyUtilities.variableConstructorWithoutToken.getSubSignature());
+                    // Replace the three-argument
                         // constructor with a two-argument
                         // constructor.  We do this for
                         // several reasons:
-                        
+                    
                         // 1) The assignment is
                         // redundant...  all parameters
                         // are initialized with the
                         // appropriate value.
-                        
+                    
                         // 2) The type of the token is
                         // often wrong for polymorphic
                         // actors.
@@ -1631,7 +1640,6 @@ public class ActorTransformer extends SceneTransformer {
                                         constructorWithoutToken,
                                         r.getArg(0),
                                         r.getArg(1)));
-                    }
                 }
             }
         }
@@ -1982,7 +1990,7 @@ public class ActorTransformer extends SceneTransformer {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
         Local tempPortLocal = Jimple.v().newLocal("tempPort",
-                RefType.v(PtolemyUtilities.portClass));
+                RefType.v(PtolemyUtilities.componentPortClass));
         body.getLocals().add(tempPortLocal);
 
 	for (Iterator ports = entity.portList().iterator();

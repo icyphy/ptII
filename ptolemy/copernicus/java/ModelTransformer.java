@@ -66,6 +66,8 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.toolkits.scalar.LocalSplitter;
+import soot.toolkits.graph.*;
+import soot.toolkits.scalar.*;
 
 import soot.dava.*;
 import soot.toolkits.graph.*;
@@ -188,6 +190,7 @@ public class ModelTransformer extends SceneTransformer {
 
         _modelClass = ActorTransformer.createCompositeActor(
                 _model, modelClassName, options);
+
     }
         /*
         EntitySootClass modelClass =
@@ -267,7 +270,7 @@ public class ModelTransformer extends SceneTransformer {
           clinitMethod = modelClass.getMethodByName("<clinit>");
           clinitBody = clinitMethod.retrieveActiveBody();
           } else {
-          clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+          clinitMethod = new SootMethod("<clinit>", Collections.EMPTY_LIST,
           VoidType.v(), Modifier.PUBLIC | Modifier.STATIC);
           modelClass.addMethod(clinitMethod);
           clinitBody = Jimple.v().newBody(clinitMethod);
@@ -652,7 +655,7 @@ public class ModelTransformer extends SceneTransformer {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
         Local tempPortLocal = Jimple.v().newLocal("tempPort",
-                RefType.v(PtolemyUtilities.portClass));
+                RefType.v(PtolemyUtilities.componentPortClass));
         body.getLocals().add(tempPortLocal);
 
 	for (Iterator ports = entity.portList().iterator();
@@ -887,10 +890,11 @@ public class ModelTransformer extends SceneTransformer {
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
-                Unit unit = (Unit)units.next();
-                Iterator boxes = unit.getUseBoxes().iterator();
-                while (boxes.hasNext()) {
-                    ValueBox box = (ValueBox)boxes.next();
+                Stmt stmt = (Stmt)units.next();
+                if (!stmt.containsInvokeExpr()) {
+                    continue;
+                }
+                    ValueBox box = stmt.getInvokeExprBox();
                     Value value = box.getValue();
                     if (value instanceof SpecialInvokeExpr) {
                         SpecialInvokeExpr r = (SpecialInvokeExpr)value;
@@ -900,12 +904,11 @@ public class ModelTransformer extends SceneTransformer {
                                     r.getMethod().getName().equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
                             } else {
-                                body.getUnits().remove(unit);
+                                body.getUnits().remove(stmt);
                             }
                         } else if (!r.getMethod().getName().equals("<init>")) {
                             System.out.println("superCall:" + r);
                         }
-                    }
                 }
             }
         }

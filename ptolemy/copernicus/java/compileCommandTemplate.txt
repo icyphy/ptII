@@ -19,7 +19,7 @@
  -p wjtp.ffpt targetPackage:@targetPackage@
  -p wjtp.idt targetPackage:@targetPackage@
  -p wjtp.iat targetPackage:@targetPackage@
- -p wjtp.ipt debug,targetPackage:@targetPackage@
+ -p wjtp.ipt targetPackage:@targetPackage@
  -p wjtp.itt targetPackage:@targetPackage@
  -p wjtp.ttn targetPackage:@targetPackage@
  -p wjtp.ts targetPackage:@targetPackage@

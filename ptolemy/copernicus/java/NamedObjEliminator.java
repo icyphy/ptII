@@ -128,7 +128,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             + "from class " + theClass );
                     throw ex;
                 }
-                method.setParameterTypes(new LinkedList());
+                method.setParameterTypes(Collections.EMPTY_LIST);
                 modifiedConstructorClassList.add(theClass);
 
                 // Dance so that indexes in the Scene are properly updated.
@@ -141,40 +141,34 @@ public class NamedObjEliminator extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-
-                    for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
-
+                    if(unit.containsInvokeExpr()) {
+                        ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-                        Type type = value.getType();
-
-                        // Fix super.<init> calls. constructor...
                         if (value instanceof SpecialInvokeExpr) {
+                            // Fix super.<init> calls. constructor...
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             if (expr.getBase().equals(body.getThisLocal()) &&
                                     expr.getMethod().getName().equals("<init>")) {
                                 System.out.println("replacing constructor = "
                                         + unit + " in method " + method);
-
+                                
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                        (Local)expr.getBase(),
-                                        PtolemyUtilities.objectClass.getMethod("void <init>()"),
-                                        new LinkedList()));
-                                break;
+                                                     (Local)expr.getBase(),
+                                                     PtolemyUtilities.objectConstructor,
+                                                     Collections.EMPTY_LIST));
                             }
                         }
-                        // Parameter values are null.
+                    } else if(unit instanceof IdentityStmt) {
+                        IdentityStmt identityStmt = (IdentityStmt)unit;
+                        Value value = identityStmt.getRightOp();
                         if (value instanceof ParameterRef) {
-                            IdentityStmt identityStmt = (IdentityStmt)unit;
+                            // Parameter values are null.
                             body.getUnits().swapWith(identityStmt,
                                     Jimple.v().newAssignStmt(
                                             identityStmt.getLeftOp(),
-
                                             NullConstant.v()));
                         }
-
                     }
                 }
             }
@@ -191,53 +185,47 @@ public class NamedObjEliminator extends SceneTransformer {
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-
+                
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
+                
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-
-                    // If any box is removable, then remove the statement.
-                    for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
-
+                    if (unit.containsInvokeExpr()) {
+                        ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-                        Type type = value.getType();
-
-                        // If we're constructing one of our actor classes,
-                        // then switch to the object constructor.
+    
                         if (value instanceof SpecialInvokeExpr) {
+                            // If we're constructing one of our actor classes,
+                            // then switch to the object constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
                             if (expr.getMethod().getName().equals("<init>") && 
-                                    modifiedConstructorClassList.contains(declaringClass)) {
+                                    modifiedConstructorClassList.contains(
+                                            declaringClass)) {
                                 System.out.println(
                                         "replacing constructor invocation = "
                                         + unit + " in method " + method);
 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                        (Local)expr.getBase(),
-                                        declaringClass.getMethod("void <init>()"),
-                                        new LinkedList()));
-                                break;
+                                     (Local)expr.getBase(),
+                                     declaringClass.getMethod("void <init>()"),
+                                     Collections.EMPTY_LIST));
                             }
-                        }
-                        // remove attachText
-                        if (value instanceof InvokeExpr) {
+                        } else if (value instanceof InvokeExpr) {
+                            // remove attachText
                             InvokeExpr expr = (InvokeExpr)value;
                             if (expr.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.attachTextMethod.getSubSignature())) {
                                 body.getUnits().remove(unit);
-                                break;
-                            }
-                            if (expr.getMethod().getName().equals("_debug")) {
+                            } else if (expr.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.setNameMethod.getSubSignature())) {
                                 body.getUnits().remove(unit);
-                                break;
+                            } else if (expr.getMethod().getName().equals("_debug")) {
+                                body.getUnits().remove(unit);
                             }
                             // Inline namedObj methods on the
                             // attribute.
@@ -260,27 +248,99 @@ public class NamedObjEliminator extends SceneTransformer {
                                         _model.getName()));
                             }
                         }
-                        // Remove other remaining method invocations.
-                        // &&
-                        //        SootUtilities.derivesFrom(theClass,
-                        //                PtolemyUtilities.actorClass)
-                        /* if (value instanceof InvokeExpr) {
-                           InvokeExpr expr = (InvokeExpr)value;
-                           SootClass methodClass =
-                           expr.getMethod().getDeclaringClass();
-                           if (SootUtilities.derivesFrom(methodClass,
-                           PtolemyUtilities.namedObjClass)) {
-                           System.out.println(
-                           "removing namedobj call = " + unit
-                           + " in method " + method);
-                           body.getUnits().remove(unit);
-                           break;
-                           }
-                           }*/
+
+
+
+                         
+                 //    // If any box is removable, then remove the statement.
+//                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
+//                          boxes.hasNext();) {
+//                         ValueBox box = (ValueBox)boxes.next();
+
+//                         Value value = box.getValue();
+//                         Type type = value.getType();
+
+//                         // If we're constructing one of our actor classes,
+//                         // then switch to the object constructor.
+//                         if (value instanceof SpecialInvokeExpr) {
+//                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+//                             SootClass declaringClass =
+//                                 expr.getMethod().getDeclaringClass();
+//                             if (expr.getMethod().getName().equals("<init>") && 
+//                                     modifiedConstructorClassList.contains(
+//                                             declaringClass)) {
+//                                 System.out.println(
+//                                         "replacing constructor invocation = "
+//                                         + unit + " in method " + method);
+
+//                                 // Replace with zero arg object constructor.
+//                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
+//                                      (Local)expr.getBase(),
+//                                      declaringClass.getMethod("void <init>()"),
+//                                      Collections.EMPTY_LIST));
+//                                 break;
+//                             }
+//                         }
+//                         // remove attachText
+//                         if (value instanceof InvokeExpr) {
+//                             InvokeExpr expr = (InvokeExpr)value;
+//                             if (expr.getMethod().getSubSignature().equals(
+//                                     PtolemyUtilities.attachTextMethod.getSubSignature())) {
+//                                 body.getUnits().remove(unit);
+//                                 break;
+//                             }
+//                             if (expr.getMethod().getSubSignature().equals(
+//                                     PtolemyUtilities.setNameMethod.getSubSignature())) {
+//                                 body.getUnits().remove(unit);
+//                                 break;
+//                             }
+//                             if (expr.getMethod().getName().equals("_debug")) {
+//                                 body.getUnits().remove(unit);
+//                                 break;
+//                             }
+//                             // Inline namedObj methods on the
+//                             // attribute.
+//                             // FIXME: This should do the
+//                             // whole traceback business to ensure that
+//                             // we are calling the methods on the
+//                             // toplevel object.  This assumes we've
+//                             // already removed other namedobj methods
+//                             // on the object objects already.  See
+//                             // InlineParameterTransformer and
+//                             // InlinePortTransformer
+//                             if (expr.getMethod().getSubSignature().equals(
+//                                     PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+//                                 box.setValue(StringConstant.v(
+//                                         _model.getFullName()));
+//                             }
+//                             if (expr.getMethod().getSubSignature().equals(
+//                                     PtolemyUtilities.getNameMethod.getSubSignature())) {
+//                                 box.setValue(StringConstant.v(
+//                                         _model.getName()));
+//                             }
+//                         }
+//                         // Remove other remaining method invocations.
+//                         // &&
+//                         //        SootUtilities.derivesFrom(theClass,
+//                         //                PtolemyUtilities.actorClass)
+//                         /* if (value instanceof InvokeExpr) {
+//                            InvokeExpr expr = (InvokeExpr)value;
+//                            SootClass methodClass =
+//                            expr.getMethod().getDeclaringClass();
+//                            if (SootUtilities.derivesFrom(methodClass,
+//                            PtolemyUtilities.namedObjClass)) {
+//                            System.out.println(
+//                            "removing namedobj call = " + unit
+//                            + " in method " + method);
+//                            body.getUnits().remove(unit);
+//                            break;
+//                            }
+//                            }*/
                     }
                 }
             }
         }
+
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
 
@@ -350,8 +410,7 @@ public class NamedObjEliminator extends SceneTransformer {
                     SootUtilities.derivesFrom(refClass,
                             PtolemyUtilities.relationClass) ||
                     SootUtilities.derivesFrom(refClass,
-                            Scene.v().loadClassAndSupport(
-                                    "ptolemy.kernel.Port"))) {
+                            PtolemyUtilities.portClass)) {
                 return true;
             }
         }

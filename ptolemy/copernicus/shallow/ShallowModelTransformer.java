@@ -432,7 +432,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	    Local portLocal;
 
             portLocal = Jimple.v().newLocal("port",
-                    PtolemyUtilities.portType);
+                    PtolemyUtilities.componentPortType);
             body.getLocals().add(portLocal);
 
             if (createdSet.contains(port.getFullName())) {
@@ -447,7 +447,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
-                                PtolemyUtilities.portType)));
+                                PtolemyUtilities.componentPortType)));
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
@@ -482,13 +482,13 @@ public class ShallowModelTransformer extends SceneTransformer {
                 // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(local,
-                                PtolemyUtilities.portType)));
+                                PtolemyUtilities.componentPortType)));
 
             }
 
             _portLocalMap.put(port, portLocal);
 	    SootUtilities.createAndSetFieldFromLocal(body,
-                    portLocal, modelClass, PtolemyUtilities.portType,
+                    portLocal, modelClass, PtolemyUtilities.componentPortType,
                     fieldName);
 	}
     }

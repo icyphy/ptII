@@ -139,6 +139,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         _options = options;
         _entityToFieldMap = new HashMap();
+        _fieldToEntityMap = new HashMap();
         _classToObjectMap = new HashMap();
 
         _createEntityInstanceFields(ModelTransformer.getModelClass(),
@@ -188,11 +189,30 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                             Jimple.v().newStaticFieldRef((SootField)
                                     _entityToFieldMap.get(_model));
                         box.setValue(newFieldRef);
+                    } else if (r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getEntityMethod.getSubSignature())) {
+                        Value nameValue = r.getArg(0);
+                        if (Evaluator.isValueConstantValued(nameValue)) {
+                            StringConstant nameConstant =
+                                (StringConstant)
+                                Evaluator.getConstantValueOf(nameValue);
+                            String name = nameConstant.value;
+
+                            Value newFieldRef = 
+                                _getEntityMethodReplacementFieldRef(
+                                        (Local)r.getBase(), name,
+                                        unit, localDefs);
+                            box.setValue(newFieldRef); 
+                        } else {
+                            String string = "Entity cannot be " +
+                                "statically determined";
+                            throw new RuntimeException(string);
+                        }
+                      
                     }
                 }
             }
-            TypeAssigner.v().transform(
-                    body, "ta", "");
+            TypeAssigner.v().transform(body, "ta", "");
         }   
 
         if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
@@ -241,6 +261,27 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
     }
 
+    private FieldRef _getEntityMethodReplacementFieldRef(Local baseLocal,
+            String name, Unit unit, LocalDefs localDefs) {
+          
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        System.out.println("object = " + object);
+        if (object != null) {
+            // Then we are dealing with a getEntity call on one of the
+            // classes we are generating.
+            Entity entity = (Entity)((CompositeEntity)object).getEntity(name);
+            return getFieldRefForEntity(entity);
+        } else {
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            CompositeEntity container = (CompositeEntity) _fieldToEntityMap.get(field);
+            return getFieldRefForEntity(container.getEntity(name));
+        }
+    }
+
     /** Attempt to determine the constant value of the given local,
      *  which is assumed to have a variable type.  Walk backwards
      *  through all the possible places that the local may have been
@@ -285,6 +326,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
 
         field.addTag(new ValueTag(actor));
         _entityToFieldMap.put(actor, field);
+        _fieldToEntityMap.put(field, actor);
       
         // Add code to the end of each class initializer to set the
         // instance field.
@@ -324,6 +366,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
     private CompositeActor _model;
     private Map _options;
     private static Map _entityToFieldMap;
+    private static Map _fieldToEntityMap;
     private Map _classToObjectMap;
 }
 

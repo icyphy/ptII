@@ -295,7 +295,7 @@ public class HSPortInliner implements PortInliner {
             clinitMethod = _modelClass.getMethodByName("<clinit>");
             clinitBody = clinitMethod.retrieveActiveBody();
         } else {
-            clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+            clinitMethod = new SootMethod("<clinit>", Collections.EMPTY_LIST,
                     VoidType.v(), Modifier.PUBLIC | Modifier.STATIC);
             _modelClass.addMethod(clinitMethod);
             clinitBody = Jimple.v().newBody(clinitMethod);

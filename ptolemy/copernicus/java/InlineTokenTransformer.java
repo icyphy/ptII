@@ -153,10 +153,11 @@ public class InlineTokenTransformer extends SceneTransformer {
                 
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while (boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
+                    Stmt stmt = (Stmt)units.next();
+                    if (!stmt.containsInvokeExpr()) {
+                        continue;
+                    }
+                        ValueBox box = stmt.getInvokeExprBox();
                         Value value = box.getValue();
                         if (value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
@@ -166,8 +167,8 @@ public class InlineTokenTransformer extends SceneTransformer {
                             if (r.getMethod().getName().equals("<init>")) {
                                 continue;
                             } 
-                            doneSomething |= _replaceTokenInvocation(actor, body, unit, box, r);
-                        }
+                            doneSomething |= _replaceTokenInvocation(actor, body, stmt, box, r);
+                   
                     }
                 }
             }

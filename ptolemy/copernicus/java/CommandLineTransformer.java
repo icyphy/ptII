@@ -271,13 +271,15 @@ public class CommandLineTransformer extends SceneTransformer {
 
             for (Iterator units = body.getUnits().snapshotIterator();
                  units.hasNext();) {
-                Unit unit = (Unit)units.next();
-                for (Iterator boxes = unit.getUseBoxes().iterator();
-                     boxes.hasNext();) {
-                    ValueBox box = (ValueBox)boxes.next();
-                    if (box.getValue() instanceof InstanceInvokeExpr) {
+                Stmt stmt = (Stmt)units.next();
+                if (!stmt.containsInvokeExpr()) {
+                    continue;
+                }
+                    ValueBox box = stmt.getInvokeExprBox();
+                    Value value = box.getValue();
+                    if (value instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr expr =
-                            (InstanceInvokeExpr)box.getValue();
+                            (InstanceInvokeExpr)value;
                         if (expr.getMethod().equals(mainStartRunMethod)) {
                             // Replace the start run method call
                             // with code to iterate the model.
@@ -296,17 +298,16 @@ public class CommandLineTransformer extends SceneTransformer {
                                             Jimple.v().newInstanceFieldRef(
                                                     body.getThisLocal(),
                                                     modelField)),
-                                    unit);
+                                    stmt);
 
                             _insertIterateCalls(body,
-                                    unit,
+                                    stmt,
                                     modelClass,
                                     modelLocal,
                                     options);
-                            body.getUnits().remove(unit);
+                            body.getUnits().remove(stmt);
                         }
                     }
-                }
             }
         }
 

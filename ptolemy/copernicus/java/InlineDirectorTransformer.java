@@ -83,11 +83,7 @@ import soot.toolkits.scalar.LocalSplitter;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeResolver;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer
@@ -217,7 +213,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the preinitialize method
             SootMethod classMethod = new SootMethod("preinitialize",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -255,7 +251,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the initialize method
             SootMethod classMethod = new SootMethod("initialize",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -291,7 +287,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the prefire method
             SootMethod classMethod = new SootMethod("prefire",
-                    new LinkedList(), BooleanType.v(),
+                    Collections.EMPTY_LIST, BooleanType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -332,7 +328,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the fire method
             SootMethod classMethod = new SootMethod("fire",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -538,7 +534,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the postfire method
             SootMethod classMethod = new SootMethod("postfire",
-                    new LinkedList(), BooleanType.v(),
+                    Collections.EMPTY_LIST, BooleanType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -579,7 +575,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the wrapup method
             SootMethod classMethod = new SootMethod("wrapup",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -627,7 +623,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the preinitialize method
             SootMethod classMethod = new SootMethod("preinitialize",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -675,7 +671,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the initialize method
             SootMethod classMethod = new SootMethod("initialize",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -711,7 +707,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the postfire method
             SootMethod classMethod = new SootMethod("prefire",
-                    new LinkedList(), BooleanType.v(),
+                    Collections.EMPTY_LIST, BooleanType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -734,7 +730,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the fire method
             SootMethod classMethod = new SootMethod("fire",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -1049,7 +1045,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the postfire method
             SootMethod classMethod = new SootMethod("postfire",
-                    new LinkedList(), BooleanType.v(),
+                    Collections.EMPTY_LIST, BooleanType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -1072,7 +1068,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         {
             // populate the wrapup method
             SootMethod classMethod = new SootMethod("wrapup",
-                    new LinkedList(), VoidType.v(),
+                    Collections.EMPTY_LIST, VoidType.v(),
                     Modifier.PUBLIC);
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);

@@ -54,6 +54,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
@@ -114,11 +115,21 @@ public class InlineParameterTransformer extends SceneTransformer {
 
         boolean debug = Options.getBoolean(options, "debug");
 
+        // Determine which parameters have a constant value.
+        ConstVariableModelAnalysis constantAnalysis;
+        try {
+            constantAnalysis = new ConstVariableModelAnalysis(_model);
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
         // For every variable and settable attribute in the model, create a
         // field that has the value of that attributes.
+        // If the variable is constant, then determine its constant value,
+        // and tag the generated field with that value.  This will be used
+        // later by the token inliner...
         _createTokenAndExpressionFields(
                 ModelTransformer.getModelClass(), _model, _model,
-                attributeToValueFieldMap, debug);
+                attributeToValueFieldMap, constantAnalysis, debug);
 
         _replaceGetTokenCalls(ModelTransformer.getModelClass(), 
                 _model, attributeToValueFieldMap, debug);
@@ -148,7 +159,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                         _phaseName + ".lns");
             }
         }        
-        if(actor instanceof CompositeActor) {
+        if(actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
             CompositeActor model = (CompositeActor)actor;
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -179,7 +190,9 @@ public class InlineParameterTransformer extends SceneTransformer {
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
-            if (stmt.containsInvokeExpr()) {
+            if (!stmt.containsInvokeExpr()) {
+                continue;
+            }
                 ValueBox box = stmt.getInvokeExprBox();
                 Value value = stmt.getInvokeExpr();
                 if (value instanceof InstanceInvokeExpr) {
@@ -371,11 +384,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     doneSomething = true;
                                 } else if (r.getMethod().getName().equals("setToken")) {
                                     if (debug) System.out.println("Replacing setToken on Variable");
-                                    // Call attribute changed AFTER we set the token.
-                                    PtolemyUtilities.callAttributeChanged(
-                                            (Local)r.getBase(), theClass, method, body,
-                                            body.getUnits().getSuccOf(stmt));
-
                                     // replace the entire statement
                                     // (which must be an invokeStmt anyway)
                                     // with an assignment to the field of the first argument.
@@ -383,11 +391,43 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     if (tokenField == null) {
                                         throw new RuntimeException("No tokenField found for attribute " + attribute);
                                     }
-
-                                    body.getUnits().swapWith(stmt,
+                                    
+                                    Local tokenLocal = Jimple.v().newLocal("convertedToken",
+                                            tokenField.getType());
+                                    body.getLocals().add(tokenLocal);
+                                    // Convert the token to the type of the attribute.
+                                    Local typeLocal = PtolemyUtilities.buildConstantTypeLocal(body,
+                                            stmt, ((Variable)attribute).getType());
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    tokenLocal,
+                                                    Jimple.v().newInterfaceInvokeExpr(
+                                                            typeLocal,
+                                                            PtolemyUtilities.typeConvertMethod,
+                                                            r.getArg(0))),
+                                            stmt);
+                                                                        
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    tokenLocal,
+                                                    Jimple.v().newCastExpr(
+                                                            tokenLocal,
+                                                            tokenField.getType())),
+                                            stmt);
+                                    
+                                    body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     Jimple.v().newStaticFieldRef(tokenField),
-                                                    r.getArg(0)));
+                                                    tokenLocal),
+                                            stmt);
+
+                                    // Call attribute changed AFTER we set the token.
+                                    PtolemyUtilities.callAttributeChanged(
+                                            (Local)r.getBase(), theClass, method, body,
+                                            stmt);
+
+                                    // remove the old call.
+                                    body.getUnits().remove(stmt);
                                     doneSomething = true;
                                 } else if (r.getMethod().getSubSignature().equals(
                                         PtolemyUtilities.getExpressionMethod.getSubSignature())) {
@@ -488,7 +528,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                               }
                             */
                         }
-                    }
                 }
             }
         }
@@ -586,7 +625,8 @@ public class InlineParameterTransformer extends SceneTransformer {
     // the token or expression that that field contains.
     private void _createTokenAndExpressionFields(SootClass theClass,
             NamedObj context, NamedObj container,
-            Map attributeToValueFieldMap, boolean debug) {
+            Map attributeToValueFieldMap, 
+            ConstVariableModelAnalysis constantAnalysis, boolean debug) {
         /*   SootClass tokenClass =
              Scene.v().loadClassAndSupport("ptolemy.data.Token");
              Type tokenType = RefType.v(tokenClass);*/
@@ -617,18 +657,30 @@ public class InlineParameterTransformer extends SceneTransformer {
                     ptolemy.data.type.Type type = variable.getType();
                     Type tokenType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
+                    
+                    boolean isConstant = constantAnalysis.getConstVariables(
+                            (Entity)context).contains(attribute);
+                    int modifier;
+                    if(isConstant) {
+                        modifier = Modifier.PUBLIC |
+                            Modifier.STATIC |
+                            Modifier.FINAL;
+                    } else {
+                        modifier = Modifier.PUBLIC | Modifier.STATIC;
+                    }
+                   
                     field = new SootField(
                             fieldName + "_CGToken",
                             tokenType,
-                            Modifier.PRIVATE |
-                            Modifier.STATIC |
-                            Modifier.FINAL);
+                            modifier);
                     theClass.addField(field);
-                    try {
-                        field.addTag(new ValueTag(variable.getToken()));
-                    } catch (Exception ex) {
+                    if(isConstant) {
+                        try {
+                            field.addTag(new ValueTag(variable.getToken()));
+                        } catch (Exception ex) {
+                        }
+                        field.addTag(new TypeTag(type));
                     }
-                    field.addTag(new TypeTag(type));
                 } else {
                     field = new SootField(
                             fieldName + "_CGExpression",
@@ -643,7 +695,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 attributeToValueFieldMap.put(attribute, field);
             }
             _createTokenAndExpressionFields(theClass, context, attribute,
-                    attributeToValueFieldMap, debug);
+                    attributeToValueFieldMap, constantAnalysis, debug);
         }
 
         if(container instanceof ComponentEntity) {
@@ -653,11 +705,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                 Port port = (Port)ports.next();
                 _createTokenAndExpressionFields(
                         theClass, context, port,
-                        attributeToValueFieldMap, debug);
+                        attributeToValueFieldMap, constantAnalysis, debug);
             }
         }
 
-        if(container instanceof CompositeEntity) {
+        if(container instanceof CompositeEntity && 
+                !(container instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)container;
             // Loop over all the actor instance classes.
             for (Iterator entities = model.deepEntityList().iterator();
@@ -670,7 +723,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 
                 _createTokenAndExpressionFields(
                         entityClass, entity, entity,
-                        attributeToValueFieldMap, debug);
+                        attributeToValueFieldMap, constantAnalysis, debug);
             }
         }
     }

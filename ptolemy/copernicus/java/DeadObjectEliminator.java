@@ -112,24 +112,25 @@ public class DeadObjectEliminator extends BodyTransformer {
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
-            Unit unit = (Unit)units.next();
-            Iterator boxes = unit.getUseBoxes().iterator();
-            while (boxes.hasNext()) {
-                ValueBox box = (ValueBox)boxes.next();
+            Stmt stmt = (Stmt)units.next();
+            if (!stmt.containsInvokeExpr()) {
+                continue;
+            }
+                ValueBox box = stmt.getInvokeExprBox();
                 Value value = box.getValue();
                 if (value instanceof SpecialInvokeExpr) {
                     SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                     if (SootUtilities.derivesFrom(
                             r.getMethod().getDeclaringClass(), theClass) &&
-                            !liveLocals.getLiveLocalsAfter(unit).contains(
+                            !liveLocals.getLiveLocalsAfter(stmt).contains(
                                     r.getBase())) {
                         // Remove the initialization and the constructor.
                         // Note: This assumes a fairly tight coupling between
                         // the new and the object constructor.  This may
                         // not be true.
-                        body.getUnits().remove(unit);
+                        body.getUnits().remove(stmt);
                         for (Iterator defs = localDefs.getDefsOfAt(
-                                (Local)r.getBase(), unit).iterator();
+                                (Local)r.getBase(), stmt).iterator();
                              defs.hasNext();) {
                             Unit defUnit = (Unit)defs.next();
                             if (defUnit instanceof DefinitionStmt) {
@@ -145,7 +146,6 @@ public class DeadObjectEliminator extends BodyTransformer {
                         }
                     }
                 }
-            }
         }
     }
 

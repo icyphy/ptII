@@ -287,7 +287,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             } else {
                 SootClass fieldClass = ((RefType)type).getSootClass();
                 if(!SootUtilities.derivesFrom(fieldClass,
-                        PtolemyUtilities.portClass)) {
+                        PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for port "
                             + port.getFullName() + " but it has type " 

@@ -1549,12 +1549,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
              uses.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair)uses.next();
             Stmt defStmt = (Stmt)pair.getUnit();
-            List defList = stmt.getDefBoxes();
-            if (defList.size() == 1) {
-                Value value = ((ValueBox)defList.get(0)).getValue();
+            if(defStmt instanceof DefinitionStmt) {
+                Value value = ((DefinitionStmt)defStmt).getLeftOp();
                 if (PtolemyUtilities.isTokenType(value.getType())) {
                     set.add(value);
-                    set.addAll(_computeTokenLocalsDefinedFrom(localUses, defStmt));
+                    set.addAll(_computeTokenLocalsDefinedFrom(
+                                       localUses, defStmt));
                 }
             }
         }

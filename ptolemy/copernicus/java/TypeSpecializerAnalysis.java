@@ -557,7 +557,7 @@ public class TypeSpecializerAnalysis {
                     return returnTypeTerm;
                 }
             } else if (SootUtilities.derivesFrom(baseClass,
-                    PtolemyUtilities.portClass)) {
+                    PtolemyUtilities.componentPortClass)) {
                 // If we are invoking a method on a port.
                 TypedIOPort port = (TypedIOPort)
                     InlinePortTransformer.getPortValue(

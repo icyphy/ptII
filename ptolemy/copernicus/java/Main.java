@@ -117,7 +117,7 @@ public class Main extends KernelMain {
         // atomic) used by the model.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.mt", ModelTransformer.v(_toplevel)));
-        /*
+        
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.idt",
@@ -127,16 +127,16 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
-        
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ffet",
-                        FieldsForEntitiesTransformer.v(_toplevel)));
-      
+                
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-          
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ffet",
+                        FieldsForEntitiesTransformer.v(_toplevel)));
+        
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         Scene.v().getPack("wjtp").add(
@@ -149,7 +149,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
                         FieldsForAttributesTransformer.v(_toplevel)));
-        /*
+        
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
@@ -163,8 +163,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", ClassWriter.v()));
-        
-        /*        
+               
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -197,12 +196,6 @@ public class Main extends KernelMain {
                         InlineTokenTransformer.v(_toplevel)));
          
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot3", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot3", ClassWriter.v()));
-         */
-        /*
-        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
         
@@ -223,7 +216,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.cp",
                         new TransformerAdapter(CopyPropagator.v())));
         
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        //       _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         
         Scene.v().getPack("wjtp").add(
@@ -267,13 +260,12 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-        /*
-        
+                
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
         
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        //     _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
@@ -293,7 +285,41 @@ public class Main extends KernelMain {
                                 CastAndInstanceofEliminator.v())));
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
 
+        // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
+        // so that we don't have to pick between multiple constructors, if
+        // there are more than one.  I'm lazy and instead of trying to pick
+        // one, lets use the only one that is reachable. 
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+
+        
+        // Remove references to named objects.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ee",
+                        ExceptionEliminator.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                         new TransformerAdapter(TypeAssigner.v())));
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.smb",
+//                         StaticMethodBinder.v()));
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.noe",
+//                         NamedObjEliminator.v(_toplevel)));
+//         Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot6", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot6", ClassWriter.v()));
+        
+   /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ts",
                         TypeSpecializer.v(_toplevel)));
@@ -487,5 +513,5 @@ public class Main extends KernelMain {
                          new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.ule",
                          new TransformerAdapter(UnusedLocalEliminator.v())));
-    }
+  }
 }
