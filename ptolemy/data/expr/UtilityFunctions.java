@@ -212,6 +212,70 @@ public class UtilityFunctions {
         return StringUtilities.getProperty(propertyName);
     }
 
+    /** Load a library by first using the default platform dependent
+     *  System.loadLibrary() method.  If the library cannot be loaded
+     *  using System.loadLibrary(), then search for the library using
+     *  @{link #findFile(String)} and if the library is found, 
+     *  load it using System.load().  If the library is not found
+     *  by findFile(), then we through the initial exception.
+     *
+     *  @param library the name of the library to be loaded.  The name
+     *  should not include the platform dependent suffix.
+     */ 
+    public static void loadLibrary(String library) {
+        try {
+            System.loadLibrary(library);
+        } catch (UnsatisfiedLinkError ex) {
+            String sharedLibrarySuffix = "dll";
+            String osName = StringUtilities.getProperty("osName");
+            if (osName.startsWith("SunOS")) {
+                sharedLibrarySuffix = "so";
+            }
+	    String libraryWithSuffix = library + "." + sharedLibrarySuffix;
+	    String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
+	    if (libraryPath.equals(libraryWithSuffix)) {
+		// UnsatisfiedLinkError does not have a (String, Throwable)
+		// constructor, so we call initCause().
+
+		String userDir = "<<user.dir unknown>>";
+		try {
+		    userDir = System.getProperty("user.dir");
+		} catch (Throwable throwable) {
+		    // Ignore.
+		}
+
+		String userHome = "<<user.home unknown>>";
+		try {
+		    userHome = System.getProperty("user.home");
+		} catch (Throwable throwable) {
+		    // Ignore.
+		}
+
+		String classpath = "<<classpath unknown>>";
+		try {
+		    classpath = System.getProperty("java.class.path");
+		} catch (Throwable throwable) {
+		    // Ignore.
+		}
+		Error error =
+		    new UnsatisfiedLinkError("Did not find '"+ library
+					     + "' in path, searched "
+					     + "user.home (" + userDir
+					     + ") user.dir (" + userHome
+					     + ") and the classpath for '"
+					     + libraryPath + "', but that"
+					     + "was not found either.\n"
+					     + "classpath was: "
+					     + classpath);
+		error.initCause(ex);
+		throw error;
+	    }
+
+	    // System.loadLibrary() does not handle pathnames with separators.
+            System.load(libraryPath);
+        }
+    }
+
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
