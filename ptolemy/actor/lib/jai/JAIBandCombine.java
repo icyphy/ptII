@@ -57,7 +57,7 @@ import javax.media.jai.RenderedOp;
    0 0 1 0
    0 1 0 0
 
-   @see BandSelect
+   @see JAIBandSelect
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
