@@ -17,16 +17,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Breakpoint.java \
+	BreakpointEditor.java \
 	Watchers.java \
 	ActorWatcher.java \
-	DbgController.java \
-	DebuggerModule.java \
-	MMI/DisplayList.java \
-	MMI/BrkptEditor.java \
-	MMI/DebuggerUI.java
+	DebugController.java \
+	DebuggerFrame.java \
+	DebuggerTableau.java \
+	DisplayList.java
 
 EXTRA_SRCS = \
-	$(JSRCS)
+	$(JSRCS) $(DIRS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
