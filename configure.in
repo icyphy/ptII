@@ -284,7 +284,7 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
     AC_MSG_CHECKING([that you have the right java in your path.])
     AC_PATH_PROG(JAVA, java)
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
-	AC_MSG_RESULT([  You have the right java in your path,
+	AC_MSG_RESULT([    You have the right java in your path,
     "$PTJAVA_DIR/bin/java"
       = "$JAVA"])
     else
@@ -311,16 +311,14 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     AC_MSG_RESULT($PTJAVA_DIR/bin/javac)
     AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
-    if test -x "$JAVAC"; then
-	AC_MSG_RESULT([$JAVAC])
-    else
+    if test ! -x "$JAVAC"; then
 	AC_MSG_WARN([Failed to find the 'javac' command in your path.
         This is not necessarily a problem, since
 	'$PTJAVA_DIR/bin/javac' was found, but if you have problems,
 	then you may want to adjust your path])
     fi
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
-        AC_MSG_RESULT([  You have the right javac in your path,
+        AC_MSG_RESULT([    You have the right javac in your path,
     "$PTJAVA_DIR/bin/javac"
      = "$JAVAC"])
     else
