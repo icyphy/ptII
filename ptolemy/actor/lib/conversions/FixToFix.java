@@ -182,7 +182,7 @@ public class FixToFix extends Transformer {
         }
         output.send(0, result);
     }
-    
+
     /** Return false if the input port has no token, otherwise return
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.

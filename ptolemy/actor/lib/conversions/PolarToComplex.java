@@ -107,7 +107,7 @@ public class PolarToComplex extends TypedAtomicActor {
             = ((DoubleToken)(magnitude.get(0))).doubleValue();
         double angleValue
             = ((DoubleToken) (angle.get(0))).doubleValue();
-        
+
         double xValue = magnitudeValue * Math.cos(angleValue);
         double yValue = magnitudeValue * Math.sin(angleValue);
 

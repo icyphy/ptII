@@ -98,7 +98,7 @@ public class CartesianToComplex extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Consume exactly one token from each input port and output the
-     *  converted complex token on the output port. 
+     *  converted complex token on the output port.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
