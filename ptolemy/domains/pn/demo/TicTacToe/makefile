@@ -67,8 +67,12 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass $(PTPACKAGE).jar
+	@echo "To run all the demos, run 'make demo'"
 
 install: all
+
+demo:
+	CLASSPATH="$(CLASSPATH)" appletviewer TicTacToe.htm
 
 depend:
 	@echo "no dependencies in this directory"
