@@ -214,8 +214,14 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
                 "ptolemy.domains.fsm.modal.TransitionRefinementPort");
                 
-        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
-            "ptolemy.domains.de.kernel.DEEDirector");
+// The following change is too aggressive.
+//        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
+//            "ptolemy.domains.de.kernel.DEEDirector");
+
+        // FIXME: In case someone used DEEDirector already.
+        _classChanges.put("ptolemy.domains.de.kernel.DEEDirector",
+                "ptolemy.domains.de.kernel.DEDirector");
+
     }
     
     // Set of class names that are obsolete and should be simply
