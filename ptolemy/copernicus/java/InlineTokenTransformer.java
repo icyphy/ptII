@@ -71,9 +71,10 @@ public class InlineTokenTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static InlineTokenTransformer v(CompositeActor model) { 
         return new InlineTokenTransformer(model);
@@ -212,10 +213,11 @@ public class InlineTokenTransformer extends SceneTransformer {
         }
     }
 
-    /** Attempt to determine the constant value of the given local, which is assumed to have a token 
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the token.  If the value can be determined, then return it, otherwise
-     *  return null.
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a token type.  Walk backwards through
+     *  all the possible places that the local may have been defined
+     *  and try to symbolically evaluate the token.  If the value can
+     *  be determined, then return it, otherwise return null.
      */ 
     public static Token getTokenValue(Entity entity, Local local, 
             Unit location, LocalDefs localDefs) {
@@ -229,9 +231,11 @@ public class InlineTokenTransformer extends SceneTransformer {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                // If the local was defined by a cast, then recurse on the value we are
-                // casting from.  Note that we assume the type is acceptable.
-                return getTokenValue(entity, (Local)((CastExpr)value).getOp(), stmt, localDefs);
+                // If the local was defined by a cast, then recurse on
+                // the value we are casting from.  Note that we assume
+                // the type is acceptable.
+                return getTokenValue(entity, 
+                        (Local)((CastExpr)value).getOp(), stmt, localDefs);
             } else if(value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
