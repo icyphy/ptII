@@ -203,7 +203,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         if (_debugging) {
             _debug("Called initialize()");
         }
-        _isSubclassOfThis = true;
+        _isSubclassOfRunCompositeActor = true;
         Iterator connectedPorts = output.sinkPortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();

@@ -238,7 +238,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  Before running the complete execution, this method calls the
      *  director's transferInputs() method to read any available inputs.
      *  After running the complete execution, it calls transferOutputs().
-     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
      *  be true to call the fire method of the superclass of this.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
@@ -299,7 +299,7 @@ public class RunCompositeActor extends TypedCompositeActor {
 
     /** Initialize this actor, which in this case, does nothing.
      *  The initialization of the submodel is accomplished in fire().
-     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
      *  be true to call the initialize method of the superclass of this.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
@@ -323,7 +323,7 @@ public class RunCompositeActor extends TypedCompositeActor {
     }
 
     /** Return true, indicating that execution can continue.
-     *  The subclass of this can set the <i>_isSubclassOfThis<i> to
+     *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
      *  be true to call the postfire method of the superclass of this.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
