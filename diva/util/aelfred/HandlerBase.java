@@ -36,7 +36,6 @@ package diva.util.aelfred;
   * @version 1.1
   * @see XmlHandler
   * @see XmlException
-  * @see org.xml.sax.HandlerBase
   */
 public class HandlerBase implements XmlHandler {
 
