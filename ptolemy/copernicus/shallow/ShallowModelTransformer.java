@@ -723,12 +723,11 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                         toplevel = (CompositeEntity)
                             _reflectionParser.parse(source);
                     } catch (Exception ex) {
-                        throw new InternalErrorException("Attempt "
+                        throw new InternalErrorException(null, ex, "Attempt "
                                 + "to create an instance of "
                                 + deferredClass + " failed because "
                                 + "it does not have a Workspace "
-                                + "constructor.  Original error:\n"
-                                + ex.getMessage());
+                                + "constructor.");
                     }
                     if (object instanceof Attribute) {
                         deferredObject =
