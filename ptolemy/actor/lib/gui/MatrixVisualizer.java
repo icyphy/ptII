@@ -140,60 +140,6 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
         }
     }
 
-    //     /** Configure the object with data from the specified input source
-    //      *  (a URL) and/or textual data, assumed to be in PlotML format.
-    //      *  If this is called before the plotter has been created
-    //      *  (by calling place() or initialize()), then the configuration
-    //      *  is deferred until the plotter is created.
-    //      *  @param base The base relative to which references within the input
-    //      *   are found, or null if this is not known, or there is none.
-    //      *  @param source The input source, which specifies a URL.
-    //      *  @param text Configuration information given as text.
-    //      *  @exception Exception If the configuration source cannot be read
-    //      *   or if the configuration information is incorrect.
-    //      */
-    // //taken from Plotter.java
-    //     public void configure(URL base, String source, String text)
-    //             throws Exception {
-    //         if (plot != null) {
-    //             PlotMLParser parser = new PlotMLParser(plot);
-    //             if (source != null && !source.equals("")) {
-    //                 URL xmlFile = new URL(base, source);
-    //                 InputStream stream = xmlFile.openStream();
-    //                 parser.parse(base, stream);
-    //                 stream.close();
-    //             }
-    //             if (text != null && !text.equals("")) {
-    //                 // NOTE: Regrettably, the XML parser we are using cannot
-    //                 // deal with having a single processing instruction at the
-    //                 // outer level.  Thus, we have to strip it.
-    //                 String trimmed = text.trim();
-    //                 if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-    //                     trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
-    //                     if (trimmed.startsWith("plotml")) {
-    //                         trimmed = trimmed.substring(6).trim();
-    //                         parser.parse(base, trimmed);
-    //                     }
-    //                     // If it's not a plotml processing instruction, ignore.
-    //                 } else {
-    //                     // Data is not enclosed in a processing instruction.
-    //                     // Must have been given in a CDATA section.
-    //                     parser.parse(base, text);
-    //                 }
-    //             }
-    //         } else {
-    //             // Defer until plot has been placed.
-    //             if (_configureBases == null) {
-    //                 _configureBases = new LinkedList();
-    //                 _configureSources = new LinkedList();
-    //                 _configureTexts = new LinkedList();
-    //             }
-    //             _configureBases.add(base);
-    //             _configureSources.add(source);
-    //             _configureTexts.add(text);
-    //         }
-    //     }
-
     /** Reset the x axis counter, and call the base class.
      *  Also, clear the datasets that this actor will use.
      *  @exception IllegalActionException If the parent class throws it.
@@ -246,26 +192,6 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
             _container.add(render);
             render.setBackground(_container.getBackground());
         }
-
-        // If configurations have been deferred, implement them now.
-        //         if (_configureSources != null) {
-        //             Iterator sources = _configureSources.iterator();
-        //             Iterator texts = _configureTexts.iterator();
-        //             Iterator bases = _configureBases.iterator();
-        //             while(sources.hasNext()) {
-        //                 URL base = (URL)bases.next();
-        //                 String source = (String)sources.next();
-        //                 String text = (String)texts.next();
-        //                 try {
-        //                     configure(base, source, text);
-        //                 } catch (Exception ex) {
-        //                     getManager().notifyListenersOfException(ex);
-        //                 }
-        //             }
-        //             _configureSources = null;
-        //             _configureTexts = null;
-        //             _configureBases = null;
-        //        }
     }
 
 
