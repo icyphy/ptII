@@ -205,7 +205,6 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  @return If the class can be found as a resource, return the
      *  directory or jar file where the necessary class can be found.
      *  otherwise, return null.
-     *  @see #getResource(String necessaryClass)
      */
     public static String lookupClassAsResource(String necessaryClass) {
 	String necessaryResource =
