@@ -332,15 +332,17 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
-        Iterator threads = _actorThreadList.iterator();
-        while (threads.hasNext() ) {
-            ProcessThread thread = (ProcessThread)threads.next();
+        if (_actorThreadList != null) {
+            Iterator threads = _actorThreadList.iterator();
+            while (threads.hasNext() ) {
+                ProcessThread thread = (ProcessThread)threads.next();
 
-            // Call stopThread() on the threads first.
-            // FIXME: Race condition here... When thread stops
-            // and when stop is called is probably nondeterministic.
-            thread.stopThread();
-            thread.getActor().stopFire();
+                // Call stopThread() on the threads first.
+                // FIXME: Race condition here... When thread stops
+                // and when stop is called is probably nondeterministic.
+                thread.stopThread();
+                thread.getActor().stopFire();
+            }
         }
     }
 
