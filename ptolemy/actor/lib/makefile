@@ -61,8 +61,6 @@ JSRCS = \
 	CurrentTime.java \
 	Distributor.java \
 	Expression.java \
-	FixToDouble.java \
-	DoubleToFix.java \
 	FileWrite.java \
 	Gaussian.java \
 	Interpolator.java \
