@@ -54,17 +54,17 @@ if {[string compare test [info procs test]] == 1} then {
 test ProcessThread-2.1 {Constructor tests} {
     set manager [java::new ptolemy.actor.Manager manager]
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set d1 [java::new ptolemy.actor.ProcessDirector director]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector director]
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d1
-    set a1 [java::new ptolemy.actor.test.TestProcessActor $e0 A1]
-    set a2 [java::new ptolemy.actor.test.TestProcessActor $e0 A2]
+    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
+    set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
 
 
-    set p1 [java::new ptolemy.actor.ProcessThread $a1 $d1]
+    set p1 [java::new ptolemy.actor.process.ProcessThread $a1 $d1]
     $p1 setName P1
-    set p2 [java::new ptolemy.actor.ProcessThread $a2 $d1 P2]
+    set p2 [java::new ptolemy.actor.process.ProcessThread $a2 $d1 P2]
     list [$p1 getName] [$p2 getName] 
 } {P1 P2}
 
@@ -82,11 +82,11 @@ test ProcessThread-3.1 {Test state methods} {
 test ProcessThread-3.2 {Test action methods} {
     set manager [java::new ptolemy.actor.Manager manager]
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set d1 [java::new ptolemy.actor.ProcessDirector director]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector director]
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d1
-    set a1 [java::new ptolemy.actor.test.TestProcessActor $e0 A1]
+    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
     $a1 clear
     $manager run
     $a1 getRecord

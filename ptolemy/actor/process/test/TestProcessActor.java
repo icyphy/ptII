@@ -1,6 +1,6 @@
 /* An atomic actor for testing Process Director.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,11 +27,12 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.test;
+package ptolemy.actor.process.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
+import ptolemy.actor.test.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////

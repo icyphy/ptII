@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,11 +53,11 @@ set manager [java::new ptolemy.actor.Manager]
 ####
 #
 test ProcessDirector-2.1 {Constructor tests} {
-    set d1 [java::new ptolemy.actor.ProcessDirector]
+    set d1 [java::new ptolemy.actor.process.ProcessDirector]
     $d1 setName D1
-    set d2 [java::new ptolemy.actor.ProcessDirector D2]
+    set d2 [java::new ptolemy.actor.process.ProcessDirector D2]
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set d3 [java::new ptolemy.actor.ProcessDirector $w D3]
+    set d3 [java::new ptolemy.actor.process.ProcessDirector $w D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
 
@@ -89,8 +89,8 @@ test Director-4.1 {Test _makeDirectorOf} {
 #
 test ProcessDirector-5.1 {Test action methods} {
     # NOTE: Uses the setup above
-    set a1 [java::new ptolemy.actor.test.TestProcessActor $e0 A1]
-    set a2 [java::new ptolemy.actor.test.TestProcessActor $e0 A2]
+    set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
+    set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
     $a1 clear
     $manager run
     lsort [$a1 getRecord]
