@@ -1,6 +1,6 @@
 # Tests for the MoMLParser class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Contributor: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -2976,3 +2976,19 @@ test MoMLParser-16.1 {get XmlParser to call MoMLParser.error() by trying to pars
     # Just get the first few characters
     string range $errMsg 0 90
 } {com.microstar.xml.XmlException: unsupported XML version (found "-0.1") (expected "1.0") in }
+
+######################################################################
+####
+#
+
+test MoMLParser-17.1 {Call isModified and setModified} {
+    # isModified and setModified are called by the filter code
+    $parser reset
+    set r1 [$parser isModified]
+    $parser setModified 1
+    set r2 [$parser isModified]
+    # Resetting should set _modified back to false
+    $parser reset
+    set r3 [$parser isModified]
+    list $r1 $r2 $r3
+} {0 1 0}
