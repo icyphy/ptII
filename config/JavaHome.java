@@ -38,7 +38,12 @@ import java.io.IOException;
 public class JavaHome {
     public static void main(String args[]) {
         try {
-            System.out.print(System.getProperty("java.home"));
+            String javaHome = System.getProperty("java.home");
+            if (javaHome == null) {
+                throw new Exception("Could not get java.home property");
+            }
+            // java policy files want forward slashes.
+            System.out.print(javaHome.replace('\\', '/'));
         } catch (Exception exception) {
             System.err.print("JavaHome.main(): " + exception);
         }
