@@ -197,10 +197,10 @@ public class Expression extends TypedAtomicActor {
             TypedIOPort port = (TypedIOPort)(inputPorts.nextElement());
             // FIXME: Handle multiports
             if(port.hasToken(0)) {
-                Token inputtoken = port.get(0);
+                Token inputToken = port.get(0);
                 PassiveVariable var =
                     (PassiveVariable)(_variables.get(port.getName()));
-                var.setToken(inputtoken);
+                var.setToken(inputToken);
             }
         }
         _expression.evaluate();
