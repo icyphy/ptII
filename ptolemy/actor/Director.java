@@ -41,6 +41,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -425,7 +426,7 @@ public class Director extends Attribute implements Executable {
         return true;
     }
 
-    /** Create receivers and then invoke the preinitialize()
+    /** Validate the attributes and then invoke the preinitialize()
      *  methods of all its deeply contained actors.
      *  Set the current time to 0.0.
      *  This method is invoked once per execution, before any
@@ -437,6 +438,11 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
+        }
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
 	    Nameable containersContainer = container.getContainer();
