@@ -43,6 +43,63 @@ ROOT =		.
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	ptII
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		doc/docConfig.jar \
+		lib/diva.jar \
+		$(PTAUXALLJARS) \
+		ptolemy/domains/experimentalDomains.jar \
+		ptolemy/ptolemy.jar \
+		ptolemy/vergil/vergil.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Makefile variables used to set up keys for jar signing.
+# To use Web Start, we have to sign the jars.
+KEYDNAME = "CN=Claudius Ptolemaus, OU=Ptolemy Project, O=UC Berkeley, L=Berkeley, S=California, C=US"
+KEYSTORE = ptKeystore
+KEYALIAS = claudius
+# The password should not be stored in a makefile, for production
+# purposes, run:
+#  make STOREPASSWORD= KEYPASSWORD= jnlp_sign
+STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
+KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
+KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+$(KEYSTORE): 
+	$(KEYTOOL) -genkey \
+		-dname $(KEYDNAME) \
+		-keystore $(KEYSTORE) \
+		-alias $(KEYALIAS) \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD)
+	$(KEYTOOL) -selfcert \
+		-keystore $(KEYSTORE) \
+		-alias $(KEYALIAS) \
+		$(STOREPASSWORD)
+	$(KEYTOOL) -list \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD)
+
+# vergil.jnlp is for Web Ramp.  For jar signing to work with Web Ramp,
+# the .jnlp file itself must be included in the signed jar file
+# and not be changed (See Section 5.4 of the JNLP specification).
+jnlp_sign: vergil.jnlp $(PTCLASSALLJAR) $(KEYSTORE)
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp vergil.jnlp JNLP-INF/APPLICATION.JNLP
+	$(JAR) -uf $(PTCLASSALLJAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	$(PTJAVA_DIR)/bin/jarsigner \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD) \
+		$(PTCLASSALLJAR) $(KEYALIAS)
+
 EXTRA_SRCS = \
 	README.txt \
 	copyright.txt \
@@ -86,7 +143,7 @@ DISTCLEAN_STUFF = \
 all: mk/ptII.mk suball
 	chmod a-w copyright.txt
 
-install: subinstall
+install: subinstall $(PTCLASSALLJAR)
 
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
