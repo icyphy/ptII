@@ -398,8 +398,8 @@ public class EntityLibrary
                 // NOTE: If you suspect this is being called prematurely,
                 // the uncomment the following to see who is doing the
                 // calling.
-                System.out.println("-----------------------");
-                (new Exception()).printStackTrace();
+                // System.out.println("-----------------------");
+                // (new Exception()).printStackTrace();
 
                 // NOTE: Set this early to prevent repeated attempts to
                 // evaluate if an exception occurs.  This way, it will
