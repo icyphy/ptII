@@ -166,7 +166,7 @@ test PNQueueReceiver-4.4 {Test for initialize} {
     $rec put [java::new {ptolemy.data.IntToken int} 4]
     $rec put [java::new {ptolemy.data.IntToken int} 5]
     $rec put [java::new {ptolemy.data.IntToken int} 6]
-    $rec clear
+    $rec reset
     set elem [$rec elements]
     set ans1 [$elem hasMoreElements]
     list $ans1
