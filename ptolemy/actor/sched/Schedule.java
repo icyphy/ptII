@@ -506,6 +506,10 @@ public class Schedule extends ScheduleElement {
 	 *  @param firingNode The starting node to backtrack from.
 	 */
 	private Schedule _backTrack(ScheduleElement firingNode) {
+	     if (_currentDepth == 0) {
+		// Don't backtrack past the root node.
+		return null;
+	    }
 	    _currentDepth--;
 	    Schedule node = (Schedule)firingNode._parent;
 	    if (node == null) {
