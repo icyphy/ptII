@@ -131,7 +131,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *  which will not prevent it from being garbage collected.
      *  This method should be called in the createBackgroundFigure method
      *  with the figure that will be returned.
-     *  @param figure A newly manufactured figure.
+     *  @param newFigure A newly manufactured figure.
      */
     protected void _addLiveFigure(Figure newFigure) {
         _figures.add(new WeakReference(newFigure));
