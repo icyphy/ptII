@@ -1015,14 +1015,21 @@ public class SootUtilities {
         // Copy the field declarations.
         List collidedFieldList = _copyFields(theClass, superClass);
 
+        // A list of methods that need to be inlined.
+        List collidedMethodList = new LinkedList();
+
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
         // Invoke the super class.
         for (Iterator methods = superClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod oldMethod = (SootMethod)methods.next();
-            if (theClass.declaresMethod(oldMethod.getSubSignature()))
+            if (theClass.declaresMethod(oldMethod.getSubSignature())) {
+                collidedMethodList.add(oldMethod);
                 continue;
+            }
+            oldMethod.retrieveActiveBody();
+                         
             SootMethod newMethod = new SootMethod(oldMethod.getName(),
                     oldMethod.getParameterTypes(),
                     oldMethod.getReturnType(),
@@ -1042,6 +1049,7 @@ public class SootUtilities {
             List parameterList = new ArrayList();
             parameterList.addAll(newBody.getLocals());
 
+            Stmt invokeStmt = null;
             // Invoke the method...
             // handling static and void methods differently
             if (oldMethod.getReturnType() == VoidType.v()) {
@@ -1055,7 +1063,8 @@ public class SootUtilities {
                     invokeExpr = Jimple.v().newVirtualInvokeExpr(
                             thisLocal, oldMethod, parameterList);
                 }
-                units.add(Jimple.v().newInvokeStmt(invokeExpr));
+                invokeStmt = Jimple.v().newInvokeStmt(invokeExpr);
+                units.add(invokeStmt);
                 // return void
                 units.add(Jimple.v().newReturnVoidStmt());
             } else {
@@ -1074,13 +1083,17 @@ public class SootUtilities {
                     invokeExpr = Jimple.v().newVirtualInvokeExpr(
                             thisLocal, oldMethod, parameterList);
                 }
-                units.add(Jimple.v().newAssignStmt(
-                        returnValueLocal, invokeExpr));
+                invokeStmt = Jimple.v().newAssignStmt(
+                        returnValueLocal, invokeExpr);
+                units.add(invokeStmt);
                 // return the value
                 units.add(Jimple.v().newReturnStmt(returnValueLocal));
             }
+            SiteInliner.inlineSite(oldMethod,
+                    invokeStmt, newMethod);
         }
 
+        System.err.println("collidedMethodList = " + collidedMethodList);
         // Loop through all the methods again, this time looking for
         // method invocations on the old superClass...  Inline these calls.
         // This code is similar to inlineCallsToMethod, but avoids iterating
@@ -1098,10 +1111,11 @@ public class SootUtilities {
                 Stmt stmt = (Stmt)j.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
-                    if (invoke.getMethod().getDeclaringClass() == superClass) {
+                    SootMethod invokeMethod = invoke.getMethod();
+                    //if (invokeMethod.getDeclaringClass() == superClass) {
+                    if (collidedMethodList.contains(invokeMethod)) {    
                         // Force the body of the thing we are inlining to be
                         // loaded
-                        SootMethod invokeMethod = invoke.getMethod();
 
                         try {
                             if (invokeMethod.isConcrete()) {
@@ -1154,6 +1168,8 @@ public class SootUtilities {
                                     "foldClass: Problem with "
                                     + "retrieveActiveBody()");
                         }
+                        System.err.println(
+                                "foldClass inlining " + invokeMethod);
                         SiteInliner.inlineSite(invokeMethod,
                                 stmt, newMethod);
                     }
