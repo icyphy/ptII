@@ -222,7 +222,7 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new array that formed by the bitwise complement of each element in
-     *  the input matrix (~matrix[i][j].
+     *  the input matrix (~matrix[i][j]).
      */
     public static final int[][] bitwiseComplement(final int[][] matrix) {
         int rows = _rows(matrix);

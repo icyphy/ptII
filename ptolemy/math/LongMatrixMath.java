@@ -222,7 +222,7 @@ public class LongMatrixMath {
     }
 
     /** Return a new array that formed by the bitwise complement of each element in
-     *  the input matrix (~matrix[i][j].
+     *  the input matrix (~matrix[i][j]).
      */
     public static final long[][] bitwiseComplement(final long[][] matrix) {
         int rows = _rows(matrix);

@@ -1,5 +1,11 @@
 /* A library of signal processing operations.
 
+The algorithms for the FFT and DCT are based on the FFCT algorithm
+described in:
+
+Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
+Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
+
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
@@ -32,7 +38,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,10 +45,15 @@ import java.util.*;
 /**
  * This class provides signal processing functions.
  *
+ * The algorithms for the FFT and DCT are based on the FFCT algorithm
+ * described in:
+ *
+ * Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
+ * Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
+ *
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  * @version $Id$
  */
-
 public class SignalProcessing {
 
     // The only constructor is private so that this class cannot
@@ -76,7 +86,8 @@ public class SignalProcessing {
         int resultsize = array1.length+array2.length-1;
 
         if (resultsize < 0) {
-            // If we attempt to convolve two zero length arrays, return
+            // If we attempt t
+   convolve two zero length arrays, return
             // a zero length array.
             result = new double[0];
             return result;

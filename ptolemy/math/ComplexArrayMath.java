@@ -32,7 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
