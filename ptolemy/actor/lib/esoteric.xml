@@ -6,7 +6,7 @@
 		<?moml <group>
 			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
 			<entity name="CalInterpreter" class="caltrop.ptolemy.actors.CalInterpreter">
-    			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+    			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
       			<property name="attributeName" value="calCode"/>
     			</property>
 			</entity>
