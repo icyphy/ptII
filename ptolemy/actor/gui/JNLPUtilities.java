@@ -72,32 +72,32 @@ public class JNLPUtilities {
      *  @see java.net.JarURLConnection
      */
     public static URL jarURLEntryResource(String spec) throws IOException {
-	// At first glance, it would appear that this method could appear
-	// in specToURL(), but the problem is that specToURL() creates
-	// a new URL with the spec, so it only does further checks if
-	// the URL is malformed.  Unfortunately, in Web Start applications
-	// the URL will often refer to a resource in another jar file,
-	// which means that the jar url is not malformed, but there is
-	// no resource by that name.  Probably specToURL() should return
-	// the resource after calling new URL().
-	int jarEntry = spec.indexOf("!/");
-	if (jarEntry == -1) {
-	    return null;
-	} else {
-	    try {
-		// !/ means that this could be in a jar file.
-		String entry = spec.substring(jarEntry + 2);
-		// We might be in the Swing Event thread, so
-		// Thread.currentThread().getContextClassLoader()
-		// .getResource(entry) probably will not work.
-		Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-		URL entryURL = refClass.getClassLoader().getResource(entry);
-		return entryURL;
-	    } catch (Exception ex) {
-		throw new IOException("File not found: " + spec + ": "
-				      + ex);
-	    }
-	}
+        // At first glance, it would appear that this method could appear
+        // in specToURL(), but the problem is that specToURL() creates
+        // a new URL with the spec, so it only does further checks if
+        // the URL is malformed.  Unfortunately, in Web Start applications
+        // the URL will often refer to a resource in another jar file,
+        // which means that the jar url is not malformed, but there is
+        // no resource by that name.  Probably specToURL() should return
+        // the resource after calling new URL().
+        int jarEntry = spec.indexOf("!/");
+        if (jarEntry == -1) {
+            return null;
+        } else {
+            try {
+                // !/ means that this could be in a jar file.
+                String entry = spec.substring(jarEntry + 2);
+                // We might be in the Swing Event thread, so
+                // Thread.currentThread().getContextClassLoader()
+                // .getResource(entry) probably will not work.
+                Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+                URL entryURL = refClass.getClassLoader().getResource(entry);
+                return entryURL;
+            } catch (Exception ex) {
+                throw new IOException("File not found: " + spec + ": "
+                                      + ex);
+            }
+        }
     }
 
     /** Given a jar URL, read in the resource and save it as a file.
@@ -120,56 +120,56 @@ public class JNLPUtilities {
      *  @return the name of the temporary file that was created
      */
     public static String saveJarURLAsTempFile(String jarURLName,
-					     String prefix,
-					     String suffix,
-					     File directory)
-	throws IOException {
+                                             String prefix,
+                                             String suffix,
+                                             File directory)
+        throws IOException {
 
-	URL jarURL = jarURLEntryResource(jarURLName);
-	if (jarURL == null) {
-	    jarURL = Thread.currentThread()
-		  .getContextClassLoader().getResource(jarURLName);
-	}
+        URL jarURL = jarURLEntryResource(jarURLName);
+        if (jarURL == null) {
+            jarURL = Thread.currentThread()
+                  .getContextClassLoader().getResource(jarURLName);
+        }
 
-	if (jarURL == null) {
-	    throw new FileNotFoundException("Could not find '"
-					    + jarURLName + "'");
-	}
+        if (jarURL == null) {
+            throw new FileNotFoundException("Could not find '"
+                                            + jarURLName + "'");
+        }
 
-	// The resource pointed to might be a pdf file, which is binary,
-	// so we are careful to read it byte by byte and not do any
-	// conversions of the bytes.
-	BufferedInputStream input =
-	    new BufferedInputStream(jarURL.openStream());
+        // The resource pointed to might be a pdf file, which is binary,
+        // so we are careful to read it byte by byte and not do any
+        // conversions of the bytes.
+        BufferedInputStream input =
+            new BufferedInputStream(jarURL.openStream());
 
-	// File.createTempFile() does the bulk of the work for us,
-	// we just check to see if suffix is null, and if it is,
-	// get the suffix from the jarURLName.
-	if (suffix == null) {
-	    // If the jarURLName does not contain a ".", then we pass
-	    // suffix=null to File.createTempFile(), which defaults
-	    // to ".tmp"
-	    if (jarURLName.lastIndexOf('.') != -1) {
-		suffix = jarURLName.substring(jarURLName.lastIndexOf('.'));
-	    }
-	}
+        // File.createTempFile() does the bulk of the work for us,
+        // we just check to see if suffix is null, and if it is,
+        // get the suffix from the jarURLName.
+        if (suffix == null) {
+            // If the jarURLName does not contain a ".", then we pass
+            // suffix=null to File.createTempFile(), which defaults
+            // to ".tmp"
+            if (jarURLName.lastIndexOf('.') != -1) {
+                suffix = jarURLName.substring(jarURLName.lastIndexOf('.'));
+            }
+        }
 
-	// We delay creating the temporary file until we are sure
-	// that the jarURL exists and is openable.
-	File temporaryFile = File.createTempFile(prefix, suffix, directory);
-	temporaryFile.deleteOnExit();
+        // We delay creating the temporary file until we are sure
+        // that the jarURL exists and is openable.
+        File temporaryFile = File.createTempFile(prefix, suffix, directory);
+        temporaryFile.deleteOnExit();
 
 
-	//FileOutputStream output = new FileOutputStream(temporaryFile);
-	BufferedOutputStream output =
-	    new BufferedOutputStream(new FileOutputStream(temporaryFile));
+        //FileOutputStream output = new FileOutputStream(temporaryFile);
+        BufferedOutputStream output =
+            new BufferedOutputStream(new FileOutputStream(temporaryFile));
 
-	int c;
-	while (( c = input.read()) != -1) {
-	    output.write(c);
-	}
-	input.close();
-	output.close();
-	return temporaryFile.toString();
+        int c;
+        while (( c = input.read()) != -1) {
+            output.write(c);
+        }
+        input.close();
+        output.close();
+        return temporaryFile.toString();
     }
 }
