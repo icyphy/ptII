@@ -184,7 +184,7 @@ public class ThreadDemo {
             //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
             //String filename =
             //    "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
-            //String filename = "c:/java/ptII/ptolemy/domains/pn/guidemo/ptII.pbm";
+            //String filename = "c:/java/ptII/ptolemy/domains/pn/demo/RunLengthptII.pbm";
             String filename = "ptII.pbm";
             try {
                 FileInputStream fis = new FileInputStream(filename);
