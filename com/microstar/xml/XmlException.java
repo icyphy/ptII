@@ -26,7 +26,10 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
+
 package com.microstar.xml;
 
 import java.io.StringWriter;
@@ -67,79 +70,79 @@ method, but not the public initCause() method that JDK1.4 has
 */
 public class XmlException extends Exception
 {
-  /** Construct a new XML parsing exception.
-    * @param message The error message from the parser.
-    * @param systemId The URI of the entity containing the error.
-    * @param line The line number where the error appeared.
-    * @param column The column number where the error appeared.
-    */
-  public XmlException (String message, String systemId,
-                       int line, int column) {
-      this(message, systemId, line, column, null);
-  }
+    /** Construct a new XML parsing exception.
+     * @param message The error message from the parser.
+     * @param systemId The URI of the entity containing the error.
+     * @param line The line number where the error appeared.
+     * @param column The column number where the error appeared.
+     */
+    public XmlException(String message, String systemId,
+            int line, int column) {
+        this(message, systemId, line, column, null);
+    }
 
 
-  /** Construct a new XML parsing exception.
+    /** Construct a new XML parsing exception.
     * @param message The error message from the parser.
     * @param systemId The URI of the entity containing the error.
     * @param line The line number where the error appeared.
     * @param column The column number where the error appeared.
     * @param cause The cause of this exception, if any
     */
-  public XmlException (String message, String systemId,
-                       int line, int column, Throwable cause) {
-      _message = message;
-      _systemId = systemId;
-      _line = line;
-      _column = column;
-      _cause = cause;
-  }
+    public XmlException(String message, String systemId,
+            int line, int column, Throwable cause) {
+        _message = message;
+        _systemId = systemId;
+        _line = line;
+        _column = column;
+        _cause = cause;
+    }
 
-  /** Get the cause of this exception.
+    /** Get the cause of this exception.
    *  @return The cause that was passed in as an argument to the
    *  constructor, or null of no cause was specified.
    */
-  public Throwable getCause() {
-      return _cause;
-  }
+    public Throwable getCause() {
+        return _cause;
+    }
 
-  /**
+    /**
     * Get the error message from the parser.
     * @return A string describing the error.
     */
-  public String getMessage () {
-      // Modified by Steve Neuendorffer because the message didn't tell what
-      // the location was.
-      return _message
-          + " in " + _systemId
-          + " at line " + _line
-          + " and column " + _column
-          + (( _cause == null) ?
-             "" : ("\nCaused by:\n " + _cause));
-  }
+    public String getMessage() {
+        // Modified by Steve Neuendorffer because the message didn't tell what
+        // the location was.
+        return _message
+            + " in " + _systemId
+            + " at line " + _line
+            + " and column " + _column
+            + (( _cause == null) ?
+                    "" : ("\nCaused by:\n " + _cause));
+    }
 
 
-  /** Get the URI of the entity containing the error.
+    /** Get the URI of the entity containing the error.
     * @return The URI as a string.
     */
-  public String getSystemId () {
-      return _systemId;
-  }
+    public String getSystemId() {
+        return _systemId;
+    }
 
 
-  /** Get the line number containing the error.
+    /** Get the line number containing the error.
     * @return The line number as an integer.
     */
-  public int getLine () {
-      return _line;
-  }
+    public int getLine() {
+        return _line;
+    }
 
-  /** Get the column number containing the error.
+    /** Get the column number containing the error.
     * @return The column number as an integer.
     */
-  public int getColumn () {
-      return _column;
-  }
+    public int getColumn() {
+        return _column;
+    }
 
     /** Print the following to stderr:
      *  this exception, its stack trace and if the cause

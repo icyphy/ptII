@@ -96,7 +96,7 @@ public class AddIcon implements MoMLFilter {
 
         if (attributeName.equals("class")) {
             if (_actorsThatShouldHaveIcons
-                .containsKey(attributeValue)) {
+                    .containsKey(attributeValue)) {
                 // We found a class that needs an _icon
                 _currentlyProcessingActorThatMayNeedAnIcon = true;
                 if (container != null ) {
@@ -108,11 +108,11 @@ public class AddIcon implements MoMLFilter {
                 _iconMoML = (String) _actorsThatShouldHaveIcons
                     .get(attributeValue);
             } else if ( _currentlyProcessingActorThatMayNeedAnIcon
-                        && container != null
-                        && !container.getFullName()
-                        .equals(_currentActorFullName)
-                        && !container.getFullName()
-                        .startsWith(_currentActorFullName)) {
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnIcon = false;
@@ -132,7 +132,7 @@ public class AddIcon implements MoMLFilter {
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
         if ( _currentlyProcessingActorThatMayNeedAnIcon
-             && elementName.equals("entity")
+                && elementName.equals("entity")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
 
@@ -150,7 +150,7 @@ public class AddIcon implements MoMLFilter {
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse\n"
-                                                 + _iconMoML);
+                        + _iconMoML);
             }
         }
         return elementName;

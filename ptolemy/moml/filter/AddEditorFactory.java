@@ -98,7 +98,7 @@ public class AddEditorFactory implements MoMLFilter {
 
         if (attributeName.equals("class")) {
             if (attributeValue
-                .equals("ptolemy.data.expr.Parameter")){
+                    .equals("ptolemy.data.expr.Parameter")){
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = true;
                 if (container != null ) {
                     _currentActorFullName = container.getFullName()
@@ -107,11 +107,11 @@ public class AddEditorFactory implements MoMLFilter {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
             } else if ( _currentlyProcessingActorThatMayNeedAnEditorFactory
-                        && container != null
-                        && !container.getFullName()
-                        .equals(_currentActorFullName)
-                        && !container.getFullName()
-                        .startsWith(_currentActorFullName)) {
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnEditorFactory =
@@ -135,10 +135,10 @@ public class AddEditorFactory implements MoMLFilter {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return elementName;
         } else         if ( _currentAttributeHasLocation
-                     && elementName.equals("property")
-                     && container != null
-                     && container.getFullName()
-                     .equals(_currentActorFullName)) {
+                && elementName.equals("property")
+                && container != null
+                && container.getFullName()
+                .equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
             _currentAttributeHasLocation = false;
 
@@ -166,7 +166,7 @@ public class AddEditorFactory implements MoMLFilter {
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse\n"
-                                                 + moml);
+                        + moml);
             }
         }
         return elementName;
@@ -186,7 +186,7 @@ public class AddEditorFactory implements MoMLFilter {
     // Set to true if we are currently processing an actor that may
     // need _editorFactory added, set to false when we are done.
     private boolean
-        _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
+    _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;

@@ -113,23 +113,23 @@ public class PortNameChanges implements MoMLFilter {
             //   class="ptolemy.actor.lib.conversions.ComplexToCartesian">
 
             if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
-                    // We found a class with a port name change.
-                    _currentlyProcessingActorWithPortNameChanges = true;
-                    _doneProcessingActorWithPortNameChanges  = false;
-                    _currentActorFullName = container.getFullName()
-                        + "." + _lastNameSeen;
-                    _portMap = (HashMap) _actorsWithPortNameChanges
-                        .get(attributeValue);
+                // We found a class with a port name change.
+                _currentlyProcessingActorWithPortNameChanges = true;
+                _doneProcessingActorWithPortNameChanges  = false;
+                _currentActorFullName = container.getFullName()
+                    + "." + _lastNameSeen;
+                _portMap = (HashMap) _actorsWithPortNameChanges
+                    .get(attributeValue);
             } else if ( _currentlyProcessingActorWithPortNameChanges
-                        && container != null
-                        && !container.getFullName()
-                        .equals(_currentActorFullName)
-                        && !container.getFullName()
-                        .startsWith(_currentActorFullName)) {
-                    // We found another class in a different container
-                    // while handling a class with port name changes, so
-                    // set _doneProcessingActorWithPortNameChanges so we
-                    // can handle any port changes later.
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
+                // We found another class in a different container
+                // while handling a class with port name changes, so
+                // set _doneProcessingActorWithPortNameChanges so we
+                // can handle any port changes later.
 
                 _currentlyProcessingActorWithPortNameChanges = false;
                 _doneProcessingActorWithPortNameChanges  = true;
@@ -187,7 +187,7 @@ public class PortNameChanges implements MoMLFilter {
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-        _currentlyProcessingActorWithPortNameChanges = false;
+    _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are done processing an actor.
     private static boolean _doneProcessingActorWithPortNameChanges = false;
@@ -204,7 +204,7 @@ public class PortNameChanges implements MoMLFilter {
     // that requires processing. Set to false once we are
     // done processing that actor.  This is done for performance reasons.
     private static boolean _currentlyProcessingActorThatRequiresUpdating =
-        false;
+    false;
 
     static {
         ///////////////////////////////////////////////////////////

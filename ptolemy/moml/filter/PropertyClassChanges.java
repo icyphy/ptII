@@ -106,7 +106,7 @@ public class PropertyClassChanges implements MoMLFilter {
 
         if (attributeName.equals("class")) {
             if (_actorsWithPropertyClassChanges
-                .containsKey(attributeValue)) {
+                    .containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
                 _currentActorFullName = container.getFullName()
@@ -115,7 +115,7 @@ public class PropertyClassChanges implements MoMLFilter {
                     (HashMap) _actorsWithPropertyClassChanges
                     .get(attributeValue);
             } else if (_currentlyProcessingActorWithPropertyClassChanges
-                       && _newClass != null) {
+                    && _newClass != null) {
 
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
@@ -129,11 +129,11 @@ public class PropertyClassChanges implements MoMLFilter {
                 MoMLParser.setModified(true);
                 return temporaryNewClass;
             } else if (  _currentlyProcessingActorWithPropertyClassChanges
-                         && container != null
-                         && !container.getFullName()
-                         .equals(_currentActorFullName)
-                         && !container.getFullName()
-                         .startsWith(_currentActorFullName)) {
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithPropertyClassChanges = false;
@@ -167,7 +167,7 @@ public class PropertyClassChanges implements MoMLFilter {
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-        _currentlyProcessingActorWithPropertyClassChanges = false;
+    _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
     private static String _lastNameSeen;
@@ -201,23 +201,23 @@ public class PropertyClassChanges implements MoMLFilter {
                 "ptolemy.actor.TypedIOPort");
 
         _actorsWithPropertyClassChanges
-               .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+            .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
                     inputOutputTypedIOPortClassChanges);
 
 
         // ImageUnpartition
         _actorsWithPropertyClassChanges
-               .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
+            .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
                     inputOutputTypedIOPortClassChanges);
 
         // HTVQEncode
         _actorsWithPropertyClassChanges
-               .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
+            .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
                     inputOutputTypedIOPortClassChanges);
 
         // VQDecode
         _actorsWithPropertyClassChanges
-               .put("ptolemy.domains.sdf.lib.vq.VQDecode",
+            .put("ptolemy.domains.sdf.lib.vq.VQDecode",
                     inputOutputTypedIOPortClassChanges);
     }
 }
