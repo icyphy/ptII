@@ -39,6 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.expr.Parameter;
 
+import java.util.Properties;
+
 //////////////////////////////////////////////////////////////////////////
 //// Bias
 /**
@@ -113,10 +115,12 @@ public class Bias extends TypedAtomicActor {
      
     public void initialize() throws IllegalActionException {
         super.initialize();
-        String line;
+        String ptII;
+
+        ptII = System.getProperty("ptolemy.ptII.dir");
 
 	try {
-	    String file = "E:/ptII/ptolemy/apps/softwalls/plane.data";
+            String file = ptII.concat("/ptolemy/apps/softwalls/plane.data");
 	    _surfaceFunction = new ThreeDFunction(file);
 	} 
 	catch (IllegalActionException a) {
