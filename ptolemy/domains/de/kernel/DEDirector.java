@@ -563,6 +563,20 @@ public class DEDirector extends Director {
         }
     }
 
+    /** Request that execution of the current iteration stop.
+     *  If the director is paused waiting for events to appear in the
+     *  event queue, then it stops waiting,
+     *  and calls stopFire() for all actors
+     *  that are deeply contained by the container of this director.
+     */
+    public void stopFire() {
+        synchronized(_eventQueue) {
+            _stopRequested = true;
+            _eventQueue.notifyAll();
+        }
+        super.stopFire();
+    }
+
     /** Specify whether the simulation should be stopped when there are no
      *  more events in the event queue. By default, an execution will stop
      *  in that case. Calling this method with a <i>false</i> argument
@@ -754,7 +768,8 @@ public class DEDirector extends Director {
                 }
             } else {
                 // In this case we want to do a blocking read of the queue.
-                while (_eventQueue.isEmpty()) {
+                _stopRequested = false;
+                while (_eventQueue.isEmpty() && !_stopRequested) {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
                     }
@@ -762,14 +777,16 @@ public class DEDirector extends Director {
                         try {
                             _eventQueue.wait();
                         } catch (InterruptedException e) {
-                            // ignore... Keep waiting
+                            // If the wait is interrupted, then stop waiting.
+                            break;
                         }
                     }
                 }
                 try {
                     nextEvent = (DEEvent)_eventQueue.get();
                 } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(ex.toString());
+                    // Nothing more to read from queue.
+                    break;
                 }
             }
 
@@ -1061,6 +1078,9 @@ public class DEDirector extends Director {
 
     // The time of the earliest event seen in the current simulation.
     private double _startTime = Double.MAX_VALUE;
+
+    // Flag that indicates that a stop has been requested.
+    private boolean _stopRequested = false;
 
     // Decide whether the simulation should be stopped when there's no more
     // events in the global event queue.
