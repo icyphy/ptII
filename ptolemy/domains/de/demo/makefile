@@ -34,8 +34,8 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		ABRO Adder Hierarchy Histogram \
-	Interrupt Queue SigmaDelta inspection
+DIRS =		ABRO Adder Hierarchy Histogram Inspection \
+	Interrupt Queue SigmaDelta 
 
 CLASSPATH =	$(ROOT)
 
