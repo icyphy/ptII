@@ -212,6 +212,14 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
+    /** Return the current time of the simulation. In this base class,
+     *  it returns 0. The derived class should override this method
+     *  and return the current time.
+     */
+    public double getCurrentTime() {
+        return 0.0;
+    }
+
     /** Create receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.  
      *  <p>
