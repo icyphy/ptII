@@ -230,7 +230,7 @@ awk 'BEGIN {
     map["Display"] = "ptolemy.actor.lib.gui.Display"
     # FIXME
     map["From"] = "ptolemy.actor.lib.Stop"
-    map["Gain"] = "ptolemy.actor.lib.Scale"
+    map["Gain"] = "vendors.ecsl_dp.ptolemy.ECSLGain"
     # FIXME
     map["Goto"] = "ptolemy.actor.lib.Stop"
     map["Ground"] = "ptolemy.actor.lib.Discard"
