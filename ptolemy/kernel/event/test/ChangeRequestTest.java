@@ -109,7 +109,7 @@ public class ChangeRequestTest {
                 }
             }
         };
-        _manager.requestChange(change);
+        _top.requestChange(change);
     }
 
     /** Mutate.
@@ -125,7 +125,7 @@ public class ChangeRequestTest {
                 }
             }
         };
-        _manager.requestChange(change);
+        _top.requestChange(change);
     }
 
     /** Start a run.

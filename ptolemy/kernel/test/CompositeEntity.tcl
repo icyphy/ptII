@@ -947,3 +947,35 @@ test CompositeEntity-18.0 {test exportMoML} {
     <link port="e2.p2" relation="r"/>
 </model>
 }
+
+######################################################################
+####
+#
+test CompositeEntity-19.0 {test changeListeners} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    set s1 [java::new java.io.ByteArrayOutputStream]
+    set s2 [java::new java.io.ByteArrayOutputStream]
+    set l1 [java::new ptolemy.kernel.event.StreamChangeListener $s1]
+    set l2 [java::new ptolemy.kernel.event.StreamChangeListener $s2]
+    $e1 addChangeListener $l1
+    $e1 addChangeListener $l2 
+    
+    set p1 [java::new ptolemy.kernel.Port]
+    set c1 [java::new ptolemy.kernel.event.PlacePort $e1 $p1 $e1]
+    $e1 notifyChangeListeners $c1
+    list [$s1 toString] [$s2 toString]
+} {{Place port . in container .
+} {Place port . in container .
+}}
+
+test CompositeEntity-19.1 {test changeListeners} {
+    $e1 addChangeListener $l1
+    $e1 removeChangeListener $l1
+    $e1 notifyChangeListeners $c1
+    list [$s1 toString] [$s2 toString]
+} {{Place port . in container .
+} {Place port . in container .
+Place port . in container .
+}}
+    

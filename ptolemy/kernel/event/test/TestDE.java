@@ -86,7 +86,7 @@ public class TestDE {
                 _clock.period.setExpression("2.0");
             }
         };
-        _manager.requestChange(change);
+        _top.requestChange(change);
     }
 
     /** Finish a run.  Return the time of the output events.
@@ -126,7 +126,7 @@ public class TestDE {
                 }
             }
         };
-        _manager.requestChange(change);
+        _top.requestChange(change);
     }
 
     /** Start a run.

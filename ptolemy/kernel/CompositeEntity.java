@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+Review changeRequest / changeListener code.
 */
 
 package ptolemy.kernel;
@@ -128,21 +129,27 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener. The listener
-     *  will be notified of the execution of each change requested
-     *  via the requestChange() method.
+    /** Add a change listener.  In this base class, 
+     *  add the listener to the list of change listeners in
+     *  this entity.  
+     *  Each listener will be notified of the execution of each 
+     *  change request that is executed via the requestChange() method
+     *  at this level of the hierarchy.  Note that in this base class
+     *  implementation, only the toplevel composite entity executes changes,
+     *  so it probably doesn't make sense to add change listeners to 
+     *  composites that are not at the toplevel.
      *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to add.
      */
     public void addChangeListener(ChangeListener listener) {
-        if (_changeListeners == null) {
-            _changeListeners = new LinkedList();
-        } else {
-            if (_changeListeners.contains(listener)) {
-                return;
-            }
-        }
-        _changeListeners.add(listener);
+	if (_changeListeners == null) {
+	    _changeListeners = new LinkedList();
+	} else {
+	    if (_changeListeners.contains(listener)) {
+		return;
+	    }
+	}
+	_changeListeners.add(listener);
     }
 
     /** Allow or disallow connections that are created using the connect()
@@ -606,6 +613,26 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Notify all change listeners registered with this composite 
+     *  that the given request has completed
+     *  without throwing an exception.  The notification is deferred to
+     *  mutation itself, which performs the actual notification.
+     *  If no change listeners have been added, then do nothing.
+     *  This method is public so that subclasses can easily defer the 
+     *  actual execution of the change request to another class.  For 
+     *  example, an instance of CompositeActor defers to a Manager to 
+     *  execute the change request at an appropriate time.
+     */
+    public void notifyChangeListeners(ChangeRequest request) {
+	if (_changeListeners != null) {
+	    Iterator listeners = _changeListeners.iterator();
+	    while(listeners.hasNext()) {
+		ChangeListener listener = (ChangeListener)listeners.next();
+		request.notify(listener);
+	    }
+	}
+    }
+
     /** Return the number of contained entities.
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
@@ -717,7 +744,10 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Request that given change request be executed.   In this base 
-     *  class, execute the change immediately.  Subclasses should override
+     *  class defer the change request to the container of this entity. 
+     *  If the entity has no container, then execute the request immediately.
+     *  In other words, the request will get passed up to the toplevel 
+     *  composite entity and then executed.  Subclasses should override
      *  this to queue the change request and execute at an appropriate time.
      *  An exception is thrown by this method if the change 
      *  request fails.
@@ -729,8 +759,13 @@ public class CompositeEntity extends ComponentEntity {
 	throws ChangeFailedException {
 	// If the model is idle (i.e., initialize() has not yet been
 	// invoked), then process the change request right now.
-	change.execute();
-	_notifyChangeListeners(change);
+	CompositeEntity container = (CompositeEntity) getContainer();
+	if(container == null) {
+	    change.execute();
+	    notifyChangeListeners(change);
+	} else {
+	    container.requestChange(change);
+	}
     }
 
     /** Return a name that is guaranteed to not be the name of
@@ -928,21 +963,6 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
         }
-    }
-
-    /** Notify all change listeners that the given request has completed
-     *  without throwing an exception.  The notification is deferred to
-     *  mutation itself, which performs the actual notification.
-     *  If no change listeners have been added, then do nothing.
-     */
-    public void _notifyChangeListeners(ChangeRequest request) {
-	if (_changeListeners != null) {
-	    Iterator listeners = _changeListeners.iterator();
-	    while(listeners.hasNext()) {
-		ChangeListener listener = (ChangeListener)listeners.next();
-		request.notify(listener);
-	    }
-	}
     }
 
     /** Remove the specified entity. This method should not be used
