@@ -87,6 +87,8 @@ public class GradientAdaptiveLattice extends Lattice {
                 "adaptedReflectionCoefficients", false, true);
         adaptedReflectionCoefficients.setTypeEquals(
                 new ArrayType(BaseType.DOUBLE));
+
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
