@@ -194,7 +194,7 @@ public class Render extends PlotBox {
                     }
                 }
             };
-        _deferIfNecessary(sample);
+        deferIfNecessary(sample);
         repaint();
     }
 

@@ -360,6 +360,56 @@ public class PlotBox extends JPanel implements Printable {
         _legendDatasets = new Vector();
     }
 
+    /** If this method is called in the event thread, then simply
+     * execute the specified action.  Otherwise,
+     * if there are already deferred actions, then add the specified
+     * one to the list.  Otherwise, create a list of deferred actions,
+     * if necessary, and request that the list be processed in the
+     * event dispatch thread.
+     *
+     * Note that it does not work nearly as well to simply schedule
+     * the action yourself on the event thread because if there are a
+     * large number of actions, then the event thread will not be able
+     * to keep up.  By grouping these actions, we avoid this problem.
+     *
+     * This method is not synchronized, so the caller should be.
+     * @param action The Runnable object to execute.
+     */
+    public void deferIfNecessary(Runnable action) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if (EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+
+            if (_deferredActions == null) {
+                _deferredActions = new LinkedList();
+            }
+            // Add the specified action to the list of actions to perform.
+            _deferredActions.add(action);
+
+            // If it hasn't already been requested, request that actions
+            // be performed in the event dispatch thread.
+            if (!_actionsDeferred) {
+                Runnable doActions = new Runnable() {
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
+                _actionsDeferred = true;
+            }
+        }
+    }
+
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
@@ -1453,56 +1503,6 @@ public class PlotBox extends JPanel implements Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** If this method is called in the event thread, then simply
-     * execute the specified action.  Otherwise,
-     * if there are already deferred actions, then add the specified
-     * one to the list.  Otherwise, create a list of deferred actions,
-     * if necessary, and request that the list be processed in the
-     * event dispatch thread.
-     *
-     * Note that it does not work nearly as well to simply schedule
-     * the action yourself on the event thread because if there are a
-     * large number of actions, then the event thread will not be able
-     * to keep up.  By grouping these actions, we avoid this problem.
-     *
-     * This method is not synchronized, so the caller should be.
-     * @param action The Runnable object to execute.
-     */
-    protected void _deferIfNecessary(Runnable action) {
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request or add to a pending request.
-        if (EventQueue.isDispatchThread()) {
-            action.run();
-        } else {
-
-            if (_deferredActions == null) {
-                _deferredActions = new LinkedList();
-            }
-            // Add the specified action to the list of actions to perform.
-            _deferredActions.add(action);
-
-            // If it hasn't already been requested, request that actions
-            // be performed in the event dispatch thread.
-            if (!_actionsDeferred) {
-                Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here risks causing
-                    // deadlock.  Don't do it!
-                    SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-                _actionsDeferred = true;
-            }
-        }
-    }
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.

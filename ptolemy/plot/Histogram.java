@@ -158,7 +158,7 @@ public class Histogram extends PlotBox {
                 _addPoint(dataset, value);
             }
         };
-        _deferIfNecessary(doAddPoint);
+        deferIfNecessary(doAddPoint);
     }
 
     /** In the specified data set, add the specified y value to the
@@ -196,7 +196,7 @@ public class Histogram extends PlotBox {
                 _clear(format);
             }
         };
-        _deferIfNecessary(doClear);
+        deferIfNecessary(doClear);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -216,7 +216,7 @@ public class Histogram extends PlotBox {
                 _fillPlot();
             }
         };
-        _deferIfNecessary(doFill);
+        deferIfNecessary(doFill);
     }
 
     /** Create a sample plot.
