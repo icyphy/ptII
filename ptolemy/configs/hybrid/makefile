@@ -58,7 +58,9 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
+	about.htm \
 	configuration.xml \
+	help.htm \
 	intro.htm \
 	welcomeWindow.xml
 
