@@ -1,35 +1,50 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../moml.dtd">
-<model name="sinewave">
-  <doc>
-  This composite actor generates a sine wave.
-  </doc>
-  <parameter name="samplingFrequency" value="8000.0">
-    <doc>The sampling frequency, in the same units as the frequency.</doc>
-  </parameter>
-  <parameter name="frequency" value="440.0">
+<model name="lib" class="ptolemy.actor.TypedCompositeActor">
+  <entity name="sinewave" class="ptolemy.actor.TypedCompositeActor">
     <doc>
-    The frequency of the sinusoid, in the same units as the
-    sampling frequency.
+    This composite actor generates a sine wave.
     </doc>
-  </parameter>
-  <parameter name="phase" value="0.0">
-    <doc>The phase, in radians.</doc>
-  </parameter>
+    <attribute name="samplingFrequency"
+               value="8000.0"
+               class="ptolemy.data.expr.Parameter">
+      <doc>The sampling frequency, in the same units as the frequency.</doc>
+    </attribute>
+    <attribute name="frequency"
+               value="440.0"
+               class="ptolemy.data.expr.Parameter">
+      <doc>
+      The frequency of the sinusoid, in the same units as the
+      sampling frequency.
+      </doc>
+    </attribute>
+    <attribute name="phase"
+               value="0.0"
+               class="ptolemy.data.expr.Parameter">
+      <doc>The phase, in radians.</doc>
+    </attribute>
 
-  <!-- Define the actors. -->
-  <actor name="ramp" class="ptolemy.actor.lib.Ramp">
-    <setParameter name="step" value="frequency*2*PI/samplingFrequency"/>
-    <setParameter name="init" value="phase"/>
-  </actor>
-  <actor name="sine" class="ptolemy.actor.lib.Sine"></actor>
+    <!-- Define the actors. -->
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+      <attribute name="step"
+                 value="frequency*2*PI/samplingFrequency">
+     </attribute>
+      <attribute name="init" value="phase"></attribute>
+    </entity>
+    <entity name="sine" class="ptolemy.actor.lib.Sine"></entity>
 
-  <!-- Define the ports. -->
-  <port name="output" direction="output">
-    <doc>Sinusoidal waveform output.</doc>
-  </port>
+    <!-- Define the ports. -->
+    <port name="output" direction="output" class="ptolemy.actor.TypedIOPort">
+      <doc>Sinusoidal waveform output.</doc>
+    </port>
 
-  <!-- Make the connections -->
-  <connection port1="ramp.output" port2="sine.input"></connection>
-  <connection port1="sine.output" port2="output"></connection>
+    <!-- Make the connections -->
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="ramp.output" relation="r1"/>
+    <link port="sine.input" relation="r1"/>
+
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="sine.output" relation="r2"/>
+    <link port="output" relation="r2"/>
+  </entity>
 </model>

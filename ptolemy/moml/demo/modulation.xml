@@ -1,33 +1,48 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model SYSTEM "../moml.dtd">
-<model name="modulation">
-  <doc>
-  Multiply a low-frequency sine wave by a higher frequency one.
-  </doc>
+<model name="modulation" class="ptolemy.actor.TypedCompositeActor">
+  <doc>Multiply a low-frequency sine wave by a higher frequency one.</doc>
 
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <setParameter name="iterations" value="100"/>
+    <attribute name="iterations" value="100"></attribute>
   </director>
 
+  <import source="sinewave.xml"/>
+
   <!-- Define the actors -->
-  <clone name="carrier" master="sinewave" source="sinewave.xml">
-    <setParameter name="samplingFrequency" value="2*PI"/>
-    <setParameter name="frequency" value="PI*0.2"/>
-  </clone>
+  <entity name="carrier" class=".lib.sinewave">
+    <attribute name="samplingFrequency" value="2*PI"></attribute>
+    <attribute name="frequency" value="PI*0.2"></attribute>
+  </entity>
 
-  <clone name="signal" master="sinewave" source="sinewave.xml">
-    <setParameter name="samplingFrequency" value="2*PI"/>
-    <setParameter name="frequency" value="PI*0.02"/>
-  </clone>
+  <entity name="signal" class=".lib.sinewave">
+    <attribute name="samplingFrequency" value="2*PI"></attribute>
+    <attribute name="frequency" value="PI*0.02"></attribute>
+  </entity>
 
-  <actor name="mult" class="ptolemy.actor.lib.MultiplyDivide"></actor>
-  <actor name="display" class="ptolemy.actor.gui.SequencePlotter">
-    <configure src="plotConfigure.xml"/>
-  </actor>
+  <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide"></entity>
+  <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+    <!-- Configure provided in both a referenced file and local data -->
+    <configure source="plotConfigure.xml"><![CDATA[
+      <?xml version="1.0" standalone="no"?>
+      <!DOCTYPE model SYSTEM "../../plot/plotml/plotml.dtd">
+      <plot>
+        <title>Modulated Waveform Example</title>
+      </plot>
+    ]]></configure>
+  </entity>
 
   <!-- Make the connections -->
-  <connection port1="carrier.output" port2="mult.multiply"></connection>
-  <connection name="c" port1="signal.output" port2="mult.multiply"></connection>
-  <connection port1="mult.output" port2="display.input"></connection>
-  <link connection="c" port="display.input"></link>
+  <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="carrier.output" relation="r1"/>
+  <link port="mult.multiply" relation="r1"/>
+
+  <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="signal.output" relation="r2"/>
+  <link port="mult.multiply" relation="r2"/>
+  <link port="display.input" relation="r2"/>
+
+  <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+  <link port="mult.output" relation="r3"/>
+  <link port="display.input" relation="r3"/>
 </model>

@@ -76,8 +76,7 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String getAppletInfo() {
         if (_toplevel != null) {
-            DocAttribute doc = (DocAttribute)_toplevel.
-                   getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME);
+            Documentation doc = (Documentation)_toplevel.getAttribute("_doc");
             if (doc != null) {
                 return "MoML applet for Ptolemy II:\n" + doc.toString();
             }

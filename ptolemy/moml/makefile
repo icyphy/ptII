@@ -47,10 +47,10 @@ PTPACKAGE = 	moml
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = DocAttribute.java \
-	LinkAttribute.java \
-	LocationAttribute.java \
-	VertexAttribute.java \
+JSRCS = Documentation.java \
+	Icon.java \
+	Locatable.java \
+	Vertex.java \
 	MoMLApplet.java \
 	MoMLParser.java
 

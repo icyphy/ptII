@@ -1,58 +1,56 @@
-<!ELEMENT model (doc | manager | director | setParameter | parameter |
-          actor | clone | connection | link | placement | icon | configure)*>
-<!ATTLIST model name CDATA "top">
-<!ATTLIST model class CDATA "ptolemy.actor.TypedCompositeActor">
+<!ELEMENT model (attribute | class | configure | doc | director |
+                entity | import | link | relation)*>
+<!ATTLIST model name CDATA #REQUIRED
+                class CDATA #REQUIRED>
 
-  <!ELEMENT doc (#PCDATA)>
+<!ELEMENT attribute (doc | configure)*>
+<!ATTLIST attribute class CDATA #IMPLIED
+                    name CDATA #REQUIRED
+                    value CDATA #IMPLIED>
 
-  <!ELEMENT actor (doc | director | setParameter | parameter | actor |
-	 clone | connection | link | placement | icon | configure)*>
-  <!ATTLIST actor name CDATA #REQUIRED>
-  <!ATTLIST actor class CDATA "ptolemy.actor.TypedCompositeActor">
+<!ELEMENT class (attribute | configure | director | doc | entity | link)*>
+<!ATTLIST class name CDATA #REQUIRED
+                extends CDATA #REQUIRED>
 
-  <!ELEMENT clone (doc | director | setParameter | placement |
-         icon | configure)*>
-  <!ATTLIST clone foo CDATA #REQUIRED>
-  <!ATTLIST clone master CDATA #REQUIRED>
-  <!ATTLIST clone source CDATA #REQUIRED>
+<!ELEMENT configure (#PCDATA)>
+<!ATTLIST configure source CDATA #IMPLIED>
 
-  <!ELEMENT director (setParameter | configure)*>
-  <!ATTLIST director name CDATA "director">
-  <!ATTLIST director class CDATA #REQUIRED>
+<!ELEMENT director (attribute | configure)*>
+<!ATTLIST director name CDATA "director"
+                   class CDATA #REQUIRED>
 
-  <!ELEMENT connection (vertex*)>
-  <!ATTLIST connection name CDATA #IMPLIED>
-  <!ATTLIST connection port1 CDATA #REQUIRED>
-  <!ATTLIST connection port2 CDATA #REQUIRED>
+<!ELEMENT doc (#PCDATA)>
 
-  <!ELEMENT link (vertex*)>
-  <!ATTLIST link port CDATA #REQUIRED>
-  <!ATTLIST link connection CDATA #REQUIRED>
-  <!ATTLIST link vertex CDATA #IMPLIED>
+<!ELEMENT entity (attribute | class | configure | doc |
+                  director | entity | rendition | relation)*>
+<!ATTLIST entity name CDATA #REQUIRED
+                 class CDATA #REQUIRED>
 
-    <!ELEMENT vertex EMPTY>
-    <!ATTLIST vertex name CDATA #IMPLIED>
-    <!ATTLIST vertex xpos CDATA #IMPLIED>
-    <!ATTLIST vertex ypos CDATA #IMPLIED>
+<!ELEMENT import EMPTY>
+<!ATTLIST import source CDATA #REQUIRED>
 
-  <!ELEMENT setParameter EMPTY>
-  <!ATTLIST setParameter name CDATA #REQUIRED>
-  <!ATTLIST setParameter value CDATA #REQUIRED>
+<!ELEMENT link EMPTY>
+<!ATTLIST link port CDATA #REQUIRED
+               relation CDATA #REQUIRED
+               vertex CDATA #IMPLIED>
 
-  <!ELEMENT parameter (doc | configure)*>
-  <!ATTLIST parameter class CDATA "ptolemy.data.expr.Parameter">
-  <!ATTLIST parameter name CDATA #REQUIRED>
-  <!ATTLIST parameter value CDATA #REQUIRED>
+<!ELEMENT location EMPTY>
+<!ATTLIST location x CDATA #REQUIRED
+                   y CDATA #IMPLIED
+                   z CDATA #IMPLIED>
 
-  <!ELEMENT icon (configure)*>
-  <!ATTLIST icon class CDATA "ptolemy.actor.gui.GenericIcon">
-  <!ATTLIST icon xpos CDATA #IMPLIED>
-  <!ATTLIST icon ypos CDATA #IMPLIED>
+<!ELEMENT port (doc | configure)*>
+<!ATTLIST port name CDATA #REQUIRED
+               class CDATA #REQUIRED
+               direction (input | output | both) "both">
 
-    <!ELEMENT configure EMPTY>
-    <!ATTLIST configure src CDATA #REQUIRED>
+<!ELEMENT relation (vertex*)>
+<!ATTLIST relation name CDATA #REQUIRED
+                   class CDATA #REQUIRED>
 
-  <!ELEMENT port (doc | configure)*>
-  <!ATTLIST port name CDATA #REQUIRED>
-  <!ATTLIST port class CDATA "ptolemy.actor.TypedIOPort">
-  <!ATTLIST port direction (input | output | both) "output">
+<!ELEMENT rendition (configure | location)*>
+<!ATTLIST rendition class CDATA #REQUIRED>
+
+<!ELEMENT vertex (location?)>
+<!ATTLIST vertex name CDATA #REQUIRED
+                 pathTo CDATA #IMPLIED>

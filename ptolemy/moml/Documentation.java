@@ -33,46 +33,29 @@ package ptolemy.moml;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DocAttribute
+//// Documentation
 /** 
 An attribute that contains documentation for the container.
 
 @author  Edward A. Lee
 @version $Id$
 */
-public class DocAttribute extends Attribute {
+public class Documentation extends Attribute {
 
-    /** Construct an attribute with the name <i>_doc</i> and the specified
-     *  contents for the the specified container.  If the container already
-     *  contains an attribute by that name, replace it.  If the container
-     *  rejects the attribute with an IllegalActionException, then
-     *  the attribute is not forced upon the container, but rather is
-     *  created with no container.
+    /** Construct an attribute with the specified container and name.
+     *  The documentation contained by the attribute is initially empty,
+     *  but can be set using the setValue() method.
      *  @param container The container.
-     *  @param value The documentation to attach to the container.
+     *  @param name The name of the attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */	
-    public DocAttribute(NamedObj container, String value) {
-        super(container.workspace());
-        try {
-            setName(DOC_ATTRIBUTE_NAME);
-            _value = value;
-            Attribute previous = container.getAttribute(DOC_ATTRIBUTE_NAME);
-            if (previous != null) {
-                previous.setContainer(null);
-            }
-            setContainer(container);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        } catch (IllegalActionException ex) {
-            // The container rejects the attribute; create with no container.
-        }
+    public Documentation(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The name of a doc attribute. */
-    public static final String DOC_ATTRIBUTE_NAME = "_doc";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -80,8 +63,22 @@ public class DocAttribute extends Attribute {
     /** Get the documentation as a string.
      *  @return The documentation.
      */	
-    public String toString() {
+    public String getValue() {
         return _value;
+    }
+
+    /** Set the documentation string.
+     *  @param value The documentation.
+     */	
+    public void setValue(String value) {
+        _value = value;
+    }
+
+    /** Get the documentation as a string, with the class name prepended.
+     *  @return A string describing the object.
+     */	
+    public String toString() {
+        return "(" + getClass().getName() + ", " + _value + ")";
     }
 
     ///////////////////////////////////////////////////////////////////
