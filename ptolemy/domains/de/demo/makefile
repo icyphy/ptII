@@ -34,6 +34,8 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
+DIRS =		inspection
+
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
@@ -48,7 +50,6 @@ JSRCS = \
 	DEApplet.java \
 	HierarchyApplet.java \
 	HistogramApplet.java \
-	InspectionParadox.java \
 	InterruptApplet.java \
 	QueueApp.java \
 	QueueApplet.java \
