@@ -565,7 +565,7 @@ public class Pxgraph extends Frame {
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 1.3, Build: $Id$\n\n"+
+                "Version 1.3p1, Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the Pxgraph class documentation.\n" +
                 "For more information, see\n" +
