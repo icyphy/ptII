@@ -73,5 +73,6 @@ proc removeGraphicalClasses {parser} {
     $filter put "ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor" [java::null]
     $filter put "ptolemy.domains.wireless.lib.GraphicalLocator" [java::null]
     $filter put "ptolemy.vergil.icon.CopyCatIcon" [java::null]
+    $filter put "ptolemy.vergil.kernel.attributes.AttributeValueAttribute" [java::null]
     $parser addMoMLFilter $filter
 }
