@@ -114,7 +114,7 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
     $toplevel requestChange $undoChange 
     set undoneMoML [$toplevel exportMoML]
     diffText $originalMoML $undoneMoML
-} {15,25d14
+} {17,27d16
 <     <entity name="const" class="ptolemy.actor.lib.Const">
 <         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
 <         </property>
@@ -216,14 +216,14 @@ test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last
     set undoneThreeChangeMoML [$toplevel exportMoML]
     diffText $threeChangeMoML $undoneThreeChangeMoML
 
-} {26,31d25
+} {28,33d27
 <     <entity name="discard1" class="ptolemy.actor.lib.Discard">
 <         <port name="input" class="ptolemy.actor.TypedIOPort">
 <             <property name="input"/>
 <             <property name="multiport"/>
 <         </port>
 <     </entity>
-33,38d26
+35,40d28
 <         <port name="input" class="ptolemy.actor.TypedIOPort">
 <             <property name="input"/>
 <             <property name="multiport"/>
