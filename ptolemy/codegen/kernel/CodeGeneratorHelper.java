@@ -64,7 +64,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     //// public methods ////
-
+    
     /**
      * FIXME
      */
@@ -77,6 +77,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public void generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
+        _firingCount = -1;
+        _firingsPerIteration = 1;
     }
 
     /**
@@ -85,7 +87,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
     }
-
+       
     /**
      * FIXME
      */
@@ -93,6 +95,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return _component;
     }
 
+    public int getFiringCount() {
+        return _firingCount;
+    }
+    
+    public int getFiringsPerIteration() {
+        return _firingsPerIteration;
+    }
+    
     /**
      * Return the value of the specified parameter of the associated actor.
      * 
@@ -135,14 +145,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         StringBuffer result = new StringBuffer();
         Receiver[][] remoteReceivers 
             = (outputPort.getRemoteReceivers());
-        
+        /*
         if (remoteReceivers.length == 0) {
             // This channel of this output port doesn't have any sink.
             result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
             result.append(outputPort.getName());
             return result.toString();
-        }
+        }*/
         
         boolean foundIt = false;
         for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
@@ -205,65 +215,81 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (_component instanceof Actor) {
             Actor actor = (Actor) _component;
 
-            StringTokenizer tokenizer = new StringTokenizer(name, "#", true);
-            if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3) {
+            StringTokenizer tokenizer = new StringTokenizer(name, "#%", true);
+            if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
+                    && tokenizer.countTokens() != 5) {
                 throw new IllegalActionException(_component,
                         "Reference not found: " + name);
             }
             
             // Get the port name.
             String portName = tokenizer.nextToken().trim();
-            if (portName.equals("#")) {
-                throw new IllegalActionException(_component,
-                        "Reference not found: " + name);
-            }
             
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort port = (IOPort) inputPorts.next();
                 // The channel is specified as $ref(port#channelNumber).
                 if (port.getName().equals(portName)) {
-                    result.append(_component.getFullName().replace('.', '_'));
-                    result.append("_");
-                    result.append(portName);
-                    if (!tokenizer.hasMoreTokens()) {
-                        // No channel number specified.
-                        return result.toString();
+                    result.append(port.getFullName().replace('.', '_'));
+                    int[] channelAndOffset = _getChannelAndOffset(name);
+                    if (channelAndOffset[0] >= 0) {
+                        result.append("[");
+                        result.append(new Integer(channelAndOffset[0])
+                                .toString());
+                        result.append("]");
                     }
-                    // get the channel number.
-                    tokenizer.nextToken(); // This is "#"
-                    Integer channel = new Integer(tokenizer.nextToken().trim());
-                    int channelNumber = channel.intValue();
-                    if (channelNumber < 0) {
-                        throw new IllegalActionException(_component, 
-                                "Invalid channel number in " + name);
+                    if (channelAndOffset[1] >= 0) {
+                        result.append("[");
+                        int offset = channelAndOffset[1] + 
+                            _firingCount * port.getReceivers()[0].length;
+                        result.append(new Integer(channelAndOffset[1])
+                                .toString());
+                        result.append("]");
+                    } else if (_firingsPerIteration > 1) {
+                        // Did not specify offset, so the receiver length is 1.
+                        // This is multiple firing.
+                        result.append("[");
+                        result.append(new Integer(_firingCount).toString());
+                        result.append("]");
                     }
-                    result.append("[");
-                    result.append(channel.toString());
-                    result.append("]");
                     return result.toString();
                 }
             }
             
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
+                
                 IOPort port = (IOPort) outputPorts.next();
                 if (port.getName().equals(portName)) {
-                    if (!tokenizer.hasMoreTokens()) {
-                        // No channel number specified.
-                        // By default, it is channel 0.
-                        result.append(getSinkChannels(port, 0));
+                    Receiver[][] remoteReceivers 
+                        = (port.getRemoteReceivers());
+                    if (remoteReceivers.length == 0) {
+                        // This channel of this output port doesn't have any sink.
+                        result.append(_component.getFullName().replace('.', '_'));
+                        result.append("_");
+                        result.append(port.getName());
                         return result.toString();
                     }
-                    // get the channel number.
-                    tokenizer.nextToken(); // This is "#".
-                    Integer channel = new Integer(tokenizer.nextToken().trim());
-                    int channelNumber = channel.intValue();
-                    if (channelNumber < 0) {
-                        throw new IllegalActionException(_component, 
-                                "Invalid channel number in " + name);
+                    
+                    int[] channelAndOffset = _getChannelAndOffset(name);
+                    if (channelAndOffset[0] < 0) {
+                        result.append(getSinkChannels(port, 0));
+                    } else {
+                        result.append(getSinkChannels(port,
+                                channelAndOffset[0]));
                     }
-                    result.append(getSinkChannels(port, channelNumber));
+                    if (channelAndOffset[1] >= 0) {
+                        result.append("[");
+                        result.append(new Integer(channelAndOffset[1])
+                                .toString());
+                        result.append("]");
+                    } else if (_firingsPerIteration > 1) {
+                        // Did not specify offset, so the receiver length is 1.
+                        // This is multiple firing.
+                        result.append("[");
+                        result.append(new Integer(_firingCount).toString());
+                        result.append("]");
+                    }
                     return result.toString();
                 }
             }
@@ -304,7 +330,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String processCode(String code) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
-        _referencedParameters = new HashSet();
         int currentPos = code.indexOf("$");
         if (currentPos < 0) {
             // No "$" in the string
@@ -392,15 +417,71 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
             currentPos = nextPos;
         }
-
         return result.toString();
     }
 
+    public void setFiringCount(int firingCount) {
+        _firingCount = firingCount;
+    }
+    
+    public void setFiringsPerIteration(int firingsPerIteration) {
+        _firingsPerIteration = firingsPerIteration;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @return
+     * @throws IllegalActionException
+     */
+    private int[] _getChannelAndOffset(String name)
+            throws IllegalActionException {
+        int[] result = {-1, -1};
+        StringTokenizer tokenizer = new StringTokenizer(name, "#%", true);
+        tokenizer.nextToken();
+        if (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            if (token.equals("#")){
+                int channel = new Integer(tokenizer.nextToken().trim())
+                        .intValue();
+                if (channel < 0) {
+                    throw new IllegalActionException(_component,
+                            "Invalid channel number in " + name);
+                }
+                result[0] = channel;
+                if (tokenizer.hasMoreTokens()) {
+                    if (tokenizer.nextToken().equals("%")) {
+                        int offset = new Integer(tokenizer.nextToken().trim())
+                                .intValue();
+                        if (offset < 0) {
+                            throw new IllegalActionException(_component,
+                                    "Invalid offset in" + name);
+                        }
+                        result[1] = offset;
+                    }
+                }
+            } else if (token.equals("%")) {
+                int offset = new Integer(tokenizer.nextToken().trim())
+                        .intValue();
+                if (offset < 0 || tokenizer.hasMoreTokens()) {
+                    throw new IllegalActionException(_component,
+                            "Invalid offset in " + name);
+                }
+                result[1] = offset;
+            }
+        }
+        return result;
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     //// private variables ////
 
     /** The associated component. */
     private NamedObj _component;
-    
-    private HashSet _referencedParameters;
+    // Number of firings already fired. The default value is -1.
+    private int _firingCount;
+    // Total number of firings per iteration. The default value is 1.
+    private int _firingsPerIteration;
+    private HashSet _referencedParameters = new HashSet();
 }

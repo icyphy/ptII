@@ -219,6 +219,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     code.append(";\n"); 
                 }
             }
+            
             // Generate variable declarations for input ports.
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
@@ -236,15 +237,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     code.append("]");
                 }
                 // For multi-rate SDF. 
-                // This should move to StaticSchedulingCodeGenerator.
-                /*
-                code.append("[");
-                int bufferCapacity = (inputPort.getReceivers())[0].length;
-                code.append(new Integer(bufferCapacity).toString());
-                code.append("]");
-                */
+                int bufferCapacity = getBufferCapacity(inputPort);
+                if (bufferCapacity > 1) {
+                    code.append("[");
+                    code.append(new Integer(bufferCapacity).toString());
+                    code.append("]");
+                }
                 code.append(";\n");
             }
+            
             // Generate variable declarations for output ports.
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
@@ -256,6 +257,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
+                    /*
+                    int bufferCapacity = getBufferCapacity(outputPort);
+                    if (bufferCapacity > 1) {
+                        code.append("[");
+                        code.append(new Integer(bufferCapacity).toString());
+                        code.append("]");
+                    }*/
                     code.append(";\n");
                 }
             }
@@ -287,6 +295,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public NamedObj getComponent() {
     	return getContainer();
+    }
+    
+    public int getBufferCapacity(TypedIOPort port)
+            throws IllegalActionException {
+        int bufferCapacity = port.getReceivers()[0].length;
+        if (bufferCapacity == 0) {
+            bufferCapacity = 1;
+        }
+        return bufferCapacity;
     }
     
     public void setContainer(NamedObj container) 

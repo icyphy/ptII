@@ -34,9 +34,13 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -149,11 +153,37 @@ public class StaticSchedulingCodeGenerator
             // check to see whether the actor contains a code generator
             // attribute. If it does, we should use that as the helper.
                         
-            ActorCodeGenerator helperObject 
-                    = (ActorCodeGenerator)_getHelper((NamedObj)actor);
-            helperObject.generateFireCode(code);
+            //ActorCodeGenerator helperObject 
+              //      = (ActorCodeGenerator)_getHelper((NamedObj)actor);
+            CodeGeneratorHelper helperObject
+                    = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
+            Variable firings = (Variable)((NamedObj)actor)
+                    .getAttribute("firingsPerIteration");
+            int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
+            helperObject.setFiringsPerIteration(firingsPerIteration);
+            for (int i = 0; i < firing.getIterationCount(); i ++) {
+                int firingCount = helperObject.getFiringCount() + 1;
+                helperObject.setFiringCount(firingCount);
+                helperObject.generateFireCode(code);
+            }
         }
     }
+    
+    /** 
+     */
+    public int getBufferCapacity(TypedIOPort port)
+            throws IllegalActionException {
+        int bufferCapacity = 1;
+        Variable firings = 
+            (Variable)port.getContainer().getAttribute("firingsPerIteration");
+        int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
+        if (port.isInput()) {
+            bufferCapacity = firingsPerIteration
+                * DFUtilities.getTokenConsumptionRate(port);
+        } 
+        return bufferCapacity;
+    }
+    
     
     public void setContainer(NamedObj container) 
             throws IllegalActionException, NameDuplicationException {
