@@ -55,7 +55,7 @@ public class Message extends Frame {
 
     //     public static void main(String args[]){
     //      Message message = new Message("A message",
-    //                             Color.white,Color.black);
+    //                             Color.white, Color.black);
     //      message.setTitle("A Message");
     //      message.pack();
     //      message.show();
