@@ -472,13 +472,19 @@ public class LongMatrixMath {
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final long[][] modulo(final long[][] matrix1,
+    public static final long[][] moduloElements(final long[][] matrix1,
             final long[][] matrix2) {
+        // This method is named moduleElements so as to match
+        // multipyElements and divideElements.
+
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
         _checkSameDimension("modulo", matrix1, matrix2);
 
-        long[][] returnValue = new long[_rows(matrix1)][_columns(matrix1)];
-        for (int i = 0; i < _rows(matrix1); i++) {
-            for (int j = 0; j < _columns(matrix1); j++) {
+        long[][] returnValue = new long[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] % matrix2[i][j];
             }
         }

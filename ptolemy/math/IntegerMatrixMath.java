@@ -467,13 +467,19 @@ public class IntegerMatrixMath {
      *  If the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final int[][] modulo(final int[][] matrix1,
+    public static final int[][] moduloElements(final int[][] matrix1,
             final int[][] matrix2) {
-        _checkSameDimension("modulo", matrix1, matrix2);
+        // This method is named moduleElements so as to match
+        // multipyElements and divideElements.
 
-        int[][] returnValue = new int[_rows(matrix1)][_columns(matrix1)];
-        for (int i = 0; i < _rows(matrix1); i++) {
-            for (int j = 0; j < _columns(matrix1); j++) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("moduloElements", matrix1, matrix2);
+
+        int[][] returnValue = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix1[i][j] % matrix2[i][j];
             }
         }
