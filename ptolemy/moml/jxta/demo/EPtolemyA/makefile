@@ -47,7 +47,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
-	Average.class \
 	EPtolemy.properties \
 	$(PTPACKAGE).htm \
 	PtolemyActorExchangeGroup.adv \
