@@ -74,5 +74,5 @@ public class Weight extends Transformer {
 
     }
 
-  
+
 }

@@ -69,23 +69,23 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// PetriNetDirector
 /**
- 
+
  *   Petri net director. Basic Petri net model consists of places and
  *   transitions. A transition is enabled if places connected to the
- *   input of the transition all have more tokens than the corresponding 
+ *   input of the transition all have more tokens than the corresponding
  *   edge weights. An enabled transition can fire. WHen a transition fires,
- *   it reduces the tokens in the places connected to the input of the 
+ *   it reduces the tokens in the places connected to the input of the
  *   transition, and increase the tokens in places connected to the output
- *   of the transition. 
+ *   of the transition.
  *
  *
  *   The key methods are the testing whether a transition
- *   is ready or not _testReadyTransition, and fire an enabled transition 
+ *   is ready or not _testReadyTransition, and fire an enabled transition
  *   _fireTransition. The sequence of firing is determinted by the method
  *   fireHierarchicalPetriNet.
 
  *   It is assumed that the Peri net is a hierarchical petri net. This works
- *   fine for flat Petri net. 
+ *   fine for flat Petri net.
 
 
 @author  Yuke Wang and Edward A. Lee
@@ -117,13 +117,13 @@ public class PetriNetDirector extends Director {
         return new PetriNetReceiver();
     }
 
-    /**  
-     *  For hierarchical structure, the chosen Transition 
-     *  can be a composite PetriNetActor or  a Transition. 
-     *  
-     *  We have to fire a hierarchical petri net even if the 
+    /**
+     *  For hierarchical structure, the chosen Transition
+     *  can be a composite PetriNetActor or  a Transition.
+     *
+     *  We have to fire a hierarchical petri net even if the
      *  inside component can be flat, since it may connected to things
-     *  outside the component. 
+     *  outside the component.
      */
 
     public void fire() throws IllegalActionException {
@@ -131,30 +131,30 @@ public class PetriNetDirector extends Director {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
             System.out.println("PetriNetDirector,the top container is"
-                    + container.getFullName());  
-            TypedCompositeActor pnContainer = 
-                                 (TypedCompositeActor) container;           
- 
+                    + container.getFullName());
+            TypedCompositeActor pnContainer =
+                                 (TypedCompositeActor) container;
+
             fireHierarchicalPetriNet(pnContainer);
-  
+
         }
     }
 
-/** This method fires enabled components step by step. 
- *  Each PetriNetActor is fired once, and then it 
+/** This method fires enabled components step by step.
+ *  Each PetriNetActor is fired once, and then it
  *  returns the control to this method and choose
  *  next enabled component.
  *  Since Petri net can go to infinite firing sequence, the count
  *  is used to control the number of firing, for testing purpose.
- * 
+ *
  *  Other form of firing sequence can be defined and coded as well.
  *  We could randomly fire all the deeply contained transitions.
  *  We could randomly fire the components by hierarchy.
  */
 
-    public void fireHierarchicalPetriNet(TypedCompositeActor container) 
+    public void fireHierarchicalPetriNet(TypedCompositeActor container)
                       throws IllegalActionException {
-  
+
         System.out.println(" _fireHierarchicalPetriNet ___________");
 
         LinkedList components = _readyComponents(container);
@@ -164,7 +164,7 @@ public class PetriNetDirector extends Director {
 
         while (i > 0 & k < 5) {
 
-       
+
 
             System.out.print(i + "  transitions ready in choosing");
             System.out.println(" transitions--");
@@ -181,9 +181,9 @@ public class PetriNetDirector extends Director {
                 _fireTransition(realTransition);
             }
             else if(chosenTransition instanceof PetriNetActor) {
-                PetriNetActor realPetriNetActor = 
+                PetriNetActor realPetriNetActor =
                                 (PetriNetActor) chosenTransition;
-                k++; 
+                k++;
                 _fireHierarchicalPetriNetOnce(realPetriNetActor);
 
             }
@@ -215,32 +215,32 @@ public class PetriNetDirector extends Director {
     }
 
 
-   
+
 ///////////////////////////////////////////////////////////////////
 ////                         private methods                   ////
 
 
 
 /** This is one of the key methods for hierarchical Petri Nets.
- *  It is equivalent to the Prefire method for a transition. 
+ *  It is equivalent to the Prefire method for a transition.
  *
  *  This method works like the graph traverse algorithm, breadth first search
- *  for places connected to the transition, due to the many possible 
+ *  for places connected to the transition, due to the many possible
  *  ports involved and the connection between ports.
- * 
- *  multiple arcs are allowed between ports, port-places, and transition-place. 
- *  the total weight of the edge from a transition to a place is the 
- *  sum of all edges. 
  *
- *  It is assumed that the place is connected to transitions or ports 
- *  and transitions are connected to places or ports. no action is 
+ *  multiple arcs are allowed between ports, port-places, and transition-place.
+ *  the total weight of the edge from a transition to a place is the
+ *  sum of all edges.
+ *
+ *  It is assumed that the place is connected to transitions or ports
+ *  and transitions are connected to places or ports. no action is
  *  performed to verify this.
  */
 
-    private boolean  _testReadyTransition(Transition transition) 
+    private boolean  _testReadyTransition(Transition transition)
                                     throws IllegalActionException {
 
-        boolean readyToFire = true;  
+        boolean readyToFire = true;
         LinkedList placeList =  _findBackwardConnectedPlaces(transition);
         Iterator pointer1 = placeList.iterator();
         int i1 = 0;
@@ -248,7 +248,7 @@ public class PetriNetDirector extends Director {
             Place item = (Place) pointer1.next();
             i1++;
             item.setTemporaryMarking(item.getMarking());
-        }     
+        }
 
 
         LinkedList newRelationList = new LinkedList();
@@ -256,13 +256,13 @@ public class PetriNetDirector extends Director {
         LinkedList temporarySourcePortList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
-            if (weights != null) {                           
+            if (weights != null) {
                 Iterator weightPorts =
                         weights.linkedSourcePortList().iterator();
                 while(weightPorts.hasNext()) {
                     IOPort weightPort = (IOPort) weightPorts.next();
                     if (!temporarySourcePortList.contains(weightPort)) {
-                        temporarySourcePortList.add(weightPort); 
+                        temporarySourcePortList.add(weightPort);
                         Nameable weightPlace = (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
                               if(weightPort.isOutput())
@@ -270,11 +270,11 @@ public class PetriNetDirector extends Director {
                                                   (weightPort.insideRelationList());
                               else if( weightPort.isInput())
                                   newRelationList.addAll
-                                                  (weightPort.linkedRelationList());                                                                 
+                                                  (weightPort.linkedRelationList());
                         }
                     }
-                    else 
-                        System.out.println("*******found used source port  " 
+                    else
+                        System.out.println("*******found used source port  "
                                                       + weightPort.getFullName());
                 }
 
@@ -286,12 +286,12 @@ public class PetriNetDirector extends Director {
                     item.decreaseTemporaryMarking(weightNumber);
                     if(item.getTemporaryMarking()<0)
                         return false;
-                }  
+                }
             } else
                 System.out.println("the arc weight is null");
-            newRelationList.remove(weights);  
+            newRelationList.remove(weights);
         }
-        
+
         return readyToFire;
     }
 
@@ -300,10 +300,10 @@ public class PetriNetDirector extends Director {
  *  from this list randomly.
  */
 
-    private LinkedList _readyComponents(TypedCompositeActor container)  
-                                      throws IllegalActionException { 
+    private LinkedList _readyComponents(TypedCompositeActor container)
+                                      throws IllegalActionException {
         Iterator actors = container.entityList().iterator();
-        LinkedList readyComponentList = new LinkedList();    
+        LinkedList readyComponentList = new LinkedList();
         while (actors.hasNext()) {
             Nameable component = (Nameable) actors.next();
             if (component instanceof PetriNetActor)  {
@@ -311,11 +311,11 @@ public class PetriNetDirector extends Director {
                 if( pnActor.prefire()) {
                     readyComponentList.add(pnActor);
                     System.out.println("found a readyPetriNetActor  "
-                                          + pnActor.getFullName());  
+                                          + pnActor.getFullName());
                 }
-            }      
+            }
             else if (component instanceof Transition) {
-                Transition componentTransition = (Transition) component; 
+                Transition componentTransition = (Transition) component;
                 if( _testReadyTransition(componentTransition))
                 readyComponentList.add(componentTransition);
             }
@@ -324,7 +324,7 @@ public class PetriNetDirector extends Director {
     }
 
 /** This is another key method for the Petri Net Domain.
- *  This method updates the tokens in the places connected to the 
+ *  This method updates the tokens in the places connected to the
  *  firing transition. It has two parts: to increase tokens in the forward
  *  connected places, and to decresae tokens in the backward connected
  *  places. The weights to be increased/decreased are determined by
@@ -332,7 +332,7 @@ public class PetriNetDirector extends Director {
  *
  */
 
-    private void  _fireTransition(Transition transition) 
+    private void  _fireTransition(Transition transition)
                                     throws IllegalActionException {
 
 
@@ -341,39 +341,39 @@ public class PetriNetDirector extends Director {
         LinkedList temporaryDestinationPortList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
-            if (weights != null) {  
+            if (weights != null) {
                 System.out.println("start to increase the weight of relation "
-                        +"*********"           + weights.getFullName());                          
+                        +"*********"           + weights.getFullName());
                 Iterator weightPorts =
                         weights.linkedDestinationPortList().iterator();
                 while(weightPorts.hasNext()) {
                     IOPort weightPort = (IOPort) weightPorts.next();
                     if (!temporaryDestinationPortList.contains(weightPort)) {
-                        temporaryDestinationPortList.add(weightPort); 
-                        Nameable weightPlace = 
+                        temporaryDestinationPortList.add(weightPort);
+                        Nameable weightPlace =
                                           (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
                             if(weightPort.isOutput())
-                                newRelationList.addAll 
-                                             (weightPort.linkedRelationList()); 
+                                newRelationList.addAll
+                                             (weightPort.linkedRelationList());
                             else if( weightPort.isInput())
                                 newRelationList.addAll
-                                             (weightPort.insideRelationList());                                                                
+                                             (weightPort.insideRelationList());
                         }
                         else if( weightPlace instanceof Place) {
                             Place realPlace = (Place) weightPlace;
-                            System.out.print("found a place " 
+                            System.out.print("found a place "
                                 + realPlace.getFullName() + "  "
                                 + realPlace.getMarking());
                         }
                         else
-                            System.out.println("something wrong " 
+                            System.out.println("something wrong "
                                           + weightPlace.getFullName());
                     }
                 }
 
                 int weightNumber = _getWeightNumber(weights);
-                LinkedList  updatePlaceForward = 
+                LinkedList  updatePlaceForward =
                                    _findForwardConnectedPlaces(weights);
                 Iterator pointerForward = updatePlaceForward.iterator();
                 int i = 0;
@@ -382,14 +382,14 @@ public class PetriNetDirector extends Director {
                     i++;
                     int j = itemForward.getMarking();
                     itemForward.increaseMarking(weightNumber);
-                    System.out.println("  the " + i + " item is " 
-                                + itemForward.getFullName() 
-                                +"  "+ j 
+                    System.out.println("  the " + i + " item is "
+                                + itemForward.getFullName()
+                                +"  "+ j
                                 + "  "+ itemForward.getMarking());
                 }
             } else
                 System.out.println("the arc weight is null");
-            newRelationList.remove(weights);  
+            newRelationList.remove(weights);
 
         }
 
@@ -398,15 +398,15 @@ public class PetriNetDirector extends Director {
         LinkedList temporarySourcePortList = new LinkedList();
         while(backRelationList.size()>0 )  {
             IORelation weights = (IORelation) backRelationList.getFirst();
-            if (weights != null) {    
+            if (weights != null) {
                 System.out.println("start to decrease the weight of relation "
-                        +"*********"           + weights.getFullName());                         
+                        +"*********"           + weights.getFullName());
                 Iterator weightPorts =
                         weights.linkedSourcePortList().iterator();
                 while(weightPorts.hasNext()) {
                     IOPort weightPort = (IOPort) weightPorts.next();
                     if (!temporarySourcePortList.contains(weightPort)) {
-                        temporarySourcePortList.add(weightPort); 
+                        temporarySourcePortList.add(weightPort);
                         Nameable weightPlace =
                                             (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
@@ -415,7 +415,7 @@ public class PetriNetDirector extends Director {
                                                 (weightPort.insideRelationList());
                             else if( weightPort.isInput())
                                 backRelationList.addAll
-                                                 (weightPort.linkedRelationList());                                                                 
+                                                 (weightPort.linkedRelationList());
                         }
                     }
                 }
@@ -426,25 +426,25 @@ public class PetriNetDirector extends Director {
                 while (pointer.hasNext()) {
                     Place item = (Place) pointer.next();
                     i++;
-                    int j = item.getMarking(); 
+                    int j = item.getMarking();
                     item.decreaseMarking(weightNumber);
-                    System.out.println("  the " + i + " item is " + 
-                       item.getFullName() + " old " + j 
+                    System.out.println("  the " + i + " item is " +
+                       item.getFullName() + " old " + j
                        + " new  " + item.getMarking());
-                }  
+                }
             } else
                 System.out.println("the arc weight is null");
-            backRelationList.remove(weights);  
-        }   
+            backRelationList.remove(weights);
+        }
     }
 
 /** This method is for fire a composite Petri Net once. This is needed
  *  for some firing sequence.
  */
 
-    private void _fireHierarchicalPetriNetOnce(TypedCompositeActor container) 
+    private void _fireHierarchicalPetriNetOnce(TypedCompositeActor container)
                       throws IllegalActionException {
-  
+
         System.out.println(" _fireHierarchicalPetriNetOnce_");
 
         LinkedList components = _readyComponents(container);
@@ -466,7 +466,7 @@ public class PetriNetDirector extends Director {
                 _fireTransition(realTransition);
             }
             else if(chosenTransition instanceof PetriNetActor) {
-                PetriNetActor realPetriNetActor = 
+                PetriNetActor realPetriNetActor =
                                 (PetriNetActor) chosenTransition;
                 _fireHierarchicalPetriNetOnce(realPetriNetActor);
             }
@@ -482,85 +482,85 @@ public class PetriNetDirector extends Director {
  *  to a firing transition.
  */
 
-    private LinkedList  _findForwardConnectedPlaces(IORelation weight) 
+    private LinkedList  _findForwardConnectedPlaces(IORelation weight)
                                    throws IllegalActionException {
 
         LinkedList newRelationList = new LinkedList();
-        newRelationList.add(weight); 
+        newRelationList.add(weight);
         LinkedList temporaryDestinationPortList = new LinkedList();
         LinkedList temporaryPlaceList = new LinkedList();
         while(newRelationList.size()>0 )  {
-            IORelation weights = (IORelation) newRelationList.getFirst();                       
+            IORelation weights = (IORelation) newRelationList.getFirst();
             Iterator weightPorts =
                         weights.linkedDestinationPortList().iterator();
             while(weightPorts.hasNext()) {
-                IOPort weightPort = (IOPort) weightPorts.next(); 
+                IOPort weightPort = (IOPort) weightPorts.next();
                 if (!temporaryDestinationPortList.contains(weightPort)) {
-                    temporaryDestinationPortList.add(weightPort); 
+                    temporaryDestinationPortList.add(weightPort);
                     Nameable weightPlace = (Nameable) weightPort.getContainer();
                     if (weightPlace instanceof PetriNetActor) {
                         if(weightPort.isOutput())
-                            newRelationList.addAll(weightPort.linkedRelationList()); 
-                        else if( weightPort.isInput())  
-                            newRelationList.addAll(weightPort.insideRelationList());                                                              
+                            newRelationList.addAll(weightPort.linkedRelationList());
+                        else if( weightPort.isInput())
+                            newRelationList.addAll(weightPort.insideRelationList());
                     }
-                    else if(weightPlace instanceof Place) 
+                    else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
-                        System.out.println("*******found no place/petrinetactor" 
-                              + weightPort.getFullName()); 
+                        System.out.println("*******found no place/petrinetactor"
+                              + weightPort.getFullName());
                         return null;
-                    }  
+                    }
                 }
 
             }
-            newRelationList.remove(weights);  
+            newRelationList.remove(weights);
         }
         return temporaryPlaceList;
     }
 
 
-/** For each relation, this method finds all the affected 
+/** For each relation, this method finds all the affected
  *  places in the backward direction. Those places determine
  *  whether a transition is ready to fire or not. If ready,
- *  the firing transition has to update the tokens in all 
+ *  the firing transition has to update the tokens in all
  *  these places. The algorithm used in this method is the
- *  breadth first search of the graph. 
+ *  breadth first search of the graph.
  */
 
-    private LinkedList  _findBackwardConnectedPlaces(IORelation weight) 
+    private LinkedList  _findBackwardConnectedPlaces(IORelation weight)
                                    throws IllegalActionException {
 
         LinkedList newRelationList = new LinkedList();
-        newRelationList.add(weight); 
+        newRelationList.add(weight);
         LinkedList temporarySourcePortList = new LinkedList();
         LinkedList temporaryPlaceList = new LinkedList();
         while(newRelationList.size()>0 )  {
-            IORelation weights = (IORelation) newRelationList.getFirst();                       
+            IORelation weights = (IORelation) newRelationList.getFirst();
             Iterator weightPorts =
                         weights.linkedSourcePortList().iterator();
             while(weightPorts.hasNext()) {
-                IOPort weightPort = (IOPort) weightPorts.next(); 
+                IOPort weightPort = (IOPort) weightPorts.next();
                 if (!temporarySourcePortList.contains(weightPort)) {
-                    temporarySourcePortList.add(weightPort); 
+                    temporarySourcePortList.add(weightPort);
                     Nameable weightPlace = (Nameable) weightPort.getContainer();
                     if (weightPlace instanceof PetriNetActor) {
                         if(weightPort.isOutput())
                             newRelationList.addAll(weightPort.insideRelationList());
                         else if( weightPort.isInput())
-                            newRelationList.addAll(weightPort.linkedRelationList());                                                                 
+                            newRelationList.addAll(weightPort.linkedRelationList());
                     }
-                    else if(weightPlace instanceof Place) 
+                    else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
-                        System.out.println("*******found no place/petrinetactor  " 
-                                  + weightPort.getFullName()); 
+                        System.out.println("*******found no place/petrinetactor  "
+                                  + weightPort.getFullName());
                         return null;
-                    }  
+                    }
                 }
 
             }
-            newRelationList.remove(weights);  
+            newRelationList.remove(weights);
         }
         return temporaryPlaceList;
     }
@@ -568,7 +568,7 @@ public class PetriNetDirector extends Director {
 
 
 
-/** This method finds all the places that determines whether a 
+/** This method finds all the places that determines whether a
  *  transition is enabled or not. It starts to trace each
  *  input relation of the transition and find each of the place
  *  connected to the relation.
@@ -577,34 +577,34 @@ public class PetriNetDirector extends Director {
  */
 
 
-    private LinkedList _findBackwardConnectedPlaces(Transition transition) 
+    private LinkedList _findBackwardConnectedPlaces(Transition transition)
                                     throws IllegalActionException {
- 
+
         LinkedList newRelationList = new LinkedList();
         newRelationList.addAll(transition.input.linkedRelationList());
         LinkedList temporaryPlaceList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
-            temporaryPlaceList.addAll( _findBackwardConnectedPlaces(weights));  
-            newRelationList.remove(weights);        
-        }    
+            temporaryPlaceList.addAll( _findBackwardConnectedPlaces(weights));
+            newRelationList.remove(weights);
+        }
         return temporaryPlaceList;
     }
 
 
 /** THe current hierarchical Petri Net allows mutliple arcs connecting
- *  places, transitions, and ports. Each arc can have an attribute 
+ *  places, transitions, and ports. Each arc can have an attribute
  *  "weight", or without such attribute. THe default is assumed to
  *  be weight 1. This default weight can be changed into other weight
  *  if necessary.
  */
 
-    private  int  _getWeightNumber(IORelation weights) 
+    private  int  _getWeightNumber(IORelation weights)
                                   throws IllegalActionException {
 
         Attribute temporaryAttribute = (Attribute)
             weights.getAttribute("Weight");
-        if (temporaryAttribute == null)  
+        if (temporaryAttribute == null)
             return 1;
         else if (temporaryAttribute instanceof Variable) {
             Variable tAttribute = (Variable) temporaryAttribute;
@@ -618,16 +618,16 @@ public class PetriNetDirector extends Director {
                return 0;
         }
         else {
-            System.out.println(" something wrong with the edge" ); 
+            System.out.println(" something wrong with the edge" );
             return 0;
         }
     }
-   
 
-  
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-  
+
 }
 

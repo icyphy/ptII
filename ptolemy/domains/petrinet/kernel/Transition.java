@@ -96,7 +96,7 @@ public class Transition extends Transformer {
 
     public void fire() throws IllegalActionException {
 
-  
+
     }
 
 
@@ -114,7 +114,7 @@ public class Transition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
- 
+
 
 }
 

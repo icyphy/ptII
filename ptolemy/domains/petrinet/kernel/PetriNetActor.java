@@ -86,17 +86,17 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor
 /**
-A Petri net Actor  
+A Petri net Actor
 
-THis is the basic unit of the hierarchical PetriNet component. It contains 
-ports, places, transitions, and hierarchical petrinet components. 
+THis is the basic unit of the hierarchical PetriNet component. It contains
+ports, places, transitions, and hierarchical petrinet components.
 The current version restricts the ports to be uniformly connected to
 Places or transitions in one direction. It is not allowed to have the
 ports to connect to places and transitions in the same input or output
 direction.
 
 It is also assumed that a transition is connected to places and a place
-is connected to transitions eventually in the hierarchy. 
+is connected to transitions eventually in the hierarchy.
 
 However, the system does not check for such restrictions.
 
@@ -108,7 +108,7 @@ A hierarchical Petri Net model is defined as follows:
 where (ports) means it could be 0 or any finite number of different directional
 ports, ---> means one or more marked or unmarked arcs.
 
-In this current implementation, it is restricted that all the inputs/outputs 
+In this current implementation, it is restricted that all the inputs/outputs
 to a port are either all places or all transitions plus possible ports.
 
 Multiple arcs are allowed for each connection. Each arc is counted as default
@@ -159,12 +159,12 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
-        System.out.println("inside the _PetriNetActor.fire, the actors is" 
+        System.out.println("inside the _PetriNetActor.fire, the actors is"
                     + container.getFullName() + "  " + getFullName());
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
 
-        director.fireHierarchicalPetriNet(pn);     
+        director.fireHierarchicalPetriNet(pn);
 
     }
 
@@ -177,7 +177,7 @@ public class PetriNetActor extends TypedCompositeActor  {
  */
 
     public boolean prefire() throws IllegalActionException {
-        System.out.println("inside the PetriNetActor.prefire, the actors is" 
+        System.out.println("inside the PetriNetActor.prefire, the actors is"
                     +  getFullName() );
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
@@ -191,9 +191,9 @@ public class PetriNetActor extends TypedCompositeActor  {
                     if(t)
                         return true;
                 }
-            }  
-            return false;  
-  
+            }
+            return false;
+
     }
 
    ///////////////////////////////////////////////////////////////////
@@ -203,5 +203,5 @@ public class PetriNetActor extends TypedCompositeActor  {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
- 
+
 }
