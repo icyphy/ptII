@@ -214,7 +214,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess().
      */
-    public synchronized void doneReading() {
+    public final synchronized void doneReading() {
         // A read-only workspace can't have any writers.
         // Since, getReadAccess() simply returns, so does doneReading().
         if (_readOnly) {
@@ -274,7 +274,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception InvalidStateException If this method is called when
      *  the workspace is read-only.
      */
-    public synchronized void doneWriting() {
+    public final synchronized void doneWriting() {
         // A read-only workspace can't be written, so calling this method
         // doesn't really make sense.
         if (_readOnly) {
@@ -332,7 +332,7 @@ public final class Workspace implements Nameable, Serializable {
      *  between the getReadAccess() and doneReading() methods is not checked
      *  under this condition.
      */
-    public synchronized void getReadAccess() {
+    public final synchronized void getReadAccess() {
 
         // The workspace is read-only, so there are no writers,
         // so always grant the permission.
@@ -415,7 +415,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception InvalidStateException If this method is called when the
      *  workspace is read-only.
      */
-    public synchronized void getWriteAccess() {
+    public final synchronized void getWriteAccess() {
         // A read-only workspace can't be written, so throw an exception.
         if (_readOnly) {
             throw new InvalidStateException(this, "Trying to get write " +
@@ -480,14 +480,14 @@ public final class Workspace implements Nameable, Serializable {
 
     /** Increment the version number by one.
      */
-    public synchronized void incrVersion() {
+    public final synchronized void incrVersion() {
         _version++;
     }
 
     /** Return true if the workspace is read only, and false otherwise.
      *  @return True if the workspace is read-only, false otherwise.
      */
-    public synchronized boolean isReadOnly() {
+    public final synchronized boolean isReadOnly() {
         return _readOnly;
     }
 
