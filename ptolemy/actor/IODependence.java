@@ -160,7 +160,7 @@ public class IODependence extends Attribute {
         Actor actor = (Actor)getContainer();
         if (inputPort.getContainer().getContainer().equals(getContainer())) {
             throw new IllegalActionException(this, "doesn't belong to " +
-                ((NamedObj)actor).getName());
+                    ((NamedObj)actor).getName());
         }
         Set notDirectlyDependentPortsSet = new HashSet();
         Iterator outputs = actor.outputPortList().listIterator();

@@ -695,9 +695,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
-     *  After the director preinitializes, construct the IODependence 
-     *  information about the inputs and outputs if this composite actor
-     *  is embedded as an opaque actor. 
      * 
      *  @exception IllegalActionException If there is no director, or if
      *   the director's preinitialize() method throws it, or if this actor
