@@ -696,7 +696,7 @@ test Parameter-17.0 {String mode parameters} {
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
     $p1 setStringMode true
 	$p1 getExpression
-} {}
+} {""}
 
 test Parameter-17.2 {String mode parameters} {
     $p1 setExpression {a"}
