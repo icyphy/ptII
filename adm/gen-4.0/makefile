@@ -74,7 +74,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #   for pid 0, Win32 error 6
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/usr/local/bin/tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/bin/tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
@@ -185,7 +185,7 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
 		$(PTIIDIST)/config/*.class
-	(cd $(PTIIDIST); $(FINDCLEAN))
+	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
