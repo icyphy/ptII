@@ -55,10 +55,7 @@ public class PNImageSource extends AtomicActor {
     public PNImageSource(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //_input = new IOPort(this, "input", true, false);
-        //_input.ISINPUT = false;
         _output = new IOPort(this, "output", false, true);
-        //_output.ISINPUT = false;
 	_filename = new Parameter(this, "Image_file", new StringToken());
     }
     
@@ -68,17 +65,19 @@ public class PNImageSource extends AtomicActor {
 
     public void initialize() throws IllegalActionException {
 	String filename =((StringToken)_filename.getToken()).stringValue();
-	try {
-            //_file = new BufferedReader(new FileReader(filename));
-            FileInputStream fis = new FileInputStream(filename);
-            _file = new DataInputStream(fis);
-        } catch (FileNotFoundException e) {
-        System.out.println("Error: In PNImageSource: file \"" +
-                filename + "\" not found!");
+        if (_file != null && !filename.equals("")) {
+            try {
+                //_file = new BufferedReader(new FileReader(filename));
+                FileInputStream fis = new FileInputStream(filename);
+                _file = new DataInputStream(fis);
+            } catch (FileNotFoundException e) {
+                System.out.println("Error: In PNImageSource: file \"" +
+                        filename + "\" not found!");
+            }
         }
     }
 
-    public void readFrom(FileInputStream fis) {
+    public void read(InputStream fis) {
 	_file = new DataInputStream(fis);
     }
 
