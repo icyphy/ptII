@@ -57,6 +57,14 @@ proc backtrack {className} {
     return $results
 }
 
+puts "Running 'make backtrack' to run Transformer"
+if [catch {set results [exec -stderrok make backtrack]} errMsg] {
+    error $errMsg	
+} else {
+    puts $results	
+}
+
+
 ######################################################################
 ####
 #

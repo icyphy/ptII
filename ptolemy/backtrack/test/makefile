@@ -78,7 +78,7 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-tests:: $(EXTRA_SRCS) backtrack test_jsimple
+tests:: $(EXTRA_SRCS) test_jsimple
 
 
 # PtolemyII-wide test definitions.
@@ -89,6 +89,8 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
 
+# Backtrack.tcl runs "make backtrack" so that we can run the
+# tests from inside Eclipse
 backtrack: suball transform jclass
 
 transform:
