@@ -124,18 +124,18 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ////                         public methods                    ////
 
     /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the interations member.  The new
+     *  base class and then sets the iterations member.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        GiottoDirector newobj = (GiottoDirector)(super.clone(ws));
-        newobj.iterations = (Parameter)newobj.getAttribute("iterations");
-        return newobj;
+        GiottoDirector newObject = (GiottoDirector)(super.clone(workspace));
+        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
+        return newObject
     }
 
     /** Return the real start time.
@@ -153,7 +153,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   container.
      */
     public void fire() throws IllegalActionException {
-        _postfirereturns = true;
+        _postFireReturns = true;
 
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
@@ -165,7 +165,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    _realStartTime = System.currentTimeMillis();
 
-	    _postfirereturns = _fire(giottoSchedule);
+	    _postFireReturns = _fire(giottoSchedule);
         } else
 	    throw new IllegalActionException(this, "Has no container!");
     }
@@ -216,17 +216,18 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	   receiver.update();
 	   } */
 
-        int numiterations = ((IntToken) (iterations.getToken())).intValue();
+        int numberOfIterations =
+            ((IntToken) (iterations.getToken())).intValue();
 
         _iteration++;
 
-        if((numiterations > 0) && (_iteration >= numiterations)) {
+        if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
             _iteration = 0;
 
             return false;
         }
 
-        return _postfirereturns;
+        return _postFireReturns;
     }
 
     /** Return true if it transfers data from an input port of the
@@ -248,20 +249,21 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.deepGetReceivers();
+        boolean transfer = false;
+        Receiver[][] insideReceivers = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
 	    if (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
-                    if (insiderecs != null && insiderecs[i] != null) {
+                    if (insideReceivers != null &&
+                            insideReceivers[i] != null) {
                         if(_debugging) _debug(getName(),
                                 "transferring input from " + port.getName());
-                        for (int j = 0; j < insiderecs[i].length; j++) {
-                            insiderecs[i][j].put(t);
-			    ((GiottoReceiver)insiderecs[i][j]).update();
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            insideReceivers[i][j].put(t);
+			    ((GiottoReceiver)insideReceivers[i][j]).update();
                         }
-                        trans = true;
+                        transfer = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -271,7 +273,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 }
             }
         }
-        return trans;
+        return transfer;
     }
 
     /** Return the next time of interest in the Giotto model.
@@ -468,7 +470,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
     private int _iteration = 0;
 
     // The anded result of the values returned by actors' postfire().
-    private boolean _postfirereturns = true;
+    private boolean _postFireReturns = true;
 
     // List of all receivers this director has created.
     private LinkedList _receivers = new LinkedList();

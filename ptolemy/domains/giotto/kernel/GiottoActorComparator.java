@@ -100,7 +100,7 @@ public class GiottoActorComparator implements Comparator {
 
     /** Caution: equals is inconsistent with compare.
      *  FIXME: If there is an equals, then hashCode should probably also
-     *  be overriden
+     *  be overridden.
      */
     public boolean equals(Object object) {
 	return false;
