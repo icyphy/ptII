@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.2
+PTVERSION =	5.2p1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -112,6 +112,7 @@ EXTRA_SRCS = $(JSRCS) \
 	copyright.txt \
 	index.htm \
 	ptplot.jnlp.in \
+	ptplot.iap_xml \
 	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
@@ -132,6 +133,7 @@ OPTIONAL_FILES = \
 	'Histogram$$1.class' \
 	'Histogram$$2.class' \
 	'Histogram$$3.class' \
+	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
@@ -157,6 +159,7 @@ OPTIONAL_FILES = \
 	'PlotLive$$StopButtonListener.class' \
 	'Plot$$Format.class' \
 	'PlotApplication$$1.class' \
+	'PlotApplication$$2.class' \
 	'PlotFrame$$EPSFileFilter.class' \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
@@ -180,8 +183,13 @@ install: all jars \
 		$(RENDERJAR)
 	(cd ../../bin; $(MAKE) install)
 
+
+# PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
+PTOLEMYGUIFILES = ptolemy/gui/*.class
+
 # Class files used in all applets and applications
 BASECLASSFILES = \
+		$(PTOLEMYGUIFILES) \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
@@ -217,6 +225,8 @@ BASECLASSFILES = \
 # Class files used in simple applets
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
+		'$(ME)/PlotLive$$StartButtonListener.class' \
+		'$(ME)/PlotLive$$StopButtonListener.class' \
 		$(ME)/PlotLive.class \
 		$(ME)/PlotLiveApplet.class
 
@@ -230,8 +240,6 @@ COMPLEXCLASSFILES = \
 		$(ME)/EditListener.class \
 		$(ME)/Histogram.class \
 		$(ME)/HistogramApplet.class \
-		'$(ME)/PlotLive$$StartButtonListener.class' \
-		'$(ME)/PlotLive$$StopButtonListener.class' \
 		'$(ME)/PlotFrame$$EPSFileFilter.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
@@ -241,8 +249,8 @@ COMPLEXCLASSFILES = \
 
 # Class files used in applications
 APPLICATIONCLASSFILES = \
-		$(COMPLEXCLASSFILES) \
 		'$(ME)/PlotApplication$$1.class' \
+		'$(ME)/PlotApplication$$2.class' \
 		$(ME)/PlotApplication.class
 
 # Render class files used by actor.lib.gui.MatrixVisualizer but
@@ -277,6 +285,7 @@ $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
 		$(BASECLASSFILES) \
 		$(APPLETCLASSFILES) \
+		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
@@ -289,7 +298,6 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 		$(BASECLASSFILES) \
 		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
-		ptolemy/gui/*.class \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
             )
@@ -467,7 +475,7 @@ fixtmpdist:
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		find . \( -name CVS -o -name "META-INF" -o -name "#*" -o -name ptplotlocales \) -print -exec rm -rf {} \; )
+		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
@@ -516,6 +524,8 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
+	chmod -R a+r $(PTTMPDIR)/$(PTDIST)
+
 
 isj:
 	echo "Setting up for installshield"
@@ -544,3 +554,18 @@ isj:
 	@echo "Cleanup META-INF dirs etc"
 	(cd $(PTTMPDIR)/installshield/; \
 		find . \( -name "META-INF" -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
+
+
+# Update the ftp site
+# Update a location with the files necessary to download
+DIST_BASE = /vol/ptolemy/pt0/ptweb/java
+DIST_DIR = $(DIST_BASE)/$(PTDIST)
+
+
+update_ftp:
+	rm -rf $(DIST_DIR)
+	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
+	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
+	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
+	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
+	cp $(PTDIST).zip $(DIST_DIR)/ptolemy/plot/
