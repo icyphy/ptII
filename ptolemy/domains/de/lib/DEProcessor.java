@@ -125,16 +125,12 @@ public class DEProcessor extends TypedCompositeActor {
 
         iServerMST.setExpression(_minimumServiceTime.getName());
         //_minimumServiceTime.addParameterListener(iServerMST);
-        iServerMST.evaluate();
 
         iServerIST.setExpression(_interruptServiceTime.getName());
         //_interruptServiceTime.addParameterListener(iServerIST);
-        iServerIST.evaluate();
 
         poissonLambda.setExpression(_lambda.getName());
         //_lambda.addParameterListener(poissonLambda);
-        poissonLambda.evaluate();
-
     }
 
     ///////////////////////////////////////////////////////////////////
