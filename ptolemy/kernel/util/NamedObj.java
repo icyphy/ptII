@@ -741,9 +741,9 @@ public class NamedObj implements Nameable, Debuggable,
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
      *  @exception IllegalActionException If the name contains a period.
-     *  @exception NameDuplicationException Not thrown in this base
-     *   class. May be thrown by derived classes if the container
-     *   already contains an object with this name.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *  May be thrown by derived classes if the container already contains
+     *  an object with this name.
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
