@@ -98,6 +98,12 @@ preemptive parameter to true or false.
         </property>
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -115,6 +121,12 @@ preemptive parameter to true or false.
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
