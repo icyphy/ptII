@@ -600,8 +600,9 @@ test Function-divideElements {Test elementwise divide on matrices} {
          [evaluate {divideElements([1, 2], [2, 2])}] \
          [evaluate {divideElements([1, 2], [2.0, 2])}] \
          [evaluate {divideElements([1.0, 2], [2, 2])}] \
-         [evaluate {divideElements([i, 2], [2.0 + 0.0*i, 2])}]
-        } {{[0.5, 1.0]} {[0, 1]} {[0.5, 1.0]} {[0.5, 1.0]} {[0.0 + 0.5i, 1.0 + 0.0i]}}
+         [evaluate {divideElements([i, 2], [2.0 + 0.0*i, 2])}] \
+         [evaluate {divideElements([2.0, 1.0], [2, 2])}]
+ } {{[0.5, 1.0]} {[0, 1]} {[0.5, 1.0]} {[0.5, 1.0]} {[0.0 + 0.5i, 1.0 + 0.0i]} {[1.0, 0.5]}}
 
 ####################################################################
 # hilbert

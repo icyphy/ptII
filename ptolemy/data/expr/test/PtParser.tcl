@@ -581,7 +581,7 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
 } {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: cos("foo")
   in .E.v1
 Because:
-No matching function: cos( "foo" ).}}
+No function found matching cos(string)}}
 
 ######################################################################
 ####
