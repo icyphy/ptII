@@ -77,11 +77,11 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public boolean action (Event evt, Object arg) {
 	// 
-        if (evt.target == __startButton) {
-            __running = true;
+        if (evt.target == _startButton) {
+            _running = true;
             return true;
-        } else if (evt.target == __stopButton) {
-            __running = false;
+        } else if (evt.target == _stopButton) {
+            _running = false;
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
@@ -118,10 +118,10 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void makeButtons () {
         // So that the buttons appear at the upper right...
         // Note that this infringes on the title space... maybe not good.
-        __startButton = new Button("start");
-        add(__startButton);
-        __stopButton = new Button("stop");
-        add(__stopButton);
+        _startButton = new Button("start");
+        add(_startButton);
+        _stopButton = new Button("stop");
+        add(_stopButton);
     }
     
     /**
@@ -140,7 +140,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public void run() {
         while (isActive()) {
-            if (__running) {
+            if (_running) {
                 addPoints();
                 Thread.yield();
             } else {
@@ -153,7 +153,7 @@ public abstract class PlotLive extends Plot implements Runnable {
         }
 	// Set to null so that if the applet is restarted the
 	// thread will be restarted.
-        __plotThread = null;
+        _plotThread = null;
     }
 
     /**
@@ -162,18 +162,18 @@ public abstract class PlotLive extends Plot implements Runnable {
      * already done.
      */
     public void start() {
-        if (__plotThread == null) {
-            __plotThread = new Thread(this, "Plot Thread");
-            __plotThread.start();
+        if (_plotThread == null) {
+            _plotThread = new Thread(this, "Plot Thread");
+            _plotThread.start();
         }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
-    private Thread __plotThread;
+    private Thread _plotThread;
    
-    private Button __startButton, __stopButton;
+    private Button _startButton, __stopButton;
     
-    private boolean __running = false;
+    private boolean _running = false;
 }

@@ -79,18 +79,18 @@ public class Pxgraph extends Frame {
      */	
     public Pxgraph(int maxdatasets) {
 	//        setLayout(new FlowLayout(FlowLayout.RIGHT));
-	//	__exitButton = new Button();
-	//	__exitButton.setLabel("Exit");
-	//	add(__exitButton);
+	//	_exitButton = new Button();
+	//	_exitButton.setLabel("Exit");
+	//	add(_exitButton);
 	// Initialize the array that contains the dataset descriptors.
-	__datasets = new String[maxdatasets];
+	_datasets = new String[maxdatasets];
 
 
     }
 
     //    public boolean action(Event e, Object arg) {
     //	Object target = e.target;
-    //	if (target == __exitButton) {
+    //	if (target == _exitButton) {
     //	    System.exit(1);
     //	    return true;
     //	} else {
@@ -134,7 +134,7 @@ public class Pxgraph extends Frame {
 	pxgraph.add(plotApplet);
 
 	try {
-	    argsread = pxgraph.__parseArgs(plotApplet, arg);
+	    argsread = pxgraph._parseArgs(plotApplet, arg);
 	} catch (CmdLineArgException e) {
 	    System.err.println("Failed to parse command line arguments: "
 			       + e);
@@ -144,15 +144,15 @@ public class Pxgraph extends Frame {
         pxgraph.show();
 	plotApplet.init();
         for(i = argsread+1; i < arg.length; i++) {
-            if (__debug) System.out.println(arg[i]);
+            if (_debug) System.out.println(arg[i]);
             //plotApplet.parseFile(arg[i]);
         }
 
         
 	plotApplet.start();
 
-	if (__test) {
-	    if (__debug) System.out.println("Sleeping for 2 seconds");
+	if (_test) {
+	    if (_debug) System.out.println("Sleeping for 2 seconds");
 	    try {
 		Thread.currentThread().sleep(2000);
 	    }
@@ -169,7 +169,7 @@ public class Pxgraph extends Frame {
 
     /* help - print out help
      */	
-    private void __help () {
+    private void _help () {
 	// We use a table here to keep things neat.
 	// If we have:
 	//  {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
@@ -241,7 +241,7 @@ public class Pxgraph extends Frame {
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
      */	
-    private int __parseArgs(Plot plotApplet, String args[])
+    private int _parseArgs(Plot plotApplet, String args[])
 	throws CmdLineArgException
 	{
         int i = 0, j, argsread;
@@ -264,7 +264,7 @@ public class Pxgraph extends Frame {
         while (i < args.length && (args[i].startsWith("-") || 
             args[i].startsWith("=")) ) {
             arg = args[i++];
-	    if (__debug) System.out.print("arg = " + arg + "\n");
+	    if (_debug) System.out.print("arg = " + arg + "\n");
 
 	    if (arg.startsWith("-")) {
 		// Search for unsupported options that take arguments
@@ -332,15 +332,15 @@ public class Pxgraph extends Frame {
 		    plotApplet.setBinary(true);
 		    continue;
 		} else if (arg.equals("-db")) {
-		    __debug = true;
+		    _debug = true;
 		    continue;
 		} else if (arg.equals("-debug")) {
 		    // -debug is not in the original X11 pxgraph.
-		    __debug = true;
+		    _debug = true;
 		    continue;
 		} else if (arg.equals("-help")) {
 		    // -help is not in the original X11 pxgraph.
-		    __help();
+		    _help();
 		    continue;
 		} else if (arg.equals("-m")) {
 		    // -m Markers Marks: various
@@ -364,7 +364,7 @@ public class Pxgraph extends Frame {
 		    continue;
 		} else if (arg.equals("-test")) {
 		    // -test is not in the original X11 pxgraph.
-		    __test = true;
+		    _test = true;
 		    continue;
 		} else if (arg.equals("-tk")) {
 		    plotApplet.setGrid(false);
@@ -378,11 +378,11 @@ public class Pxgraph extends Frame {
 			if (datasetnumber >= 0 &&
 			    datasetnumber <= plotApplet.getMaxDataSets()) {
 			    // Save the next arg in the dataset array
-			    __datasets[datasetnumber] = args[i++];
-			    if (__debug)
+			    _datasets[datasetnumber] = args[i++];
+			    if (_debug)
 				System.out.println("dataset " + datasetnumber
 						 + " = " +
-						 __datasets[datasetnumber]);
+						 _datasets[datasetnumber]);
 			    continue;
 			}
 		    } catch (NumberFormatException e) {
@@ -427,7 +427,7 @@ public class Pxgraph extends Frame {
 				// but setsize is not in JDK1.0.2
 	setTitle(title);
 
-        if (__debug) {
+        if (_debug) {
 	    System.err.println("dataurl = " + dataurl);
 	    System.err.println("title= " + title);
 	    System.err.println("width = " + width + " height = " + height);
@@ -438,13 +438,13 @@ public class Pxgraph extends Frame {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private Button __exitButton;
+    private Button _exitButton;
 
     // For debugging, call with -db or -debug.
-    private static boolean __debug = false;
+    private static boolean _debug = false;
 
     // If true, then auto exit after a few seconds.
-    private static boolean __test = false;
+    private static boolean _test = false;
 
-    private String __datasets[];
+    private String _datasets[];
 }

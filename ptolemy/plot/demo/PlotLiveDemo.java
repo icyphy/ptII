@@ -50,14 +50,14 @@ public class PlotLiveDemo extends PlotLive {
     public void addPoints() {
         // Plot 6 points at a time for faster response.
         for (int i = 0; i < 6; i++) {
-            addPoint(0, Math.sin(Math.PI*__count/25),
-		     Math.cos(Math.PI * __count/100), false);
-            addPoint(0, Math.sin(Math.PI*__count/45),
-		     Math.cos(Math.PI * __count/70), true);
-            addPoint(1, Math.sin(Math.PI*__count/45),
-		     Math.cos(Math.PI * __count/70), !__first);
-            __first = false;
-            __count += 1.0;
+            addPoint(0, Math.sin(Math.PI*_count/25),
+		     Math.cos(Math.PI * _count/100), false);
+            addPoint(0, Math.sin(Math.PI*_count/45),
+		     Math.cos(Math.PI * _count/70), true);
+            addPoint(1, Math.sin(Math.PI*_count/45),
+		     Math.cos(Math.PI * _count/70), !__first);
+            _first = false;
+            _count += 1.0;
         }
     }
 
@@ -98,6 +98,6 @@ public class PlotLiveDemo extends PlotLive {
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
-    private boolean __first = true;
-    private double __count = 0.0;
+    private boolean _first = true;
+    private double _count = 0.0;
 }
