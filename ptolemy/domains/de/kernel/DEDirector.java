@@ -312,9 +312,9 @@ public class DEDirector extends Director {
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
                 refire = false;
-                Enumeration inputPorts = actorToFire.inputPorts();
-                while (inputPorts.hasMoreElements()) {
-                    IOPort port = (IOPort)inputPorts.nextElement();
+                Iterator inputPorts = actorToFire.inputPortList().iterator();
+                while (inputPorts.hasNext()) {
+                    IOPort port = (IOPort)inputPorts.next();
                     for (int i = 0; i < port.getWidth(); i++) {
                         if (port.hasToken(i)) {
                             refire = true;
@@ -874,9 +874,9 @@ public class DEDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // get all the input ports in that actor
-            Enumeration ports = actor.inputPorts();
-            while (ports.hasMoreElements()) {
-                IOPort inputPort = (IOPort)ports.nextElement();
+            Iterator ports = actor.inputPortList().iterator();
+            while (ports.hasNext()) {
+                IOPort inputPort = (IOPort)ports.next();
                     
                 Set delayPorts = null;
                 if (inputPort instanceof DEIOPort) {
@@ -885,19 +885,20 @@ public class DEDirector extends Director {
                 }
 
                 // Find the successor of the port.
-                Enumeration triggers
-                        = ((Actor)inputPort.getContainer()).outputPorts();
-                while (triggers.hasMoreElements()) {
-                    IOPort outPort = (IOPort) triggers.nextElement();
+                Iterator triggers =
+                    ((Actor)inputPort.getContainer()).outputPortList().iterator();
+                while (triggers.hasNext()) {
+                    IOPort outPort = (IOPort) triggers.next();
 
                     if (delayPorts != null && delayPorts.contains(outPort)) {
                         // Skip this port since there is a declared delay.
                         continue;
                     }
                     // find the input ports connected to outPort
-                    Enumeration inPortEnum = outPort.deepConnectedInPorts();
-                    while (inPortEnum.hasMoreElements()) {
-                        IOPort pp = (IOPort)inPortEnum.nextElement();
+                    Iterator inPortIter = 
+                        outPort.deepConnectedInPortList().iterator();
+                    while (inPortIter.hasNext()) {
+                        IOPort pp = (IOPort)inPortIter.next();
                         Actor destination = (Actor)(pp.getContainer());
                         if(destination.equals(actor)) {
                             throw new IllegalActionException(this,
