@@ -129,10 +129,10 @@ OTHER_FILES_TO_BE_JARED = \
 
 
 # Not shipped
-PHOTOSHOP_SRCS =
+PHOTOSHOP_SRCS = \
 	PtolemyIISplash.psd \
 	banner.psd \
-	ptIIbanner2.psd \
+	ptIIbanner2.psd
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
