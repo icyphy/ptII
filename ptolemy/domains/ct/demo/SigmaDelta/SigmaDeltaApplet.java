@@ -140,7 +140,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _ctPlot.setPanel(this);
             _ctPlot.plot.setGrid(true);
             _ctPlot.plot.setYRange(-1.0, 1.0);
-            _ctPlot.plot.setSize(500, 200);
+            _ctPlot.plot.setSize(500, 180);
             _ctPlot.plot.addLegend(0,"Position");
             _ctPlot.plot.addLegend(1,"Input");
             _ctPlot.plot.addLegend(2, "Control");
@@ -190,7 +190,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _dePlot.setPanel(this);
             _dePlot.plot.setGrid(true);
             _dePlot.plot.setYRange(-1.0, 1.0);
-            _dePlot.plot.setSize(500, 200);
+            _dePlot.plot.setSize(500, 180);
             _dePlot.plot.setConnected(false);
             _dePlot.plot.setImpulses(true);
             _dePlot.plot.setMarksStyle("dots");
