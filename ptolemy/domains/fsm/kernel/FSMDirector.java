@@ -418,22 +418,32 @@ public class FSMDirector extends Director {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
+        // Clear the inside receivers of all output ports of the container.
+        CompositeActor actor = (CompositeActor)getContainer();
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort p = (IOPort)outputPorts.next();
+            Receiver[][] insideReceivers = p.getInsideReceivers();
+            if (insideReceivers == null) continue;
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] == null) continue;
+                for (int j = 0; j < insideReceivers[i].length; j++) {
+                    try {
+                        if (insideReceivers[i][j].hasToken()) {
+                            insideReceivers[i][j].get();
+                        }
+                    } catch (NoTokenException ex) {
+                        throw new InternalErrorException(this, ex, null);
+                    }
+                }
+            }
+        }
         // Set the current time based on the enclosing class.
         super.prefire();
 
-        FSMActor ctrl = getController();
-        /*Actor[] actors = ctrl.currentState().getRefinement();
-
-          _enabledRefinements = new LinkedList();
-          if (actors != null) {
-          for (int i = 0; i < actors.length; ++i) {
-          if (actors[i].prefire()) {
-          _enabledRefinements.add(actors[i]);
-          }
-          }
-          }*/
         _firstFire = true;
 
+        FSMActor ctrl = getController();
         return getController().prefire();
     }
 
