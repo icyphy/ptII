@@ -179,22 +179,23 @@ public class ProcessDirector extends Director {
                 ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
-                //actors should be initialized after creating receivers so that
-                //they can transmit data in their initialize method.
                 actor.createReceivers();
-                actor.initialize();
 	        
-		// Initialize Receivers
+		// Reset the receivers
                 Enumeration ports = actor.inputPorts(); 
 		while (ports.hasMoreElements()) {
 		    IOPort port = (IOPort)ports.nextElement(); 
 		    Receiver[][] receivers = port.getReceivers(); 
 		    for (int i = 0; i < receivers.length; i++) {
 		        for (int j = 0; j < receivers[i].length; j++) {
-			    ((ProcessReceiver)receivers[i][j]).initialize();
+			    ((ProcessReceiver)receivers[i][j]).reset();
 			}
 		    }
 		}
+
+                //Actors should be initialized after creating receivers so that
+                //they can transmit data in their initialize methods.
+                actor.initialize();
             }
 
 	    CompositeActor topOfContainer = 
