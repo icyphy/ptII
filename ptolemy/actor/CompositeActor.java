@@ -558,11 +558,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Set the Manager for execution of this CompositeActor.
      *  This can only be done for a composite actor that has no container.
      *  For others, the Manager is inherited from the container.
-     *  @see getManager
      *  This method is write-synchronized on the workspace.
      *
      *  @param manager The Manager
      *  @exception IllegalActionException If this actor has a container.
+     *  @see getManager
      */
     public void setManager(Manager manager)
             throws IllegalActionException {
