@@ -517,6 +517,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                         "Internal error in NamedObj _addAttribute() method!"
                         + ex.getMessage());
             }
+            _debug("Added attribute " + p.getName() + " to " + getFullName());
         } finally {
             workspace().doneWriting();
         }
@@ -611,6 +612,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         try {
             workspace().getWriteAccess();
             _attributes.remove((Nameable)param);
+            _debug("Removed attribute " + param.getName() + " from "
+                    + getFullName());
         } finally {
             workspace().doneWriting();
         }

@@ -227,3 +227,14 @@ test NamedObj-8.5 {Test debug listener} {
     $a setName "B"
     $a setName "C"
 } {}
+
+test NamedObj-8.6 {Test debug listener} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    set b [java::new ptolemy.kernel.util.Attribute $a "X"]
+    $b setContainer [java::null]
+    $listener getMessages
+} {Added attribute X to N.A
+Removed attribute X from N.A}
