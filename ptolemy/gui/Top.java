@@ -49,6 +49,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.Pageable;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
@@ -233,8 +236,14 @@ public abstract class Top extends JFrame {
             // Print button = ctrl-p.
             _fileMenuItems[4].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
-            // Print button disabled by default.
-            _fileMenuItems[4].setEnabled(false);
+            // Print button disabled by default, unless this class implements
+	    // one of the JDK1.2 printing interfaces.
+            if(this instanceof Printable ||
+	       this instanceof Pageable) {
+		_fileMenuItems[4].setEnabled(true);
+	    } else {
+		_fileMenuItems[4].setEnabled(false);
+	    }
 
             // Close button = ctrl-w.
             _fileMenuItems[5].setAccelerator(
@@ -435,17 +444,28 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Print the contents.
+    /** Print the contents.  If this frame implements either the
+     *  Printable or Pageable then those interfaces are used to print
+     *  it.
      */
     protected void _print() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        if (job.printDialog()) {
-            try {
-                job.print();
-            } catch (Exception ex) {
-                report("Printing failed", ex);
-            }
-        }
+	PrinterJob job = PrinterJob.getPrinterJob();
+	if(this instanceof Pageable) {
+	    job.setPageable((Pageable)this);
+	} else if(this instanceof Printable) {
+	    PageFormat format = job.pageDialog(job.defaultPage());
+	    job.setPrintable((Printable)this, format);
+	} else {
+	    // can't print it.
+	    return;
+	}
+	if (job.printDialog()) {
+	    try {
+		job.print();
+	    } catch (Exception ex) {
+		MessageHandler.error("Printing Failed", ex);
+	    }
+	} 
     }
 
     /** Save the model to the current file, determined by the
