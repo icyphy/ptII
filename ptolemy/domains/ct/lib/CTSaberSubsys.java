@@ -144,7 +144,7 @@ public class CTSaberSubsys extends CTActor
             while (true){
                 try {
                     String line = _reader.readLine();
-                    System.out.println(line);
+                    //System.out.println(line);
                     if (line.startsWith(new String(">"))){
                         break;
                     }
@@ -154,7 +154,7 @@ public class CTSaberSubsys extends CTActor
                 }
             } 
             // perform DC analysis 
-            System.out.println("perform dc analysis");
+            //System.out.println("perform dc analysis");
             _ps.println("dc (dcep " + _startpt);
             _ps.println("di "+_startpt);
 	    _ps.println();
@@ -163,7 +163,7 @@ public class CTSaberSubsys extends CTActor
                 try {
                     //if(_reader.ready()) {
                         String line = _reader.readLine();
-                        System.out.println(line);
+                        //System.out.println(line);
                         if (line == null) continue;
                         if (line.startsWith(new String("bye"))){
                             break;
@@ -182,7 +182,7 @@ public class CTSaberSubsys extends CTActor
             while (true) {
                 try {
                     String line = _reader.readLine();
-                    System.out.println(line);
+                    //System.out.println(line);
                     if (line == null) continue;
                     if (line.startsWith(new String("bye"))){
                         break;
@@ -209,7 +209,8 @@ public class CTSaberSubsys extends CTActor
                     
                 }
             }
-        } 
+        }
+        _first = true;
     }
 
     /** emit the output again.
@@ -220,7 +221,7 @@ public class CTSaberSubsys extends CTActor
             TypedIOPort p = (TypedIOPort)outps.nextElement();
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
-            System.out.println("Output token" + d.stringValue());
+            //System.out.println("Output token" + d.stringValue());
         }
     }
         
@@ -244,14 +245,21 @@ public class CTSaberSubsys extends CTActor
             _ps.println("alter /"+ ppstr +" = " + indata);
             
         }
-        _ps.println("tr (tend "+endTime+
-                    " ,trep "+_endpt+" ,trip "+_startpt
-                    +" ,tripeqtrep yes,tstep "+_innerStep);
+        //_ps.println("tr (tend "+endTime+
+        //            " ,trep "+_endpt+" ,trip "+_startpt
+        //            +" ,tripeqtrep yes,tstep "+_innerStep);
+        
+        if(_first) {
+            _ps.println("tr (tend " + endTime + ", tstep "+ _innerStep );
+            _first = false;
+        } else {
+            _ps.println("cont tr (tend " + endTime + ", tstep "+_innerStep);
+        }
         _ps.println("bye");
         while (true){
             try {
                 String line = _reader.readLine();
-                //System.out.println(line);
+                // System.out.println(line);
                 if (line == null) continue;
                 if (line.startsWith(new String("bye"))){
                     break;
@@ -297,13 +305,14 @@ public class CTSaberSubsys extends CTActor
             return;
         }
         _outvar = new double[outindex];
-        _ps.println("pr (cname "+ outstr);
+        _ps.println("pr (cname "+ outstr + ", XSTEP " + endTime);
         _ps.println("bye");
         boolean firstsep = false;
         boolean secondsep = false;
         while (true){
             try {
                 String line = _reader.readLine();
+                //System.out.println(line);
                 if (secondsep){
                     if (line.startsWith(new String(">"))){
                         secondsep = false;
@@ -312,7 +321,7 @@ public class CTSaberSubsys extends CTActor
                         int locsep = line.indexOf('|');
                         if (locsep < 0) continue;
                         // get time value 
-                        double time = _parseNumber(line, 0, locsep);
+                        //double time = _parseNumber(line, 0, locsep);
                         
                         int tmp = locsep+1;
                         for (int i = 0; i < outindex; i++) {
@@ -449,8 +458,22 @@ public class CTSaberSubsys extends CTActor
                                 locn)).doubleValue();
                         number *= 0.001*0.001*0.001*0.001;
                     } else {
-                        number = new Double(text.substring(begpt, 
-                                endpt)).doubleValue();
+                        locn = text.indexOf('f', begpt); 
+                        if ((locn > begpt) && (locn <= endpt)){
+                            number = new Double(text.substring(begpt, 
+                                    locn)).doubleValue();
+                            number *= 0.001*0.001*0.001*0.001*0.001;
+                        } else {
+                             locn = text.indexOf('a', begpt); 
+                             if ((locn > begpt) && (locn <= endpt)){
+                                 number = new Double(text.substring(begpt, 
+                                         locn)).doubleValue();
+                                 number *= 1e-18;
+                             } else {
+                                 number = new Double(text.substring(begpt, 
+                                         endpt)).doubleValue();
+                             }
+                        }
                     }
                 }
             }
@@ -489,4 +512,5 @@ public class CTSaberSubsys extends CTActor
     //hash table for output ports and their tool variables.
     private Hashtable _porttable;
     private Hashtable _outpvalue;
+    private boolean _first;
 }
