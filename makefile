@@ -146,7 +146,7 @@ glimpse: .glimpse_exclude
 	cp .glimpse_exclude glimpse_exclude
 	rm -f .glimpse*
 	cp  glimpse_exclude .glimpse_exclude
-	$(GLIMPSEINDEX) -H `pwd` `pwd`
+	$(GLIMPSEINDEX) -n -H `pwd` `pwd`
 	chmod a+r .glimpse_*
 	rm -f glimpse_exclude
 
