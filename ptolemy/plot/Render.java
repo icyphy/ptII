@@ -160,7 +160,7 @@ public class Render extends PlotBox {
                     stripe2[0] = _LOWCOLOR;
                     
 		    // Reset the data structure.
-		    clear();
+		    clearData();
 
                     // Add the stripes to the data structure.
                     for (int i = 1; i <= 50; i++) {
