@@ -23,6 +23,9 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating RED (galicia@eecs.berkeley.edu)
+
 */
 
 package pt.kernel;
@@ -291,10 +294,10 @@ public final class CrossRefList {
                     } else {
                         // If pointer is NULL, then end of list was
                         // already passed.  Throw exception.
-                        throw new NoSuchElementException("End of list passed.\n");
+                        throw new NoSuchElementException("End of list passed.");
                     }
                 } else { // If at end of list.
-                    throw new NoSuchElementException("End of list reached.\n");
+                    throw new NoSuchElementException("End of list reached.");
                 }
             }
         }
