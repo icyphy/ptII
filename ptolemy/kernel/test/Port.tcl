@@ -62,12 +62,13 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {_checkRelation pt.kernel.Relation} {equals java.lang.O
-    bject} getClass getContainer getFullName getLinkedRelat
-    ions getName hashCode {link pt.kernel.Relation} notify 
-    notifyAll numLinks {setContainer pt.kernel.Entity} {set
-    Name java.lang.String} toString {unlink pt.kernel.Relat
-    ion} unlinkAll wait {wait long} {wait long int}
+  methods:       {CrossLevelLink pt.kernel.Relation} {_checkRelation pt.
+    kernel.Relation} {equals java.lang.Object} getClass get
+    Container getFullName getLinkedRelations getName hashCo
+    de {link pt.kernel.Relation} notify notifyAll numLinks 
+    {setContainer pt.kernel.Entity} {setName java.lang.Stri
+    ng} toString {unlink pt.kernel.Relation} unlinkAll wait
+     {wait long} {wait long int}
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String}
@@ -343,4 +344,26 @@ test Port-10.1 {Reassign a port to a new container} {
             [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $print]
 } {{Arc Arc} {{}} {{{Print in} {Ramp out}}}}
+
+######################################################################
+#### 
+# 
+test Port-11.1 {Cross Level Link} {
+    # Create objects
+    set e0 [java::new pt.kernel.CompositeEntity "E0"]
+    set e1 [java::new pt.kernel.CompositeEntity $e0 "E1"]
+    set e2 [java::new pt.kernel.ComponentEntity $e1 "E2"]
+    set e3 [java::new pt.kernel.ComponentEntity $e0 "E3"]
+    set p1 [java::new pt.kernel.ComponentPort $e2 "P1"]
+    set p2 [java::new pt.kernel.ComponentPort $e3 "P2"]
+    set r1 [java::new pt.kernel.ComponentRelation $e0 "R1"]
+
+    # Connect
+    $p1 CrossLevelLink $r1
+    $p2 link $r1
+
+    # Note that we are not getting all the information we could
+    list [_testPortGetLinkedRelations $p1 $p2]
+            
+} {{R1 R1}}
 
