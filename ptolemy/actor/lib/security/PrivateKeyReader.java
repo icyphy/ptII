@@ -31,27 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.security;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.cert.Certificate;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.PublicKey;
-import java.util.Enumeration;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrivateKeyReader

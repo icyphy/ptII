@@ -31,28 +31,16 @@
 package ptolemy.actor.lib.security;
 
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import java.io.ByteArrayOutputStream;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
 import java.security.PrivateKey;
-import java.security.Security;
-import java.security.SignatureException;
-import java.security.cert.X509Certificate;
-import java.util.Iterator;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner

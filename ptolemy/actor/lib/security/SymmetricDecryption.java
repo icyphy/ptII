@@ -32,27 +32,17 @@
 package ptolemy.actor.lib.security;
 
 
-import ptolemy.data.ArrayToken;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 
 
 
@@ -88,9 +78,6 @@ Cryptography Extension (JCE).
 @since Ptolemy II 3.1
 */
 public class SymmetricDecryption extends CipherActor {
-
-    // TODO: include sources of information on JCE cipher and algorithms
-    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

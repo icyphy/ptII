@@ -32,26 +32,16 @@
 package ptolemy.actor.lib.security;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.AlgorithmParameters;
-import java.security.InvalidKeyException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-
-import ptolemy.actor.NoRoomException;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.ByteArrayOutputStream;
+
+import javax.crypto.Cipher;
 
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricEncryption
@@ -87,8 +77,6 @@ Cryptography Extension (JCE).
 */
 public class SymmetricEncryption extends CipherActor {
 
-    // TODO: include sources of information on JCE cipher and algorithms
-    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -202,18 +190,6 @@ public class SymmetricEncryption extends CipherActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /* The public key to be used for asymmetric encryption. This key is null
-     * for symmetric decryption.
-     */
-    private SecretKey _secretKey = null;
-
-    private static int BUFFER_SIZE = 8192;
-
-    private boolean FIRST_RUN;
-
-    //    private CipherOutputStream _cos;
-
+   
     private ByteArrayOutputStream _byteArrayOutputStream;
-
-    private ByteArrayInputStream byteArrayInputStream;
 }

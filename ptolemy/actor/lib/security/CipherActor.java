@@ -31,21 +31,14 @@
 package ptolemy.actor.lib.security;
 
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
+
+import javax.crypto.Cipher;
 
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor

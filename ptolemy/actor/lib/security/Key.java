@@ -31,42 +31,26 @@
 package ptolemy.actor.lib.security;
 
 
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
-
-import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.AlgorithmParameters;
-import java.security.InvalidKeyException;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 
 //////////////////////////////////////////////////////////////////////////
 //// Key

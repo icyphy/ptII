@@ -30,19 +30,16 @@
 
 package ptolemy.actor.lib.security;
 
-import ptolemy.data.ObjectToken;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import java.io.ByteArrayOutputStream;
-import java.security.InvalidKeyException;
 import java.security.PublicKey;
-import java.security.SignatureException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureVerifier 
@@ -163,8 +160,6 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The original input data in cleartext that is being verified.
-    private byte[] _inputBytes;
-
+    // The PublicKey that is read in from the publicKey port.
     private PublicKey _publicKey;
 }

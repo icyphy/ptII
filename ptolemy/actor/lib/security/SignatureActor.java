@@ -41,14 +41,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Provider;
-import java.security.PublicKey;
 import java.security.Security;
 import java.security.Signature;
 import java.util.Iterator;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureActor
