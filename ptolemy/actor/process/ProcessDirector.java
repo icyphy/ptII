@@ -142,11 +142,15 @@ public class ProcessDirector extends Director {
             while( !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
+	    // This is new, 11/18/00, davisjs@eecs.berkeley.edu
+            _notDone = _resolveDeadlock();
+	    /*
             if( _areActorsDeadlocked() ) {
                 _notDone = _resolveDeadlock();
             } else {
 		_notDone = true;
 	    }
+            */
         }
     }
 
@@ -216,7 +220,7 @@ public class ProcessDirector extends Director {
         return new Mailbox();
     }
 
-    /** Return false if the model has reached a deadlock and can
+    /** Return false if the model has reached deadlock and can
      *  be terminated if desired. Return true otherwise.
      *  This flag is set on detection of a deadlock in the fire() method.
      *  @return false if the director has detected a deadlock and can be
@@ -418,7 +422,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Return true if the count of active processes in the container is 0.
-     *  Otherwise return true. Derived classes must override this method to
+     *  Otherwise return false. Derived classes must override this method to
      *  return true to any other forms of deadlocks that they might introduce.
      * @return true if there are no active processes in the container.
      */
