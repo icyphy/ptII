@@ -23,7 +23,7 @@ These are: MDL2XML.exe, and XML2ECSL.exe. MDL2XML.exe takes a Matlab
 Simulink .mdl file, and produces an XML model, whose schema is described
 by matlab.xsd.
 
-This XML model is the input of the next translator: MDL2XML.exe, which
+This XML model is the input of the next translator: XML2ECL.exe, which
 converts this file into an ECSL-DP GME model file (.mga).
 Then the ECSL-DP model can be expanded by various software and hardware
 modeling elements available in the ECSL-DP language.
