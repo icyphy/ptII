@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    </pre>
    <p>
    Since this filter is minimum phase, the transfer function of the lattice
-   filter is <i>H <sup>-</i>1<i></sup> </i>(<i>z</i>).
+   filter is <i>H </i><sup>-1</sup>(<i>z</i>).
    <p>
    Note that the definition of reflection coefficients is not quite universal
    in the literature. The reflection coefficients in reference [2]
@@ -216,8 +216,11 @@ public class Lattice extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    // Compute the filter, updating the caches, based on the current
-    // values.
+
+    /** Compute the filter, updating the caches, based on the current
+     *  values.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
     protected void _doFilter() throws IllegalActionException {
         double k;
 
@@ -239,7 +242,7 @@ public class Lattice extends Transformer {
         }
     }
 
-    // Reallocate the internal arrays.
+    /**  Reallocate the internal arrays. */
     protected void _reallocate() {
         _backward = new double[_order + 1];
         _backwardCache = new double[_order + 1];
