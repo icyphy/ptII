@@ -319,7 +319,7 @@ fi
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
 ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${X10_JARS}${CHIC_JARS}"
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
@@ -349,7 +349,7 @@ passHelpArgument=yes
 jarfile="$ALL_JAR"
 
 # The Java process to run.
-javac="\$JAVAHOME/bin/java"
+javac="$JAVAHOME/bin/java"
 
 # javaflag contains optional flags passed to java that may be
 # set by this script
@@ -367,15 +367,27 @@ javaflag="$ALL_JFLAG"
 
 # Flags that are specific to invoking ptolemy programs.  By default,
 # this sets the ptolemy.ptII.dir environment variable.
-ptflag="-Dptolemy.ptII.dir=$PTII"
+ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 
 
 # See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
 #USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
 
+commandname=`basename "$0"`
+# check to see if we are building bat files.
+case $commandname in
+    makebat)
+	help="Make a DOS batch file"
+	makebat="1"
+	commandname=$1
+	shift
+    ;;
+esac
+
+error="none"
 # Keep these alphabetical
-case `basename "$0"` in
+case $commandname in
     copernicus)
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
@@ -386,7 +398,7 @@ case `basename "$0"` in
 	help="Do deep jhdl codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
-	applicationflags="-codeGenerator \"\\\"jhdl\"\\\""
+	applicationflags="-codeGenerator jhdl"
         ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
@@ -398,13 +410,11 @@ case `basename "$0"` in
 	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
 	    javaflag="$JODE_JFLAG"
 	else
-	    echo "Jode was not found when $PTII/configure was run, "
-	    echo "  so we are running javap instead."
-	    echo "  To run Jode, download Jode from:"
-            echo "    http://jode.sourceforge.net/download.php"
-	    echo "  and run: "
-	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
-	    
+	    error='Jode was not found when $PTII/configure was run.
+To run Jode, download Jode from:
+  http://jode.sourceforge.net/download.php
+and run:
+  cd $PTII; rm config.*; ./configure; cd bin; make'
         fi	    
 	;;
     giottoc)
@@ -413,11 +423,11 @@ case `basename "$0"` in
 	    javastartupclass=giotto.giottoc.GiottoC
 	    javasourcedir=
 	else
-	    echo "GiottoSDK was not found when $PTII/configure was run, "
-	    echo "  To run GiottoC, download GiottoSDK from:"
-            echo "    http://www.eecs.berkeley.edu/~fresco"
-	    echo "  and run: "
-	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
+	    error='GiottoSDK was not found when $PTII/configure was run.
+To run GiottoC, download GiottoSDK from:
+  http://www.eecs.berkeley.edu/~fresco
+and run:
+  cd $PTII; rm config.*; ./configure; cd bin; make'
 	fi	    
         ;;    
     emachine)
@@ -426,11 +436,11 @@ case `basename "$0"` in
 	    javastartupclass=platform.emachine.java.Emulator
 	    javasourcedir=
 	else
-	    echo "GiottoSDK was not found when $PTII/configure was run, "
-	    echo "  To run the embedded machine, download GiottoSDK from:"
-            echo "    http://www.eecs.berkeley.edu/~fresco"
-	    echo "  and run: "
-	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
+	    error='GiottoSDK was not found when $PTII/configure was run,
+To run the embedded machine, download GiottoSDK from:
+  http://www.eecs.berkeley.edu/~fresco
+and run:
+  cd $PTII; rm config.*; ./configure; cd bin; make'
 	fi	    
         ;;
     histogram)
@@ -457,13 +467,6 @@ case `basename "$0"` in
 	javasourcedir=
 	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
-	;;
-    jshrink)
-	help="extractor/obfuscator"
-	javastartupclass=jshrink.Jshrink
-	javasourcedir=
-	jarfile="$PTII/lib/jshrink.jar"
-	javaflag="-Xmx256M"
 	;;
     obfuscate)
 	help="Jode obfuscator, useful for reducing class file size"
@@ -592,7 +595,7 @@ case `basename "$0"` in
 	javaflag="$TINI_JFLAG"
 	;;
     tinic)
-	javac="\$JAVAHOME/bin/javac"
+	javac="$JAVAHOME/bin/javac"
 	ptflag="" # setting ptII environment variable is not valid under javac
 	help="Tini compiler using embedded libraries"
 	invokeHelp="$0: Usage: $0 [commonOptions]"
@@ -792,7 +795,7 @@ EOF
     fi
     # If -jdb is supplied then run jdb instead of java.
     if [ "$1" = "-jdb" ]; then
-        javac="\$JAVAHOME/bin/jdb"
+        javac="$JAVAHOME/bin/jdb"
         shift
         continue
     fi
@@ -863,14 +866,35 @@ else
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
 
-
-if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
-    str="\"$JAVAHOME/bin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
-
-else
+if [ "$error" = "none" ]; then
+    if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
+	str="\"$JAVAHOME/bin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
+	
+    else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-    str="\"$javac\" $jdbflags $javaflag \"$ptflag\" $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
-fi 
-if [ "$quiet" = "0" ]; then echo $str;fi
-eval exec $str
+	str="\"$javac\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+    fi 
+    if [ "$quiet" = "0" ]; then echo $str; fi
+    
+    if [ "$makebat" = "1" ]; then   
+	echo "@echo off" > $commandname.bat
+	echo "rem This script was automatically generated by makebat." >> $commandname.bat
+	echo "rem DO NOT EDIT.  Instead, edit ptinvoke.in, and run make." >> $commandname.bat
+	echo "" >> $commandname.bat
+	echo "$str %1 %2 %3 %4 %5 %6 %7 %8 %9" >> $commandname.bat
+	echo "pause" >> $commandname.bat
+    else
+	eval exec $str
+    fi
+else
+    if [ "$makebat" = "1" ]; then   
+	echo "@echo off" > $commandname.bat
+	echo "rem This script was automatically generated by makebat." >> $commandname.bat
+	echo "rem DO NOT EDIT.  Instead, edit ptinvoke.in, and run make." >> $commandname.bat
+	echo "$error" | sed -e "s/.*/echo &/" >> $commandname.bat
+	echo "pause" >> $commandname.bat
+    else
+	echo "$error"
+    fi
+fi
