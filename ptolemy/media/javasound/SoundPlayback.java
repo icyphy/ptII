@@ -105,7 +105,6 @@ import java.util.StringTokenizer;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
-   @see ptolemy.media.javasound.SoundCapture
 */
 
 public class SoundPlayback {
