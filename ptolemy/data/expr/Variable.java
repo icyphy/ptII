@@ -828,6 +828,11 @@ public class Variable extends Attribute implements Typeable {
 		    throw new InternalErrorException("Variable.setTypeEquals: "
 			    + "Cannot set user on the new type."
 			    + ex.getMessage());
+		} catch (CloneNotSupportedException ex2) {
+		    throw new InternalErrorException(
+                            "Variable.setTypeEquals: " +
+                            " Cannot clone typeStruct" +
+                            ex2.getMessage());
 		}
 	    }
 	}
@@ -1288,7 +1293,14 @@ public class Variable extends Attribute implements Typeable {
         Token oldToken = _token;
         Type oldVarType = _varType;
 	if (_varType instanceof StructuredType) {
-	    oldVarType = (Type)((StructuredType)_varType).clone();
+            try {
+                oldVarType = (Type)((StructuredType)_varType).clone();
+            } catch (CloneNotSupportedException ex2) {
+                throw new InternalErrorException(
+                        "Variable._setTokenAndNotify: " +
+                        " Cannot clone _varType" +
+                        ex2.getMessage());
+            }
 	}
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
