@@ -36,19 +36,20 @@
   </entity>
 
   <!-- Default director library. -->
-  <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+  <class name="utilities" extends="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
   <!-- Blank composite actor. -->
   <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
+  <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor"/> 
         </group>
       ?>
     </configure>
-  </entity>
+  </class>
 
   <!-- Default director library. -->
-  <entity name="director library" class="ptolemy.moml.EntityLibrary">
+  <class name="director library" extends="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -98,10 +99,10 @@
         </group>
       ?>
     </configure>
-  </entity>
+  </class>
 
   <!-- Default entity library to appear in the library browser. -->
-  <entity name="actor library" class="ptolemy.moml.EntityLibrary">
+  <class name="actor library" extends="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -116,18 +117,17 @@
           <input source="../domains/ct/lib/ctentities.xml"/>
           <input source="../domains/de/lib/deentities.xml"/>
 <!--
-          <input source="../domains/fsm/lib/fsmentities.xml"/>
           <input source="../apps/lego/legoentities.xml"/>
           <input source="../apps/agilent/agilententities.xml"/>
 -->
         </group>
       ?>
     </configure>
-  </entity>
+  </class>
 
   <!-- The graphics package is in a sublibrary because it may not be present. -->
   <!-- It depends on the 3D graphics package of Java being present. -->
-  <entity name="Graphics" class="ptolemy.moml.EntityLibrary">
+  <class name="Graphics" extends="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
         <group>
@@ -136,6 +136,5 @@
         </group>
       ?>
     </configure>
-  </entity>
-
+  </class>
 </model>
