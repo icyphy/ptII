@@ -49,7 +49,6 @@ import java.util.Enumeration;
 /**
 An application demonstrating the hierarchical combination of DE, FSM, and 
 CT domains in PtolemyII.
-
 @author Jie Liu, Xiaojun Liu
 @version $Id$
 */
@@ -116,12 +115,12 @@ public class SimpleHS {
             SCTransition ctrlTr1 = 
                     ctrl.createTransition(ctrlInc, ctrlDec);
             ctrlTr1.setTriggerEvent("output");
-            ctrlTr1.setInitEntry(true);
+            // ctrlTr1.setInitEntry(true);
             HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
             SCTransition ctrlTr2 = 
                     ctrl.createTransition(ctrlDec, ctrlInc);            
             ctrlTr2.setTriggerEvent("output");
-            ctrlTr2.setInitEntry(true);
+            //ctrlTr2.setInitEntry(true);
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
 
             // the hybrid system director
