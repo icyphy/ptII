@@ -246,13 +246,17 @@ public class ODActor extends AtomicActor {
             int priority = port.getPriority();
             boolean portNotInserted = true;
             if( listOfPorts.size() == 0 ) {
-                listOfPorts.insertAt( 0, port );
+                listOfPorts.insertAt( 0, port ); 
+                portNotInserted = false;
             } else {
                 for( int cnt = 0; cnt < listOfPorts.size(); cnt++ ) {
                     ODIOPort nextPort = (ODIOPort)listOfPorts.at(cnt);
                     if( port.getPriority() <= nextPort.getPriority() ) {
-                        listOfPorts.insertAt( cnt, port );
-                        cnt = listOfPorts.size();
+                        if( port != nextPort ) {
+                            listOfPorts.insertAt( cnt, port ); 
+                            cnt = listOfPorts.size(); 
+                        } 
+                        portNotInserted = false;
                     }
                 }
             }
@@ -260,7 +264,9 @@ public class ODActor extends AtomicActor {
                 listOfPorts.insertLast(port);
                 portNotInserted = false;
             }
-        }
+        } 
+        
+        System.out.println("# of Ports = " + listOfPorts.size());
         
         //
         // Now Set The Priorities Of Each Port's Receiver
