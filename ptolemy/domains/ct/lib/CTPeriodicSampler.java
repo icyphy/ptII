@@ -46,7 +46,7 @@ import ptolemy.actor.lib.Transformer;
 This actor periodically sample the input signal and generate events
 which has the value of the input signal. The sampling rate is given by
 parameter "samplePeriod", which has default value 0.1.
-The actor has a multi-inputport and a multi-outputport. Singals in
+The actor has a multi-input port and a multi-output port. Signals in
 each input channel are sampled and produced to corresponding output
 channel.
 @author Jie Liu
@@ -94,12 +94,12 @@ public class CTPeriodicSampler extends Transformer
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException If the sampling rate set is
+    /** Update the local cache of the sampling period if it has been changed.
+     *  @exception IllegalActionException If the sampling period is
      *  less than or equal to 0.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException{
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException{
         if (attribute == samplePeriod) {
             double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
             if(p <= 0) {
@@ -113,65 +113,47 @@ public class CTPeriodicSampler extends Transformer
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        CTPeriodicSampler newObject =
-            (CTPeriodicSampler)super.clone(workspace);
-        newObject.input.setMultiport(true);
-        newObject.output.setMultiport(true);
-        newObject.output.setTypeAtLeast(newObject.input);
-        return newObject;
-        }*/
-
-    /** Emit the current event, which has the token of the latest input
-     *  token.
+    /** Emit the current event if there is one. The value of the event
+     *  is the sample of the input signal.
+     *  @exception IllegalActionException If the transfer of tokens failed.
      */
-    public void emitCurrentEvents() {
+    public void emitCurrentEvents() throws IllegalActionException {
         if(_hasCurrentEvent) {
-            try {
-                for (int i = 0;
-                     i < Math.min(input.getWidth(), output.getWidth());
-                     i++) {
-                    if(input.hasToken(i)) {
-                        output.send(i, input.get(i));
-                    }
+            for (int i = 0;
+                 i < Math.min(input.getWidth(), output.getWidth());
+                 i++) {
+                if(input.hasToken(i)) {
+                    output.send(i, input.get(i));
                 }
-                _hasCurrentEvent = false;
-                // register for the next event.
-                _nextSamplingTime += _samplePeriod;
-                getDirector().fireAt(this, _nextSamplingTime);
-            }catch (IllegalActionException e) {
-                throw new InternalErrorException("Token mismatch.");
             }
+            _hasCurrentEvent = false;
+            // register for the next event.
+            _nextSamplingTime += _samplePeriod;
+            getDirector().fireAt(this, _nextSamplingTime);
         }
     }
 
-    /** If the current time is the event time, set the flag indicating
-     *  that there is a current event.
+    /** Check the current time of the director and determine
+     *  whether there is an event to be emitted.
+     *  @exception IllegalActionException Never thrown.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
-        double tnow = dir.getCurrentTime();
+        double now = dir.getCurrentTime();
         _hasCurrentEvent = false;
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
+        if(Math.abs(now - _nextSamplingTime)<dir.getTimeResolution()) {
             _hasCurrentEvent = true;
         }
     }
 
     /** Return true if there is a current event.
+     *  @return If there is a discrete event to emit.
      */
     public boolean hasCurrentEvent() {
         return _hasCurrentEvent;
     }
 
-    /** Request the first sampling time as a director refire.
+    /** Request the first sampling time by calling director.fireAt().
      *  @exception IllegalActionException If thrown by the supper class.
      */
     public void initialize() throws IllegalActionException {
@@ -187,34 +169,6 @@ public class CTPeriodicSampler extends Transformer
         if(_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
-
-    /* FIXME: This method is commented out, and should be removed
-     * I went ahead and changed removed one of the * from the
-     * start javadoc comment tag so as to stop javadoc warnings.
-     */
-    /* Return true always. If the current time is greater than the next
-     *  sampling time, increase the next sample time until it is
-     *  greater than the current time. Request a director refire at the
-     *  next sampling time.
-     *  @return True always.
-     *  @exception IllegalActionException If parameter update throws it.
-     */
-    /*
-      public boolean prefire() throws IllegalActionException {
-      CTDirector dir = (CTDirector) getDirector();
-      boolean hasjump = false;
-      while (_nextSamplingTime <
-      (dir.getCurrentTime()-dir.getTimeResolution())) {
-      hasjump = true;
-      _nextSamplingTime += _samplePeriod;
-      }
-      if(hasjump) {
-      dir.fireAt(this, _nextSamplingTime);
-      }
-      _debug(getFullName() + ": next sampling time = "
-      + _nextSamplingTime);
-      return true;
-      }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
