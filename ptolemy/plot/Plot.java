@@ -176,6 +176,21 @@ arbitrary numbers as supported by the Double parser in Java.
 If there are four numbers, then the last two numbers are assumed to
 be the lower and upper values for error bars.
 The numbers can be separated by commas, spaces or tabs.
+<p>Some of the methods, such as those that add points a plot, are
+executed in the event thread, possibly some time after they are called.
+If they are called from a thread different from the event thread,
+then the order in which changes to the plot take effect may be
+surprising.  We recommend that any code you write that changes
+the plot in visible ways be executed in the event thread. You
+can accomplish this using the following template:
+
+         Runnable doAction = new Runnable() {
+             public void run() {
+                ... make changes here (e.g. setMarksStyle()) ...
+            }
+         };
+         plot.deferIfNecessary(doAction);
+<pre>
 <p>
 This plotter has some <A NAME="ptplot limitations">limitations</a>:
 <ul>
@@ -237,7 +252,7 @@ public class Plot extends PlotBox {
                     _addPoint(dataset, x, y, 0, 0, connected, false);
                 }
             };
-        _deferIfNecessary(doAddPoint);
+        deferIfNecessary(doAddPoint);
     }
 
     /** In the specified data set, add the specified x, y point to the
@@ -276,7 +291,7 @@ public class Plot extends PlotBox {
                     _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
                 }
             };
-        _deferIfNecessary(doAddPoint);
+        deferIfNecessary(doAddPoint);
     }
 
     /** Clear the plot of all data points.  If the argument is true, then
@@ -299,7 +314,7 @@ public class Plot extends PlotBox {
                     _clear(format);
                 }
             };
-        _deferIfNecessary(doClear);
+        deferIfNecessary(doClear);
     }
 
     /** Clear the plot of data points in the specified dataset.
@@ -321,7 +336,7 @@ public class Plot extends PlotBox {
                     _clear(dataset);
                 }
             };
-        _deferIfNecessary(doClear);
+        deferIfNecessary(doClear);
     }
 
     /** Erase the point at the given index in the given dataset.  If
@@ -347,7 +362,7 @@ public class Plot extends PlotBox {
                     _erasePoint(dataset, index);
                 }
             };
-        _deferIfNecessary(doErasePoint);
+        deferIfNecessary(doErasePoint);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -370,7 +385,7 @@ public class Plot extends PlotBox {
                     _fillPlot();
                 }
             };
-        _deferIfNecessary(doFill);
+        deferIfNecessary(doFill);
     }
 
     /** Return whether the default is to connect
@@ -521,7 +536,7 @@ public class Plot extends PlotBox {
                     repaint();
                 } // run method
             }; // Runnable class
-        _deferIfNecessary(sample);
+        deferIfNecessary(sample);
     }
 
     /** Turn bars on or off (for bar charts).  Note that this is a global
@@ -1580,7 +1595,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called via _deferIfNecessary().
+     * be called via deferIfNecessary().
      */
     private void _addPoint(
             int dataset, double x, double y, double yLowEB, double yHighEB,
@@ -1756,7 +1771,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called via _deferIfNecessary().
+     * be called via deferIfNecessary().
      */
     private void _clear(boolean format) {
         super.clear(format);
@@ -1792,7 +1807,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called via _deferIfNecessary().
+     * be called via deferIfNecessary().
      */
     private void _clear(int dataset) {
         _checkDatasetIndex(dataset);
@@ -1889,7 +1904,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called via _deferIfNecessary().
+     * be called via deferIfNecessary().
      */
     private void _erasePoint(int dataset, int index) {
         _checkDatasetIndex(dataset);
@@ -1984,7 +1999,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called via _deferIfNecessary().
+     * be called via deferIfNecessary().
      */
     private void _fillPlot() {
         if (_xyInvalid) {
