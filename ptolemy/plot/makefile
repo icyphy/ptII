@@ -141,6 +141,9 @@ install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) jars bin_install_dir
 	$(INSTALL_PROGRAM) ptplot $(BIN_INSTALL_DIR)
 	$(INSTALL_PROGRAM) pxgraph $(BIN_INSTALL_DIR)
 	$(INSTALL_PROGRAM) histogram $(BIN_INSTALL_DIR)
+	$(INSTALL_PROGRAM) ptplot.bat $(BIN_INSTALL_DIR)
+	$(INSTALL_PROGRAM) pxgraph.bat $(BIN_INSTALL_DIR)
+	$(INSTALL_PROGRAM) histogram.bat $(BIN_INSTALL_DIR)
 
 # FIXME: this is ugly, dangerous, and unportable.
 #

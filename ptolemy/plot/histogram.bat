@@ -6,5 +6,5 @@ rem @version $Id$
 rem @copyright: Copyright (c) 1997-1999
 rem The Regents of the University of California.
 
-java -classpath %PTII% ptolemy.plot.compat.PxgraphApplication %1 %2 %3 %4 %5 %6 %7 %8 %9
+java -classpath %PTII% ptolemy.plot.plotml.HistogramMLApplication %1 %2 %3 %4 %5 %6 %7 %8 %9
 
