@@ -112,7 +112,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
              entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, _options);
+                ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass =
                 Scene.v().loadClassAndSupport(className);
 

@@ -704,7 +704,7 @@ public class GiottoPortInliner implements PortInliner {
              entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, _options);
+                ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             _createBufferReferences(entity, entityClass);

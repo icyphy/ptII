@@ -182,7 +182,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                  i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _replacePortCalls(entityClass, entity);
@@ -331,7 +331,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                  i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);

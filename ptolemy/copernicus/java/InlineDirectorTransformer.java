@@ -120,7 +120,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Entity entity = (Entity)i.next();
             if(entity instanceof CompositeActor) {
                 String className = 
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
                 _inlineDirectorsIn((CompositeActor)entity, compositeClass,
                         phaseName, options);
@@ -147,7 +147,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
              i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, options);
+                ModelTransformer.getInstanceClassName(entity, options);
             SootClass theClass =
                 Scene.v().loadClassAndSupport(className);
 
@@ -242,7 +242,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
              entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String entityClassName =
-                ActorTransformer.getInstanceClassName(entity, options);
+                ModelTransformer.getInstanceClassName(entity, options);
             SootClass entityClass = 
                 Scene.v().loadClassAndSupport(entityClassName);
             String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -569,7 +569,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod preinitializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -609,7 +609,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod initializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -646,7 +646,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //                     controller, model);
 //             SootField field = modelClass.getFieldByName(fieldName);
 //             String className =
-//                 ActorTransformer.getInstanceClassName(controller, options);
+//                 ModelTransformer.getInstanceClassName(controller, options);
 //             SootClass theClass = Scene.v().loadClassAndSupport(className);
 //             SootMethod actorPrefireMethod =
 //                 SootUtilities.searchForMethodByName(
@@ -783,7 +783,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //                         controller, model);
 //                 SootField field = modelClass.getFieldByName(fieldName);
 //                 String className =
-//                     ActorTransformer.getInstanceClassName(controller, options);
+//                     ModelTransformer.getInstanceClassName(controller, options);
 //                 SootClass theClass = Scene.v().loadClassAndSupport(className);
 //                 SootMethod actorFireMethod =
 //                     SootUtilities.searchForMethodByName(
@@ -911,7 +911,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //                     controller, model);
 //             SootField field = modelClass.getFieldByName(fieldName);
 //             String className =
-//                 ActorTransformer.getInstanceClassName(controller, options);
+//                 ModelTransformer.getInstanceClassName(controller, options);
 //             SootClass theClass = Scene.v().loadClassAndSupport(className);
 //             SootMethod actorPostfireMethod =
 //                 SootUtilities.searchForMethodByName(
@@ -955,7 +955,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod wrapupMethod =
                     SootUtilities.searchForMethodByName(
@@ -1013,7 +1013,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod preinitializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -1053,7 +1053,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod initializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -1090,7 +1090,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     controller, model);
             SootField field = modelClass.getFieldByName(fieldName);
             String className =
-                ActorTransformer.getInstanceClassName(controller, options);
+                ModelTransformer.getInstanceClassName(controller, options);
             SootClass theClass = Scene.v().loadClassAndSupport(className);
             SootMethod actorPrefireMethod =
                 SootUtilities.searchForMethodByName(
@@ -1213,7 +1213,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         controller, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(controller, options);
+                    ModelTransformer.getInstanceClassName(controller, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod actorFireMethod =
                     SootUtilities.searchForMethodByName(
@@ -1341,7 +1341,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     controller, model);
             SootField field = modelClass.getFieldByName(fieldName);
             String className =
-                ActorTransformer.getInstanceClassName(controller, options);
+                ModelTransformer.getInstanceClassName(controller, options);
             SootClass theClass = Scene.v().loadClassAndSupport(className);
             SootMethod actorPostfireMethod =
                 SootUtilities.searchForMethodByName(
@@ -1381,7 +1381,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod wrapupMethod =
                     SootUtilities.searchForMethodByName(
@@ -1443,7 +1443,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod preinitializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -1483,7 +1483,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod initializeMethod =
                     SootUtilities.searchForMethodByName(
@@ -1656,7 +1656,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod actorPrefireMethod =
                     SootUtilities.searchForMethodByName(
@@ -1885,7 +1885,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
+                    ModelTransformer.getInstanceClassName(entity, options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod wrapupMethod =
                     SootUtilities.searchForMethodByName(

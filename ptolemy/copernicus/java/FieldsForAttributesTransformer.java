@@ -197,7 +197,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                  i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _replaceAttributeCalls(entityClass, entity);
@@ -383,7 +383,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                  i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)i.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);

@@ -201,7 +201,7 @@ public class InlineParameterTransformer extends SceneTransformer {
 //                  entities.hasNext();) {
 //                 ComponentEntity entity = (ComponentEntity)entities.next();
 //                 String className =
-//                     ActorTransformer.getInstanceClassName(entity, _options);
+//                     ModelTransformer.getInstanceClassName(entity, _options);
 //                 SootClass theClass =
 //                     Scene.v().loadClassAndSupport(className);
 //                 _replaceGetTokenCalls(theClass, entity,
@@ -796,7 +796,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                  entities.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)entities.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass entityClass =
                     Scene.v().loadClassAndSupport(className);
 

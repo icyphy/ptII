@@ -179,7 +179,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                  entities.hasNext();) {
                 ComponentEntity entity = (ComponentEntity)entities.next();
                 String className =
-                    ActorTransformer.getInstanceClassName(entity, _options);
+                    ModelTransformer.getInstanceClassName(entity, _options);
                 SootClass theClass =
                     Scene.v().loadClassAndSupport(className);
                 _inlineTokenCalls(theClass, entity);

@@ -157,7 +157,7 @@ public class InlinePortTransformer extends SceneTransformer {
              entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, _options);
+                ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             // recurse.
@@ -206,7 +206,7 @@ public class InlinePortTransformer extends SceneTransformer {
              entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, _options);
+                ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             // Loop through all the methods and inline calls on ports.

@@ -124,7 +124,7 @@ public class TypeSpecializer extends SceneTransformer {
              entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, options);
+                ModelTransformer.getInstanceClassName(entity, options);
             SootClass theClass =
                 Scene.v().loadClassAndSupport(className);
 
