@@ -41,6 +41,7 @@ import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -426,6 +427,30 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return super.prefire();
     }
 
+    /** Check if the modal model is embedded inside a CT model or a modal model
+     *  with a HSDirector.
+     * 
+     *  @exception IllegalActionException If parent class throws it or the 
+     *  immediately upper director is neither a CTDirector nor a HSDirector. 
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            CompositeActor compositeActor = (CompositeActor)container; 
+            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector 
+                  || compositeActor.getExecutiveDirector() instanceof 
+                  CTTransparentDirector)) {
+                throw new IllegalActionException("HSDirector is designed for " +
+                    "a modal model embedded inside a CT model or another " +
+                    "modal model with a HSDirector. If the modal " +
+                    "model is embedded inside other domains, like DE or SDF, " +
+                    "use FSMDirector instead. Right click the modal model and " +
+                    "configure the directorClass parameter.");  
+            }
+        }
+    }
+
     /** Return the step size refined by all the enabled refinements,
      *  which are refinements that returned true
      *  in their prefire() methods in this iteration, or the enabled
@@ -471,81 +496,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        // FIXME: Linear interpolation is great but may be optimized with some
-        // tricks from following commented code. That is why I haven't deleted it.
-        /*
-          if (_transitionAccurate) {
-          return result;
-          } else {
-          // FIXME: needs better algorithm
-          // FIXME: only handles one integrator
-
-          // If last step size is not accurate, we use a linear interpolation
-          // approach to get the refined step size; otherwise, we use the
-          // maximum value of current derivatives of state variables to refine the step size.
-
-          // Notice, we try to refine the step size such that the distance
-          // to boundary is errorTolerance/2.
-          double possibleStepSize = result;
-          double errorTolerance = dir.getErrorTolerance();
-
-          if (!_lastTransitionAccurate) {
-
-          //System.out.println();
-          //System.out.println("====> using linear interopolation.");
-          //System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
-          //System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
-
-          possibleStepSize = _lastStepSize - (_lastStepSize - result)
-          *( _lastDistanceToBoundary - errorTolerance/2) / (_lastDistanceToBoundary - _distanceToBoundary);
-          } else {
-
-          //System.out.println();
-          //System.out.println("***** using derivative.");
-          double maximumDerivative = 0.0;
-
-          Iterator actors = _enabledRefinements.iterator();
-          while (actors.hasNext()) {
-          CompositeActor actor = (CompositeActor) actors.next();
-          Iterator integrators = actor.entityList(Integrator.class).
-          iterator();
-          while (integrators.hasNext()) {
-          Integrator integrator = (Integrator) integrators.next();
-          try {
-          double input = ( (DoubleToken) integrator.input.get(
-          0)).
-          absolute().doubleValue();
-          if (input > maximumDerivative) {
-          maximumDerivative = input;
-          }
-          }
-          catch (IllegalActionException e) {
-          //FIXME: how to handle the exception.
-          System.out.println("FIXME" + e.getMessage());
-          maximumDerivative = 1.0;
-          }
-          }
-          }
-
-          possibleStepSize = result - (_distanceToBoundary - errorTolerance/2) /maximumDerivative;
-          }
-
-          // save for next step size checking.
-          _lastDistanceToBoundary = _distanceToBoundary;
-          _lastTransitionAccurate = false;
-          _lastStepSize = result;
-
-          //System.out.println("           refined current Step size " + possibleStepSize);
-
-          if (possibleStepSize < 0.0) {
-          // This refined step size does not make sense.
-          return result/2.0;
-          } else {
-          // step size is always reduced.
-          return possibleStepSize;
-          }
-          }
-        */
     }
 
     ///////////////////////////////////////////////////////////////////
