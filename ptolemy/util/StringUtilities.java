@@ -429,4 +429,38 @@ public class StringUtilities {
         return
 	    (String [])commandList.toArray(new String[commandList.size()]);
     }
+
+
+    /** Return a string that contains a description of how to use this
+     *  class.
+     *  @param commnandTemplate  A string naming the command and the
+     *  format of the arguments, for example 
+     *  "moml [options] [file . . .]"
+     *  @param commandOptions A 2xN array of Strings that list command-line
+     *  options that take arguments where the first
+     *  element is a String naming the command line option, and the
+     *  second element is the argument, for example
+     *  <code>{"-class", "<classname>")</code>
+     *  @param commandFlags An array of Strings that list command-line
+     *  options that are either present or not.
+     *  @returns A string that descripts the command.
+     */   
+    public static String usageString(String commandTemplate,
+            String [][] commandOptions, String [] commandFlags) {
+        // This method is static so that we can reuse it in places
+        // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
+        String result = "Usage: " + commandTemplate + "\n\n"
+            + "Options that take values:\n";
+
+        int i;
+        for (i = 0; i < commandOptions.length; i++) {
+            result += " " + commandOptions[i][0] +
+                " " + commandOptions[i][1] + "\n";
+        }
+        result += "\nBoolean flags:\n";
+        for (i = 0; i < commandFlags.length; i++) {
+            result += " " + commandFlags[i];
+        }
+        return result;
+    }
 }
