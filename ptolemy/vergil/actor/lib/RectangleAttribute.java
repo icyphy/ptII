@@ -31,8 +31,11 @@
 package ptolemy.vergil.actor.lib;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -65,14 +68,18 @@ public class RectangleAttribute extends FilledShapeAttribute {
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // FIXME: controller for resizing.
-        // Create a custom controller.
-        // new ImageAttributeControllerFactory(this, "_controllerFactory");
+        rounding = new Parameter(this, "rounding");
+        rounding.setTypeEquals(BaseType.DOUBLE);
+        rounding.setExpression("0.0");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** The amount of rounding of the corners.
+     *  This is a double that defaults to 0.0, which indicates no rounding.
+     */
+    public Parameter rounding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -85,12 +92,27 @@ public class RectangleAttribute extends FilledShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
-        if (attribute == width || attribute == height) {
+        if (attribute == width
+            || attribute == height
+            || attribute == rounding) {
             double widthValue = ((DoubleToken) width.getToken()).doubleValue();
             double heightValue =
                 ((DoubleToken) height.getToken()).doubleValue();
-            _icon.setShape(
-                new Rectangle2D.Double(0.0, 0.0, widthValue, heightValue));
+            double roundingValue =
+                ((DoubleToken) rounding.getToken()).doubleValue();
+            if (roundingValue == 0.0) {
+                _icon.setShape(
+                    new Rectangle2D.Double(0.0, 0.0, widthValue, heightValue));
+            } else {
+                _icon.setShape(
+                    new RoundRectangle2D.Double(
+                        0.0,
+                        0.0,
+                        widthValue,
+                        heightValue,
+                        roundingValue,
+                        roundingValue));
+            }
         } else {
             super.attributeChanged(attribute);
         }
