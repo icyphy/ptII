@@ -101,28 +101,13 @@ public class Gaussian extends RandomSource {
         output.send(0, new DoubleToken(_current));
     }
     
-    /** Generate the first random number.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void initialize() throws IllegalActionException {   	
-        super.initialize();
-        _generateRandomNumber();
-    }
-
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
-     */
-    public boolean postfire() throws IllegalActionException {
-        _generateRandomNumber();
-        return super.postfire();
-    }
-    
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
-    /** Generate a new random number. */
-    private void _generateRandomNumber() throws IllegalActionException {
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
+     */
+    protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken) (standardDeviation
         		.getToken())).doubleValue();
@@ -135,4 +120,7 @@ public class Gaussian extends RandomSource {
     
     /** The random number for the current iteration. */
     private double _current;
+    
+    /** Indicator that a new random number is needed. */
+    private boolean _needNew = false;
 }

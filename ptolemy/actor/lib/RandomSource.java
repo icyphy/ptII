@@ -53,6 +53,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (bilung)
 */
 public abstract class RandomSource extends Source {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -103,6 +104,27 @@ public abstract class RandomSource extends Source {
         return newObject;
     }
 
+    /** Generate a new random number if this is the first firing
+     *  of the iteration.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        if (_needNew) {
+            _generateRandomNumber();
+            _needNew = false;
+        }
+    }
+  
+    /** Calculate the next random number.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @return True if it is ok to continue.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _needNew = true;
+        return super.postfire();
+    }
+    
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.  In such cases, a seed based on the current
@@ -120,11 +142,24 @@ public abstract class RandomSource extends Source {
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
+        _needNew = true;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number. */
+    protected abstract void _generateRandomNumber() throws IllegalActionException;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The Random object. */
     protected Random _random = new Random();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Indicator that a new random number is needed. */
+    private boolean _needNew = false;
 }

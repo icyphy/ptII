@@ -53,6 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Uniform extends RandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -99,12 +100,13 @@ public class Uniform extends RandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the value of <i>lowerBound</i>
-     *   is greater than the value of <i>upperBound</i>.
-     *  @return Whatever the superclass returns (probably true).
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _generateRandomNumber() throws IllegalActionException {
         double lowerValue = ((DoubleToken) (lowerBound.getToken())).doubleValue();
         double upperValue = ((DoubleToken) (upperBound.getToken())).doubleValue();
 
@@ -115,7 +117,6 @@ public class Uniform extends RandomSource {
 
         double rawNum = _random.nextDouble();
         _current = (rawNum * (upperValue - lowerValue)) + lowerValue;
-        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////

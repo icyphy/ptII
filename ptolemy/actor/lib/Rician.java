@@ -63,6 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (bilung)
 */
 public class Rician extends RandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -119,11 +120,13 @@ public class Rician extends RandomSource {
         output.send(0, new DoubleToken(_current));
     }
 
-    /** Calculate the next random number.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _generateRandomNumber() throws IllegalActionException {
         double xMeanValue = ((DoubleToken) (xMean.getToken())).doubleValue();
         double yMeanValue = ((DoubleToken) (yMean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken) (standardDeviation
@@ -134,7 +137,6 @@ public class Rician extends RandomSource {
                                                + xMeanValue, 2)
                 + java.lang.Math.pow((yRawNum * standardDeviationValue)
                         + yMeanValue, 2));
-        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////

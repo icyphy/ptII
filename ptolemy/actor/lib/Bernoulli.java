@@ -47,6 +47,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    The seed can be specified as a parameter to control the sequence that is
    generated.
    This actor uses the class java.util.Random to generate random numbers.
+   Note that if the parameters are changed during execution of the
+   model, there is a one iteration delay before the changes take
+   effect.
 
    @author Edward A. Lee
    @version $Id$
@@ -55,6 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (bilung)
 */
 public class Bernoulli extends RandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -96,23 +100,24 @@ public class Bernoulli extends RandomSource {
         output.send(0, new BooleanToken(_current));
     }
 
-    /** Calculate the next random boolean for this iteration.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @return True if it is ok to continue.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number.
+     *  @exception If parameter values are incorrect.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))
                 .doubleValue()) {
             _current = true;
         } else {
             _current = false;
         }
-
-        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random boolean for the current iteration.
+    
+    /** The random boolean for the current iteration. */
     private boolean _current;
 }

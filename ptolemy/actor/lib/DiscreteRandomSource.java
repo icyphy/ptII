@@ -67,6 +67,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.AcceptedRating Yellow (ssachs)
 */
 public class DiscreteRandomSource extends RandomSource {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -166,14 +167,15 @@ public class DiscreteRandomSource extends RandomSource {
         output.send(0, _current);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Choose one of the tokens in <i>values</i> randomly, using
      *  the <i>pmf</i> parameter to select one.  The chosen token
      *  will be sent to the output in the fire() method.
-     *  @exception IllegalActionException If there is no director, or
-     *   if the lengths of the two parameters are not equal.
-     *  @return True.
+     *  @exception If parameter values are incorrect.
      */
-    public boolean prefire() throws IllegalActionException {
+    protected void _generateRandomNumber() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();
         ArrayToken valuesToken = (ArrayToken) values.getToken();
@@ -191,13 +193,11 @@ public class DiscreteRandomSource extends RandomSource {
 
             if (randomValue <= cdf) {
                 _current = valuesToken.getElement(i);
-                return true;
             }
         }
 
         // We shouldn't get here, but if we do, we output the last value.
         _current = valuesToken.getElement(_pmf.length - 1);
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
