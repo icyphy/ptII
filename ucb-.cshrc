@@ -24,31 +24,6 @@ set path = ( 	/usr/krb5/bin \
 	# Needed for SUN CC, may interfere with Synopsys
 	setenv LM_LICENSE_FILE /opt/lm/lmgrd.key
 
-	# Synopsys needs these
-	# Old version 3.4a
-	# setenv SYNOPSYS /vol/markov/markov1/synopsys
-	# New version 3.4b
-	setenv SYNOPSYS /usr/tools/synopsys
-	setenv SIM_ARCH sparcOS5
-	# vhdlan which is run in utils/ptvhdlsim requires that $ARCH be set
-	setenv ARCH $PTARCH
-
-	# Get Synopsys in path
-	set path = ( $path \
-		$SYNOPSYS/$SIM_ARCH/syn/bin \
-                $SYNOPSYS/$SIM_ARCH/sim/bin \
-                $SYNOPSYS/$SIM_ARCH/sge/bin )
-
-	# These are for accessing online documentation
-	# through "iview" and SOLV-IT On-Line through "sos".
-	set path = ( $path \
-		$SYNOPSYS/worldview/bin \
-                $SYNOPSYS/sos/bin )
-
-	# Needed for Synopsys to find libCLI.so
-	setenv LD_LIBRARY_PATH \
-		${LD_LIBRARY_PATH}:${SYNOPSYS}/${SIM_ARCH}/sim/lib
-
 	# Only include /usr/tools/bin in our path if we are running under
 	# Solaris otherwise the sun4 build will fail because
 	# /usr/tools/mathematica is Solaris
