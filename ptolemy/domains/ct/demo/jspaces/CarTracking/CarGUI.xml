@@ -40,12 +40,18 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="forceV" class="ptolemy.actor.lib.Sine">
-        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
+    <entity name="forceV" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" value="sin">
         </property>
-        <property name="omega" class="ptolemy.data.expr.Parameter" value="0.05*PI">
-        </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="scaleV" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.05*PI">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -193,6 +199,8 @@
     </relation>
     <relation name="r0_2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="r0_3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
@@ -221,7 +229,9 @@
         </vertex>
     </relation>
     <link port="time.output" relation="r0"/>
-    <link port="forceV.input" relation="r0"/>
+    <link port="scaleV.input" relation="r0"/>
+    <link port="scaleV.output" relation="r0_3"/>
+    <link port="forceV.input" relation="r0_3"/>
     <link port="forceV.output" relation="r0_1"/>
     <link port="forceC.output" relation="r0_2"/>
     <link port="add0.plus" relation="r0_1"/>
