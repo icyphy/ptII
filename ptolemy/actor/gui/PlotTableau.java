@@ -193,23 +193,23 @@ public class PlotTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy already contains a tableau named
+        /** If the specified effigy already contains a tableau named
          *  "plotTableau", then return that tableau; otherwise, create
          *  a new instance of PlotTableau in the specified
          *  effigy, and name it "plotTableau".  If the specified
@@ -218,14 +218,14 @@ public class PlotTableau extends Tableau {
          *  responsibility of callers of this method to check the
          *  return value and call show().
          *
-	 *  @param effigy The effigy.
-	 *  @return A plot tableau, or null if one cannot be
-	 *    found or created.
+         *  @param effigy The effigy.
+         *  @return A plot tableau, or null if one cannot be
+         *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PlotEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof PlotEffigy) {
 
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
@@ -248,9 +248,9 @@ public class PlotTableau extends Tableau {
                 // createTableau() returns.  This will affect how
                 // centering works.
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 }

@@ -285,8 +285,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         rowIndexLocal, columnIndexLocal)), _insertPoint);
 
             } else {
-		throw new IllegalActionException("Wrong number of indices "
-			+ "when referencing " + node.getFunctionName());
+                throw new IllegalActionException("Wrong number of indices "
+                        + "when referencing " + node.getFunctionName());
             }
             _nodeToLocal.put(node, resultLocal);
             return;

@@ -53,7 +53,7 @@ tokens.
 public class NamedConstantsScope implements ParserScope {
 
     /** Construct a new scope that contains the given map from names to
-	 *  value tokens.
+         *  value tokens.
      */
     public NamedConstantsScope(Map map) {
         _map = map;
@@ -64,7 +64,7 @@ public class NamedConstantsScope implements ParserScope {
      *  @return The token associated with the given name in the scope.
      */
     public ptolemy.data.Token get(String name) {
-		ptolemy.data.Token result = (ptolemy.data.Token)_map.get(name);
+                ptolemy.data.Token result = (ptolemy.data.Token)_map.get(name);
         return result;
     }
 

@@ -194,7 +194,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
-		String functionName = node.getFunctionName();
+                String functionName = node.getFunctionName();
         if(_scope != null && functionName != null) {
             value = _scope.get(node.getFunctionName());
         }
@@ -284,7 +284,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
             _evaluateChild(node, 1);
             ptolemy.data.Token token =
                 node.jjtGetChild(1).getToken();
-	    if (token instanceof StringToken) {
+            if (token instanceof StringToken) {
                 // Invoke the matlab engine to evaluate this function
                 String expression = ((StringToken)token).stringValue();
                 // NamedList scope = node.getParser().getScope();
@@ -359,24 +359,24 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 node.setToken(result);
                 return;
             } else {
-		throw new IllegalActionException("The function \"matlab\" is" +
+                throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +
                         " a string matlab expression argument followed by" +
                         " names of input variables used in the expression.");
-	    }
+            }
         }
 
         // the first child contains the function name as an id
         int argCount = node.jjtGetNumChildren() - 1;
 
         // If not a special function, then reflect the name of the function.
-	Type[] argTypes = new Type[argCount];
-	Object[] argValues = new Object[argCount];
+        Type[] argTypes = new Type[argCount];
+        Object[] argValues = new Object[argCount];
 
         // First try to find a signature using argument token values.
-	for (int i = 0; i < argCount; i++) {
+        for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-			_evaluateChild(node, i + 1);
+                        _evaluateChild(node, i + 1);
             ptolemy.data.Token token = node.jjtGetChild(i + 1).getToken();
             argValues[i] = token;
             argTypes[i] = token.getType();
@@ -425,27 +425,27 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
 
         int numChildren = node.jjtGetNumChildren();
-	if (numChildren != 3) {
-	    // A functional-if node MUST have three children in the parse
-	    // tree.
-	    throw new InternalErrorException(
-		    "PtParser error: a functional-if node does not have "
-		    + "three children in the parse tree.");
-	}
+        if (numChildren != 3) {
+            // A functional-if node MUST have three children in the parse
+            // tree.
+            throw new InternalErrorException(
+                    "PtParser error: a functional-if node does not have "
+                    + "three children in the parse tree.");
+        }
 
-	// evaluate the first sub-expression
+        // evaluate the first sub-expression
         _evaluateChild(node, 0);
         ptolemy.data.Token test = node.jjtGetChild(0).getToken();
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
                     "Functional-if must branch on a boolean, but instead was "
-		    + test.toString() + " an instance of "
+                    + test.toString() + " an instance of "
                     + test.getClass().getName());
         }
 
         boolean value = ((BooleanToken)test).booleanValue();
 
-     	// Choose the correct sub-expression to evaluate,
+             // Choose the correct sub-expression to evaluate,
         // and type check the other.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();
@@ -617,11 +617,11 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
 
         // The first child is the object to invoke the method on.
-	Type[] argTypes = new Type[argCount];
-	Object[] argValues = new Object[argCount];
+        Type[] argTypes = new Type[argCount];
+        Object[] argValues = new Object[argCount];
 
         // First try to find a signature using argument token values.
-	for (int i = 0; i < argCount; i++) {
+        for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
             ptolemy.data.Token token = node.jjtGetChild(i).getToken();
             argValues[i] = token;
@@ -1006,44 +1006,44 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       inner classes                       ////
 
-	private class ExpressionFunction implements FunctionToken.Function {
+        private class ExpressionFunction implements FunctionToken.Function {
 
-		public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
-				ParserScope freeVariablesScope) {
-			_argumentNames = new ArrayList(argumentNames);
-			_exprRoot = exprRoot;
-			_freeVariablesScope = freeVariablesScope;
-		}
+                public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
+                                ParserScope freeVariablesScope) {
+                        _argumentNames = new ArrayList(argumentNames);
+                        _exprRoot = exprRoot;
+                        _freeVariablesScope = freeVariablesScope;
+                }
 
-		public ptolemy.data.Token apply(List args)
-				throws IllegalActionException {
-			if (_parseTreeEvaluator == null) {
-				_parseTreeEvaluator = new ParseTreeEvaluator();
-			}
-			// construct a NamedConstantsScope that contains mappings from
-			// argument names to the given argument values
-			Map map = new HashMap();
-			for (int i = 0; i < args.size(); ++i) {
-				String name = (String)_argumentNames.get(i);
-				ptolemy.data.Token arg = (ptolemy.data.Token)args.get(i);
-				map.put(name, arg);
-			}
-			NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
-			ArrayList listOfScopes = new ArrayList(2);
-			listOfScopes.add(0, argumentsScope);
-			listOfScopes.add(1, _freeVariablesScope);
-			ParserScope evaluationScope = new NestedScope(listOfScopes);
-			return _parseTreeEvaluator.evaluateParseTree(_exprRoot, evaluationScope);
-		}
+                public ptolemy.data.Token apply(List args)
+                                throws IllegalActionException {
+                        if (_parseTreeEvaluator == null) {
+                                _parseTreeEvaluator = new ParseTreeEvaluator();
+                        }
+                        // construct a NamedConstantsScope that contains mappings from
+                        // argument names to the given argument values
+                        Map map = new HashMap();
+                        for (int i = 0; i < args.size(); ++i) {
+                                String name = (String)_argumentNames.get(i);
+                                ptolemy.data.Token arg = (ptolemy.data.Token)args.get(i);
+                                map.put(name, arg);
+                        }
+                        NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
+                        ArrayList listOfScopes = new ArrayList(2);
+                        listOfScopes.add(0, argumentsScope);
+                        listOfScopes.add(1, _freeVariablesScope);
+                        ParserScope evaluationScope = new NestedScope(listOfScopes);
+                        return _parseTreeEvaluator.evaluateParseTree(_exprRoot, evaluationScope);
+                }
 
-		public int getNumberOfArguments() {
-			return _argumentNames.size();
-		}
+                public int getNumberOfArguments() {
+                        return _argumentNames.size();
+                }
 
-		private ASTPtRootNode _exprRoot;
-		private List _argumentNames;
-		private ParserScope _freeVariablesScope;
-		private ParseTreeEvaluator _parseTreeEvaluator;
-	}
+                private ASTPtRootNode _exprRoot;
+                private List _argumentNames;
+                private ParserScope _freeVariablesScope;
+                private ParseTreeEvaluator _parseTreeEvaluator;
+        }
 
 }

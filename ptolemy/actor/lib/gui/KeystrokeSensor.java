@@ -134,17 +134,17 @@ public class KeystrokeSensor extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
 
-	if (_copyKeyPressed) {
-	    _copyKeyPressed = false;
-	    controlC.broadcast(new Token());
-	}
+        if (_copyKeyPressed) {
+            _copyKeyPressed = false;
+            controlC.broadcast(new Token());
+        }
 
-	if (_pasteKeyPressed) {
-	    _pasteKeyPressed = false;
-	    controlV.broadcast(new Token());
-	}
+        if (_pasteKeyPressed) {
+            _pasteKeyPressed = false;
+            controlV.broadcast(new Token());
+        }
 
-	if (_debugging) _debug("fire has completed");
+        if (_debugging) _debug("fire has completed");
     }
 
     /** Create the JFrame window and show() it on the desktop.
@@ -158,7 +158,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
     /** Dispose of the JFrame, thus closing that window.
      */
     public void wrapup() {
-	_myFrame.dispose();
+        _myFrame.dispose();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,52 +186,52 @@ public class KeystrokeSensor extends TypedAtomicActor {
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // Copy call-back
+            // Copy call-back
             ActionListener myCopyListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			if (_debugging) _debug("copy call-back called");
-			_copyKeyPressed = true;
-			try {
-			    getDirector().fireAtCurrentTime(
+                        if (_debugging) _debug("copy call-back called");
+                        _copyKeyPressed = true;
+                        try {
+                            getDirector().fireAtCurrentTime(
                                     KeystrokeSensor.this);
-			} catch (IllegalActionException ex) {
-			    System.out.println(this
-			            + "Ex calling fireAtCurrentTime");
-			    throw new RuntimeException("-fireAt* C catch-");
-			}
-			if (_debugging) _debug("copy call-back completed");
-		    }
-	    };
+                        } catch (IllegalActionException ex) {
+                            System.out.println(this
+                                    + "Ex calling fireAtCurrentTime");
+                            throw new RuntimeException("-fireAt* C catch-");
+                        }
+                        if (_debugging) _debug("copy call-back completed");
+                    }
+            };
 
-	    // Paste call-back
+            // Paste call-back
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			if (_debugging) _debug("pasteFrom.. has been called");
-			_pasteKeyPressed = true;
-			try {
-			    getDirector().fireAtCurrentTime(
+                        if (_debugging) _debug("pasteFrom.. has been called");
+                        _pasteKeyPressed = true;
+                        try {
+                            getDirector().fireAtCurrentTime(
                                     KeystrokeSensor.this);
-			} catch (IllegalActionException ex) {
-			    System.out.println("--" + ex.toString() + "--");
-			    System.out.println(this
-				    + "Exception calling fireAtCurrentTime");
-			    throw new RuntimeException("-fireAt* catch-");
-			}
-			if (_debugging) _debug("pasteFrom.. has completed");
-		    }
-	    };
+                        } catch (IllegalActionException ex) {
+                            System.out.println("--" + ex.toString() + "--");
+                            System.out.println(this
+                                    + "Exception calling fireAtCurrentTime");
+                            throw new RuntimeException("-fireAt* catch-");
+                        }
+                        if (_debugging) _debug("pasteFrom.. has completed");
+                    }
+            };
 
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
 
-	    // Paste registration of call-back.
+            // Paste registration of call-back.
             label.registerKeyboardAction(myPasteListener, "Paste",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Copy registration of call-back.
+            // Copy registration of call-back.
             label.registerKeyboardAction(myCopyListener, "Copy",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
@@ -243,7 +243,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
-	    show();
+            show();
             if (_debugging) _debug("frame constructor completes");
         }
     }

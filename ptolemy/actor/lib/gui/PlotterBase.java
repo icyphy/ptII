@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -114,7 +114,7 @@ public class PlotterBase extends TypedAtomicActor
 
         _plotSize = new SizeAttribute(this, "_plotSize");
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"
@@ -272,14 +272,14 @@ public class PlotterBase extends TypedAtomicActor
             String header
                 = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
             StringWriter writer = new StringWriter();
-	    PrintWriter print = new PrintWriter(writer);
+            PrintWriter print = new PrintWriter(writer);
             // NOTE: Cannot include xml spec in the header because processing
             // instructions cannot be nested in XML (lame, isn't it?).
             //print.write(header);
             print.write("\n<plot>\n");
             // The second (null) argument indicates that PlotML PUBLIC DTD
-	    // should be referenced.
-	    plot.writeFormat(print);
+            // should be referenced.
+            plot.writeFormat(print);
             print.write("</plot>\n");
             return writer.toString();
         }
@@ -405,15 +405,15 @@ public class PlotterBase extends TypedAtomicActor
         // instructions cannot be nested in XML (lame, isn't it?).
         String header =
             "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
-	    + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-	if (plot != null) {
-	    output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
+            + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        if (plot != null) {
+            output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
                     + header + "\n<plot>\n");
-	    PrintWriter print = new PrintWriter(output);
-	    // The second (null) argument indicates that PlotML PUBLIC DTD
-	    // should be referenced.
-	    plot.writeFormat(print);
-	    output.write("</plot>?>\n"
+            PrintWriter print = new PrintWriter(output);
+            // The second (null) argument indicates that PlotML PUBLIC DTD
+            // should be referenced.
+            plot.writeFormat(print);
+            output.write("</plot>?>\n"
                     + _getIndentPrefix(depth) + "</configure>\n");
         } else if (_configureSources != null) {
             // Configuration has been specified, but not yet evaluated.
@@ -430,18 +430,18 @@ public class PlotterBase extends TypedAtomicActor
                             + "<configure source=\""
                             + source
                             + "\">");
-		    if (text != null) {
-			output.write("<![CDATA[\n");
-		    }
+                    if (text != null) {
+                        output.write("<![CDATA[\n");
+                    }
                 } else {
                     output.write(_getIndentPrefix(depth) + "<configure>\n");
                 }
                 if (text != null) {
-		    output.write(text.trim() + "\n");
-		    if (source != null && !source.trim().equals("")) {
-			output.write(_getIndentPrefix(depth) + "]]>\n");
-		    }
-		}
+                    output.write(text.trim() + "\n");
+                    if (source != null && !source.trim().equals("")) {
+                        output.write(_getIndentPrefix(depth) + "]]>\n");
+                    }
+                }
                 output.write(_getIndentPrefix(depth) + "</configure>\n");
             }
         }

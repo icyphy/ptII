@@ -95,18 +95,18 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-		String functionName = node.getFunctionName();
-		if(functionName == null) {
-			_visitChild(node, 0);
-		}
-		for(int i = 0; i < argCount; ++i) {
-			_visitChild(node, i + 1);
-		}
+                String functionName = node.getFunctionName();
+                if(functionName == null) {
+                        _visitChild(node, 0);
+                }
+                for(int i = 0; i < argCount; ++i) {
+                        _visitChild(node, i + 1);
+                }
 
-		if(functionName == null) {
-			throw new IllegalActionException(
+                if(functionName == null) {
+                        throw new IllegalActionException(
                     "unimplemented case");
-		}
+                }
 
         if(_isValidName(functionName)) {
             // Handle as an array or matrix index into a named
@@ -147,7 +147,7 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
 
         // Otherwise, try to reflect the method name.
         //Type[] childTypes = _getChildTypes(node);
-		Type[] childTypes = new Type[argCount];
+                Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
             childTypes[i] =  ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
             if(childTypes[i] == null) {
@@ -183,9 +183,9 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-		//FIXME
-		return;
-	}
+                //FIXME
+                return;
+        }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);

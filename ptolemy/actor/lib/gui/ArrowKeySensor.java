@@ -156,52 +156,52 @@ public class ArrowKeySensor extends TypedAtomicActor {
         if (_debugging) _debug("fire has been called");
 
 
-	// Broadcast key presses
+        // Broadcast key presses
 
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
+        if (_upKeyPressed) {
+            _upKeyPressed = false;
+            upArrow.broadcast(new IntToken(1));
+        }
 
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
+        if (_leftKeyPressed) {
+            _leftKeyPressed = false;
+            leftArrow.broadcast(new IntToken(1));
+        }
 
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
+        if (_rightKeyPressed) {
+            _rightKeyPressed = false;
+            rightArrow.broadcast(new IntToken(1));
+        }
 
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
+        if (_downKeyPressed) {
+            _downKeyPressed = false;
+            downArrow.broadcast(new IntToken(1));
+        }
 
 
-	// Broadcast key releases
+        // Broadcast key releases
 
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
+        if (_upKeyReleased) {
+            _upKeyReleased = false;
+            upArrow.broadcast(new IntToken(0));
+        }
 
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
+        if (_leftKeyReleased) {
+            _leftKeyReleased = false;
+            leftArrow.broadcast(new IntToken(0));
+        }
 
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
+        if (_rightKeyReleased) {
+            _rightKeyReleased = false;
+            rightArrow.broadcast(new IntToken(0));
+        }
 
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
+        if (_downKeyReleased) {
+            _downKeyReleased = false;
+            downArrow.broadcast(new IntToken(0));
+        }
 
-	if (_debugging) _debug("fire has completed");
+        if (_debugging) _debug("fire has completed");
     }
 
     /** Create the JFrame window capable of detecting the key-presses. */
@@ -213,7 +213,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
     /** Dispose of the JFrame, causing the window to vanish. */
     public void wrapup() {
-	_myFrame.dispose();
+        _myFrame.dispose();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -252,86 +252,86 @@ public class ArrowKeySensor extends TypedAtomicActor {
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // up-arrow call-backs
+            // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _upKeyPressed = true;
+                        _upKeyReleased = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
             ActionListener myUpReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _upKeyReleased = true;
+                        _upKeyPressed = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
-	    // left-arrow call-backs
+            // left-arrow call-backs
             ActionListener myLeftPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _leftKeyPressed = true;
+                        _leftKeyReleased = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
             ActionListener myLeftReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _leftKeyReleased = true;
+                        _leftKeyPressed = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
-	    // right-arrow call-backs
+            // right-arrow call-backs
             ActionListener myRightPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _rightKeyPressed = true;
+                        _rightKeyReleased = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
             ActionListener myRightReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _rightKeyReleased = true;
+                        _rightKeyPressed = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
-	    // down-arrow call-backs
+            // down-arrow call-backs
             ActionListener myDownPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _downKeyPressed = true;
+                        _downKeyReleased = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
             ActionListener myDownReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        _downKeyReleased = true;
+                        _downKeyPressed = false;
+                        tryCallingFireAtCurrentTime();
+                    }
+            };
 
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
 
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
+            // As of jdk1.4, the .registerKeyboardAction() method below is
             // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
+            //  .getInputMap().put(aKeyStroke, aCommand);
+            //  .getActionMap().put(aCommmand, anAction);
+            // with the String aCommand inserted to link them together.
+            // See javax.swing.Jcomponent.registerKeyboardAction().
 
-	    // Registration of up-arrow call-backs.
+            // Registration of up-arrow call-backs.
             label.registerKeyboardAction(myUpPressedListener,
                     "UpPressed",
                     KeyStroke.getKeyStroke(
@@ -344,7 +344,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_UP, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of left-arrow call-backs.
+            // Registration of left-arrow call-backs.
             label.registerKeyboardAction(myLeftPressedListener,
                     "LeftPressed",
                     KeyStroke.getKeyStroke(
@@ -357,7 +357,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of right-arrow call-backs.
+            // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener,
                     "RightPressed",
                     KeyStroke.getKeyStroke(
@@ -370,7 +370,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_RIGHT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of down-arrow call-backs.
+            // Registration of down-arrow call-backs.
             label.registerKeyboardAction(myDownPressedListener,
                     "DownPressed",
                     KeyStroke.getKeyStroke(
@@ -389,23 +389,23 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
-	    show();
+            show();
             if (_debugging) _debug("frame constructor completes");
         }
 
-	/** This is simply the try-catch clause for the call to the
+        /** This is simply the try-catch clause for the call to the
          *  director.  It has been pulled out to make the code terser
          *  and more readable.
          */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
+        private void tryCallingFireAtCurrentTime() {
+            try {
+                getDirector().fireAtCurrentTime(ArrowKeySensor.this);
+            } catch (IllegalActionException ex) {
+                System.out.println("--" + ex.toString() + "--");
+                System.out.println(this + "Ex calling fireAtCurrentTime");
+                throw new RuntimeException("-fireAt* catch-");
+            }
+        }
 
     }
 }

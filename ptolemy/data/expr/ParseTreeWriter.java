@@ -78,34 +78,34 @@ public class ParseTreeWriter implements ParseTreeVisitor {
     }
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException  {
-		_printChild(node, 0);
+                _printChild(node, 0);
         _stream.print("(");
-		int n = node.jjtGetNumChildren();
-		for (int i = 1; i < n - 1; ++i) {
-			_printChild(node, i);
-			_stream.print(", ");
-		}
-		if (n > 1) {
-			_printChild(node, n - 1);
-		}
+                int n = node.jjtGetNumChildren();
+                for (int i = 1; i < n - 1; ++i) {
+                        _printChild(node, i);
+                        _stream.print(", ");
+                }
+                if (n > 1) {
+                        _printChild(node, n - 1);
+                }
         _stream.print(")");
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException  {
         _stream.print("(function (");
         List args = node.getArgumentNameList();
-		int n = args.size();
-		for (int i = 0; i < n - 1; ++i) {
-			_stream.print((String)args.get(i));
-			_stream.print(", ");
-		}
-		if (n > 0) {
-			_stream.print((String)args.get(n - 1));
-		}
-		_stream.print(") ");
-		_printChildrenSeparated(node, ", ");
-		_stream.print(")");
-	}
+                int n = args.size();
+                for (int i = 0; i < n - 1; ++i) {
+                        _stream.print((String)args.get(i));
+                        _stream.print(", ");
+                }
+                if (n > 0) {
+                        _stream.print((String)args.get(n - 1));
+                }
+                _stream.print(") ");
+                _printChildrenSeparated(node, ", ");
+                _stream.print(")");
+        }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _printChild(node, 0);

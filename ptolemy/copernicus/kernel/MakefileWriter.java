@@ -88,7 +88,7 @@ public class MakefileWriter extends SceneTransformer {
     /** Construct a new transformer
      */
     private MakefileWriter(CompositeActor model) {
-	_model = model;
+        _model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -102,7 +102,7 @@ public class MakefileWriter extends SceneTransformer {
 
     public String getDefaultOptions() {
         return super.getDefaultOptions() + "templateDirectory:" +
-	    TEMPLATE_DIRECTORY_DEFAULT;
+            TEMPLATE_DIRECTORY_DEFAULT;
     }
 
     public String getDeclaredOptions() {
@@ -135,14 +135,14 @@ public class MakefileWriter extends SceneTransformer {
         // targetPackage parameter to parentTargetPackage but I'd
         // rather keep things uniform with the other generators?
 
-	int start = targetPackage.indexOf('.');
-	// codeBase has one more level than targetPackage.
-	StringBuffer buffer = new StringBuffer("..");
-	while (start != -1) {
-	    buffer.append("/..");
-	    start = targetPackage.indexOf('.', start + 1);
-	}
-	String codeBase = buffer.toString();
+        int start = targetPackage.indexOf('.');
+        // codeBase has one more level than targetPackage.
+        StringBuffer buffer = new StringBuffer("..");
+        while (start != -1) {
+            buffer.append("/..");
+            start = targetPackage.indexOf('.', start + 1);
+        }
+        String codeBase = buffer.toString();
 
         if (JNLPUtilities.isRunningUnderWebStart()) {
             // If we are under WebStart, we always copy jar files
@@ -172,7 +172,7 @@ public class MakefileWriter extends SceneTransformer {
      *  <p>For example, if the model is called MyModel, and
      *  this phase is called with:
      *  <pre>
-     *	-p wjtp.makefileWriter targetPackage:foo.bar,outdir:c:/tmp,templateDirectory:bif
+     *        -p wjtp.makefileWriter targetPackage:foo.bar,outdir:c:/tmp,templateDirectory:bif
      *  </pre>
      *  Then we will create the directory c:/tmp/foo/bar/MyModel, read
      *  in $PTII/bif/makefile.in and generate c:/tmp/foo/bar/makefile.
@@ -207,7 +207,7 @@ public class MakefileWriter extends SceneTransformer {
         // Read in the GeneratorAttribute and use it for substitution
 
         // Note that this option has a leading _
-	_generatorAttributeFileName = Options.getString(options,
+        _generatorAttributeFileName = Options.getString(options,
                 "_generatorAttributeFileName");
 
         if (_generatorAttributeFileName.length() == 0) {
@@ -273,20 +273,20 @@ public class MakefileWriter extends SceneTransformer {
 
 
 
-	_outputDirectory = Options.getString(options, "outDir");
+        _outputDirectory = Options.getString(options, "outDir");
         if (!_outputDirectory.endsWith("/")) {
             _outputDirectory = _outputDirectory + "/";
         }
 
-	// Create the directory where we will create the files.
-	File outDirFile = new File(_outputDirectory);
-	if (!outDirFile.isDirectory()) {
+        // Create the directory where we will create the files.
+        File outDirFile = new File(_outputDirectory);
+        if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
-	}
+        }
 
-	_targetPackage = Options.getString(options, "targetPackage");
+        _targetPackage = Options.getString(options, "targetPackage");
 
-	_templateDirectory = Options.getString(options, "templateDirectory");
+        _templateDirectory = Options.getString(options, "templateDirectory");
         if (!_templateDirectory.endsWith("/")) {
             _templateDirectory = _templateDirectory + "/";
         }
@@ -305,7 +305,7 @@ public class MakefileWriter extends SceneTransformer {
                     + generatorAttribute);
         }
 
-	try {
+        try {
             System.out.println("MakefileWriter: reading '"
                     + _templateDirectory + "makefile.in'\n\t writing '"
                     + _outputDirectory + "makefile'");
@@ -313,19 +313,19 @@ public class MakefileWriter extends SceneTransformer {
             Copernicus.substitute(_templateDirectory + "makefile.in",
                     substituteMap,
                     _outputDirectory + "makefile");
-	} catch (Exception ex) {
-	    // This exception tends to get eaten by soot, so we print as well.
-	    System.err.println("Problem writing makefile:" + ex);
-	    ex.printStackTrace();
-	    throw new InternalErrorException(_model, ex,
+        } catch (Exception ex) {
+            // This exception tends to get eaten by soot, so we print as well.
+            System.err.println("Problem writing makefile:" + ex);
+            ex.printStackTrace();
+            throw new InternalErrorException(_model, ex,
                     "Problem writing the makefile");
-	}
+        }
 
         // Obfuscation script is optional
-	BufferedReader inputFile = null;
+        BufferedReader inputFile = null;
         String obfuscateTemplate = _templateDirectory
             + "obfuscateScript.jos.in";
-	try {
+        try {
             inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
         } catch (IOException ex) {
             System.out.println("Note: Optional obfuscation template not "
@@ -351,24 +351,24 @@ public class MakefileWriter extends SceneTransformer {
 
     /** Return true if _possibleSubdirectory is a subdirectory of parent. */
     private static boolean _isSubdirectory(String parent,
-				    String possibleSubdirectory)
-	throws IOException {
-	//System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
-        //			   possibleSubdirectory);
-	File parentFile = new File(parent);
-	File possibleSubdirectoryFile = new File(possibleSubdirectory);
-	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
-	    throw new IOException ("'" + parent + "' or '"
-				   + possibleSubdirectory + "' is a file, "
-				   + "it should be a directory");
-	}
-	String parentCanonical = parentFile.getCanonicalPath();
-	String possibleSubdirectoryCanonical =
-	    possibleSubdirectoryFile.getCanonicalPath();
-	// System.out.println("\n\n_isSubdirectory: \n\t"
-	//		   + parentCanonical + "\n\t"
-	//		   + possibleSubdirectoryCanonical);
-	return possibleSubdirectoryCanonical.startsWith(parentCanonical);
+                                    String possibleSubdirectory)
+        throws IOException {
+        //System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
+        //                           possibleSubdirectory);
+        File parentFile = new File(parent);
+        File possibleSubdirectoryFile = new File(possibleSubdirectory);
+        if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
+            throw new IOException ("'" + parent + "' or '"
+                                   + possibleSubdirectory + "' is a file, "
+                                   + "it should be a directory");
+        }
+        String parentCanonical = parentFile.getCanonicalPath();
+        String possibleSubdirectoryCanonical =
+            possibleSubdirectoryFile.getCanonicalPath();
+        // System.out.println("\n\n_isSubdirectory: \n\t"
+        //                   + parentCanonical + "\n\t"
+        //                   + possibleSubdirectoryCanonical);
+        return possibleSubdirectoryCanonical.startsWith(parentCanonical);
     }
 
 

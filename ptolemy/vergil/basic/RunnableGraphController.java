@@ -80,12 +80,12 @@ public abstract class RunnableGraphController
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-	GUIUtilities.addHotKey(getFrame().getJGraph(), _runModelAction);
-       	GUIUtilities.addToolBarButton(toolbar, _runModelAction);
-	GUIUtilities.addHotKey(getFrame().getJGraph(), _pauseModelAction);
-       	GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
-	GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
-       	GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
+        GUIUtilities.addHotKey(getFrame().getJGraph(), _runModelAction);
+               GUIUtilities.addToolBarButton(toolbar, _runModelAction);
+        GUIUtilities.addHotKey(getFrame().getJGraph(), _pauseModelAction);
+               GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
+        GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
+               GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
     }
 
     /** Report that an execution error has occurred.  This method
@@ -135,13 +135,13 @@ public abstract class RunnableGraphController
         }
         Manager manager = ((CompositeActor)toplevel).getManager();
         if (manager == null) {
-	    try {
+            try {
                 manager = new Manager(toplevel.workspace(), "manager");
-		((CompositeActor)toplevel).setManager(manager);
-	    } catch ( IllegalActionException ex) {
+                ((CompositeActor)toplevel).setManager(manager);
+            } catch ( IllegalActionException ex) {
                 // Should not occur.
-		throw new InternalErrorException(ex);
-	    }
+                throw new InternalErrorException(ex);
+            }
         }
         if (manager != _manager) {
             // If there was a previous manager, unlisten.
@@ -190,28 +190,28 @@ public abstract class RunnableGraphController
          *  @param description The description used for menu entries and
          *   tooltips.
          */
-	public RunModelAction(String description) {
-	    super(description);
+        public RunModelAction(String description) {
+            super(description);
 
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource(
                     "/ptolemy/vergil/actor/img/run.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", description + " (Ctrl+R)");
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue("tooltip", description + " (Ctrl+R)");
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_R, Event.CTRL_MASK));
-	}
+        }
 
         /** Run the model. */
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
             try {
                 _getManager().startRun();
             } catch (IllegalActionException ex) {
@@ -222,7 +222,7 @@ public abstract class RunnableGraphController
                     MessageHandler.error("Failed to run/resume.", ex);
                 }
             }
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,34 +235,34 @@ public abstract class RunnableGraphController
          *  @param description The description used for menu entries and
          *   tooltips.
          */
-	public PauseModelAction(String description) {
-	    super(description);
+        public PauseModelAction(String description) {
+            super(description);
 
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource(
                     "/ptolemy/vergil/actor/img/pause.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", description + " (Ctrl+U)");
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue("tooltip", description + " (Ctrl+U)");
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_U, Event.CTRL_MASK));
-	}
+        }
 
         /** Pause the model. */
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
             try {
                 _getManager().pause();
             } catch (IllegalActionException ex) {
                 MessageHandler.error("failed to pause.", ex);
             }
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -275,33 +275,33 @@ public abstract class RunnableGraphController
          *  @param description The description used for menu entries and
          *   tooltips.
          */
-	public StopModelAction(String description) {
-	    super(description);
+        public StopModelAction(String description) {
+            super(description);
 
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource(
                     "/ptolemy/vergil/actor/img/stop.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", description + " (Ctrl+H)");
-	    putValue(GUIUtilities.ACCELERATOR_KEY,
+            putValue("tooltip", description + " (Ctrl+H)");
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK));
-	}
+        }
 
         /** Stop the model. */
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
             try {
                 _getManager().stop();
             } catch (IllegalActionException ex) {
                 MessageHandler.error("failed to stop.", ex);
             }
-	}
+        }
     }
 }

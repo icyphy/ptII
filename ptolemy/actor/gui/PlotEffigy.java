@@ -55,7 +55,7 @@ public class PlotEffigy extends Effigy {
      *  @param workspace The workspace for this effigy.
      */
     public PlotEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new effigy in the given directory with the given name.
@@ -64,7 +64,7 @@ public class PlotEffigy extends Effigy {
      */
     public PlotEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ public class PlotEffigy extends Effigy {
      *  @return The plot or null if none has been set.
      */
     public PlotBox getPlot() {
-	return _plot;
+        return _plot;
     }
 
     /** Set the plot that this is an effigy of.
@@ -110,18 +110,18 @@ public class PlotEffigy extends Effigy {
      */
     public static class Factory extends EffigyFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////

@@ -54,59 +54,59 @@ are supported.
 */
 public class FunctionToken extends Token {
 
-	public FunctionToken(Function f) {
-		_function = f;
-	}
+        public FunctionToken(Function f) {
+                _function = f;
+        }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	public Token apply(List args) throws IllegalActionException {
-		return _function.apply(args);
-	}
+        public Token apply(List args) throws IllegalActionException {
+                return _function.apply(args);
+        }
 
-	/** Return the number of arguments of the function.
-	 *  @return The number of arguments of the function.
-	 */
-	public int getNumberOfArguments() {
-		return _function.getNumberOfArguments();
-	}
+        /** Return the number of arguments of the function.
+         *  @return The number of arguments of the function.
+         */
+        public int getNumberOfArguments() {
+                return _function.getNumberOfArguments();
+        }
 
     /** Return the type of this token.
-	 *  FIXME: before a function type is implemented, use BaseType.GENERAL.
+         *  FIXME: before a function type is implemented, use BaseType.GENERAL.
      *  @return BaseType.GENERAL
      */
     public Type getType() {
         return BaseType.GENERAL;
     }
 
-	///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-	// The object that implements the function.
-	private Function _function;
+        // The object that implements the function.
+        private Function _function;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-	/** The interface for functions contained by function tokens.
-	 */
-	public interface Function {
+        /** The interface for functions contained by function tokens.
+         */
+        public interface Function {
 
-		/** Apply the function to the list of arguments, which are tokens.
-		 *  @param arguments The list of arguments.
-		 *  @return The result of applying the function to the given
-		 *   arguments.
-		 *  @exception IllegalActionException If thrown during evaluating
-		 *   the function.
-		 */
-		public Token apply(List args) throws IllegalActionException;
+                /** Apply the function to the list of arguments, which are tokens.
+                 *  @param arguments The list of arguments.
+                 *  @return The result of applying the function to the given
+                 *   arguments.
+                 *  @exception IllegalActionException If thrown during evaluating
+                 *   the function.
+                 */
+                public Token apply(List args) throws IllegalActionException;
 
-		/** Return the number of arguments of the function.
-		 *  @return The number of arguments of the function.
-		 */
-		public int getNumberOfArguments();
-	}
+                /** Return the number of arguments of the function.
+                 *  @return The number of arguments of the function.
+                 */
+                public int getNumberOfArguments();
+        }
 
 }
 

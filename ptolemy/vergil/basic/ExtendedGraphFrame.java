@@ -124,7 +124,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
-	super._addMenus();
+        super._addMenus();
 
         _viewMenu.addSeparator();
         GUIUtilities.addHotKey(_jgraph, _fullScreenAction);
@@ -152,14 +152,14 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     // An action to display in full-screen mode.
     public class FullScreenAction extends AbstractAction
             implements KeyListener {
-	public FullScreenAction(String description) {
-	    super(description);
+        public FullScreenAction(String description) {
+            super(description);
 
             // Load the image by using the absolute path to the gif.
-	    // Using a relative location should work, but it does not.
+            // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-	    // For more information, see
-	    // jdk1.3/docs/guide/resources/resources.html
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
             // FIXME: Replace zoomin graphic with fullscreen.
             URL img = getClass().getResource(
                     "/ptolemy/vergil/basic/img/zoomin.gif");
@@ -167,13 +167,13 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", description);
+            putValue("tooltip", description);
 
-	    putValue(GUIUtilities.MNEMONIC_KEY,
+            putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_S));
-	}
+        }
 
-	public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
             // If we are in full-screen mode, then revert.
             // Otherwise, go to full-screen mode.
             if (_screen == null) {
@@ -229,7 +229,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             } else {
                 _cancelFullScreenMode();
             }
-	}
+        }
 
         /** React to a key press by removing full-screen mode. */
         public void keyPressed(KeyEvent e) {

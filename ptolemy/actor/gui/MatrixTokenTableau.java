@@ -168,23 +168,23 @@ public class MatrixTokenTableau extends TokenTableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy already contains a tableau named
+        /** If the specified effigy already contains a tableau named
          *  "tokenTableau", then return that tableau; otherwise, create
          *  a new instance of MatrixTokenTableau in the specified
          *  effigy, and name it "tokenTableau".  If the specified
@@ -196,14 +196,14 @@ public class MatrixTokenTableau extends TokenTableau {
          *  responsibility of callers of this method to check the
          *  return value and call show().
          *
-	 *  @param effigy The effigy, which is expected to be a TokenEffigy.
-	 *  @return An instance of MatrixTokenTableau, or null if one cannot be
-	 *    found or created.
+         *  @param effigy The effigy, which is expected to be a TokenEffigy.
+         *  @return An instance of MatrixTokenTableau, or null if one cannot be
+         *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof TokenEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof TokenEffigy) {
                 // Indicate to the effigy that this factory contains effigies
                 // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
@@ -226,8 +226,8 @@ public class MatrixTokenTableau extends TokenTableau {
                 }
                 return new MatrixTokenTableau(
                         (TokenEffigy)effigy, "tokenTableau");
-	    }
+            }
             return null;
-	}
+        }
     }
 }

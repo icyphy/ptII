@@ -65,7 +65,7 @@ public class TokenEffigy extends Effigy {
      *  @param workspace The workspace for this effigy.
      */
     public TokenEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new effigy in the given directory with the given name.
@@ -74,7 +74,7 @@ public class TokenEffigy extends Effigy {
      */
     public TokenEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ public class TokenEffigy extends Effigy {
      *  effigy.
      */
     public void append(Token token) {
-	_tokens.add(token);
+        _tokens.add(token);
         // Notify the contained tableaux.
         Iterator tableaux = entityList(TokenTableau.class).iterator();
         while (tableaux.hasNext()) {
@@ -118,7 +118,7 @@ public class TokenEffigy extends Effigy {
     /** Clear the token array associated with this effigy.
      */
     public void clear() {
-	_tokens.clear();
+        _tokens.clear();
         // Notify the contained tableaux.
         Iterator tableaux = entityList(TokenTableau.class).iterator();
         while (tableaux.hasNext()) {
@@ -131,7 +131,7 @@ public class TokenEffigy extends Effigy {
      *  @return An array of tokens in the file.
      */
     public ArrayList getTokens() {
-	return _tokens;
+        return _tokens;
     }
 
     /** Read the specified URL and parse the data.
@@ -230,18 +230,18 @@ public class TokenEffigy extends Effigy {
      */
     public static class Factory extends EffigyFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////

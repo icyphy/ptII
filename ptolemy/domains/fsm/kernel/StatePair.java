@@ -66,8 +66,8 @@ public class StatePair {
         if (object instanceof StatePair) {
             return ((this.first() == ((StatePair)object).first()) &&
                     (this.second() == ((StatePair)object).second()));
-	}
-	return false;
+        }
+        return false;
     }
 
     /** Return the first state in this pair.

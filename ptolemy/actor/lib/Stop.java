@@ -94,7 +94,7 @@ public class Stop extends Sink {
 
         input.setTypeEquals(BaseType.BOOLEAN);
 
-	_attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
                 + "-8,19 -19,8 -19,-8\" "
                 + "style=\"fill:red\"/>\n"

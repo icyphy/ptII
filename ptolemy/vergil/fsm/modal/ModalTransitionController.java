@@ -91,12 +91,12 @@ public class ModalTransitionController extends TransitionController {
     /** An action to add a new refinement.
      */
     private class AddRefinementAction extends FigureAction {
-	public AddRefinementAction() {
-	    super("Add Refinement");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+        public AddRefinementAction() {
+            super("Add Refinement");
+        }
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             if (!(target instanceof Transition)) {
                 MessageHandler.error("Can only add refinements to transitions.");
                 return;
@@ -229,17 +229,17 @@ public class ModalTransitionController extends TransitionController {
                     }
                 };
             container.requestChange(change);
-	}
+        }
     }
 
     /** Action to remove refinements. */
     private class RemoveRefinementAction extends FigureAction {
-	public RemoveRefinementAction() {
-	    super("Remove Refinement");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
+        public RemoveRefinementAction() {
+            super("Remove Refinement");
+        }
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj target = getTarget();
             if (!(target instanceof Transition)) {
                 MessageHandler.error(
                         "Can only remove refinements from transitions.");
@@ -363,6 +363,6 @@ public class ModalTransitionController extends TransitionController {
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml);
             container.requestChange(change);
-	}
+        }
     }
 }

@@ -156,20 +156,20 @@ public class PlotTableauFrame extends TableauFrame {
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
-	super._addMenus();
+        super._addMenus();
 
         // Edit menu
-       	_editMenu = new JMenu("Edit");
+               _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
-	_menubar.add(_editMenu);
+        _menubar.add(_editMenu);
 
         FormatAction formatAction = new FormatAction();
-	GUIUtilities.addMenuItem(_editMenu, formatAction);
+        GUIUtilities.addMenuItem(_editMenu, formatAction);
 
         // Special menu
-       	_specialMenu = new JMenu("Special");
+               _specialMenu = new JMenu("Special");
         _specialMenu.setMnemonic(KeyEvent.VK_S);
-	_menubar.add(_specialMenu);
+        _menubar.add(_specialMenu);
 
         JMenuItem[] specialMenuItems = {
             new JMenuItem("Clear", KeyEvent.VK_C),
@@ -288,23 +288,23 @@ public class PlotTableauFrame extends TableauFrame {
         /** Create a new action to format the plot. */
         public FormatAction() {
             super("Format");
-	    putValue("tooltip",
+            putValue("tooltip",
                     "Open a dialog to format the plot.");
-	    putValue(GUIUtilities.MNEMONIC_KEY,
+            putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_F));
         }
 
         public void actionPerformed(ActionEvent e) {
-	    try {
-		_editFormat();
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
+            try {
+                _editFormat();
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
                         "Format Exception:\n" + exception.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-	    }
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -316,28 +316,28 @@ public class PlotTableauFrame extends TableauFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-	    try {
-		if (actionCommand.equals("Fill")) {
-		    plot.fillPlot();
-		} else if (actionCommand.equals("Reset axes")) {
-		    plot.resetAxes();
-		} else if (actionCommand.equals("Clear")) {
-		    plot.clear(false);
-		    plot.repaint();
-		} else if (actionCommand.equals("Export")) {
-		    _export();
-		} else if (actionCommand.equals("Sample plot")) {
-		    plot.clear(true);
-		    samplePlot();
-		}
-	    } catch (Exception exception) {
-		// If we do not catch exceptions here, then they
-		// disappear to stdout, which is bad if we launched
-		// where there is no stdout visible.
+            try {
+                if (actionCommand.equals("Fill")) {
+                    plot.fillPlot();
+                } else if (actionCommand.equals("Reset axes")) {
+                    plot.resetAxes();
+                } else if (actionCommand.equals("Clear")) {
+                    plot.clear(false);
+                    plot.repaint();
+                } else if (actionCommand.equals("Export")) {
+                    _export();
+                } else if (actionCommand.equals("Sample plot")) {
+                    plot.clear(true);
+                    samplePlot();
+                }
+            } catch (Exception exception) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
                         "Special Menu Exception:\n" + exception.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-	    }
+            }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
