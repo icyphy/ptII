@@ -193,10 +193,10 @@ public class Query extends JPanel {
      *  @param defaultChoice Default choice.
      */
     public void addChoice(
-        String name,
-        String label,
-        String[] values,
-        String defaultChoice) {
+            String name,
+            String label,
+            String[] values,
+            String defaultChoice) {
         addChoice(name, label, values, defaultChoice, false);
     }
 
@@ -209,16 +209,38 @@ public class Query extends JPanel {
      *  to the choices in values.
      */
     public void addChoice(
-        String name,
-        String label,
-        String[] values,
-        String defaultChoice,
-        boolean editable) {
+            String name,
+            String label,
+            String[] values,
+            String defaultChoice,
+            boolean editable) {
+        addChoice(name, label, values, defaultChoice, editable, Color.white);
+    }
+    
+    /** Create a choice menu.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param values The list of possible choices.
+     *  @param defaultChoice Default choice.
+     *  @param editable True if an arbitrary choice can be entered, in addition
+     *   to the choices in values.
+     *  @param background The background color for the editable part.
+     */
+    public void addChoice(
+            String name,
+            String label,
+            String[] values,
+            String defaultChoice,
+            boolean editable,
+            Color background) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JComboBox combobox = new JComboBox(values);
         combobox.setEditable(editable);
-        combobox.setBackground(Color.white);
+        // FIXME: Typical of Swing, the following does not set
+        // the background color.  How does one set the background
+        // color?
+        combobox.setBackground(background);
         combobox.setSelectedItem(defaultChoice);
         _addPair(name, lbl, combobox, combobox);
         // Add the listener last so that there is no notification
@@ -250,9 +272,9 @@ public class Query extends JPanel {
      *  @param defaultColor The default color to use.
      */
     public void addColorChooser(
-        String name,
-        String label,
-        String defaultColor) {
+            String name,
+            String label,
+            String defaultColor) {
 
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -270,15 +292,46 @@ public class Query extends JPanel {
      *  @param startingDirectory The directory to open the file chooser in.
      */
     public void addFileChooser(
-        String name,
-        String label,
-        String defaultName,
-        URI base,
-        File startingDirectory) {
+            String name,
+            String label,
+            String defaultName,
+            URI base,
+            File startingDirectory) {
+        addFileChooser(
+                name, 
+                label, 
+                defaultName, 
+                base, 
+                startingDirectory, 
+                Color.white);
+    }
+    
+    /** Create a FileChooser
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     *  @param background The background color for the text entry box.
+     */
+    public void addFileChooser(
+            String name,
+            String label,
+            String defaultName,
+            URI base,
+            File startingDirectory,
+            Color background) {
+
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         QueryFileChooser fileChooser =
-            new QueryFileChooser(name, defaultName, base, startingDirectory);
+            new QueryFileChooser(
+                    name, 
+                    defaultName, 
+                    base, 
+                    startingDirectory, 
+                    background);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
 
@@ -291,10 +344,27 @@ public class Query extends JPanel {
      *  @param defaultValue Default value to appear in the entry box.
      */
     public void addLine(String name, String label, String defaultValue) {
+        addLine(name, label, defaultValue, Color.white);
+    }
+    
+    /** Create a single-line entry box with the specified name, label,
+     *  default value, and background color.  To control the width of
+     *  the box, call setTextWidth() first.
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
+     *  @param label The label to attach to the entry.
+     *  @param defaultValue Default value to appear in the entry box.
+     *  @param background The background color.
+     */
+    public void addLine(
+            String name,
+            String label,
+            String defaultValue,
+            Color background) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JTextField entryBox = new JTextField(defaultValue, _width);
-        entryBox.setBackground(Color.white);
+        entryBox.setBackground(background);
         _addPair(name, lbl, entryBox, entryBox);
 
         // Add the listener last so that there is no notification
@@ -321,11 +391,25 @@ public class Query extends JPanel {
      *  @param theValues The value of this text area
      */
     public void addTextArea(String name, String label, String theValue) {
+        addTextArea(name, label, theValue, Color.white);
+    }
+    
+    /*  Create a text area.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area.
+     *  @param background The background color.
+     */
+    public void addTextArea(
+            String name,
+            String label,
+            String theValue,
+            Color background) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JTextArea textArea = new JTextArea(theValue, _height, _width);
         textArea.setEditable(true);
-        textArea.setBackground(Color.white);
+        textArea.setBackground(background);
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(name));
@@ -667,9 +751,11 @@ public class Query extends JPanel {
     }
 
     /** Get the preferred number of lines to be used for entry boxes created
-     *  in using addText().  The preferred height is set using
+     *  in using addTextArea().  The preferred height is set using
      *  setTextHeight().
      *  @return The preferred height in lines.
+     *  @see #addTextArea(String, String, String)
+     *  @see #setTextHeight(int)
      */
     public int getTextHeight() {
         return _height;
@@ -1076,9 +1162,11 @@ public class Query extends JPanel {
     }
 
     /** Specify the preferred height to be used for entry boxes created
-     *  in using addLine().  If this is called multiple times, then
+     *  in using addTextArea().  If this is called multiple times, then
      *  it only affects subsequent calls.
      *  @param characters The preferred height.
+     *  @see #addTextArea(String, String, String)
+     *  @see #getTextHeight()
      */
     public void setTextHeight(int characters) {
         _height = characters;
@@ -1130,7 +1218,7 @@ public class Query extends JPanel {
     public static final int DEFAULT_ENTRY_HEIGHT = 10;
 
     /** The default width of entries created with addLine(). */
-    public static final int DEFAULT_ENTRY_WIDTH = 20;
+    public static final int DEFAULT_ENTRY_WIDTH = 30;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1416,14 +1504,23 @@ public class Query extends JPanel {
      */
     class QueryFileChooser extends Box implements ActionListener {
         public QueryFileChooser(
-            String name,
-            String defaultName,
-            URI base,
-            File startingDirectory) {
+                String name,
+                String defaultName,
+                URI base,
+                File startingDirectory) {
+            this(name, defaultName, base, startingDirectory, Color.white);
+        }
+        public QueryFileChooser(
+                String name,
+                String defaultName,
+                URI base,
+                File startingDirectory,
+                Color background) {
             super(BoxLayout.X_AXIS);
             _base = base;
             _startingDirectory = startingDirectory;
             _entryBox = new JTextField(defaultName, _width);
+            _entryBox.setBackground(background);
             JButton button = new JButton("Browse");
             button.addActionListener(this);
             add(_entryBox);
