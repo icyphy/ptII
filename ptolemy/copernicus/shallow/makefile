@@ -115,12 +115,13 @@ compileDemo: $(JCLASS)
 		-iterationsParameter "$(ITERATIONSPARAMETER)" \
 		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-jvmSize         "$(JVMSIZE)" \
-		-modelPath       "$(MODELPATH)" \
 		-run		 false \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
 		-targetPath      "$(TARGETPATH)" \
-		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)" \
+		"$(MODELPATH)"
+
 
 #		-compileOptions  "$(COMPILEOPTIONS)"
 
