@@ -37,13 +37,11 @@ import java.util.Collections;
 /** Computation of self loops in a graph.
 
 The <code>result</code> method
-(see {@link #ptolemy.graph.analysis.Analysis.result()})
+(see {@link Analysis.#result()})
 of this analysis returns the self loop edges in the associated graph.
 The self loop edges are returned in the form of a 
 {@link java.util.Collection}, where each element in the collection is an
-{@link Edge}. The collection returned is safe in that modifications
-to the returned collection do not affect the value cached
-in this analysis.
+{@link Edge}. The collection returned cannot be modified.
 <p>
 This analysis requires <em>O</em>(<em>E</em>) time, where <em>E</em> is the
 number of edges in the graph.
@@ -80,7 +78,9 @@ public class SelfLoopAnalysis extends Analysis {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Compute the set of self-loop edges in the graph.
+    /** Compute the self-loop edges in the graph in the form of
+     *  a collection. Each element of the collection is an {@link Edge}.
+     *  @return The self-loop edges.
      */
     protected Object _compute() {
         ArrayList selfLoopEdges = new ArrayList();
@@ -94,6 +94,10 @@ public class SelfLoopAnalysis extends Analysis {
         return selfLoopEdges;
     }
 
+    /** Return the result of this analysis (collection of self loop edges)
+     *  in a form that cannot be modified.
+     *  @return The analysis result in unmodifiable form.
+     */
     protected Object _convertResult() {
         return Collections.unmodifiableList((List)_cachedResult());
     }
