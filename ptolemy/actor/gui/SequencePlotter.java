@@ -48,8 +48,7 @@ import ptolemy.plot.*;
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class SequencePlotter extends Plotter
-    implements Placeable, SequenceActor {
+public class SequencePlotter extends Plotter implements SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -82,21 +81,27 @@ public class SequencePlotter extends Plotter
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         SequencePlotter newobj = (SequencePlotter)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.input.setMultiport(true);
-        newobj.input.setTypeEquals(DoubleToken.class);
         return newobj;
     }
 
     /** Reset the x axis counter, and call the base class.
+     *  Also, clear the datasets that this actor will use.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _xValue = -1.0;
+        int width = input.getWidth();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        for (int i = width - 1; i >= 0; i--) {
+            plot.clear(i + offset);
+        }
     }
 
     /** Read at most one token from each input channel and plot
@@ -109,11 +114,12 @@ public class SequencePlotter extends Plotter
     public boolean postfire() throws IllegalActionException {
         _xValue += 1.0;
         int width = input.getWidth();
+        int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                plot.addPoint(i, _xValue, curValue, true);
+                plot.addPoint(i + offset, _xValue, curValue, true);
             }
         }
         return super.postfire();
