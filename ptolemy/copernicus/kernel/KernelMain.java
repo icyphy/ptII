@@ -118,6 +118,9 @@ public class KernelMain {
 	    new RemoveGraphicalClasses();
 	removeGraphicalClasses
 	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
+        // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
+	removeGraphicalClasses
+	    .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
 	_parser.addMoMLFilter(removeGraphicalClasses);
     }
 
