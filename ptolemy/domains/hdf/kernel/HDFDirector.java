@@ -120,7 +120,6 @@ public class HDFDirector extends SDFDirector {
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *
      *  @param workspace The workspace for this object.
      */
     public HDFDirector(Workspace workspace)
@@ -135,14 +134,13 @@ public class HDFDirector extends SDFDirector {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *  The HDFDirector will have a default scheduler of type
-     *   SDFScheduler.
-     *
+     *  SDFScheduler.
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.  May be thrown in a derived class.
+     *  with the specified container.  May be thrown in a derived class.
      *  @exception NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+     *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -150,10 +148,9 @@ public class HDFDirector extends SDFDirector {
         _init();
     }
 
-    /** A parameter representing the size of the schedule cache to
-     *  use. If the value is less than
-     *  or equal to zero, then schedules will never be discarded
-     *  from the cache. The default value is 100.
+    /** A parameter representing the size of the schedule cache to use.
+     *  If the value is less than or equal to zero, then schedules
+     *  will never be discarded from the cache. The default value is 100.
      *  <p>
      *  Note that the number of schedules in an HDF model can be
      *  exponential in the number of actors. Setting the cache size to a
@@ -165,9 +162,9 @@ public class HDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the number of firings of current director per top-level
+    /** Get the number of firings of current director per global
      *  iteration.
-     *  @return The number of firings of current director per top-level
+     *  @return The number of firings of current director per global
      *  iteration.
      */
     public int getDirectorFiringsPerIteration() {
@@ -183,11 +180,8 @@ public class HDFDirector extends SDFDirector {
      *  <p>
      *  The schedule cache uses a least-recently-used replacement
      *  policy. The size of the cache is specified by the
-     *  scheduleCacheSize parameter. The default cache size is
-     *  100.
-     *
+     *  scheduleCacheSize parameter. The default cache size is 100.
      *  @return The Schedule for the current hdf graph.
-     *
      *  @exception IllegalActionException If there is a problem getting
      *   the schedule.
      */
@@ -242,28 +236,25 @@ public class HDFDirector extends SDFDirector {
             if (rateKey == _mostRecentRates) {
                 schedule = ((SDFScheduler)scheduler).getSchedule();
             } else if (_scheduleCache.containsKey(rateKey)) {
-                _mostRecentRates = rateKey;
                 // cache hit.
+                _mostRecentRates = rateKey;
                 if (_debug_info) {
-                    System.out.println(getName() +
-                            " : Cache hit!");
+                    System.out.println(getName() + " : Cache hit!");
                 }
                 if (cacheSize > 0) {
                     // Remove the key from its old position in
-                    // the list.
+                    // the list and add it to the head of the list.
                     _scheduleKeyList.remove(rateKey);
                     _externalRatesKeyList.remove(rateKey);
-                    // and add the key to head of list.
                     _scheduleKeyList.add(0, rateKey);
                     _externalRatesKeyList.add(0, rateKey);
                 }
                 schedule = (Schedule)_scheduleCache.get(rateKey);
                 Map externalRates = (Map)_externalRatesCache.get(rateKey);
                 ((SDFScheduler)scheduler).setContainerRates(externalRates);
-                //schedule = ((SDFScheduler)scheduler).getSchedule();
             } else {
-                _mostRecentRates = rateKey;
                 // cache miss.
+                _mostRecentRates = rateKey;
                 if (_debug_info) {
                     System.out.println(getName() +
                             " : Cache miss!");
@@ -294,11 +285,6 @@ public class HDFDirector extends SDFDirector {
     }
 
     /** Initialize the actors associated with this director.
-     *  If this method is called immediately after preinitialize(),
-     *  then it will not compute the schedule because it was done
-     *  in preinitialize(). Otherwise it needs to re-compute
-     *  the schedule in case this director is nested in a refinement
-     *  of FSM and the "reset" in the guard is set to be true.
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler, or if the cache size parameter is not set to
@@ -317,14 +303,13 @@ public class HDFDirector extends SDFDirector {
         }
     }*/
 
-
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of
-     *  firings per top-level iteration for each actor from the top level
+     *  firings per global iteration for each actor from the top level
      *  down to the bottom level.
      *  @exception IllegalActionException If no schedule can be found, or
-     *  if the updateFiringsCount method throws it, or if the super class
-     *  method throws it.
+     *  if the updateFiringsPerIteration method throws it, or if the super
+     *  class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
         // Get schedule here, no matter if it is the top level.
@@ -334,8 +319,7 @@ public class HDFDirector extends SDFDirector {
         if (exeDirector == null
             || ((! (exeDirector instanceof SDFDirector))
                && (! (exeDirector instanceof HDFFSMDirector))
-               &&(! (exeDirector instanceof HDFDirector)))
-            ) {
+               &&(! (exeDirector instanceof HDFDirector)))) {
             _directorFiringsPerIteration = 1;
             updateFiringsPerIteration(1, false);
         }
@@ -345,13 +329,14 @@ public class HDFDirector extends SDFDirector {
     /** Preinitialize the actors associated with this director.
      *  The super class method will compute the schedule. If this
      *  HDF director is at the top level, then update the number
-     *  of firings per top-level iteration for each actor from the
+     *  of firings per global iteration for each actor from the
      *  top level down to the bottom level.
      *  @exception IllegalActionException If the super class
-     *  preinitialize throws it, or if the updateFiringCount method
-     *  throws it.
+     *  preinitialize throws it, or if the updateFiringPerIteration
+     *  method throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        // FIXME
         //_scheduleKeyList.clear();
         _mostRecentRates = "";
         super.preinitialize();
@@ -364,27 +349,28 @@ public class HDFDirector extends SDFDirector {
         }
     }
 
-    /** Set the number of firings per top-level iteration of the
+    /** Set the number of firings per global iteration of the
      *  current director.
-     *  @param firingsPerIteration Number of firings per top-level
+     *  @param firingsPerIteration Number of firings per global
      *  iteration of the current director to be set.
      */
     public void setDirectorFiringsPerIteration(int firingsPerIteration) {
         _directorFiringsPerIteration = firingsPerIteration;
     }
 
-    /** Update the number of firings per top-level iteration of
+    /** Update the number of firings per global iteration of
      *  each actor in the current director.
-     *  @param directorFiringCount The number of firings per
-     *  top-level iteration of the container that contains this
+     *  @param directorFiringsPerIteration The number of firings
+     *  per global iteration of the container that contains this
      *  director.
      *  @param preinitializeFlag Flag indicating whether this
      *  method is called in the preinitialize() method.
      *  @exception IllegalActionException If no schedule can be found,
-     *  or if the updateFiringsCount method in HDFFSMDirector throws it.
+     *  or if the updateFiringsPerIteration method in HDFFSMDirector
+     *  throws it.
      */
     public void updateFiringsPerIteration
-        (int directorFiringCount, boolean preinitializeFlag)
+        (int directorFiringsPerIteration, boolean preinitializeFlag)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         Scheduler scheduler = ((SDFDirector)this).getScheduler();
@@ -396,13 +382,15 @@ public class HDFDirector extends SDFDirector {
             if (entity instanceof CompositeActor) {
                 Director director = ((CompositeActor)entity).getDirector();
                 if (director instanceof HDFFSMDirector) {
-                    firingCount = firingCount * directorFiringCount;
+                    firingCount =
+                        firingCount * directorFiringsPerIteration;
                     ((HDFFSMDirector)director)
                         .setFiringsPerIteration(firingCount);
                     ((HDFFSMDirector)director).updateFiringsPerIteration(
                         firingCount, preinitializeFlag);
                 } else if (director instanceof HDFDirector) {
-                    firingCount = firingCount * directorFiringCount;
+                    firingCount =
+                        firingCount * directorFiringsPerIteration;
                     ((HDFDirector)director)
                         .setDirectorFiringsPerIteration(firingCount);
                     ((HDFDirector)director).updateFiringsPerIteration(
@@ -530,7 +518,7 @@ public class HDFDirector extends SDFDirector {
     // called immediately after the preinitialize() method.
     //private boolean _preinitializeFlag;
 
-    // Number of firings per top-level iteration
+    // Number of firings per global iteration
     // of the current director.
     private int _directorFiringsPerIteration = 1;
 
