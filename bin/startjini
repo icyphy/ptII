@@ -90,7 +90,7 @@ sleep 2
 
 echo "Starting rmid"
 rm -rf $TMP_DIR/rmid_log
-rmid -log $TMP_DIR\\rmid_log &
+rmid -log $TMP_DIR\\rmid_log -J-Djava.security.policy=$POLICY &
 
 sleep 2
 
