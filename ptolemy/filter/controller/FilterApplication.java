@@ -34,6 +34,7 @@ import java.util.*;
 import java.io.*;
 import ptolemy.math.Complex;
 import ptolemy.math.filter.Filter;
+import ptolemy.filter.view.FilterView;
 
 //////////////////////////////////////////////////////////////////////////
 //// FilterApplication
@@ -94,7 +95,7 @@ public class FilterApplication extends Frame implements ActionListener {
       this.add("Center", _message);  
 
       // run Manager in Frame mode
-      _man = new Manager(Manager.FRAMEMODE);
+      _man = new Manager(FilterView.FRAMEMODE);
       _newline = System.getProperty("line.separator");
       this.setSize(new Dimension(200,200)); 
       this.setLocation(300, 300);

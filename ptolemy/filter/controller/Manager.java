@@ -42,6 +42,7 @@ import ptolemy.filter.view.*;
   @author: William Wu (wbwu@eecs.berkeley.edu)
   @version: %W%   %G%
   @date: 3/2/98
+  
  */
 
 public class Manager {
@@ -49,7 +50,7 @@ public class Manager {
 
     /**
      * Constructor.  _opMode is set for specify which mode the ptfilter is in
-     * either as stand alone application or applet on the web. 
+     * either as stand alone application or applet on the web, see FilterView. 
      * @param mode mode of operation, either Frame mode, or Applet mode. 
      */ 
     public Manager(int mode){
@@ -76,7 +77,7 @@ public class Manager {
        _fobj = new FilterObj();
        _fobj.init(name, type);
        if (type == Filter.IIR){ // IIR
-          if (_opMode == FRAMEMODE){ // frame mode, it is ok to start 
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode, it is ok to start 
                                      // filter design now since all the 
                                      // graphics is taken care internally
               _fobj.setIIRParameter(Filter.BUTTERWORTH, Filter.BILINEAR, 
@@ -179,11 +180,6 @@ public class Manager {
    //////////////////////////////////////////////////////////////////////////
    ////                         public variables                        ////
 
-   /** Operation Mode : Frame mode */
-   public final static int FRAMEMODE = 0; 
-   /** Operation Mode : Applet mode */
-   public final static int APPLETMODE = 1; 
-   
    //////////////////////////////////////////////////////////////////////////
    ////                         private methods                         ////
 
