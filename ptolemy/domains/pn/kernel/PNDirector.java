@@ -220,8 +220,8 @@ public class PNDirector extends Director {
     public Receiver newReceiver() {
         PNQueueReceiver rec =  new PNQueueReceiver();
         try {
-            //rec.setCapacity(1);
-        } catch (Exception e) {
+            rec.setCapacity(1);
+        } catch (IllegalActionException e) {
             //This exception should never be thrown, as size of queue should 
             //be 0, and capacity should be set to a non-negative number
             throw new InternalErrorException(e.toString());
