@@ -800,12 +800,12 @@ public class CTScheduler extends Scheduler{
         // their location in the schedule. So they are created
         // in the _schedule() method.
         
-        // FIXME: Should also do the following checks:
         // For each eventGenerator, its successors should either
         // be waveformGenerator or a discrete (composite) actor.
         // For each discrete (composite) actor, its predecessors
         // should be eventGenerators, and its successors should be
-        // waveformGenerator. Need an interface to specify them.
+        // waveformGenerator. Note that all of the tests below are
+        // needed, although they overlap.
         Iterator generators = _eventGenerators.iterator();
         while(generators.hasNext()) {
             Actor generator = (Actor) generators.next();
@@ -835,6 +835,32 @@ public class CTScheduler extends Scheduler{
                             + " is a predecessor of a waveform generator "
                             + (NamedObj)generator 
                             + ", but it is not a discrete actor.");
+                }
+            }
+        }
+        Iterator discreteActors = _discretes.iterator();
+        while(discreteActors.hasNext()) {
+            Actor actor = (Actor) discreteActors.next();
+            Iterator predecessors = predecessorList(actor).iterator();
+            while(predecessors.hasNext()) {
+                Object nextActor = predecessors.next();
+                if (!_eventGenerators.contains(nextActor)) {
+                    throw new NotSchedulableException (getContainer(),
+                            (NamedObj)nextActor
+                            + " is a predecessor of a discrete actor "
+                            + (NamedObj)actor 
+                            + ", but it is not an event generator.");
+                }
+            }
+            Iterator successors = successorList(actor).iterator();
+            while(successors.hasNext()) {
+                Object nextActor = successors.next();
+                if (!_waveGenerators.contains(nextActor)) {
+                    throw new NotSchedulableException(getContainer(),
+                            (NamedObj)nextActor
+                            + " is a successor of a discrete actor "
+                            + (NamedObj)actor
+                            + ", but it is not a waveform generator.");
                 }
             }
         }
