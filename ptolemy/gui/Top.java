@@ -142,30 +142,6 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Abbreviate a string. 
-     *  If the string is longer than 80 characters, truncate it by
-     *  displaying the first 37 chars, then ". . .", then the last 38
-     *  characters.
-     *  If the <i>longName</i> argument is null, then the string
-     *  "<Unnamed>" is returned.
-     *  @see split
-     *  @return The name.
-     */
-    public static String abbreviate(String longName) {
-	// In theory, this method should be in
-	// ptolemy.kernel.util.StringUtilities, but ptolemy.gui gets shipped
-	// without StringUtilities, so we include it here
-
-        if (longName == null) {
-            return "<Unnamed>";
-        }
-	if (longName.length() < 80) {
-	    return longName;
-	}
-	return longName.substring(0,37) + ". . ."
-	    + longName.substring(longName.length() - 38);
-    }
-
 
     /** Center the window on the screen.  This must be called after the
      *  window is populated with its contents, since it depends on the size
@@ -258,7 +234,7 @@ public abstract class Top extends JFrame {
      *  displaying adding newlines every 80 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see abbreviate
+     *  @see GUIStringUtilities#abbreviate
      *  @param longName The string to optionally split up
      *  @return Either the original string, or the string with newlines
      *  inserted
@@ -642,7 +618,7 @@ public abstract class Top extends JFrame {
             }
 	    // Truncate the name so that dialogs under Web Start on the Mac
 	    // work better.
-            setTitle(abbreviate(_getName()));
+            setTitle(GUIStringUtilities.abbreviate(_getName()));
             _directory = fileDialog.getCurrentDirectory();
             return _save();
         }
