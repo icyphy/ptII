@@ -115,6 +115,23 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return true if the argument is legal to be added to the scope
+     *  of this parameter. The argument is legal if it is an instance
+     *  of Parameter and is in the same workspace as this parameter.
+     *  @param var The variable to be checked.
+     *  @return True if the argument is legal.
+     */
+    protected boolean _isLegalInScope(Variable var) {
+        if (!(var instanceof Parameter)) {
+            return false;
+        }
+        return (var.workspace() == this.workspace());
+    }
+
 }
 
 
