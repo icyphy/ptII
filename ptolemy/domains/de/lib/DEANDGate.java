@@ -1,4 +1,4 @@
-/* An actor that delays the input by the specified amount.
+/* An actor that simulate an AND gate with a specified delay.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -59,7 +59,7 @@ public class DEANDGate extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEANDGate(CompositeActor container,
+    public DEANDGate(TypedCompositeActor container,
             String name, double delay)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

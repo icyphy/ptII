@@ -58,7 +58,7 @@ public class DERegister extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DERegister(CompositeActor container,
+    public DERegister(TypedCompositeActor container,
             String name,
             Token initToken)
             throws NameDuplicationException, IllegalActionException  {

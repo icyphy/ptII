@@ -38,7 +38,7 @@ import java.awt.*;
 //////////////////////////////////////////////////////////////////////////
 //// DELogicAnalyzer
 /**
-A plotter for discrete-event signals.
+A plotter for digital signals.
 
 @author Lukito Muliadi
 @version $Id$
@@ -51,12 +51,12 @@ public class DELogicAnalyzer extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DELogicAnalyzer(CompositeActor container, String name)
+    public DELogicAnalyzer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.makeMultiport(true);
         
         // FIXME: Consolidate code with next constructor.
@@ -72,12 +72,13 @@ public class DELogicAnalyzer extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DELogicAnalyzer(CompositeActor container, String name, LogicAnalyzer plot)
+    public DELogicAnalyzer(TypedCompositeActor container, 
+            String name, LogicAnalyzer plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.makeMultiport(true);
 
         _logicAnalyzer = plot;
@@ -163,7 +164,7 @@ public class DELogicAnalyzer extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    public IOPort input;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -32,6 +32,8 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.graph.*;
+import collections.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,15 +60,17 @@ public class DESampler extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DESampler(CompositeActor container,
+    public DESampler(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
         // create input ports
-        input = new DEIOPort(this, "data input", true, false);
-        clock = new DEIOPort(this, "clock input", true, false);
+        input = new DEIOPort(this, "dataInput", true, false);
+        
+        clock = new DEIOPort(this, "clockInput", true, false);
+        clock.setDeclaredType(Token.class);
         clock.triggers(output);
     }
 
@@ -105,6 +109,25 @@ public class DESampler extends DEActor {
                     "bad scheduling");
         }
 
+    }
+
+    /** Return the type constraints of this actor.
+     *  This method is read-synchronized on the workspace.
+     *  @return an Enumeration of Inequality.
+     *  @see ptolemy.graph.Inequality
+     */
+    public Enumeration typeConstraints()  {
+	try {
+	    workspace().getReadAccess();
+           
+            LinkedList result = new LinkedList();
+            Inequality constraint = new Inequality(input.getTypeTerm(),output.getTypeTerm());
+            result.insertLast(constraint);
+            return result.elements();
+            
+        } finally {
+	    workspace().doneReading();
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

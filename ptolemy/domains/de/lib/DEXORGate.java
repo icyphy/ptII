@@ -59,7 +59,7 @@ public class DEXORGate extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEXORGate(CompositeActor container,
+    public DEXORGate(TypedCompositeActor container,
             String name, double delay)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

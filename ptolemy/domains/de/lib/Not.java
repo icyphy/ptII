@@ -45,7 +45,7 @@ import java.util.Enumeration;
 @version $Id$
 @see Actor
 */
-public class Not extends AtomicActor {
+public class Not extends TypedAtomicActor {
 
     /** Constructor.
      * @param container The composite actor that this actor belongs too.
@@ -55,14 +55,16 @@ public class Not extends AtomicActor {
      * @exception IllegalActionException FIXME: useless description:
      *  internal problem
      */
-    public Not(CompositeActor container,
+    public Not(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
         // create an input port
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,7 +86,7 @@ public class Not extends AtomicActor {
 	else 
 	    outputToken = new DoubleToken(0.0);
 
-        // send the output token via output IOPort.
+        // send the output token via output TypedIOPort.
         output.broadcast(outputToken);
     }
 
@@ -92,6 +94,6 @@ public class Not extends AtomicActor {
     ////                         public variables                  ////
 
     // the ports.
-    public IOPort output;
-    public IOPort input;
+    public TypedIOPort output;
+    public TypedIOPort input;
 }

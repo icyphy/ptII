@@ -58,11 +58,12 @@ public class DEClock extends DEActor {
      */
     // FIXME: The value should be an attribute, as should the interval.
     // FIXME: Should the value be a double? Probably not...
-    public DEClock(CompositeActor container, String name,
+    public DEClock(TypedCompositeActor container, String name,
             double value, double interval)
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
-        output = new IOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(Token.class);
         _interval = new Parameter(this, "interval", new DoubleToken(interval));
         _value = new Parameter(this, "value", new DoubleToken(value));
     }
@@ -102,7 +103,7 @@ public class DEClock extends DEActor {
     ////                         public members                    ////
 
     // The output port.
-    public IOPort output;
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

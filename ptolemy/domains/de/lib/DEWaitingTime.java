@@ -55,7 +55,7 @@ public class DEWaitingTime extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEWaitingTime(CompositeActor container, String name)
+    public DEWaitingTime(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports

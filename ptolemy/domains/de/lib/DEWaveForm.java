@@ -67,14 +67,14 @@ public class DEWaveForm extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEWaveForm(CompositeActor container, String name,
+    public DEWaveForm(TypedCompositeActor container, String name,
             double[] value, boolean haltAtEnd,
             boolean periodic, int period)
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         // ports
-        output = new IOPort(this, "output", false, true);
-        input = new IOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
         
         // parameters
         // create a 2d double matrix from the 1d double array argument.
@@ -175,8 +175,8 @@ public class DEWaveForm extends DEActor {
     ////                         public members                    ////
 
     // The output port.
-    public IOPort output;
-    public IOPort input;
+    public TypedIOPort output;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -56,15 +56,17 @@ public class DEServer extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */	
-    public DEServer(CompositeActor container, 
+    public DEServer(TypedCompositeActor container, 
             String name,
             double serviceTime) 
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
         // create an input port
         input = new DEIOPort(this, "input", true, false);
+        input.setDeclaredType(DoubleToken.class);
         // set the service time.
         _serviceTime = serviceTime;
     }

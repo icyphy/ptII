@@ -51,24 +51,11 @@ public class DEPlot extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEPlot(CompositeActor container, String name)
+    public DEPlot(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
 
-        // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
-        input.makeMultiport(true);
-        
-        // FIXME: Consolidate code with next constructor.
-        PlotFrame plotFrame = new PlotFrame(getName());
-        _plot = plotFrame.plot;
-        _plot.setMarksStyle("dots");
-        _plot.setImpulses(true);
-        _plot.setConnected(false);
-        
-        // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
+        this(container, name, (new PlotFrame(name)).plot);
+
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -78,12 +65,13 @@ public class DEPlot extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEPlot(CompositeActor container, String name, Plot plot)
+    public DEPlot(TypedCompositeActor container, String name, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setDeclaredType(DoubleToken.class);
         input.makeMultiport(true);
 
         _plot = plot;
@@ -202,7 +190,7 @@ public class DEPlot extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    public IOPort input;
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

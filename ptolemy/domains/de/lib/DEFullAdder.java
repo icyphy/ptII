@@ -44,7 +44,7 @@ wired together to form a full adder.
 @version $Id$
 @see Actor
 */
-public class DEFullAdder extends CompositeActor {
+public class DEFullAdder extends TypedCompositeActor {
 
     /** Construct a DESampler actor.
      *  @param container The composite actor that this actor belongs too.
@@ -55,19 +55,19 @@ public class DEFullAdder extends CompositeActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEFullAdder(CompositeActor container,
+    public DEFullAdder(TypedCompositeActor container,
             String name,
             double gateDelay)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        S = new IOPort(this, "S", false, true);
-        Cout = new IOPort(this, "Cout", false, true);
+        S = new TypedIOPort(this, "S", false, true);
+        Cout = new TypedIOPort(this, "Cout", false, true);
         
         // create input ports
-        A = new IOPort(this, "A", true, false);
-        B = new IOPort(this, "B", true, false);
-        Cin = new IOPort(this, "Cin", true, false);
+        A = new TypedIOPort(this, "A", true, false);
+        B = new TypedIOPort(this, "B", true, false);
+        Cin = new TypedIOPort(this, "Cin", true, false);
 
         // S = A xor B xor Cin
         DEXORGate xor1 = new DEXORGate(this, "xor1", gateDelay);
@@ -114,11 +114,11 @@ public class DEFullAdder extends CompositeActor {
     private DoubleToken _lastToken = _zeroToken;
 
     // the ports.
-    public IOPort A;
-    public IOPort B;
-    public IOPort Cin;
-    public IOPort S;
-    public IOPort Cout;
+    public TypedIOPort A;
+    public TypedIOPort B;
+    public TypedIOPort Cin;
+    public TypedIOPort S;
+    public TypedIOPort Cout;
     
 }
 

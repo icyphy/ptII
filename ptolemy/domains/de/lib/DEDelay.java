@@ -59,7 +59,7 @@ public class DEDelay extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEDelay(CompositeActor container,
+    public DEDelay(TypedCompositeActor container,
             String name, double delay)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -70,7 +70,9 @@ public class DEDelay extends DEActor {
         _delay = new Parameter(this, "delay", new DoubleToken(delay));
         // create the ports
         output = new DEIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
         input = new DEIOPort(this, "input", true, false);
+        input.setDeclaredType(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

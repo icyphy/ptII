@@ -54,16 +54,18 @@ public class DEPassGate extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public DEPassGate(CompositeActor container,
+    public DEPassGate(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-
+        output.setDeclaredType(DoubleToken.class);
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
+        input.setDeclaredType(DoubleToken.class);
         gate = new DEIOPort(this, "gate input", true, false);
+        gate.setDeclaredType(DoubleToken.class);
 
 	// Assert priorities
         gate.before(input);

@@ -28,7 +28,6 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -37,14 +36,25 @@ import ptolemy.actor.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEFIFOQueue
-/** FIXME: Describe me!
+/**
+Implements a first-in first-out (FIFO) queue with finite or infinite length.
+Events on the "demand" input trigger a dequeue on the "outData" port if the
+queue is not empty. If the queue is empty, then a "demand" event enables
+the next future "inData" particle to pass immediately to "outData". The first
+particle to arrive at "inData" is always passed directly to the output,
+unless <i>numDemandsPending</i> is initialized to 0. If 
+<i>consolidateDemands</i> is set to TRUE (the default), then 
+<i>numDemandsPending</i> is not permitted to rise above one. The size of the
+queue is sent to the <i>size</i> output whenever an "inData" or "demand"
+event is processed. Input data that doesn't fit in the queue is sent to
+the "overflow" output.
 
 @author Lukito Muliadi
 @version $Id$
 @see Actor
 */
-public class DEFIFOQueue extends DEActor {
-    /** Construct a DEFIFOQueue star.
+public class DEFIFOQueue extends TypedAtomicActor {
+    /** Construct a FIFOQueue star.
      *
      * @param value The initial output event value.
      * @param step The step size by which to increase the output event values.
@@ -54,24 +64,30 @@ public class DEFIFOQueue extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public DEFIFOQueue(int numDemandsPending,
+    public DEFIFOQueue(TypedCompositeActor container,
+            String name, 
+            int numDemandsPending,
 	    boolean consolidateDemands,
-	    int capacity,
-	    CompositeActor container,
-            String name)
+	    int capacity)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        outData = new IOPort(this, "outData", false, true);
-	overflow = new IOPort(this, "overflow", false, true);
-	queueSize = new IOPort(this, "queueSize", false, true);
+        outData = new TypedIOPort(this, "outData", false, true);
+        outData.setDeclaredType(DoubleToken.class);
+	overflow = new TypedIOPort(this, "overflow", false, true);
+        overflow.setDeclaredType(DoubleToken.class);
+	queueSize = new TypedIOPort(this, "queueSize", false, true);
+        queueSize.setDeclaredType(DoubleToken.class);
 
         // create input ports
-        inData = new IOPort(this, "inData", true, false);
-        demand = new IOPort(this, "demand", true, false);
+        inData = new TypedIOPort(this, "inData", true, false);
+        inData.setDeclaredType(DoubleToken.class);
+        demand = new TypedIOPort(this, "demand", true, false);
+        demand.setDeclaredType(DoubleToken.class);
 
 	// set up the parameter
-	_numDemandsPending = numDemandsPending;
+
+        _initialNumDemandsPending = numDemandsPending;
 	_consolidateDemands = consolidateDemands;
 	_capacity = capacity;
 	_queue.setCapacity(_capacity);
@@ -85,11 +101,9 @@ public class DEFIFOQueue extends DEActor {
     /** If there's an event in the clock input port then produce an event,
      *  otherwise just record the value of the input port.
      *
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
 
 	boolean bugFree = false;
 
@@ -97,11 +111,8 @@ public class DEFIFOQueue extends DEActor {
         if (inData.hasToken(0)) {
 	    bugFree = true;
 	    Token inDataToken = null;
-	    try {
-		inDataToken = inData.get(0);
-	    } catch (NoSuchItemException e) {
-		throw new InvalidStateException("bug in DEFifoQueue.java (1)");
-	    }
+            inDataToken = inData.get(0);
+        
 	    // check if the queue is full.
 	    if (_queue.size() == _capacity) {
 		// put the token into the overflow
@@ -120,11 +131,8 @@ public class DEFIFOQueue extends DEActor {
 	if (demand.hasToken(0)) {
 	    bugFree = true;
 	    Token demandToken = null;
-	    try {
-		demandToken = demand.get(0);
-	    } catch (NoSuchItemException e) {
-		throw new InvalidStateException("bug in DEFIFOQueue.java (2)");
-	    }
+            demandToken = demand.get(0);
+	    
 	    // check if the queue is empty
 	    if (_queue.size() == 0) {
 		// queue is empty, so increment numDemandsPending.
@@ -141,33 +149,41 @@ public class DEFIFOQueue extends DEActor {
 
 	if (!bugFree) {
 	    throw new InvalidStateException("Bug in scheduler, look at "+
-                    "DEFIFOQueue");
+                    "FIFOQueueActor");
 	}
     }
+
+    /** FIXME:Describe me!
+     *
+     *  @exception IllegalActionException Thrown if could not create the 
+     *   receivers.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // empty the FIFO queue
+        while (_queue.size() > 0) {
+            _queue.take();
+        }
+        _numDemandsPending = _initialNumDemandsPending;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     // the ports.
-    public IOPort outData;
-    public IOPort inData;
-    public IOPort overflow;
-    public IOPort demand;
-    public IOPort queueSize;
+    public TypedIOPort outData;
+    public TypedIOPort inData;
+    public TypedIOPort overflow;
+    public TypedIOPort demand;
+    public TypedIOPort queueSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private FIFOQueue _queue = new FIFOQueue();
+    private ptolemy.actor.util.FIFOQueue _queue = new ptolemy.actor.util.FIFOQueue();
     private int _numDemandsPending = 0;
     private int _capacity;
     private boolean _consolidateDemands = true;
+    private int _initialNumDemandsPending = 0;
 }
-
-
-
-
-
-
-
-

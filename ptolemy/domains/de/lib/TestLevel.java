@@ -45,7 +45,7 @@ FIXME: copy from the manual
 @version $Id$
 @see Actor
 */
-public class TestLevel extends AtomicActor {
+public class TestLevel extends TypedAtomicActor {
     /** Construct a DERamp star.
      *
      * @param value The initial output event value.
@@ -56,15 +56,17 @@ public class TestLevel extends AtomicActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public TestLevel(CompositeActor container,
+    public TestLevel(TypedCompositeActor container,
             String name,
             boolean crossingsOnly, double threshold)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(DoubleToken.class);
         // create an input port
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
+        output.setDeclaredType(DoubleToken.class);
         // set the parameters
         _crossingsOnly = crossingsOnly;
         _threshold = threshold;
@@ -118,8 +120,8 @@ public class TestLevel extends AtomicActor {
     private double _threshold;
 
     // the ports.
-    public IOPort output;
-    public IOPort input;
+    public TypedIOPort output;
+    public TypedIOPort input;
 }
 
 

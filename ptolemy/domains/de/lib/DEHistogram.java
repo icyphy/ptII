@@ -55,31 +55,11 @@ public class DEHistogram extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEHistogram(CompositeActor container, String name, double binWidth)
+    public DEHistogram(TypedCompositeActor container, 
+            String name, double binWidth)
             throws NameDuplicationException, IllegalActionException  {
 
-        super(container, name);
-
-        // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
-        input.makeMultiport(true);
-
-        // FIXME: Consolidate code with next constructor.
-        PlotFrame plotFrame = new PlotFrame(getName());
-        _plot = plotFrame.plot;
-        _plot.setBars((1-_percentGap)*binWidth , 0.25*_percentGap*binWidth);
-
-        // FIXME: This is not the right way to handle this...
-        _yMin = (double)-1;
-        _yMax = (double)1;
-
-        // Set the parameters
-        _binWidth = new Parameter(this,"bin width",new DoubleToken(binWidth));
-
-        // FIXME: Hardwire binZeroOffset.
-        _binZeroOffset = binWidth / 2.0;
-
-        
+        this(container, name, binWidth, (new PlotFrame(name)).plot);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -89,12 +69,13 @@ public class DEHistogram extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEHistogram(CompositeActor container, String name, double binWidth, Plot plot)
+    public DEHistogram(TypedCompositeActor container, 
+            String name, double binWidth, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // create the input port and make it a multiport.
-        input = new IOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.makeMultiport(true);
 
         _plot = plot;
@@ -210,7 +191,7 @@ public class DEHistogram extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    public IOPort input;
+    public TypedIOPort input;
 
 
     ////////////////////////////////////////////////////////////////////////

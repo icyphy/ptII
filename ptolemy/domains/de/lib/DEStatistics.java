@@ -53,7 +53,7 @@ public class DEStatistics extends DEActor {
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public DEStatistics(CompositeActor container,
+    public DEStatistics(TypedCompositeActor container,
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);

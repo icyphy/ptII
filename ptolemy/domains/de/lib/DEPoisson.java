@@ -60,11 +60,12 @@ public class DEPoisson extends DEActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEPoisson(CompositeActor container,
+    public DEPoisson(TypedCompositeActor container,
             String name, double value, double lambda)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output = new IOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setDeclaredType(Token.class);
         _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
         _value = new Parameter(this, "value", new DoubleToken(value));
     }
@@ -78,9 +79,6 @@ public class DEPoisson extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        // FIXME: This should be just DEDirector
-        // FIXME: This class should be derived from DEActor, which should
-        // ensure that this cast is valid.
         super.initialize();
         double curTime = getCurrentTime();
 	refireAfterDelay(0.0-curTime);
@@ -105,7 +103,7 @@ public class DEPoisson extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public IOPort output;
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

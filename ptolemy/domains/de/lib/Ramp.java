@@ -32,6 +32,8 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.graph.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +48,7 @@ fires.
 @version $Id$
 @see Actor
 */
-public class Ramp extends AtomicActor {
+public class Ramp extends TypedAtomicActor {
 
     /** Constructor.
      *  @param container The container.
@@ -59,21 +61,43 @@ public class Ramp extends AtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(CompositeActor container, String name,
+    public Ramp(TypedCompositeActor container, String name,
             double value, double step)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        // set the parameters.
+        _value = new Parameter(this, "value", new DoubleToken(value));
+        _step = new Parameter(this, "step", new DoubleToken(step));
         // create an output port
-        output = new IOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         // create an input port
-        input = new IOPort(this, "input", true, false);
-        // set the interval between events.
-        _value = value;
-        _step = step;
+        input = new TypedIOPort(this, "input", true, false);
+        input.setDeclaredType(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Describe me
+     */
+    public void initialize() throws IllegalActionException {
+
+        Class valueClass = _value.getToken().getClass();
+        Class stepClass = _value.getToken().getClass();
+        int compare = TypeLattice.compare(valueClass, stepClass);
+        // FIXME: this might not work if user change the parameter during
+        // simulation.
+        if (compare == CPO.INCOMPARABLE) {
+            throw new InvalidStateException("Bad parameter type in Ramp.initialize()");
+        }
+        if (compare == CPO.LOWER) {
+            output.setDeclaredType(stepClass);
+        } else {
+            output.setDeclaredType(valueClass);
+        }
+        _stateToken = _value.getToken();
+    }
+
 
 
     /** Produce the next ramp output with the same time stamp as the current
@@ -82,14 +106,14 @@ public class Ramp extends AtomicActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {
-	// get the input token from the input port.
-        DoubleToken inputToken;
-        inputToken = (DoubleToken)(input.get(0));
-        
-        // produce the output token.
-        DoubleToken outputToken = new DoubleToken(_value);
-        _value += _step;
-        output.broadcast(outputToken);
+        // output the state token.
+        while (input.hasToken(0)) {
+            input.get(0);
+            output.broadcast(_stateToken);
+            
+            // increment the state.
+            _stateToken = _stateToken.add(_step.getToken());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,10 +123,11 @@ public class Ramp extends AtomicActor {
     // have regular C++ comments.
 
     // the intial value and increment
-    private double _value;
-    private double _step;
+    private Token _stateToken;
+    private Parameter _value;
+    private Parameter _step;
 
     // the ports.
-    public IOPort output;
-    public IOPort input;
+    public TypedIOPort output;
+    public TypedIOPort input;
 }

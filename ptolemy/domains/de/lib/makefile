@@ -56,8 +56,10 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	DEANDGate.java \
+	DEBus.java \
 	DEClock.java \
 	DEDelay.java \
+	DEFIFOQueue.java \
 	DEFullAdder.java \
 	DEHistogram.java \
 	DELogicAnalyzer.java \
@@ -65,7 +67,7 @@ JSRCS = \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
-	DERamp.java \
+	DEPseudoPlot.java \
 	DERegister.java \
 	DESampler.java \
 	DEServer.java \
@@ -73,7 +75,6 @@ JSRCS = \
 	DEWaitingTime.java \
 	DEWaveForm.java \
 	DEXORGate.java \
-	FIFOQueue.java \
 	Not.java \
 	TestLevel.java \
 	Ramp.java
