@@ -88,7 +88,7 @@ will be thrown.
 
 public class CTScheduler extends Scheduler{
 
-    /** Construct a CT scheduler in the defaul workspace
+    /** Construct a CT scheduler in the default workspace
      *  with the default name "CTScheduler".
      */
     public CTScheduler() {
