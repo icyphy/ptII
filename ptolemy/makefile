@@ -60,7 +60,8 @@ PTAUXALLJARS = \
 		data/data.jar \
 		actor/actor.jar \
 		math/math.jar \
-		media/media.jar
+		media/media.jar \
+		moml/moml.jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
