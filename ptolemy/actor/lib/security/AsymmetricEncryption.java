@@ -95,14 +95,11 @@ public class AsymmetricEncryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** This port receives the public key to be used from the
      *  AsymmetricDecryption actor in the form of an unsigned byte array.
      *  This key is used to encrypt data from the <i>input</i> port.
      */
     public SDFIOPort keyIn;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -155,7 +152,7 @@ public class AsymmetricEncryption extends CipherActor {
             byteOutputStream.close();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Probles processing data, cipher was " + _cipher);
+                    "Problems processing data, cipher was " + _cipher);
         }
         return byteOutputStream.toByteArray();
     }

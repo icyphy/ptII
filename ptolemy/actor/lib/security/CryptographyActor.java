@@ -61,30 +61,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CryptographyActor
 /**
-This is a base class that implements general and helper functions used by
-cryptographic actors. Actors extending this class take in an unsigned byte
-array at the <i>input</i>, process the the data based on the
-<i>algorithm</i> parameter and send an unsigned byte array on the <i>output</i>.
-These transformations include ciphers and signatures implemented by JCE.
-The algorithms that maybe implemented are limited those that are
-implemented by "providers" following the JCE specifications and installed on
-the machine being run.  In case a provider specific instance of an algorithm
-is needed, the provider may be specified in the <i>provider</i> parameter.
-This class takes care of basic initialization of the subclasses. The
-<i>keySize</i> also allows implementations of algorithms using various key
-sizes.
 
-This class and its subclasses rely on the Java Cryptography Extension (JCE)
+This is a base class that implements general and helper functions used
+by cryptographic actors. Actors extending this class take in an
+unsigned byte array at the <i>input</i>, process the the data based on
+the <i>algorithm</i> parameter and send an unsigned byte array on the
+<i>output</i>.  These transformations include ciphers and signatures
+implemented by JCE.  The algorithms that maybe implemented are limited
+those that are implemented by "providers" following the JCE
+specifications and installed on the machine being run.  In case a
+provider specific instance of an algorithm is needed, the provider may
+be specified in the <i>provider</i> parameter.  This class takes care
+of basic initialization of the subclasses. The <i>keySize</i> also
+allows implementations of algorithms using various key sizes.
+
+<p>This class and its subclasses rely on the Java Cryptography Extension (JCE)
 and Java Cryptography Architecture(JCA).
-
-TODO: add link talking about basics of crypto or create a readme.txt
 
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class CryptographyActor extends TypedAtomicActor {
+
+    // TODO: add link talking about basics of crypto or create a readme.txt
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -155,7 +155,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *  data based on the <i>algorithm</i>, and <i>provider</i>.  The
      *  transformed data is then sent on the <i>output</i>.
      *
-     * @exception IllegalActionException if thrown by the base class.
+     * @exception IllegalActionException If thrown by the base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -167,8 +167,8 @@ public class CryptographyActor extends TypedAtomicActor {
                 output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "Problem sending data");
         }
 
     }
@@ -198,7 +198,8 @@ public class CryptographyActor extends TypedAtomicActor {
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
      */
-    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
+    protected byte[] _arrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -225,12 +226,9 @@ public class CryptographyActor extends TypedAtomicActor {
             objectInputStream = new ObjectInputStream(byteArrayInputStream);
             key =(Key)objectInputStream.readObject();
             return key;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem converting " + keyBytes.length + "bytes");
         }
     }
 
@@ -239,24 +237,26 @@ public class CryptographyActor extends TypedAtomicActor {
      * @exception IllegalActionException if algorithm or provider is not found.
      *
      */
-    protected KeyPair _createAsymmetricKeys()throws IllegalActionException{
-        try{
+    protected KeyPair _createAsymmetricKeys() throws IllegalActionException{
+        try {
             KeyPairGenerator keyPairGen;
             if (_provider.equalsIgnoreCase("SystemDefault")) {
                 keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm);
             } else {
-                keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm, _provider);
+                keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm,
+                        _provider);
             }
 
             keyPairGen.initialize(_keySize, new SecureRandom());
             return keyPairGen.generateKeyPair();
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception e) {
+            throw new IllegalActionException(ex, this,
+                    "Failed to create asymmetric keys, "
+                    + _algorithm + "', keyAlgorithm: '"
+                    + _keyAlgorithm + "', keySize: '"
+                    + _keySize + "', provider: '"
+                    + _provider + "'");
         }
     }
 
@@ -265,7 +265,7 @@ public class CryptographyActor extends TypedAtomicActor {
      * @exception IllegalActionException if algorithm or provider is not found.
      */
     protected Key _createSymmetricKey() throws IllegalActionException{
-        try{
+        try {
             KeyGenerator keyGen;
             if (_provider.equalsIgnoreCase("SystemDefault")) {
                 keyGen = KeyGenerator.getInstance(_keyAlgorithm);
@@ -275,12 +275,13 @@ public class CryptographyActor extends TypedAtomicActor {
             keyGen.init(_keySize, new SecureRandom());
             return keyGen.generateKey();
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(ex, this,
+                    "Failed to create symmetric key, "
+                    + _algorithm + "', keyAlgorithm: '"
+                    + _keyAlgorithm + "', keySize: '"
+                    + _keySize + "', provider: '"
+                    + _provider + "'");
         }
     }
 
@@ -291,20 +292,23 @@ public class CryptographyActor extends TypedAtomicActor {
      * @exception IllegalActionException if IOException occurs.
      */
     protected byte[] _keyToBytes(Key key) throws IllegalActionException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try{
-            ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
-            oos.writeObject(key);
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream objectOutputStream =
+                new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(key);
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+            throw new IllegalActionException(this, ex, 
+                    "Problem with writing key");
         }
     }
 
-    /** Processes the data based on parameter specifications.  This class returns
-     *  the data in its original form.  Subclasses should process the data using
-     *  one of the signature or cipher classes provided in the JCE or JCA.
+    /** Processes the data based on parameter specifications.  This
+     *  class returns the data in its original form.  Subclasses
+     *  should process the data using one of the signature or cipher
+     *  classes provided in the JCE or JCA.
      *
      * @param dataBytes the data to be processed.
      * @return dataBytes the data unchanged.
@@ -333,21 +337,18 @@ public class CryptographyActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The name of the algorithm to be used.
+    /** The name of the algorithm to be used. */
     protected String _algorithm;
 
-    /* The algorithm to be used for generating the key.  This is the
+    /** The algorithm to be used for generating the key.  This is the
      * same as the _algorithm for Ciphers but needs to be specified
      * separately for Signatures
      */
     protected String _keyAlgorithm;
 
-    // The key size to be used when processing information.
+    /** The key size to be used when processing information. */
     protected int _keySize;
 
-    // The provider to be used for a provider specific implementation.
+    /** The provider to be used for a provider specific implementation. */
     protected String _provider;
-
-
-
 }

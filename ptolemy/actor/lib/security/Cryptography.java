@@ -54,26 +54,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Cryptography
 /**
-This a base class that implements general and helper functions used by
-cryptographic actors. Actors extending this class take in an unsigned byte
-array at the <i>input</i>, perform the transformation specified in the
-<i>algorithm</i> parameter and send a unsigned byte array on the <i>output</i>.
-The algorithms that maybe implemented are limited to the ciphers that are
-implemented by "providers" following the JCE specifications and installed in
-the machine being run. The mode and padding can also be specified in the mode
-and padding parameters.  In case a provider specific instance of an algorithm
-is needed, the provider may also be specified in the <i>provider</i> parameter.
-This class takes care of basic initialization of the subclasses. The
-<i>keySize</i> also allows implementations of algorithms with various key sizes.
 
-This class and its subclasses rely on the Java Cryptography Extension (JCE)
+This a base class that implements general and helper functions used by
+cryptographic actors. Actors extending this class take in an unsigned
+byte array at the <i>input</i>, perform the transformation specified
+in the <i>algorithm</i> parameter and send a unsigned byte array on
+the <i>output</i>.  The algorithms that maybe implemented are limited
+to the ciphers that are implemented by "providers" following the JCE
+specifications and installed in the machine being run. The mode and
+padding can also be specified in the mode and padding parameters.  In
+case a provider specific instance of an algorithm is needed, the
+provider may also be specified in the <i>provider</i> parameter.  This
+class takes care of basic initialization of the subclasses. The
+<i>keySize</i> also allows implementations of algorithms with various
+key sizes.
+
+<p>This class and its subclasses rely on the Java Cryptography Extension (JCE)
 and Java Cryptography Architecture(JCA).
 
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class Cryptography extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -173,7 +175,7 @@ public class Cryptography extends TypedAtomicActor {
      *  <i>padding</i>.  This is the sent on the <i>output</i>.  All parameters
      *  should be the same as the corresponding encryption or decryption
      *  actor.
-     * @exception IllegalActionException if thrown by the base class.
+     * @exception IllegalActionException If thrown by the base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -181,12 +183,11 @@ public class Cryptography extends TypedAtomicActor {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
-                dataBytes=_crypt(dataBytes);
+                dataBytes = _crypt(dataBytes);
                 output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Problem sending data");
         }
 
     }
@@ -195,12 +196,9 @@ public class Cryptography extends TypedAtomicActor {
      *  <i>mode</i>, <i>keySize</i> and <i>padding</i>.  The cipher is also
      *  initialized.
      *
-     * @exception IllegalActionException if thrown by the base class.
-     * @exception NoSuchAlgorihmException when the algorithm is not found.
-     * @exception NoSuchPaddingException when the padding scheme is illegal
-     *     for the given algorithm.
-     * @exception NoSuchProviderException if the specified provider does not
-     *     exist.
+     * @exception IllegalActionException If the base class throws it, or
+     * if the algorithm is not found, the padding scheme is illegal
+     * for a given algorithm or if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -216,16 +214,14 @@ public class Cryptography extends TypedAtomicActor {
         try{
             _cipher =
                 Cipher.getInstance(_algorithm+"/"+mode+"/"+padding, _provider);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+        } catch (Exception ex)
+            throw new IllegalActionException(ex, this,
+                    "Failed to initialize Cipher with algorithm: '"
+                    + _algorithm + "', padding: '"
+                    + _padding + "', provider: '"
+                    + _provider + "'");
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
@@ -235,7 +231,8 @@ public class Cryptography extends TypedAtomicActor {
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
      */
-    protected byte[] _arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
+    protected byte[] _arrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -245,58 +242,54 @@ public class Cryptography extends TypedAtomicActor {
         return dataBytes;
     }
 
-    /** Determine what key to use and transforms the data with the specified
-     *  key.  Receives the data to be encrypted in as a byte array and returns
-     *  a byte array.  The base class simply returns the data but all base
-     *  classes should implement this method.
+    /** Determine what key to use and transforms the data with the
+     *  specified key.  Receives the data to be encrypted in as a byte
+     *  array and returns a byte array.  The base class simply returns
+     *  the data but all base classes should implement this method.
      *
      * @param initialData data to be transformed.
      * @return byte[] the transformed data.
-     * @exception IllegalActionException when exception is thrown.
+     * @exception IllegalActionException If thrown in the base class
      */
     protected byte[] _crypt(byte[] initialData)throws IllegalActionException{
         return initialData;
     }
 
-    /** If a key is not specified in the parameter, this function checks for a
-     *  default key size. If the specified algorithm is found in the list below
-     *  then the key size is set to this value.  If the algorithm is not found
-     *  in this list then and exception is thrown.
+    /** If a key is not specified in the parameter, this function
+     *  checks for a default key size. If the specified algorithm is
+     *  found in the list below then the key size is set to this
+     *  value.  If the algorithm is not found in this list then and
+     *  exception is thrown.
      *
-     * @exception IllegalActionException when a key size is not specified and the
-     *          does not exist in the list below.
+     * @exception IllegalActionException If a key size is not
+     * specified and the does not exist in the list below.
      */
-    protected void _defaultKeySize() throws IllegalActionException{
-        if (_algorithm=="Blowfish") {
+    protected void _defaultKeySize() throws IllegalActionException {
+        if (_algorithm.equals("Blowfish")) {
             // valid values are: starting from 40bit up to
             // 448 in 8-bit increments
-            _keySize=448;
-        }
-        else if (_algorithm=="CAST5") {
+            _keySize = 448;
+        } else if (_algorithm.equals("CAST5")) {
             //valid values are: starting from 40bit up to 128bit using
             // 8bit steps.
-            _keySize=128;
-        }
-        else if (_algorithm=="DES") {
-            _keySize=56;
-        }
-        else if (_algorithm=="TripleDES"||_algorithm=="DESede") {
-            _keySize=3*56;
-        }
-        else if (_algorithm=="Rijndael") {
-            _keySize=256; //valid values are: 128, 192, 256
-        }
-        else if (_algorithm=="SKIPJACK") {
+            _keySize = 128;
+        } else if (_algorithm.equals("DES")) {
+            _keySize = 56;
+        } else if (_algorithm.equals("TripleDES")
+                ||_algorithm.equals("DESede")) {
+            _keySize = 3*56;
+        } else if (_algorithm.equals("Rijndael")) {
+            _keySize = 256; //valid values are: 128, 192, 256
+        } else if (_algorithm.equals("SKIPJACK")) {
             // fixed size: 80 bits
-            _keySize=80;
-        }
-        else if (_algorithm=="Square") {
-            _keySize=128;
-        }
-        else{
-            throw new IllegalActionException(this.getName()+
-                    "No default key size found.  " +
-                    "Must be specified in parameters");
+            _keySize = 80;
+        } else if (_algorithm.equals("Square")) {
+            _keySize = 128;
+        } else{
+            throw new IllegalActionException(this, null
+                    "No default key size found, "
+                    + "the key size must be specified in parameters. "
+                    + "The algorithm was '" + _algorithm + "'");
         }
     }
 
@@ -304,10 +297,10 @@ public class Cryptography extends TypedAtomicActor {
      *
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
-     * @exception IllegalActionException if ArrayTOken can not be created.
+     * @exception IllegalActionException If the ArrayToken can not be created.
      */
-    protected ArrayToken _unsignedByteArrayToArrayToken( byte[] dataBytes)
-            throws IllegalActionException{
+    protected ArrayToken _unsignedByteArrayToArrayToken(byte[] dataBytes)
+            throws IllegalActionException {
         int bytesAvailable = dataBytes.length;
         Token[] dataArrayToken = new Token[bytesAvailable];
         for (int j = 0; j < bytesAvailable; j++) {

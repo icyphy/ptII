@@ -69,36 +69,38 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// Decryption
 /**
-This actor takes an unsigned byte array at the input and decrypts the message.
-The resulting ouput is an unsighned byte array. Various ciphers that are
-implemented by "providers" and installed maybe used by specifying the algorithm
-in the algorithm parameter.  The mode and padding can also be spcecified in the
-mode and padding parameters.  In case a provider specific instance of an
-algorithm is needed the provider may also be specified in the provider
-parameter.  The mode parameter must also be set to asymmetric or symmetric
-depending on the specified algorithm.  When in an asymmetric mode, this actor
-creates a private key for decyption use and a public key which is sent on the
-<i>keyOut</i> port to an encyption actor for encryption purposes.  In symmetric
-mode, the share secret key is sent on the <i>keyOut</i> port to an encyption
-actor for encryption purposes.  Key creation is done in preinitilization and is
-put on the keyOut port during initilization so the encryption has a key to use
-when its first fired.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+This actor takes an unsigned byte array at the input and decrypts the
+message.  The resulting ouput is an unsighned byte array. Various
+ciphers that are implemented by "providers" and installed maybe used
+by specifying the algorithm in the algorithm parameter.  The mode and
+padding can also be spcecified in the mode and padding parameters.  In
+case a provider specific instance of an algorithm is needed the
+provider may also be specified in the provider parameter.  The mode
+parameter must also be set to asymmetric or symmetric depending on the
+specified algorithm.  When in an asymmetric mode, this actor creates a
+private key for decyption use and a public key which is sent on the
+<i>keyOut</i> port to an encyption actor for encryption purposes.  In
+symmetric mode, the share secret key is sent on the <i>keyOut</i> port
+to an encyption actor for encryption purposes.  Key creation is done
+in preinitilization and is put on the keyOut port during initilization
+so the encryption has a key to use when its first fired.
+
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-
-TODO: include sources of information on JCE cipher and algorithms
-TODO: split asymmetric and symmetric
-TODO: make encryption create key for symmetric(main reason for above)
-TODO: Send keys as ObjectOutputStreams
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class Decryption extends TypedAtomicActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: split asymmetric and symmetric
+    // TODO: make encryption create key for symmetric(main reason for above)
+    // TODO: Send keys as ObjectOutputStreams
+    // TODO: Use cipher streaming to allow for easier file input reading.
+
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -212,7 +214,7 @@ public class Decryption extends TypedAtomicActor {
 
             if (function.equals("asymmetric")) {
                 _keyMode = _ASYMMETRIC;
-            }else if (function.equals("symmetric")) {
+            } else if (function.equals("symmetric")) {
                 _keyMode = _SYMMETRIC;
             }
         } else super.attributeChanged(attribute);
@@ -226,7 +228,7 @@ public class Decryption extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        try{
+        try {
             if (input.hasToken(0)) {
                 byte[] dataBytes = _ArrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes=_crypt(dataBytes);
@@ -240,31 +242,28 @@ public class Decryption extends TypedAtomicActor {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName() + e.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "Problem firing");
         }
 
     }
 
     /** Get an instance of the cipher and outputs the key required for
      *  decryption.
-     *  @exception IllegalActionException
-     *  @exception NoSuchAlgorihmException when the algorithm is not found.
-     *  @exception NoSuchPaddingException when the padding scheme is illegal
-     *      for the given algorithm.
-     *  @exception NoSuchProviderException if the specified proviedr does not
-     *      exist.
+     *  @exception IllegalActionException If the algorithm is not found,
+     *  the padding scheme is illegal or if the provider does not exist
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         try{
             _cipher = Cipher.getInstance(_algo, _provider);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+
+        } catch (Exception ex) {
+            throw new IllegalActionException(ex, this,
+                    "Failed to initialize Cipher with algorithm: '"
+                    + _algorithm + "', padding: '"
+                    + _padding + "', provider: '"
+                    + _provider + "'");
         }
 
         if (_keyMode == _ASYMMETRIC) {
@@ -299,7 +298,8 @@ public class Decryption extends TypedAtomicActor {
      * @param dataArrayToken
      * @return dataBytes
      */
-    protected byte[] _ArrayTokenToUnsignedByteArray( ArrayToken dataArrayToken) {
+    protected byte[] _ArrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken =
@@ -318,7 +318,8 @@ public class Decryption extends TypedAtomicActor {
      */
     protected void _createAsymmetricKeys()throws IllegalActionException{
         try{
-            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(_algo, _provider);
+            KeyPairGenerator keyPairGen =
+                KeyPairGenerator.getInstance(_algo, _provider);
             keyPairGen.initialize(1024, new SecureRandom());
             KeyPair pair = keyPairGen.generateKeyPair();
             _publicKey = pair.getPublic();
