@@ -74,15 +74,29 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'Arc$$1.class' \
 	'Arc$$2.class' \
+	'FSMGraphController$$1.class' \
+	'FSMGraphController$$NewStateAction.class' \
+	'FSMGraphController$$StateCreator.class' \
+	'FSMGraphFrame$$LookInsideAction.class' \
+	'FSMGraphFrame$$StateContextMenuFactory.class' \
+	'FSMGraphFrame$$TransitionContextMenuFactory.class' \
 	'FSMGraphController$$LinkCreator.class' \
+	'FSMGraphModel$$1.class' \
+	'FSMGraphModel$$2.class' \
+	'FSMGraphModel$$3.class' \
+	'FSMGraphModel$$4.class' \
+	'FSMGraphModel$$5.class' \
 	'FSMGraphModel$$ArcModel.class' \
 	'FSMGraphModel$$StateModel.class' \
 	'FSMGraphModel$$ToplevelModel.class' \
+	'FSMGraphModel$$RemoveableNodeModel.class' \
 	'FSMGraphTableau$$Factory.class' \
 	'FSMStateController$$StateRenderer.class' \
 	'FSMStateController$$EntityRenderer.class' \
 	'FSMTransitionController$$LinkRenderer.class' \
-	'FSMTransitionController$$LinkTarget.class'
+	'FSMTransitionController$$LinkTarget.class' \
+	'FSMTransitionController$$LinkDropper.class' \
+	'FSMViewerController$$SchematicContextMenuFactory.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
