@@ -60,8 +60,8 @@ public class BufferInfo implements Cloneable {
 
     public String toString() {
         return "name = " + name + ", cg name = " + codeGenName +
-               " width x length = " + width + " x " + length +
-               ", type = " + type;
+            " width x length = " + width + " x " + length +
+            ", type = " + type;
     }
 
     public String name;

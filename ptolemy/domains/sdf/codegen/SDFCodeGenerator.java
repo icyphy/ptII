@@ -61,7 +61,7 @@ import ptolemy.domains.sdf.kernel.*;
  *  @author Jeff Tsay
  */
 public class SDFCodeGenerator extends CompositeActorApplication
-     implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     public SDFCodeGenerator(String[] args) throws Exception {
         super(args, false);
@@ -69,18 +69,18 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
     public void generateCode() throws IllegalActionException {
         if (_outputDirectoryName == null) {
-           throw new RuntimeException("output directory was not specified " +
-            "with the -outdir option");
+            throw new RuntimeException("output directory was not specified " +
+                    "with the -outdir option");
         }
 
         if (_outputPackageName == null) {
-           throw new RuntimeException("output package was not specified " +
-            "with the -outpkg option");
+            throw new RuntimeException("output package was not specified " +
+                    "with the -outpkg option");
         }
 
         _packageDirectoryName = _outputDirectoryName + File.separatorChar +
-         _outputPackageName.replace('.', File.separatorChar) +
-         File.separatorChar;
+            _outputPackageName.replace('.', File.separatorChar) +
+            File.separatorChar;
 
         // Create the directory to put the output package in,
         // creating subdirectories as needed.
@@ -93,10 +93,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // that a ClassDecl stub is placed in the package environment for it
         // (this is a nasty hack)
         try {
-          new File(_packageDirectoryName + "CG_Main.java").createNewFile();
+            new File(_packageDirectoryName + "CG_Main.java").createNewFile();
         } catch (IOException ioe) {
-           ApplicationUtility.error("could not create output directory " +
-            _packageDirectoryName);
+            ApplicationUtility.error("could not create output directory " +
+                    _packageDirectoryName);
         }
 
         // assume just one model on the command line
@@ -104,11 +104,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
         _compositeActor = (TypedCompositeActor) _models.get(0);
 
         try {
-          // initialize the model to ensure type resolution and scheduling
-          // are done
-          _compositeActor.getManager().initialize();
+            // initialize the model to ensure type resolution and scheduling
+            // are done
+            _compositeActor.getManager().initialize();
         } catch (Exception e) {
-          ApplicationUtility.error("could not initialize composite actor");
+            ApplicationUtility.error("could not initialize composite actor");
         }
 
         // get the schedule for the model
@@ -131,28 +131,28 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             // see if this is the first appearance of this actor
             if (_actorSet.add(actor)) {
-               SDFActorCodeGeneratorInfo actorInfo =
-                new SDFActorCodeGeneratorInfo();
+                SDFActorCodeGeneratorInfo actorInfo =
+                    new SDFActorCodeGeneratorInfo();
 
-               actorInfo.actor = actor;
-               actorInfo.disjointAppearances = 1;
-               actorInfo.totalFirings = _scheduler.getFiringCount(actor);
+                actorInfo.actor = actor;
+                actorInfo.disjointAppearances = 1;
+                actorInfo.totalFirings = _scheduler.getFiringCount(actor);
 
-               _makeBufferInfo(actor, actorInfo);
+                _makeBufferInfo(actor, actorInfo);
 
-               _actorInfoMap.put(actor, actorInfo);
+                _actorInfoMap.put(actor, actorInfo);
 
-               ApplicationUtility.trace("actor " + actor + " fires " +
-                actorInfo.totalFirings + " time(s).");
+                ApplicationUtility.trace("actor " + actor + " fires " +
+                        actorInfo.totalFirings + " time(s).");
 
             }  else {
-               if (actor != lastActor) {
-                  // update the disjoint appearance count
-                  SDFActorCodeGeneratorInfo actorInfo =
-                   (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
+                if (actor != lastActor) {
+                    // update the disjoint appearance count
+                    SDFActorCodeGeneratorInfo actorInfo =
+                        (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
 
-                  actorInfo.disjointAppearances++;
-               }
+                    actorInfo.disjointAppearances++;
+                }
             }
             lastActor = actor;
         }
@@ -162,33 +162,33 @@ public class SDFCodeGenerator extends CompositeActorApplication
         Iterator actorItr = _actorSet.iterator();
 
         ActorCodeGenerator actorCodeGen =
-         new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
-          _outputPackageName);
+            new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
+                    _outputPackageName);
 
         LinkedList renamedSourceList = new LinkedList();
 
         while (actorItr.hasNext()) {
-             TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
-             SDFActorCodeGeneratorInfo actorInfo =
-              (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
+            TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+            SDFActorCodeGeneratorInfo actorInfo =
+                (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
 
-             _makeInputInfo(actor, actorInfo);
+            _makeInputInfo(actor, actorInfo);
 
-             String renamedSource = actorCodeGen.pass1(actorInfo);
-             renamedSourceList.addLast(renamedSource);
+            String renamedSource = actorCodeGen.pass1(actorInfo);
+            renamedSourceList.addLast(renamedSource);
         }
 
         actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
 
         while (actorItr.hasNext()) {
-             TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
-             SDFActorCodeGeneratorInfo actorInfo =
-              (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
+            TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+            SDFActorCodeGeneratorInfo actorInfo =
+                (SDFActorCodeGeneratorInfo) _actorInfoMap.get(actor);
 
-             String renamedSource = (String) renamedSourceItr.next();
+            String renamedSource = (String) renamedSourceItr.next();
 
-             actorCodeGen.pass2(renamedSource, actorInfo);
+            actorCodeGen.pass2(renamedSource, actorInfo);
         }
 
         _generateMainClass();
@@ -196,9 +196,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         renamedSourceItr = renamedSourceList.iterator();
 
         while (renamedSourceItr.hasNext()) {
-             String renamedSource = (String) renamedSourceItr.next();
+            String renamedSource = (String) renamedSourceItr.next();
 
-             actorCodeGen.pass3(renamedSource);
+            actorCodeGen.pass3(renamedSource);
         }
     }
 
@@ -228,72 +228,72 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator bufferItr = _bufferInfoMap.values().iterator();
         PtolemyTypeIdentifier typeID =
-         _codeGenClassFactory.createPtolemyTypeIdentifier();
+            _codeGenClassFactory.createPtolemyTypeIdentifier();
 
         while (bufferItr.hasNext()) {
-           BufferInfo bufferInfo = (BufferInfo) bufferItr.next();
+            BufferInfo bufferInfo = (BufferInfo) bufferItr.next();
 
-           TypeNode dataTypeNode =
-            typeID.encapsulatedDataType(bufferInfo.type);
+            TypeNode dataTypeNode =
+                typeID.encapsulatedDataType(bufferInfo.type);
 
-           int bufferWidth = bufferInfo.width;
-           int bufferDimension = (bufferWidth <= 1) ? 1 : 2;
+            int bufferWidth = bufferInfo.width;
+            int bufferDimension = (bufferWidth <= 1) ? 1 : 2;
 
-           TypeNode typeNode = TypeUtility.makeArrayType(dataTypeNode,
-            bufferDimension);
+            TypeNode typeNode = TypeUtility.makeArrayType(dataTypeNode,
+                    bufferDimension);
 
-           int bufferLength = bufferInfo.length;
+            int bufferLength = bufferInfo.length;
 
-           LinkedList dimExprList = TNLManip.cons(new IntLitNode(
-            String.valueOf(bufferLength)));
+            LinkedList dimExprList = TNLManip.cons(new IntLitNode(
+                    String.valueOf(bufferLength)));
 
-           if (bufferDimension > 1) {
-              dimExprList.addFirst(new IntLitNode(
-               String.valueOf(bufferWidth)));
-           }
+            if (bufferDimension > 1) {
+                dimExprList.addFirst(new IntLitNode(
+                        String.valueOf(bufferWidth)));
+            }
 
-           TypeNode dataBaseTypeNode = TypeUtility.arrayBaseType(dataTypeNode);
-           int dataTypeDims = TypeUtility.arrayDimension(dataTypeNode);
+            TypeNode dataBaseTypeNode = TypeUtility.arrayBaseType(dataTypeNode);
+            int dataTypeDims = TypeUtility.arrayDimension(dataTypeNode);
 
-           AllocateArrayNode allocateArrayNode = new AllocateArrayNode(
-            dataBaseTypeNode, dimExprList, dataTypeDims,
-            AbsentTreeNode.instance);
+            AllocateArrayNode allocateArrayNode = new AllocateArrayNode(
+                    dataBaseTypeNode, dimExprList, dataTypeDims,
+                    AbsentTreeNode.instance);
 
-           FieldDeclNode fieldDeclNode = new FieldDeclNode(
-            PUBLIC_MOD | STATIC_MOD | FINAL_MOD, typeNode,
-            new NameNode(AbsentTreeNode.instance, bufferInfo.codeGenName),
-            allocateArrayNode);
+            FieldDeclNode fieldDeclNode = new FieldDeclNode(
+                    PUBLIC_MOD | STATIC_MOD | FINAL_MOD, typeNode,
+                    new NameNode(AbsentTreeNode.instance, bufferInfo.codeGenName),
+                    allocateArrayNode);
 
-           memberList.add(fieldDeclNode);
+            memberList.add(fieldDeclNode);
         }
 
         ClassDeclNode classDeclNode = new ClassDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "CG_Main"),
-         new LinkedList(), memberList,
-         (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
+                new NameNode(AbsentTreeNode.instance, "CG_Main"),
+                new LinkedList(), memberList,
+                (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
 
         // bring in imports for Complex and FixPoint
         // (remove unnecessary ones later)
         LinkedList importList = new LinkedList();
 
         importList.add(new ImportNode((NameNode)
-         StaticResolution.makeNameNode("ptolemy.math.Complex")));
+                StaticResolution.makeNameNode("ptolemy.math.Complex")));
         importList.add(new ImportNode((NameNode)
-         StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
+                StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
 
         CompileUnitNode unitNode = new CompileUnitNode(
-         new NameNode(AbsentTreeNode.instance, _outputPackageName),
-         importList, TNLManip.cons(classDeclNode));
+                new NameNode(AbsentTreeNode.instance, _outputPackageName),
+                importList, TNLManip.cons(classDeclNode));
 
         String outFileName = _packageDirectoryName +  "CG_Main.java";
 
         JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.cons(unitNode),
-         TNLManip.cons(outFileName));
+                TNLManip.cons(outFileName));
     }
 
     /** Generate the main() method of the main class. */
     protected MethodDeclNode _generateMainMethod()
-         throws IllegalActionException {
+            throws IllegalActionException {
         // a map of actors to the ObjectNodes that represent the actors
         HashMap actorToVariableMap = new HashMap();
 
@@ -303,67 +303,67 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         // generate actor allocation statments and fill in actorToVariableMap
         while (actorItr.hasNext()) {
-           TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+            TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
 
-           String oldActorClassString =
-            StringManip.unqualifiedPart(actor.getClass().toString());
+            String oldActorClassString =
+                StringManip.unqualifiedPart(actor.getClass().toString());
 
-           String actorName =  actor.getName();
+            String actorName =  actor.getName();
 
-           String actorClassString = "CG_" + oldActorClassString +
-            "_" + actorName;
+            String actorClassString = "CG_" + oldActorClassString +
+                "_" + actorName;
 
-           NameNode actorVarNameNode = new NameNode(AbsentTreeNode.instance,
-            "cg_" + oldActorClassString + "_" + actorName);
+            NameNode actorVarNameNode = new NameNode(AbsentTreeNode.instance,
+                    "cg_" + oldActorClassString + "_" + actorName);
 
-           TypeNameNode actorTypeNode = new TypeNameNode(
-            new NameNode(AbsentTreeNode.instance, actorClassString));
+            TypeNameNode actorTypeNode = new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, actorClassString));
 
-           AllocateNode allocateActorNode = new AllocateNode(actorTypeNode,
-            new LinkedList(), AbsentTreeNode.instance);
+            AllocateNode allocateActorNode = new AllocateNode(actorTypeNode,
+                    new LinkedList(), AbsentTreeNode.instance);
 
-           stmtList.addLast(new LocalVarDeclNode(FINAL_MOD, actorTypeNode,
-            actorVarNameNode, allocateActorNode));
+            stmtList.addLast(new LocalVarDeclNode(FINAL_MOD, actorTypeNode,
+                    actorVarNameNode, allocateActorNode));
 
-           actorToVariableMap.put(actor, new ObjectNode(
-            (NameNode) actorVarNameNode.clone()));
+            actorToVariableMap.put(actor, new ObjectNode(
+                    (NameNode) actorVarNameNode.clone()));
         }
 
         // generate preinitialize statements
         actorItr = _actorSet.iterator();
 
         while (actorItr.hasNext()) {
-           TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+            TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
 
-           ObjectNode actorObjectNode = (ObjectNode)
-            ((ObjectNode) actorToVariableMap.get(actor)).clone();
+            ObjectNode actorObjectNode = (ObjectNode)
+                ((ObjectNode) actorToVariableMap.get(actor)).clone();
 
 
-           MethodCallNode methodCallNode = new MethodCallNode(
-            new ObjectFieldAccessNode(
-             new NameNode(AbsentTreeNode.instance, "preinitialize"),
-             actorObjectNode),
-            new LinkedList());
+            MethodCallNode methodCallNode = new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "preinitialize"),
+                            actorObjectNode),
+                    new LinkedList());
 
-           stmtList.addLast(new ExprStmtNode(methodCallNode));
+            stmtList.addLast(new ExprStmtNode(methodCallNode));
         }
 
         // generate initialize statements
         actorItr = _actorSet.iterator();
 
         while (actorItr.hasNext()) {
-           TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+            TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
 
-           ObjectNode actorObjectNode = (ObjectNode)
-            ((ObjectNode) actorToVariableMap.get(actor)).clone();
+            ObjectNode actorObjectNode = (ObjectNode)
+                ((ObjectNode) actorToVariableMap.get(actor)).clone();
 
-           MethodCallNode methodCallNode = new MethodCallNode(
-            new ObjectFieldAccessNode(
-             new NameNode(AbsentTreeNode.instance, "initialize"),
-             actorObjectNode),
-            new LinkedList());
+            MethodCallNode methodCallNode = new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "initialize"),
+                            actorObjectNode),
+                    new LinkedList());
 
-           stmtList.addLast(new ExprStmtNode(methodCallNode));
+            stmtList.addLast(new ExprStmtNode(methodCallNode));
         }
 
         // generate the iteration loop
@@ -385,115 +385,115 @@ public class SDFCodeGenerator extends CompositeActorApplication
         boolean endLoop = !schedule.hasMoreElements();
         while (!endLoop) {
 
-           TypedAtomicActor actor = null;
+            TypedAtomicActor actor = null;
 
-           if (schedule.hasMoreElements()) {
-               actor = (TypedAtomicActor) schedule.nextElement();
-           } else {
-               actor = null;
-               endLoop = true;
-           }
+            if (schedule.hasMoreElements()) {
+                actor = (TypedAtomicActor) schedule.nextElement();
+            } else {
+                actor = null;
+                endLoop = true;
+            }
 
-           if (actor != lastActor) {
-              if (lastActor != null) {
-                 ObjectNode actorVarNode = (ObjectNode)
-                  ((ObjectNode) actorToVariableMap.get(lastActor)).clone();
+            if (actor != lastActor) {
+                if (lastActor != null) {
+                    ObjectNode actorVarNode = (ObjectNode)
+                        ((ObjectNode) actorToVariableMap.get(lastActor)).clone();
 
-                 ExprStmtNode prefireCallStmtNode = new ExprStmtNode(
-                  new MethodCallNode(new ObjectFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "prefire"),
-                   actorVarNode),
-                   new LinkedList()));
+                    ExprStmtNode prefireCallStmtNode = new ExprStmtNode(
+                            new MethodCallNode(new ObjectFieldAccessNode(
+                                    new NameNode(AbsentTreeNode.instance, "prefire"),
+                                    actorVarNode),
+                                    new LinkedList()));
 
-                 // Every node in the tree needs to be unique, so the
-                 // actor node needs to be cloned here.
-                 ExprStmtNode fireCallStmtNode = new ExprStmtNode(
-                  new MethodCallNode(new ObjectFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "fire"),
-                   ((ObjectNode)actorVarNode.clone())),
-                   new LinkedList()));
+                    // Every node in the tree needs to be unique, so the
+                    // actor node needs to be cloned here.
+                    ExprStmtNode fireCallStmtNode = new ExprStmtNode(
+                            new MethodCallNode(new ObjectFieldAccessNode(
+                                    new NameNode(AbsentTreeNode.instance, "fire"),
+                                    ((ObjectNode)actorVarNode.clone())),
+                                    new LinkedList()));
 
-                 ExprStmtNode postfireCallStmtNode = new ExprStmtNode(
-                  new MethodCallNode(new ObjectFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "postfire"),
-                   ((ObjectNode)actorVarNode.clone())),
-                   new LinkedList()));
+                    ExprStmtNode postfireCallStmtNode = new ExprStmtNode(
+                            new MethodCallNode(new ObjectFieldAccessNode(
+                                    new NameNode(AbsentTreeNode.instance, "postfire"),
+                                    ((ObjectNode)actorVarNode.clone())),
+                                    new LinkedList()));
 
-                 LinkedList iterationCalls = new LinkedList();
-                 iterationCalls.add(prefireCallStmtNode);
-                 iterationCalls.add(fireCallStmtNode);
-                 iterationCalls.add(postfireCallStmtNode);
+                    LinkedList iterationCalls = new LinkedList();
+                    iterationCalls.add(prefireCallStmtNode);
+                    iterationCalls.add(fireCallStmtNode);
+                    iterationCalls.add(postfireCallStmtNode);
 
-                 BlockNode iterationBlockNode =
-                  new BlockNode(iterationCalls);
+                    BlockNode iterationBlockNode =
+                        new BlockNode(iterationCalls);
 
-                 if (contiguousAppearances > 1) {
+                    if (contiguousAppearances > 1) {
 
-                    NameNode loopCounterNameNode =
-                     new NameNode(AbsentTreeNode.instance, "fc");
+                        NameNode loopCounterNameNode =
+                            new NameNode(AbsentTreeNode.instance, "fc");
 
-                    ObjectNode loopCounterObjectNode =
-                     new ObjectNode(loopCounterNameNode);
+                        ObjectNode loopCounterObjectNode =
+                            new ObjectNode(loopCounterNameNode);
 
-                    List forInitList = TNLManip.cons(
-                     new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
-                     (NameNode) loopCounterNameNode.clone(),
-                     new IntLitNode("0")));
+                        List forInitList = TNLManip.cons(
+                                new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
+                                        (NameNode) loopCounterNameNode.clone(),
+                                        new IntLitNode("0")));
 
-                    LTNode forTestExprNode = new LTNode(
-                     loopCounterObjectNode,
-                     new IntLitNode(String.valueOf(contiguousAppearances)));
+                        LTNode forTestExprNode = new LTNode(
+                                loopCounterObjectNode,
+                                new IntLitNode(String.valueOf(contiguousAppearances)));
 
-                    List forUpdateList = TNLManip.cons(new PostIncrNode(
-                     (ObjectNode) loopCounterObjectNode.clone()));
+                        List forUpdateList = TNLManip.cons(new PostIncrNode(
+                                (ObjectNode) loopCounterObjectNode.clone()));
 
-                    iterationStmtList.addLast(new ForNode(forInitList,
-                     forTestExprNode, forUpdateList, iterationBlockNode));
-                 }  else {
-                     iterationStmtList.addLast(iterationBlockNode);
-                 }
-              }
-              lastActor = actor;
-              contiguousAppearances = 1;
-           } else {
-              contiguousAppearances++;
-           }
+                        iterationStmtList.addLast(new ForNode(forInitList,
+                                forTestExprNode, forUpdateList, iterationBlockNode));
+                    }  else {
+                        iterationStmtList.addLast(iterationBlockNode);
+                    }
+                }
+                lastActor = actor;
+                contiguousAppearances = 1;
+            } else {
+                contiguousAppearances++;
+            }
         }
 
         int iterations =
-         ((IntToken) _director.iterations.getToken()).intValue();
+            ((IntToken) _director.iterations.getToken()).intValue();
 
         if (iterations == 1) {
-          // just add all the iteration statements to the list of all statements
-          stmtList.addAll(iterationStmtList);
+            // just add all the iteration statements to the list of all statements
+            stmtList.addAll(iterationStmtList);
         } else {
-          if (iterations == 0) {
-             // iterate forever
-             stmtList.addLast(new LoopNode(new BlockNode(iterationStmtList),
-              new BoolLitNode("true"), AbsentTreeNode.instance));
-          } else {
+            if (iterations == 0) {
+                // iterate forever
+                stmtList.addLast(new LoopNode(new BlockNode(iterationStmtList),
+                        new BoolLitNode("true"), AbsentTreeNode.instance));
+            } else {
 
-             NameNode loopCounterNameNode =
-              new NameNode(AbsentTreeNode.instance, "it");
+                NameNode loopCounterNameNode =
+                    new NameNode(AbsentTreeNode.instance, "it");
 
-             ObjectNode loopCounterObjectNode =
-              new ObjectNode(loopCounterNameNode);
+                ObjectNode loopCounterObjectNode =
+                    new ObjectNode(loopCounterNameNode);
 
-             List forInitList = TNLManip.cons(
-              new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
-              (NameNode) loopCounterNameNode.clone(),
-              new IntLitNode("0")));
+                List forInitList = TNLManip.cons(
+                        new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
+                                (NameNode) loopCounterNameNode.clone(),
+                                new IntLitNode("0")));
 
-             LTNode forTestExprNode = new LTNode(
-              loopCounterObjectNode,
-              new IntLitNode(String.valueOf(iterations)));
+                LTNode forTestExprNode = new LTNode(
+                        loopCounterObjectNode,
+                        new IntLitNode(String.valueOf(iterations)));
 
-             List forUpdateList = TNLManip.cons(new PostIncrNode(
-              (ObjectNode) loopCounterObjectNode.clone()));
+                List forUpdateList = TNLManip.cons(new PostIncrNode(
+                        (ObjectNode) loopCounterObjectNode.clone()));
 
-             stmtList.addLast(new ForNode(forInitList, forTestExprNode,
-              forUpdateList, new BlockNode(iterationStmtList)));
-          }
+                stmtList.addLast(new ForNode(forInitList, forTestExprNode,
+                        forUpdateList, new BlockNode(iterationStmtList)));
+            }
         }
 
         // generate wrapup statements, unless we are iterating forever.
@@ -504,12 +504,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
 
                 ObjectNode actorObjectNode = (ObjectNode)
-                ((ObjectNode) actorToVariableMap.get(actor)).clone();
+                    ((ObjectNode) actorToVariableMap.get(actor)).clone();
 
                 MethodCallNode methodCallNode = new MethodCallNode(
-                    new ObjectFieldAccessNode(
-                        new NameNode(AbsentTreeNode.instance, "wrapup"),
-                        actorObjectNode),
+                        new ObjectFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "wrapup"),
+                                actorObjectNode),
                         new LinkedList());
 
                 stmtList.addLast(new ExprStmtNode(methodCallNode));
@@ -517,12 +517,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
         return new MethodDeclNode(PUBLIC_MOD | STATIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "main"),
-         TNLManip.cons(new ParameterNode(NO_MOD,
-          TypeUtility.makeArrayType(
-           (TypeNode) StaticResolution.STRING_TYPE.clone(), 1),
-          new NameNode(AbsentTreeNode.instance, "args"))),
-         new LinkedList(), new BlockNode(stmtList), VoidTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "main"),
+                TNLManip.cons(new ParameterNode(NO_MOD,
+                        TypeUtility.makeArrayType(
+                                (TypeNode) StaticResolution.STRING_TYPE.clone(), 1),
+                        new NameNode(AbsentTreeNode.instance, "args"))),
+                new LinkedList(), new BlockNode(stmtList), VoidTypeNode.instance);
     }
 
 
@@ -531,113 +531,113 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  SDFActorCodeGeneratorInfo argument.
      */
     protected void _makeInputInfo(TypedAtomicActor actor,
-         SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+            SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
 
         // iterate over the ports of this actor
         Iterator portItr = actor.portList().iterator();
 
         while (portItr.hasNext()) {
-           TypedIOPort port = (TypedIOPort) portItr.next();
+            TypedIOPort port = (TypedIOPort) portItr.next();
 
-           // we are only concerned with input ports
-           if (port.isInput()) {
+            // we are only concerned with input ports
+            if (port.isInput()) {
 
-              int inputWidth = port.getWidth();
+                int inputWidth = port.getWidth();
 
-              List connectedPortList = port.connectedPortList();
+                List connectedPortList = port.connectedPortList();
 
-              String[] bufferNames = new String[inputWidth];
-              int[] bufferLengths = new int[inputWidth];
+                String[] bufferNames = new String[inputWidth];
+                int[] bufferLengths = new int[inputWidth];
 
-              Receiver[][] receivers = port.getReceivers();
+                Receiver[][] receivers = port.getReceivers();
 
-              for (int channel = 0; channel < inputWidth; channel++) {
-                  // get the receiver for this channel
-                  // we only support one reciever per channel
-                  Receiver receiver = receivers[channel][0];
+                for (int channel = 0; channel < inputWidth; channel++) {
+                    // get the receiver for this channel
+                    // we only support one reciever per channel
+                    Receiver receiver = receivers[channel][0];
 
-                  // Find the output port for this channel and the channel
-                  // number connecting it to this port.
-                  // This is done by matching the receiver for this
-                  // channel with a remoteReceiver of a connected output port
+                    // Find the output port for this channel and the channel
+                    // number connecting it to this port.
+                    // This is done by matching the receiver for this
+                    // channel with a remoteReceiver of a connected output port
 
-                  int outputChannel = -1;
+                    int outputChannel = -1;
 
-                  // search all output ports connected to this port
-                  Iterator connectedPortItr = connectedPortList.iterator();
+                    // search all output ports connected to this port
+                    Iterator connectedPortItr = connectedPortList.iterator();
 
-                  TypedIOPort outputPort = null;
+                    TypedIOPort outputPort = null;
 
-                  while (connectedPortItr.hasNext() && (outputPort == null)) {
-                     TypedIOPort connectedPort =
-                      (TypedIOPort) connectedPortItr.next();
+                    while (connectedPortItr.hasNext() && (outputPort == null)) {
+                        TypedIOPort connectedPort =
+                            (TypedIOPort) connectedPortItr.next();
 
-                     // search only output ports
-                     if (connectedPort.isOutput()) {
-                        int outputWidth = connectedPort.getWidth();
+                        // search only output ports
+                        if (connectedPort.isOutput()) {
+                            int outputWidth = connectedPort.getWidth();
 
-                        Receiver[][] remoteReceiversArray =
-                         connectedPort.getRemoteReceivers();
+                            Receiver[][] remoteReceiversArray =
+                                connectedPort.getRemoteReceivers();
 
-                        // search all channels of the output port
-                        int ch = 0;
-                        do {
+                            // search all channels of the output port
+                            int ch = 0;
+                            do {
 
-                           Receiver[] remoteReceivers =
-                            remoteReceiversArray[ch];
+                                Receiver[] remoteReceivers =
+                                    remoteReceiversArray[ch];
 
-                           int i = 0;
+                                int i = 0;
 
-                           // search all receivers in the same receiver group
-                           while ((i < remoteReceivers.length) &&
-                                  (outputPort == null)) {
+                                // search all receivers in the same receiver group
+                                while ((i < remoteReceivers.length) &&
+                                        (outputPort == null)) {
 
-                              Receiver remoteReceiver = remoteReceivers[i];
+                                    Receiver remoteReceiver = remoteReceivers[i];
 
-                              if (receiver == remoteReceiver) {
-                                 outputPort = connectedPort;
-                                 outputChannel = ch;
-                              }
-                              i++;
-                           }
-                           ch++;
-                        } while ((ch < outputWidth) && (outputPort == null));
-                     }
-                  }
+                                    if (receiver == remoteReceiver) {
+                                        outputPort = connectedPort;
+                                        outputChannel = ch;
+                                    }
+                                    i++;
+                                }
+                                ch++;
+                            } while ((ch < outputWidth) && (outputPort == null));
+                        }
+                    }
 
-                  if (outputPort == null) {
-                     throw new InternalError(
-                      "could not find output port associated " +
-                      "with channel " + channel + " for port " +
-                      port.getName() + " of actor " + actor + '.');
-                  }
+                    if (outputPort == null) {
+                        throw new InternalError(
+                                "could not find output port associated " +
+                                "with channel " + channel + " for port " +
+                                port.getName() + " of actor " + actor + '.');
+                    }
 
-                  BufferInfo bufferInfo =
-                   (BufferInfo) _bufferInfoMap.get(outputPort);
+                    BufferInfo bufferInfo =
+                        (BufferInfo) _bufferInfoMap.get(outputPort);
 
-                  bufferLengths[channel] = bufferInfo.length;
+                    bufferLengths[channel] = bufferInfo.length;
 
-                  if (bufferInfo.width == 1) {
-                     bufferNames[channel] = bufferInfo.codeGenName;
-                  } else {
-                     bufferNames[channel] =
-                      bufferInfo.codeGenName + '[' + outputChannel + ']';
-                  }
+                    if (bufferInfo.width == 1) {
+                        bufferNames[channel] = bufferInfo.codeGenName;
+                    } else {
+                        bufferNames[channel] =
+                            bufferInfo.codeGenName + '[' + outputChannel + ']';
+                    }
 
-              } // for (int channel = 0; channel < inputWidth; channel++) ...
-
-
-              ApplicationUtility.trace("connected buffers for port " + port.getName() +
-               " of actor " + actor.getName());
-              for (int ch = 0; ch < inputWidth; ch++) {
-                 ApplicationUtility.trace("ch " + ch + ": " + bufferNames[ch]);
-              }
-
-              actorInfo.inputBufferNameMap.put(port, bufferNames);
-              actorInfo.inputBufferLengthMap.put(port, bufferLengths);
+                } // for (int channel = 0; channel < inputWidth; channel++) ...
 
 
-           } // if (port.isInput()) ...
+                ApplicationUtility.trace("connected buffers for port " + port.getName() +
+                        " of actor " + actor.getName());
+                for (int ch = 0; ch < inputWidth; ch++) {
+                    ApplicationUtility.trace("ch " + ch + ": " + bufferNames[ch]);
+                }
+
+                actorInfo.inputBufferNameMap.put(port, bufferNames);
+                actorInfo.inputBufferLengthMap.put(port, bufferLengths);
+
+
+            } // if (port.isInput()) ...
         } // while (portItr.hasNext()) ...
     }
 
@@ -645,49 +645,49 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  actor, and put them in the actor to buffer info map.
      */
     protected void _makeBufferInfo(TypedAtomicActor actor,
-         SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+            SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
 
         int firings = actorInfo.totalFirings;
 
         Iterator portItr = actor.portList().iterator();
 
         while (portItr.hasNext()) {
-           TypedIOPort port = (TypedIOPort) portItr.next();
+            TypedIOPort port = (TypedIOPort) portItr.next();
 
-           // allocate one buffer for each output port
-           if (port.isOutput()) {
+            // allocate one buffer for each output port
+            if (port.isOutput()) {
 
-              BufferInfo bufferInfo = new BufferInfo();
-              bufferInfo.name = port.getName();
-              bufferInfo.codeGenName = _makeUniqueName(bufferInfo.name);
-              bufferInfo.width = port.getWidth();
+                BufferInfo bufferInfo = new BufferInfo();
+                bufferInfo.name = port.getName();
+                bufferInfo.codeGenName = _makeUniqueName(bufferInfo.name);
+                bufferInfo.width = port.getWidth();
 
-              // set length of buffer =
-              // init token production +
-              // number of firings * token production rate
-              // (a worst case length)
+                // set length of buffer =
+                // init token production +
+                // number of firings * token production rate
+                // (a worst case length)
 
-              int productionRate;
-              int initProduction;
+                int productionRate;
+                int initProduction;
 
-              if (port instanceof SDFIOPort) {
-                 SDFIOPort sdfIOPort = (SDFIOPort) port;
-                 productionRate = sdfIOPort.getTokenProductionRate();
-                 initProduction = sdfIOPort.getTokenInitProduction();
-              } else {
-                 // for non-SDFIOPorts, the production rate is assumed to be 1,
-                 // and the init production rate is assumed to be 0
-                 productionRate = 1;
-                 initProduction = 0;
-              }
-              bufferInfo.length = initProduction + firings * productionRate;
+                if (port instanceof SDFIOPort) {
+                    SDFIOPort sdfIOPort = (SDFIOPort) port;
+                    productionRate = sdfIOPort.getTokenProductionRate();
+                    initProduction = sdfIOPort.getTokenInitProduction();
+                } else {
+                    // for non-SDFIOPorts, the production rate is assumed to be 1,
+                    // and the init production rate is assumed to be 0
+                    productionRate = 1;
+                    initProduction = 0;
+                }
+                bufferInfo.length = initProduction + firings * productionRate;
 
-              bufferInfo.type = port.getType();
+                bufferInfo.type = port.getType();
 
-              actorInfo.outputInfoMap.put(port, bufferInfo);
+                actorInfo.outputInfoMap.put(port, bufferInfo);
 
-              _bufferInfoMap.put(port, bufferInfo);
-           }
+                _bufferInfoMap.put(port, bufferInfo);
+            }
         }
     }
 
@@ -708,22 +708,22 @@ public class SDFCodeGenerator extends CompositeActorApplication
      */
     protected boolean _parseArg(String arg) throws Exception {
         if (arg.equals("-outdir")) {
-           _expectingOutputDirectory = true;
+            _expectingOutputDirectory = true;
         } else if (arg.equals("-outpkg")) {
-           _expectingOutputPackage = true;
+            _expectingOutputPackage = true;
         } else if (arg.equals("-version")) {
-           System.out.println("Version 1.0, Build $Id$");
-           System.exit(0);
+            System.out.println("Version 1.0, Build $Id$");
+            System.exit(0);
         } else {
-           if (_expectingOutputDirectory) {
-              _outputDirectoryName = new File(arg).getCanonicalPath();
-              _expectingOutputDirectory = false;
-           }  else if  (_expectingOutputPackage) {
-              _outputPackageName = arg;
-              _expectingOutputPackage = false;
-           } else {
-             return super._parseArg(arg);
-           }
+            if (_expectingOutputDirectory) {
+                _outputDirectoryName = new File(arg).getCanonicalPath();
+                _expectingOutputDirectory = false;
+            }  else if  (_expectingOutputPackage) {
+                _outputPackageName = arg;
+                _expectingOutputPackage = false;
+            } else {
+                return super._parseArg(arg);
+            }
         }
         return true;
     }
@@ -778,7 +778,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
     protected HashMap _bufferInfoMap = new HashMap();
 
     protected CodeGeneratorClassFactory _codeGenClassFactory =
-     SDFCodeGeneratorClassFactory.getInstance();
+    SDFCodeGeneratorClassFactory.getInstance();
 
     /** A non-decreasing number used for globally unique labeling. */
     protected int labelNum = 0;

@@ -42,22 +42,22 @@ public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
     private SDFCodeGeneratorClassFactory() {}
 
     public ActorCodeGeneratorInfo createActorCodeGeneratorInfo() {
-       return new SDFActorCodeGeneratorInfo();
+        return new SDFActorCodeGeneratorInfo();
     }
 
     public ActorTransformerVisitor createActorTransformerVisitor(
-     ActorCodeGeneratorInfo actorInfo) {
-       return new SDFActorTransformerVisitor(actorInfo,
-        createPtolemyTypeVisitor(actorInfo));
+            ActorCodeGeneratorInfo actorInfo) {
+        return new SDFActorTransformerVisitor(actorInfo,
+                createPtolemyTypeVisitor(actorInfo));
     }
 
     public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
-       return new SDFTypeIdentifier();
+        return new SDFTypeIdentifier();
     }
 
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
-           _instance = new SDFCodeGeneratorClassFactory();
+            _instance = new SDFCodeGeneratorClassFactory();
         }
         return _instance;
     }

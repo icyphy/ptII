@@ -63,12 +63,12 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
     public boolean isSupportedActorKind(int kind) {
         return  ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) ||
-                 super.isSupportedActorKind(kind));
+                super.isSupportedActorKind(kind));
     }
 
     public boolean isSupportedPortKind(int kind) {
         return  ((kind == TYPE_KIND_SDF_IO_PORT) ||
-                 super.isSupportedPortKind(kind));
+                super.isSupportedPortKind(kind));
     }
 
     /** Return an integer representing the user type that has the specified ClassDecl,
@@ -77,9 +77,9 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
      */
     public int kindOfClassDecl(ClassDecl classDecl) {
         if (classDecl == SDF_ATOMIC_ACTOR_DECL) {
-           return TYPE_KIND_SDF_ATOMIC_ACTOR;
+            return TYPE_KIND_SDF_ATOMIC_ACTOR;
         } if (classDecl == SDF_IO_PORT_DECL) {
-           return TYPE_KIND_SDF_IO_PORT;
+            return TYPE_KIND_SDF_IO_PORT;
         }
         return super.kindOfClassDecl(classDecl);
     }
@@ -90,9 +90,9 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
      */
     public TypeNameNode typeNodeForKind(int kind) {
         if (kind == TYPE_KIND_SDF_ATOMIC_ACTOR) {
-           return (TypeNameNode) SDF_ATOMIC_ACTOR_TYPE.clone();
+            return (TypeNameNode) SDF_ATOMIC_ACTOR_TYPE.clone();
         } else if (kind == TYPE_KIND_SDF_IO_PORT) {
-           return (TypeNameNode) SDF_IO_PORT_TYPE.clone();
+            return (TypeNameNode) SDF_IO_PORT_TYPE.clone();
         }
         return super.typeNodeForKind(kind);
     }
@@ -114,19 +114,19 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
     static {
 
         CompileUnitNode sdfAtomicActorUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
 
         SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS);
+                sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS);
 
         SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();
 
         CompileUnitNode sdfIOPortUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFIOPort", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFIOPort", true), 1);
 
         SDF_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfIOPortUnit,  "SDFIOPort", CG_CLASS);
+                sdfIOPortUnit,  "SDFIOPort", CG_CLASS);
 
         SDF_IO_PORT_TYPE = SDF_IO_PORT_DECL.getDefType();
     }
