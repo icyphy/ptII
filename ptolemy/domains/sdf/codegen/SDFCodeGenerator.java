@@ -44,6 +44,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.CompositeActorApplication;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.codegen.*;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -99,9 +100,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     _packageDirectoryName);
         }
 
-        // assume just one model on the command line
+        // assume exactly one model on the command line
 
-        _compositeActor = (TypedCompositeActor) _models.get(0);
+        _compositeActor = (TypedCompositeActor)
+                ModelDirectory.models().iterator().next();
 
         try {
             // initialize the model to ensure type resolution and scheduling
