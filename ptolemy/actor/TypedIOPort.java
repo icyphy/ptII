@@ -102,7 +102,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public TypedIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     /** Construct a TypedIOPort with a container and a name that is
@@ -123,7 +123,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public TypedIOPort(ComponentEntity container, String name,
             boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name, isInput, isOutput);
+        super(container, name, isInput, isOutput);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to add.
      */
     public void addTypeListener(TypeListener listener) {
-	_typeListeners.add(listener);
+        _typeListeners.add(listener);
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -171,18 +171,18 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TypedIOPort newobj = (TypedIOPort)super.clone(ws);
-	// set _declaredType and _resolvedType
-	if (_declaredType instanceof StructuredType &&
+        // set _declaredType and _resolvedType
+        if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
-	    newobj._declaredType =
+            newobj._declaredType =
                 (Type)((StructuredType)_declaredType).clone();
-	    newobj._resolvedType = newobj._declaredType;
-	}
+            newobj._resolvedType = newobj._declaredType;
+        }
 
-	newobj._typeTerm = null;
-	newobj._typeListeners = new LinkedList();
-	newobj._constraints = new LinkedList();
-	return newobj;
+        newobj._typeTerm = null;
+        newobj._typeListeners = new LinkedList();
+        newobj._constraints = new LinkedList();
+        return newobj;
     }
 
     /** Return the type of this port.  The type is represented
@@ -194,12 +194,12 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @return An instance of Type.
      */
     public Type getType() {
-	try {
-	    _workspace.getReadAccess();
-	    return _resolvedType;
-	} finally {
-	    _workspace.doneReading();
-	}
+        try {
+            _workspace.getReadAccess();
+            return _resolvedType;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return an InequalityTerm encapsulating the type of
@@ -210,10 +210,10 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @return An InequalityTerm whose value is the type of this port.
      */
     public InequalityTerm getTypeTerm() {
-	if (_typeTerm == null) {
-	    _typeTerm = new TypeTerm(this);
-	}
-	return _typeTerm;
+        if (_typeTerm == null) {
+            _typeTerm = new TypeTerm(this);
+        }
+        return _typeTerm;
     }
 
     /** Remove a type listener from this port.  If the listener is
@@ -221,7 +221,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to be removed.
      */
     public void removeTypeListener(TypeListener listener) {
-	_typeListeners.remove(listener);
+        _typeListeners.remove(listener);
     }
 
     /** Send a token to the specified channel, checking the type
@@ -260,7 +260,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             throw new IllegalActionException(this,
                     "Cannot send a null token.");
         }
-	Receiver[][] farRec;
+        Receiver[][] farRec;
         try {
             try {
                 _workspace.getReadAccess();
@@ -353,14 +353,14 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
-	Token token = null;
+        Token token = null;
         try {
             try {
                 _workspace.getReadAccess();
-		// Only do type checking on the 1st token for
-		// performance reasons.
-		token = tokenArray[0];
-		int compare = TypeLattice.compare(token.getType(),
+                // Only do type checking on the 1st token for
+                // performance reasons.
+                token = tokenArray[0];
+                int compare = TypeLattice.compare(token.getType(),
                         _resolvedType);
                 if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                     throw new IllegalArgumentException(
@@ -372,27 +372,27 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // any non-runtime exception.
                 farRec = getRemoteReceivers();
                 if (farRec == null || farRec[channelIndex] == null) {
-		    System.out.println("returning now...");
-		    return;
-		}
+                    System.out.println("returning now...");
+                    return;
+                }
             } finally {
                 _workspace.doneReading();
             }
             for (int j = 0; j < farRec[channelIndex].length; j++) {
-		TypedIOPort port =
+                TypedIOPort port =
                     (TypedIOPort)farRec[channelIndex][j].getContainer();
                 Type farType = port.getType();
                 if (farType.isEqualTo(token.getType())) {
-		    // Good, no conversion necessary.
-		    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+                    // Good, no conversion necessary.
+                    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
                 } else {
-		    // Note: This is very bad for performance!
-		    // For better efficiency, make sure
-		    // all ports have the same type.
-		    for (int i = 0; i < vectorLength; i++) {
-			tokenArray[i] = farType.convert(tokenArray[i]);
-		    }
-		    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+                    // Note: This is very bad for performance!
+                    // For better efficiency, make sure
+                    // all ports have the same type.
+                    for (int i = 0; i < vectorLength; i++) {
+                        tokenArray[i] = farType.convert(tokenArray[i]);
+                    }
+                    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -406,9 +406,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param less A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
-	Inequality ineq = new Inequality(lesser.getTypeTerm(),
+        Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Constrain that the type of this port to be equal to or greater
@@ -416,17 +416,17 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param typeTerm An InequalityTerm.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
-	Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-	_constraints.add(ineq);
+        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
+        _constraints.add(ineq);
     }
 
     /** Constrain that the type of this port to be equal to or less
      *  than the argument.
      */
     public void setTypeAtMost(Type type) {
-	Inequality ineq = new Inequality(this.getTypeTerm(),
+        Inequality ineq = new Inequality(this.getTypeTerm(),
                 new TypeConstant(type));
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Set the type of this port. The type is represented by an instance
@@ -436,51 +436,25 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param type A Type.
      */
     public void setTypeEquals(Type type) {
-	try {
-	    _workspace.getWriteAccess();
+        try {
+            _workspace.getWriteAccess();
 
-	    if (type instanceof BaseType) {
-	    	_declaredType = type;
-	    } else {
-		// new type is StructuredType
-		StructuredType typeStruct = (StructuredType)type;
+            try {
+                _declaredType = (Type)type.clone();
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalErrorException(
+                    "TypedIOPort.setTypeEquals: Cannot clone type" +
+                    cnse.getMessage());
+            }
 
-		if (typeStruct.isConstant()) {
-		    _declaredType = type;
-		} else {
-		    // new type is a variable StructuredType.
-		    try {
-			if (typeStruct.getUser() == null) {
-			    typeStruct.setUser(this);
-			    _declaredType = type;
-			} else {
-			    // new type already has user, clone it.
-			    StructuredType newType =
-				(StructuredType)typeStruct.clone();
-			    newType.setUser(this);
-			    _declaredType = newType;
-			}
-		    } catch (IllegalActionException ex) {
-			// since the user was null, this should never happen.
-			throw new InternalErrorException(
-                                "TypedIOPort.setTypeEquals: " + ex.getMessage());
-                    } catch (CloneNotSupportedException ex2) {
-                        throw new InternalErrorException(
-                                "TypedIOPort.setTypeEquals: " +
-                                "Cannot clone typeStruct" +
-                                ex2.getMessage());
-                    }
-		}
-	    }
+            if (!_resolvedType.isEqualTo(_declaredType)) {
+                _notifyTypeListener(_resolvedType, _declaredType);
+            }
+            _resolvedType = _declaredType;
 
-	    if (!_resolvedType.isEqualTo(_declaredType)) {
-		_notifyTypeListener(_resolvedType, _declaredType);
-	    }
-	    _resolvedType = _declaredType;
-
-	} finally {
-	    _workspace.doneWriting();
-	}
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Constrain that the type of this port is the same as the type
@@ -488,12 +462,12 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
-	Inequality ineq = new Inequality(this.getTypeTerm(),
+        Inequality ineq = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
-	_constraints.add(ineq);
-	ineq = new Inequality(equal.getTypeTerm(),
+        _constraints.add(ineq);
+        ineq = new Inequality(equal.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.add(ineq);
+        _constraints.add(ineq);
     }
 
     /** Return the type constraints of this port in the form of a
@@ -502,7 +476,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
-	return _constraints;
+        return _constraints;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -529,7 +503,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         if (!(container instanceof TypedActor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects " +
-		    "implementing the TypedActor interface.");
+                    "implementing the TypedActor interface.");
         }
     }
 
@@ -617,10 +591,10 @@ public class TypedIOPort extends IOPort implements Typeable {
                     result += " ";
                 }
                 result += "type {declared ";
-		result += _declaredType.toString();
+                result += _declaredType.toString();
                 result += " resolved ";
-		result += getType().toString();
-		result += "}";
+                result += getType().toString();
+                result += "}";
             }
             if (bracket == 2) result += "}";
             return result;
@@ -636,13 +610,13 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     private void _notifyTypeListener(Type oldType, Type newType) {
 
-	if (_typeListeners.size() > 0) {
-	    TypeEvent event = new TypeEvent(this, oldType, newType);
-	    Iterator listeners = _typeListeners.iterator();
-	    while (listeners.hasNext()) {
-		((TypeListener)listeners.next()).typeChanged(event);
-	    }
-	}
+        if (_typeListeners.size() > 0) {
+            TypeEvent event = new TypeEvent(this, oldType, newType);
+            Iterator listeners = _typeListeners.iterator();
+            while (listeners.hasNext()) {
+                ((TypeListener)listeners.next()).typeChanged(event);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -664,87 +638,87 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     private class TypeTerm implements InequalityTerm {
 
-	// pass the port reference in the constructor so it can be
-	// returned by getAssociatedObject().
-	private TypeTerm(TypedIOPort port) {
-	    _port = port;
-	}
+        // pass the port reference in the constructor so it can be
+        // returned by getAssociatedObject().
+        private TypeTerm(TypedIOPort port) {
+            _port = port;
+        }
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return this TypedIOPort.
-	 *  @return A TypedIOPort.
-	 */
-	public Object getAssociatedObject() {
-	    return _port;
-	}
+        /** Return this TypedIOPort.
+         *  @return A TypedIOPort.
+         */
+        public Object getAssociatedObject() {
+            return _port;
+        }
 
-	/** Return the type of this TypedIOPort.
-	 */
-	public Object getValue() {
-	    return getType();
+        /** Return the type of this TypedIOPort.
+         */
+        public Object getValue() {
+            return getType();
         }
 
         /** Return this TypeTerm in an array if this term represent
-	 *  a type variable. This term represents a type variable
-	 *  if the type of this port is not set through setTypeEquals().
+         *  a type variable. This term represents a type variable
+         *  if the type of this port is not set through setTypeEquals().
          *  If the type of this port is set, return an array of size zero.
-	 *  @return An array of InequalityTerm.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if (isSettable()) {
-	    	InequalityTerm[] variable = new InequalityTerm[1];
-	    	variable[0] = this;
-	    	return variable;
-	    }
-	    return (new InequalityTerm[0]);
+            if (isSettable()) {
+                    InequalityTerm[] variable = new InequalityTerm[1];
+                    variable[0] = this;
+                    return variable;
+            }
+            return (new InequalityTerm[0]);
         }
 
         /** Reset the variable part of this type to the specified type.
-	 *  @param e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If the type is not settable,
-	 *   or the argument is not a Type.
+         *   or the argument is not a Type.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    if ( !isSettable()) {
-	    	throw new IllegalActionException("TypeTerm.initialize: " +
+                throws IllegalActionException {
+            if ( !isSettable()) {
+                    throw new IllegalActionException("TypeTerm.initialize: " +
                         "Cannot initialize a constant type.");
-	    }
+            }
 
-	    if ( !(e instanceof Type)) {
-		throw new IllegalActionException("TypeTerm.initialize: " +
+            if ( !(e instanceof Type)) {
+                throw new IllegalActionException("TypeTerm.initialize: " +
                         "The argument is not a Type.");
-	    }
+            }
 
-	    Type oldType = _resolvedType;
-	    if (_declaredType == BaseType.NAT) {
-	        _resolvedType = (Type)e;
-	    } else {
-		// _declaredType is a StructuredType
-		((StructuredType)_resolvedType).initialize((Type)e);
-	    }
+            Type oldType = _resolvedType;
+            if (_declaredType == BaseType.NAT) {
+                _resolvedType = (Type)e;
+            } else {
+                // _declaredType is a StructuredType
+                ((StructuredType)_resolvedType).initialize((Type)e);
+            }
 
-	    if (!oldType.isEqualTo(_resolvedType)) {
-		_notifyTypeListener(oldType, _resolvedType);
-	    }
+            if (!oldType.isEqualTo(_resolvedType)) {
+                _notifyTypeListener(oldType, _resolvedType);
+            }
         }
 
         /** Test if the type of this TypedIOPort can be changed.
-	 *  The type can be changed if setTypeEquals() is not called,
-	 *  or called with a BaseType.NAT argument.
+         *  The type can be changed if setTypeEquals() is not called,
+         *  or called with a BaseType.NAT argument.
          *  @return True if the type of this TypedIOPort can be changed;
-	 *   false otherwise.
+         *   false otherwise.
          */
         public boolean isSettable() {
-	    return !_declaredType.isConstant();
+            return !_declaredType.isConstant();
         }
 
         /** Check whether the current type of this port is acceptable.
          *  A type is acceptable if it represents an instantiable object.
-	 *  Any type is acceptable (including non-instantiable types)
-	 *  if the associated port is not connected to anything.
+         *  Any type is acceptable (including non-instantiable types)
+         *  if the associated port is not connected to anything.
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
@@ -759,37 +733,37 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Set the type of this port.
-	 *  @parameter e A Type.
+         *  @parameter e A Type.
          *  @exception IllegalActionException If the argument is not a
-	 *   substitution instance of the type of this port.
+         *   substitution instance of the type of this port.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if ( !isSettable()) {
-		throw new IllegalActionException(
+            if ( !isSettable()) {
+                throw new IllegalActionException(
                         "TypedIOPort$TypeTerm.setValue: The type is not " +
                         "settable.");
-	    }
+            }
 
-	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-		// FIXME: should throw TypeConflictException.
-	        throw new IllegalActionException(
+            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+                // FIXME: should throw TypeConflictException.
+                throw new IllegalActionException(
                         "TypedIOPort$TypeTerm.setValue: The new type is not a " +
                         "substitution instance of the type of this port. " +
                         "port: " + _port.getFullName() + " portType: " +
                         getValue() + " newType: " + e.toString());
-	    }
+            }
 
-	    Type oldType = _resolvedType;
-	    if (_declaredType == BaseType.NAT) {
-		_resolvedType = (Type)e;
-	    } else {
-		// _declaredType is a StructuredType
-		((StructuredType)_resolvedType).updateType((StructuredType)e);
-	    }
+            Type oldType = _resolvedType;
+            if (_declaredType == BaseType.NAT) {
+                _resolvedType = (Type)e;
+            } else {
+                // _declaredType is a StructuredType
+                ((StructuredType)_resolvedType).updateType((StructuredType)e);
+            }
 
-	    if (!oldType.isEqualTo((Type)e)) {
-		_notifyTypeListener(oldType, _resolvedType);
-	    }
+            if (!oldType.isEqualTo((Type)e)) {
+                _notifyTypeListener(oldType, _resolvedType);
+            }
         }
 
         /** Override the base class to give a description of the port

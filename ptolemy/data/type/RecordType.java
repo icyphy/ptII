@@ -167,16 +167,6 @@ public class RecordType extends StructuredType {
         return (InequalityTerm)_fields.get(label);
     }
 
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    // FIXME: This method will be removed after verifying "user" is not
-    // needed.
-    public Object getUser() {
-        return null;
-    }
-
     /** Test if the argument token is compatible with this type.
      *  If this type is a constant, the argument is compatible if it can be
      *  converted losslessly to a token of this type; If this type is a
@@ -314,20 +304,6 @@ public class RecordType extends StructuredType {
         return true;
     }
 
-    /** Set the user of this RecordType. The user can only be set once,
-     *  otherwise an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    // FIXME: This method will be removed after verifying "user" is not
-    // needed.
-    public void setUser(Object user)
-            throws IllegalActionException {
-//        throw new IllegalActionException("RecordType.setUser: " +
-//                    "This method should not be called.");
-    }
-
     /** Return the string representation of this type. The format is
      *  {<lable>:<type>, <label>:<type>, ...}.
      *  The record fields are listed in the lexicographical order of the
@@ -446,23 +422,6 @@ public class RecordType extends StructuredType {
         }
 
         return CPO.INCOMPARABLE;
-    }
-
-    /** Determine if the specified StructuredType is this object, or
-     *  a user of this type, or a user of a higher level.
-     *  @return True if the above condition is true.
-     */
-    // FIXME: this method will be removed.
-    protected boolean _deepIsUser(Object st) {
-//        if (st == this) {
-//            return true;
-//        }
-
-//        if (_user != null && (_user instanceof StructuredType)) {
-//            return ((StructuredType)_user)._deepIsUser(st);
-//        }
-
-        return false;
     }
 
     /** Return a static instance of RecordType.
@@ -714,7 +673,13 @@ public class RecordType extends StructuredType {
             }
 
             if (_declaredType == BaseType.NAT) {
-                _resolvedType = (Type)e;
+	        try {
+                    _resolvedType = (Type)((Type)e).clone();
+		} catch (CloneNotSupportedException cnse) {
+                    throw new InternalErrorException(
+		        "RecordType$FieldType.setValue: " +
+                        "The specified type cannot be cloned.");
+                }
             } else {
                 ((StructuredType)_resolvedType).updateType((StructuredType)e);
             }

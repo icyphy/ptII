@@ -57,26 +57,11 @@ public abstract class StructuredType implements Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a deep copy this StructuredType. The returned copy does
-     *  not have the user set.
+    /** Return a deep copy this StructuredType.
      *  @return A StructuredType.
      *  @exception CloneNotSupportedException Not thrown.
      */
     abstract public Object clone() throws CloneNotSupportedException;
-
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    public abstract Object getUser();
-
-    /** Set the user of this StructuredType. The user can only be set once
-     *  Otherwise, an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    public abstract void setUser(Object user) throws IllegalActionException;
 
     /** Set the elements that have declared type BaseType.ANY to the
      *  specified type.
@@ -115,14 +100,6 @@ public abstract class StructuredType implements Type {
      */
     protected abstract int _compare(StructuredType t);
 
-    /** Determine if the specified StructuredType is a direct or
-     *  indirect user of this type. This method returns true if the
-     *  argument is this StructuredType itself, or is the user of this
-     *  StructuredType, or the user on a higher level.
-     *  @return A boolean.
-     */
-    protected abstract boolean _deepIsUser(Object st);
-
     /** Return a static instance of this structured type. The return
      *  value is used by TypeLattice to represent this type.
      *  @return a StructuredType.
@@ -148,5 +125,5 @@ public abstract class StructuredType implements Type {
      *   not the same structured type as this one.
      */
     protected abstract StructuredType _leastUpperBound(StructuredType t);
-
 }
+

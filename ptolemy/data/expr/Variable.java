@@ -783,41 +783,14 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
         }
 
-	// set _declaredType to the argument.
-	if (type instanceof BaseType) {
-            _declaredType = type;
-	} else {
-	    // new type is StructuredType
-	    StructuredType typeStruct = (StructuredType)type;
-
-	    if (typeStruct.isConstant()) {
-          	_declaredType = type;
-	    } else {
-		// new type is a variable StructuredType.
-		try {
-		    if (typeStruct.getUser() == null) {
-		        typeStruct.setUser(this);
-			_declaredType = type;
-		    } else {
-		        // new type already has a user, clone it.
-			StructuredType newType =
-				    (StructuredType)typeStruct.clone();
-			newType.setUser(this);
-			_declaredType = newType;
-		    }
-		} catch (IllegalActionException ex) {
-		    // since the user was null, this should never happen.
-		    throw new InternalErrorException("Variable.setTypeEquals: "
-			    + "Cannot set user on the new type."
-			    + ex.getMessage());
-		} catch (CloneNotSupportedException ex2) {
-		    throw new InternalErrorException(
-                            "Variable.setTypeEquals: " +
-                            " Cannot clone typeStruct" +
-                            ex2.getMessage());
-		}
-	    }
-	}
+	// set _declaredType to a clone of the argument since the argument
+	// may be a structured type and may change later.
+	try {
+	    _declaredType = (Type)type.clone();
+	} catch (CloneNotSupportedException cnse) {
+            throw new InternalErrorException("Variable.setTypeEquals: " +
+                    "The specified type cannot be cloned.");
+        }
 
 	// set _varType. It is _token.getType() if _token is not null, or
 	// _declaredType if _token is null.

@@ -60,16 +60,20 @@ public class ArrayType extends StructuredType {
                     + " null");
 	}
 
-	_setElementType(elementType);
-	_declaredElementType = elementType;
+        try {
+	    _declaredElementType = (Type)elementType.clone();
+	} catch (CloneNotSupportedException cnse) {
+            throw new InternalErrorException("ArrayType: The specified type " +
+	        "cannot be cloned.");
+        }
+	_elementType = _declaredElementType;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return a deep copy of this ArrayType if it is a variable, or
-     *  itself if it is a constant. The returned copy does
-     *  not have the user set.
+     *  itself if it is a constant.
      *  @return An ArrayType.
      */
     public Object clone() {
@@ -177,14 +181,6 @@ public class ArrayType extends StructuredType {
 	return _elemTypeTerm;
     }
 
-    /** Return the user of this StructuredType. If the user is not set,
-     *  return null.
-     *  @return An Object.
-     */
-    public Object getUser() {
-	return _user;
-    }
-
     /** Test if the argument token is compatible with this type.
      *  If this type is a constant, the argument is compatible if it can be
      *  converted losslessly to a token of this type; If this type is a
@@ -277,27 +273,6 @@ public class ArrayType extends StructuredType {
 	return _declaredElementType.isSubstitutionInstance(argElemType);
     }
 
-    /** Set the user of this ArrayType. The user can only be set once,
-     *  otherwise an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If the user is already set, or
-     *   if the argument is null.
-     */
-    public void setUser(Object user)
-	    throws IllegalActionException {
-	if (_user != null) {
-	    throw new IllegalActionException("ArrayType._setUser: " +
-                    "The user is already set.");
-	}
-
-	if (user == null) {
-	    throw new IllegalActionException("ArrayType._setUser" +
-                    "The specified user is null.");
-	}
-
-	_user = user;
-    }
-
     /** Return the string representation of this type. The format is
      *  (<type>) array, where <type> is is the elemenet type.
      *  @return A String.
@@ -337,12 +312,17 @@ public class ArrayType extends StructuredType {
 	    throws IllegalActionException {
 	if ( !this.isSubstitutionInstance(newType)) {
 	    throw new IllegalActionException("ArrayType.updateType: " +
-                    "The argument is not a substitution instance of this type.");
+                "The argument is not a substitution instance of this type.");
 	}
 
 	Type newElemType = ((ArrayType)newType).getElementType();
 	if (_declaredElementType == BaseType.NAT) {
-	    _setElementType(newElemType);
+	    try {
+	        _elementType = (Type)newElemType.clone();
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalErrorException("RecordType.updateType: " +
+                    "The specified type cannot be cloned.");
+            }
 	} else {
 	    // _declaredElementType is a StructuredType. _elementType
 	    // must also be.
@@ -374,22 +354,6 @@ public class ArrayType extends StructuredType {
 
 	return TypeLattice.compare(_elementType,
                 ((ArrayType)t).getElementType());
-    }
-
-    /** Determine if the specified StructuredType is this object, or
-     *  a user of this type, or a user of a higher level.
-     *  @return True if the above condition is true.
-     */
-    protected boolean _deepIsUser(Object st) {
-	if (st == this) {
-	    return true;
-	}
-
-	if (_user != null && (_user instanceof StructuredType)) {
-	    return ((StructuredType)_user)._deepIsUser(st);
-	}
-
-	return false;
     }
 
     /** Return a static instance of ArrayType.
@@ -450,54 +414,12 @@ public class ArrayType extends StructuredType {
 	return new ArrayToken(tokArray);
     }
 
-    // Set the elementType. Clone and set the user of the specified
-    // element type if necessary.
-    private void _setElementType(Type elementType) {
-	if (elementType instanceof BaseType) {
-            _elementType = elementType;
-	} else {
-	    // elementType is a StructuredType
-	    StructuredType elemTypeStruct = (StructuredType)elementType;
-
-	    if (elemTypeStruct.isConstant()) {
-                _elementType = elementType;
-	    } else {
-	        // elementType is a non-constant StructuredType
-		try {
-	            if (elemTypeStruct.getUser() == null) {
-		        elemTypeStruct.setUser(this);
-                        _elementType = elementType;
-		    } else {
-		        // user already set, clone elementType
-		        StructuredType newElemType =
-                            (StructuredType)elemTypeStruct.clone();
-		        newElemType.setUser(this);
-		        _elementType = newElemType;
-		    }
-		} catch (IllegalActionException ex) {
-		    // since the user was null, this should never happen.
-		    throw new InternalErrorException(
-                            "ArrayToken._setElementType: " +
-                            " Cannot set user on the elementType. " +
-                            ex.getMessage());
-		} catch (CloneNotSupportedException ex2) {
-		    throw new InternalErrorException(
-                            "ArrayToken._setElementType: " +
-                            " Cannot clone elemTypeStruct" +
-                            ex2.getMessage());
-		}
-	    }
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
     // the type of array elements.
     private Type _declaredElementType;
     private Type _elementType;
-
-    private Object _user = null;
 
     private ElementTypeTerm _elemTypeTerm = null;
 
@@ -563,8 +485,6 @@ public class ArrayType extends StructuredType {
                         + "The argument is not a Type.");
 	    }
 
-//	    reset();
-
 	    if (_declaredElementType == BaseType.NAT) {
 	        _elementType = (Type)e;
 	    } else {
@@ -604,26 +524,9 @@ public class ArrayType extends StructuredType {
                         "settable.");
 	    }
 
-	    // check for circular type containment
-	    if (e instanceof StructuredType) {
-		if (_arrayType._deepIsUser(e)) {
-		    throw new IllegalActionException(
-                            "ElementTypeTerm.setValue: Attempt to construct " +
-                            "circular type structure.");
-		}
-	    }
-
 	    if ( !_declaredElementType.isSubstitutionInstance((Type)e)) {
 	        // The LUB of the _elementType and another type is General,
 		// this is a type conflict.
-
-		// FIXME Should throw TypeConflictException
-		// LinkedList conflict = new LinkedList();
-		// conflict.add(_arrayType);
-		// throw new TypeConflictException(conflict.elements(),
-		//    "Type conflict occurs when updating array element "
-		//    + "type. Old type: " + _elementType.toString() +
-		//    + "; New type: " + e.toString());
 
 	    	throw new IllegalActionException("ElementTypeTerm.setValue:" +
                         " The new type is not a substitution instance of the " +
@@ -633,7 +536,13 @@ public class ArrayType extends StructuredType {
 	    }
 
 	    if (_declaredElementType == BaseType.NAT) {
-		_elementType = (Type)e;
+	        try {
+		    _elementType = (Type)((Type)e).clone();
+                } catch (CloneNotSupportedException cnse) {
+                    throw new InternalErrorException(
+		        "ArrayType$ElementTypeTerm.setValue: " +
+                        "The specified type cannot be cloned.");
+                }
 	    } else {
 	        ((StructuredType)_elementType).updateType((StructuredType)e);
 	    }
