@@ -48,7 +48,8 @@ TCL_SRCS = \
 JSRCS = \
 	DotProductSystem.java \
 	RampArraySystem.java \
-	RampSystem.java
+	RampSystem.java \
+	TwoArraysIn.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -90,18 +91,21 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 depend:
 	@echo "no dependencies in this directory"
 
-RampArraySystem: jclass
+
+# Generate code for a Ramp->FileWriter demo that uses
+# array tokens
+# To generate code in the current directory:
+#   rm -rf ~/ptII/cg; make CGROOT=. ramp2
+CGROOT=$(ROOT)
+ramp2: interpret_ramp2 generate_ramp2 compile_ramp2 run_ramp2
+# Run using the standard Ptolemy infrastructure
+interpret_ramp2: jclass
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.domains.sdf.codegen.test.RampArraySystem \
 		-iterations 10
 
-
-# Generate code for a trivial ramp2 demo - much faster for testing
-# To generate code in the current directory:
-#   rm -rf ~/ptII/cg; make CGROOT=. ramp2
-CGROOT=$(ROOT)
-ramp2: RampArraySystem.class generate_ramp2 compile_ramp2 run_ramp2
+# Generate code in $CGROOT/RampArraySystem
 generate_ramp2:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
@@ -109,8 +113,11 @@ generate_ramp2:
 	-iterations 10 \
 	-outdir $(CGROOT) -outpkg cg.RampArraySystem
 
+# Compile code in $CGROOT/RampArraySystem
 compile_ramp2:
 	(cd $(CGROOT)/cg/RampArraySystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+
+# Run in $CGROOT/RampArraySystem
 run_ramp2:
 	(cd $(CGROOT)/cg/RampArraySystem; \
 		"$(JAVA)" -classpath ../.. cg.RampArraySystem.CG_Main)

@@ -51,18 +51,26 @@ public class RampArraySystem extends TypedCompositeActor {
 
         try {
             setDirector(new SDFDirector(this, "director"));
+	    //_recorderListener = new RecorderListener();
             //Const ramp = new Const(this, "ramp");
             Ramp ramp = new Ramp(this, "ramp");
-            ramp.init.setExpression("{0,0}");
-            ramp.step.setExpression("{1,1}");
+            ramp.init.setExpression("{0.0,0.1}");
+            ramp.step.setExpression("{1,2}");
             FileWriter fileWriter = new FileWriter(this, "fileWriter");
             connect(ramp.output, fileWriter.input);
 
             // A hack to get code generation to work
             //fileWriter.input.setTypeEquals(BaseType.INT);
-
         } catch (NameDuplicationException e) {
             throw new RuntimeException(e.toString());
         }
     }
+    /*
+    public boolean postfire() throws IllegalActionException {
+	boolean returnValue = super.postfire();
+	System.out.println(_recorderListener.getMessages());
+	return returnValue;
+    }
+    private RecorderListener _recorderListener = null;
+    */
 }
