@@ -167,9 +167,15 @@ public class HTMLViewerTableau extends Tableau {
                     tableau = new HTMLViewerTableau(
                             (HTMLEffigy)effigy, "htmlTableau");
                 }
+		// Unfortunately, if we have a jar url, (for example
+		// jar:file:/C:/foo.jar!/intro.htm
+		// then the java.net.URI toURL() method will return 
+		// a URL like jar:, which is missing the file: part
+		// This breaks Ptolemy II under WebStart.
+		URL pageURL = new URL(effigy.uri.getURI().toString());
 		try {
 		    ((HTMLViewer)tableau.getFrame())
-                            .setPage(effigy.uri.getURL());
+			.setPage(pageURL);
 		} catch (IOException io) {
 		    // setPage() throws an IOException if the page can't
 		    // be found.  If we are under Web Start, it could be
