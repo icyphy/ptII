@@ -177,8 +177,8 @@ case "`basename $0`" in
 	jarfile=$JINI_LIB_DIR/jini-examples.jar
 	case "${OSTYPE-no}" in
 	    cygwin*)
-		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's/jini1_0_1//'`
-		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_ROOT_DIR"
+		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's@\\\jini1_0_1@@'`
+		javaflag="-Dcom.sun.jini.example.service.rootDir=\"$JINI_ROOT_DIR\""
 	    ;;
 	    *)
 		JINI_ROOT_DIR=`echo $JINI_DIR | sed 's/jini1_0_1//'`
