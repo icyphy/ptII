@@ -303,8 +303,7 @@ public class InequalitySolver {
         for (int i = 0; i < variables.length; i++) {
             if ( !variables[i].isSettable()) {
                 throw new InvalidStateException(
-                        "InequalitySolver._addToClist: variable in an"
-                        + "InequalityTerm is not settable.");
+                        "Variable in an InequalityTerm is not settable.");
             }
 
             ArrayList entry = (ArrayList)(_Clist.get(variables[i]));
