@@ -1,15 +1,19 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="" class="ptolemy.actor.TypedCompositeActor">
+<entity name="test2" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="74.0, 43.0">
+        </property>
     </property>
     <port name="port8" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
+        <property name="_location" class="ptolemy.moml.Location" value="459.99998474121094, 225.0">
+        </property>
     </port>
     <entity name="SequencePlotter1" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -20,10 +24,8 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="288.0, 98.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="459.99998474121094, 105.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -32,11 +34,9 @@
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="85.0, 119.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 225.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -46,8 +46,7 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex">
-            <location value="172.0, 148.0"/>
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="300.0, 225.0">
         </vertex>
     </relation>
     <link port="port8" relation="relation5"/>
