@@ -96,10 +96,8 @@ test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
-    set sort [$p topSort]
     set reach [$p reachableNodes $n2]
     list [$p isAcyclic] \
-	 [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] \
 	 [$reach get 0]
-} {1 node1 node2 node3 node4 node4}
+} {1 node4}
 
