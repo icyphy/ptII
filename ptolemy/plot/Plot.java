@@ -480,6 +480,8 @@ public class Plot extends PlotBox {
     
     /**
      * Read in a pxgraph format binary file.
+     * @exception PlotDataException if there is a serious data format problem.
+     * @exception java.io.IOException if an I/O error occurs.
      */	
     protected void convertBinaryStream(DataInputStream in) 
 	throws PlotDataException,  IOException

@@ -882,6 +882,8 @@ public class PlotBox extends Applet {
 
     /**
      * Abstract method - convert a Binary Stream
+     * @exception PlotDataException if there is a serious data format problem.
+     * @exception java.io.IOException if an I/O error occurs.
      */
     protected void convertBinaryStream(DataInputStream in) throws
 	PlotDataException, IOException {
