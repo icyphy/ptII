@@ -152,7 +152,7 @@ public class Translate2D extends GRTransform2D {
                 xOffset = in;
                 if (!isAccumulating) {
                     // Subtract the current xOrigin.
-                    xOffset = xOffset-origin.getX()+initialX;
+                    xOffset = xOffset - origin.getX() + initialX;
                 }
             }
         }
@@ -164,7 +164,7 @@ public class Translate2D extends GRTransform2D {
                 yOffset = in;
                 if (!isAccumulating) {
                     // Subtract the current yOrigin.
-                    yOffset = yOffset-origin.getY()+initialY;
+                    yOffset = yOffset - origin.getY() + initialY;
                 }
             }
         }
