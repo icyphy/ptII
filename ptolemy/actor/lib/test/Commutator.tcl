@@ -113,25 +113,14 @@ test Commutator-4.1 {run with mutations} {
     # from SDFScheduler._setBufferSize
     list $results \
 	    [enumToTokenValues [$rec getRecord 0]]
-} {{StreamChangeRequest.changeExecuted(): <group>
-<relation name="r1">
-<property name="bufferSize" class="ptolemy.data.expr.Variable" value="1"/>
-</relation>
-<relation name="_R">
-<property name="bufferSize" class="ptolemy.data.expr.Variable" value="2"/>
-</relation>
-<relation name="_R2">
-<property name="bufferSize" class="ptolemy.data.expr.Variable" value="1"/>
-</relation>
-</group> succeeded
-StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
+} {{StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
 StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
 StreamChangeRequest.changeExecuted(): <group>
 <relation name="_R">
-<property name="bufferSize" class="ptolemy.data.expr.Variable" value="1"/>
+<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </relation>
 <relation name="_R2">
-<property name="bufferSize" class="ptolemy.data.expr.Variable" value="1"/>
+<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </relation>
 </group> succeeded
 } {0 0 1}}
