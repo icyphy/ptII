@@ -49,6 +49,15 @@ recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
 
+ <p>This tar file (ptplot5.1p2.tar.gz), will unpack into called
+ptplot5.1p2, and the configure-make-make install process will not
+install any files outside of this ptplot5.1p2 directory.  So if you
+unpack the tar file into /usr/local, after installing you will have
+/usr/local/ptplot5.1p2, and you may want to tell users to add
+/usr/local/ptplot5.1p2/bin to their PATH.  The scripts in the bin
+directory will run the plotter as a standalone application, or they
+can add /usr/local/ptplot5.1p2 to their Java CLASSPATH.
+
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
 Cygwin toolkit from
