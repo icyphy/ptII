@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Matlab Expression Actor demo
+# Makefile for Ptolemy II Matlab CT Actor demo
 #
 # @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1999-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/matlab/demo/MatlabExpression
+ME =		ptolemy/matlab/demo/MatlabCT
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	MatlabExpression
+PTPACKAGE = 	MatlabCT
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	MatlabExpression.xml \
+	MatlabCT.xml \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -74,10 +74,10 @@ install: all jars
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" MatlabExpression.xml
+	"$(PTII)/bin/ptolemy" MatlabCT.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" MatlabExpression.xml
+	"$(PTII)/bin/vergil" MatlabCT.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
