@@ -37,7 +37,6 @@ import ptolemy.domains.sc.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.lib.*;
-import ptolemy.automata.util.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.util.*;
