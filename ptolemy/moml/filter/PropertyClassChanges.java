@@ -339,6 +339,12 @@ public class PropertyClassChanges implements MoMLFilter {
         // Key = property name, Value = new class name
         modalModelClassChanges.put("directorClass",
                 "ptolemy.data.expr.StringParameter");
+        // Remove the _Director attribute, which does not help the modal model
+        // to decide which director to choose. This attribugte will be 
+        // automatically created. This attribute will not appear in the MoML 
+        // output any more.
+        // NOTE: Remove a property by setting the new class to "REMOVED!".
+        modalModelClassChanges.put("_Director", "REMOVED!");
 
         _actorsWithPropertyClassChanges
             .put("ptolemy.domains.fsm.modal.ModalModel",
@@ -427,20 +433,5 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.VariableFIR",
                 rateParameterChanges);
-
-        ///////////////////////////////////////////////////////////
-        // Actors that have properties that will be removed.
-        // NOTE: Remove a property by setting the new class to "REMOVED!".
-
-        // ModalModel
-        // Remove the _Director attribute, whose default value is HSDirector.
-        // Remove the directorClass attribute, which does not reflect the 
-        // correct director that is needed by the model.
-        HashMap modalModelPropertyChanges = new HashMap();
-        modalModelPropertyChanges.put("_Director", "REMOVED!");
-
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.fsm.modal.ModalModel",
-                modalModelPropertyChanges);
     }
 }
