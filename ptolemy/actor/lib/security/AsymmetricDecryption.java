@@ -53,17 +53,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricDecryption
 /**
-This actor takes an unsigned byte array at the input and decrypts the message.
-The resulting output is an unsigned byte array. Various ciphers that are
-implemented by "providers" and installed maybe used by specifying the algorithm
-in the <i>algorithm</i> parameter.  The algorithm specified must be asymmetric.
-The mode and padding can also be specified in the <i>mode</i> and <i>padding</i>
-parameters. In case a provider specific instance of an algorithm is needed the
-provider may also be specified in the <i>provider</i> parameter.  This actor
-creates a private key for decryption use and a public key which is sent on the
-<i>keyOut</i> port to an encryption actor for encryption purposes.  Key creation
-is done in pre-initialization and is put on the <i>keyOut</i> port during
-initialization so the encryption actor has a key to use when it is first fired.
+This actor takes an unsigned byte array at the input and decrypts the
+message.  The resulting output is an unsigned byte array. Various
+ciphers that are implemented by "providers" and installed maybe used
+by specifying the algorithm in the <i>algorithm</i> parameter.  The
+algorithm specified must be asymmetric.  The mode and padding can also
+be specified in the <i>mode</i> and <i>padding</i> parameters. In case
+a provider specific instance of an algorithm is needed the provider
+may also be specified in the <i>provider</i> parameter.  This actor
+creates a private key for decryption use and a public key which is
+sent on the <i>keyOut</i> port to an encryption actor for encryption
+purposes.  Key creation is done in pre-initialization and is put on
+the <i>keyOut</i> port during initialization so the encryption actor
+has a key to use when it is first fired.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
