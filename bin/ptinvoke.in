@@ -342,14 +342,24 @@ fi
 
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
-case "${OSTYPE-no}" in
-# Cygwin Bash
-    cygwin*)
+if [ "${OSTYPE-no}" = "no" ]; then
+    case "`uname -s`" in
+    CYGWIN*) 
 	windows=yes;;
-# Tcsh
+    # Tcsh
     Windows*)
 	windows=yes;;
-esac
+    esac
+else    
+    case "${OSTYPE-no}" in
+    # Cygwin Bash
+    cygwin*)
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+fi
 
 # If JAVAHOME is not set, then try to set it
 if [ -z "$JAVAHOME" ]; then
@@ -407,6 +417,18 @@ if [ "$windows" = "yes" ]; then
     *)
 	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
     esac
+
+    # Set the path to include $PTII/bin so that the Matlab interface
+    # will work.  
+
+    # Unfortunately, we need to change things like d: to /cygdrive/d,
+    # and deal with backslashes.  Note that java does not understand
+    # /cygdrive, so we can't use PTII_CYGDRIVE when we invoke java.
+    PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
+    
+    # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
+    PATH="${PTII_CYGDRIVE};$PATH"
+    export PATH
 else
     PTII_DIR=$PTII
 fi
