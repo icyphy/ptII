@@ -302,7 +302,7 @@ public class ExecShellTableau extends Tableau
 
 
                 try {
-                    int processReturnCode = _interpreter.waitFor();
+                    /*int processReturnCode = */ _interpreter.waitFor();
                     synchronized(this) {
                         _interpreter = null;
                     }
