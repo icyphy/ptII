@@ -53,10 +53,10 @@ controller factory found as an attribute will be used.
 It is a singleton, so placing it any container will replace any
 previous controller factory with the same name.
 
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee
 @version $Id$
 */
-public class NodeControllerFactory extends ClassFactoryAttribute /*SingletonAttribute*/ {
+public class NodeControllerFactory extends SingletonAttribute {
 
     /** Construct a new attribute with the given container and name.
      *  @param container The container.
@@ -81,15 +81,7 @@ public class NodeControllerFactory extends ClassFactoryAttribute /*SingletonAttr
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
-    public NamedObjController create(GraphController controller)
-        throws IllegalActionException {
-	if (! IconController.USE_CLASSFACTORYATTRIBUTE) {
-            return new IconController(controller);
-	}
-	System.out.println("NodeControllerFactory.create(" +
-			   controller + ")");
-	Object[] args = new Object[1];
-	args[0] = controller;
-	return (NamedObjController)instantiate(args);
+    public NamedObjController create(GraphController controller) {
+        return new IconController(controller);
     }
 }

@@ -167,15 +167,10 @@ public abstract class BasicGraphController extends AbstractGraphController
                 if(factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory)
                            factoryList.get(0);
-                    try {
-                        NamedObjController controller = factory.create(this);
-                        controller.setConfiguration(getConfiguration());
-                        _initializeInteraction(controller);
-                        return controller;
-                    } catch (IllegalActionException ex) {
-                        throw new InternalErrorException(null, ex, 
-                                "Failed to create '" + this + "'");
-                    }
+                    NamedObjController controller = factory.create(this);
+                    controller.setConfiguration(getConfiguration());
+                    _initializeInteraction(controller);
+                    return controller;
                 }
             }
         }

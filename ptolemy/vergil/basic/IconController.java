@@ -80,28 +80,9 @@ public class IconController extends ParameterizedNodeController {
 	    // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
             try {
-		// FIXME: Temporary hack while we
-		// figure out kernel.util.ClassFactoryAttribute
-		if (USE_CLASSFACTORYATTRIBUTE) {
-		    List classFactoryList =
-			object
-			.attributeList(VergilClassFactoryAttribute.class);
-		    Iterator classFactories = classFactoryList.iterator();
-		    result = new CompositeFigure();
-		    while (classFactories.hasNext()) {
-			VergilClassFactoryAttribute classFactory =
-			    (VergilClassFactoryAttribute)classFactories.next();
-			System.out.println("IconController.IconRenderer."
-					   + "render():\n\t" 
-					   + classFactory);
-			classFactory.instantiateWithDefaultContainerAndName();
-		    }
-		}
-		// FIXME: End of temporary hack
-
                 List iconList = object.attributeList(EditorIcon.class);
                 if (iconList.size() == 0) {
-		    EditorIcon icon = new XMLIcon(object, "_iconController");
+		    EditorIcon icon = new XMLIcon(object, "_icon");
                     result = icon.createFigure();
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();
@@ -125,8 +106,4 @@ public class IconController extends ParameterizedNodeController {
 	    return result;
 	}
     }
-
-    // FIXME: Temporary hack while we
-    // use kernel.util.ClassFactoryAttribute
-    public static final boolean USE_CLASSFACTORYATTRIBUTE = false;
 }
