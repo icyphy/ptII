@@ -136,18 +136,17 @@ public class Scheduler extends NamedObj {
         return _container;
     }
 
-    /** Return the scheduling sequence. If the cached version of the
-     *  schedule is valid, return it directly. Otherwise call
-     *  _schedule() to reconstruct it. The validity of the current
-     *  schedule is set by the setValid() method.
-     *  If the scheduler has no container, or the container
-     *  StaticSchedulingDirector has no container, throw an
-     *  IllegalActionException.
-     *  This method read synchronize the workspace.
+    /** Return the scheduling sequence as an enumeration.
+     *  For efficiency, this method returns a cached version of the schedule,
+     *  if it is valid.  Otherwise, it calls the protected method _schedule()
+     *  to update the schedule.  Derived classes would normally override
+     *  the protected method, not this one.
+     *  The validity of the current schedule is set by the setValid() method.
+     *  This method is read-synchronized on the workspace.
      *
      * @return The Enumeration returned by the _schedule() method.
      * @exception IllegalActionException If the scheduler has no container
-     * (director), or the container has no container (CompositeActor).
+     *  (a director), or the director has no container (a CompositeActor).
      * @exception NotSchedulableException If the _schedule() method
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
@@ -158,14 +157,14 @@ public class Scheduler extends NamedObj {
             workspace().getReadAccess();
             StaticSchedulingDirector dir =
                 (StaticSchedulingDirector)getContainer();
-            if( dir == null) {
+            if (dir == null) {
                 throw new IllegalActionException(this,
-                        "is a dangling scheduler.");
+                        "Scheduler has no director.");
             }
             CompositeActor ca = (CompositeActor)(dir.getContainer());
-            if( ca == null) {
+            if (ca == null) {
                 throw new IllegalActionException(this,
-                        "is a dangling scheduler.");
+                        "Director has no container.");
             }
             if(!isValid()) {
                 _cachedSchedule = new ArrayList();
