@@ -63,7 +63,6 @@ OTHER_FILES_TO_BE_JARED = \
 	basicDirectors.xml \
 	basicLibrary.xml \
 	basicUtilities.xml \
-	basicTableauFactories.xml \
 	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
