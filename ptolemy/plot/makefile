@@ -50,7 +50,6 @@ CLASSPATH =	..
 # Sources that compile under JDK1.0.2 and later
 JSRCS1_0 = \
 	CmdLineArgException.java \
-	Message.java \
 	PlotBox.java \
 	Plot.java \
 	PlotApplet.java \
@@ -60,7 +59,7 @@ JSRCS1_0 = \
 
 # Sources that require JDK1.1 and later.
 JSRCS1_1 = \
-	Message.class \
+	Message.java \
 	Pxgraph.java
 
 JSRCS = $(JSRCS1_0) $(JSRCS1_1)
