@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;

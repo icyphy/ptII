@@ -1,6 +1,9 @@
 /*
 A library for mathematical operations on arrays of doubles.
 
+This file was automatically generated with a preprocessor, so that 
+similar array operations are supported on ints, longs, floats, and doubles. 
+
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
@@ -27,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -44,8 +47,11 @@ import java.lang.Double;              /* Needed by javadoc */
  * non-null. If a null array is passed to a method, a NullPointerException
  * will be thrown in the method or called methods.
  * <p>
+ * This file was automatically generated with a preprocessor, so that 
+ * similar matrix operations are supported on ints, longs, floats, and doubles. 
+ * <p> 
+ * 
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- * @version $Id$
  */
 
 public class DoubleArrayMath {
@@ -55,6 +61,18 @@ public class DoubleArrayMath {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a new array that is the formed by adding z to each element
+     *  of the input array.
+     */
+    public static final double[] add(final double[] array, final double z) {
+        int length = array.length;
+        double[] retval = new double[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] + z;
+        }
+        return retval;
+    }
 
     /** Return a new array that is the element-by-element sum of the two
      *  input arrays.
@@ -72,7 +90,7 @@ public class DoubleArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the absolute value of the input array.
+    /** Return a new array that is the element-by-element absolute value of the input array.
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] abs(final double[] array) {
@@ -166,6 +184,8 @@ public class DoubleArrayMath {
      *  then it is replaced by either the top or the bottom, depending on
      *  its sign.  To leave either the bottom or the top unconstrained,
      *  specify Double.NEGATIVE_INFINITY or Double.POSITIVE_INFINITY.
+
+
      *  If the length of the array is 0, return a new array of length 0.
      *  @param array An array of doubles.
      *  @param bottom The bottom limit.
@@ -176,20 +196,27 @@ public class DoubleArrayMath {
      final double bottom, final double top) {
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++) {
-            if ((array[i] > top) ||
-                    (array[i] == Double.NaN) ||
-                    (array[i] == Double.POSITIVE_INFINITY)) {
+            if ((array[i] > top) ||  
+                (array[i] == Double.NaN) ||
+                (array[i] == Double.POSITIVE_INFINITY)) {                 
+
+
                 result[i] = top;
             } else if ((array[i] < bottom) ||
                     (array[i] == -Double.NaN) ||
                     (array[i] == Double.NEGATIVE_INFINITY)) {
+
+
                 result[i] = bottom;
+                
             } else {
                 result[i] = array[i];
             }
         }
         return result;
     }
+
+
 
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
@@ -232,7 +259,7 @@ public class DoubleArrayMath {
            return resize(array, newLength); // allocates a new array
         }
 
-        double halfLength   = ((double) length) * 0.5;
+        double halfLength   = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil  = (int) Math.ceil(halfLength);
         double[] retval = new double[newLength];
@@ -246,7 +273,6 @@ public class DoubleArrayMath {
         return retval;
     }
 
-
     /** Return a new array of doubles that is formed by raising each
      *  element to the specified exponent.
      *  If the length of the array is 0, return a new array of length 0.
@@ -257,10 +283,11 @@ public class DoubleArrayMath {
         double[] retval = new double[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = Math.pow(array[i], exponent);
+            retval[i] = (double) Math.pow(array[i], exponent);
         }
         return retval;
     }
+
 
     /** Return a new array of length newLength that is formed by
      *  either truncating or padding the input array.
@@ -321,6 +348,7 @@ public class DoubleArrayMath {
         return retval;
     }
 
+
     /** Return a new array that is the element-by-element difference of the
      *  two input arrays, i.e. the first array minus the second array.
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -338,57 +366,62 @@ public class DoubleArrayMath {
         }
         return retval;
     }
+    
 
-    /** Return a new array that is formed by converting the shorts in
+    /** Return a new array that is formed by converting the doubles in
      *  the argument array to doubles.
      *  If the length of the argument array is 0,
      *  return a new array of length 0.
-     *  @param array An array of shorts.
+     *  @param array An array of double.
      *  @return A new array of doubles.
      */
-    public static final double[] toDoubleArray(final short[] array) {
+    public static final float[] toFloatArray(final double[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        float[] retval = new float[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            retval[i] = (float) array[i];
         }
         return retval;
     }
+    
 
-    /** Return a new array that is formed by converting the integers in
-     *  the argument array to doubles.
+
+    /** Return a new array that is formed by converting the doubles in
+     *  the argument array to integers.
      *  If the length of the argument array is 0,
      *  return a new array of length 0.
-     *  @param array An array of integers.
-     *  @return A new array of doubles.
+     *  @param array An array of double.
+     *  @return A new array of integers.
      */
-    public static final double[] toDoubleArray(final int[] array) {
+    public static final int[] toIntegerArray(final double[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        int[] retval = new int[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            retval[i] = (int) array[i];
         }
         return retval;
     }
+    
 
-    /** Return a new array that is formed by converting the floats in
-     *  the argument array to doubles.
+    /** Return a new array that is formed by converting the doubles in
+     *  the argument array to longs.
      *  If the length of the argument array is 0,
      *  return a new array of length 0.
-     *  @param array An array of floats.
-     *  @return A new array of doubles.
+     *  @param array An array of double.
+     *  @return A new array of longs.
      */
-    public static final double[] toDoubleArray(final float[] array) {
+    public static final long[] toLongArray(final double[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        long[] retval = new long[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            retval[i] = (long) array[i];
         }
         return retval;
     }
+    
 
     /** Return a new String representing the array, formatted as
      *  in Java array initializers.
