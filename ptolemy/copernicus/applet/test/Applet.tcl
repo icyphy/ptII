@@ -50,6 +50,10 @@ if {[info procs sootCodeGeneration] == "" } then {
 # Generate code for all the xml files in a directory.
 proc autoAppletCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
+	if { [string last FileWriter2.xml $file] != -1 \
+		|| [string last ReadFile2.xml $file] != -1 } {
+		next
+	}
 	puts "---- testing $file"
 	test "Auto" "Automatic test in file $file" {
 	    set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
@@ -64,10 +68,6 @@ proc autoAppletCG {autoDirectory} {
 proc autoAppletDemoCG {autoDirectory} {
     set i 0
     foreach file [glob $autoDirectory/*/demo/*/*.xml] {
-	if { [string last FileWriter2.xml $file] != -1 \
-		|| [string last ReadFile2.xml $file] != -1 } {
-		next
-	}
 	puts "---- testing $file"
 	incr i
 	test "Auto-$i" "Automatic test in file $file" {
