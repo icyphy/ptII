@@ -106,6 +106,7 @@ foreach i $configs {
     puts " Force everything to get expanded ptolemy/configs/$i"
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     
+
     test "$i-1.1" "Test to see if $i contains any bad XML" {
 	# force everything to get expanded
 	expr [string length [$configuration description]] > 0
@@ -221,4 +222,105 @@ foreach i $configs {
 	# throws an exception.
 	list $results
     } {{}}
+
+
+    test "$i-4.1" "Test to see if $i contains any actors that might not drag and drop properly by creating ChangeRequests " {
+
+	# This test caught a problem with AudioReader, where the initial
+	# default source URL parameter had a bogus value.
+
+	# Create a base model.
+	set baseModel {<?xml version="1.0" standalone="no"?>
+	    <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+	    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+	    <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+	    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+	    <property name="iterations" value="2"/>
+	    </property>
+	    </entity>
+	}
+
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser reset
+	set toplevel [java::cast ptolemy.actor.CompositeActor \
+			  [$parser parse $baseModel]]
+	set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+	$toplevel setManager $manager
+	
+
+	# Set up a StreamChangeListener to listen for errors
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printStream [java::new \
+		     {java.io.PrintStream java.io.OutputStream} $stream]
+	set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+			  $printStream]
+	$toplevel addChangeListener $listener
+
+	set cloneConfiguration \
+	    [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]} \
+	    {[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    
+	    #puts [$entity toString]
+	    #if [java::instanceof $entity ptolemy.kernel.util.NamedObj] {
+	    #	puts [[java::cast ptolemy.kernel.util.NamedObj $entity] \
+	    #		  getName]
+	    #}
+
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set fullName [$actor getName $configuration]
+	
+		set clone [java::cast ptolemy.actor.TypedAtomicActor \
+			       [$cloneConfiguration getEntity $fullName]]
+		set moml [java::new StringBuffer]
+		# Simulate vergil.basic.EditorDropTarget.drop()
+		$moml append "<group>"
+		$moml append [$clone exportMoML "dropped_[$actor getName]"]
+		$moml append "</group>"
+
+		# The context of the ChangeRequest is the container
+		# so that we properly evaluate atomic actors in
+		# composite actors like MaximumEntropySpectrum
+		set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
+				       $toplevel [$clone getContainer] \
+				       [$moml toString]]
+		if [catch {$toplevel requestChange $changeRequest} errMsg] {
+		    # Note that the changeRequest will likely never
+		    # throw an error that will get us to here, we use
+		    # a StreamChangeListener instead
+		    set msg "\n\nIn '$fullName'\n\
+                            the ChangeRequest:\n\
+                            [$moml toString]\n\
+                            failed:\n\
+                            $errMsg\n\
+                            Perhaps there is a typo in the initial\n\
+                            value of a parameter?\n"
+		    puts $msg
+		    lappend results $msg
+		}
+		
+		# Flush the listener
+		$printStream flush
+		regsub -all [java::call System getProperty "line.separator"] \
+		    [$stream toString] "\n" output
+		if {[string first "StreamChangeRequest.changeFailed():" \
+			 $output] != -1 } {
+		    # If the listener starts with changedFailed, then we
+		    # have an error
+		    lappend results $output
+		    puts $output
+		}
+		$stream reset
+	    }
+	}
+	list $results
+    } {{}}
+
 }
+
