@@ -40,13 +40,14 @@ public class CodeGeneratorClassFactory {
     
     protected CodeGeneratorClassFactory() {}
 
-    public ActorTransformerVisitor createActorTransformerVisitor(
-     ActorCodeGeneratorInfo actorInfo) {
-       return new ActorTransformerVisitor(actorInfo);    
-    }
-
     public ActorCodeGeneratorInfo createActorCodeGeneratorInfo() {
        return new ActorCodeGeneratorInfo();
+    }
+
+    public ActorTransformerVisitor createActorTransformerVisitor(
+     ActorCodeGeneratorInfo actorInfo) {
+       return new ActorTransformerVisitor(actorInfo,
+        createPtolemyTypeVisitor(actorInfo));    
     }
 
     public PtolemyTypeVisitor createPtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {

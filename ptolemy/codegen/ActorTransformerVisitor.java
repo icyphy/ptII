@@ -53,11 +53,12 @@ import ptolemy.math.FixPoint;
 public class ActorTransformerVisitor extends ReplacementJavaVisitor 
      implements JavaStaticSemanticConstants {
     
-    public ActorTransformerVisitor(ActorCodeGeneratorInfo actorInfo) {
+    public ActorTransformerVisitor(ActorCodeGeneratorInfo actorInfo,
+                                   PtolemyTypeVisitor typeVisitor) {
         super(TM_CUSTOM);
         
        _actorInfo = actorInfo;
-       _typeVisitor = new PtolemyTypeVisitor(actorInfo);
+       _typeVisitor = typeVisitor;
 
        _actorName = actorInfo.actor.getName();
     }
@@ -139,8 +140,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            ClassDecl superClassDecl = 
             (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
            
-           if ((superClassDecl == _TYPED_ATOMIC_ACTOR_DECL) ||
-               (superClassDecl == _SDF_ATOMIC_ACTOR_DECL)) {
+           int superKind = _typeVisitor.kindOfClassDecl(superClassDecl);
+           
+           if (_typeVisitor.isSupportedActorKind(superKind)) {
               node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());                 
               _isBaseClass = true;
            } 
@@ -1189,23 +1191,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     /** A flag indicating that actor class inherits from object, so super.XXX()
      *  method calls must be eliminated.
      */      
-    protected boolean _isBaseClass = false;
-    
-    public static final ClassDecl _TYPED_ATOMIC_ACTOR_DECL;
-    public static final ClassDecl _SDF_ATOMIC_ACTOR_DECL;
-                             
-    static {    
-        CompileUnitNode typedAtomicActorUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);
-         
-        _TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-         typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS, null, null);        
- 
-        CompileUnitNode sdfAtomicActorUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
-         
-        _SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS, null, null);        
-    }     
+    protected boolean _isBaseClass = false;                                 
 }
  
