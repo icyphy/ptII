@@ -398,7 +398,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addR(this);
+                return rightArg.subtractR(this);
             } else if (rightArg instanceof DoubleToken) {
                 double result = _value -  ((DoubleToken)rightArg).getValue();
                 return new DoubleToken(result);
@@ -429,7 +429,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
-        double result = _value - tmp.getValue();
+        double result = tmp.getValue() - _value;
         return new DoubleToken(result);
     }
 

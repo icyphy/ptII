@@ -328,7 +328,7 @@ public class LongToken extends ScalarToken {
         long typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addR(this);
+                return rightArg.subtractR(this);
             } else if (rightArg instanceof LongToken) {
                 long result = _value -  ((LongToken)rightArg).getValue();
                 return new LongToken(result);
@@ -359,7 +359,7 @@ public class LongToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(leftArg);
-        long result = _value - tmp.getValue();
+        long result = tmp.getValue() - _value;
         return new LongToken(result);
     }
 

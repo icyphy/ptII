@@ -408,7 +408,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addR(this);
+                return rightArg.subtractR(this);
             } else if (rightArg instanceof IntToken) {
                 int result = _value -  ((IntToken)rightArg).getValue();
                 return new IntToken(result);
@@ -420,10 +420,9 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "subtract method not supported between";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArg.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException("IntToken: subtract method not" +
+                    " supported between: " + getClass().getName() + " and " +
+                    rightArg.getClass().getName() + ",: " + ex.getMessage());
         }
     }
 
@@ -439,7 +438,7 @@ public class IntToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
-        int result = _value - tmp.getValue();
+        int result = tmp.getValue() - _value;
         return new IntToken(result);
     }
 
