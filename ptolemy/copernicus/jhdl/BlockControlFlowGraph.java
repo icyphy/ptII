@@ -36,6 +36,7 @@ import java.util.Map;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
+import ptolemy.kernel.util.IllegalActionException;
 
 import soot.toolkits.graph.BriefBlockGraph;
 import soot.toolkits.graph.Block;
@@ -70,7 +71,6 @@ public class BlockControlFlowGraph extends DirectedGraph {
 	    addNodeWeight(block);
 	}
 
-	//Connect the graph so it has the same structure as bbgraph
 	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
 	    Block block=(Block)blocks.next();
 	    Node nb = node(block);
@@ -82,7 +82,44 @@ public class BlockControlFlowGraph extends DirectedGraph {
 	}
     }
 
-    protected Map _blockMap;
+    public void controlFlowAnalysis() throws IllegalActionException {
+	// perform a topological sort on the graph
+	Object sortedNodes[] = attemptTopologicalSort(nodes()).toArray();
+	// For each node in graph (topological order)
+	// - combineLabels
+	// - for each successor
+	//   - propagateLabelsto
+    }
+
+
+    public static void main(String args[]) {
+	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
+	String methodname = "method1";
+	if (args.length > 0)
+	    classname = args[0];
+	if (args.length > 1)
+	    methodname = args[1];
+	
+	soot.SootClass testClass = 
+	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
+	if (testClass == null) {
+	    System.err.println("Class "+classname+" not found");
+	    System.exit(1);
+	}
+	System.out.println("Loading class "+classname+" method "+methodname);
+	if (!testClass.declaresMethodByName(methodname)) {
+	    System.err.println("Method "+methodname+" not found");
+	    System.exit(1);
+	}
+	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
+	soot.Body body = testMethod.retrieveActiveBody();
+	soot.toolkits.graph.CompleteUnitGraph unitGraph = 
+	    new soot.toolkits.graph.CompleteUnitGraph(body);
+	
+	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+	ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+	BlockControlFlowGraph bcfg = new BlockControlFlowGraph(bbgraph);
+    }
 
     protected BriefBlockGraph _bbgraph;
 
