@@ -762,7 +762,7 @@ public class Graph implements Cloneable {
      *  allows the same label to be used if the edge is restored later.
      *  This is an <em>O(1)</em> operation.
      *  @param edge The edge to hide.
-     *  @return true If the edge is in the graph and not already hidden.
+     *  @return true If the edge was in the graph and not already hidden.
      *  @see #restoreEdge(Edge).
      */
     public boolean hideEdge(Edge edge) {
