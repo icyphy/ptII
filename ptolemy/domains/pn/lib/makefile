@@ -59,15 +59,8 @@ JSRCS = \
 	PNRDDecoder.java \
 	PNRDInfo.java \
 	PNRDMainController.java \
-	PNImageSink.java \
-	PNImageSource.java \
 	PNSink.java \
-	MatrixPacker.java \
-	MatrixUnpacker.java \
 	RandomValueSource.java \
-	RLDecoder.java \
-	RLEncoder.java \
-	ImageDisplay.java \
 	RadioController.java 
 
 #	PNPlot.java 
