@@ -50,7 +50,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	FourierSeries.xml \
 	FourierSeries.htm \
-	FourierSeriesVergil.htm
+	FourierSeriesVergil.htm \
+	FourierSeriesNoAnnotations.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
