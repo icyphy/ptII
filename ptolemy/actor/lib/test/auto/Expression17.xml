@@ -57,12 +57,12 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute">
             </property>
         </port>
         <port name="a1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{a=int,b=int}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute">
             </property>
         </port>
     </entity>

@@ -25,8 +25,10 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (wbwu@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
+added truncatedUnsignedByteValue.  Note that this needs to be greatly
+extended to be made useful.
 */
 
 package ptolemy.data;
@@ -202,6 +204,19 @@ public class LongToken extends ScalarToken {
      */
     public String toString() {
         return Long.toString(_value);
+    }
+
+    /** Return the value in the token truncated to an unsignedByte.
+     *  @exception IllegalActionException If the value is not in the
+     *  range of an unsigned byte.
+     */
+    public byte truncatedUnsignedByteValue() throws IllegalActionException {
+        if(_value < 0 || _value > 255) {
+            throw new IllegalActionException("Value cannot be represented" +
+                    " as an unsigned Byte");
+        } else {
+            return (byte)_value;
+        }
     }
 
     /** Returns a new LongToken with value 0.

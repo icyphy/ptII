@@ -18,6 +18,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 55.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="a &lt; b">
         </property>
@@ -42,11 +44,11 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{false,false,true,true, false,true},{false, true, true, false,true,false},{true,true,false,false,false,true}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,6 +209,81 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true,true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 220.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 265.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 310.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 355.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 395.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="190.0, 165.0">
         </vertex>
@@ -217,40 +294,40 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Expression.output" relation="relation"/>
     <link port="Expression.b" relation="relation4"/>
     <link port="Expression.a" relation="relation5"/>
     <link port="Test.input" relation="relation"/>
-    <link port="Test.input" relation="relation2"/>
-    <link port="Test.input" relation="relation6"/>
-    <link port="Test.input" relation="relation3"/>
-    <link port="Test.input" relation="relation7"/>
-    <link port="Test.input" relation="relation8"/>
     <link port="Ramp.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation5"/>
-    <link port="Expression2.output" relation="relation2"/>
+    <link port="Expression2.output" relation="relation9"/>
     <link port="Expression2.b" relation="relation4"/>
     <link port="Expression2.a" relation="relation5"/>
     <link port="Expression3.output" relation="relation3"/>
     <link port="Expression3.b" relation="relation4"/>
     <link port="Expression3.a" relation="relation5"/>
-    <link port="Expression4.output" relation="relation6"/>
+    <link port="Expression4.output" relation="relation2"/>
     <link port="Expression4.b" relation="relation4"/>
     <link port="Expression4.a" relation="relation5"/>
-    <link port="Expression5.output" relation="relation8"/>
+    <link port="Expression5.output" relation="relation7"/>
     <link port="Expression5.b" relation="relation4"/>
     <link port="Expression5.a" relation="relation5"/>
-    <link port="Expression6.output" relation="relation7"/>
+    <link port="Expression6.output" relation="relation6"/>
     <link port="Expression6.b" relation="relation4"/>
     <link port="Expression6.a" relation="relation5"/>
+    <link port="Test2.input" relation="relation9"/>
+    <link port="Test3.input" relation="relation2"/>
+    <link port="Test4.input" relation="relation3"/>
+    <link port="Test5.input" relation="relation6"/>
+    <link port="Test6.input" relation="relation7"/>
 </entity>
