@@ -59,20 +59,32 @@ public class Port extends GenericPort {
      */	
     public void connectToRelation(Relation relation) 
 	throws NullReferenceException, NameDuplicationException {
-	_relation = relation;
-	if( _relation == null ) {
+	relation_ = relation;
+	if( relation_ == null ) {
 	     throw new NullReferenceException( 
 	     "Null Relation passed to Port.connectToRelation()" );
 	}
-	_relation.connectPort( this );
+	relation_.connectPort( this );
         return;
+    }
+
+    /** Disconnect this Port from its Relation.
+     * @return Return the name of the Relation from which the Port
+     * was connected. Return null if the connection was non-existent.
+     */	
+    public String disconnect() {
+	if( relation_ == null ) {
+	     return null;
+	}
+	relation_.disconnectPort(this);
+	return relation_.getName();
     }
 
     /** Return the Ports that are connected to this Port through its Relation.
      *  Return null if no connections exist.
      */	
     public Enumeration getConnectedPorts() {
-	return _relation.getPorts();
+	return relation_.getPorts();
     }
 
     /** Return the MultiPort which contains this Port.
@@ -81,12 +93,37 @@ public class Port extends GenericPort {
         return _multiPortContainer;
     }
 
+    /** Return the name of this Port's Relation. Return null if
+     *  the Relation is null.
+     */	
+    public String getRelation() {
+	if( relation_ == null ) {
+	     return null;
+	}
+        return relation_.getName();
+    }
+
+    /** Insert this Port in the alias chain one level above
+     *  the position of the argument.
+     * @param lowerPort The Port above which this Port will be placed.
+     */
+    public void insertAliasAbove(Port lowerPort) {
+	 super.insertAliasAbove_( lowerPort );
+	 return;
+    }
+
+    /** Return false since this is a Port.
+     */
+    public final boolean isMulti() {
+        return false;
+    }
+
     /** Return true if this Port is connected to another Port. Return false
      *  otherwise.
      */	
     public boolean isConnected() {
-	if( _relation != null ) {
-	     if( !_relation.isDangling() ) {
+	if( relation_ != null ) {
+	     if( !relation_.isDangling() ) {
 		  return true;
 	     }
 	}
@@ -114,6 +151,12 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
+    /** This is the Relation through which the Port connects to other
+     *  Ports. The Relation is non-null only for Ports at the lowest level
+     *  of the hierarchy.
+     */
+    protected Relation relation_;
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
@@ -124,10 +167,4 @@ public class Port extends GenericPort {
     /* The MultiPort which contains this Port.
      */
     private MultiPort _multiPortContainer;
-
-    /* This is the Relation through which this Port connects to other
-     * Ports. The Relation is non-null only for Ports at the lowest level
-     * of the hierarchy.
-     */
-    private Relation _relation;
 }

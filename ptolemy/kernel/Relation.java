@@ -40,8 +40,7 @@ hierarchical graph. A Relation connects n links such that each link has
 access to the other n-1 links. In our case, a "link" is a Port. We say 
 that a Relation is <\EM> dangling </EM> if it has only one Port connected 
 to it.  FIXME: Eventually we will set a variable in Port for determining if 
-it is connected to a dangling Relation. FIXME: What should happen to a 
-disconnected Relation (zero connections)?
+it is connected to a dangling Relation. 
 @author John S. Davis, II
 @version $Id$
 */
@@ -78,7 +77,7 @@ public class Relation extends Node {
 
     /** Disconnect a Port from this Relation.
      * @param port The Port being disconnected from the Relation.
-     * @return Returns the disconnected Port; returns null if the Port is
+     * @return Return the disconnected Port; returns null if the Port is
      * not found.
      */	
     public Port disconnectPort(Port port) {
@@ -89,7 +88,7 @@ public class Relation extends Node {
     }
 
     /** Return the Ports which are connected to this Relation.
-     * @return Returns an Enumeration of Ports; returns null if the
+     * @return Return an Enumeration of Ports; returns null if the
      * collection of Ports is null.
      */	
     public Enumeration getPorts() {
@@ -102,10 +101,13 @@ public class Relation extends Node {
         return _links.elements();
     }
 
+    /** Initialize this Relation.
+     */
+    public void init() {}
+
     /** Determine if the Relation is dangling? By dangling, we mean that the
      *  Relation has exactly one Port connection.
-     *  FIXME: What if there are zero connections?
-     * @return Returns true if the Relation is dangling; returns false otherwise.
+     * @return Return true if the Relation is dangling; returns false otherwise.
      */	
     public boolean isDangling() {
 	if( _links == null ) {
@@ -119,7 +121,7 @@ public class Relation extends Node {
 
     /** Determine if a given Port is connected to this Relation.
      * @param portName The name of the Port for which we check connectivity.
-     * @return Returns true if the Port is connected to this Relation. Returns 
+     * @return Return true if the Port is connected to this Relation. Return 
      * false otherwise.
      */	
     public boolean isPortConnected(String portName) {
@@ -129,7 +131,7 @@ public class Relation extends Node {
 	return _links.containsKey( portName );
     }
 
-    /** Returns the number of Ports connected to the net.
+    /** Return the number of Ports connected to the net.
      */	
     public int size() {
 	if( _links == null ) {
