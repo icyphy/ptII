@@ -80,6 +80,7 @@
             <input source="ptolemy/matlab/matlab.xml"/>
             <input source="ptolemy/actor/lib/matrix.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
+	    <input source="ptolemy/apps/apps.xml"/>
           </group>
         ?>
       </configure>
