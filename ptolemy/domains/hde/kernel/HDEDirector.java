@@ -337,35 +337,4 @@ public class HDEDirector extends DEDirector {
         if (_debugging) _debug("Creating new HDE receiver.");
         return new HDEReceiver();
     }
-
-    /** Override the base class method to transfer all the available
-     *  tokens from a DE model.  No data remains at the boundary of a
-     *  DE model after the model has been fired.  This facilitates
-     *  building multirate DE models.  The port argument must be an
-     *  opaque output port. If any channel of the output port has no
-     *  data, then that channel is ignored.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-
-
-     public boolean transferOutputs(IOPort port)
-     throws IllegalActionException {
-     return super.transferOutputs(port);
-     }
-
-    */
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
-        if (_debugging) _debug("Transferring outputs on port " +
-                port.getFullName());
-        boolean flag = port.transferOutputs();
-        if (_debugging) _debug("Done Transferring outputs on port " +
-                port.getFullName());
-        return flag;
-
-    }
-
 }
