@@ -578,8 +578,9 @@ test Function-crop {Test crop} {
 
 test Function-determinant {Test determinant} {
     list [evaluate {determinant(identityDouble(3))}] \
+         [evaluate {determinant(identityInt(3))}] \
          [evaluate {determinant(identityComplex(3))}]
-} {1.0 {1.0 + 0.0i}}
+} {1.0 1.0 {1.0 + 0.0i}}
 
 ####################################################################
 # diag
@@ -597,8 +598,10 @@ test Function-diag {Test diag} {
 test Function-divideElements {Test elementwise divide on matrices} {
     list [evaluate {divideElements([1.0, 2.0], [2.0, 2.0])}] \
          [evaluate {divideElements([1, 2], [2, 2])}] \
+         [evaluate {divideElements([1, 2], [2.0, 2])}] \
+         [evaluate {divideElements([1.0, 2], [2, 2])}] \
          [evaluate {divideElements([i, 2], [2.0 + 0.0*i, 2])}]
-        } {{[0.5, 1.0]} {[0, 1]} {[0.0 + 0.5i, 1.0 + 0.0i]}}
+        } {{[0.5, 1.0]} {[0, 1]} {[0.5, 1.0]} {[0.5, 1.0]} {[0.0 + 0.5i, 1.0 + 0.0i]}}
 
 ####################################################################
 # hilbert
