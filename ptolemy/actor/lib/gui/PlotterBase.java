@@ -301,7 +301,7 @@ public class PlotterBase extends TypedAtomicActor
      *  configurations are performed at this time.
      *
      *  @param container The container into which to place the plot, or
-     *   null to specify that 
+     *   null to specify that a new plot should be created.
      */
     public void place(Container container) {
         _container = container;
