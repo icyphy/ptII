@@ -1248,8 +1248,8 @@ testMatrix orthonormalizeRows $types
 ####
 ##  *ArrayMath Test out: xxx[] scale(xxx[], xxx)
 
-# FIXME: Note that ComplexArrayMath.scale(Complex[], double)
-# takes a double, not a Complex
+# FIXED (FIXME): Note that ComplexArrayMath.scale(Complex[], double)
+# takes a double, not a Complex - both versions are now present
 
 set types [list \
 	[list Double double double {{4.0 -2.0}}] \
@@ -1543,7 +1543,17 @@ testArrayIntInt toMatrixFromArray $types x_4 1 2
 
 ######################################################################
 ####
-##  FIXME: toString(xxx[][])
+##  FIXED - Tests added (FIXME): toString(xxx[][])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{2.0 - 2.0i 1.0 + 1.0i} {-1.0 - 1.0i 0.0 + 0.0i}}}] \
+	[list Double double double {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Float float float {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Integer int int {{{2 -1} {1 0}}}] \
+	[list Long long long {{{2 -1} {1 0}}}]]
+
+testMatrix toString $types
 
 ######################################################################
 ####
