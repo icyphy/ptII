@@ -55,6 +55,7 @@ JSRCS = \
 	AbsoluteValue.java \
 	Average.java \
 	Bernoulli.java \
+	Broadcast.java \
 	Clock.java \
 	Commutator.java \
 	Const.java \
