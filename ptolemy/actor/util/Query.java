@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
-/** 
+/**
 Create a query with various types of entry boxes and controls.
 
 @author  Edward A. Lee
@@ -47,7 +47,7 @@ Create a query with various types of entry boxes and controls.
 public class Query extends Panel {
 
     /** Construct a panel with no queries in it.
-     */	
+     */
     public Query () {
         // FIXME: Setting the number of rows to a large number.
         setLayout(new GridLayout(1,2));
@@ -58,7 +58,7 @@ public class Query extends Panel {
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.
-     */	
+     */
     public void line(String name, String label, String defvalue) {
         add(new Label(label));
         // FIXME: Fixed width.
@@ -80,7 +80,7 @@ public class Query extends Panel {
                     name + " \" in the query box.");
         }
         return result.getText();
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
