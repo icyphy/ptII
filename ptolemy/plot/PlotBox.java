@@ -138,8 +138,8 @@ public class PlotBox extends Applet {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-                                            // but we need to compile under 
-                                            // jdk1.0.2 for netscape3.x
+            // but we need to compile under 
+            // jdk1.0.2 for netscape3.x
         }
     }
 
@@ -151,7 +151,7 @@ public class PlotBox extends Applet {
      */
     public void addLegend(int dataset, String legend) {
         if (_debug > 8) System.out.println("PlotBox addLegend: " +
-                                           dataset + " " + legend);
+                dataset + " " + legend);
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
@@ -189,9 +189,9 @@ public class PlotBox extends Applet {
     }
     
     /**
-      * Draw the axes using the current range, label, and title information.
-      * If the argument is true, clear the display before redrawing.
-      */
+     * Draw the axes using the current range, label, and title information.
+     * If the argument is true, clear the display before redrawing.
+     */
     public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
         if (graphics == null) {
             System.out.println("Attempt to draw axes without "+
@@ -235,33 +235,33 @@ public class PlotBox extends Applet {
                 msgy += fheight;
             }
             return;
-         }
+        }
 
-         // Make sure we have an x and y range
-         if (!_xRangeGiven) {
-             if (_xBottom > _xTop) {
-                 // have nothing to go on.
-                 _setXRange(0,0);
-             } else {
-                 _setXRange(_xBottom, _xTop);
-             }
-         }
-         if (!_yRangeGiven) {
-             if (_yBottom > _yTop) {
-                 // have nothing to go on.
-                 _setYRange(0,0);
-             } else {
-                 _setYRange(_yBottom, _yTop);
-             }
-         }
+        // Make sure we have an x and y range
+        if (!_xRangeGiven) {
+            if (_xBottom > _xTop) {
+                // have nothing to go on.
+                _setXRange(0,0);
+            } else {
+                _setXRange(_xBottom, _xTop);
+            }
+        }
+        if (!_yRangeGiven) {
+            if (_yBottom > _yTop) {
+                // have nothing to go on.
+                _setYRange(0,0);
+            } else {
+                _setYRange(_yBottom, _yTop);
+            }
+        }
          
-         // Vertical space for title, if appropriate.
-         // NOTE: We assume a one-line title.
-         int titley = 0;
-         int titlefontheight = tfm.getHeight();
-         if (_title != null || _yExp != 0) {
-             titley = titlefontheight + _topPadding;
-         }
+        // Vertical space for title, if appropriate.
+        // NOTE: We assume a one-line title.
+        int titley = 0;
+        int titlefontheight = tfm.getHeight();
+        if (_title != null || _yExp != 0) {
+            titley = titlefontheight + _topPadding;
+        }
         
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
@@ -380,7 +380,7 @@ public class PlotBox extends Applet {
             _ulx = drawRect.x + widesty + _leftPadding;
         }
         int legendwidth = _drawLegend(graphics,
-                                      drawRect.width-_rightPadding, _uly);
+                drawRect.width-_rightPadding, _uly);
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
@@ -418,7 +418,7 @@ public class PlotBox extends Applet {
                 }
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
-                                    _ulx-ylabwidth[ind++]-4, yCoord1+offset);
+                        _ulx-ylabwidth[ind++]-4, yCoord1+offset);
             }
         
             // Draw scaling annotation for y axis.
@@ -426,8 +426,8 @@ public class PlotBox extends Applet {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptfont);
                 graphics.drawString(Integer.toString(_yExp),
-                                    lfm.stringWidth("x10") + 2, 
-                                    titley-halflabelheight);
+                        lfm.stringWidth("x10") + 2, 
+                        titley-halflabelheight);
                 graphics.setFont(_labelfont);
             }
         } else {
@@ -450,7 +450,7 @@ public class PlotBox extends Applet {
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(label, _ulx - lfm.stringWidth(label) - 3,
-                                    yCoord1+offset);
+                        yCoord1+offset);
             }
         }
         
@@ -513,7 +513,7 @@ public class PlotBox extends Applet {
                 int labxpos = xCoord1 - lfm.stringWidth(xticklabel)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(xticklabel, labxpos,
-                                    _lry + 3 + labelheight);
+                        _lry + 3 + labelheight);
             }
         } else {
             // ticks have been explicitly specified
@@ -544,7 +544,7 @@ public class PlotBox extends Applet {
         graphics.setColor(_foreground);
         
         if (_title != null) {
-                graphics.setFont(_titlefont);
+            graphics.setFont(_titlefont);
             int titlex = _ulx + (width - tfm.stringWidth(_title))/2;
             graphics.drawString(_title,titlex,titley);
         }
@@ -607,20 +607,20 @@ public class PlotBox extends Applet {
             fontname = stoken.nextToken();
         }
         if (stoken.hasMoreTokens()) {
-                String stylename = stoken.nextToken();
-                // FIXME: we need to be able to mix and match these
-                if (stylename.equals("PLAIN")) {
-                    style = Font.PLAIN;
-                } else if (stylename.equals("BOLD")) {
-                    style = Font.BOLD;
-                } else if (stylename.equals("ITALIC")) {
-                    style = Font.ITALIC;
-                } else {
-                    // Perhaps this is a font size?
-                    try {
-                        size = Integer.valueOf(stylename).intValue();
-                    } catch (NumberFormatException e) {}
-                }
+            String stylename = stoken.nextToken();
+            // FIXME: we need to be able to mix and match these
+            if (stylename.equals("PLAIN")) {
+                style = Font.PLAIN;
+            } else if (stylename.equals("BOLD")) {
+                style = Font.BOLD;
+            } else if (stylename.equals("ITALIC")) {
+                style = Font.ITALIC;
+            } else {
+                // Perhaps this is a font size?
+                try {
+                    size = Integer.valueOf(stylename).intValue();
+                } catch (NumberFormatException e) {}
+            }
         }
         if (stoken.hasMoreTokens()) {
             try {
@@ -628,7 +628,7 @@ public class PlotBox extends Applet {
             } catch (NumberFormatException e) {}
         }
         if (_debug > 7) System.out.println("PlotBox: getFontByName: "+
-                                           fontname+" "+style+" "+size);
+                fontname+" "+style+" "+size);
         return new Font(fontname, style, size);
     }
 
@@ -723,7 +723,7 @@ public class PlotBox extends Applet {
 
         if (_graphics == null) {
             System.out.println("PlotBox::init(): Internal error: " +
-                               "_graphic was null");
+                    "_graphic was null");
             return;
         }
 
@@ -752,7 +752,7 @@ public class PlotBox extends Applet {
         }
         if (_debug > 6)
             System.out.println("PlotBox: color = "+foreground+" "+_foreground
-                               +" "+background+" "+_background);
+                    +" "+background+" "+_background);
 
 
         // Make a button that auto-scales the plot.
@@ -852,7 +852,7 @@ public class PlotBox extends Applet {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
                     _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
-                           30+x_diff*2, 30+y_diff*2);
+                            30+x_diff*2, 30+y_diff*2);
                 }
                 if (y < _zoomy){
                     _zoomxn = x;
@@ -942,58 +942,58 @@ public class PlotBox extends Applet {
     }
 
     /** 
-      * Paint the applet contents, which in this base class is
-      * only the axes.
-      */
+     * Paint the applet contents, which in this base class is
+     * only the axes.
+     */
     public void paint(Graphics graphics) {
         super.paint(graphics);
         drawPlot(graphics, true);
     }
 
-     /**
-      * Open up the input file, which could be stdin, a URL or a file.
-      * This code can be called from an application, which means that
-      * getDocumentBase() might fail.
-      */
+    /**
+     * Open up the input file, which could be stdin, a URL or a file.
+     * This code can be called from an application, which means that
+     * getDocumentBase() might fail.
+     */
     public void parseFile(String dataurl) {
         DataInputStream in;
         if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+
-                                           ") _dataurl = "+_dataurl);
+                ") _dataurl = "+_dataurl);
         if (dataurl == null || dataurl.length() == 0) {
             // Open up stdin
             in = new DataInputStream(System.in);
         } else {
-           try {
-               URL url;
-               try {
-                   url = new URL(getDocumentBase(), dataurl);
-               } catch (NullPointerException e) {
-                   // If we got a NullPointerException, then perhaps
-                   // we are calling this as an application, not as an applet.
-                   url = new URL(_dataurl);
-               }
-               in = new DataInputStream(url.openStream());
-           } catch (MalformedURLException e) {
-               try {
-                   // Just try to open it as a file.
-                   in = new DataInputStream(new FileInputStream(dataurl));
-               } catch (FileNotFoundException me) {
-                   _errorMsg = new String [2];
-                   _errorMsg[0] = "Malformed URL: " + dataurl;
-                   _errorMsg[1] = e.getMessage();
-                   return;
-               } catch (SecurityException me) {
-                   _errorMsg = new String [2];
-                   _errorMsg[0] = "Security Exception: " + dataurl;
-                   _errorMsg[1] = e.getMessage();
-                   return;
-               }
-           } catch (IOException ioe) {
-               _errorMsg = new String [2];
-               _errorMsg[0] = "Failure opening URL: " + dataurl;
-               _errorMsg[1] = ioe.getMessage();
-               return;
-           }
+            try {
+                URL url;
+                try {
+                    url = new URL(getDocumentBase(), dataurl);
+                } catch (NullPointerException e) {
+                    // If we got a NullPointerException, then perhaps
+                    // we are calling this as an application, not as an applet.
+                    url = new URL(_dataurl);
+                }
+                in = new DataInputStream(url.openStream());
+            } catch (MalformedURLException e) {
+                try {
+                    // Just try to open it as a file.
+                    in = new DataInputStream(new FileInputStream(dataurl));
+                } catch (FileNotFoundException me) {
+                    _errorMsg = new String [2];
+                    _errorMsg[0] = "Malformed URL: " + dataurl;
+                    _errorMsg[1] = e.getMessage();
+                    return;
+                } catch (SecurityException me) {
+                    _errorMsg = new String [2];
+                    _errorMsg[0] = "Security Exception: " + dataurl;
+                    _errorMsg[1] = e.getMessage();
+                    return;
+                }
+            } catch (IOException ioe) {
+                _errorMsg = new String [2];
+                _errorMsg[0] = "Failure opening URL: " + dataurl;
+                _errorMsg[1] = ioe.getMessage();
+                return;
+            }
         }
 
         _newFile(); // Hook for child classes to do any preprocessing.
@@ -1171,9 +1171,9 @@ public class PlotBox extends Applet {
      * @exception java.io.IOException if an I/O error occurs.
      */
     protected void _parseBinaryStream(DataInputStream in) throws
-        PlotDataException, IOException {
-            throw new PlotDataException("Binary data not supported in the" +
-                                        "baseclass");
+    PlotDataException, IOException {
+        throw new PlotDataException("Binary data not supported in the" +
+                "baseclass");
     }
 
     /**
@@ -1205,48 +1205,48 @@ public class PlotBox extends Applet {
             return true;
         }
         if (lcLine.startsWith("xrange:")) {
-                int comma = line.indexOf(",", 7);
-                if (comma > 0) {
-                    String min = (line.substring(7,comma)).trim();
-                    String max = (line.substring(comma+1)).trim();
-                    try {
-                        Double dmin = new Double(min);
-                        Double dmax = new Double(max);
-                        setXRange(dmin.doubleValue(), dmax.doubleValue());
-                    } catch (NumberFormatException e) {
-                        // ignore if format is bogus.
-                    }
+            int comma = line.indexOf(",", 7);
+            if (comma > 0) {
+                String min = (line.substring(7,comma)).trim();
+                String max = (line.substring(comma+1)).trim();
+                try {
+                    Double dmin = new Double(min);
+                    Double dmax = new Double(max);
+                    setXRange(dmin.doubleValue(), dmax.doubleValue());
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
                 }
-                return true;
+            }
+            return true;
         }
         if (lcLine.startsWith("yrange:")) {
-                int comma = line.indexOf(",", 7);
-                if (comma > 0) {
-                    String min = (line.substring(7,comma)).trim();
-                    String max = (line.substring(comma+1)).trim();
-                    try {
-                        Double dmin = new Double(min);
-                        Double dmax = new Double(max);
-                        setYRange(dmin.doubleValue(), dmax.doubleValue());
-                    } catch (NumberFormatException e) {
-                        // ignore if format is bogus.
-                    }
+            int comma = line.indexOf(",", 7);
+            if (comma > 0) {
+                String min = (line.substring(7,comma)).trim();
+                String max = (line.substring(comma+1)).trim();
+                try {
+                    Double dmin = new Double(min);
+                    Double dmax = new Double(max);
+                    setYRange(dmin.doubleValue(), dmax.doubleValue());
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
                 }
-                return true;
+            }
+            return true;
         }
         if (lcLine.startsWith("xticks:")) {
             // example:
             // XTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
             _parsePairs(line.substring(7), true);
-                return true;
+            return true;
         }
         if (lcLine.startsWith("yticks:")) {
             // example:
             // YTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
             _parsePairs(line.substring(7), false);
-                return true;
+            return true;
         }
         
         if (lcLine.startsWith("grid:")) {
@@ -1477,10 +1477,10 @@ public class PlotBox extends Applet {
         int start = 0;
         boolean cont = true;
         while (cont) {
-                int comma = line.indexOf(",", start);
-                String pair;
-                if (comma > start) {
-                    pair = (line.substring(start,comma)).trim();
+            int comma = line.indexOf(",", start);
+            String pair;
+            if (comma > start) {
+                pair = (line.substring(start,comma)).trim();
             } else {
                 pair = (line.substring(start)).trim();
                 cont = false;
@@ -1488,9 +1488,9 @@ public class PlotBox extends Applet {
             int close;
             int open = 0;
             if (pair.startsWith("\"")) {
-                    close = pair.indexOf("\"",1);
-                    open = 1;
-                } else {
+                close = pair.indexOf("\"",1);
+                open = 1;
+            } else {
                 close = pair.indexOf(" ");              
             }
             if (close > 0) {
@@ -1515,15 +1515,15 @@ public class PlotBox extends Applet {
      *
      * Note: The argument must be strictly positive.
      */
-     private double _roundUp(double val) {
-         int exponent, idx;
-         exponent = (int) Math.floor(Math.log(val)*_log10scale);
-         val *= Math.pow(10, -exponent);
-         if (val > 5.0) val = 10.0;
-         else if (val > 2.0) val = 5.0;
-         else if (val > 1.0) val = 2.0;
-         val *= Math.pow(10, exponent);
-         return val;
+    private double _roundUp(double val) {
+        int exponent, idx;
+        exponent = (int) Math.floor(Math.log(val)*_log10scale);
+        val *= Math.pow(10, -exponent);
+        if (val > 5.0) val = 10.0;
+        else if (val > 2.0) val = 5.0;
+        else if (val > 1.0) val = 2.0;
+        val *= Math.pow(10, exponent);
+        return val;
     }
 
     /*

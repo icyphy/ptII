@@ -34,8 +34,6 @@ package plot;
  * @author: Christopher Hylands
  * @version: $Id$
  */
-/** Thrown when an incorrect argument is passed to the plotter. 
-  */
 class CmdLineArgException extends Throwable {
     public CmdLineArgException() { super(); }
     public CmdLineArgException(String s) { super(s); }

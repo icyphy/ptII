@@ -36,7 +36,7 @@ import java.util.*;
  */
 public class Message extends Frame {
     /** Pop up a text widget with a close button.
-      */
+     */
     public Message(String msg, Color background, Color foreground) {
         setBackground(background);
         setForeground(foreground);
@@ -53,12 +53,12 @@ public class Message extends Frame {
 
     }
 
-//     public static void main(String args[]){
-//      Message message = new Message("A message", Color.white,Color.black);
-//      message.setTitle("A Message");
-//      message.pack();
-//      message.show();
-//     }
+    //     public static void main(String args[]){
+    //      Message message = new Message("A message", Color.white,Color.black);
+    //      message.setTitle("A Message");
+    //      message.pack();
+    //      message.show();
+    //     }
 
     public boolean handleEvent(Event event) {
         if (event.id == Event.WINDOW_DESTROY) {

@@ -84,8 +84,8 @@ public abstract class PlotLive extends Plot implements Runnable {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-                                            // but we need to compile under 
-                                            // jdk1.0.2 for netscape3.x
+            // but we need to compile under 
+            // jdk1.0.2 for netscape3.x
         }
     }
 

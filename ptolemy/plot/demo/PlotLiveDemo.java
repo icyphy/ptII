@@ -44,7 +44,7 @@ public class PlotLiveDemo extends PlotLive {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
    
-   /** Add points to the plot.  This is called by the base class
+    /** Add points to the plot.  This is called by the base class
      * <code>run()</code> method while live plotting is enabled.
      */
     public synchronized void addPoints() {

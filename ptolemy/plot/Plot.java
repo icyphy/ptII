@@ -245,7 +245,7 @@ public class Plot extends PlotBox {
         } catch (NullPointerException e) {
         } catch (CmdLineArgException e) {
             System.out.println("Plot: failed to parse `"+pxgraphargs+
-                               "': " +e);
+                    "': " +e);
         }
 
         super.init();
@@ -274,9 +274,7 @@ public class Plot extends PlotBox {
      * @exception plot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
      */ 
-    public int parseArgs(String args[])
-        throws CmdLineArgException
-        {
+    public int parseArgs(String args[]) throws CmdLineArgException {
         int i = 0, j, argsread;
         int width;         // Default width of the graph.
         int height;        // Default height of the graph.
@@ -312,7 +310,7 @@ public class Plot extends PlotBox {
         String title = "A plot";
 
         while (i < args.length && (args[i].startsWith("-") || 
-            args[i].startsWith("=")) ) {
+                args[i].startsWith("=")) ) {
             arg = args[i++];
             if (_debug > 2) System.out.print("Plot: arg = " + arg + "\n");
 
@@ -322,7 +320,7 @@ public class Plot extends PlotBox {
                 for(j = 0; j < unsupportedOptions.length; j++) {
                     if (arg.equals(unsupportedOptions[j])) {
                         System.err.println("pxgraph: " + arg +
-                                           " is not yet supported");
+                                " is not yet supported");
                         i++;
                         badarg = true;
                     }
@@ -332,7 +330,7 @@ public class Plot extends PlotBox {
                 for(j = 0; j < unsupportedFlags.length; j++) {
                     if (arg.equals(unsupportedFlags[j])) {
                         System.err.println("pxgraph: " + arg +
-                                           " is not yet supported");
+                                " is not yet supported");
                         badarg = true;
                     }
 
@@ -481,13 +479,13 @@ public class Plot extends PlotBox {
                             Integer(arg.substring(1));
                         int datasetnumber = datasetnumberint.intValue();
                         if (datasetnumber >= 0 &&
-                            datasetnumber <= getMaxDataSets()) {
-                                if (_debug > 8) 
-                                    System.out.println("Plot: parseArgs: "+
-                                               "calling addLegend "+
-                                               +datasetnumber+" "+args[i]);
-                                addLegend(datasetnumber, args[i++]);
-                                continue;
+                                datasetnumber <= getMaxDataSets()) {
+                            if (_debug > 8) 
+                                System.out.println("Plot: parseArgs: "+
+                                        "calling addLegend "+
+                                        datasetnumber+" "+args[i]);
+                            addLegend(datasetnumber, args[i++]);
+                            continue;
                         }
                     } catch (NumberFormatException e) {}
                 }
@@ -497,18 +495,18 @@ public class Plot extends PlotBox {
                     // Process =WxH+X+Y
                     int endofheight;
                     width = (int)Integer.valueOf(arg.substring(1,
-                                               arg.indexOf('x'))).intValue();
+                            arg.indexOf('x'))).intValue();
                     if (arg.indexOf('+') != -1) {
-                        height = 
-                            (int)Integer.valueOf(arg.substring(
-                                               arg.indexOf('x')+1,
-                                               arg.indexOf('+'))).intValue();
+                        height =
+                            Integer.valueOf(arg.substring(
+                                    arg.indexOf('x')+1,
+                                    arg.indexOf('+'))).intValue();
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             height =
                                 Integer.valueOf(arg.substring(
-                                               arg.indexOf('x')+1,
-                                               arg.length())).intValue();
+                                        arg.indexOf('x')+1,
+                                        arg.length())).intValue();
                         }
                     }
                     // FIXME: need to handle X and Y in =WxH+X+Y
@@ -534,13 +532,13 @@ public class Plot extends PlotBox {
             System.err.println("Plot: title= " + title);
         }
         if (_debug > 3) System.out.println("Plot: argsread = "+ argsread +
-                                            " args.length = "+args.length);
-         // Copy the file names into the _dataurls Vector for use later.
-         _dataurls = new Vector();
-         for(i = argsread+1; i < args.length; i++) {
+                " args.length = "+args.length);
+        // Copy the file names into the _dataurls Vector for use later.
+        _dataurls = new Vector();
+        for(i = argsread+1; i < args.length; i++) {
             if (_debug > 3) System.out.println("Plot: saving "+args[i]);
             _dataurls.addElement(args[i]);
-         }
+        }
         return argsread;
     }
 
@@ -612,19 +610,14 @@ public class Plot extends PlotBox {
     public void setNumSets (int numsets) throws NumberFormatException {
         if (numsets < 1) {
             throw new NumberFormatException("Number of data sets ("+
-                                            numsets +
-                                            ") must be " +
-                                            "greater than 0.");
+                    numsets + ") must be greater than 0.");
 
         }
         if (numsets > _MAX_DATASETS) {
             throw new NumberFormatException("Number of data sets (" +
-                                            numsets +
-                                            ") must be less than the " +
-                                            "internal limit of " +
-                                            _MAX_DATASETS +
-                                            "To increase this value, edit " +
-                                            "_MAX_DATASETS and recompile");
+                    numsets + ") must be less than the internal limit of " +
+                    _MAX_DATASETS + "To increase this value, edit " +
+                    "_MAX_DATASETS and recompile");
         }
 
         this._numsets = numsets;
@@ -759,93 +752,93 @@ public class Plot extends PlotBox {
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
 
-            if (clip) {
-                // Rule out impossible cases.
-                if (_debug > 20) {
-                    System.out.println("bounds: " + _ulx +", "+
-                            _uly +", "+ _lrx +", "+ _lry);
-                    System.out.println("before: " + startx +", "+
-                            starty +", "+ endx +", "+ endy);
-                }
-                if (!((endx <= _ulx && startx <= _ulx) ||
-                (endx >= _lrx && startx >= _lrx) ||
-                (endy <= _uly && starty <= _uly) ||
-                (endy >= _lry && starty >= _lry))) {
-                    // If the end point is out of x range, adjust
-                    // end point to boundary.
-                    // The integer arithmetic has to be done with longs so as
-                    // to not loose precision on extremely close zooms.
-                    if (startx != endx) {
-                        if (endx < _ulx) {
-                            endy = (int)(endy + ((long)(starty - endy) *
-                                             (_ulx - endx))/(startx - endx));
-                            endx = _ulx;
-                        } else if (endx > _lrx) {
-                            endy = (int)(endy + ((long)(starty - endy) *
-                                             (_lrx - endx))/(startx - endx));
-                            endx = _lrx;
-                        }
-                    }
-                    
-                    // If end point is out of y range, adjust to boundary.
-                    // Note that y increases downward
-                    if (starty != endy) {
-                        if (endy < _uly) {
-                            endx = (int)(endx + ((long)(startx - endx) *
-                                             (_uly - endy))/(starty - endy));
-                           endy = _uly;
-                        } else if (endy > _lry) {
-                            endx = (int)(endx + ((long)(startx - endx) *
-                                             (_lry - endy))/(starty - endy));
-                            endy = _lry;
-                        }
-                    }
-                    
-                    // Adjust current point to lie on the boundary.
-                    if (startx != endx) {
-                        if (startx < _ulx) {
-                            starty = (int)(starty + ((long)(endy - starty) *
-                                           (_ulx - startx))/(endx - startx));
-                            startx = _ulx;
-                        } else if (startx > _lrx) {
-                            starty = (int)(starty + ((long)(endy - starty) *
-                                           (_lrx - startx))/(endx - startx));
-                            startx = _lrx;
-                        }
-                    }
-                    if (starty != endy) {
-                        if (starty < _uly) {
-                            startx = (int)(startx + ((long)(endx - startx) *
-                                           (_uly - starty))/(endy - starty));
-                            starty = _uly;
-                        } else if (starty > _lry) {
-                            startx = (int)(startx + ((long)(endx - startx) *
-                                           (_lry - starty))/(endy - starty));
-                            starty = _lry;
-                        }
+        if (clip) {
+            // Rule out impossible cases.
+            if (_debug > 20) {
+                System.out.println("bounds: " + _ulx +", "+
+                        _uly +", "+ _lrx +", "+ _lry);
+                System.out.println("before: " + startx +", "+
+                        starty +", "+ endx +", "+ endy);
+            }
+            if (!((endx <= _ulx && startx <= _ulx) ||
+                    (endx >= _lrx && startx >= _lrx) ||
+                    (endy <= _uly && starty <= _uly) ||
+                    (endy >= _lry && starty >= _lry))) {
+                // If the end point is out of x range, adjust
+                // end point to boundary.
+                // The integer arithmetic has to be done with longs so as
+                // to not loose precision on extremely close zooms.
+                if (startx != endx) {
+                    if (endx < _ulx) {
+                        endy = (int)(endy + ((long)(starty - endy) *
+                                (_ulx - endx))/(startx - endx));
+                        endx = _ulx;
+                    } else if (endx > _lrx) {
+                        endy = (int)(endy + ((long)(starty - endy) *
+                                (_lrx - endx))/(startx - endx));
+                        endx = _lrx;
                     }
                 }
+                    
+                // If end point is out of y range, adjust to boundary.
+                // Note that y increases downward
+                if (starty != endy) {
+                    if (endy < _uly) {
+                        endx = (int)(endx + ((long)(startx - endx) *
+                                (_uly - endy))/(starty - endy));
+                        endy = _uly;
+                    } else if (endy > _lry) {
+                        endx = (int)(endx + ((long)(startx - endx) *
+                                (_lry - endy))/(starty - endy));
+                        endy = _lry;
+                    }
+                }
+                    
+                // Adjust current point to lie on the boundary.
+                if (startx != endx) {
+                    if (startx < _ulx) {
+                        starty = (int)(starty + ((long)(endy - starty) *
+                                (_ulx - startx))/(endx - startx));
+                        startx = _ulx;
+                    } else if (startx > _lrx) {
+                        starty = (int)(starty + ((long)(endy - starty) *
+                                (_lrx - startx))/(endx - startx));
+                        startx = _lrx;
+                    }
+                }
+                if (starty != endy) {
+                    if (starty < _uly) {
+                        startx = (int)(startx + ((long)(endx - startx) *
+                                (_uly - starty))/(endy - starty));
+                        starty = _uly;
+                    } else if (starty > _lry) {
+                        startx = (int)(startx + ((long)(endx - startx) *
+                                (_lry - starty))/(endy - starty));
+                        starty = _lry;
+                    }
+                }
+            }
                  
-                 // Are the new points in range?
-                 if (endx >= _ulx && endx <= _lrx &&
-                         endy >= _uly && endy <= _lry &&
-                         startx >= _ulx && startx <= _lrx &&
-                         starty >= _uly && starty <= _lry) {
-                     if (_debug > 20) {
-                         System.out.println("after: " + startx +", "+ starty +
-                                 ", "+ endx +", "+ endy);
-                     }
-                     graphics.drawLine((int)startx, (int)starty,
-                             (int)endx, (int)endy);
-                 }
-             } else {
-                 // draw unconditionally.
-                 graphics.drawLine((int)startx, (int)starty,
-                         (int)endx, (int)endy);
-             }
+            // Are the new points in range?
+            if (endx >= _ulx && endx <= _lrx &&
+                    endy >= _uly && endy <= _lry &&
+                    startx >= _ulx && startx <= _lrx &&
+                    starty >= _uly && starty <= _lry) {
+                if (_debug > 20) {
+                    System.out.println("after: " + startx +", "+ starty +
+                            ", "+ endx +", "+ endy);
+                }
+                graphics.drawLine((int)startx, (int)starty,
+                        (int)endx, (int)endy);
+            }
+        } else {
+            // draw unconditionally.
+            graphics.drawLine((int)startx, (int)starty,
+                    (int)endx, (int)endy);
+        }
     }
 
-   /**
+    /**
      * Put a mark corresponding to the specified dataset at the
      * specified x and y position. The mark is drawn in the current
      * color. What kind of mark is drawn depends on the _marks
@@ -863,7 +856,7 @@ public class Plot extends PlotBox {
 
         // If the point is not out of range, draw it.
         if (!clip || (ypos <= _lry && ypos >= _uly &&
-            xpos <= _lrx && xpos >= _ulx)) {
+                xpos <= _lrx && xpos >= _ulx)) {
             int xposi = (int)xpos;
             int yposi = (int)ypos;
             switch (_marks) {
@@ -879,7 +872,7 @@ public class Plot extends PlotBox {
             case 2:
                 // dots
                 graphics.fillOval(xposi-_radius, yposi-_radius,
-                                   _diameter, _diameter); 
+                        _diameter, _diameter); 
                 break;
             case 3:
                 // marks
@@ -887,82 +880,82 @@ public class Plot extends PlotBox {
                 // Points are only distinguished up to _MAX_MARKS data sets.
                 int mark = dataset % _MAX_MARKS;
                 switch (mark) {
-                    case 0:
-                        // filled circle
-                        graphics.fillOval(xposi-_radius, yposi-_radius,
-                                          _diameter, _diameter); 
-                        break;
-                    case 1:
-                        // cross
-                        graphics.drawLine(xposi-_radius, yposi-_radius,
-                                          xposi+_radius, yposi+_radius); 
-                        graphics.drawLine(xposi+_radius, yposi-_radius,
-                                          xposi-_radius, yposi+_radius); 
-                        break;
-                    case 2:
-                        // square
-                        graphics.drawRect(xposi-_radius, yposi-_radius,
-                                          _diameter, _diameter); 
-                        break;
-                    case 3:
-                        // filled triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
-                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
-                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 4);
-                        break;
-                    case 4:
-                        // diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
-                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
-                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
-                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 5);
-                        break;
-                    case 5:
-                        // circle
-                        graphics.drawOval(xposi-_radius, yposi-_radius,
-                                          _diameter, _diameter); 
-                        break;
-                    case 6:
-                        // plus sign
-                        graphics.drawLine(xposi, yposi-_radius, xposi,
-                                          yposi+_radius); 
-                        graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
-                                          yposi); 
-                        break;
-                    case 7:
-                        // filled square
-                        graphics.fillRect(xposi-_radius, yposi-_radius,
-                                          _diameter, _diameter); 
-                        break;
-                    case 8:
-                        // triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
-                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
-                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 4);
-                        break;
-                    case 9:
-                        // filled diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
-                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
-                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
-                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
-                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 5);
-                        break;
+                case 0:
+                    // filled circle
+                    graphics.fillOval(xposi-_radius, yposi-_radius,
+                            _diameter, _diameter); 
+                    break;
+                case 1:
+                    // cross
+                    graphics.drawLine(xposi-_radius, yposi-_radius,
+                            xposi+_radius, yposi+_radius); 
+                    graphics.drawLine(xposi+_radius, yposi-_radius,
+                            xposi-_radius, yposi+_radius); 
+                    break;
+                case 2:
+                    // square
+                    graphics.drawRect(xposi-_radius, yposi-_radius,
+                            _diameter, _diameter); 
+                    break;
+                case 3:
+                    // filled triangle
+                    xpoints = new int[4];
+                    ypoints = new int[4];
+                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                    xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                    xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                    xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                    graphics.fillPolygon(xpoints, ypoints, 4);
+                    break;
+                case 4:
+                    // diamond
+                    xpoints = new int[5];
+                    ypoints = new int[5];
+                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                    xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                    xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                    xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                    xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                    graphics.drawPolygon(xpoints, ypoints, 5);
+                    break;
+                case 5:
+                    // circle
+                    graphics.drawOval(xposi-_radius, yposi-_radius,
+                            _diameter, _diameter); 
+                    break;
+                case 6:
+                    // plus sign
+                    graphics.drawLine(xposi, yposi-_radius, xposi,
+                            yposi+_radius); 
+                    graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
+                            yposi); 
+                    break;
+                case 7:
+                    // filled square
+                    graphics.fillRect(xposi-_radius, yposi-_radius,
+                            _diameter, _diameter); 
+                    break;
+                case 8:
+                    // triangle
+                    xpoints = new int[4];
+                    ypoints = new int[4];
+                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                    xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                    xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                    xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                    graphics.drawPolygon(xpoints, ypoints, 4);
+                    break;
+                case 9:
+                    // filled diamond
+                    xpoints = new int[5];
+                    ypoints = new int[5];
+                    xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                    xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                    xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                    xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                    xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                    graphics.fillPolygon(xpoints, ypoints, 5);
+                    break;
                 }
                 break;
             default:
@@ -984,9 +977,7 @@ public class Plot extends PlotBox {
      * @exception PlotDataException if there is a serious data format problem.
      * @exception java.io.IOException if an I/O error occurs.
      */ 
-    protected void _parseBinaryStream(DataInputStream in) 
-    throws PlotDataException,  IOException
-    {
+    protected void _parseBinaryStream(DataInputStream in) throws PlotDataException,  IOException {
         // This method is similar to _parseLine() below, except it parses
         // an entire file at a time.
         int c;
@@ -1045,9 +1036,9 @@ public class Plot extends PlotBox {
                     break;
                 default:
                     throw new PlotDataException("Don't understand `" + 
-                                                (char)c + "' character " +
-                                                "(decimal value = " + c +
-                                                ") in binary file");
+                            (char)c + "' character " +
+                            "(decimal value = " + c +
+                            ") in binary file");
                 }
             } 
         } catch (EOFException e) {}         
@@ -1129,9 +1120,9 @@ public class Plot extends PlotBox {
                                 doubleValue();
                         }
                         setBars(bwidth.doubleValue(), boffset);
-                        } catch (NumberFormatException e) {
-                            // ignore if format is bogus.
-                        }
+                    } catch (NumberFormatException e) {
+                        // ignore if format is bogus.
+                    }
                 }
                 return true;
             } else if (line.startsWith("move:")) {
@@ -1152,29 +1143,29 @@ public class Plot extends PlotBox {
                 line = line.substring(4, line.length()).trim();
             }
             // See if an x,y or x<Space>y x<Taby> point is given
-                line = line.trim();
-                int fieldsplit = line.indexOf(",");
-                if (fieldsplit == -1) {
-                    fieldsplit = line.indexOf(" ");
-                }
-                if (fieldsplit == -1) {
-                    fieldsplit = line.indexOf(" ");  // a tab
-                }
+            line = line.trim();
+            int fieldsplit = line.indexOf(",");
+            if (fieldsplit == -1) {
+                fieldsplit = line.indexOf(" ");
+            }
+            if (fieldsplit == -1) {
+                fieldsplit = line.indexOf(" ");  // a tab
+            }
 
-                if (fieldsplit > 0) {
-                    String x = (line.substring(0, fieldsplit)).trim();
-                    String y = (line.substring(fieldsplit+1)).trim();
-                    try {
-                        Double xpt = new Double(x);
-                        Double ypt = new Double(y);
-                        connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, xpt.doubleValue(),
-                                 ypt.doubleValue(), connected);
-                        return true;
-                    } catch (NumberFormatException e) {
-                        // ignore if format is bogus.
-                    }
+            if (fieldsplit > 0) {
+                String x = (line.substring(0, fieldsplit)).trim();
+                String y = (line.substring(fieldsplit+1)).trim();
+                try {
+                    Double xpt = new Double(x);
+                    Double ypt = new Double(y);
+                    connected = _addLegendIfNecessary(connected);
+                    addPoint(_currentdataset, xpt.doubleValue(),
+                            ypt.doubleValue(), connected);
+                    return true;
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
                 }
+            }
         }
         return false;
     }
@@ -1208,11 +1199,8 @@ public class Plot extends PlotBox {
         }
         if (_debug > 14) {
             System.out.println("Plot _addLegendIfNecessary( "+connected+" ) "+
-                           + (_filecount) + " "
-                           + (_currentdataset) +
-                           "<"+getLegend(0)+">"+
-                           "<"+getLegend(1)+"> "+
-                           "<"+getLegend(_currentdataset)+">");
+                    + (_filecount) + " " + (_currentdataset) +
+                    "<"+getLegend(0)+">");
         }
         if (getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
@@ -1220,7 +1208,7 @@ public class Plot extends PlotBox {
             _firstinset = true;
             _sawfirstdataset = true;
             addLegend(_currentdataset,
-                      new String("Set "+ _currentdataset));
+                    new String("Set "+ _currentdataset));
         }
         if (_firstinset) {
             connected = false;
@@ -1237,8 +1225,8 @@ public class Plot extends PlotBox {
      * point.
      */
     private synchronized void _addPoint(Graphics graphics,
-                                      int dataset, double x, double y,
-                                      boolean connected) {
+            int dataset, double x, double y,
+            boolean connected) {
         if (_debug > 100) {
             System.out.println("Plot: addPoint " + dataset + " "+
                     x+" "+y+" "+connected);
@@ -1291,7 +1279,7 @@ public class Plot extends PlotBox {
 
         // Draw the line to the previous point.
         if (pt.connected) _drawLine(graphics, dataset, xpos, ypos,
-                 _prevx[dataset], _prevy[dataset], true);
+                _prevx[dataset], _prevy[dataset], true);
 
         // Save the current point as the "previous" point for future
         // line drawing.
@@ -1342,7 +1330,7 @@ public class Plot extends PlotBox {
             int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
             // NOTE: I have no idea why I have to give this point backwards.
             if (nextp.connected) _drawLine(graphics, dataset,
-                     nextx, nexty,  xpos, ypos, true);
+                    nextx, nexty,  xpos, ypos, true);
             nextp.connected = false;
         }
 
@@ -1363,8 +1351,7 @@ public class Plot extends PlotBox {
 
     /* Split pxgraphargs up into an array and call _parseArgs
      */       
-    private int _parsePxgraphargs(String pxgraphargs) 
-    throws CmdLineArgException  {
+    private int _parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
         // We convert the String to a Stream and then use a StreamTokenizer
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
@@ -1393,7 +1380,7 @@ public class Plot extends PlotBox {
             stoken.quoteChar('\'');
             int c;
 
-         out:
+        out:
             while (true) {
                 c = stoken.nextToken();
                 //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
@@ -1420,24 +1407,24 @@ public class Plot extends PlotBox {
                     break;
                 default:
                     throw new IOException("Failed to parse: '"+ (char)c +
-                                          "' in `"+pxgraphargs+"'");
+                            "' in `" + pxgraphargs + "'");
                 }
             }
-         } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-         }
+        }
 
 
-         // Create a array 
-         String args[] = new String[argvector.size()];
-         for(int i = 0; i<argvector.size(); i++) {
-             args[i] = (String)argvector.elementAt(i);
-             if (_debug > 2) System.out.print("<"+args[i]+ "> ");
-         }
-         if (_debug > 2) System.out.println(" ");
+        // Create a array 
+        String args[] = new String[argvector.size()];
+        for(int i = 0; i<argvector.size(); i++) {
+            args[i] = (String)argvector.elementAt(i);
+            if (_debug > 2) System.out.print("<"+args[i]+ "> ");
+        }
+        if (_debug > 2) System.out.println(" ");
 
-         return parseArgs(args);
-     }
+        return parseArgs(args);
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
