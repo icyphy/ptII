@@ -147,8 +147,10 @@ public class EditParametersDialog extends ComponentDialog
                     + deleteName
                     + "\"/>";
                 _target.addChangeListener(this);
-                _target.requestChange(
-                        new MoMLChangeRequest(this, _target, moml));
+                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                                                                  moml);
+                request.setUndoable(true);
+                _target.requestChange(request);
             }
         } else if (buttonPressed().equals("Edit Styles")) {
             // Create a dialog for setting parameter styles.
@@ -258,8 +260,10 @@ public class EditParametersDialog extends ComponentDialog
                         // and the user hit cancel or close.
                         String moml =
                             "<deleteProperty name=\"" + newName + "\"/>";
-                        _target.requestChange(
-                                new MoMLChangeRequest(this, _target, moml));
+                        MoMLChangeRequest request =
+                            new MoMLChangeRequest(this, _target, moml);
+                        request.setUndoable(true);
+                        _target.requestChange(request);
                     }
                 }
             });
@@ -325,8 +329,10 @@ public class EditParametersDialog extends ComponentDialog
                 + _query.getStringValue("class")
                 + "\"/>";
             _target.addChangeListener(this);
-            _target.requestChange(
-                    new MoMLChangeRequest(this, _target, moml));
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                                                              moml);
+            request.setUndoable(true);
+            _target.requestChange(request);
         }
         return dialog;
     }

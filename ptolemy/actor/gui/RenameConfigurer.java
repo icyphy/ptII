@@ -146,13 +146,14 @@ public class RenameConfigurer extends Query
             moml.append(elementName);
             moml.append(">");
 
-            ChangeRequest request = new MoMLChangeRequest(
+            MoMLChangeRequest request = new MoMLChangeRequest(
                     this,            // originator
                     parent,          // context
                     moml.toString(), // MoML code
                     null);           // base
 
             request.addChangeListener(this);
+            request.setUndoable(true);
             parent.requestChange(request);
         }
     }
