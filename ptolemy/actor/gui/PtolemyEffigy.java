@@ -282,6 +282,12 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 NamedObj newModel;
                 if (entity != null) {
                     newModel = (NamedObj)entity.clone(new Workspace());
+                    // The cloning process results an object that defers change
+                    // requests.  By default, we do not want to defer change
+                    // requests, but more importantly, we need to execute
+                    // any change requests that may have been queued
+                    // during cloning. The following call does that.
+                    newModel.setDeferringChangeRequests(false);
                 } else {
                     newModel = new TypedCompositeActor(new Workspace());
                 }

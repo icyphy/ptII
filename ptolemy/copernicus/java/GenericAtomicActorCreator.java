@@ -126,6 +126,12 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         try {
             classEntity = (Entity)
                 ModelTransformer._findDeferredInstance(entity).clone(null);
+            // The cloning process results an object that defers change
+            // requests.  By default, we do not want to defer change
+            // requests, but more importantly, we need to execute
+            // any change requests that may have been queued
+            // during cloning. The following call does that.
+            classEntity.setDeferringChangeRequests(false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
