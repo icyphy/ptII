@@ -29,7 +29,6 @@ package ptplot;
 
 import java.awt.*;
 import java.util.*;
-import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
@@ -76,10 +75,10 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _startButton) {
-            _running = true;
+            _plotting = true;
             return true;
         } else if (evt.target == _stopButton) {
-            _running = false;
+            _plotting = false;
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
@@ -131,7 +130,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void run() {
         if (_debug >8 ) System.out.println("PlotLive: run");
         while ( true /*isActive()*/) {
-            if (_running) {
+            if (_plotting) {
                 addPoints();
                 Thread.yield();
             } else {
@@ -148,10 +147,11 @@ public abstract class PlotLive extends Plot implements Runnable {
 //        _plotThread = null;
     }
 
-    /**
-     * Start the applet.  This is called by the applet viewer.  It
-     * creates a thread to plot live data, if this has not been
-     * already done.
+    /** 
+     * Start the widget. It creates a thread to plot live data, if
+     * this has not been already done.  However, we don't actually
+     * start plotting until either the start button is called, or
+     * setPlotting(true) is called.
      */
     public void start() {
         if (_debug >8 ) System.out.println("PlotLive: start");
@@ -161,12 +161,21 @@ public abstract class PlotLive extends Plot implements Runnable {
         }
     }
 
+    /**
+     * If plotting is set to true, then we plot.
+     */  
+    public void setPlotting( boolean plotting) {
+        _plotting = plotting;
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
     private Thread _plotLiveThread;
    
+    // True if we are actually plotting
+    private boolean _plotting = false;
+
     private Button _startButton, _stopButton;
     
-    private boolean _running = false;
 }
