@@ -41,15 +41,16 @@ import ptolemy.kernel.util.*;
 Base class for classes representing guarded communication statements. A
 guarded communication statement is of the form
 <br>
-      guard; communication => statements
+      <CENTER>guard; communication => statements </CENTER>
 <br>
 If the guard is true, or absent which implies true, then the branch
 is enabled. Guarded communication statements are the used to perform
-both forms of conditional communication constructs: CIF and CDO.  Each guarded
-communication statement is one branch of a CIF or CDO.
+both forms of conditional communication constructs: CIF and CDO.  
+Each guarded communication statement is one branch of a CIF or CDO.
 <p>
 A CDO has the form
 <br>
+<CODE>
 CDO {
      G1; C1 => S1;
 []
@@ -57,6 +58,7 @@ CDO {
 []
      ...
 }
+</CODE>
 <br>
 While at least one of the branches is enabled, the construct continues
 to evaluate and execute one of the enabled branches. If more than one
@@ -67,7 +69,7 @@ which branch is successful. The CIF is similar to the CDO except that
 it is only evaluated once.
 <p>
 The communication part of a guarded communication statement can be
-either a send() or a receive(). There are thus two subclasses of this
+either a send() or a get(). There are thus two subclasses of this
 class, each representing a guarded communication statement for one of
 the communication primitives. The subclasses are ConditionalSend and
 ConditionalReceive.
@@ -77,8 +79,8 @@ in a separate thread. For rendezvous, the receiver is the key
 synchronization point.
 <p>
 Conditional branches are designed to be used once. Upon instantiation,
-they are given the guard, port and the channel and the identification
-number of the branch according to the parent.
+they are given the guard, the port and channel over which to communicate, 
+and the identification number of the branch according to the parent.
 The port and the channel together define the CSPReceiver with which to
 rendezvous. The CSPActor, that contains this branch, is
 assumed to be the container of the port argument.
@@ -149,7 +151,7 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
-    /** the token transferred if the branch succeeded. For a ConditionalSend
+    /** The token transferred if the branch succeeded. For a ConditionalSend
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
@@ -162,7 +164,7 @@ public abstract class ConditionalBranch {
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
      *  this branch. The branch should stop trying to rendezvous with
-     *  its receiver and terminate
+     *  its receiver and terminate.
      *  @return boolean indicating if this branch is still alive(needed).
      */
     public boolean isAlive() {
