@@ -654,6 +654,9 @@ public class Pxgraph extends Frame {
 		if (_cmdLineArgs[i].indexOf(" ") != -1) {
 		    // If the arg contains a space, wrap it in single quotes.
 		    applettag.append("'" + _cmdLineArgs[i] + "' ");
+		} else if (_cmdLineArgs[i].length() == 0) {
+		    // If the arg is the empty string, print two single quotes.
+		    applettag.append("'' ");
 		} else
 		    applettag.append(_cmdLineArgs[i] + " ");
 	    }
