@@ -133,10 +133,7 @@ public class Schedule extends ScheduleElement {
     ////                         public methods                    ////
 
     /** Return the actor invocation sequence of the schedule in the
-     *  form of a sequence of actors. All of the lowest-level nodes of
-     *  the schedule should be an instance of Firing. Otherwise an
-     *  exception will occur at some point in the iteration.
-     *  <p>
+     *  form of a sequence of instances of Firing.
      *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
@@ -145,7 +142,7 @@ public class Schedule extends ScheduleElement {
      *  efficient. It walks the schedule tree structure as the
      *  iterator methods are invoked.
      *
-     *  @return An iterator over a sequence of actors.
+     *  @return An iterator over instances of Firing.
      *  @exception ConcurrentModificationException If the
      *   underlying schedule structure is modified while the iterator
      *   is active.
