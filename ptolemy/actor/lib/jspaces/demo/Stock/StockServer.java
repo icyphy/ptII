@@ -48,7 +48,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.actor.lib.jspaces.Publisher;
-import ptolemy.actor.lib.RealTimeDelay;
+import ptolemy.actor.lib.Sleep;
 
 
 import java.util.StringTokenizer;
@@ -143,10 +143,10 @@ public class StockServer extends TypedCompositeActor {
 	    removeAllEntities();
 	    removeAllRelations();
 
-	    // create a RealTimeDelay that will be connected to all the
+	    // create a Sleep that will be connected to all the
 	    // StockQuote actors so that the SDF graph is connected,
             // and a real time delay
-	    RealTimeDelay sink = new RealTimeDelay(this, "sink");
+	    Sleep sink = new Sleep(this, "sink");
             sink.delay.setToken(new LongToken(30000));
 
 	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
