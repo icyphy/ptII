@@ -128,15 +128,9 @@ public class Delay extends SDFTransformer {
         Delay newObject = (Delay)(super.clone(workspace));
 
         // set the type constraints
-        try {
-            ArrayType paramType = (ArrayType)newObject.initialOutputs.getType();
-            InequalityTerm elemTerm = paramType.getElementTypeTerm();
-            newObject.output.setTypeAtLeast(elemTerm);
-        } catch (IllegalActionException ex) {
-            // Ignore..
-            // FIXME: This try..catch seems bogus...  ArrayToSequence
-            // doesn't need it..
-        }
+        ArrayType paramType = (ArrayType)newObject.initialOutputs.getType();
+        InequalityTerm elemTerm = paramType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elemTerm);
         return newObject;
     }
 

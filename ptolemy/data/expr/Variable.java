@@ -465,27 +465,24 @@ public class Variable extends Attribute implements Typeable, Settable {
         return _token;
     }
 
-    /** Get the type of this variable. It is BaseType.NAT if the type has
-     *  not set by setTypeEquals(), no token has been set by setToken(),
-     *  and no expression has been set by setExpression(). Calling this method
-     *  will trigger evaluation of the expression, if the value has been
-     *  given by setExpression(). Notice the evaluation of the expression
-     *  can trigger an exception if the expression is not valid, or if the
-     *  result of the expression violates type constraints specified by
-     *  setTypeEquals() or setTypeAtMost(), or if the result of the expression
-     *  is null and there are other variables that depend on this one.
-     *  The returned value will be BaseType.NAT if neither an expression nor a
-     *  token has been set.
+    /** Get the type of this variable. If a token has been set by setToken(),
+     *  the returned type is the type of that token; If an expression has
+     *  been set by setExpression(), and the expression can be evaluated, the
+     *  returned type is the type the evaluation result. If the expression
+     *  cannot be evaluated at this time, the returned type is the declared
+     *  type of this Variable, which is either set by setTypeEquals(), or
+     *  the default BaseType.NAT; If no token has been set by setToken(),
+     *  no expression has been set by setExpression(), and setTypeEquals()
+     *  has not been called, the returned type is BaseType.NAT.
      *  @return The type of this variable.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
      */
-    public Type getType()
-	    throws IllegalActionException {
-        _evaluate();
-        return _varType;
+    public Type getType() {
+        try {
+            _evaluate();
+            return _varType;
+	} catch (IllegalActionException iae) {
+	    return _declaredType;
+	}
     }
 
     /** Return an InequalityTerm whose value is the type of this variable.
@@ -1162,9 +1159,9 @@ public class Variable extends Attribute implements Typeable, Settable {
 		newToken = _declaredType.convert(newToken);
 	    } else {
                 throw new IllegalActionException(this, "Variable._setToken: " +
-                        "Cannot store a token of type " +
-                        newToken.getType().toString() + ", which is incompatible" +
-                        " with type " + _varType.toString());
+                    "Cannot store a token of type " +
+                    newToken.getType().toString() + ", which is incompatible" +
+                    " with type " + _varType.toString());
 	    }
 
 	    // update _varType to the type of the new token.
@@ -1368,12 +1365,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	/** Return the type of this Variable.
 	 */
 	public Object getValue() {
-	    try {
-	        return getType();
-	    } catch (IllegalActionException ex) {
-		throw new InternalErrorException("Variable " +
-                        "TypeTerm.getValue(): Cannot get type. " + ex.getMessage());
-	    }
+	    return getType();
         }
 
         /** Return this TypeTerm in an array if this term represent
@@ -1434,16 +1426,10 @@ public class Variable extends Attribute implements Typeable, Settable {
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
-	    try {
-            	if (getType().isInstantiable()) {
-                    return true;
-                }
-                return false;
-	    } catch (IllegalActionException ex) {
-		throw new InternalErrorException("Variable " +
-                        "TypeTerm.isValueAcceptable(): Cannot get type. " +
-                        ex.getMessage());
-	    }
+            if (getType().isInstantiable()) {
+                return true;
+            }
+            return false;
         }
 
         /** Set the type of this variable.
@@ -1475,12 +1461,7 @@ public class Variable extends Attribute implements Typeable, Settable {
          *  @return A description of the variable and its type.
          */
         public String toString() {
-	    try {
-                return "(" + _variable.toString() + ", " + getType() + ")";
-	    } catch (IllegalActionException ex) {
-		throw new InternalErrorException("Variable " +
-                        "TypeTerm.toString(): Cannot get type. " + ex.getMessage());
-	    }
+            return "(" + _variable.toString() + ", " + getType() + ")";
         }
 
         ///////////////////////////////////////////////////////////////
@@ -1489,3 +1470,4 @@ public class Variable extends Attribute implements Typeable, Settable {
         private Variable _variable = null;
     }
 }
+
