@@ -116,18 +116,15 @@ public class SDFTestDelay extends SDFAtomicActor {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFTestDelay newobj = (SDFTestDelay)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SDFTestDelay newobj = (SDFTestDelay)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /* Notice that constructors start the file.  Public methods should follow,

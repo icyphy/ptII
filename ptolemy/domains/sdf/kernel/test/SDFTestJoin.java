@@ -83,19 +83,16 @@ public class SDFTestJoin extends SDFAtomicActor {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFTestJoin newobj = (SDFTestJoin)(super.clone(ws));
-            newobj.input1 = (SDFIOPort)newobj.getPort("input1");
-            newobj.input2 = (SDFIOPort)newobj.getPort("input2");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SDFTestJoin newobj = (SDFTestJoin)(super.clone(ws));
+        newobj.input1 = (SDFIOPort)newobj.getPort("input1");
+        newobj.input2 = (SDFIOPort)newobj.getPort("input2");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** Fire the actor.

@@ -319,34 +319,31 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            CTDirector newobj = (CTDirector)(super.clone(ws));
-            newobj.startTime =
-                (Parameter)newobj.getAttribute("startTime");
-            newobj.stopTime =
-                (Parameter)newobj.getAttribute("stopTime");
-            newobj.initStepSize =
-                (Parameter)newobj.getAttribute("initStepSize");
-            newobj.minStepSize =
-                (Parameter)newobj.getAttribute("minStepSize");
-            newobj.maxStepSize =
-                (Parameter)newobj.getAttribute("maxStepSize");
-            newobj.maxIterations =
-                (Parameter)newobj.getAttribute("maxIterations");
-            newobj.errorTolerance =
-                (Parameter)newobj.getAttribute("errorTolerance");
-            newobj.valueResolution =
-                (Parameter)newobj.getAttribute("valueResolution");
-	    newobj.timeResolution =
-                (Parameter)newobj.getAttribute("timeResolution");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        CTDirector newobj = (CTDirector)(super.clone(ws));
+        newobj.startTime =
+            (Parameter)newobj.getAttribute("startTime");
+        newobj.stopTime =
+            (Parameter)newobj.getAttribute("stopTime");
+        newobj.initStepSize =
+            (Parameter)newobj.getAttribute("initStepSize");
+        newobj.minStepSize =
+            (Parameter)newobj.getAttribute("minStepSize");
+        newobj.maxStepSize =
+            (Parameter)newobj.getAttribute("maxStepSize");
+        newobj.maxIterations =
+            (Parameter)newobj.getAttribute("maxIterations");
+        newobj.errorTolerance =
+            (Parameter)newobj.getAttribute("errorTolerance");
+        newobj.valueResolution =
+            (Parameter)newobj.getAttribute("valueResolution");
+        newobj.timeResolution =
+            (Parameter)newobj.getAttribute("timeResolution");
+        return newobj;
     }
 
     /** Return the break point table.

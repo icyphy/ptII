@@ -252,26 +252,23 @@ public class DEDirector extends Director {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            DEDirector newobj = (DEDirector)(super.clone(ws));
-            newobj.stopTime = 
-                (Parameter)newobj.getAttribute("stopTime");
-            newobj.stopWhenQueueIsEmpty = 
-                (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
-            newobj.isCQAdaptive =
-                (Parameter)newobj.getAttribute("isCQAdaptive");
-            newobj.minBinCount = 
-                (Parameter)newobj.getAttribute("minBinCount");
-            newobj.binCountFactor = 
-                (Parameter)newobj.getAttribute("binCountFactor");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        DEDirector newobj = (DEDirector)(super.clone(ws));
+        newobj.stopTime = 
+            (Parameter)newobj.getAttribute("stopTime");
+        newobj.stopWhenQueueIsEmpty = 
+            (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
+        newobj.isCQAdaptive =
+            (Parameter)newobj.getAttribute("isCQAdaptive");
+        newobj.minBinCount = 
+            (Parameter)newobj.getAttribute("minBinCount");
+        newobj.binCountFactor = 
+            (Parameter)newobj.getAttribute("binCountFactor");
+        return newobj;
     }
 
     /** Disable the specified actor.  All events destined to this actor

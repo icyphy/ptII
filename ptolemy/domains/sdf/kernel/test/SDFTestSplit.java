@@ -79,19 +79,16 @@ public class SDFTestSplit extends SDFAtomicActor {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFTestSplit newobj = (SDFTestSplit)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output1 = (SDFIOPort)newobj.getPort("output1");
-            newobj.output2 = (SDFIOPort)newobj.getPort("output2");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SDFTestSplit newobj = (SDFTestSplit)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output1 = (SDFIOPort)newobj.getPort("output1");
+        newobj.output2 = (SDFIOPort)newobj.getPort("output2");
+        return newobj;
     }
 
     /**

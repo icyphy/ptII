@@ -133,22 +133,19 @@ public final class SDFIOPort extends TypedIOPort {
      *  port will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new SDFIOPort.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFIOPort newobj = (SDFIOPort)(super.clone(ws));
-            newobj.tokenConsumptionRate =
-                (Parameter)newobj.getAttribute("tokenConsumptionRate");
-            newobj.tokenInitProduction =
-                (Parameter)newobj.getAttribute("tokenInitProduction");
-            newobj.tokenProductionRate =
-                (Parameter)newobj.getAttribute("tokenProductionRate");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SDFIOPort newobj = (SDFIOPort)(super.clone(ws));
+        newobj.tokenConsumptionRate =
+            (Parameter)newobj.getAttribute("tokenConsumptionRate");
+        newobj.tokenInitProduction =
+            (Parameter)newobj.getAttribute("tokenInitProduction");
+        newobj.tokenProductionRate =
+            (Parameter)newobj.getAttribute("tokenProductionRate");
+        return newobj;
     }
 
     /** Get an array of tokens from the specified channel.

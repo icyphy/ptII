@@ -139,18 +139,15 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFDirector newobj = (SDFDirector)(super.clone(ws));
-            newobj.iterations =
-                (Parameter)newobj.getAttribute("iterations");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        SDFDirector newobj = (SDFDirector)(super.clone(ws));
+        newobj.iterations =
+            (Parameter)newobj.getAttribute("iterations");
+        return newobj;
     }
 
     /** Calculate the current schedule, if necessary,
