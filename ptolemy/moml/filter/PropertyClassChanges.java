@@ -384,5 +384,16 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.VariableFIR",
                 rateParameterChanges);
+
+        // DE VariableDelay, the delay DEIOPort is now
+        // a PortParameter
+
+        HashMap variableDelayClassChanges = new HashMap();
+        variableDelayClassChanges.put("delay",
+                "ptolemy.actor.parameters.PortParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.domains.de.lib.VariableDelay",
+                    variableDelayClassChanges);
     }
 }
