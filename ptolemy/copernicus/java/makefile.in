@@ -415,6 +415,7 @@ GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit ptolemy/data ptolemy/kernel/u
 
 GCJ_TO_BE_REMOVED = ptolemy/util/XSLTUtilities.class \
 	ptolemy/data/expr/NotEditableParameter.class \
+	ptolemy/actor/MobileFunction.class \
 	ptolemy/actor/MobileModel.class
 
 gcj2_0a: $(TARGETPATH)/gcj
