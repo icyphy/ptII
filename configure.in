@@ -147,22 +147,26 @@ fi
 JFLAGSINIT=-g
 
 AC_MSG_CHECKING([the Java compiler with a simple compile])
-if env $JAVAC -d . $srcdir/mk/confTest.java ; then
+# We need to run javac in the mk directory so that javac from jdk1.1.6
+# under NT and cygwin works properly
+startdir=`pwd`
+cd $srcdir/mk
+if env $JAVAC -d $startdir confTest.java ; then
     AC_MSG_RESULT(ok)
     JFLAGS="$JFLAGSINIT -depend"
     AC_MSG_CHECKING([javac $JFLAGS])
-    if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+    if env $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	AC_MSG_RESULT(yes)
     else
 	AC_MSG_RESULT(no)
 	JFLAGS="$JFLAGSINIT -Xdepend"
 	AC_MSG_CHECKING([javac $JFLAGS])
-	if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+	if env $JAVAC -d $startdir $JFLAGS confTest.java ; then
 	    AC_MSG_RESULT(yes)
 	else
 	    AC_MSG_RESULT(no)
-	    AC_MSG_WARN(['$JAVAC -d . -depend $srcdir/mk/confTest.java' and
-'$JAVAC -d . -Xdepend $srcdir/mk/confTest.java' both failed, so we don't
+	    AC_MSG_WARN(['$JAVAC -d $startdir -depend confTest.java' and
+'$JAVAC -d $startdir -Xdepend confTest.java' both failed, so we don't
 know how to build with dependencies taken into account.  This could
 cause problems later if you modify .java files that other .java
 files depend on])
@@ -171,11 +175,11 @@ files depend on])
     fi
 else
     JFLAGS="$JFLAGSINIT -depend"
-   AC_MSG_WARN(['$JAVAC -d . $srcdir/mk/confTest.java' failed,
+   AC_MSG_WARN(['$JAVAC -d $startdir confTest.java' failed,
 so we can't figure out whether to use -depend or -Xdepend.
 Defaulting to $JFLAGS]);
 fi
-
+cd $startdir
 
 
 #--------------------------------------------------------------------
