@@ -31,8 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.io;
 
 import ptolemy.actor.lib.Source;
+import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
@@ -49,9 +51,13 @@ This actor reads a file or URL, one line at a time, and outputs each line
 as a string.  The file or URL is specified using any form acceptable
 to FileAttribute.  If an end of file is reached, then prefire() and
 postfire() will both return false.
+<p>
+This actor can skip some lines at the beginning of the file or URL, with
+the number specified by the <i>numberOfLinesToSkip</i> parameter. The
+default value of this parameter is 0.
 
 @see FileAttribute
-@author  Edward A. Lee
+@author  Edward A. Lee, Yuhong Xiong
 @version $Id$
 */
 public class LineReader extends Source {
@@ -72,6 +78,10 @@ public class LineReader extends Source {
 
         fileOrURL = new FileAttribute(this, "fileOrURL");
 
+        numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip",
+                                            new IntToken(0));
+        numberOfLinesToSkip.setTypeEquals(BaseType.INT);
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" "
                 + "width=\"50\" height=\"40\" "
@@ -91,15 +101,24 @@ public class LineReader extends Source {
      */
     public FileAttribute fileOrURL;
 
+    /** The number of lines to skip at the beginning of the file or URL.
+     *  This parameter contains an IntToken, initially with value 0.
+     *  The value of this parameter must be non-negative.
+     */
+    public Parameter numberOfLinesToSkip; 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the specified attribute is <i>fileOrURL</i> and there is an
-     *  open file being read, then close that file and open the new one.
+     *  open file being read, then close that file and open the new one;
+     *  if the attribute is <i>numberOfLinesToSkip</i> and its value is
+     *  negative, throw an exception.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>fileOrURL</i> and the file cannot be opened, or the previously
-     *   opened file cannot be closed.
+     *   opened file cannot be closed; or if the attribute is
+     *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -107,6 +126,13 @@ public class LineReader extends Source {
             fileOrURL.close();
             _reader = fileOrURL.openForReading();
             _reachedEOF = false;
+        } else if (attribute == numberOfLinesToSkip) {
+            int linesToSkip =
+                    ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+            if (linesToSkip < 0) {
+                throw new IllegalActionException(this, "The number of lines "
+                        + "to skip cannot be negative.");
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -169,12 +195,15 @@ public class LineReader extends Source {
         else return super.prefire();
     }
 
-    /** Open the file or URL and read the first line.
+    /** Open the file or URL, skip the number of lines specified by the
+     *  <i>numberOfLinesToSkip</i> parameter, and read the first line to
+     *  be sent out in the fire() method.
      *  This is done in preinitialize() so
      *  that derived classes can extract information from the file
      *  that affects information used in type resolution or scheduling.
      *  @exception IllegalActionException If the file or URL cannot be
-     *   opened, or if the first line cannot be read.
+     *   opened, or if the lines to be skipped and the first line to be
+     *   sent out in the fire() method cannot be read.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -183,9 +212,15 @@ public class LineReader extends Source {
         _reader = fileOrURL.openForReading();
         _reachedEOF = false;
         try {
-            _currentLine = _reader.readLine();
-            if (_currentLine == null) {
-                throw new IllegalActionException(this, "Empty file.");
+            // Read (numberOfLinesToSkip + 1) lines
+            int numberOfLines =
+                    ((IntToken)numberOfLinesToSkip.getToken()).intValue();
+            for (int i = 0; i <= numberOfLines; i++) {
+                _currentLine = _reader.readLine();
+                if (_currentLine == null) {
+                    throw new IllegalActionException(this, "The file does not "
+                            + "have enough lines.");
+                }
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -208,11 +243,11 @@ public class LineReader extends Source {
     /** Cache of most recently read data. */
     protected String _currentLine;
 
+    /** The current reader for the input file. */
+    protected BufferedReader _reader;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
-    /** The current reader for the input file. */
-    private BufferedReader _reader;
 
     /** Indicator that we have reached the end of file. */
     private boolean _reachedEOF = false;
