@@ -62,6 +62,11 @@ public class PlotMLParser extends PlotBoxMLParser {
         super(plot);
     }
 
+    /** Protected constructor allows derived classes to set _plot
+     *  differently.
+     */
+    protected PlotMLParser() {}
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -74,12 +79,9 @@ public class PlotMLParser extends PlotBoxMLParser {
     public void endElement(String elementName) throws Exception {
         super.endElement(elementName);
 
-        if (elementName.equals("bars")) {
+        if (elementName.equals("dataset")) {
             // Reset the default, in case it was changed for this dataset.
             ((Plot)_plot).setBars(_bars);
-
-        } else if (elementName.equals("dataset")) {
-            // Reset the default, in case it was changed for this dataset.
             ((Plot)_plot).setConnected(_connected);
         }
     }
@@ -91,6 +93,7 @@ public class PlotMLParser extends PlotBoxMLParser {
     public void startDocument() {
         super.startDocument();
         _currentDataset = -1;
+        _currentPointCount = 0.0;
     }
 
     /** Start an element.
@@ -121,6 +124,7 @@ public class PlotMLParser extends PlotBoxMLParser {
 
             } else if (elementName.equals("dataset")) {
                 _currentDataset++;
+                _currentPointCount = 0.0;
 
                 String connected = (String)_attributes.get("connected");
                 if (connected != null) {
@@ -211,25 +215,39 @@ public class PlotMLParser extends PlotBoxMLParser {
     ////                         protected members                 ////
 
     /** The default bars state. */
-    protected boolean _bars;
+    protected boolean _bars = false;
 
     /** The default connected state. */
-    protected boolean _connected;
+    protected boolean _connected = true;
 
     /** The current dataset number in a "dataset" element. */
     protected int _currentDataset = -1;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    /** A count within the current dataset, in case no x value is given. */
+    protected double _currentPointCount = 0.0;
 
-    // Add a point based on the current _attributes.
-    // If the first argument is true, connect it to the previous point.
-    // The second argument is the element name, used for error reporting.
-    private void _addPoint(boolean connected, String element) throws Exception {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Add a point based on the current attributes.
+     *  If the first argument is true, connect it to the previous point.
+     *  The second argument is the element name, used for error reporting.
+     *  @param connected If true, connect to the previous point.
+     *  @param element The name of the element.
+     */
+    protected void _addPoint(boolean connected, String element)
+            throws Exception {
         String xSpec = (String)_attributes.get("x");
-        _checkForNull(xSpec, "No x value for element \"" + element + "\"");
-        // NOTE: Do not use parseDouble() to maintain Java 1.1 compatibility.
-        double x = (Double.valueOf(xSpec)).doubleValue();
+        double x;
+        if (xSpec == null) {
+            // No x value given.  Use _currentPointCount.
+            x = _currentPointCount;
+            _currentPointCount += 1.0;
+        } else {
+            // NOTE: Do not use parseDouble() to maintain
+            // Java 1.1 compatibility.
+            x = (Double.valueOf(xSpec)).doubleValue();
+        }
 
         String ySpec = (String)_attributes.get("y");
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");

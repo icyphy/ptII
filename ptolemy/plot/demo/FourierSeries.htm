@@ -6,10 +6,11 @@
 <body bgcolor="#faf0e6">
 <h1>Fourier Series Approximation to a Square Wave</h1>
 
-The plot below shows a sequence of approximations to a square
-wave constructed by adding together sinusoids.
-It is implemented by a Java class derived from Plot that
-computes the data to be plotted on the fly:
+The plot below shows a sequence of approximations to a square wave constructed 
+by adding together sinusoids. It is implemented by a Java class derived from PlotApplet 
+that computes the data to be plotted on the fly. This is an example of a customized 
+application of the ptolemy plot package, where the package is used to define base 
+classes rather than as the end classes for applets or applications. 
 <p>
 <applet name="Fourier" code="ptolemy.plot.demo.PlotFourierSeries"
     width=500 height=300
@@ -21,30 +22,21 @@ computes the data to be plotted on the fly:
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
-<p>
-Note that you can zoom in on any region of the graph by drawing a box.
-Start at the upper left corner of the region you wish to view in more
-detail, and drag downwards and to the right.
-Dragging upwards instead allows you to zoom out.  When zooming out,
-a reference box is drawn that will represent the current view, and
-dragging will cause a box to be displayed that represents the new
-view.  Zooming out will only go as far as the original scale.
-Clicking on the "fill" button at the upper right brings all data within range.
-<p>
-The <a href="PlotFourierSeries.java">source code</a>
-defines a class <code>PlotFourierSeries</code>
-derived from <code>Plot</code>.  This class contains a sequence of Java
-statements in its <code>init()</code> method that configures and constructs
-the plot.  This particular example also demonstrates a number of features.
-In particular, no marks are made at all for each plotted point, so the plot
-consists entirely of connected lines.
-The X and Y ranges and tick marks are not given,
-so they get computed automatically to just fit the data.
-
- <p>
-<a href="../doc/toc.htm" target="toc"><img src="../../../doc/img/up.gif" alt="up to main plot menu"></a>
-<a href="Marks.htm" target="main"><img src="../../../doc/img/next.gif" alt="forward to next demo"></a>
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+<p> Note that you can zoom in on any region of the graph by drawing a box. Start 
+  at the upper left corner of the region you wish to view in more detail, and 
+  drag downwards and to the right. Dragging upwards instead allows you to zoom 
+  out. When zooming out, a reference box is drawn that will represent the current 
+  view, and dragging will cause a box to be displayed that represents the new 
+  view. Zooming out will only go as far as the original scale. Clicking on the 
+  "fill" button at the upper right brings all data within range. These capabilities 
+  are available in all classes in the package.
+<p> The <a href="PlotFourierSeries.java">source code</a> defines a class <code>PlotFourierSeries</code> 
+  derived from <code>PlotApplet</code>. This class contains a sequence of Java 
+  statements in its <code>init()</code> method that configures and constructs 
+  the plot. This particular example also demonstrates a number of features. In 
+  particular, no marks are made at all for each plotted point, so the plot consists 
+  entirely of connected lines. The X and Y ranges and tick marks are not given, 
+  so they get computed automatically to just fit the data. 
+<p>&nbsp; 
 </body>
 </html>

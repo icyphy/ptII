@@ -5,12 +5,15 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Editable Plot</h1>
-
-Here is an example of an editable plot:
+<p>
+One of the classes in the plot package, EditablePlot, extends
+the Plot class with a facility for graphically
+editing the data being plotted.
+The following plot is editable:
 <p>
 <applet name="Editable plot"
     code="ptolemy.plot.plotml.EditablePlotMLApplet"
-    width=500
+    width=600
     height=400
     codebase="../../.."
     archive="ptolemy/plot/plotapplet.jar"
@@ -26,11 +29,17 @@ At the bottom, you can select one of the three data sets.
 Then, by dragging the right mouse button, you can change the values
 plotted for the corresponding data set.
 <p>
-This demonstration is implementing using the EditablePlotMLApplet
+This demonstration is implementing using the
+<a href="../../../doc/codeDoc/ptolemy/plot/plotml/EditablePlotMLApplet.html">
+EditablePlotMLApplet</a>
 class in the ptolemy.plot.plotml package.  That applet has
-an applet parameter, <i>dataurl</i>, that specifies the data to
-be plotted and format information.  It creates the choice menu
-at the bottom and implements the plot using the EditablePlot
+an applet parameter, <i>dataurl</i>, that specifies the initial data to
+be plotted and the format information (the fact that it is
+a bar graph, the title, the axis labels, etc.).  It creates the choice menu
+at the bottom and implements the plot using the
+<a href="../../../doc/codeDoc/ptolemy/plot/EditablePlot.html">
+EditablePlot</a>
 class instead of the base class Plot.
+<p>&nbsp;
 </body>
 </html>

@@ -45,20 +45,12 @@ import java.awt.Point;
 
 /**
 An application that can plot data in pxgraph format.
-To compile and run this application, do the following (in Unix):
+To compile and run this application, do the following:
 <pre>
-    setenv CLASSPATH ../../..
-    javac PxgraphApplication.java
-    java ptolemy.plot.pxgraph.PxgraphApplication
+    javac -classpath ../../.. PxgraphApplication.java
+    java -classpath ../../.. ptolemy.plot.pxgraph.PxgraphApplication
 </pre>
-or in a bash shell in Windows NT:
-<pre>
-    CLASSPATH=../../..
-    export CLASSPATH
-    javac PxgraphApplication.java
-    java ptolemy.plot.pxgraph.PxgraphApplication
-</pre>
-
+<p>
 This class uses the helper class PxgraphParser to parse command-line
 arguments and binary files.  See that class for documentation on
 the formats.
@@ -159,7 +151,7 @@ public class PxgraphApplication extends PlotApplication {
 
         // Although most of the arguments are handled by the Plot class,
         // a few are dealt with here.
-        while (i < args.length) {
+        while (args != null && i < args.length) {
             arg = args[i++];
 
             if (arg.equals("-help")) {
@@ -218,7 +210,6 @@ public class PxgraphApplication extends PlotApplication {
         setTitle(title);
 
         argumentsRead = i++;
-
 
         if (_parser == null) {
             _parser = new PxgraphParser((Plot)plot);

@@ -48,6 +48,7 @@ import java.net.MalformedURLException;
  *  The URL should be specified using the dataurl applet parameter.
  *  The formatting commands are included in the file with the
  *  the data.
+ *  If no URL is given, then a sample plot is generated.
  *
  *  @author Edward A. Lee, Christopher Hylands
  *  @version $Id$
@@ -58,6 +59,7 @@ import java.net.MalformedURLException;
 public class PlotApplet extends Applet {
 
     /** Return a string describing this applet.
+     *  @return A string describing the applet.
      */
     public String getAppletInfo() {
         return "PlotApplet 3.0: A data plotter.\n" +
@@ -67,12 +69,16 @@ public class PlotApplet extends Applet {
     }
 
     /** Return information about parameters.
+     *  @return A array of arrays giving parameter names, the type,
+     *   and the default value or description.
      */
     public String[][] getParameterInfo() {
         String pinfo[][] = {
             {"background", "hexcolor value", "background color"},
             {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
+            {"height", "integer", "100"},
+            {"width", "integer", "100"},
         };
         return pinfo;
     }
@@ -137,14 +143,16 @@ public class PlotApplet extends Applet {
 
     /** Create a new Plot object for the applet.  Derived classes can
      *  redefine this method to return a different type of plot object.
+     *  @return A new instance of PlotBox.
      */
-    public Plot newPlot() {
+    public PlotBox newPlot() {
         return new Plot();
     }
 
-    /** Return the Plot object to operate on.
+    /** Return the plot object to operate on.
+     *  @return The plot object associated with this applet.
      */
-    public Plot plot() {
+    public PlotBox plot() {
         return _plot;
     }
 
@@ -174,5 +182,5 @@ public class PlotApplet extends Applet {
     ////                         protected variables               ////
 
     // The Plot component we are running.
-    private transient Plot _plot;
+    private transient PlotBox _plot;
 }

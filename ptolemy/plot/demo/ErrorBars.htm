@@ -5,17 +5,11 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Plot using Error Bars</h1>
-
-The plot below shows error bars for some of the data points.
- <P>Error bars can be specified from within the data file or programmatically
-by calling Java methods.
- <P>
-The error bars below are specified in the <a href="errorbars.plt">data file</a>
-with a 4 number line:
-<pre>
-<i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
-</pre>
-The numbers can be separated by white space or commas.
+<p>
+One of the features of the
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</a> class
+is that the data can show upper and lower error bars.
+An example is below.
 <p>
 <applet name="ErrorBars"
     code="ptolemy.plot.compat.PxgraphApplet"
@@ -31,19 +25,26 @@ The numbers can be separated by white space or commas.
     you would see an applet here.<hr>
 </applet>
 
-<p>From within Java, error bars can be added by calling
-the <CODE>addPointWithErrorBars()</CODE> method in the
-<A HREF="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</A> class.
-The error bars can be erased by calling the <CODE>erasePoint()</CODE>
-Plot class method.
- <P>The error bar data is stored inside the
-<A HREF="../../../doc/codeDoc/ptolemy/plot/PlotPoint.html">PlotPoint</A> class.
-
+<P>Error bars can be specified from within the data file or
+by calling Java methods.
+The error bars above are specified in the
+<a href="errorbars.plt">data file</a>
+with a 4 number line:
+<pre>
+<i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
+</pre>
+The numbers can be separated by white space or commas.
+This is the "old syntax," but the PlotML syntax also supports
+error bars.  A point with error bars is given by a element
+of the following form:
 <p>
-<a href="Ptplot.htm"><img src="../../../doc/img/prev.gif" alt="to previous demonstration"></a>
-<a href="../doc/toc.htm" target="toc"><img src="../../../doc/img/up.gif" alt="up to main plot menu"></a>
-<a href="LogAxes.htm"><img src="../../../doc/img/next.gif" alt="to next demonstration"></a>
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+<pre>
+&lt;point x="0.1" y="1.0" lowErrorBar="0.9" highErrorBar="1.1"/&gt;
+</pre>
+<p>
+From within Java, error bars can be added by calling
+the addPointWithErrorBars() method in the
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</a> class.
+<p>&nbsp;
 </body>
 </html>

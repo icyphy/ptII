@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# If this script is named 'ptplot' or 'pxgraph' don't edit it!
+# If this script is named 'ptplot', 'pxgraph', or 'histogram' don't edit it!
 # instead, edit ptplot.in and run configure
 # 
 # configure substitutes in variables that are surrounded with @,
@@ -50,13 +50,19 @@ if [ -z "$PTII" ]; then
     fi
 fi
 
-# We can start up either Pxgraph or PlotApplication here
+# We can start up either PxgraphApplication, EditablePlotMLApplication, or
+# HistogramMLApplication here
 if [ "`basename $0`" = "pxgraph" ]; then
     javastartupclass=ptolemy.plot.compat.PxgraphApplication
 
-else
-    # javastartupclass=ptolemy.plot.PlotApplication
-    javastartupclass=ptolemy.plot.plotml.PlotMLApplication
+else 
+    if [ "`basename $0`" = "histogram" ]; then
+        javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
+
+    else
+        # javastartupclass=ptolemy.plot.PlotApplication
+        javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
+    fi
 fi
 
 windows=no

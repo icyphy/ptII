@@ -8,7 +8,10 @@
 
 Here is an example of a bar graph:
 <p>
-<applet name="BarGraph" code="ptolemy.plot.PlotApplet" width=500 height=400
+<applet name="BarGraph"
+    code="ptolemy.plot.PlotApplet"
+    width=600
+    height=400
     codebase="../../.."
     archive="ptolemy/plot/plotapplet.jar"
     alt="If you had a java-enabled browser, you would see an applet here."
@@ -18,20 +21,14 @@ Here is an example of a bar graph:
     <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
-<p>
-Here,  data is read from an ASCII file at a <a href="bargraph.plt">URL</a>.
-The horizontal axis is manually labeled with tick marks indicating years.
-It is possible to control the thickness of bars and the offset of the bars
-behind by editing that file.
-For details about the file format, see the documentation for the
-<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html" target="_top">Plot</a> and
-<a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html" target="_top">PlotBox</a> classes.
-
- <p>
-<a href="Sinusoids.htm"><img src="../../../doc/img/prev.gif" alt="to previous demonstration"></a>
-<a href="../doc/toc.htm" target="toc"><img src="../../../doc/img/up.gif" alt="up to main plot menu"></a>
-<a href="Histogram.htm"><img src="../../../doc/img/next.gif" alt="to next demonstration"></a>
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+<p> Here, data is read from an <a href="bargraph.plt">ASCII file</a> at a URL. 
+  The format of that file is the &quot;old ptplot format,&quot; which is simpler 
+  than PlotML, but not as compatible with modern web tools. The horizontal axis 
+  is manually labeled with tick marks indicating years. It is possible to control 
+  the thickness of bars and the offset of the bars behind by editing that file. 
+  For details about the file format, see the documentation for the <a href="../../../doc/codeDoc/ptolemy/plot/Plot.html" target="_top">Plot</a> 
+  and <a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html" target="_top">PlotBox</a> 
+  classes. 
+<p>&nbsp;
 </body>
 </html>

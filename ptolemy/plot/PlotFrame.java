@@ -1,4 +1,4 @@
-/* 2-D plotter widget
+/* Top-level window containing a plotter.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -38,13 +38,6 @@ import java.util.StringTokenizer;
 //   - Add a mechanism for combining two plots into one
 //   - Convert to use swing, especially for the menu.
 //   - Add a swing-based dialog for setting the plot format
-//   - Add a swing-based dialog for adding points.
-//   - Improve the help mechanism and separate from the usage message.
-//   - Add an "export" mechanism.  Should create:
-//        + and HTML file and a .plt plot file.
-//        + a gif
-//        + an MIF file
-//        + what else?
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFrame
@@ -132,6 +125,13 @@ public class PlotFrame extends Frame {
         }
         _menubar.add(_fileMenu);
 
+        // Edit menu
+        MenuItem format = new MenuItem("Format");
+        FormatListener formatListener = new FormatListener();
+        format.addActionListener(formatListener);
+        _editMenu.add(format);
+        _menubar.add(_editMenu);
+
         // Special menu
         MenuItem[] specialMenuItems = {
             // FIXME: These shortcuts are not right.
@@ -183,6 +183,9 @@ public class PlotFrame extends Frame {
     /** @serial Menubar for this frame. */
     protected MenuBar _menubar = new MenuBar();
 
+    /** @serial Edit menu for this frame. */
+    protected Menu _editMenu = new Menu("Edit");
+
     /** @serial File menu for this frame. */
     protected Menu _fileMenu = new Menu("File");
 
@@ -216,6 +219,13 @@ public class PlotFrame extends Frame {
      */
     protected void _close() {
         dispose();
+    }
+
+    /** Interactively edit the file format.
+     *  NOTE: Not supported yet.
+     */
+    protected void _editFormat() {
+        new Message("Sorry, not supported yet.");
     }
 
     /** Query the user for a filename and export the plot to that file.
@@ -382,6 +392,12 @@ public class PlotFrame extends Frame {
             else if (actionCommand.equals("Export")) _export();
             else if (actionCommand.equals("Print")) _print();
             else if (actionCommand.equals("Close")) _close();
+        }
+    }
+
+    class FormatListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            _editFormat();
         }
     }
 

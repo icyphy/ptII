@@ -57,7 +57,6 @@ PTAUXJAR = plotapplet.jar
 JSRCS = \
 	CmdLineArgException.java \
 	EditablePlot.java \
-	EditablePlotApplication.java \
 	EditListener.java \
 	EPSGraphics.java \
 	Histogram.java \
@@ -97,6 +96,7 @@ MISC_FILES = test #bean
 OPTIONAL_FILES = \
 	$(DIRS) \
 	adm \
+	histogram \
 	manifest.tmp \
 	ptplot \
 	pxgraph \
@@ -129,12 +129,17 @@ all: sources ptplot jclass
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
+	rm -f histogram
+	ln -s ptplot histogram
 install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
+	rm -f histogram
+	ln -s ptplot histogram
 	$(INSTALL_PROGRAM) ptplot $(BIN_INSTALL_DIR)
 	$(INSTALL_PROGRAM) pxgraph $(BIN_INSTALL_DIR)
+	$(INSTALL_PROGRAM) histogram $(BIN_INSTALL_DIR)
 
 # FIXME: this is ugly, dangerous, and unportable.
 #

@@ -86,19 +86,12 @@ format file created on a little-endian machine, such as Intel x86
 machine, then use the <code>-littleendian</code> flag.
 </dl>
 <p>
-To compile and run this application, do the following (in Unix):
+To compile and run this application, do the following:
 <pre>
-    setenv CLASSPATH ../..
-    javac PlotApplication.java
-    java ptolemy.plot.PlotApplication
+    javac -classpath ../.. PlotApplication.java
+    java -classpath ../.. ptolemy.plot.PlotApplication
 </pre>
-or in a bash shell in Windows NT:
-<pre>
-    CLASSPATH=../..
-    export CLASSPATH
-    javac PlotApplication.java
-    java ptolemy.plot.PlotApplication
-</pre>
+<p>
 This assumes a particular directory structure.  If this is not what you
 have, then alter the above accordingly.
 
@@ -127,10 +120,11 @@ public class PlotApplication extends PlotFrame {
 
     /** Construct a plot with the specified command-line arguments
      *  and instance of plot.
+     *  @param plot The instance of Plot to use.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(Plot plot, String args[]) throws Exception {
+    public PlotApplication(PlotBox plot, String args[]) throws Exception {
 
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
@@ -146,10 +140,8 @@ public class PlotApplication extends PlotFrame {
                 System.exit(0);
             }
         });
-
-        if (args != null && args.length != 0) {
-            _parseArgs(args);
-        } else {
+        _parseArgs(args);
+        if (args == null || args.length == 0) {
             samplePlot();
         }
         setVisible(true);
@@ -187,7 +179,7 @@ public class PlotApplication extends PlotFrame {
      */
     protected void _about() {
         Message message = new Message(
-                "Ptplot\n" +
+                "PlotApplication class\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 2.2, Build: $Id$\n\n"+
@@ -235,7 +227,7 @@ public class PlotApplication extends PlotFrame {
         int width = 500;      // Default width of the graph
         int height = 300;     // Default height of the graph
 
-        while (i < args.length) {
+        while (args != null && i < args.length) {
             arg = args[i++];
 
             if (arg.equals("-height")) {

@@ -48,6 +48,7 @@ DIRS =
 
 # Order matters here.
 JSRCS = \
+	HistogramDemo.java \
 	PlotDemo.java \
 	PlotFourierSeries.java \
 	PlotLiveDemo.java \

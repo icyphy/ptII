@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.compat;
 
 import ptolemy.plot.PlotApplet;
+import ptolemy.plot.Plot;
 import ptolemy.plot.CmdLineArgException;
 
 import java.io.*;
@@ -85,7 +86,7 @@ public class PxgraphApplet extends PlotApplet {
     public void init() {
         super.init();
 
-        _parser = new PxgraphParser(plot());
+        _parser = new PxgraphParser((Plot)plot());
 
         // Process the pxgraphargs parameter.
         String pxgraphargs = null;

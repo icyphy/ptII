@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.PlotApplet;
+import ptolemy.plot.Plot;
 
 import com.microstar.xml.XmlException;
 
@@ -85,7 +86,7 @@ public class PlotMLApplet extends PlotApplet {
         bin.reset();
         if ((new String(peek)).startsWith("<?xm")) {
             // file is an XML file.
-            PlotMLParser parser = new PlotMLParser(plot());
+            PlotMLParser parser = _newParser();
             try {
                 URL docBase = getDocumentBase();
                 parser.parse(docBase, bin);
@@ -108,5 +109,12 @@ public class PlotMLApplet extends PlotApplet {
         } else {
             super._read(bin);
         }
+    }
+
+    /** Create a new parser object for the applet.  Derived classes can
+     *  redefine this method to return a different type of parser.
+     */
+    protected PlotMLParser _newParser() {
+        return new PlotMLParser((Plot)plot());
     }
 }

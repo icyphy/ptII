@@ -60,7 +60,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
 
         _choice = new Choice();
         controlPanel.add(_choice);
-        for (int i = 0; i < plot().getNumDataSets(); i++) {
+        for (int i = 0; i < ((Plot)plot()).getNumDataSets(); i++) {
             _choice.add(plot().getLegend(i));
         }
         _choice.addItemListener(new ChoiceListener());
@@ -78,7 +78,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     /** Create a new Plot object for the applet.  Derived classes can
      *  redefine this method to return a different type of plot object.
      */
-    public Plot newPlot() {
+    public PlotBox newPlot() {
         return new EditablePlot();
     }
 

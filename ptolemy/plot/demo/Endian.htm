@@ -5,21 +5,25 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Endian Examples</h1>
-<hr>
-The three plots below illustrate the use of the different endian
-command line arguments on the same data sets from the
-<a href="Binary.htm">Plot of Binary Data</a>.
- <p>At least one of the plots will displayed incorrectly.
-
- <p>If you are running on a little-endian machine such as a machine
-with an Intel x86 processor, then the <CODE>-binary</CODE> and
-<CODE>-littleendian</CODE> plots will be incorrect.
-
- <p>If you are running on a big-endian machine, such as a Sun SPARC,
-then the <CODE>-littleendian</CODE> plot will be incorrect.
-
- <p> See the
-<a href="../doc/ptplotfaq.htm#endian">Ptplot FAQ</a> for details.
+<p>
+"Endian" refers to the unfortunate fact of modern computing that
+data that requires multiple bytes to represent is stored differently
+on different computers.  The bytes can be high-order first or
+low-order first.  Binary data stored in the pxgraph format will
+depend on the computer that generates it.  Thus, the pxgraph
+compatibility features of the plot package permit you to specify
+the endianness of the data.
+<p>
+The three plots show the same data with different endian
+arguments.  The correct rendition looks like the
+<a href="Binary.htm">binary data demo</a>.
+If you are running on a little-endian machine such as a machine
+with an Intel x86 processor, then the <i>-binary</i> and
+<i>-littleendian</i> plots will be incorrect.
+If you are running on a big-endian machine, such as a Sun SPARC,
+then the <i>-littleendian</i> plot will be incorrect.
+See the
+<a href="../doc/ptplotfaq.htm#endian">Ptplot FAQ</a> for further details.
 
 <h2>-binary</h2>
 The plot below uses the <CODE>-binary</CODE> argument.
@@ -69,13 +73,6 @@ The plot below uses the <CODE>-littleendian</CODE> argument.
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
-<p>
-<HR>
-<A HREF="index.htm">Up</A> to the Example index -
-<A HREF="Live.htm">Back</A> to a Live, animated plot -
-<A HREF="Butterfly.htm">Forward</A> to a Plot of 10,000 binary points
-
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+<p>&nbsp;
 </body>
 </html> 

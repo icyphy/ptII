@@ -1,4 +1,4 @@
-/* HistogramApplet
+/* HistogramDemo
 
 @Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
@@ -25,41 +25,32 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.plot;
+package ptolemy.plot.demo;
 
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// HistogramApplet
+//// HistogramDemo
 /**
- * A Histogram.  Data can be given in ASCII format at a URL.
+ * A Histogram demo.  Data can be given in ASCII format at a URL.
  * If none is given, then a sample histogram is generated.
  *
  * @author Edward A. Lee
  * @version $Id$
  */
-public class HistogramApplet extends PlotApplet {
+public class HistogramDemo extends HistogramApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a string describing this applet.
-     *  @return A string describing the applet.
+    /** Initialize the applet.  Read the applet parameters.
      */
-    public String getAppletInfo() {
-        return "Histogram 1.0: Demo of PlotApplet.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
-            "($Id$)";
-    }
-
-    /** Create a new Histogram object for the applet.
-     *  @return A new instance of Histogram.
-     */
-    public PlotBox newPlot() {
-        return new Histogram();
+    public void init() {
+        super.init();
+        plot().samplePlot();
     }
 }

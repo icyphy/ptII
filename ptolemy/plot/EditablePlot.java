@@ -162,11 +162,20 @@ public class EditablePlot extends Plot {
         setConnected(false);
         setImpulses(true);
 
+        addLegend(0, "first");
         boolean first = true;
         for (int i = 0; i <= 100; i++) {
-            this.addPoint(0, (double)i, 0.0, !first);
+            addPoint(0, (double)i, 0.0, !first);
             first = false;
         }
+
+        addLegend(1, "second");
+        first = true;
+        for (int i = 0; i <= 100; i++) {
+            addPoint(1, (double)i, 0.0, !first);
+            first = false;
+        }
+
         repaint();
     }
 
@@ -176,7 +185,9 @@ public class EditablePlot extends Plot {
      *  @param dataset The editable dataset.
      */
     public void setEditable(int dataset) {
-        _checkDatasetIndex(dataset);
+        if (dataset >= 0) {
+            _checkDatasetIndex(dataset);
+        }
         _dataset = dataset;
     }
 

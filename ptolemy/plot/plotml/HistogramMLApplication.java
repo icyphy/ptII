@@ -1,4 +1,4 @@
-/* Plotter application that is capable of reading PlotML files.
+/* Histogram application that is capable of reading PlotML files.
 
 @Author: Edward A. Lee
 
@@ -33,42 +33,40 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.Message;
-import ptolemy.plot.Plot;
+import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
-import ptolemy.plot.PlotApplication;
+import ptolemy.plot.Plot;
+import ptolemy.plot.Message;
+import ptolemy.gui.Query;
+import ptolemy.gui.PanelDialog;
 
-import com.microstar.xml.XmlException;
-
-import java.io.IOException;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
+import java.awt.MenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotMLApplication
+//// HistogramMLApplication
 
 /**
-An application that can plot data in PlotML format from a URL or
+An application that can histogram data in PlotML format from a URL or
 from files specified on the command line.
 To compile and run this application, do the following:
 <pre>
-    javac -classpath ../.. PlotMLApplication.java
-    java -classpath ../.. ptolemy.plot.plotml.PlotMLApplication
+    javac -classpath ../../.. HistogramMLApplication.java
+    java -classpath ../../.. ptolemy.plot.plotml.HistogramMLApplication
 </pre>
 
 @author Edward A. Lee
 @version $Id$
-@see PlotBox
-@see Plot
+@see Histogram
 */
-public class PlotMLApplication extends PlotApplication {
+public class HistogramMLApplication extends PlotMLApplication {
 
-    /** Construct a plot with no command-line arguments.
+    /** Construct a histogram with no command-line arguments.
      *  It initially displays a sample plot.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication() throws Exception {
+    public HistogramMLApplication() throws Exception {
         this(null);
     }
 
@@ -76,17 +74,18 @@ public class PlotMLApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(String args[]) throws Exception {
-        this(new Plot(), args);
+    public HistogramMLApplication(String args[]) throws Exception {
+        this(new Histogram(), args);
     }
 
     /** Construct a plot with the specified command-line arguments
      *  and instance of plot.
-     *  @param plot The instance of Plot to use.
+     *  @param plot The instance of Histogram to use.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(PlotBox plot, String args[]) throws Exception {
+    public HistogramMLApplication(Histogram plot, String args[])
+            throws Exception {
         super(plot, args);
     }
 
@@ -97,7 +96,8 @@ public class PlotMLApplication extends PlotApplication {
      */
     public static void main(String args[]) {
         try {
-            PlotApplication plot = new PlotMLApplication(new Plot(), args);
+            HistogramMLApplication plot =
+                   new HistogramMLApplication(new Histogram(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
@@ -121,7 +121,7 @@ public class PlotMLApplication extends PlotApplication {
      */
     protected void _about() {
         Message message = new Message(
-                "PlotMLApplication class\n" +
+                "HistogramMLApplication class\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.0, Build: $Id$\n\n"+
@@ -137,55 +137,15 @@ public class PlotMLApplication extends PlotApplication {
     protected void _help() {
         // Use newlines here since we are displaying with scrollbars.
         Message message = new Message(
-                "PlotMLApplication is a standalone plot application.\n" +
-                "It can read files in the PlotML format " +
-                "(an XML extension).\n\n" +
+                "HistogramMLApplication is a standalone plot " +
+                " application.\n" +
+                "It can read files in the PlotML format (an XML extension).\n" +
+                "Drag the right mouse button to edit the plot.\n" +
+                "Use the File menu to open and edit plot files.\n" +
+                "Use the Edit menu to select a dataset to edit " +
+                "(if there is more than one dataset)." +
                 _usage());
         message.setTitle("Usage of Ptolemy Plot");
-    }
-
-    /** Read the specified stream.  This method checks to see whether
-     *  the data is PlotML data, and if so, creates a parser to read it.
-     *  If not, it defers to the parent class to read it.
-     *  @param base The base for relative file references, or null if
-     *   there are not relative file references.
-     *  @param in The input stream.
-     *  @exception IOException If the stream cannot be read.
-     */
-    protected void _read(URL base, InputStream in) throws IOException {
-        // Create a buffered input stream so that mark and reset
-        // are supported.
-        BufferedInputStream bin = new BufferedInputStream(in);
-        // Peek at the file...
-        bin.mark(9);
-        // Read 8 bytes in case 16-bit encoding is being used.
-        byte[] peek = new byte[8];
-        bin.read(peek);
-        bin.reset();
-        if ((new String(peek)).startsWith("<?xm")) {
-            // file is an XML file.
-            PlotBoxMLParser parser = _newParser();
-            try {
-                parser.parse(base, bin);
-            } catch (Exception ex) {
-                String msg;
-                if (ex instanceof XmlException) {
-                    XmlException xmlex = (XmlException)ex;
-                    msg =
-                        "PlotMLApplication: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine()
-                        + ", column: " + xmlex.getColumn()
-                        + "\nIn entity: " + xmlex.getSystemId()
-                        + "\n";
-                } else {
-                    msg = "PlotMLApplication: failed to parse PlotML data:\n";
-                }
-                System.err.println(msg + ex.toString());
-                ex.printStackTrace();
-            }
-        } else {
-            super._read(base, bin);
-        }
     }
 
     /** Create a new parser object for the application.  Derived classes can
@@ -193,10 +153,6 @@ public class PlotMLApplication extends PlotApplication {
      *  @return A new parser.
      */
     protected PlotBoxMLParser _newParser() {
-        if (plot instanceof Plot) {
-            return new PlotMLParser((Plot)plot);
-        } else {
-            return new PlotBoxMLParser(plot);
-        }
+        return new HistogramMLParser((Histogram)plot);
     }
 }

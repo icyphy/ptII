@@ -442,7 +442,7 @@ public class PxgraphParser {
             "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
         };
 
-        while (i < args.length && (args[i].startsWith("-") ||
+        while ( args != null && i < args.length && (args[i].startsWith("-") ||
                 args[i].startsWith("=")) ) {
             arg = args[i++];
 
@@ -687,6 +687,7 @@ public class PxgraphParser {
         _plot.setSize(width, height);
 
         for(i = argumentsRead; i < args.length; i++) {
+
             // Have a filename.  First attempt to open it as a URL.
             InputStream instream;
             try {

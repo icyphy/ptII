@@ -48,6 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = EditablePlotMLApplet.java \
+	EditablePlotMLApplication.java \
+	HistogramMLApplet.java \
+	HistogramMLApplication.java \
+	HistogramMLParser.java \
 	PlotBoxMLParser.java \
 	PlotMLApplet.java \
 	PlotMLApplication.java \

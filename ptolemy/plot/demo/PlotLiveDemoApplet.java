@@ -55,7 +55,7 @@ public class PlotLiveDemoApplet extends PlotLiveApplet {
 
     /** Create a new Plot object to operate on.
      */
-    public Plot newPlot() {
+    public PlotBox newPlot() {
         return new PlotLiveDemo();
     }
 }

@@ -185,6 +185,7 @@ import java.util.*;
  * it can only be viewed by a browser that supports JDK 1.1.
  *
  * @author Edward A. Lee, Christopher Hylands
+ * @contributor Jun Wu (jwu@inin.com.au)
  * @version $Id$
  */
 public class PlotBox extends Panel {
@@ -1186,6 +1187,7 @@ public class PlotBox extends Panel {
             // ticks have been explicitly specified
             Enumeration nt = _yticks.elements();
             Enumeration nl = _yticklabels.elements();
+
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
                 double ypos = ((Double)(nt.nextElement())).doubleValue();
@@ -1342,21 +1344,41 @@ public class PlotBox extends Panel {
             // ticks have been explicitly specified
             Enumeration nt = _xticks.elements();
             Enumeration nl = _xticklabels.elements();
+            // Code contributed by Jun Wu (jwu@inin.com.au)
+            double preLength = 0.0;
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
+                // If xpos is out of range, ignore.
                 if (xpos > _xMax || xpos < _xMin) continue;
+
+                // Find the center position of the label.
                 xCoord1 = _ulx + (int)((xpos-_xMin)*_xscale);
-                graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
-                graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                    graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
-                    graphics.setColor(_foreground);
-                }
+
+                // Find  the start position of x label.
                 int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)/2;
-                // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, labxpos, _lry + 3 + labelheight);
+
+                // If the labels are not overlapped, proceed.     
+                if (labxpos > preLength) {
+                    // calculate the length of the label
+                    preLength = xCoord1
+                            + _labelFontMetrics.stringWidth(label)/2 + 10;
+
+                    // Draw the label.
+                    // NOTE: 3 pixel spacing between axis and labels.
+                    graphics.drawString(label, labxpos, _lry + 3 + labelheight);
+
+                    // Draw the label mark on the axis
+                    graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                    graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
+
+                    // Draw the grid line
+                    if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                        graphics.setColor(Color.lightGray);
+                        graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                        graphics.setColor(_foreground);
+                    }
+                }
             }
         }
 
@@ -2462,12 +2484,15 @@ public class PlotBox extends Panel {
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
     private static final String _DTD =
-"<!ELEMENT plot (barGraph | dataset | default | noColor | noGrid | title |\n"
-+ "	wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange |\n"
-+ "	yTicks)*>\n"
+"<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | \n"
++ "	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | \n"
++ "     yRange | yTicks)*>\n"
 + "  <!ELEMENT barGraph EMPTY>\n"
 + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
 + "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
++ "  <!ELEMENT bin EMPTY>\n"
++ "    <!ATTLIST bin width CDATA #IMPLIED>\n"
++ "    <!ATTLIST bin offset CDATA #IMPLIED>\n"
 + "  <!ELEMENT dataset (m | move | p | point)*>\n"
 + "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
 + "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
@@ -2497,22 +2522,22 @@ public class PlotBox extends Panel {
 + "      <!ATTLIST tick label CDATA #REQUIRED>\n"
 + "      <!ATTLIST tick position CDATA #REQUIRED>\n"
 + "    <!ELEMENT m EMPTY>\n"
-+ "      <!ATTLIST m x CDATA #REQUIRED>\n"
++ "      <!ATTLIST m x CDATA #IMPLIED>\n"
 + "      <!ATTLIST m x CDATA #REQUIRED>\n"
 + "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
 + "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
 + "    <!ELEMENT move EMPTY>\n"
-+ "      <!ATTLIST move x CDATA #REQUIRED>\n"
++ "      <!ATTLIST move x CDATA #IMPLIED>\n"
 + "      <!ATTLIST move x CDATA #REQUIRED>\n"
 + "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
 + "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
 + "    <!ELEMENT p EMPTY>\n"
-+ "      <!ATTLIST p x CDATA #REQUIRED>\n"
++ "      <!ATTLIST p x CDATA #IMPLIED>\n"
 + "      <!ATTLIST p x CDATA #REQUIRED>\n"
 + "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
 + "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
 + "    <!ELEMENT point EMPTY>\n"
-+ "      <!ATTLIST point x CDATA #REQUIRED>\n"
++ "      <!ATTLIST point x CDATA #IMPLIED>\n"
 + "      <!ATTLIST point x CDATA #REQUIRED>\n"
 + "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
 + "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";

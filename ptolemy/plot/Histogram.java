@@ -174,6 +174,20 @@ public class Histogram extends PlotBox {
         }
     }
 
+    /** In the specified data set, add the specified y value to the
+     *  histogram.  The x value and the <i>connected</i> arguments are
+     *  ignored.  Data set indices begin with zero.  If the data set
+     *  does not exist, create it.
+     *  @param dataset The data set index.
+     *  @param x Ignored.
+     *  @param y The Y position of the new point.
+     *  @param connected Ignored
+     */
+    public synchronized void addPoint(int dataset, double x, double y,
+            boolean connected) {
+        addPoint(dataset, y);
+    }
+
     /** Clear the plot of all data points.  If the argument is true, then
      *  reset all parameters to their initial conditions, including
      *  the persistence, plotting format, and axes formats.
@@ -473,26 +487,30 @@ public class Histogram extends PlotBox {
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
-        output.println("# Ptolemy histogram, version 1.0");
-
         super._write(output);
 
-        output.println("Bars: " + _barwidth + ", " + _baroffset);
+        output.println(
+            "<barGraph width=\"" + _barwidth
+            + "\" offset=\"" + _baroffset + "\"/>");
+
+        output.println("<bin width=\"" + _binWidth
+        + " offset=\"" + _binOffset + "\">");
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
             String legend = getLegend(dataset);
             if (legend != null) {
-                output.println("DataSet: " + getLegend(dataset));
+                output.println("<dataset name=\"" + legend + "\">");
             } else {
-                output.println("DataSet:");
+                output.println("<dataset>");
             }
             // Write the data
             Vector pts = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
                 Double pt = (Double)pts.elementAt(pointnum);
-                output.println(pt.doubleValue());
+                output.println("<p y=\"" + pt.doubleValue() + "\"/");
             }
+            output.println("</dataset>");
         }
     }
 

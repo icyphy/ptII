@@ -69,6 +69,11 @@ public class PlotBoxMLParser extends HandlerBase {
         _plot = plot;
     }
 
+    /** Protected constructor allows derived classes to set _plot
+     *  differently.
+     */
+    protected PlotBoxMLParser() {}
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

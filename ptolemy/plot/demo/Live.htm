@@ -18,37 +18,34 @@ The following plot illustrates a dynamically updated plot:
     you would see an applet here.<hr>
 </applet>
 <p>
-Click on the start button to start the plotting, and on the stop button to stop it.  The animation on this plot has been slowed down for visual
+Click on the stop button to stop the plotting.
+The animation on this plot has been slowed down for visual
 aesthetics.
 On a reasonable computer, plotting is quite fast.
 <p>
-Such a plot is created by defining a class derived from <code>PlotLive</code>
+Such a plot is created by defining a class derived from
+<a href="../../../doc/codeDoc/ptolemy/plot/PlotLive.html">
+PlotLive</a>
 (which is abstract).  The example shown here is the
 <a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
-It defines two methods, <code>init()</code> and <code>addPoints()</code>.
-The <code>init()</code> method sets static properties of the plot
+It defines two methods, init() and addPoints().
+The init() method sets static properties of the plot
 (title, labels, etc.)
-while the <code>addPoints()</code> method is called from the body
-of the <code>run()</code> method in the parent class.
-The parental <code>run()</code> method is called by a
-thread that generates points forever (if it is allowed to).
+while the addPoints() method is called 
+repeatedly from the body
+of the run() method in the parent class.
 <p>
 
-There are still some problems with <code>PlotLive</code>.  The most
+There are still some problems with PlotLive.  The most
 annoying is that this class uses the "exclusive or" drawing mode to
 allow it to easily erase old points as it adds new ones.  This mode,
-however, introduces a number of annoying artifacts in the graph.  In
+however, introduces a number of artifacts in the graph.  In
 particular, if marks are made at the plotted points, and lines are
 drawn between points, the lines effectively erase the marks where they
 intersect.  Moreover, if lines or points overlap, they erase each
-other.  In the future we hope to replace this mechanism with one that
+other. In the future we hope to replace this mechanism with one that
 treats marks on the screen as graphical objects.
+<p>&nbsp;
 
- <p>
-<a href="Histogram.htm"><img src="../../../doc/img/prev.gif" alt="to previous demonstration"></a>
-<a href="../doc/toc.htm" target="toc"><img src="../../../doc/img/up.gif" alt="up to main plot menu"></a>
-<a href="Binary.htm"><img src="../../../doc/img/next.gif" alt="to next demonstration"></a>
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
