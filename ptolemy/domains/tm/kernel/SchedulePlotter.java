@@ -86,9 +86,20 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
         new SchedulePlotterEditorFactory(this, "_editorFactory");
 
-        // FIXME: These casts look unsafe, use instanceOf?
-        Director director = ((CompositeActor)container).getDirector();
-        ((TMDirector)director).addScheduleListener(this);
+        // FIXME: This seems wrong.
+        if (container instanceof CompositeActor) {
+            // We need to check if the container is a CompositeActor
+            // because the reference to SchedulePlotter in tmentities.xml 
+            // is not a CompositeActor
+            Director director = ((CompositeActor)container).getDirector();
+            if (!(director instanceof TMDirector)) {
+                throw new IllegalActionException("Director '" + director
+                        + "' is not a TMDirector, so adding a SchedulePlotter "
+                        + "makes no sense");
+            }
+            ((TMDirector)director).addScheduleListener(this);
+
+        }
                 
     }
 
