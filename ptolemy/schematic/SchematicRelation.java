@@ -31,6 +31,7 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,18 +80,31 @@ public class SchematicRelation extends SchematicElement {
     }
 
     /**
-     * Add a new link to this relation. The name of the link
+     * Add a new link to the given junction. The name of the link
      * is the concatenation of the entity name and the port
      * name, separated by a period.
-     *
-     * @return an XMLElement that represents the link.
      */
-    public void addLink (String name) {
+    public void addLink (String name, String junction) {
+        XMLElement j;
+        try {
+            j = getChildElement("junction", junction);
+        } 
+        catch (NoSuchElementException e) {
+            j = new XMLElement("junction");
+            j.setAttribute("name",junction);
+            addChildElement(j);
+        }
         XMLElement e = new XMLElement("link");
         e.setAttribute("name", name);
-        addChildElement(e);
+        j.addChildElement(e);
         links.putAt(name, e);
     }
+
+    public void addJunction (String name) {
+        XMLElement e = new XMLElement("junction");
+        e.setAttribute("name", name);
+        addChildElement(e);
+    }       
 
     /**
      * Test if this relation contains the given link.
@@ -107,7 +121,7 @@ public class SchematicRelation extends SchematicElement {
     }
 
     /**
-     * Return an enumeration over the links in this relation.   Each
+     * Return an enumeration over the links in this relation.   Each SimpleNode
      * element in the enumeration will be a string representing a
      * port that is connected to this relation.
      *
@@ -125,6 +139,11 @@ public class SchematicRelation extends SchematicElement {
         XMLElement e = (XMLElement) links.at(name);
         removeChildElement(e);
         links.removeAt(name);
+    }
+
+    public void removeJunction(String name) {
+        XMLElement e = getChildElement("junction",name);
+        removeChildElement(e);
     }
 
     /**
