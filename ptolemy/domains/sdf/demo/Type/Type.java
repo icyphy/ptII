@@ -208,6 +208,7 @@ public class Type extends SDFApplet {
 	_query.addLine("ramp2init", "Ramp2 Init Value", "0");
 	_query.addLine("ramp2step", "Ramp2 Step Size", "1");
 	_query.addLine("expr", "Expression", "input1 + input2");
+        _query.setBackground(_getBackground());
 
 	Panel displayPanel = new Panel();
 	displayPanel.add(new Label("Display using"));
