@@ -34,8 +34,9 @@ import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// SelfLoopAnalysis
-/** Computation of self loops in a graph.
+/** Computation of self-loops in a graph.
 
+A self-loop in a graph is an edge whose source and sink nodes are identical.
 The <code>result</code> method
 (see {@link Analysis.#result()})
 of this analysis returns the self loop edges in the associated graph.
