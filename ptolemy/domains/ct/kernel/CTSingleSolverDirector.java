@@ -226,7 +226,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public boolean prefire() throws IllegalActionException {
         if (VERBOSE) {
-            System.out.println("Director prefire.");
+            System.out.println(this.getFullName() + "prefire.");
         }
         if(STAT) {
             NSTEP++;
@@ -405,57 +405,59 @@ public class CTSingleSolverDirector extends CTDirector {
      *  in their prefire() method. The the time is advanced by the 
      *  current step size.
      */
-    protected void _fireOneIteration() throws IllegalActionException {        
-        // prefire all the actors.       
-        if(_prefireSystem()) {
-            ODESolver solver = getCurrentODESolver();
-            while (true) {
-                while (true) { 
-                    if (solver.resolveStates()) {
-                        if(VERBOSE) {
-                            System.out.println("state resolved.");
-                        }
-                        // ask if this step is acceptable
-                        if (!_isStateAcceptable()) {
-                            setCurrentTime(getFireBeginTime());
-                            setCurrentStepSize(_refinedStepWRTState());
-                            if(VERBOSE) {
-                                System.out.println("execute the system from "+
-                                        getCurrentTime() +" step size" + 
-                                        getCurrentStepSize());
-                            }
-                            if(STAT) {
-                                NFAIL++;
-                            }
-                        } else {
-                            break;
-                        }
-                    } else { // resolve state failed, e.g. in implicit methods.
-                        if(getCurrentStepSize() < 0.5*getMinStepSize()) {
-                            throw new IllegalActionException(this,
-                                    "Cannot resolve new states even using "+
-                                    "the minimum step size, at time "+
-                                    getCurrentTime());
-                        }
+    protected void _fireOneIteration() throws IllegalActionException {   
+        if(VERBOSE) {
+            System.out.println(this.getFullName() +"Fire one iteration from " +
+                    getCurrentTime() + " step size" +
+                    getCurrentStepSize());
+        }
+        ODESolver solver = getCurrentODESolver();
+        while (true) {
+            while (_prefireSystem()) {
+                if (solver.resolveStates()) {
+                    if(VERBOSE) {
+                        System.out.println("state resolved.");
+                    }
+                    // ask if this step is acceptable
+                    if (!_isStateAcceptable()) {
                         setCurrentTime(getFireBeginTime());
-                        setCurrentStepSize(0.5*getCurrentStepSize());
+                        setCurrentStepSize(_refinedStepWRTState());
+                        if(VERBOSE) {
+                            System.out.println("execute the system from "+
+                                    getCurrentTime() +" step size" + 
+                                    getCurrentStepSize());
+                        }
+                        if(STAT) {
+                            NFAIL++;
+                        }
+                    } else {
+                        break;
                     }
-                }
-                produceOutput();
-                if (!_isOutputAcceptable()) {
-                    System.out.println("Output not satisfied.");
+                } else { // resolve state failed, e.g. in implicit methods.
+                    if(getCurrentStepSize() < 0.5*getMinStepSize()) {
+                        throw new IllegalActionException(this,
+                                "Cannot resolve new states even using "+
+                                "the minimum step size, at time "+
+                                getCurrentTime());
+                    }
                     setCurrentTime(getFireBeginTime());
-                    setCurrentStepSize(_refinedStepWRTOutput());
-                    if(STAT) {
-                        NFAIL++;
-                    }
-                }else {
-                    break;
+                    setCurrentStepSize(0.5*getCurrentStepSize());
                 }
             }
-            setSuggestedNextStepSize(_predictNextStepSize());
-            updateStates(); // call postfire on all actors
+            produceOutput();
+            if (!_isOutputAcceptable()) {
+                System.out.println("Output not satisfied.");
+                setCurrentTime(getFireBeginTime());
+                setCurrentStepSize(_refinedStepWRTOutput());
+                if(STAT) {
+                    NFAIL++;
+                }
+            }else {
+                break;
+            }
         }
+        setSuggestedNextStepSize(_predictNextStepSize());
+        updateStates(); // call postfire on all actors
     }
 
     /** Real initialize method.

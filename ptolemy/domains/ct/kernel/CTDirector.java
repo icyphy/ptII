@@ -326,15 +326,18 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if(_breakPoints == null) {
             _breakPoints = new TotallyOrderedSet(new DoubleComparator());
         }
-        // check if the time is before the current time;
-        if(time < getCurrentTime()) {
-            throw new IllegalActionException((Nameable)actor, 
-                    "Requested an Fire time that is earlier than" +
-                    " the current time.");
-        }
-        if ((actor != null) && (time == getCurrentTime())) {
+        /*
+        if ((actor != null) && (time == Double.MIN_VALUE)) {
             // Try fuzzy time.
             actor.fire();
+            return;
+        }
+        */
+        // check if the time is before the current time;
+        if(time < getCurrentTime()-getTimeResolution()) {
+            throw new IllegalActionException((Nameable)actor, 
+                    "Requested an Fire time " + time + " is earlier than" +
+                    " the current time." + getCurrentTime() );
         }
         _breakPoints.insert(new Double(time));
     }

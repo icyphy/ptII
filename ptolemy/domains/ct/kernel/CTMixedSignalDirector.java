@@ -172,11 +172,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
             if(VERBOSE) {
-                System.out.println("In event phase execution.");
+                System.out.println(this.getFullName() + 
+                        "In event phase execution.");
             }
             _eventPhaseExecution();
-            exe.fireAt(ca, exe.getCurrentTime());
             _setEventPhase(false);
+            exe.fireAt(ca, exe.getCurrentTime());
             return;
         }
         // Not event phase.
@@ -192,10 +193,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
             if(DEBUG) {
-                System.out.println("Resolved stepsize: "+getCurrentStepSize());
+                System.out.println("Resolved stepsize: "+getCurrentStepSize() +
+                                   " One itertion from " + getCurrentTime());
             }
             _fireOneIteration();
             if (_stopByEvent()) {
+                System.out.println( this.getFullName() + 
+                        " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = false;
                 _refinedStep = getCurrentTime() - getOutsideTime();
@@ -204,8 +208,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             } else if (getCurrentTime()>=getFireEndTime()) {
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = true;
+                _setEventPhase(false);
                 return;
             } 
+            _isFireSuccessful = true;
         }
     }
 
@@ -371,6 +377,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                         getCurrentTime() + " to outside time " +_outsideTime);
                 }
                 setCurrentTime(_outsideTime);
+                // remove 
             }
             if (_outsideTime > getCurrentTime()) {
                 throw new IllegalActionException(this, exe,
@@ -386,7 +393,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                 if(STAT) {
                     NROLL ++;
                 }
-                _rollback();
+                _rollback(); 
                 fireAt(null,_outsideTime);
                 _catchUp();
             }
@@ -414,9 +421,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         if(!_isFireSuccessful) {
             return _refinedStep;
         } else {
-            Director exdir = 
-                ((CompositeActor)getContainer()).getExecutiveDirector();
-            return exdir.getNextIterationTime() - exdir.getCurrentTime();
+            return Double.MAX_VALUE;
         }
     } 
 
@@ -535,8 +540,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     protected void _setFireEndTime(double time ) {
         if(time < getCurrentTime()) {
             throw new InvalidStateException(this,
-                " Fire end time should be greater than or equal to" +
-                " the current time.");
+                " Fire end time" + time + " is less than" +
+                " the current time." + getCurrentTime());
         }
         _fireEndTime = time;
     }
@@ -545,6 +550,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  the occurrence of events (expected or unexpected).
      */
     protected boolean _stopByEvent() {
+
         // expected events
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
@@ -555,7 +561,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                 if(bp < (tnow-getTimeResolution())) {
                     // break point in the past or at now.
                     breakPoints.removeFirst();
-                } else if(Math.abs(bp-tnow) < getTimeResolution()){
+                } else if(Math.abs(bp-tnow) < getTimeResolution() && 
+                          bp < getFireEndTime()){
                     // break point now!
                     return true;
                 } else {
@@ -635,7 +642,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     private boolean _eventPhase = false;
 
     // If this fire is successful (not interrupted by events) 
-    private boolean _isFireSuccessful;
+    private boolean _isFireSuccessful = true;
     
     // The refined step size if this fire is not successful
     private double _refinedStep;
