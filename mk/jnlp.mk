@@ -487,7 +487,8 @@ jnlp_verify:
 DIST_BASE = ptolemyII/hyvisual2.2/jnlp
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
-OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
+OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
+	ptolemy/configs/hyvisual/hyvisualPlanet.gif
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx"
