@@ -272,7 +272,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
 
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling deepCetEntities()). The derived classes should
+     *  (Same as calling deepGetEntities()). The derived classes should
      *  override this method and add their scheduling algorithms here.
      *  This method should not be called directly, rather the schedule()
      *  will call it when the schedule is not valid. So it is not
