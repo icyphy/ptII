@@ -33,9 +33,9 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../..
 
-ME =		java/pt/math
+ME =		pt/math
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
