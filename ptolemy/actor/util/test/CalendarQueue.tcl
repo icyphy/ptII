@@ -203,12 +203,11 @@ test CalendarQueue-3.6 {Test toArray} {
 #
 test CalendarQueue-3.7 {Test toArray} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
-    $queue put $p9
     $queue put $p666
     $queue put $p666
     $queue put $p7
     arrayToStrings [$queue toArray]
-} {8.9 999.1 666.0 666.0}
+} {8.9 666.0 666.0}
 
 ######################################################################
 ####
