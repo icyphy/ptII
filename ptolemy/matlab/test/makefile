@@ -51,12 +51,14 @@ include $(CONFIG)
 
 # Keep this list alphabetized.
 JSRCS = \
-	MatlabExpression.java \
 	TestEngine.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	Counter1.xml \
+	Counter2.xml \
+	MatlabExpression.xml
 
 JCLASS = $(JSRCS:%.java=%.class)
 
