@@ -321,7 +321,50 @@ GCJ_DIR=/home/eecs/cxh/src/ptII/vendors/gcj
 GCJ=$(GCJ_DIR)/bin/gcj
 GCJ_LIBDIR=$(GCJ_DIR)/lib
 
-gcj2: $(ROOT)/$(TARGETPATH)/gcj gcj2_1 gcj2_2
+gcj2: $(ROOT)/$(TARGETPATH)/gcj gcj2_0 gcj2_1 gcj2_2
+
+# Unjar the treeshake_codegen jar file for use with gcj
+# Use $(PTII)/$(TARGETPATH)/treeshake_codegen.jar insetead of
+# $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
+unjar_treeshake_codegen: $(ROOT)/$(TARGETPATH)/gcj
+$(ROOT)/$(TARGETPATH)/gcj: $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
+	rm -rf $@
+	mkdir $@
+	cd $@; jar -xf "$(PTII)/$(TARGETPATH)/treeshake_codegen.jar"
+
+# A list of directories that are required to compile the treeshaken directories
+# This is necessary because we treeshake by class, so the .class files
+# that the treeshaker includes may have methods that are not called
+# that contain references to classes that were not included in the
+# treeshaker output.  However, gcj does a C style link, where all
+# the symbols in a .o file must be resolved.  So we include these
+# other classes.
+GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit
+
+gcj2_0:
+	@echo "For each directory in the treeshaken output,"
+	@echo "Copy all the class files from corresponding directory"
+	@echo "in $PTII"
+	@echo " Ignore any '*.class not found' messages" 
+	cd $(ROOT)/$(TARGETPATH)/gcj; \
+		dirs=`find . -type d -print`; \
+		for dir in $$dirs; \
+		do \
+			files=`ls -1 $$dir/*.class | awk 'END {print NR}'`; \
+			if [ $$files -gt 1 ]; then \
+				echo "---Copying .class files from \$$PTII to $$dir"; \
+				cp $(PTII)/$$dir/*.class $$dir; \
+			fi; \
+		done; \
+		for dir in $(GCJ_AUX_DIRS); \
+		do \
+			if [ ! -d $$dir ]; then \
+				mkdir $$dir; \
+			fi; \
+			echo "---Copying aux .class from \$$PTII to $$dir"; \
+			cp $(PTII)/$$dir/*.class $$dir; \
+		done;
+
 gcj2_1:
 	@echo "--- Run gcj on all the .class files in the jar file dir"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
@@ -347,6 +390,18 @@ gcj2_2:
 gcjRun:
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		./$(MODEL)_gcj
+
+gcjRunStats:
+	@echo "Run the gcj output and collect stats"
+	@rm -f  $(STATSFILE)
+	@for repeat in 1 2 3 4; \
+	do \
+		(cd $(ROOT)/$(TARGETPATH)/gcj; \
+			./$(MODEL)_gcj) | tail -1 | \
+			tee -a $(STATSFILE); \
+	done
+	@$(ROOT)/util/testsuite/memorystats "$(MODEL) gcj" < $(STATSFILE);
+	@rm -f $(STATSFILE)
 
 GDB=/usr/local/bin/gdb 
 gcjGdb:
@@ -380,15 +435,6 @@ gcj3_2:
 	@echo "Unfortunately, this still does not work because we need"
 	@echo "yet more methods in other packages"
 
-
-# Unjar the treeshake_codegen jar file for use with gcj
-# Use $(PTII)/$(TARGETPATH)/treeshake_codegen.jar insetead of
-# $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
-unjar_treeshake_codegen: $(ROOT)/$(TARGETPATH)/gcj
-$(ROOT)/$(TARGETPATH)/gcj: $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
-	rm -rf $@
-	mkdir $@
-	cd $@; jar -xf "$(PTII)/$(TARGETPATH)/treeshake_codegen.jar"
 
 
 
