@@ -174,8 +174,9 @@ runTreeShake:
 SNAPSHOTS=jimple1 jimple2 jimple3 jimple4
 
 STATSFILE=runSnapShot.stats
-# $PTII/util/testsuite/codegen.tcl calls runDemoTest
-runDemoTest: compareAll
+
+# $PTII/util/testsuite/codegen.tcl calls runDemo by default.
+runDemo: compareAll
 
 # Rules for dealing with original model
 treeShakeWithoutCodegen:
