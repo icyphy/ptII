@@ -75,7 +75,8 @@ import java.lang.*;
  * </pre>
  * The arguments <i>min</i> and <i>max</i> are numbers, possibly
  * including a sign and a decimal point. If they are not specified,
- * then the ranges are computed automatically from the data.
+ * then the ranges are computed automatically from the data and padded
+ * slightly so that datapoints are not plotted on the axes.
  * <p>
  * The tick marks for the axes are usually computed automatically from
  * the ranges.  Every attempt is made to choose reasonable positions
@@ -1199,8 +1200,8 @@ public class PlotBox extends Panel {
      */
     public void setXRange (double min, double max) {
         if (_debug > 7) System.out.println("PlotBox: setXRange");
-        _setXRange(min,max);
         _xRangeGiven = true;
+        _setXRange(min,max);
     }
 
     /** 
@@ -1220,8 +1221,8 @@ public class PlotBox extends Panel {
      * arbitrarily spread by 0.1.
      */
     public void setYRange (double min, double max) {
-        _setYRange(min,max);
         _yRangeGiven = true;
+        _setYRange(min,max);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -1378,8 +1379,11 @@ public class PlotBox extends Panel {
     // around properly.
     protected Graphics _graphics = null;
 
-    // The range of the plot.
+    // The range of the data to be plotted.
     protected double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
+
+    // The factor we pad by so that we don't plot points on the axes.
+    protected static final double _PADDING = 0.05;
 
     // Whether the ranges have been given.
     protected boolean _xRangeGiven = false;
@@ -1641,21 +1645,29 @@ public class PlotBox extends Panel {
             min -= 1.0;
             max += 1.0;
         }
+        if (_xRangeGiven) {
+            // The user specified the range, so don't pad.
+            _xMin = min;
+            _xMax = max;
+        } else {
+            // Pad slightly so that we don't plot points on the axes.
+            _xMin = min - ((max - min) * _PADDING);
+            _xMax = max + ((max - min) * _PADDING);
+        }
+
         // Find the exponent.
-        double largest = Math.max(Math.abs(min),Math.abs(max));
+        double largest = Math.max(Math.abs(_xMin),Math.abs(_xMax));
         _xExp = (int) Math.floor(Math.log(largest)*_log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_xExp > 1 || _xExp < -1) {
             double xs = 1.0/Math.pow(10.0,(double)_xExp);
-            _xtickMin = min*xs;
-            _xtickMax = max*xs;
+            _xtickMin = _xMin*xs;
+            _xtickMax = _xMax*xs;
         } else {
-            _xtickMin = min;
-            _xtickMax = max;
+            _xtickMin = _xMin;
+            _xtickMax = _xMax;
             _xExp = 0;
         }
-        _xMin = min;
-        _xMax = max;
     }
 
     /*
@@ -1671,21 +1683,29 @@ public class PlotBox extends Panel {
             min -= 0.1;
             max += 0.1;
         }
+        if (_yRangeGiven) {
+            // The user specified the range, so don't pad.
+            _yMin = min;
+            _yMax = max;
+        } else {
+            // Pad slightly so that we don't plot points on the axes.
+            _yMin = min - ((max - min) * _PADDING);
+            _yMax = max + ((max - min) * _PADDING);
+        }
+
         // Find the exponent.
-        double largest = Math.max(Math.abs(min),Math.abs(max));
+        double largest = Math.max(Math.abs(_yMin),Math.abs(_yMax));
         _yExp = (int) Math.floor(Math.log(largest)*_log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || _yExp < -1) {
             double ys = 1.0/Math.pow(10.0,(double)_yExp);
-            _ytickMin = min*ys;
-            _ytickMax = max*ys;
+            _ytickMin = _yMin*ys;
+            _ytickMax = _yMax*ys;
         } else {
-            _ytickMin = min;
-            _ytickMax = max;
+            _ytickMin = _yMin;
+            _ytickMax = _yMax;
             _yExp = 0;
         }
-        _yMin = min;
-        _yMax = max;
     }
 
     //////////////////////////////////////////////////////////////////////////
