@@ -1004,11 +1004,13 @@ else
     fi
 
     AC_MSG_CHECKING([for the proper JNI architecture])
-    PTJNI_ARCHITECTURE=win32;
     case "`uname -s`" in
-	 Linux)	 PTJNI_ARCHITECTURE=linux;;
-	 SunOS)	 PTJNI_ARCHITECTURE=solaris;;
-	 *) PTJNI_ARCHITECTURE=unknown;;
+        CYGWIN_ME-*) PTJNI_ARCHITECTURE=win32;;
+	CYGWIN_NT-*) PTJNI_ARCHITECTURE=win32;;
+	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
+	Linux) PTJNI_ARCHITECTURE=linux;;
+	SunOS) PTJNI_ARCHITECTURE=solaris;;
+	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
     AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
@@ -1022,10 +1024,12 @@ else
     fi
 
     AC_MSG_CHECKING([for the proper shared library suffix])
-    PTJNI_SHAREDLIBRARY_SUFFIX=dll;
     case "`uname -s`" in
-	 SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=.so;;
-	 *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
+        CYGWIN_ME-*) PTJNI_ARCHITECTURE=dll;;
+	CYGWIN_NT-*) PTJNI_ARCHITECTURE=dll;;
+	CYGWIN_98-*) PTJNI_ARCHITECTURE=dll;;
+	SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
     esac
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
 fi
