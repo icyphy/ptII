@@ -166,28 +166,24 @@ public class Constants {
         
         try {
             // StringToken.getProperty() specially handles user.dir.
-            _table.put("CWD",
-                    new StringToken(StringUtilities.getProperty("user.dir")));
-            _table.put("HOME",
-                    new StringToken(StringUtilities.getProperty("user.home")));
-            
+            _putProperty("CWD", "user.dir");
+
+            _putProperty("HOME", "user.home");
+
             // When Vergil is started up, java is called with
             // -Dptolemy.ptII.dir=${PTII} and 
             // StringUtilities.getProperty() does some special munging 
             // for ptolemy.ptII.dir
 
-            _table.put("PTII",
-                    new StringToken(
-                            StringUtilities.getProperty("ptolemy.ptII.dir")));
-            // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
+            _putProperty("PTII", "ptolemy.ptII.dir");
 
+            // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
+            
             // Note that TMPDIR almost always ends with a \ or /
             // so usually we refer to it as ${TMPDIR}.
-            _table.put("TMPDIR",
-                    new StringToken(
-                            StringUtilities.getProperty("java.io.tmpdir")));
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            _putProperty("TMPDIR", "java.io.tmpdir");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
 
         // Infinities and NaN
@@ -223,5 +219,23 @@ public class Constants {
         _table.put("string", new StringToken(""));
         _table.put("unknown", new UnknownToken());
         _table.put("unsignedByte", new UnsignedByteToken(0));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Look up a property and add it to the _table.
+    // If the property is not available because of a securityException,
+    // then ignore the securityException and do nothing.
+    private static void _putProperty(String variableName, String property) {
+        try {
+            _table.put(variableName, new StringToken(StringUtilities
+                               .getProperty(property)));
+        } catch (SecurityException ex) {
+            System.out.println("Warning: While trying to set '" + variableName
+                    + "', failed to read '" + property
+                    + "' property " 
+                    + "(-sandbox always causes this)");
+        }
     }
 }
