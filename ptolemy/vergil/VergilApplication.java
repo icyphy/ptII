@@ -288,15 +288,15 @@ public class VergilApplication extends MoMLApplication {
                             + "library: "
                             + libraryName, ex);
                 }
+            }
 
-                // Load the user library.
-                try {
-                    openLibrary(configuration, file);
-                    System.out.println(" Done");
-                } catch (Exception ex) {
-                    MessageHandler.error("Failed to display user library.",
-                            ex);
-                }
+            // Load the user library.
+            try {
+                openLibrary(configuration, file);
+                System.out.println(" Done");
+            } catch (Exception ex) {
+                MessageHandler.error("Failed to display user library.",
+                        ex);
             }
         }
 
