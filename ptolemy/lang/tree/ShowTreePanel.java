@@ -41,7 +41,7 @@ import javax.swing.JTree;
 
 //////////////////////////////////////////////////////////////////////////
 //// ShowTreePanel
-/** 
+/**
 A panel that displays the abstract syntax tree of the specified
 java files.
 
