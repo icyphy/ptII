@@ -234,7 +234,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         //String _address = __address.getHostAddress();
         
         // NOTE: Avoid executing concurrently with thread's run()'s sync block.
-        synchronized(_broadcastPacket) {
+        synchronized(this) {
             // Get the data out of the packet as a string of data's length
             _length = _broadcastPacket.getLength();
             _dataStr = new String(_broadcastPacket.getData(), 0, _length);
@@ -299,6 +299,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         _listenerThread = new ListenerThread();
         _listenerThread.start();
         if(_debugging) _debug("Socket-reading thread created & started.");
+
     }
     
     
@@ -308,6 +309,13 @@ public class DatagramReceiver extends TypedAtomicActor {
      *  was not created.
      */
     public void wrapup() throws IllegalActionException {
+
+	System.err.println("wrapup() has been called in " + this);
+	//e.printStackTrace();
+	//throw new RuntimeException("Manager: " + e.getMessage());
+
+	//throw new IllegalActionException(this,"has had its wrapup() method called.");
+
         if (_listenerThread != null) {
             _listenerThread.interrupt();
             _listenerThread = null;
@@ -324,6 +332,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             System.out.println("Socket null at wrapup!?");
             //throw new IllegalActionException("Socket null at wrapup!?");
         }
+
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -360,6 +369,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 try {
                     if(_debugging) _debug("attempt socket.receive");
                     // NOTE: The following call may block.
+		    _receivePacket.setLength(440);
                     socket.receive(_receivePacket);
                     if(_debugging) _debug("receive unblocked!");
                 } catch (IOException ex) {
@@ -369,7 +379,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 
                 // NOTE: Avoid executing concurrently with actor's fire().
                 // 'DatagramReceiver.this' replaced with '_broadcastPacket'
-                synchronized(_broadcastPacket) {
+                synchronized(DatagramReceiver.this) {
                     
                     // There are 2 datagram packet buffers.
                     
@@ -414,8 +424,8 @@ public class DatagramReceiver extends TypedAtomicActor {
                         // Increment count & call fireAt()
                         packetsAlreadyAwaitingFire++;
                         try {
-                            getDirector().fireAt(DatagramReceiver.this,
-                                    getDirector().getCurrentTime());
+			    getDirector().fireAtCurrentTime(
+                                    DatagramReceiver.this);
                         } catch (IllegalActionException ex) {
                             if(_debugging) _debug("IAE 0!!");
                         }
