@@ -63,6 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1)
    </pre>
    <li>Otherwise, just output the input.
+   </ul>
    <P>
    This actor works as a (continuous) nonlinear function. It does not
    control integration step sizes. Notice that this actor does not try

@@ -177,8 +177,8 @@ public class ThresholdMonitor extends TypedAtomicActor
 
     /** Make this input to be the history input and return true.
      *  @return True.
-     *  @exception If token can not be read from or sent to ports, or thrown by
-     *  the super class.
+     *  @exception IllegalActionException If token can not be read from or 
+     *  sent to ports, or thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
