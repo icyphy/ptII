@@ -154,13 +154,8 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Get an array of tokens from this receiver. The parameter
      *  specifies the number of valid tokens to get in the returned
-     *  array. The length of the returned array will be at least equal to
-     *  <i>count</i>. This method may sometimes return an array with
-     *  length greater than <i>count</i>, in which case, only the first
-     *  <i>count</i> elements are valid. This behavior is allowed so that
-     *  this method can choose to reallocate the returned token array
-     *  only when the vector length is increased.
-     *
+     *  array. The length of the returned array will be equal to
+     *  <i>count</i>.
      *  @param count The number of valid tokens to get in the
      *   returned array.
      *  @return An array containing <i>count</i> tokens from the

@@ -84,11 +84,8 @@ public interface Receiver {
 
     /** Get an array of tokens from this receiver. The <i>numberOfTokens</i>
      *  argument specifies the number of tokens to get. In an implementation,
-     *  the length of the returned array is allowed to be greater than
-     *  <i>numberOfTokens</i>, in which case, only the first
-     *  <i>numberOfTokens</i> elements are the ones that have been read
-     *  from the receiver. In some domains, this allows the implementation
-     *  to be more efficient.
+     *  the length of the returned array must be equal to
+     *  <i>numberOfTokens</i>.
      *  @param numberOfTokens The number of tokens to get in the
      *   returned array.
      *  @return An array of tokens read from the receiver.
