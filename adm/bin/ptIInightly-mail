@@ -130,8 +130,7 @@ sh $ADMDIR/bin/coveragesummary >> $mailmsg
 
 echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
-echo "Test Failures during code coverage, JDK1.1 build" >> $mailmsg
-echo "or cvs build" >> $mailmsg
+echo "Test Failures during code coverage." >> $mailmsg
 echo "" >> $mailmsg
 egrep 'Total Tests' $ptbuildlog |
     egrep -v '^Failed: 0' >> $mailmsg
