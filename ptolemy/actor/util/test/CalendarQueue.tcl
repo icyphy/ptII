@@ -67,7 +67,7 @@ test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue take]} msg1
     list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.}}
+} {{ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.}}
 
 ######################################################################
 ######################################################################
@@ -213,7 +213,7 @@ test CalendarQueue-5.1 {Test remove and includes methods} {
     catch {[$queue take]} msg1
     catch {[$queue get]} msg2
     lappend mylist $msg1 $msg2
-} {0.0 1 0.1 0.1 1 0 1 1 0.1 4.0 {ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: Queue is empty.}}
+} {0.0 1 0.1 0.1 1 0 1 1 0.1 4.0 {ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.} {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
 
 ######################################################################
 ####
@@ -224,7 +224,7 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     catch {[$queue take]} msg2
     catch {[$queue get]} msg3
     list $msg1 $msg2 $msg3
-} {{ptolemy.kernel.util.IllegalActionException: Queue is empty.} {ptolemy.kernel.util.IllegalActionException: Cannot take from an empty queue.} {ptolemy.kernel.util.IllegalActionException: Queue is empty.}}
+} {{ptolemy.kernel.util.InvalidStateException: Queue is empty.} {ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.} {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
 
 test CalendarQueue-5.3 {Comprehensive tests of everything} {
 
@@ -272,7 +272,7 @@ test CalendarQueue-6.1 {Test identical entry} {
     catch {[$queue get]} msg1
     lappend mylist $msg1
 
-} {0.0 1 0.0 0.0 0 0 0 0 0.0 0.0 0.0 0.0 {ptolemy.kernel.util.IllegalActionException: Queue is empty.}}
+} {0.0 1 0.0 0.0 0 0 0 0 0.0 0.0 0.0 0.0 {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
 
 ######################################################################
 ####
@@ -307,4 +307,4 @@ test CalendarQueue-7.1 {Test the clear method} {
     catch {$queue get} msg1
     lappend mylist $msg1
 
-} {0.0 1 0 0 0 0 0 0.0 0.0 0.0 0.0 {ptolemy.kernel.util.IllegalActionException: Queue is empty.}}
+} {0.0 1 0 0 0 0 0 0.0 0.0 0.0 0.0 {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}

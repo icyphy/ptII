@@ -30,7 +30,7 @@
 
 package ptolemy.actor.util;
 
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Debuggable;
@@ -179,15 +179,16 @@ public class CalendarQueue implements Debuggable {
 
     /** Return entry that is at the head of the
      *  queue (i.e. the one that will be obtained by the next take()).
-     *  If the queue is empty, then throw an exception.
+     *  If the queue is empty, then throw an InvalidStateException, 
+     *  since the emptiness can be tested.
      *
      *  @return Object The smallest entry in the queue.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public final Object get() throws IllegalActionException {
+    public final Object get() throws InvalidStateException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
-            throw new IllegalActionException("Queue is empty.");
+            throw new InvalidStateException("Queue is empty.");
         }
         Object[] contents = toArray(1);
         return contents[0];
@@ -336,14 +337,16 @@ public class CalendarQueue implements Debuggable {
     /** Remove the smallest entry and return it.
      *  If there are multiple smallest entries, then return the
      *  first one that was put in the queue (FIFO behavior).
+     *  If the queue is empty, then through an InvalidStateException,
+     *  since the emptiness can be tested.
      *
      *  @return The entry that is smallest, per the comparator.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception InvalidStateException If the queue is empty.
      */
-    public final Object take() throws IllegalActionException {
+    public final Object take() throws InvalidStateException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
-            throw new IllegalActionException(
+            throw new InvalidStateException(
                     "Cannot take from an empty queue.");
         }
 
