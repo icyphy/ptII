@@ -204,10 +204,6 @@ public class HDFDirector extends SDFDirector {
 		}
 		int iterationCount = firing.getIterationCount();
 
-		if(_debugging) {
-                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
-		}
-
 		// FIXME: This is a hack. It does not even check if the
 		// SDF graph contains loops, and may be far from optimal when
 		// the SDF graph contains non-homogeneous actors. However,
