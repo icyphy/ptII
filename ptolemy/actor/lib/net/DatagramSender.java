@@ -243,9 +243,26 @@ public class DatagramSender extends TypedAtomicActor {
                 }
 	    }
 
+	} else if (attribute == defaultRemoteAddress) { 
+	    String address =
+                    defaultRemoteAddress.getExpression();
+	    try {
+		_address = InetAddress.getByName(address);
+	    } catch (UnknownHostException ex) {
+		throw new IllegalActionException(this, "The default remote "
+                        + "address specifies an unknown host: "
+                        + ex.getMessage());
+	    }
+
+	} else if (attribute == defaultRemoteSocketNumber) {
+	    _remoteSocketNumber =
+                    ((IntToken)defaultRemoteSocketNumber.getToken())
+                    .intValue();
+	    _remoteSocketNumber &= 65535; // Truncate to 16 bits.
+
 	// This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
         // See also ../io.xml for other half of this mechanism.
-        } else if (attribute == encoding) {
+	} else if (attribute == encoding) {
 	    _encoding = encoding.getExpression();
 	    if (_encoding.equals("for_Ptolemy_parser")) {
 		_encodeForPtolemyParser = true;
@@ -401,8 +418,6 @@ public class DatagramSender extends TypedAtomicActor {
             throw new IllegalActionException(this, "The default remote "
                     + "address specifies an unknown host: "
                     + ex.getMessage());
-	    // Or, can be that no DNS server is available.
-	    // Funny that this only happened when I put "" around 128...!?
         }
 
         _remoteSocketNumber =

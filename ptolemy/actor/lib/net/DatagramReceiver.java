@@ -271,7 +271,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     /** Encoding to expect of received datagrams.  This is a
      *  string-valued attribute that defaults to "forPtolemyParser".
      *  This is a 'ChoiceStyle' i.e. drop-menu-select parameter.
-     *  The three options curretly implemented are: "for_Ptolemy_parser", 
+     *  The three options currently implemented are: "for_Ptolemy_parser", 
      *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".  
      *  The first option allows reconstruction of any data type upon
      *  reception.  This is designed to be used with the DatagramSender 
