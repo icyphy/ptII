@@ -96,7 +96,7 @@ public class EditorIcon extends Icon {
         Figure figure = new CompositeFigure(background);
         Entity entity = (Entity) getContainer();
         LabelFigure label = new LabelFigure(entity.getName());
-        label.setSize(10);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 12));
 	label.setPadding(1);
 	label.setAnchor(SwingConstants.SOUTH_WEST);
 	label.translateTo(backBounds.getX(), backBounds.getY());
@@ -158,9 +158,8 @@ public class EditorIcon extends Icon {
     /**
      * The default background figure, if nothing else is available.
      */
-    protected Figure _createDefaultBackgroundFigure() {
-	// FIXME better default.
-	return new BasicRectangle(0, 0, 20, 20, Color.green);
+    protected static Figure _createDefaultBackgroundFigure() {
+	return new BasicRectangle(0, 0, 60, 40, Color.yellow, 1);
     }
 
 }

@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	BasicContextMenu.java \
 	EditorIcon.java \
+	FigureAction.java \
 	GraphicElement.java \
 	GraphPalette.java \
 	JDesignTree.java \
