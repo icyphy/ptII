@@ -117,12 +117,14 @@ public class TimedQueueReceiver implements Receiver {
         // System.out.println("rcvrTime = " + getRcvrTime() );
         ODActor odactor = (ODActor)getContainer().getContainer();
         // System.out.println("actor time = " + odactor.getCurrentTime() );
+	Token token = null;
+	synchronized( this ) {
         Event event = (Event)_queue.take();
         if (event == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get token from an empty FIFO queue.");
         }
-        Token token = event.getToken();
+        token = event.getToken();
         
         // Set the rcvr time based on the next token
         if( getSize() > 0 ) {
@@ -138,14 +140,16 @@ public class TimedQueueReceiver implements Receiver {
         // no longer in front
             
         RcvrTimeTriple triple; 
-        triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
-        ODActor actor = (ODActor)getContainer().getContainer(); 
-        actor.updateRcvrTable( triple );
+        triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
+        // triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
+        // ODActor actor = (ODActor)getContainer().getContainer(); 
+        odactor.updateRcvrTable( triple );
             
         /*
         // System.out.println(((ComponentEntity)odactor).getName()
                 + " completed TimedQueueReceiver.get().");
         */
+	}
         return token;
     }
 
