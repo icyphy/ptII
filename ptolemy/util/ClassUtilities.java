@@ -58,14 +58,15 @@ public class ClassUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a jar url of the format jar:<url>!/{entry}, return
+    /** Given a jar url of the format jar:<i>url<i>!/{entry}, return
      *  the resource, if any of the {entry}.
      *  If the string does not contain <code>!/</code>, then return null.
      *  Web Start uses jar URL, and there are some cases where
-     *  if we have a jar URL, then we may need to strip off the jar:<url>!/
+     *  if we have a jar URL, then we may need to strip off the jar:<i>url<i>!/
      *  part so that we can search for the {entry} as a resource.
      *
      *  @param spec The string containing the jar url.
+     *  @return The resource, if any.
      *  @exception IOException If it cannot convert the specification to
      *   a URL.
      *  @see java.net.JarURLConnection
