@@ -37,7 +37,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
-import java.util.Random;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -45,7 +44,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CSPController
 /**
-   FIXME: add description!!
+   
 
 @author John S. Davis II
 @version $Id$
@@ -97,13 +96,9 @@ public class CSPController extends CSPActor {
             //
             // State 1: Wait for 1st Request
             //
-	    System.out.println("STATE 1: " +getName());
+	    System.out.println("\t\t\tSTATE 1: " +getName());
             ConditionalBranch[] reqBrchs = 
                     new ConditionalBranch[_numRequestInChannels];
-            /*
-            System.out.println("There are "+_numRequestInChannels+
-                    " request input channels for "+getName());
-            */
             for( int i=0; i<_numRequestInChannels; i++ ) {
                 reqBrchs[i] = new 
                         ConditionalReceive(true, _requestIn, i, i);
@@ -113,7 +108,6 @@ public class CSPController extends CSPActor {
             
             if( br != -1 ) {
                 IntToken token = (IntToken)reqBrchs[br].getToken();
-                // IntToken token = (IntToken)_requestIn.get(br);
                 code = token.intValue(); 
                 _winningPortChannelCode = 
                         new PortChannelCode(_requestIn, br, code);
@@ -123,14 +117,14 @@ public class CSPController extends CSPActor {
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
-	    System.out.println("STATE 2: " +getName());
+	    System.out.println("\t\t\tSTATE 2: " +getName());
             _contendOut.send(0, new Token() );
             
             
             //
             // State 3: Wait for Contenders and Send Ack's
             //
-	    System.out.println("STATE 3: " +getName());
+	    System.out.println("\t\t\tSTATE 3: " +getName());
             _losingPortChannelCodes = new LinkedList(); 
             boolean continueCDO = true;
             while( continueCDO ) {
@@ -146,8 +140,7 @@ public class CSPController extends CSPActor {
                 
                 // Contention Occurred...and might happen again
                 if( br >= 0 && br < _numRequestInChannels ) {
-                   IntToken token = (IntToken)reqBrchs[br].getToken();
-                    // IntToken token = (IntToken)_requestIn.get(br);
+                    IntToken token = (IntToken)reqBrchs[br].getToken();
                     code = token.intValue(); 
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
@@ -159,10 +152,12 @@ public class CSPController extends CSPActor {
                             PortChannelCode(_requestIn, br, code) );
                     }
                     
-                }
+                } else if( br == _numRequestInChannels ) {
                 
-                // Contention is Over
-                else if( br == _numRequestInChannels ) {
+                    // 
+                    // State 4: Contention is Over 
+                    // 
+	            System.out.println("\t\t\tSTATE 4: " +getName());
                 
                     reqBrchs[br].getToken();
                     
@@ -196,12 +191,6 @@ public class CSPController extends CSPActor {
         }
     }
     
-    
-    
-
-    public boolean postfire() {
-        return false;
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////

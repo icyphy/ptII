@@ -35,11 +35,6 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.BooleanToken;
-import java.util.Random;
-import java.util.Enumeration;
-import collections.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,21 +68,19 @@ public class CSPContentionAlarm extends CSPActor {
         
         while(true) {
             // State 1
-	    System.out.println("STATE 1: " +getName());
+	    System.out.println("\t\t\t\tSTATE 1: " +getName());
             _input.get(0);
             
             // State 2
-	    System.out.println("STATE 2: " +getName());
+	    System.out.println("\t\t\t\tSTATE 2: " +getName());
             waitForDeadlock();
-	    System.out.println(getName() + " has ended timed deadlock");
+            
+            // State 3
+	    System.out.println("\t\t\t\tSTATE 3: " +getName());
             _output.send(0, new Token());
         }
     }
     
-    public boolean postfire() {
-        return false;
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
