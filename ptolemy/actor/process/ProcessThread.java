@@ -126,7 +126,7 @@ public class ProcessThread extends PtolemyThread {
 			_actor.fire();
 			iterate =  _actor.postfire();
 		    }
-                    System.out.println(_name+" processThread.iterate = "+iterate);
+                    // System.out.println(_name+" processThread.iterate = "+iterate);
 		}
             }
         } catch (TerminateProcessException t) {

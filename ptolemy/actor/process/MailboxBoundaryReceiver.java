@@ -130,7 +130,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
+            // _otherBranch.registerRcvrUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
@@ -148,6 +148,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             return;
         }
         
+	/*
         Workspace workspace = getContainer().workspace();
         while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
             branch.registerRcvrBlocked(this);
@@ -155,6 +156,7 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
         branch.registerRcvrUnBlocked(this);
         checkIfBranchIterationIsOver(branch);
+	*/
     }
             
     /**
@@ -162,10 +164,12 @@ public class MailboxBoundaryReceiver extends Mailbox
     public synchronized void checkIfBranchIterationIsOver(Branch branch) 
     	    throws TerminateBranchException {
         if( branch != null ) {
+	    /*
             if( branch.isIterationOver() ) {
                 throw new TerminateBranchException("The current "
                         + "iteration has ended.");
             }
+	    */
         }
     }
     
@@ -174,8 +178,10 @@ public class MailboxBoundaryReceiver extends Mailbox
     public synchronized void prepareToBlock(Branch branch) 
             throws TerminateBranchException {
         if( branch != null ) {
+	    /*
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
+	    */
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
