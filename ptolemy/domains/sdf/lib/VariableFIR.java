@@ -46,58 +46,23 @@ import ptolemy.domains.sdf.kernel.*;
 //// VariableFIR
 /**
 This actor implements a type polymorphic finite-impulse response
-filter with multirate capability. Since this filter operates on
+filter with multirate capability, where the impulse response
+of the filter is provided by an input. Since this filter operates on
 Tokens, it is polymorphic in the type of data it operates on.
 <p>
-Note that the current implementation of this actor only reads its
-parameters during initialization, so the filter cannot be
-changed during execution.
-<p>
-When the <i>decimation</i> (<i>interpolation</i>)
-parameters are different from unity, the filter behaves exactly
-as it were followed (preceded) by a DownSample (UpSample) actor.
-However, the implementation is much more efficient than
-it would be using UpSample or DownSample actors;
-a polyphase structure is used internally, avoiding unnecessary use
-of memory and unnecessary multiplication by zero.
-Arbitrary sample-rate conversions by rational factors can
-be accomplished this way.
-<p>
-To design a filter for a multirate system, simply assume the
-sample rate is the product of the interpolation parameter and
-the input sample rate, or equivalently, the product of the decimation
-parameter and the output sample rate.
-In particular, considerable care must be taken to avoid aliasing.
-Specifically, if the input sample rate is <i>f</i>,
-then the filter stopband should begin before <i>f</i>/2.
-If the interpolation ratio is <i>i</i>, then <i>f</i>/2 is a fraction
-1/2<i>i</i> of the sample rate at which you must design your filter.
-<p>
-The <i>decimationPhase</i> parameter is somewhat subtle.
-It is exactly equivalent the phase parameter of the DownSample actor.
-Its interpretation is as follows; when decimating,
-samples are conceptually discarded (although a polyphase structure
-does not actually compute the discarded samples).
-If you are decimating by a factor of three, then you will select
-one of every three outputs, with three possible phases.
-When decimationPhase is zero (the default),
-the latest (most recent) samples are the ones selected.
-The decimationPhase must be strictly less than
-the decimation ratio.
-<p>
-<i>Note: in this description "sample rate" refers to the physical sampling
-rate of an A/D converter in the system.  In other words, the number of
-data samples per second.  This is not usually specified anywhere in an
-SDF system, and most definitely does NOT correspond to the SDF rate parameters
-of this actor.  This actor automatically sets the rates of the input
-and output ports to the decimation and interpolation ratios, respectively.</i>
-<p>
-For more information about polyphase filters, see F. J. Harris,
-"Multirate FIR Filters for Interpolating and Desampling", in
-<i>Handbook of Digital Signal Processing</i>, Academic Press, 1987.
+If the <i>decimation</i> parameter is unity (the default, then
+the <i>blockSize</i> parameter specifies the number of inputs
+of the filter are processed per coefficient set provided on the
+<i>newTaps</i> input.  Otherwise, if <i>decimation</i> is greater than unity,
+then the number of tokens consumed is the product of <i>decimation</i>
+and <i>blockSize</i>, and all these inputs are processed using the
+filter coefficients provided on <i>newTaps</i>.
+In all other respects, the behavior of this
+actor is the same as that of the base class.
 
-@author Edward A. Lee, Bart Kienhuis, Steve Neuendorffer
+@author Edward A. Lee, Yuhong Xiong
 @version $Id$
+
 @see ptolemy.data.Token
 */
 public class VariableFIR extends FIR {
@@ -114,21 +79,60 @@ public class VariableFIR extends FIR {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        blockSize = new Parameter(this, "blockSize");
+        blockSize.setExpression("1");
+
         newTaps = new TypedIOPort(this, "newTaps");
         newTaps.setInput(true);
+
         newTaps.setTypeSameAs(taps);
+
+        // The taps parameter is no longer of any use, so it is hidden.
+        taps.setVisibility(Settable.NONE);
+
         output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input for new tap values.
+    /** The number of inputs that use each each coefficient set is the
+     *  value of this parameter multiplied by the value of the
+     *  <i>decimation</i> parameter.
+     *  This is an integer that defaults to 1.
+     */
+    public Parameter blockSize;
+
+    /** The input for new tap values.  This is an array.
      */
     public TypedIOPort newTaps;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Set a flag that causes recalculation of various local variables
+     *  that are used in execution on the next invocation of fire().
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == interpolation
+                || attribute == decimation
+                || attribute == blockSize) {
+            // The base class doesn't set the production/consumption
+            // rates correctly for the blockSize, so we redo it.
+            IntToken blockSizeToken = (IntToken)(blockSize.getToken());
+            _blockSizeValue = blockSizeToken.intValue();
+            output.setTokenProductionRate(_interp*_blockSizeValue);
+            input.setTokenConsumptionRate(_dec*_blockSizeValue);
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+            }
+            _reinitializeNeeded = true;
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
@@ -142,8 +146,10 @@ public class VariableFIR extends FIR {
         VariableFIR newObject = (VariableFIR)(super.clone(workspace));
 
         // set the type constraints
-        newObject.newTaps.setTypeAtLeast(newObject.taps);
-        newObject.output.setTypeSameAs(newObject.input);
+        // FIXME: Doesn't work.
+        // newObject.newTaps.setTypeSameAs(newObject.taps);
+        // FIXME: backup plan.
+        newObject.newTaps.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         return newObject;
     }
 
@@ -161,6 +167,29 @@ public class VariableFIR extends FIR {
 
             _reinitializeNeeded = true;
         }
-        super.fire();
+        for (int i=0; i < _blockSizeValue; i++) {
+            super.fire();
+        }
     }
+
+    /** Return false if the input does not have enough tokens to fire.
+     *  Otherwise, return true.
+     *  @return False if the number of input tokens available is not at least
+     *   equal to the <i>decimation</i> parameter multiplied by the 
+     *   <i>blockSize</i> parameter.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // If an attribute has changed since the last fire(), or if
+        // this is the first fire(), then renitialize.
+        if (_reinitializeNeeded) _reinitialize();
+
+        if (input.hasToken(0, _dec * _blockSizeValue)) return true;
+        else return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private int _blockSizeValue = 1;
 }
