@@ -152,7 +152,9 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
+	lib/jython.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
+	ptolemy/actor/lib/python/python.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
@@ -161,6 +163,10 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/pn/demo/demo.jar \
+	ptolemy/domains/pn/doc/doc.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar \
 	ptolemy/moml/demo/demo.jar
 
 PTINY_MAIN_JAR = \
@@ -195,8 +201,11 @@ EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 		lib/ptjacl.jar
+
 # Do not include PTJACL for size reasons
-PTJACL_JARS =
+#PTJACL_JARS =
+#	lib/ptjacl.jar \
+#        ptolemy/actor/gui/ptjacl/ptjacl.jar
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -205,13 +214,11 @@ FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
-	lib/jython.jar \
 	ptolemy/actor/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-	ptolemy/actor/lib/python/python.jar \
 	ptolemy/actor/lib/python/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
@@ -226,17 +233,11 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/giotto/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
-	ptolemy/domains/pn/demo/demo.jar \
-	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
-	ptolemy/domains/tm/doc/doc.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar \
-	lib/ptjacl.jar \
-        ptolemy/actor/gui/ptjacl/ptjacl.jar
+	ptolemy/domains/tm/doc/doc.jar 
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
