@@ -52,7 +52,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -348,7 +348,7 @@ public class SRDirector extends StaticSchedulingDirector {
             while(outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 // FIXME: Introduces dependency on sdf
-                int initialToken = SDFUtilities.getTokenInitProduction(port);
+                int initialToken = DFUtilities.getTokenInitProduction(port);
 
                 if (initialToken > 0) {
                     Parameter parameter =

@@ -50,7 +50,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -774,13 +774,13 @@ public class DDFDirector extends Director {
                     int tokenConsumptionRate = 1;
                     Variable rate = null;
                     if (port.isInput()) {
-                        rate = SDFUtilities.getRateVariable(port,
+                        rate = DFUtilities.getRateVariable(port,
                                 "tokenConsumptionRate");
                     }
                     // If DDF domain is inside another domain and the
                     // farReceiver is contained by an opaque output port...
                     if (port.isOutput()) {
-                        rate = SDFUtilities.getRateVariable(port,
+                        rate = DFUtilities.getRateVariable(port,
                                 "tokenProductionRate");
                     }
                     if (rate != null) {
@@ -876,7 +876,7 @@ public class DDFDirector extends Director {
             throws IllegalActionException {
         int[] rate = new int[port.getWidth()];
         Arrays.fill(rate, 1);
-        Variable parameter = SDFUtilities.getRateVariable(port,
+        Variable parameter = DFUtilities.getRateVariable(port,
                 "tokenConsumptionRate");
         if (parameter != null) {
             Token token = parameter.getToken();
@@ -911,7 +911,7 @@ public class DDFDirector extends Director {
             throws IllegalActionException {
         int[] rate = new int[port.getWidthInside()];
         Arrays.fill(rate, 1);
-        Variable parameter = SDFUtilities.getRateVariable(port,
+        Variable parameter = DFUtilities.getRateVariable(port,
                 "tokenProductionRate");
         if (parameter != null) {
             Token token = parameter.getToken();

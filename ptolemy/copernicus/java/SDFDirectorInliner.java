@@ -51,7 +51,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 
 import ptolemy.kernel.Entity;
 
@@ -315,7 +315,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                     continue;
                 }
                 int rate;
-                rate = SDFUtilities.getTokenConsumptionRate(port);
+                rate = DFUtilities.getTokenConsumptionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
@@ -511,7 +511,7 @@ public class SDFDirectorInliner implements DirectorInliner {
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
-                rate = SDFUtilities.getTokenProductionRate(port);
+                rate = DFUtilities.getTokenProductionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);

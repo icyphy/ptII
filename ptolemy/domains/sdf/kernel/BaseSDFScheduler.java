@@ -129,7 +129,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     name + " in port " + port.getFullName());
         }
         Variable variable =
-            (Variable)SDFUtilities.getRateVariable(port, name);
+            (Variable)DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration)
             variable.getAttribute(
                     "_SDFRateDependencyDeclaration",
@@ -222,7 +222,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                             minimumBufferSizes.get(relation);
                         if (bufferSizeObject instanceof Integer) {
                             int bufferSize = ((Integer)bufferSizeObject).intValue();
-                            SDFUtilities._setOrCreate(relation, "bufferSize", bufferSize);
+                            DFUtilities._setOrCreate(relation, "bufferSize", bufferSize);
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
                                         + relation.getName() +
@@ -230,7 +230,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                             }
                         } else if (bufferSizeObject instanceof String) {
                             String bufferSizeExpression = (String)bufferSizeObject;
-                            SDFUtilities._setOrCreate(relation, "bufferSize",
+                            DFUtilities._setOrCreate(relation, "bufferSize",
                                     "\"" + bufferSizeExpression + "\"");
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
@@ -281,14 +281,14 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         "External port is both an input and an output, "
                         + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                SDFUtilities._setIfNotDefined(
+                DFUtilities._setIfNotDefined(
                         port, "tokenConsumptionRate", rate.intValue());
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to "
                             + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                SDFUtilities._setIfNotDefined(
+                DFUtilities._setIfNotDefined(
                         port, "tokenProductionRate", rate.intValue());
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenProductionRate to "
@@ -308,7 +308,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     int newRate;
                     if (connectedPort.isOutput()) {
                         newRate =
-                            SDFUtilities.getTokenInitProduction(connectedPort);
+                            DFUtilities.getTokenInitProduction(connectedPort);
                     } else {
                         newRate = 0;
                     }
@@ -326,7 +326,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     foundOutputPort = connectedPort;
                     inferredRate = newRate;
                 }
-                SDFUtilities._setIfNotDefined(
+                DFUtilities._setIfNotDefined(
                         port, "tokenInitProduction", inferredRate);
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenInitProduction to "
@@ -357,7 +357,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         Entity entity = (Entity) entities.next();
                         int firingCount =
                             ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
-                        SDFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
+                        DFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
                         if (_debugging) {
                             _debug("Adding firingsPerIteration parameter to "
                                     + entity.getName() + " with value "

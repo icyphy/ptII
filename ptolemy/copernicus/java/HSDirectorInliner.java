@@ -48,7 +48,7 @@ import ptolemy.data.expr.*;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 
 import ptolemy.kernel.Entity;
 
@@ -355,7 +355,7 @@ public class HSDirectorInliner implements DirectorInliner {
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate = SDFUtilities.getTokenProductionRate(port);
+                int rate = DFUtilities.getTokenProductionRate(port);
                 
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);

@@ -51,7 +51,7 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.BaseSDFScheduler;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.graph.Edge;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
@@ -289,7 +289,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
                     String sinkExpression;
                     Variable sinkRateVariable = 
-                        SDFUtilities.getRateVariable(
+                        DFUtilities.getRateVariable(
                                 connectedPort, "tokenConsumptionRate");
                     if (sinkRateVariable == null) {
                         sinkExpression = "1";
@@ -300,7 +300,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String expression = sinkExpression + " * " 
                         + entity.getName() + "::firingsPerIteration";
 
-                    SDFUtilities.setExpressionIfNotDefined(
+                    DFUtilities.setExpressionIfNotDefined(
                             port, "tokenConsumptionRate",
                             expression);
 
@@ -317,7 +317,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String name = connectedPort.getName(model);
                     String identifier = name.replaceAll("\\.", "::");
                     Variable sourceRateVariable = 
-                        SDFUtilities.getRateVariable(
+                        DFUtilities.getRateVariable(
                                 connectedPort, "tokenProductionRate");
                     String sourceExpression;
                     if (sourceRateVariable == null) {
@@ -329,7 +329,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String expression = sourceExpression + " * " 
                         + entity.getName() + "::firingsPerIteration";
 
-                    SDFUtilities.setExpressionIfNotDefined(
+                    DFUtilities.setExpressionIfNotDefined(
                             port, "tokenProductionRate",
                             expression);
                     if (_debugging && VERBOSE) {
@@ -351,7 +351,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 //                     int newRate;
                 //                     if (connectedPort.isOutput()) {
                 //                         newRate =
-                //                             SDFUtilities.getTokenInitProduction(connectedPort);
+                //                             DFUtilities.getTokenInitProduction(connectedPort);
                 //                     } else {
                 //                         newRate = 0;
                 //                     }
@@ -369,7 +369,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 //                     foundOutputPort = connectedPort;
                 //                     inferredRate = newRate;
                 //                 }
-                //                 SDFUtilities._setIfNotDefined(
+                //                 DFUtilities._setIfNotDefined(
                 //                         port, "tokenInitProduction", inferredRate);
                 //                 if (_debugging && VERBOSE) {
                 //                     _debug("Setting tokenInitProduction to "

@@ -315,7 +315,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // It gets populated with the fractional production ratios
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
-        Map externalRates = new TreeMap(new SDFUtilities.NamedObjComparator());
+        Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
         for (Iterator ports = container.portList().iterator();
@@ -328,7 +328,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // and array of the maximum number of tokens that are ever
         // waiting on that relation.
         Map minimumBufferSize =
-            new TreeMap(new SDFUtilities.NamedObjComparator());
+            new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize the buffer size of each relation to zero.
         for (Iterator relations = container.relationList().iterator();
@@ -415,7 +415,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     protected void _localMemberInitialize() {
         _firingVector =
-            new TreeMap(new SDFUtilities.NamedObjComparator());
+            new TreeMap(new DFUtilities.NamedObjComparator());
         _firingVectorValid = true;
     }
 
@@ -538,7 +538,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // This will be populated with the fraction firing ratios for
         // each actor.
         Map entityToFiringsPerIteration =
-            new TreeMap(new SDFUtilities.NamedObjComparator());
+            new TreeMap(new DFUtilities.NamedObjComparator());
 
         // The pool of Actors that have not been touched
         // yet. (i.e. all their firingsPerIteration are still set to
@@ -742,14 +742,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Port port = (Port) ports.next();
                 Set set = analysis.getNotConstVariables(port);
                 Variable variable;
-                variable = SDFUtilities.getRateVariable(
+                variable = DFUtilities.getRateVariable(
                         port, "tokenInitProduction");
                 _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 }
-                variable = SDFUtilities.getRateVariable(
+                variable = DFUtilities.getRateVariable(
                         port, "tokenConsumptionRate");
                 _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
@@ -757,7 +757,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             model, variable, rateVariables, analysis);
                 }
 
-                variable = SDFUtilities.getRateVariable(
+                variable = DFUtilities.getRateVariable(
                         port, "tokenProductionRate");
                 _listenToRateVariable(variable, rateVariables);
                 if (set.contains(variable)) {
@@ -788,7 +788,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens = (int []) waitingTokens.get(inputPort);
-            int tokenRate = SDFUtilities.getTokenConsumptionRate(inputPort);
+            int tokenRate = DFUtilities.getTokenConsumptionRate(inputPort);
             // Ignore zero rate ports.. they don't limit the number of times
             // we can fire their actors.
             if (tokenRate == 0) {
@@ -839,7 +839,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         inputPort.getFullName());
             }
 
-            int threshold = SDFUtilities.getTokenConsumptionRate(inputPort);
+            int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
             if (_debugging && VERBOSE) {
                 _debug("Threshold = " + threshold);
             }
@@ -914,7 +914,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             for (Iterator ports = actor.portList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                if (SDFUtilities._getRate(port) == 0) {
+                if (DFUtilities._getRate(port) == 0) {
                     return actor;
                 }
             }
@@ -1049,7 +1049,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if(currentActor == model) {
             currentRate = 1;
         } else {
-            currentRate = SDFUtilities._getRate(currentPort);
+            currentRate = DFUtilities._getRate(currentPort);
         }
         
         // Port rates of less than zero are not valid.
@@ -1095,7 +1095,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if(connectedActor == model) {
                 connectedRate = 1;
             } else {
-                connectedRate = SDFUtilities._getRate(connectedPort);
+                connectedRate = DFUtilities._getRate(connectedPort);
             }
 
             // currentFiring is the firing ratio that we've already
@@ -1248,7 +1248,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // An association between each actor and the number of firings
         // for that actor that remain to be simulated.
         Map firingsRemainingVector =
-            new TreeMap(new SDFUtilities.NamedObjComparator());
+            new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialized the firingsRemainingVector to the current
         // firing vector.
@@ -1261,7 +1261,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // An association between all the input ports in a simulation and an
         // array of the number of tokens waiting on each relation of that port.
         Map waitingTokens =
-            new TreeMap(new SDFUtilities.NamedObjComparator());
+            new TreeMap(new DFUtilities.NamedObjComparator());
         try {
             // Initialize waitingTokens
             // at all the input ports to zero
@@ -1317,7 +1317,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
                     int count =
-                        SDFUtilities.getTokenInitProduction(outputPort);
+                        DFUtilities.getTokenInitProduction(outputPort);
                     if (_debugging && VERBOSE) {
                         _debug("Simulating " + count
                                 + " tokens created on " + outputPort);
@@ -1454,7 +1454,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
                     int count =
-                        SDFUtilities.getTokenProductionRate(outputPort);
+                        DFUtilities.getTokenProductionRate(outputPort);
 
                     _simulateTokensCreated(outputPort,
                             count * numberOfFirings,
@@ -1696,7 +1696,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens = (int []) waitingTokens.get(inputPort);
             int tokenRate =
-                SDFUtilities.getTokenConsumptionRate(inputPort);
+                DFUtilities.getTokenConsumptionRate(inputPort);
             for (int channel = 0;
                  channel < inputPort.getWidth();
                  channel++) {
@@ -1860,7 +1860,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     private Fraction _minusOne = new Fraction(-1);
 
     private Map _externalRates =
-    new TreeMap(new SDFUtilities.NamedObjComparator());
+    new TreeMap(new DFUtilities.NamedObjComparator());
     
     //private Set _clusteredActors = new HashSet();
     

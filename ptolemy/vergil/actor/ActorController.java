@@ -477,7 +477,7 @@ public abstract class ActorController extends AttributeController {
                 // NOTE: Showing rates only makes sense for IOPorts.
                 if (port instanceof IOPort &&
                         port.getAttribute("_showRate") != null) {
-                    // Infer the rate.  See SDFUtilities.
+                    // Infer the rate.  See DFUtilities.
                     String rateString = "";
                     Variable rateParameter = null;
                     if (((IOPort)port).isInput()) {

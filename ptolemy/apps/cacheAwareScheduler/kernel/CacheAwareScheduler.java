@@ -55,7 +55,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -2085,7 +2085,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         // It gets populated with the fractional production ratios
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
-        Map externalRates = new TreeMap(new SDFUtilities.NamedObjComparator());
+        Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
         for (Iterator ports = container.portList().iterator();

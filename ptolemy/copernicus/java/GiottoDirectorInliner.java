@@ -47,7 +47,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.giotto.kernel.GiottoCodeGenerator;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -791,7 +791,7 @@ public class GiottoDirectorInliner implements DirectorInliner {
             for (Iterator ports = model.outputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                int rate = SDFUtilities.getTokenProductionRate(port);
+                int rate = DFUtilities.getTokenProductionRate(port);
                
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);

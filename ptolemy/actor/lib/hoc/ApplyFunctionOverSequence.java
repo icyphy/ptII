@@ -41,7 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 
 import java.util.*;
 
@@ -161,7 +161,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
         if(type.getReturnType() instanceof ArrayType) {
             output.setTypeEquals(
                     ((ArrayType)type.getReturnType()).getElementType());
-            _outputRate = SDFUtilities.getTokenProductionRate(output);
+            _outputRate = DFUtilities.getTokenProductionRate(output);
         } else {
             output.setTypeEquals(type.getReturnType());
             _outputRate = -1;
@@ -177,7 +177,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
             Type portType = type.getArgType(i);
             if(portType instanceof ArrayType) {
                 port.setTypeEquals(((ArrayType)portType).getElementType());
-                _rate[i] = SDFUtilities.getTokenConsumptionRate(port);
+                _rate[i] = DFUtilities.getTokenConsumptionRate(port);
             } else {
                 port.setTypeEquals(portType);
                 _rate[i] = -1;

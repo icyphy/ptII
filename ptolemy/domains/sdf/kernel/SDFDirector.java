@@ -259,7 +259,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             IOPort port = (IOPort)ports.next();
 
             // Create external initial production.
-            int rate = SDFUtilities.getTokenInitProduction(port);
+            int rate = DFUtilities.getTokenInitProduction(port);
             boolean wasTransferred = false;
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
@@ -316,7 +316,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             // insist on there being an input.
             if (inputPort instanceof ParameterPort) continue;
 
-            int threshold = SDFUtilities.getTokenConsumptionRate(inputPort);
+            int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
             if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
@@ -418,7 +418,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // The number of tokens depends on the schedule, so make sure
         // the schedule is valid.
         getScheduler().getSchedule();
-        int rate = SDFUtilities.getTokenConsumptionRate(port);
+        int rate = DFUtilities.getTokenConsumptionRate(port);
         boolean wasTransferred = false;
         for (int i = 0; i < port.getWidth(); i++) {
             try {
@@ -480,7 +480,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Attempted to transferOutputs on a port that "
                     + "is not an opaque input port.");
         }
-        int rate = SDFUtilities.getTokenProductionRate(port);
+        int rate = DFUtilities.getTokenProductionRate(port);
         boolean wasTransferred = false;
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {

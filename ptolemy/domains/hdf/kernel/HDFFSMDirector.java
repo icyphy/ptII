@@ -60,7 +60,7 @@ import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -629,7 +629,7 @@ public class HDFFSMDirector extends FSMDirector {
           //  " insideReceivers " + insideReceivers.toString());
         // For each channel.
         for (int i = 0; i < port.getWidth(); i++) {
-            int rate = SDFUtilities.getTokenConsumptionRate(port);
+            int rate = DFUtilities.getTokenConsumptionRate(port);
             try {
                 if (insideReceivers != null
                         && insideReceivers[i] != null) {
@@ -759,7 +759,7 @@ public class HDFFSMDirector extends FSMDirector {
             IOPort port, String name, List dependents)
             throws IllegalActionException {
         Variable variable =
-            (Variable)SDFUtilities.getRateVariable(port, name);
+            (Variable)DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration)
             variable.getAttribute(
                     "_HDFFSMRateDependencyDeclaration",
@@ -822,7 +822,7 @@ public class HDFFSMDirector extends FSMDirector {
             insidePorts.hasNext();) {
             IOPort insidePort = (IOPort)insidePorts.next();
             Variable variable = (Variable)
-                SDFUtilities.getRateVariable(insidePort, parameterName);
+                DFUtilities.getRateVariable(insidePort, parameterName);
             if(variable != null) {
                 list.add(variable);
             }
@@ -895,7 +895,7 @@ public class HDFFSMDirector extends FSMDirector {
         Iterator containerPorts = containerPortList.iterator();
         while (containerPorts.hasNext()) {
             IOPort containerPort = (IOPort)containerPorts.next();
-            SDFUtilities.setTokenConsumptionRate(
+            DFUtilities.setTokenConsumptionRate(
                     containerPort, 0);
         }
         // Get all of its input ports of the current refinement actor.
@@ -932,10 +932,10 @@ public class HDFFSMDirector extends FSMDirector {
                         temp.equals(thisPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
-                    int portRateToSet = SDFUtilities
+                    int portRateToSet = DFUtilities
                         .getTokenConsumptionRate(refineInPort);
                         //System.out.println("port rate = " + portRateToSet);
-                    SDFUtilities.setTokenConsumptionRate
+                    DFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
                 } else {
                     State curState = ctrl.currentState();
@@ -959,11 +959,11 @@ public class HDFFSMDirector extends FSMDirector {
                                     if (thisPortContainer.getFullName()
                                             == trRefinementName) {
                                         int portRateToSet =
-                                            SDFUtilities
+                                            DFUtilities
                                             .getTokenConsumptionRate
                                             (refineInPort);
                                         int transitionPortRate =
-                                            SDFUtilities.
+                                            DFUtilities.
                                             getTokenConsumptionRate
                                             (inputPortOutside);
                                         if (portRateToSet
@@ -1007,7 +1007,7 @@ public class HDFFSMDirector extends FSMDirector {
         Iterator containerPorts = containerPortList.iterator();
         while (containerPorts.hasNext()) {
             IOPort containerPort = (IOPort)containerPorts.next();
-            SDFUtilities.setTokenProductionRate(
+            DFUtilities.setTokenProductionRate(
                     containerPort, 0);
         }
         // Get all of the current refinement's output ports.
@@ -1039,20 +1039,20 @@ public class HDFFSMDirector extends FSMDirector {
                         refineOutPortContainer.getFullName()) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
-                    int portRateToSet = SDFUtilities
+                    int portRateToSet = DFUtilities
                         .getTokenProductionRate(refineOutPort);
-                    int portInitRateToSet = SDFUtilities
+                    int portInitRateToSet = DFUtilities
                         .getTokenInitProduction(refineOutPort);
-                    SDFUtilities.setTokenProductionRate
+                    DFUtilities.setTokenProductionRate
                         (outputPortOutside, portRateToSet);
-                    SDFUtilities.setTokenInitProduction
+                    DFUtilities.setTokenInitProduction
                         (outputPortOutside, portInitRateToSet);
                 } else if (temp.equals(thisPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate of
                     // the refinement.
-                    int portRateToSet = SDFUtilities
+                    int portRateToSet = DFUtilities
                         .getTokenProductionRate(refineOutPort);
-                    SDFUtilities.setTokenConsumptionRate
+                    DFUtilities.setTokenConsumptionRate
                         (outputPortOutside, portRateToSet);
                 }
             }
