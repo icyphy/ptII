@@ -88,9 +88,9 @@ class will not have this constraint.
 RcvrTimeTriple objects are used to facilitate the ordering of receivers 
 contained by an ODActor according to rcvrTime/lastTime and priority. A
 RcvrTimeTriple is an object containing an ODReceiver, the _rcvrTime of
-the receiver and the priority of the receiver. Each actor contains a table 
+the receiver and the priority of the receiver. Each actor contains a list 
 consisting of one RcvrTimeTriple per receiver contained by the actor. As 
-tokens are placed in and taken out of the receivers of an actor, the table 
+tokens are placed in and taken out of the receivers of an actor, the list 
 of RcvrTimeTriples is updated.
 <P>
 ***
@@ -142,7 +142,7 @@ public class ODActor extends AtomicActor {
      */
     public ODActor() {
         super();
-        _rcvrTimeTable = new LinkedList();
+        _rcvrTimeList = new LinkedList();
     }
     
     /** Construct an ODActor with the specified workspace and no name.
@@ -150,7 +150,7 @@ public class ODActor extends AtomicActor {
      */
     public ODActor(Workspace workspace) {
 	super(workspace);
-        _rcvrTimeTable = new LinkedList();
+        _rcvrTimeList = new LinkedList();
     }
 
     /** Construct an ODActor with the specified container and name.
@@ -160,7 +160,7 @@ public class ODActor extends AtomicActor {
     public ODActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _rcvrTimeTable = new LinkedList();
+        _rcvrTimeList = new LinkedList();
     }
  
     
@@ -178,7 +178,7 @@ public class ODActor extends AtomicActor {
     
     /** Return the RcvrTimeTriple consisting of the receiver with the 
      *  highest priority given that it has the lowest nonnegative rcvrTime. 
-     *  Return null if this actor's table of RcvrTimeTriples is empty.
+     *  Return null if this actor's list of RcvrTimeTriples is empty.
      * @return The RcvrTimeTriple consisting of the receiver with the 
      *  highest priority and lowest nonnegative rcvrTime. If no triples 
      *  exist, return null.
@@ -192,11 +192,11 @@ public class ODActor extends AtomicActor {
         RcvrTimeTriple highPriorityTriple = null;
 
 	while( rcvrNotFound ) {
-	    if( cnt == _rcvrTimeTable.size() ) {
+	    if( cnt == _rcvrTimeList.size() ) {
 	        return highPriorityTriple;
 	    }
 
-	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
+	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
@@ -226,10 +226,10 @@ public class ODActor extends AtomicActor {
      * @see TimedQueueReceiver
      */
     public double getNextTime() {
-        if( _rcvrTimeTable.size() == 0 ) {
+        if( _rcvrTimeList.size() == 0 ) {
             return _currentTime;
         }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
     }
     
@@ -253,7 +253,7 @@ public class ODActor extends AtomicActor {
      *  <P>
      *  If the current time is not equal to -1, then call get() on the
      *  receiver which has the minimum rcvrTime and is listed first in 
-     *  the RcvrTimeTriple table. If get() returns null, then check to
+     *  the RcvrTimeTriple list. If get() returns null, then check to
      *  see if there is a single receiver which has a minimum rcvrTime. 
      *  If so, call getNextToken() - note that a new receiver may now have 
      *  the minimum rcvrTime. If multiple receivers share a common minimum 
@@ -284,23 +284,23 @@ public class ODActor extends AtomicActor {
         /*
         if( name.equals("printer") ) {
             System.out.println("\n\n\n"+name+": Entered getNextToken()");
-	    // printRcvrTable();
+	    // printRcvrList();
         }
         */
         
-        if( _rcvrTimeTable.size() == 0 ) {
+        if( _rcvrTimeList.size() == 0 ) {
             // System.out.println("No receivers. Return from getNextToken()");
             return null;
         }
         
         /* BEGINNING ORIGINAL STUFF
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
 	END OF ORIGINAL STUFF */
 
 	// BEGINNING OF NEW STUFF
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
 
@@ -315,7 +315,7 @@ public class ODActor extends AtomicActor {
 	    // All receivers have completed. 
 	    // Prepare to terminate.
 	    // System.out.println("All receivers have completed."); 
-	    // printRcvrTable();
+	    // printRcvrList();
 	    noticeOfTermination();
 	    lowestRcvr.setFinish();
 	    lowestRcvr.get();
@@ -330,7 +330,7 @@ public class ODActor extends AtomicActor {
 	    // System.out.println("preparing to call get");
 	    // System.out.println("getNextToken() time = " + _currentTime);
 	    // System.out.println("getNextToken() counter = "+_cntr);
-            // printRcvrTable();
+            // printRcvrList();
         }
         /*
         */
@@ -349,7 +349,7 @@ public class ODActor extends AtomicActor {
                 System.out.println(name+" returned a token: 1st non-null");
             }
             */
-	    // updateRcvrTable( triple );
+	    // updateRcvrList( triple );
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
@@ -391,7 +391,7 @@ public class ODActor extends AtomicActor {
                 token = lowestRcvr.get();
                 
                 if( token != null ) {
-                    // updateRcvrTable( priorityTriple );
+                    // updateRcvrList( priorityTriple );
                     /*
                     if( name.equals("printer") ) {
                         System.out.println(name+
@@ -430,12 +430,12 @@ public class ODActor extends AtomicActor {
      *  or if there are no receivers; otherwise return false.
      */
     public boolean hasMinRcvrTime() {
-        if( _rcvrTimeTable.size() < 2 ) {
+        if( _rcvrTimeList.size() < 2 ) {
             return true;
         }
 
-        RcvrTimeTriple firstTriple = (RcvrTimeTriple)_rcvrTimeTable.first(); 
-	RcvrTimeTriple secondTriple = (RcvrTimeTriple)_rcvrTimeTable.at(1);
+        RcvrTimeTriple firstTriple = (RcvrTimeTriple)_rcvrTimeList.first(); 
+	RcvrTimeTriple secondTriple = (RcvrTimeTriple)_rcvrTimeList.at(1);
 
 	if( firstTriple.getTime() == secondTriple.getTime() ) {
 	    return false;
@@ -444,7 +444,7 @@ public class ODActor extends AtomicActor {
     }
     
     /** Initialize this actor by setting the receiver priorities.
-     *  This method will also initialize the RcvrTimeTriple table
+     *  This method will also initialize the RcvrTimeTriple list
      *  via setPriorities().
      * @exception IllegalActionException If there is an error when
      *  setting the receiver priorities.
@@ -553,7 +553,7 @@ public class ODActor extends AtomicActor {
         
         //
         // Now Set The Priorities Of Each Port's Receiver
-        // And Initialize RcvrTable
+        // And Initialize RcvrList
         //
         int cnt = 0;
         int currentPriority = 0;
@@ -566,7 +566,7 @@ public class ODActor extends AtomicActor {
                     RcvrTimeTriple triple = new RcvrTimeTriple( 
                             (ODReceiver)rcvrs[i][j], _currentTime, 
                             currentPriority );
-                    updateRcvrTable( triple );
+                    updateRcvrList( triple );
                     currentPriority++;
                 }
             }
@@ -574,35 +574,35 @@ public class ODActor extends AtomicActor {
         }
     }
 
-    /** Update the table of RcvrTimeTriples by positioning the 
+    /** Update the list of RcvrTimeTriples by positioning the 
      *  specified triple. If the specified triple is already
-     *  contained in the table, then the triple is removed and
-     *  then added back to the table. The position of the triple
+     *  contained in the list, then the triple is removed and
+     *  then added back to the list. The position of the triple
      *  is based on the triple's time value.
-     * @param triple The RcvrTimeTriple to be positioned in the table.
+     * @param triple The RcvrTimeTriple to be positioned in the list.
      */
-    public synchronized void updateRcvrTable(RcvrTimeTriple triple) {
-	_removeRcvrTable( triple );
+    public synchronized void updateRcvrList(RcvrTimeTriple triple) {
+	_removeRcvrList( triple );
 	_addRcvrTriple( triple );
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
 
-    /** Print the contents of the RcvrTimeTriple table contained by 
+    /** Print the contents of the RcvrTimeTriple list contained by 
      *  this actor. Use this method for testing purposes only.
      */
-    void printRcvrTable() {
-        System.out.println("\n***Print "+getName()+"'s RcvrTable.");
-        System.out.println("   Number of Receivers in RcvrTable = " 
-                + _rcvrTimeTable.size() );
-        if( _rcvrTimeTable.size() == 0 ) {
-            System.out.println("\tTable is empty");
-            System.out.println("***End of printRcvrTable()\n");
+    void printRcvrList() {
+        System.out.println("\n***Print "+getName()+"'s RcvrList.");
+        System.out.println("   Number of Receivers in RcvrList = " 
+                + _rcvrTimeList.size() );
+        if( _rcvrTimeList.size() == 0 ) {
+            System.out.println("\tList is empty");
+            System.out.println("***End of printRcvrList()\n");
 	    return;
         }
-        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
-	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
+        for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
+	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeList.at(i);
 	    Receiver testRcvr = testTriple.getReceiver(); 
             double time = testTriple.getTime();
             String testPort = testRcvr.getContainer().getName();
@@ -637,127 +637,77 @@ public class ODActor extends AtomicActor {
             System.out.println("\t"+getName()+"'s Receiver "+i+
 	            " has a time of " +time+" and string: "+testString);
         }
-        System.out.println("***End of printRcvrTable()\n");
+        System.out.println("***End of printRcvrList()\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
 
-    /** Add the specified RcvrTimeTriple based on the _Receiver_.
-     *  This method must be called after _removeRcvrTable() if 
-     *  the RcvrTimeTriple table already conatains the triple
-     *  specified in the argument.
+    /** Add the specified RcvrTimeTriple to the list of triples.
+     *  If the time stamp of the specified triple is -1.0, then
+     *  insert the triple into the last position of the RcvrTimeTriple
+     *  list. Otherwise, insert the triple immediately after all
+     *  other triples with time stamps less than or equal to the
+     *  time stamp of the specified triple. ALWAYS call _removeRcvrTriple 
+     *  immediately before calling this method if the RcvrTimeTriple list 
+     *  already contains the triple specified in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
-        // System.out.println("Entered _addRcvrTriple");
-        // printRcvrTable();
-	int cnt = 0;
-        boolean notAddedYet = true;
-
-        if( _rcvrTimeTable.size() == 0 ) {
-            /* These checks are just for debugging but they
-               violate the synchronization lock hierarchy.
-            String portName = newTriple.getReceiver().getContainer().getName();
-            // System.out.println(portName + " inserted at position " + cnt);
-            */
-            _rcvrTimeTable.insertAt( 0, newTriple );
-            // printRcvrTable();
+        if( _rcvrTimeList.size() == 0 ) {
+            _rcvrTimeList.insertAt( 0, newTriple );
             return;
         }
 
 	if( newTriple.getTime() == -1.0 ) {
-	    _rcvrTimeTable.insertLast(newTriple);
+	    _rcvrTimeList.insertLast(newTriple);
 	    return;
 	}
         
-        // System.out.println("Preparing to add triple to table of size "
-        //        + _rcvrTimeTable.size() );
-	while( cnt < _rcvrTimeTable.size() ) {
-	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
-            
-            /* These checks are just for debugging but they
-               violate the synchronization lock hierarchy.
-            String portName1 = triple.getReceiver().getContainer().getName();
-            // System.out.println(portName1 + " being checked.");
-            String portName2 = newTriple.getReceiver().getContainer().getName();
-            // System.out.println(portName2 + " to be added.");
-            
-            //System.out.println(portName1+" has time of "+triple.getTime());
-            //System.out.println(portName2+" has time of "+newTriple.getTime());
-            */
+	int cnt = 0;
+        boolean notAddedYet = true;
+	while( cnt < _rcvrTimeList.size() ) {
+	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
             
 	    if( triple.getTime() == -1.0 ) {
-	        //System.out.println("Triple has time = -1.0 inserted before");
-	        _rcvrTimeTable.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeTable.size();
+	        _rcvrTimeList.insertAt( cnt, newTriple );
+		cnt = _rcvrTimeList.size();
                 notAddedYet = false;
 	    } else if( newTriple.getTime() < triple.getTime() ) {
-                /* These checks are just for debugging but they
-                   violate the synchronization lock hierarchy.
-                String portName = 
-                        newTriple.getReceiver().getContainer().getName();
-                // System.out.println(portName + " inserted at position " + cnt);
-                */
-	        _rcvrTimeTable.insertAt( cnt, newTriple );
-		cnt = _rcvrTimeTable.size();
-                // return;
+	        _rcvrTimeList.insertAt( cnt, newTriple );
+		cnt = _rcvrTimeList.size();
                 notAddedYet = false;
 	    }
 	    cnt++;
 	}
         
         if( notAddedYet ) {
-            _rcvrTimeTable.insertLast( newTriple );
+            _rcvrTimeList.insertLast( newTriple );
         }
-        
-        // System.out.println("Additions are complete. Now check elements");
-        // printRcvrTable();
     }
     
-    /** Remove the specified RcvrTimeTriple based on the _Receiver_. 
+    /** Remove the specified RcvrTimeTriple from the list of triples.
      */
-    private void _removeRcvrTable(RcvrTimeTriple triple) {
-        // System.out.println("Entered _removeRcvrTriple");
-        
-        // printRcvrTable();
-        
+    private void _removeRcvrList(RcvrTimeTriple triple) {
+
         Receiver rcvrToBeRemoved = triple.getReceiver();
         
-	for( int cnt = 0; cnt < _rcvrTimeTable.size(); cnt++ ) {
-	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
+	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
+	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    Receiver nextRcvr = nextTriple.getReceiver(); 
             
-            /* These checks are just for debugging but they
-               violate the synchronization lock hierarchy.
-            String portName1 = nextRcvr.getContainer().getName();
-            // System.out.println(portName1 + " being checked.");
-            String portName2 = rcvrToBeRemoved.getContainer().getName();
-            // System.out.println(portName2 + " to be removed.");
-            */
-            
 	    if( rcvrToBeRemoved == nextRcvr ) {
-                /* These checks are just for debugging but they
-                   violate the synchronization lock hierarchy.
-                String portName = nextRcvr.getContainer().getName();
-                // System.out.println(portName+" removed from position "+cnt);
-                */
-	        _rcvrTimeTable.removeAt( cnt );
-		cnt = _rcvrTimeTable.size();
-                // return;
+	        _rcvrTimeList.removeAt( cnt );
+		cnt = _rcvrTimeList.size();
 	    }
 	}
-        
-        // System.out.println("Removal is complete. Now check remaining elements.");
-        
-        // printRcvrTable();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    // The _rcvrTimeTable stores RcvrTimeTriples and is used to
+    // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
-    private LinkedList _rcvrTimeTable;
+    private LinkedList _rcvrTimeList;
     
     // The currentTime of this actor is equivalent to the minimum
     // positive rcvrTime of each input receiver. This value is 
