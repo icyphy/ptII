@@ -112,8 +112,6 @@ OPTIONAL_FILES = \
 	adm \
 	histogram \
 	manifest.tmp \
-	ptplot \
-	pxgraph \
 	$(PTCLASSALLJAR) \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
@@ -141,12 +139,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources ptplot jclass 
-	-chmod a+x ptplot
-	rm -f pxgraph
-	ln -s ptplot pxgraph
-	rm -f histogram
-	ln -s ptplot histogram
+all: sources jclass 
+
 install: all jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
 	(cd ../../bin; $(MAKE) install)
