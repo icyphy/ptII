@@ -42,7 +42,7 @@ public class PlotPoint {
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
 
-    public double x,y;
+    public double x, y;
 
     /** Error bar Y low value. */
     public double yLowEB;
