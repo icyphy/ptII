@@ -41,6 +41,13 @@ proc jdkProperties {} {
     }
 }
 
+# Get Runtime information
+proc jdkRuntime {} {
+    set runtime [java::call Runtime getRuntime]
+    puts "totalMemory: [$runtime totalMemory]"
+    puts "freeMemory:  [$runtime freeMemory]"
+}
+
 # Print JDK version info
 proc jdkVersion {} {
     global tcl_version tcl_patchLevel env
@@ -55,14 +62,15 @@ proc jdkVersion {} {
     puts -nonewline "jdk version: [java::call System getProperty \
 	    "java.version"]"
     if [info exists ::java::patchLevel] {
-	puts " Tcl Blend patch level: $::java::patchLevel"
+	puts "   Tcl Blend patch level: $::java::patchLevel"
     } else {
 	puts ""
     }
-    puts "tcl version: $tcl_version \
+    puts "tcl version: $tcl_version    \
 	    tcl patch level: $tcl_patchLevel"
-    puts "java package: [package versions java] \
+    puts "java package: [package versions java]   \
 	    info loaded: [info loaded]"   
+    jdkRuntime
 }
 
 # Capture output to System.out
