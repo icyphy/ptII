@@ -83,6 +83,30 @@ public interface Executable {
      */
     public void initialize() throws IllegalActionException;
 
+    /** Invoke a specified number of iterations of the actor. An
+     *  iteration has the effect of invoking prefire(), fire(), and 
+     *  postfire(), in that order. In an iteration, if prefire() 
+     *  returns true, then fire() will be called once, followed by 
+     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  and postfire() are not invoked, and an exception will
+     *  be thrown. This method will return the value returned by the 
+     *  last invocation postfire(). 
+     *  <p>
+     *  An implementation of this method is not required to
+     *  actually invoke prefire(), fire(), and postfire(). An
+     *  implementation of this method must, however,  contain code
+     *  that performs the equivalent operations (viewing this actor
+     *  as a black box).
+     *  
+     *  @param count The number of iterations to perform.
+     *  @return The value returned be the last invocation of
+     *   postfire().
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire (or the equivalent code) returns 
+     *   false, or there is a problem iterating.
+     */
+    public boolean iterate(int count) throws IllegalActionException;
+
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
      *  It returns true if the execution can proceed into the next iteration.
