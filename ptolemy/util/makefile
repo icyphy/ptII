@@ -45,6 +45,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	util
+# NOTE: util.jar gets included by jar files in plot
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
