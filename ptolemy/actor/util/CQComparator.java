@@ -45,7 +45,7 @@ not sufficient.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
-@see CalendarQueue
+@see ptolemy.actor.util.CalendarQueue
 @see collections.Comparator
 */
 

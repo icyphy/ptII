@@ -170,7 +170,7 @@ public class CalendarQueue implements Debuggable {
     /** Empty the queue, discarding all current information.
      *  On the next put(), the queue will be reinitialized, including
      *  setting the bin width and zero reference of the comparator.
-     *  @see CQComparator.setZeroReference
+     *  @see CQComparator#setZeroReference
      */
     public void clear() {
         _initialized = false;
