@@ -49,11 +49,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ArrayFIFOQueue.java \
-	DataflowActor.java \
 	Debug.java \
 	DebugListener.java \
 	SDFAtomicActor.java \
-	SDFCompositeActor.java \
 	SDFDirector.java \
 	SDFIOPort.java \
 	SDFReceiver.java \

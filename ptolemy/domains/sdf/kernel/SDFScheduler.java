@@ -124,7 +124,7 @@ public class SDFScheduler extends Scheduler{
      *  equivalent to indexing into the Map returned by getFiringVector and
      *  casting the result to an integer.
      */
-    public int getFiringCount(ComponentEntity entity) {
+    public int getFiringCount(Entity entity) {
             Debug.println(_firingvector.toString());
             return ((Integer) _firingvector.at(entity)).intValue();
     }
@@ -133,7 +133,7 @@ public class SDFScheduler extends Scheduler{
      *  equivalent to changing the entry in the FiringVector associated with
      *  with the entity to have a value count.
      */
-    public void setFiringCount(ComponentEntity entity, int count) {
+    public void setFiringCount(Entity entity, int count) {
         _firingvector = (HashedMap)
             _firingvector.puttingAt(entity, new Integer(count));
     }
@@ -411,11 +411,8 @@ public class SDFScheduler extends Scheduler{
 
                     Debug.println("Propagating output to " +
                             connectedActor.getName());
-                    if(connectedActor instanceof DataflowActor)
-                        Debug.println("Succeed!");
-                            else Debug.println("fail");
 
-                    Debug.assert(connectedActor instanceof DataflowActor);
+              //   Debug.assert(connectedActor instanceof DataflowActor);
                     int connectedRate =
                         _getTokenConsumptionRate(connectedPort);
 
@@ -506,6 +503,8 @@ public class SDFScheduler extends Scheduler{
         Debug.print("Firing Vector:");
         Debug.println(Firings.toString());
 
+        _setContainerRates();
+
         setValid(true);
 
         return result.elements();
@@ -577,13 +576,12 @@ public class SDFScheduler extends Scheduler{
                 }
             }
 
-
             int inputcount = _countUnfulfilledInputs(a, UnscheduledActors,
                 waitingTokens);
             if(inputcount == 0)
                 ReadyToScheduleActors.insertFirst((ComponentEntity) a);
             // map a->InputCount
-            unfulfilledInputs.putAt(a,new Integer(inputcount));
+            unfulfilledInputs.putAt(a, new Integer(inputcount));
 
             Debug.print("Actor ");
             Debug.print(((ComponentEntity) a).getName());
@@ -753,7 +751,209 @@ public class SDFScheduler extends Scheduler{
                     ((ComponentEntity) eschedule.nextElement()).toString());
         return newSchedule;
     }
-    
+
+    protected void _setContainerRates() 
+        throws NotSchedulableException {
+        Director director = (Director) getContainer();
+        if(director == null) 
+            throw new NotSchedulableException("Scheduler must " +
+                "have a director in order to schedule.");
+        
+        CompositeActor container = (CompositeActor) director.getContainer();
+        if(container == null) throw new NotSchedulableException(
+                "The model must be contained within a CompositeActor in " +
+                "order to be scheduled.");
+        
+        Enumeration ports = container.getPorts();
+        while(ports.hasMoreElements()) {
+            IOPort port = (IOPort) ports.nextElement();
+            // Extrapolate the Rates
+            Enumeration connectedports = port.insidePorts();
+            int consumptionrate = 0;
+            int productionrate = 0;
+            int initproduction = 0;
+            if(connectedports.hasMoreElements() == true) {
+                IOPort cport = (IOPort) connectedports.nextElement();
+                Entity cactor = (Entity) cport.getContainer();
+                consumptionrate = getFiringCount(cactor) * 
+                    _getTokenConsumptionRate(cport);
+                productionrate = getFiringCount(cactor) * 
+                    _getTokenProductionRate(cport);
+                initproduction = getFiringCount(cactor) * 
+                    _getTokenInitProduction(cport);
+            }
+            // All the ports connected to this port must have the same rate
+            while(connectedports.hasMoreElements()) {
+                IOPort cport = (IOPort) connectedports.nextElement();
+                Entity cactor = (Entity) cport.getContainer();
+                int crate = getFiringCount(cactor) * 
+                    _getTokenConsumptionRate(cport);
+                if(crate != consumptionrate) throw new NotSchedulableException(
+                        port, cport, "Port " + cport.getName() + 
+                        " has an aggregate consumption rate of " + crate + 
+                        " which does not match the computed aggregate rate " +
+                        "of " + port.getName() + " of " + consumptionrate + 
+                        "!");
+                int prate = getFiringCount(cactor) * 
+                    _getTokenProductionRate(cport);
+                if(prate != productionrate) throw new NotSchedulableException(
+                        port, cport, "Port " + cport.getName() + 
+                        " has an aggregate production rate of " + prate + 
+                        " which does not match the computed aggregate rate " +
+                        "of " + port.getName() + " of " + productionrate + 
+                        "!");
+                int initp = getFiringCount(cactor) * 
+                    _getTokenInitProduction(cport);
+                if(initp != productionrate) throw new NotSchedulableException(
+                        port, cport, "Port " + cport.getName() + 
+                        " has an aggregate init production of " + initp + 
+                        " which does not match the computed aggregate " +
+                        "of " + port.getName() + " of " + initproduction + 
+                        "!");
+                
+            }
+            if((consumptionrate == 0) && port.isInput()) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " declares that it consumes tokens," +
+                        " but has a consumption rate of 0");
+            }
+            if((consumptionrate != 0) && !port.isInput()) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a nonzero consumption rate, " +
+                        "but does not declare that it is an input port.");
+            }
+            if(_getTokenConsumptionRate(port) != consumptionrate) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a declared consumption rate " +
+                        "of " + _getTokenConsumptionRate(port) + " that " +
+                        "does not match the rate extrapolated from the " +
+                        "contained model of " + consumptionrate + ".");
+            }
+            if((productionrate == 0) && port.isOutput()) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " declares that it produces tokens," +
+                        " but has a production rate of 0");
+            }
+            if((productionrate != 0) && !port.isOutput()) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a nonzero production rate, " +
+                        "but does not declare that it is an output port.");
+            }
+            if(_getTokenProductionRate(port) != productionrate) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a declared production rate " +
+                        "of " + _getTokenProductionRate(port) + " that " +
+                        "does not match the rate extrapolated from the " +
+                        "contained model of " + productionrate + ".");
+            }
+            if((initproduction != 0) && !port.isOutput()) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a nonzero init production, " +
+                        "but does not declare that it is an output port.");
+            }
+            if(_getTokenInitProduction(port) != initproduction) {
+                throw new NotSchedulableException(port, "Port " +
+                        port.getName() + " has a declared init production " +
+                        "of " + _getTokenInitProduction(port) + " that " +
+                        "does not match the extrapolated value from the " +
+                        "contained model of " + initproduction + ".");
+            }
+            _setTokenConsumptionRate(container, port, consumptionrate);
+            _setTokenProductionRate(container, port, productionrate);
+            _setTokenInitProduction(container, port, initproduction);
+        }            
+    }
+
+    public void _setTokenConsumptionRate(Entity e, IOPort port, int rate) 
+        throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Input Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("Token Consumption Rate");
+        if(param != null) {
+            param.setToken(new IntToken(rate));
+        } else {
+            try {
+                param = new Parameter(port,"Token Consumption Rate",
+                        new IntToken(rate));
+            }
+            catch (Exception exception) {
+                // This should never happen.  
+                // e might be NameDuplicationException, but we already
+                // know it doesn't exist.
+                // e might be IllegalActionException, but we've already
+                // checked the error conditions
+                throw new InternalErrorException(exception.getMessage());
+            }
+        }
+    }
+
+    public void _setTokenProductionRate(Entity e, IOPort port, int rate) 
+        throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Output Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("Token Production Rate");
+        if(param != null) {
+            param.setToken(new IntToken(rate));
+        } else {
+            try {
+                param = new Parameter(port,"Token Production Rate",
+                        new IntToken(rate));
+            } 
+            catch (Exception exception) {
+               // This should never happen.  
+                // e might be NameDuplicationException, but we already
+                // know it doesn't exist.
+                // e might be IllegalActionException, but we've already
+                // checked the error conditions
+                throw new InternalErrorException(exception.getMessage());
+            }
+         }
+    }
+
+    public void _setTokenInitProduction(Entity e, IOPort port, int rate) 
+        throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Input Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("Token Init Production");
+        if(param != null) {
+            param.setToken(new IntToken(rate));
+        } else {
+            try {
+                param = new Parameter(port,"Token Init Production",
+                        new IntToken(rate));
+            } 
+            catch (Exception exception) {
+                // This should never happen.  
+                // e might be NameDuplicationException, but we already
+                // know it doesn't exist.
+                // e might be IllegalActionException, but we've already
+                // checked the error conditions
+               throw new InternalErrorException(exception.getMessage());
+            }
+        }
+    }   
+
     /** Simulate the consumption of tokens by the actor during an execution.
      *  The entries in HashedMap will be modified to reflect the number of
      *  tokens still waiting after the actor has consumed tokens for a firing.

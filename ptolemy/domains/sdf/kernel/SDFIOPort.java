@@ -102,8 +102,12 @@ public final class SDFIOPort extends TypedIOPort {
 
     /** Get an array of tokens from the specified channel.
      *  This call is similar to IOPort.get(int), except that it returns
-     *  an array of tokens.  This is faster because the overhead associated
-     *  with get() is amortized over all the tokens in the array.
+     *  a sequence of tokens in an array.   The oldest token in the
+     *  sequence will be returned in the first position in the array, and
+     *  the newest token in the sequence will be in the last position of the
+     *  array.   This method is provided for efficiency only, and is 
+     *  semantically equivalent to calling IOPort.get() consecutively for 
+     *  each element in the array.
      *
      *  @param channelindex The channel index.
      *  @param tokens An array to fill with Tokens from the port.
@@ -154,12 +158,21 @@ public final class SDFIOPort extends TypedIOPort {
             }
         }
         else {
-            ((SDFReceiver) localRec[channelindex][0]).get(tokens);
+            ((SDFReceiver) localRec[channelindex][0]).getArray(tokens);
         }    
     }
 
     /** Send an array of tokens to all receivers connected to the
-     *  specified channel.  Operation is similar to IOPort.send()
+     *  specified channel.  Operation is similar to IOPort.send(), 
+     *  except that it sends 
+     *  a sequence of tokens in an array.   The token in the
+     *  first position in the array is interpreted as the oldest token
+     *  in the sequence, and
+     *  the token in the last position of the
+     *  array in interpreted as the newest token in the sequence.   
+     *  This method is provided for efficiency only, and is 
+     *  semantically equivalent to calling IOPort.put() consecutively for 
+     *  each element in the array.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param tokens The tokens to send
@@ -192,7 +205,7 @@ public final class SDFIOPort extends TypedIOPort {
         }
         for (int j = 0; j < farRec[channelindex].length; j++) {
             if(farRec[channelindex][j] instanceof SDFReceiver)
-                ((SDFReceiver) farRec[channelindex][j]).put(tokens);
+                ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
             else
                 for (int i = 0; i < tokens.length; i++) {
                     farRec[channelindex][j].put(tokens[i]);

@@ -114,7 +114,7 @@ public final class SDFReceiver implements Receiver {
         } catch (NoSuchElementException ex) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty QueueReveiver.");
+                    "Attempt to get token from an empty QueueReceiver.");
         }
         return t;
     }
@@ -153,11 +153,10 @@ public final class SDFReceiver implements Receiver {
      *  If there are not enough tokens in the receiver, throw an exception.
      *  @exception NoTokenException If there is no token in the receiver.
      */
-    public void get(Token t[]) {
+    public void getArray(Token t[]) {
        try {
-           Object o[] = _queue.take(t.length);
-           System.arraycopy(o, 0 , t, 0, t.length);
-            return;
+           _queue.takeArray(t);
+           return;
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
                     "Count " + t.length + " out of range with " + _queue.size()
@@ -242,8 +241,8 @@ public final class SDFReceiver implements Receiver {
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
      */
-    public void put(Token token[]) {
-        if (!_queue.put(token)) {
+    public void putArray(Token token[]) {
+        if (!_queue.putArray(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
         }

@@ -54,7 +54,7 @@ constant for all firings and it is known before execution begins.
 @see ptolemy.actors.TypedCompositeActor
 @see ptolemy.actors.IOPort
 */
-public class SDFAtomicActor extends TypedAtomicActor implements DataflowActor{
+public class SDFAtomicActor extends TypedAtomicActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  The object is added to the workspace directory.
@@ -195,7 +195,7 @@ public class SDFAtomicActor extends TypedAtomicActor implements DataflowActor{
         throws IllegalActionException {
 
         if(r <= 0) throw new IllegalActionException(
-                "setTokenConsumptionRate: Rate must be > 0");
+                "Rate must be > 0");
         if(!p.isInput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
          Port pp = getPort(p.getName());
