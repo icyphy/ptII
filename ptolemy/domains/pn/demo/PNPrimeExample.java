@@ -45,19 +45,19 @@ public class PNPrimeExample {
             IllegalStateException, IllegalActionException, 
             NameDuplicationException {
         PNUniverse myUniverse = new PNUniverse();
-        //myUniverse.setMode(Integer.parseInt(args[0]));
-        myUniverse.setNoCycles(Integer.parseInt(args[0]));
+        myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
-        ramp.initialize(2);
-        ramp.setCycles(Integer.parseInt(args[0]));
+        ramp.setInitState(2);
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
-        sieve.initialize(2);
-        IORelation queue = new IORelation(myUniverse, "2_queue");
-        PNPort port = (PNPort)sieve.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(queue);
-        port = (PNPort)ramp.getPort("output");
-        port.link(queue);
+        sieve.setInitState(2);
+
+        //        IORelation queue = new IORelation(myUniverse, "2_queue");
+        PNInPort portin = (PNInPort)sieve.getPort("input");
+        portin.getQueue().setCapacity(1);
+        //port.link(queue);
+        PNOutPort portout = (PNOutPort)ramp.getPort("output");
+        //port.link(queue);
+        myUniverse.connect(portin, portout, "2_queue");
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
         //FIXME: Should I use connect() rather than all the above stuff??
