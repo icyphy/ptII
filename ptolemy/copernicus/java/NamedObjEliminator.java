@@ -173,7 +173,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 }
 
                 // Remove all the interfaces that it implements.
-                theClass.getInterfaces().clear();
+                //                theClass.getInterfaces().clear();
             }
         }
 
