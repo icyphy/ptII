@@ -31,7 +31,7 @@
 
 ME =		ptolemy/graph
 
-DIRS = 		test demo
+DIRS = 		analysis test demo
 
 # Root of the Java directory
 ROOT =		../..
@@ -54,7 +54,6 @@ JSRCS = \
 	Edge.java \
 	Graph.java \
 	Graphs.java \
-	Analysis.java \
 	LabeledList.java \
 	Inequality.java \
 	InequalitySolver.java \

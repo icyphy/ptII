@@ -31,6 +31,8 @@
 
 package ptolemy.graph;
 
+import ptolemy.graph.analysis.Analysis;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
