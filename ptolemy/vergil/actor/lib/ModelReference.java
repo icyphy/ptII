@@ -37,6 +37,7 @@ import javax.swing.JFrame;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
@@ -75,6 +76,19 @@ invocation of the fire() method will wait for completion of the first
 execution...  FIXME
 If an exception occurs during a run in another thread, then it will
 be reported at the next invocation of fire() or postfire().
+
+FIXME: Note that using full screen is dangerous.
+
+FIXME: Note that can use to execute infinite running models by executing
+in a new thread and specifying a linger time.
+
+FIXME: Pausing the referring model doesn't pause the referenced model.
+
+FIXME: Closing the master model doesn't close open referenced models.
+
+FIXME: Close option fails.
+
+FIXME: Need options for error handling.
 <P>
 
 @author Edward A. Lee
@@ -218,19 +232,36 @@ public class ModelReference
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
             if (url != null) {
-                MoMLParser parser = new MoMLParser(workspace());
+                // By specifying no workspace argument to the parser, we
+                // are asking it to create a new workspace for the referenced
+                // model.  This is necessary because the execution of that
+                // model will proceed through its own sequences, and it
+                // will need to get write permission on the workspace.
+                // Particularly if it is executing in a new thread, then
+                // during the fire() method of this actor it would be
+                // inappropriate to grant write access on the workspace
+                // of this actor.
+                MoMLParser parser = new MoMLParser();
                 try {
                     _model = parser.parse(null, url);
-                    _modelChanged = true;
                 } catch (Exception ex) {
                     throw new IllegalActionException(
                         this,
                         ex,
                         "Failed to read model.");
                 }
+                // Create a manager, if appropriate.
+                if (_model instanceof CompositeActor) {
+                    _manager = new Manager(_model.workspace(), "Manager");
+                    ((CompositeActor)_model).setManager(_manager);
+                    // FIXME
+                    System.out.println("Created new manager: " + _manager);
+                }
             }
         } else if (attribute == executionOnFiring) {
             String executionOnFiringValue = executionOnFiring.getExpression();
+            // FIXME:
+            System.out.println("****: " + getFullName() + " " + executionOnFiringValue);
             if (executionOnFiringValue.equals("run in calling thread")) {
                 _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
             } else if (executionOnFiringValue.equals("run in a new thread")) {
@@ -267,7 +298,7 @@ public class ModelReference
             super.attributeChanged(attribute);
         }
     }
-    
+
     // FIXME: clone method needed.  Make variables transient.
 
     /** React to the fact that execution has failed by unregistering
@@ -280,8 +311,8 @@ public class ModelReference
      *  @param throwable The throwable to report.
      */
     public synchronized void executionError(
-            Manager manager,
-            Throwable throwable) {
+        Manager manager,
+        Throwable throwable) {
         _throwable = throwable;
         _executing = false;
         manager.removeExecutionListener(this);
@@ -327,66 +358,70 @@ public class ModelReference
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "Run in a new thread threw an exception.");
+                this,
+                throwable,
+                "Run in a new thread threw an exception.");
         }
 
         if (_model instanceof CompositeActor) {
             CompositeActor executable = (CompositeActor) _model;
 
-/* FIXME remove _modelChanged?
-            if (_modelChanged) {
-            */
-                System.out.println("Model has changed.");
-                _modelChanged = false;
+            // Will need the effigy for the model this actor is in.
+            NamedObj toplevel = toplevel();
+            Effigy myEffigy = Configuration.findEffigy(toplevel);
+            // FIXME
+            System.out.println(
+                "Found effigy for controlling model: " + myEffigy);
 
-                // Will need the effigy for the model this actor is in.
-                NamedObj toplevel = toplevel();
-                Effigy myEffigy = Configuration.findEffigy(toplevel);
-                System.out.println("Found effigy for controlling model: " + myEffigy);
-
-                // If there is no such effigy, then skip trying to open a tableau.
-                // The model may have no graphical elements.
-                if (myEffigy != null) {
-                    try {
-                        // Conditionally show the model in Vergil. The openModel()
-                        // method also creates the right effigy.
-                        if (_openOnFiringValue == _OPEN_IN_VERGIL
-                                || _openOnFiringValue
-                                == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                            Configuration configuration =
-                                    (Configuration) myEffigy.toplevel();
-                            _tableau = configuration.openModel(_model, myEffigy);
-                            System.out.println("Tableau for referenced model: " + _tableau);
-                            _tableau.show();
-                        } else {
-                            // Need an effigy for the model, or else graphical elements
-                            // of the model will not work properly.  That effigy needs
-                            // to be contained by the effigy responsible for this actor.
-                            PtolemyEffigy newEffigy =
-                                new PtolemyEffigy(
-                                    myEffigy,
-                                    myEffigy.uniqueName(_model.getName()));
-                            newEffigy.setModel(_model);
-                            System.out.println("Created new effigy for referenced model: " + newEffigy);
-                        }
-                    } catch (NameDuplicationException ex) {
-                        // This should not be thrown.
-                        throw new InternalErrorException(ex);
+            // If there is no such effigy, then skip trying to open a tableau.
+            // The model may have no graphical elements.
+            if (myEffigy != null) {
+                try {
+                    // Conditionally show the model in Vergil. The openModel()
+                    // method also creates the right effigy.
+                    if (_openOnFiringValue == _OPEN_IN_VERGIL
+                        || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                        Configuration configuration =
+                            (Configuration) myEffigy.toplevel();
+                        _tableau = configuration.openModel(_model, myEffigy);
+                        
+                        // Do not allow editing on this tableau.  In particular,
+                        // if editing were allowed, then an attempt to save the
+                        // changes will result in a spectacular failure.  The
+                        // model that will be saved will actually be the referring
+                        // model rather than the referred to model.  This will
+                        // trash the referred to model, and will result in an
+                        // infinite loop when attempting to open either model.
+                        // FIXME: This doesn't work!!!! Can still save model!!!!
+                        _tableau.setEditable(false);
+                        
+                        // FIXME
+                        System.out.println(
+                            "Tableau for referenced model: " + _tableau);
+                        _tableau.show();
+                    } else {
+                        // Need an effigy for the model, or else graphical elements
+                        // of the model will not work properly.  That effigy needs
+                        // to be contained by the effigy responsible for this actor.
+                        PtolemyEffigy newEffigy =
+                            new PtolemyEffigy(
+                                myEffigy,
+                                myEffigy.uniqueName(_model.getName()));
+                        newEffigy.setModel(_model);
+                        // FIXME
+                        System.out.println(
+                            "Created new effigy for referenced model: "
+                                + newEffigy);
                     }
+                } catch (NameDuplicationException ex) {
+                    // This should not be thrown.
+                    throw new InternalErrorException(ex);
                 }
-                _manager = executable.getManager();
-                if (_manager == null) {
-                    _manager = new Manager(_model.workspace(), "Manager");
-                    executable.setManager(_manager);
-                    System.out.println("Created new manager: " + _manager);
-                } else {
-                    System.out.println("Found manager: " + _manager);
-                }
-                /* FIXME
             }
-            */
+            _manager = executable.getManager();
+            if (_manager == null) {
+                throw new InternalErrorException("No manager!");
+            }
             if (_debugging) {
                 _manager.addDebugListener(this);
                 Director director = executable.getDirector();
@@ -398,7 +433,7 @@ public class ModelReference
                 Director director = executable.getDirector();
                 if (director != null) {
                     director.removeDebugListener(this);
-                }                
+                }
             }
 
             try {
@@ -406,24 +441,25 @@ public class ModelReference
                 // If we did not open in Vergil, then there is no tableau.
                 if (_tableau != null) {
                     frame = _tableau.getFrame();
-                } 
+                }
                 // If there is a previous execution, then wait for it to finish.
                 // Avoid the synchronize block if possible.
                 if (_executing) {
                     synchronized (this) {
                         while (_executing) {
                             try {
-                                wait();
+                                // Use workspace version of wait to release
+                                // read permission on the workspace.
+                                workspace().wait(this);
                             } catch (InterruptedException ex) {
                                 // Cancel subsequent execution.
-                                if (frame instanceof ExtendedGraphFrame) {
-                                    ((ExtendedGraphFrame) frame).cancelFullScreen();
-                                }
+                                getManager().finish();
                                 return;
                             }
                         }
                     }
                 }
+                // FIXME
                 System.out.println("Frame: " + frame);
                 if (_openOnFiringValue == _OPEN_IN_VERGIL && frame != null) {
                     frame.toFront();
@@ -435,14 +471,16 @@ public class ModelReference
                         frame.toFront();
                     }
                 }
-                
-                if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {      
-                    System.out.println("Executing in calling thread.");    
+
+                if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
+                    // FIXME
+                    System.out.println("Executing in calling thread.");
                     _manager.execute();
                 } else if (_executionOnFiringValue == _RUN_IN_A_NEW_THREAD) {
                     // Listen for exceptions. The listener is
                     // removed in the listener methods, executionError()
                     // and executionFinished().
+                    // FIXME
                     System.out.println("Executing in a new thread.");
                     _manager.addExecutionListener(this);
                     _manager.startRun();
@@ -476,7 +514,7 @@ public class ModelReference
             _debug("Referenced model manager state: " + manager.getState());
         }
     }
-    
+
     /** Override the base class to perform requested postfire actions.
      *  @return Whatever the superclass returns (probably true).
      */
@@ -485,29 +523,57 @@ public class ModelReference
         if (_tableau != null) {
             _tableau.getFrame();
         }
+        // FIXME
         System.out.println("In postfire, tableau is: " + _tableau);
         if ((_postfireActionValue | _STOP_EXECUTING) != 0) {
+            // FIXME:
+            System.out.println("Calling finish.");
             _manager.finish();
+            // Wait for the finish.
+            _manager.waitForCompletion();
         }
         _manager = null;
         if ((_postfireActionValue | _CLOSE_VERGIL_GRAPH) != 0
-                && _tableau != null) {
+            && _tableau != null) {
             if (frame instanceof ExtendedGraphFrame) {
                 ((ExtendedGraphFrame) frame).cancelFullScreen();
             }
             if (frame instanceof TableauFrame) {
                 // FIXME: Do this only if explicitly requested.
-                ((TableauFrame)frame).close();
-                // The above results in discarding the effigy since
-                // there are no more open tableaux. Force creation
-                // of a new effigy for the model on the next run.
-                _modelChanged = true;
+                 ((TableauFrame) frame).close();
             } else if (frame != null) {
                 frame.hide();
             }
         }
         return super.postfire();
-    }    
+    }
+
+    /** Override the base class to call stop() on the referenced model.
+     */
+    public void stop() {
+        if (_model instanceof Executable) {
+            ((Executable)_model).stop();
+        }
+        super.stop();
+    }
+
+    /* Override the base class to call stopFire() on the referenced model.
+     */
+    public void stopFire() {
+        if (_model instanceof Executable) {
+            ((Executable)_model).stopFire();
+        }
+        super.stopFire();
+    }
+
+    /** Override the base class to call terminate() on the referenced model.
+     */
+    public void terminate() {
+        if (_model instanceof Executable) {
+            ((Executable)_model).terminate();
+        }
+        super.terminate();
+    }
 
     /** Report an exception if it occurred in a background run.
      *  @exception IllegalActionException If there is no director, or if
@@ -519,12 +585,12 @@ public class ModelReference
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "Background run threw an exception");
+                this,
+                throwable,
+                "Background run threw an exception");
         }
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
@@ -536,20 +602,17 @@ public class ModelReference
 
     // Possible values for executionOnFiring.
     private static int _DO_NOTHING = 0;
-    private static int _RUN_IN_CALLING_THREAD;
-    private static int _RUN_IN_A_NEW_THREAD;
+    private static int _RUN_IN_CALLING_THREAD = 1;
+    private static int _RUN_IN_A_NEW_THREAD = 2;
 
     /** Indicator of what the last call to iterate() returned. */
     private int _lastIterateResult = NOT_READY;
-    
+
     /** The manager currently managing execution. */
     private Manager _manager = null;
 
     /** The model. */
     private NamedObj _model;
-
-    /** An indicator of whether the model has changes since the last fire(). */
-    private boolean _modelChanged = false;
 
     /** The value of the executionOnFiring parameter. */
     private int _openOnFiringValue = _DO_NOT_OPEN;
@@ -571,7 +634,7 @@ public class ModelReference
 
     // Tableau that has been created (if any).
     private Tableau _tableau;
-    
+
     // Error from a previous run.
     private Throwable _throwable = null;
 }

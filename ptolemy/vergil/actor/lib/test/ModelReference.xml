@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelReference" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="Director" class="ptolemy.actor.Director">
+        <doc>Simple director that executes actors in the order in which they were created.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 65, 579, 384}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[364, 275]">
+    </property>
+    <entity name="model reference" class="ptolemy.vergil.actor.lib.ModelReference">
+        <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="ReferencedModel.xml">
+        </property>
+        <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute">
+            <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="doNotOpen" class="ptolemy.kernel.util.StringAttribute" value="do not open">
+                </property>
+                <property name="openInVergil" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil">
+                </property>
+                <property name="openInVergilFullScreen" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil (full screen)">
+                </property>
+                <property name="openRunControlPanel" class="ptolemy.kernel.util.StringAttribute" value="open run control panel">
+                </property>
+            </property>
+        </property>
+        <property name="executionOnFiring" class="ptolemy.kernel.util.StringAttribute">
+            <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="runInCallingThread" class="ptolemy.kernel.util.StringAttribute" value="run in calling thread">
+                </property>
+                <property name="runInNewThread" class="ptolemy.kernel.util.StringAttribute" value="run in a new thread">
+                </property>
+                <property name="doNothing" class="ptolemy.kernel.util.StringAttribute" value="do nothing">
+                </property>
+            </property>
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
+        </property>
+        <property name="postfireAction" class="ptolemy.kernel.util.StringAttribute">
+            <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="doNothing" class="ptolemy.kernel.util.StringAttribute" value="do nothing">
+                </property>
+                <property name="closeVergilGraph" class="ptolemy.kernel.util.StringAttribute" value="close Vergil graph">
+                </property>
+                <property name="stopExecuting" class="ptolemy.kernel.util.StringAttribute" value="stop executing">
+                </property>
+                <property name="stopExecutingAndCloseInVergil" class="ptolemy.kernel.util.StringAttribute" value="stop executing and close Vergil graph">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 135.0">
+        </property>
+    </entity>
+</entity>
