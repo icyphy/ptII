@@ -27,13 +27,21 @@
 
 package pt.kernel;
 
+import collections.UpdatableSeq;
+
 //////////////////////////////////////////////////////////////////////////
 //// Relation
 /** 
 A Relation is an arc in a hierarchical graph. Relations serve as a general 
-notion of connection and can be point-to-point connections or nets. 
+notion of connection Entities and should be thought of as nets that can be 
+specialized to point-to-point connections. 
 <A HREF="pt.kernel.Particles.html#_top_">Particles</A> reside in in Relations 
-during transit. 
+during transit. Unlike Entities, Relations can not contain ports but they 
+do have port references. Relations come in two types as follows: 
+<LI>
+<EM>Source Relations</EM> consist of a one-to-many topology while
+<EM>Destination Relations</EM> facilitate many-to-one topologies.
+</LI>
 @author John S. Davis, II
 @version $Id$
 @see pt.kernel.Particle
@@ -104,6 +112,19 @@ public class Relation extends NamedObj {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
+
+    /* The list of source ports connected via this Relation
+     */
+    private UpdatableSeq _sourcePorts;
+
+    /* The list of destination ports connected via this Relation
+     */
+    private UpdatableSeq _destinationPorts;
+
+    /* Private variables should not have doc comments, they should
+       have regular comments.
+     */
+    private boolean _isSourceOrDestination;
 
     /* Private variables should not have doc comments, they should
        have regular comments.
