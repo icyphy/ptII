@@ -3,7 +3,7 @@
 # Version: $Id$
 # Makefile Author: Christopher Hylands
 #
-# Copyright (c) 1997 The Regents of the University of California.
+# Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -38,18 +38,18 @@ VPATH =		$(ROOT)/java/doc
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+# Sub directories to run make in.
+DIRS =		 internals #usersGuides
+
 EXTRA_SRCS = \
 	index.html \
 	javalinks.html \
 	tyjava.html
 
-MISC_FILES =	#usersGuides #codeDoc #internals
+MISC_FILES =	$(DIRS)
 
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
-
-# Sub directories to run make in.
-DIRS =		 internals #usersGuides
 
 ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java \
 			tycho/Cool_Beans/util/*.java \
