@@ -40,6 +40,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictTest
 /**
@@ -64,9 +67,18 @@ If the input is a DoubleToken or ComplexToken, then the comparison
 passes if the value is close to what it should be, within the
 specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
 input data type is undeclared, so it can resolve to anything.
+<p>
+If the parameter <i>trainingMode</i> is <i>true</i>, then instead
+of performing the test, this actor collects the inputs into the
+<i>correctValues</i> parameter.  Thus, to use this actor, you can
+place it in a model, set <i>trainingMode</i> to <i>true</i> to
+collect the reference data, then set <i>trainingMode</i> to
+<i>false</i>.  Any subsequent run of the actor will throw an
+exception if the input data does not match the training data.
+The value of the reference token is set in the wrapup() method.
 
 @see Test
-@author Paul Whitaker, Christopher Hylands
+@author Paul Whitaker, Christopher Hylands, Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -102,6 +114,10 @@ public class NonStrictTest extends Transformer {
 
         tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
         tolerance.setTypeEquals(BaseType.DOUBLE);
+
+        trainingMode = new Parameter(this, "trainingMode");
+        trainingMode.setExpression("false");
+        trainingMode.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,6 +133,12 @@ public class NonStrictTest extends Transformer {
      *  value 10<sup>-9</sup>.
      */
     public Parameter tolerance;
+
+    /** If true, then do not check inputs, but rather collect them into
+     *  the <i>correctValues</i> array.  This parameter is a boolean,
+     *  and it defaults to false.
+     */
+    public Parameter trainingMode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -142,6 +164,7 @@ public class NonStrictTest extends Transformer {
         super.initialize();
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
+        _trainingTokens = null;
     }
 
     /** Read one token from each input channel and compare against
@@ -159,6 +182,17 @@ public class NonStrictTest extends Transformer {
                     "Width of input is " + input.getWidth()
                     + "but NonStrictTest only supports a width of 1.");
 	}
+        boolean training = ((BooleanToken)trainingMode.getToken())
+                .booleanValue();
+        if (training) {
+            if (_trainingTokens == null) {
+                _trainingTokens = new ArrayList();
+            }
+            if (input.hasToken(0)) {
+		_trainingTokens.add(input.get(0));
+	    }
+            return true;
+        }
 	if (_numberOfInputTokensSeen
                 >= ((ArrayToken)(correctValues.getToken())).length()) {
 	    // Consume and discard input values.  We are beyond the end
@@ -194,6 +228,23 @@ public class NonStrictTest extends Transformer {
         return true;
     }
 
+    /** If <i>trainingMode</i> is <i>true</i>, then take the collected
+     *  training tokens and store them as an array in <i>correctValues</i>.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        boolean training = ((BooleanToken)trainingMode.getToken())
+                .booleanValue();
+        if (training) {
+            Object[] newValues = _trainingTokens.toArray();
+            Token[] newTokens = new Token[newValues.length];
+            for(int i = 0; i < newValues.length; i++) {
+                newTokens[i] = (Token)newValues[i];
+            }
+            correctValues.setToken(new ArrayToken(newTokens));
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -209,4 +260,10 @@ public class NonStrictTest extends Transformer {
 
     /** Count of iterations. */
     protected int _iteration;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // List to store tokens for training mode.
+    private List _trainingTokens;
 }
