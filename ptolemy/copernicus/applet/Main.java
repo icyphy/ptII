@@ -44,8 +44,8 @@ import soot.Transform;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate a .html file
-that will run the model as an applet
+Read in a MoML model and generate a .html file that will run the model
+as an applet.
 
 @author Christopher Hylands
 @version $Id$
