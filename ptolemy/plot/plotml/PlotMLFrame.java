@@ -33,7 +33,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.Message;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFrame;
@@ -44,6 +43,7 @@ import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLFrame
@@ -107,14 +107,14 @@ public class PlotMLFrame extends PlotFrame {
     /** Display basic information about the application.
      */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.1p1, Build: $Id$"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
-        message.setTitle("About Ptolemy Plot");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether

@@ -39,6 +39,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.StringTokenizer;
 import java.awt.Point;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplication
@@ -123,7 +124,7 @@ public class PxgraphApplication extends PlotApplication {
     /** Display basic information about the application.
      */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "               pxgraph\n" +
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
@@ -132,10 +133,8 @@ public class PxgraphApplication extends PlotApplication {
                 "For help, type 'pxgraph -help', or see \n" +
                 "the class documentation in the plot.pxgraph package.\n" +
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
-        message.setTitle("About pxgraph");
-        message.pack();
-        message.show();
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+                "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse those command-line arguments that are relevant to the
