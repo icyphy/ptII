@@ -8,6 +8,61 @@
 <body>
 <h1>Ordered Dataflow</h1>
 <P>
-The Ordered Dataflow (OD) domain . . .
+The Ordered Dataflow (OD) domain incorporates
+a distributed notion of time into a dataflow style communication semantic.
+Much of the functionality of the OD domain is consistent with the 
+<A HREF="../../pn/doc/home.html"> Process Networks domain </A>. 
+In particular, this model of computation's mechanism for dealing with 
+blocking due to empty or full queues is functionally identical that of
+the PN domain.
+<P>
+The OD domain's use of time serves as the point of divergence in the 
+respective designs of OD and PN. Time progress is communicated between
+actors by passing Tokens that have time stamps associated with them.
+In a network of OD actors each actor has a local notion of time. To 
+facilitate this local notion of time, ODActors adhere to the following 
+constraints:
+<UL>
+    <LI> Successive tokens emitted from any ODActor output port must 
+	 have a time stamp that is greater <BR> than or equal to that 
+	 of previous tokens.
+    <LI> An ODActor can consume a token on an input port (P1) only if the 
+	 the other input ports of that <BR> actor have pending tokens with 
+	 time stamps greater than or equal to that of P1.
+    <LI> If an ODActor has two or more input ports with pending time stamps 
+	 that are identical, then a local <BR> input port prioritization rule 
+	 will be invoked.
+</UL>
+The above rules facilitate a local notion of time and are consistent with
+the "conservative" blocking mechanism of Chandy and Misra's distributed 
+discrete event system.
+</A>.
+<P>
+We are approaching the OD model of computation as the intersection between
+dataflow and discrete event semantics. This allows us to study OD 
+semantics from two different perspectives. In particular, we can benefit
+from denotational semantics that are based on metric spaces (the Banach
+oriented DE approach) or posets (the Tarskian dataflow approach). Matthews
+offers a partial metric topology which incorporates both of these 
+mathematical tools.
+<P>
+Currently a feedforward version of the OD domain has been implemented. In
+the coming weeks a feedback system will be implemented. We expect to 
+apply the OD domain towards modelling distributed systems and in the use
+of distributed debuggers.
+<P>
+
+<B>References:</B>
+<OL>
+<li><A Name="Matthews">Matthews</A>, S. G., "Partial Metric Topology", General Topology and
+Applications, <I>Proceedings of the 8th Summer Conference</I>, Queen's
+College (1992), Annals of the New York Academy of Science, Vol. 728, pp 183-197.
+
+<LI>Fujimoto, Richard M., "Parallel Discrete Event Simulation", 
+<I>Communications of the ACM</I>, Vol. 33, No. 10, October 1990, pp. 30-53.
+
+</OL>
+
+
 </body>
 </html>
