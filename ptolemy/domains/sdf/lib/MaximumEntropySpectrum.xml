@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="MaximumEntropySpectrum" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
@@ -367,7 +367,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="90.0, 400.0">
+        <vertex name="vertex1" value="90.0, 400.0">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -375,12 +375,10 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="645.0, 410.0">
+        <vertex name="vertex1" value="645.0, 410.0">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -394,6 +392,8 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="input" relation="relation"/>
     <link port="output" relation="relation20"/>
     <link port="Pulse.output" relation="relation2"/>
@@ -405,8 +405,8 @@ radians per second, centered at zero frequency, in decibels (dB).</text></svg></
     <link port="LevinsonDurbin.autocorrelation" relation="relation4"/>
     <link port="LevinsonDurbin.errorPower" relation="relation17"/>
     <link port="LevinsonDurbin.linearPredictor" relation="relation5"/>
-    <link port="ArrayAppend.input" relation="relation5"/>
     <link port="ArrayAppend.input" relation="relation18"/>
+    <link port="ArrayAppend.input" relation="relation5"/>
     <link port="ArrayAppend.output" relation="relation8"/>
     <link port="ArrayToSequence.input" relation="relation8"/>
     <link port="ArrayToSequence.output" relation="relation9"/>
