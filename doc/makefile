@@ -155,7 +155,12 @@ HYBRIDSYSTEMSPACKAGES = \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
-			ptolemy.domains.ct.lib
+			ptolemy.domains.ct.kernel \
+			ptolemy.domains.ct.kernel.solver \
+			ptolemy.domains.ct.kernel.util \
+			ptolemy.domains.ct.lib \
+			ptolemy.domains.fsm.kernel \
+
 
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
@@ -163,7 +168,9 @@ HYBRIDSYSTEMSPACKAGES = \
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
 			$(HYBRIDSYSTEMSPACKAGES) \
+			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
+			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq
 
@@ -210,17 +217,11 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
-			ptolemy.domains.ct.kernel \
-			ptolemy.domains.ct.kernel.solver \
-			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
-			ptolemy.domains.de.kernel \
-			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.giotto.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.petrinet.kernel \
-			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
 			ptolemy.data \
