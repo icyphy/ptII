@@ -97,14 +97,11 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
-			ptolemy.domains.dde.gui \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
-			ptolemy.domains.de.gui \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
-			ptolemy.domains.pn.gui \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
@@ -157,14 +154,11 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/ct/kernel/solver/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
 			../ptolemy/domains/ct/lib/*.java \
-			../ptolemy/domains/dde/gui/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
-			../ptolemy/domains/de/gui/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
-			../ptolemy/domains/pn/gui/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
