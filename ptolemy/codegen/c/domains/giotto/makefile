@@ -36,7 +36,7 @@ ME =		ptolemy/codegen/c/domains/giotto
 DIRS =		kernel
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
