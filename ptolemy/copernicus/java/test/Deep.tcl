@@ -75,9 +75,6 @@ proc autoDeepCG {autoDirectory} {
 ####
 #
 
-autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
-
-
 #  test Deep-1.1 {Compile and run the Orthocomm test} {
 #      set result [sootDeepCodeGeneration \
 #  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
@@ -86,9 +83,9 @@ autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
 
 # First, do an SDF test just to be sure things are working
 test Deep-1.2 {Compile and run the SDF IIR test} {
-    set result [sootDeepCodeGeneration \
+    set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    IIR.xml]]
+	    IIR.xml] "Deep"]
     list {}
 } {{}}
 
@@ -101,7 +98,7 @@ test Deep-1.3 {Compile and run the SDF ArrayAppend test} {
 
 # Now try to generate code for all the tests in the auto directories.
 
-
+autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
 autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
 
 #  #autoDeepCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
@@ -124,5 +121,6 @@ autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 # Print out stats
-#doneTests
+doneTests
+
 
