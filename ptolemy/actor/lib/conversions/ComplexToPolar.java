@@ -136,20 +136,6 @@ public class ComplexToPolar extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ComplexToPolar newobj = (ComplexToPolar)(super.clone(ws));
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.magnitude = (TypedIOPort)newobj.getPort("magnitude");
-        newobj.angle = (TypedIOPort)newobj.getPort("angle");
-        return newobj;
-    }
-
     /** Consume one complex token and output two new double tokens
      *  (magnitude and angle). The output is a polar form representation
      *  of the complex input. The output angle is in radians.

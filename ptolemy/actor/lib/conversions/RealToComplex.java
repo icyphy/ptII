@@ -94,20 +94,6 @@ public class RealToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        RealToComplex newobj = (RealToComplex)(super.clone(ws));
-        newobj.real = (TypedIOPort)newobj.getPort("real");
-        newobj.imag = (TypedIOPort)newobj.getPort("imag");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** Consume exactly one token from each input port and convert them to 
      *  a complex token. If either input port is empty, do nothing.
      *

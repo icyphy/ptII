@@ -126,21 +126,6 @@ public class FixToDouble extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        FixToDouble newobj = (FixToDouble)super.clone(ws);
-        newobj.precision = (Parameter)newobj.getAttribute("precision");
-        newobj.overflow = (Parameter)newobj.getAttribute("overflow");
-        return newobj;
-    }
-
     /** Read at most one token from each input the convert the
      *  FixToken into a DoubleToken. The FixToken is howver first
      *  scaled to the desired precision, which may lead to rounding or
