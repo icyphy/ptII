@@ -51,12 +51,7 @@ JSRCS = \
 	FullScreenImageDisplay.java \
 	GraphicsDevices.java \
 	GraphicsDevicesToString.java \
-	ImageReader.java \
-	ImageRotate.java \
-	ImageToString.java \
-	MultiBuffer.java \
-	Transform.java \
-	URLToImage.java
+	MultiBuffer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	fullscreen.xml

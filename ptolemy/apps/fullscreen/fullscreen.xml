@@ -12,15 +12,6 @@
 </entity>
 <entity name="GraphicsDevicesToString" class="ptolemy.apps.fullscreen.GraphicsDevicesToString">
 </entity>
-<entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
-</entity>
-<entity name="ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
-</entity>
-<entity name="ImageToString" class="ptolemy.apps.fullscreen.ImageToString">
-</entity>
-<entity name="SlideShow" class="ptolemy.apps.fullscreen.SlideShow"/>
-<entity name="URLToImage" class="ptolemy.apps.fullscreen.URLToImage">
-</entity>
       </group>
     ?>
   </configure>

@@ -40,7 +40,7 @@ three displays</text></svg></configure>
         <property name="_location" class="ptolemy.moml.Location" value="93.4609375, 185.46875">
         </property>
     </property>
-    <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="53.078125, 97.203125">
@@ -53,7 +53,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="1:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="428.078125, 27.1875">
@@ -66,7 +66,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+    <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate>">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="90">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="215.0859375, 137.203125">
@@ -466,7 +466,7 @@ three displays</text></svg></configure>
         <link port="2:3:ArrayElement12.input" relation="2:relation11"/>
         <link port="2:3:ArrayElement12.output" relation="2:relation7"/>
     </entity>
-    <entity name="3:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="3:1:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="433.078125, 182.1875">
@@ -479,7 +479,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="4:1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="4:1:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;gsrc-logo-400.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="428.078125, 342.1875">
@@ -492,7 +492,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="5:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="5:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="68.078125, 282.203125">
@@ -505,7 +505,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="5:ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+    <entity name="5:ImageRotate" class="ptolemy.actor.lib.image.ImageRotate>">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="180">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="215.0859375, 282.203125">
@@ -517,7 +517,7 @@ three displays</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="6:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="6:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="68.078125, 382.1875">
@@ -530,7 +530,7 @@ three displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="6:ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+    <entity name="6:ImageRotate" class="ptolemy.actor.lib.image.ImageRotate>">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="270">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="210.0859375, 382.1875">

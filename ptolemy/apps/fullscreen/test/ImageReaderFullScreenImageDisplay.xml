@@ -37,7 +37,7 @@ in full screen mode.</text></svg></configure>
         <property name="_location" class="ptolemy.moml.Location" value="435.0, 55.0">
         </property>
     </property>
-    <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="93.078125, 122.203125">
@@ -68,7 +68,7 @@ in full screen mode.</text></svg></configure>
             <property name="input"/>
         </port>
     </entity>
-    <entity name="1:ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+    <entity name="1:ImageReader" class="ptolemy.actor.lib.image.ImageReader>">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/ptIIbanner3.gif&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="253.078125, 62.1875">
@@ -81,7 +81,7 @@ in full screen mode.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
+    <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate>">
         <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="90">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="150.0859375, 222.203125">
