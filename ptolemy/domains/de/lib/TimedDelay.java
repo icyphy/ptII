@@ -116,7 +116,8 @@ public class TimedDelay extends DETransformer {
         if (attribute == delay) {
             if (((DoubleToken)(delay.getToken())).doubleValue() < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative delay.");
+                        "Cannot have negative delay: "
+                        + ((DoubleToken)(delay.getToken())));
             }
         } else {
             super.attributeChanged(attribute);
