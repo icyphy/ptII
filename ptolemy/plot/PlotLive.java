@@ -62,8 +62,7 @@ import java.applet.Applet;
  * be specified in a separate file rather than in Java code.
  *
  * @author: Edward A. Lee
- * @version: 
-@(#)PlotLive.java       1.15    09/19/97
+ * @version: $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
@@ -105,7 +104,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     public String getAppletInfo() {
         return "PlotLive 1.0: A live data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-            "(@(#)PlotLive.java 1.15 09/19/97)";
+            "($Id$)";
     }
 
     /**
