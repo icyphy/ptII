@@ -69,6 +69,7 @@ PTAUXALLJAR =	ptsupport.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
+		codegen/codegen.jar \
 		domains/domains.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
