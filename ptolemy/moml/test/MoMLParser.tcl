@@ -443,7 +443,7 @@ test MoMLParser-1.11 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <import source="testClass.xml"/>
+    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
     <entity name="b" class=".a"/>
 </model>
 }
@@ -470,7 +470,7 @@ test MoMLParser-1.12 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <import source="testClass.xml"/>
+    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
     <entity name="b" class=".a"/>
     <import source="testClass2.xml"/>
     <entity name="c" class=".a"/>
@@ -765,3 +765,50 @@ test MoMLParser-1.22 {test with an actor} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $moml
+
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"Sender\" class=\"ptolemy.actor.TypedCompositeActor\">
+        <entity name=\"Connect\" class=\"ptolemy.actor.TypedCompositeActor\">
+            <port name=\"expired\" class=\"ptolemy.actor.TypedIOPort\">
+                <property name=\"input\"/>
+            </port>
+            <entity name=\"Init\" class=\"ptolemy.actor.TypedAtomicActor\">
+                <port name=\"Outgoing\" class=\"ptolemy.actor.TypedIOPort\">
+                </port>
+            </entity>
+        </entity>
+    </entity>
+</class>
+"
+test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure properties cause problems } {
+    # The bug was that the following xml would throw an exception
+    # because of problems with handling 'pure properties' like
+    #   <property name="input"
+    #
+    #<?xml version="1.0" standalone="no"?>
+    #<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    #    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+    #<model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+    #    <director name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+    #    </director>
+    #    <entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
+    #        <entity name="Connect" class="ptolemy.domains.fsm.demo.ABP.DEFSMActor">
+    #            <port name="expired" class="ptolemy.actor.TypedIOPort">
+    #                <property name="input"/>
+    #            </port>
+    #            <entity name="Init" class="ptolemy.domains.fsm.kernel.FSMState">
+    #                <port name="Outgoing" class="ptolemy.kernel.ComponentPort">
+    #                </port>
+    #            </entity>
+    #        </entity>
+    #     </entity>
+    #</model>
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} $moml
+
