@@ -149,10 +149,14 @@ public class IODependenceOfCompositeActor extends IODependence {
                     ioDependence = 
                         new IODependenceOfAtomicActor((Entity) embeddedActor, 
                             "_IODependence");
-                } else {
+                } else if (embeddedActor instanceof CompositeActor) {
                     ioDependence = 
                         new IODependenceOfCompositeActor((Entity) embeddedActor, 
                             "_IODependence");
+                } else {
+                    // Deal with ModalModel
+                    // FIXME: two different entities: FSMActor, State.
+                    return;
                 }
             }
             // get all the input ports of current actor
