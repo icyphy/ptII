@@ -58,13 +58,19 @@ JSRCS = \
 	SampleTarget.java \
 	SampleSDFExecutive.java
 
+# Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	NamedObj.tcl
+
+# Graphical Java tests that use Tcl.
+# Since there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
-	dummy
+	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	$(JGRAPHICAL_TESTS) RampApplet.html ptjdriver
+	RampApplet.html ptjdriver #$(JGRAPHICAL_TESTS) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
