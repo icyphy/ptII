@@ -147,6 +147,13 @@ public class FixToken extends ScalarToken {
         return _value;
     }
 
+    /** Return the type of this token.
+     *  @return BaseType.FIX
+     */
+    public Type getType() {
+	return BaseType.FIX;
+    }
+
     /** Check if the value of this token is strictly less than that of the
      *  argument token.
      *  @param arg A ScalarToken.
