@@ -105,7 +105,7 @@ public class LayerEvent extends MouseEvent {
     public LayerEvent (MouseEvent e, int id) {
         super(e.getComponent(), id, e.getWhen(),
                 e.getModifiersEx(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger() );
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
@@ -201,7 +201,7 @@ public class LayerEvent extends MouseEvent {
                 + ",figure=" + getFigureSource()
                 + ",layer=(" + _layerX + "," + _layerY + ")"
                 + "]");
-        return result.toString();
+        return result.toString() + _backingEvent;
     }
 
      /** Print the string representation of modifier flags
