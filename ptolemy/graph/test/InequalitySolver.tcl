@@ -213,19 +213,11 @@ test InequalitySolver-2.6 {solve for greatest solution for above} {
 ####
 # 
 test InequalitySolver-2.7 {description method} {
-    lcompare [$s1 description] \
-{{_Ilist:
- {_ineq: ptolemy.graph.test.TestVariableA(variable)_w <= ptolemy.graph.test.TestConstantW(constant)_w _inCvar: true _inserted: false}
-  {_ineq: ptolemy.graph.test.TestConstantW(constant)_w <= ptolemy.graph.test.TestVariableA(variable)_w _inCvar: false _inserted: false}
-  {_ineq: ptolemy.graph.test.TestVariableB(variable)_z <= ptolemy.graph.test.TestConstantZ(constant)_z _inCvar: true _inserted: false}
-  {_ineq: ptolemy.graph.test.TestConstantY(constant)_y <= ptolemy.graph.test.TestVariableB(variable)_z _inCvar: false _inserted: false}
-  }
-{Clist:
- {ptolemy.graph.test.TestVariableB(variable)_z}
- {ptolemy.graph.test.TestVariableA(variable)_w}
- }
-}
-} {1}
+    # Sort the Ilist and Clist output to handle platform dependent ordering
+    set description [$s1 description]
+    list [lsort [lindex $description 0]] \
+	    [lsort [lindex $description 1]]
+} {{_Ilist: {_ineq: ptolemy.graph.test.TestConstantW(constant)_w <= ptolemy.graph.test.TestVariableA(variable)_w _inCvar: false _inserted: false} {_ineq: ptolemy.graph.test.TestConstantY(constant)_y <= ptolemy.graph.test.TestVariableB(variable)_z _inCvar: false _inserted: false} {_ineq: ptolemy.graph.test.TestVariableA(variable)_w <= ptolemy.graph.test.TestConstantW(constant)_w _inCvar: true _inserted: false} {_ineq: ptolemy.graph.test.TestVariableB(variable)_z <= ptolemy.graph.test.TestConstantZ(constant)_z _inCvar: true _inserted: false}} {Clist: ptolemy.graph.test.TestVariableA(variable)_w ptolemy.graph.test.TestVariableB(variable)_z}}
 
 
 ######################################################################
