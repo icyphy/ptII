@@ -49,21 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PNAdder.java \
-	PNAudioSource.java \
-	PNAudioPacker.java \
-	PNCirConvFilter.java \
-	PNDAConverter.java \
-	PNQuantizer.java \
-	PNRDController.java \
-	PNRDDecider.java \
-	PNRDDecoder.java \
-	PNRDInfo.java \
-	PNRDMainController.java \
-	PNSink.java \
-	RandomValueSource.java \
-	RadioController.java 
-
-#	PNPlot.java 
+	PNSink.java
 
 
 EXTRA_SRCS =	$(JSRCS)
