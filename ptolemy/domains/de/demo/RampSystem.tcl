@@ -49,7 +49,7 @@ $dir setStopTime 10.0
 
 # Build the system
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
-set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp 0.0 1.0]
+set ramp [java::new ptolemy.domains.de.lib.Ramp $sys Ramp 0.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
@@ -70,4 +70,4 @@ set r1 [$sys connect $clockOut $rampIn R1]
 set r2 [$sys connect $rampOut $plotIn R2]
 
 # Run it
-$exec run
+$exec go

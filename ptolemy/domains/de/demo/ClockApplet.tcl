@@ -80,3 +80,6 @@ $exec run
 
 $dir setStopTime 12.0
 $exec run 
+
+$dir setStopTime 6
+$exec run

@@ -53,10 +53,10 @@ $sys setExecutiveDirector $exec
 #####################
 
 set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
-set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp 0 1.0]
+set ramp [java::new ptolemy.domains.de.lib.Ramp $sys Ramp 0 1.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 10
-set fifo1 [java::new ptolemy.domains.de.lib.DEFIFOQueue 1 1 10 $sys FIFO1]
+set fifo1 [java::new ptolemy.domains.de.lib.FIFOQueue 1 1 10 $sys FIFO1]
 
 set plot1 [java::new ptolemy.domains.de.lib.DEPlot $sys "Queue 1 Size"]
 
@@ -67,15 +67,15 @@ set passgate [java::new ptolemy.domains.de.lib.DEPassGate $sys PassGate]
 
 set delta [java::new ptolemy.domains.de.lib.DEDelay $sys DEDelay 0.0]
 
-# num demands pending = 1, consolidate demands = 1, capacity = -1
-set fifo2 [java::new ptolemy.domains.de.lib.DEFIFOQueue 1 1 100 $sys FIFO2]
+# num demands pending = 1, consolidate demands = 1, capacity = 1000
+set fifo2 [java::new ptolemy.domains.de.lib.FIFOQueue 1 1 1000 $sys FIFO2]
 
 set plot2 [java::new ptolemy.domains.de.lib.DEPlot $sys "Queue 2 Size"]
 
 # crossingsOnly = true, threshold = 4
-set testlevel [java::new ptolemy.domains.de.lib.DETestLevel 1 4 $sys TestLevel]
+set testlevel [java::new ptolemy.domains.de.lib.TestLevel 1 4 $sys TestLevel]
 
-set not [java::new ptolemy.domains.de.lib.DENot $sys Not]
+set not [java::new ptolemy.domains.de.lib.Not $sys Not]
 
 # service time of server 2 is equal to 3.0
 set server2 [java::new ptolemy.domains.de.lib.DEServer 3.0 $sys Server2]
@@ -221,4 +221,4 @@ set r13 [$sys connect $fifo2OutData $server2In R13]
 $dir setStopTime 30.0
 
 # Run it
-$exec run
+$exec go

@@ -143,10 +143,11 @@ CLOCK_CLASSFILES = \
 	'ptolemy/domains/de/demo/ClockApplet$$StopTimeListener.class' \
 	ptolemy/domains/de/demo/ClockApplet.class \
 	ptolemy/domains/de/demo/ClockApplet.class \
-	ptolemy/domains/de/kernel/DECQComparator.class \
+	ptolemy/domains/de/kernel/DEActor.class \
+	'ptolemy/domains/de/kernel/DECQDirector$$DECQComparator.class' \
 	'ptolemy/domains/de/kernel/DECQDirector$$DEEvent.class' \
 	ptolemy/domains/de/kernel/DECQDirector.class \
-	ptolemy/domains/de/kernel/DEDelta.class \
+	ptolemy/domains/de/kernel/DEDirector.class \
 	ptolemy/domains/de/kernel/DEIOPort.class \
 	ptolemy/domains/de/kernel/DEReceiver.class \
 	ptolemy/domains/de/kernel/DESortKey.class \

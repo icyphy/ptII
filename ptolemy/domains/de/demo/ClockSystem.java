@@ -70,7 +70,7 @@ public class ClockSystem {
     public void go(double stopTime) throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
         localDirector.setStopTime(stopTime);
-        executiveDirector.run();
+        executiveDirector.go();
     }
 
     /** Run for 10 time units.
