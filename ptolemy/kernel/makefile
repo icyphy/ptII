@@ -63,6 +63,7 @@ JSRCS = \
 	CompositeEntity.java \
 	CrossRefList.java \
 	Entity.java \
+	FlowPort.java \
 	KernelException.java \
 	IllegalActionException.java \
 	IntToken.java \
@@ -77,6 +78,7 @@ JSRCS = \
 	ObjectToken.java \
 	Port.java \
 	Relation.java \
+	ScalarToken.java \
 	StringToken.java \
 	Token.java \
 	Workspace.java
