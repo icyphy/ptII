@@ -100,8 +100,8 @@ public class ZeroOrderHold extends Transformer
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
-        output.setTypeAtLeast(input);
-	output.setTypeAtLeast(defaultValue);
+        newObject.output.setTypeAtLeast(input);
+	newObject.output.setTypeAtLeast(defaultValue);
         return newObject;
     }
 

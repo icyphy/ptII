@@ -78,7 +78,6 @@ public class Switch extends Transformer {
         super(container, name);
 
         output.setMultiport(true);
-        output.setTypeSameAs(input);
 
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.INT);

@@ -73,8 +73,6 @@ public class Multiplexor extends Transformer {
 
         select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.INT);
-
-        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////

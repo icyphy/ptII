@@ -74,8 +74,6 @@ public class Repeat extends SDFTransformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	output.setTypeSameAs(input);
-
 	// parameters
 	numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
 	numberOfTimes.setTypeEquals(BaseType.INT);

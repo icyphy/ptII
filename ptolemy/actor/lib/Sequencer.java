@@ -82,8 +82,6 @@ public class Sequencer extends Transformer implements SequenceActor {
 
         startingSequenceNumber = new Parameter(this, "startingSequenceNumber");
         startingSequenceNumber.setExpression("0");
-
-        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -86,7 +86,6 @@ public class Select extends Transformer {
         super(container, name);
 
         input.setMultiport(true);
-        output.setTypeSameAs(input);
 
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.INT);

@@ -68,8 +68,6 @@ public class Synchronizer extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
-
-        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
