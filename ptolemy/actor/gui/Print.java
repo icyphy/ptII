@@ -31,16 +31,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.*;
-import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.actor.*;
 import java.awt.*;
 
 /** Display the values of the tokens arriving on the input channels
  *  in a text area on the screen.
  *  <p>
- *  The input type is StringToken.  Since any other type of token
- *  can be converted to a StringToken, this imposes no constraints
- *  on the types of the upstream actors.
+ *  The input type is Token, meaning that any token is acceptable.
  *
  *  @author  Yuhong Xiong, Edward A. Lee
  *  @version $Id$
@@ -54,13 +52,13 @@ public class Print extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(StringToken.class);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type StringToken. */
+    /** Input port, which has type Token. */
     public TypedIOPort input;
 
     /** The text area in which the data will be displayed. */
@@ -96,7 +94,7 @@ public class Print extends TypedAtomicActor implements Placeable {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                StringToken token = (StringToken)input.get(i);
+                Token token = input.get(i);
                 String value = token.stringValue();
                 textArea.append(value + "\n");
             }
