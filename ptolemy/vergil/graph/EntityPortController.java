@@ -148,6 +148,7 @@ public class EntityPortController extends NodeController {
 	     * parameters on the given target.
 	     */
 	    public JMenuItem create(JContextMenu menu, NamedObj target) {
+		target = _getItemTargetFromMenuTarget(target);
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
 		    String string = "";
@@ -176,6 +177,15 @@ public class EntityPortController extends NodeController {
 		}
 		return null;
 	    }
+	    
+	    /**
+	     * Get the name of the items that will be created. 
+	     * This is provided so
+	     * that factory can be overriden slightly with the name changed.
+	     */
+	    protected String _getName() {
+		return null;
+	    }     
 	}
     }
 

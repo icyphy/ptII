@@ -147,6 +147,7 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
+        addDocumentListener(new MouseFocusMover());
 
 	// FIXME read this out of resources somehow.
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
@@ -374,13 +375,14 @@ public class VergilApplication extends MDIApplication {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
 
-    // A mouse listener that is attached to the view that is created for
-    // every document.  It ensures that keyboard focus is properly passed
-    // to each view.
-    // Note that we use a mouse listener instead of a document listener, since
-    // the focus could be changed to a component that is not associated with
-    // a document without the current document changing.
-    private class MouseFocusMover extends MouseAdapter {        
+    // This class is responsible for keeping the keyboard focus attached to
+    // the active document's component.  It is added (as a mouse listener)
+    // to the view that is created for every document.  
+    // It is also added to this application as a document listener, since
+    // the focus could be changed through a method without a mouse click
+    // occuring.  (This often happens when a document is first created.
+    private class MouseFocusMover extends MouseAdapter 
+	implements ListDataListener {        
 	/**
 	 * Grab the keyboard focus when the component that this listener is
 	 * attached to is clicked on.
@@ -392,6 +394,22 @@ public class VergilApplication extends MDIApplication {
                 component.requestFocus();
             }
         }
+
+	public void contentsChanged(ListDataEvent e) {
+	    VergilDocument document = (VergilDocument)getCurrentDocument();
+	    if(document == null) return;
+	    JComponent component = getView(document);
+	    if(component == null) return;
+	    if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+	}        
+
+	public void intervalAdded(ListDataEvent e) {
+	}
+
+	public void intervalRemoved(ListDataEvent e) {
+	}
     }
     
     ///////////////////////////////////////////////////////////////////

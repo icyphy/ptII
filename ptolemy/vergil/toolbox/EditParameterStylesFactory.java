@@ -56,8 +56,9 @@ public class EditParameterStylesFactory extends MenuItemFactory {
      * parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-	String name = "Edit Parameter Styles";
-	final NamedObj target = object;
+	String name = _getName();
+	final NamedObj target = _getItemTargetFromMenuTarget(object);
+	if(target == null) return null;
 	Action action = new AbstractAction(name) {
 	    public void actionPerformed(ActionEvent e) {
 
@@ -80,5 +81,13 @@ public class EditParameterStylesFactory extends MenuItemFactory {
 	    }
 	};
 	return menu.add(action, name);
+    }
+
+    /**
+     * Get the name of the items that will be created.  This is provided so
+     * that factory can be overriden slightly with the name changed.
+     */
+    protected String _getName() {
+	return "Edit Parameters Styles";
     }
 }

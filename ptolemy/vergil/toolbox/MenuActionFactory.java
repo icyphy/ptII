@@ -59,13 +59,17 @@ public class MenuActionFactory extends MenuItemFactory {
      * parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-	if(object instanceof CompositeEntity) {
-	    return menu.add(_action, (String)_action.getValue(Action.NAME));
-	} else {
-	    return null;
-	}
+	return menu.add(_action, (String)_action.getValue(Action.NAME));
     }
     
+    /**
+     * Get the name of the items that will be created.  This is provided so
+     * that factory can be overriden slightly with the name changed.
+     */
+    protected String _getName() {
+	return (String)_action.getValue(Action.NAME);
+    }
+
     // The action that will be added to the context menu.
     private Action _action;
 }

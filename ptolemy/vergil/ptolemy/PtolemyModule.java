@@ -292,7 +292,7 @@ public class PtolemyModule implements Module {
 	    dir = new FSMDirector();
 	    dir.setName("FSM");
 	    _directorModel.addElement(dir);
-	    dir = new CTMixedSignalDirector();
+	    dir = new CTMixedSignalDirector();	    
 	    dir.setName("CT");
 	    _directorModel.addElement(dir);
 	}

@@ -14,6 +14,9 @@ Cut and Paste.
 Improve debugger.
 Instantiation by name.
 Multiple vertexes per Relation.
+Changes to ptolemy model should be mutations and a changeListener should
+set the dirty flag on the document.
+
 
 DONE:
 Direct connections from Ports to Ports.

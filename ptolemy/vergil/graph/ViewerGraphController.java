@@ -220,6 +220,8 @@ public class ViewerGraphController extends CompositeGraphController {
 	    super();
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new EditDirectorParametersFactory());
+	    addMenuItemFactory(new EditDirectorParameterStylesFactory());
 	}	
 	
 	public NamedObj _getObjectFromFigure(Figure source) {
@@ -228,4 +230,36 @@ public class ViewerGraphController extends CompositeGraphController {
 	    return d.getModel();
 	}
     };
+
+    public class EditDirectorParametersFactory 
+	extends EditParametersFactory {
+	protected String _getName() {
+	    return "Edit Director Parameters";
+	}
+
+	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
+	    if(object instanceof CompositeActor) {
+		return ((CompositeActor)object).getDirector();
+	    } else {
+		throw new InternalErrorException("Object " + 
+		    object.getFullName() + "is not a director.");
+	    }
+	}	
+    }
+
+    public class EditDirectorParameterStylesFactory 
+	extends EditParameterStylesFactory {
+	protected String _getName() {
+	    return "Edit Director Parameter Styles";
+	}
+
+	protected NamedObj _getItemTargetFromMenuTarget(NamedObj object) {
+	    if(object instanceof CompositeActor) {
+		return ((CompositeActor)object).getDirector();
+	    } else {
+		throw new InternalErrorException("Object " + 
+		    object.getFullName() + "is not a director.");
+	    }
+	}	
+    }
 }
