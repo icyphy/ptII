@@ -49,7 +49,7 @@ import java.util.Iterator;
 /**
 Base class for integrators in the continuous time (CT) domain.
 An integrator has one input port and one output port. Conceptually,
-the input is the direvative of the output w.r.t. time. So an ordinary
+the input is the derivative of the output w.r.t. time. So an ordinary
 differential equation dx/dt = f(x, t) can be built by:
 <P>
 <pre>
@@ -145,7 +145,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public TypedIOPort output;
 
-    /** The initial state of type DouleToken. The default value is 0.0
+    /** The initial state of type DoubleToken. The default value is 0.0
      */
     public Parameter initialState;
 
@@ -169,7 +169,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Delegate to the integratorFire() of the
-     *  current ODE solver. The existance of a director and an ODE solver
+     *  current ODE solver. The existence of a director and an ODE solver
      *  is not checked here. If there's no director and ODE solver, a
      *  NullPointerException will be thrown.
      *
@@ -261,7 +261,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Go to the marked state. After calling the markState() method,
      *  calling this method will bring the integrator back to the
      *  marked state. This method is used
-     *  for rollbacking the excution to a previous time point.
+     *  for rollbacking the execution to a previous time point.
      */
     public void goToMarkedState() {
         _state = _storedState;
@@ -353,7 +353,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  current ODE solver. If not, create more auxiliary variables.
      *  This method also adjusts the history information w.r.t. the
      *  current ODE solver and the current step size.
-     *  The existance of director and ODE solver is not checked,
+     *  The existence of director and ODE solver is not checked,
      *  since they are checked in the initialize() method.
      *  @return True always.
      *  @exception IllegalActionException If there's no director or
@@ -390,18 +390,18 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        double curstep = ((CTDirector)getDirector()).getCurrentStepSize();
+        double step = ((CTDirector)getDirector()).getCurrentStepSize();
         if(_successful) {
-            return curstep;
+            return step;
         }else {
-            return (double)0.5*curstep;
+            return (double)0.5*step;
         }
     }
 
     /** Set the value of an auxiliary variable.  If the index is out of
      *  the bound of the auxiliary variable
      *  array, an InvalidStateException is thrown to indicate an
-     *  inconsistecy in the ODE solver.
+     *  inconsistency in the ODE solver.
      *
      *  @param index The index in the auxVariables array.
      *  @param value The value to be set.
@@ -452,8 +452,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** The history states and their derivative.
      *  This variable is needed by Linear Multistep (LMS) methods,
-     *  like Trapezoidal rule and backward defferential formula.
-     *  This varaible is protected so that derived classes may
+     *  like Trapezoidal rule and backward differential formula.
+     *  This variable is protected so that derived classes may
      *  access it directly.
      */
     protected History _history;
@@ -504,7 +504,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         ///////////////////////////////////////////////////////////////
         ////                         public methods                ////
 
-        /** Remove all history informaion.
+        /** Remove all history information.
          */
         public void clear() {
             _entries.clear();
@@ -564,8 +564,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
 
         /** Rebalance the history information
-         *  with repect to the current step size, such that the information
-         *  in the history list are equaly distanced, and the
+         *  with respect to the current step size, such that the information
+         *  in the history list are equally distanced, and the
          *  distance is the current step size.
          *  If the current step size is less than the history step size
          *  used in the history list, then a 4-th order Hermite
@@ -585,19 +585,20 @@ public class CTBaseIntegrator extends TypedAtomicActor
                 }
                 double ratio = currentStepSize/_stepsize;
                 for (int i = 1; i < size; i++) {
-                    double[] newentry;
+                    double[] newEntry;
                     int bin = (int)Math.floor(i*ratio);
                     if (bin < size) {
-                        // interpolation as much as possible.
-                        double rem = i*ratio - (double)bin;
-                        newentry = _Hermite(history[bin+1], history[bin], 1-rem);
+                        // Interpolation as much as possible.
+                        double remainder = i*ratio - (double)bin;
+                        newEntry = _Hermite(history[bin+1], history[bin],
+                                1-remainder);
                     } else {
-                        // extrapolation
-                        newentry = _extrapolation(history[size-2],
+                        // Extrapolation
+                        newEntry = _extrapolation(history[size-2],
                                 history[size-1], i*ratio-size+1);
                     }
                     _entries.addLast(new DoubleDouble
-                            (newentry[0], newentry[1]));
+                            (newEntry[0], newEntry[1]));
                 }
                 _stepsize = currentStepSize;
             }
@@ -635,8 +636,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         ////                        private methods                ////
 
         // Hermite interpolation.
-        // @param p1 Point1, state and derivative.
-        // @param p2 Point2, state and derivative.
+        // @param p1 Point 1, state and derivative.
+        // @param p2 Point 2, state and derivative.
         // @param s The interpolation point.
         // @return The Hermite interpolation of the arguments.
         private double[] _Hermite(double[] p1, double[] p2, double s) {
