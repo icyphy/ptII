@@ -266,9 +266,9 @@ public class ComponentPort extends Port {
             if (_outside(relation.getContainer())) {
                 // An inside link
                 _checkRelation(relation);
-                if (getAssocEntity() == null) {
+                if (getContainer() == null) {
                 throw new IllegalActionException(this, relation,
-                         "Port must have an associated entity to establish a link.");
+                         "Port must have a container to establish a link.");
                 }
                 _insideLinks.link(relation._getPortList(this));
             } else {
@@ -298,7 +298,7 @@ public class ComponentPort extends Port {
         }
         synchronized(workspace()) {
             _checkRelation(relation);
-            Nameable container = getAssocEntity();
+            Nameable container = getContainer();
             if (container != null) {
                 Nameable relcont = relation.getContainer();
                 if (container != relcont &&
@@ -371,7 +371,7 @@ public class ComponentPort extends Port {
      */	
     public boolean _outside(Nameable entity) {
         synchronized(workspace()) {
-            Nameable portcontainer = getAssocEntity();
+            Nameable portcontainer = getContainer();
             while (entity != null) {
                 if (portcontainer == entity) return true;
                 entity = entity.getContainer();
