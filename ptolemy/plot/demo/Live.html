@@ -8,13 +8,18 @@
 <hr>
 The following plot illustrates a dynamically updated plot:
 <p>
-<applet code="PlotLiveDemo.class" width=400 height=400>
+<applet code="PlotLiveDemo.class" width=400 height=400
+    codebase=".."
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
 </applet>
 <p>
 Click on the start button to start the plotting, and on the stop button to stop it.
 Such a plot is created by defining a class derived from <code>PlotLive</code>
 (which is abstract).  The example shown here is the
-<a href=PlotLiveDemo.java>PlotLiveDemo</a> class.
+<a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
 It defines only two methods, <code>init()</code> and <code>run()</code>.
 The first of these sets static properties of the plot (title, labels, etc.)
 while the second defines the body of a thread that generates points forever (if it is

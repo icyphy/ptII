@@ -7,11 +7,16 @@
 <h1>Plot data read from a URL</h1>
 <hr>
 The plot below obtains its data from a
-<a href=data.plt>data file</a> at a URL and shows certain features
+<a href="data.plt">data file</a> at a URL and shows certain features
 of the plotter:
 <p>
-<applet code="Plot.class" width=500 height=400>
+<applet code="Plot.class" width=500 height=400
+    codebase=".."
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
 <param name="dataurl" value="data.plt">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
 </applet>
 <p>
 Note that color is disabled, and individual marks
