@@ -357,7 +357,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
         }
     }
 
-    /** Remove this class from the manager's list of execution listeners
+    /** Remove this class from the manager's list of execution listeners.
      *  @return Whatever the superclass returns (probably true).
      *  @exception IllegalActionException If removing the execution listener
      *  throws it, or if thrown by the superclass.

@@ -108,12 +108,12 @@ public class ModelUtilities {
 
     /**
      * This method takes model argument which is type of CompositeActor.
-     * The <i>args<i> argument is a record token that will be used to
+     * The <i>args</i> argument is a record token that will be used to
      * set corresponding attributes of the specified model by
      * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
      * Attributes. In particular, only Attributes
-     * that have name matches the <i>resultLabels<i> are returned.
+     * that have name matches the <i>resultLabels</i> are returned.
      * The return result is a RecordToken which has the resultLabels as
      * its field.
      * @param model The Model.
