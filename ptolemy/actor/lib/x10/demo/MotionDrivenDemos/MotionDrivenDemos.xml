@@ -396,7 +396,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </port>
             <entity name="Run MaximumEntropy" class="ptolemy.vergil.actor.lib.ModelReference">
-                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="file:/C:/ptII/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">
+                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">
                 </property>
                 <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil">
                     <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -438,7 +438,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </entity>
             <entity name="Run Inspection" class="ptolemy.vergil.actor.lib.ModelReference">
-                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="file:/C:/ptII/ptolemy/domains/de/demo/Inspection/Inspection.xml">
+                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/ptolemy/domains/de/demo/Inspection/Inspection.xml">
                 </property>
                 <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil (full screen)">
                     <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -480,7 +480,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </entity>
             <entity name="Run Lorenz" class="ptolemy.vergil.actor.lib.ModelReference">
-                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="file:/C:/ptII/ptolemy/domains/ct/demo/Lorenz/Lorenz.xml">
+                <property name="modelFileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/ptolemy/domains/ct/demo/Lorenz/Lorenz.xml">
                 </property>
                 <property name="openOnFiring" class="ptolemy.kernel.util.StringAttribute" value="open in Vergil (full screen)">
                     <property name="choiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
