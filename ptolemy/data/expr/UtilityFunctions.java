@@ -140,6 +140,9 @@ public class UtilityFunctions {
      *  then this property might not be set, in which case we look
      *  for "ptolemy/kernel/util/NamedObj.class" and set the
      *  property accordingly.
+     *  <dt> "ptolemy.ptII.dirAsURL"
+     *  <dd> Return $PTII as a URL.  For example, if $PTII was c:\ptII,
+     *  then return file:/c:/ptII/.
      *  </dl>
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
@@ -161,6 +164,22 @@ public class UtilityFunctions {
 	if (property != null) {
 	    return property;
 	}
+	if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
+            // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
+            // then return file:/c:/ptII/
+            File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
+            
+            try {
+                URL ptIIAsURL = ptIIAsFile.toURL();
+                return ptIIAsURL.toString();
+            } catch (java.net.MalformedURLException malformed) {
+                throw new InternalErrorException(null, malformed,
+                        "While trying to find '" + propertyName 
+                        + "', could not convert '"
+                        + ptIIAsFile + "' to a URL");
+            }
+        }
+
 	if (propertyName.equals("ptolemy.ptII.dir")) {
 
 	    String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
