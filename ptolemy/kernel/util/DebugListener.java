@@ -35,7 +35,7 @@ package ptolemy.kernel.util;
 /**
 Interface for listeners that receive debug messages.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.3
 @see NamedObj
@@ -47,10 +47,12 @@ public interface DebugListener {
     ////                         public methods                    ////
 
     /** React to the given event.
+     *  @param event The event.
      */
     public void event(DebugEvent event);
 
     /** React to a debug message.
+     *  @param message The debug message.
      */
     public void message(String message);
 }
