@@ -106,6 +106,14 @@ test ExtendedMath-6.0 {log10} {
 test ExtendedMath-6.8 {roundToInt} {
     ExtendedMathApply roundToInt {-1 0 0 1 1 1 3}
 } {}
+
+####################################################################
+test ExtendedMath-6.9 {roundToInt with a double larger than an int} {
+    catch {java::call ptolemy.math.ExtendedMath \
+	roundToInt [java::field Double MAX_VALUE]} errorMsg
+    set errorMsg	
+} {java.lang.IllegalArgumentException: double value 1.7976931348623157E308 does not fit into an Integer.}
+
 ####################################################################
 test ExtendedMath-7.0 {sinh} {
     ExtendedMathApply sinh {-1.19069101772 -0.521095305494 0.0 0.521095305494 1.15982889066 1.50946135541 11.5487393573}
