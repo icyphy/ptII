@@ -73,8 +73,13 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo: demo_applet demo_applet_vergil demo_ptolemy demo_vergil
+
 demo_applet:
+	appletviewer Controllers.htm
+
+demo_applet_vergil:
+	appletviewer ControllersVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Controllers.xml
