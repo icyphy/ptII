@@ -85,7 +85,7 @@ import javax.sound.sampled.*;
   <li><i>bit resolution</i>: 8 bit and 16 bit audio is supported. 
   Note that some newer sound cards support 20 bit, 24 bit, and 32 
   bit audio, but this is not supported under Java. The default 
-  bit resolution used by this class is 8 bit audio. The bit 
+  bit resolution used by this class is 16 bit audio. The bit 
   resolution may be set by the setBitsPerSample() method and 
   read by the getBitsPerSample() method.
   </ul>
@@ -123,7 +123,7 @@ import javax.sound.sampled.*;
   if values other than the defaults are desired. The 
   setTransferSize() method should also be invoked to set the size 
   of the array (in samples per channel) that is returned when 
-  audio samples are captured. The default value is 64 samples 
+  audio samples are captured. The default value is 128 samples 
   per channel. Then invoke the startCapture(consumer) method to 
   start the audio capture process. This class will be ready to 
   capture audio immediately after startCapture() returns. Note 
@@ -154,7 +154,7 @@ import javax.sound.sampled.*;
   resolution if values other than the defaults are desired. 
   The setTransferSize() method should also be invoked to set the 
   size of the array (in samples per channel) that is supplied 
-  when audio samples are played. The default value is 64 samples 
+  when audio samples are played. The default value is 128 samples 
   per channel. Then invoke the startPlayback(producer) method 
   to start the audio playback process. This class will be ready 
   to playback audio immediately after startPlayback() returns. 
@@ -209,7 +209,7 @@ public class LiveSound {
 
     /** Return the number of bits per audio sample, which is
      *  set by the setBitsPerSample() method. The default
-     *  value of this parameter is 8 bits.
+     *  value of this parameter is 16 bits.
      *
      * @return The sample size in bits. 
      *
@@ -288,7 +288,7 @@ public class LiveSound {
 
     /** Set the number of bits per sample to use for audio capture
      *  and playback. Allowable values include 8 and 16 bits. If
-     *  this method is not invoked, then the default value of 8
+     *  this method is not invoked, then the default value of 16
      *  bits is used.
      *  <p>
      *  This method should only be called while audio capture and
@@ -363,7 +363,7 @@ public class LiveSound {
      *  and getSamples() methods. This method sets the size
      *  of the 2nd dimension of the 2-dimensional array
      *  used by the putSamples() and getSamples() methods. If
-     *  this method is not invoked, the default value of 64 is
+     *  this method is not invoked, the default value of 128 is
      *  used.
      *  <p>
      *  This method should only be called while audio capture and
@@ -400,7 +400,7 @@ public class LiveSound {
      *  used by the putSamples() and getSamples() methods. This
      *  method returns the value that was set by the 
      *  setTransferSize(). If setTransferSize() was not invoked,
-     *  the default value of 64 is returns.
+     *  the default value of 128 is returns.
      *  <p>
      *  This method should only be called while audio capture and
      *  playback are inactive. Otherwise an exception will occur.
@@ -532,6 +532,9 @@ public class LiveSound {
     public static void startPlayback(Object producer) 
 	throws IOException, IllegalStateException {
 	// FIXME: the value of producer is ignored.
+	if (_debug) {
+	    System.out.println("LiveSound: startPlayback() invoked");
+	}
 	_startPlayback();
 	_playbackIsActive = true;
     }
@@ -553,6 +556,9 @@ public class LiveSound {
     public static void stopPlayback(Object producer)
     throws IOException, IllegalStateException{
 	// FIXME: the value of producer is ignored.
+	if (_debug) {
+	    System.out.println("LiveSound: stopPlayback() invoked");
+	}
 	if (_sourceLine != null) {
 	    _sourceLine.drain();
 	    _sourceLine.stop();
@@ -692,7 +698,17 @@ public class LiveSound {
     public static void putSamples(Object producer, double[][] samplesArray)
 	throws IOException, IllegalStateException {
 	// FIXME: the value of producer is ignored.
-
+	if (_debug) {
+	    System.out.println("LiveSound: putSamples(): invoked");
+	    System.out.println("LiveSound: putSamples(): " +
+			       "_transferSize = " + 
+			       _transferSize);
+	     System.out.println("LiveSound: putSamples(): " +
+				"_bytesPerSample = " +
+				_bytesPerSample);
+		 System.out.println("LiveSound: putSamples(): " +
+				    "_channels = " + _channels);
+	}
 	// Convert array of double valued samples into
 	// the proper byte array format.
 	_data = _doubleArrayToByteArray(samplesArray,
@@ -702,10 +718,22 @@ public class LiveSound {
 	// Note: _data is a byte array containing data to
 	// be written to the output device.
 	// Note: consumptionRate is amount of data to write, in bytes.
-	
+	if (_debug) {
+	    System.out.println("LiveSound: putSamples(): " +
+			       "writing samples...");
+	    System.out.println("LiveSound: putSamples(): " +
+			       "_data.length = " + _data.length);
+	    System.out.println("LiveSound: putSamples(): " +
+			       "_transferSize = " + _transferSize);
+	    System.out.println("LiveSound: putSamples(): " +
+			       "_frameSizeInBytes = " +
+			       _frameSizeInBytes);
+	}
 	// Now write the array to output device.
 	_sourceLine.write(_data, 0, _transferSize*_frameSizeInBytes);
-
+	if (_debug) {
+	    System.out.println("LiveSound: putSamples(): returning now.");
+	}
     }
 
 
@@ -819,7 +847,7 @@ public class LiveSound {
 
 	// Array of audio samples in byte format.
 	_data = new byte[_transferSize*_frameSizeInBytes*_channels];
-
+	_bytesPerSample = _bitsPerSample/8;
         // Start the source data line
 	_sourceLine.start();
     }
@@ -972,7 +1000,7 @@ public class LiveSound {
     // Array of audio samples in double format.
     private static double[][] _audioInDoubleArray;
     private static byte[] _b = new byte[1];
-    private static int _bitsPerSample;
+    private static int _bitsPerSample = 16;
     private static int _bufferSize = 4096;
     private static int _bytesPerSample;
     // true is audio capture is currently active
@@ -989,7 +1017,7 @@ public class LiveSound {
     private static TargetDataLine _targetLine;
     // the number of audio samples to transfer per channel
     // when putSamples() or getSamples() is invoked.
-    private static int _transferSize = 64;
+    private static int _transferSize = 128;
     // for debuging;
-    private static boolean _debug = true;
+    private static boolean _debug = false;
 }
