@@ -106,7 +106,7 @@ public class Test extends Sink {
      *   actor with this name.
      */
     public Test(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         outputCorrect = new TypedIOPort(this, "output", false, true);
         outputCorrect.setTypeEquals(BaseType.BOOLEAN);
@@ -114,7 +114,7 @@ public class Test extends Sink {
         defaultEntries[0] = new BooleanToken(true);
         ArrayToken defaultArray = new ArrayToken(defaultEntries);
         correctValues = new Parameter(this, "correctValues", defaultArray);
-	correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
         tolerance.setTypeEquals(BaseType.DOUBLE);
@@ -145,9 +145,9 @@ public class Test extends Sink {
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-	throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == tolerance) {
-	    _tolerance = ((DoubleToken)(tolerance.getToken())).doubleValue();
+            _tolerance = ((DoubleToken)(tolerance.getToken())).doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -159,7 +159,7 @@ public class Test extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
-	outputCorrect.send(0, new BooleanToken(false));
+        outputCorrect.send(0, new BooleanToken(false));
     }
 
     /** Read one token from each input channel and compare against
@@ -172,57 +172,57 @@ public class Test extends Sink {
      *   or if its value does not match the required value.
      */
     public boolean postfire() throws IllegalActionException {
-	int width = input.getWidth();
-	if (_numberOfInputTokensSeen
-	    >= ((ArrayToken)(correctValues.getToken())).length()) {
-	    // Consume and discard input values.  We are beyond the end
-	    // of the correctValues array.
-	    for (int i = 0; i < width; i++) {
-		if (input.hasToken(i)) {
-		    input.get(i);
-		}
-	    }
-	    outputCorrect.send(0, new BooleanToken(true));
-	    return true;
-	} else { outputCorrect.send(0, new BooleanToken(false));
-	}
-	Token referenceToken
-	    = ((ArrayToken)(correctValues.getToken()))
-	    .getElement(_numberOfInputTokensSeen);
-	Token[] reference;
-	if (width == 1 && !(referenceToken instanceof ArrayToken)) {
-	    reference = new Token[1];
-	    reference[0] = referenceToken;
-	} else {
-	    try {
-		reference = ((ArrayToken)referenceToken).arrayValue();
-	    } catch (ClassCastException ex) {
-		throw new IllegalActionException(this,
-						 "Test fails in iteration " + _numberOfInputTokensSeen
-						 + ".\n"
-						 + "Width of input is " + width
-						 + ", but correctValues parameter is not an array "
-						 + "of arrays.");
-	    }
-	    if (width != reference.length) {
-		throw new IllegalActionException(this,
-						 "Test fails in iteration " + _numberOfInputTokensSeen
-						 + ".\n"
-						 + "Width of input is " + width
-						 + ", which does not match the width of the "
-						 + _numberOfInputTokensSeen
-						 + "-th element of correctValues, "
-						 + reference.length);
-	    }
-	}
-	for (int i = 0; i < width; i++) {
-	    if (!input.hasToken(i)) {
-		throw new IllegalActionException(this,
-						 "Test fails in iteration "
-						 + _numberOfInputTokensSeen + ".\n"
-						 + "Empty input on channel " + i);
-	    }
-	    Token token = input.get(i);
+        int width = input.getWidth();
+        if (_numberOfInputTokensSeen
+            >= ((ArrayToken)(correctValues.getToken())).length()) {
+            // Consume and discard input values.  We are beyond the end
+            // of the correctValues array.
+            for (int i = 0; i < width; i++) {
+                if (input.hasToken(i)) {
+                    input.get(i);
+                }
+            }
+            outputCorrect.send(0, new BooleanToken(true));
+            return true;
+        } else { outputCorrect.send(0, new BooleanToken(false));
+        }
+        Token referenceToken
+            = ((ArrayToken)(correctValues.getToken()))
+            .getElement(_numberOfInputTokensSeen);
+        Token[] reference;
+        if (width == 1 && !(referenceToken instanceof ArrayToken)) {
+            reference = new Token[1];
+            reference[0] = referenceToken;
+        } else {
+            try {
+                reference = ((ArrayToken)referenceToken).arrayValue();
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this,
+                                                 "Test fails in iteration " + _numberOfInputTokensSeen
+                                                 + ".\n"
+                                                 + "Width of input is " + width
+                                                 + ", but correctValues parameter is not an array "
+                                                 + "of arrays.");
+            }
+            if (width != reference.length) {
+                throw new IllegalActionException(this,
+                                                 "Test fails in iteration " + _numberOfInputTokensSeen
+                                                 + ".\n"
+                                                 + "Width of input is " + width
+                                                 + ", which does not match the width of the "
+                                                 + _numberOfInputTokensSeen
+                                                 + "-th element of correctValues, "
+                                                 + reference.length);
+            }
+        }
+        for (int i = 0; i < width; i++) {
+            if (!input.hasToken(i)) {
+                throw new IllegalActionException(this,
+                                                 "Test fails in iteration "
+                                                 + _numberOfInputTokensSeen + ".\n"
+                                                 + "Empty input on channel " + i);
+            }
+            Token token = input.get(i);
             boolean isClose;
             try {
                 isClose =
@@ -231,18 +231,18 @@ public class Test extends Sink {
                 // Chain the exceptions together so we know which test
                 // actor failed if there was more than one...
                 throw new IllegalActionException(this, ex,
-						 "Test fails in iteration " + _numberOfInputTokensSeen
-						 + ".\n"
-						 + "Value was: " + token
-						 + ". Should have been: " + reference[i]);
+                                                 "Test fails in iteration " + _numberOfInputTokensSeen
+                                                 + ".\n"
+                                                 + "Value was: " + token
+                                                 + ". Should have been: " + reference[i]);
             }
 
-	    if (!isClose) {
-		throw new IllegalActionException(this,
-						 "Test fails in iteration " + _numberOfInputTokensSeen
-						 + ".\n"
-						 + "Value was: " + token
-						 + ". Should have been: " + reference[i]);
+            if (!isClose) {
+                throw new IllegalActionException(this,
+                                                 "Test fails in iteration " + _numberOfInputTokensSeen
+                                                 + ".\n"
+                                                 + "Value was: " + token
+                                                 + ". Should have been: " + reference[i]);
             }
         }
         _numberOfInputTokensSeen++;
@@ -256,7 +256,7 @@ public class Test extends Sink {
     protected int _numberOfInputTokensSeen = 0;
 
     /** A double that is read from the <i>tolerance</i> parameter
-     *	specifying how close the input has to be to the value
+     *        specifying how close the input has to be to the value
      *  given by <i>correctValues</i>.  This is a double, with default
      *  value 10<sup>-9</sup>.
      */
