@@ -1348,6 +1348,8 @@ public class SootUtilities {
      *  to an underscores. 
      *  This method does not check that the returned string is a 
      *  keyword or literal.
+     *  Note that two different strings can sanitize to the same
+     *  string.
      *  @param name A string with spaces and other characters that
      *  cannot be in a Java name.
      *  @returns A String that follows the Java identifier rules
