@@ -36,7 +36,9 @@ DIRS =		test
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# JDK1.2.2 requires that we include $(SOOT_CLASSES) or we get:
+#error: Class soot.SceneTransformer not found in nested class ptolemy.copernicus.kernel.KernelMain. _IgnoreAllApplicationClasses.
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
