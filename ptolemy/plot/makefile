@@ -423,7 +423,7 @@ fixtmpdist:
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
 	-chmod -R a+rX $(PTTMPME)
-
+	find $(PTTMPDIR)/$(PTDIST)/doc -name CVS -ls -exec rm {} \;
 
 ISPMP_PROJECT_DIR= [cC]:\\users\\cxh\\ptII\\adm\\trees\\ptII1.0beta\\ptolemy\\plot
 ISPMP_WINDOWS_SRC= $(ISPMP_PROJECT_DIR)\\adm\\tmp\\$(PTDIST)
