@@ -93,15 +93,15 @@ public class UnitSystem extends ScopeExtendingAttribute {
      */
     public static void addUnitCategory(UnitCategory category) {
 
-	Integer index = (Integer)_indexTable.get(category);
-	if (index != null) {
+        Integer index = (Integer)_indexTable.get(category);
+        if (index != null) {
             return;
-	} else {
-	    index = new Integer(_categories);
-	    _indexTable.put(category, index);
+        } else {
+            index = new Integer(_categories);
+            _indexTable.put(category, index);
             ++_categories;
             _categoryVector.add(category);
-	}
+        }
     }
 
     /** Return the name of the base unit of the specified category.
@@ -109,9 +109,9 @@ public class UnitSystem extends ScopeExtendingAttribute {
      *  @return The name of the base unit of the category.
      */
     public static String getBaseUnitName(int categoryIndex) {
-	if (categoryIndex < 0 || categoryIndex >= _categories) {
-	    return "unknown";
-	} else {
+        if (categoryIndex < 0 || categoryIndex >= _categories) {
+            return "unknown";
+        } else {
             UnitCategory category =
                     (UnitCategory)_categoryVector.elementAt(categoryIndex);
             if (category != null) {
@@ -119,7 +119,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
             } else {
                 return "unknown";
             }
-	}
+        }
     }
 
     /** Return the index assigned to the specified unit category.
@@ -127,13 +127,13 @@ public class UnitSystem extends ScopeExtendingAttribute {
      *  @return The index assigned to the category.
      */
     public static int getUnitCategoryIndex(UnitCategory category) {
-	Integer index = (Integer)_indexTable.get(category);
-	if (index == null) {
-	    //FIXME: throw an exception?
-	    return -1;
-	} else {
-	    return index.intValue();
-	}
+        Integer index = (Integer)_indexTable.get(category);
+        if (index == null) {
+            //FIXME: throw an exception?
+            return -1;
+        } else {
+            return index.intValue();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

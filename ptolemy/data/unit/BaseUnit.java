@@ -97,21 +97,21 @@ public class BaseUnit extends Parameter {
      *   and there are variables that depend on this one.
      */
     public Token getToken() throws IllegalActionException {
-	Token token = super.getToken();
-	if (token != _token) {
-	    Iterator attributes =
+        Token token = super.getToken();
+        if (token != _token) {
+            Iterator attributes =
                     attributeList(UnitCategory.class).iterator();
-	    if (attributes.hasNext()) {
-		UnitCategory category = (UnitCategory)attributes.next();
-		int index =
+            if (attributes.hasNext()) {
+                UnitCategory category = (UnitCategory)attributes.next();
+                int index =
                         UnitSystem.getUnitCategoryIndex(category);
-		if (index >= 0) {
-		    ((ScalarToken)token).setUnitCategory(index);
-		}
-	    }
-	    _token = token;
-	}
-	return _token;
+                if (index >= 0) {
+                    ((ScalarToken)token).setUnitCategory(index);
+                }
+            }
+            _token = token;
+        }
+        return _token;
     }
 
     ///////////////////////////////////////////////////////////////////
