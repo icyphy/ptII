@@ -57,7 +57,7 @@ set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
 ######################################################################
 ####
 #
-test DDEDirector-2.1 {Check compositionality} {
+test DDEDirector-2.1 {Test of simple composite actor with ports} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
@@ -68,8 +68,6 @@ test DDEDirector-2.1 {Check compositionality} {
     
     # Assign Directors/Managers
     $toplevel setManager $mgr
-    # $toplevel setDirector $topdir
-    # $wormhole setDirector $wormdir
     
     # Instantiate Actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
@@ -110,3 +108,39 @@ test DDEDirector-2.1 {Check compositionality} {
 
 } {5.0 15.0 25.0}
 
+######################################################################
+####
+#
+test DDEDirector-3.1 {Portless composite actor contained in a composite actor} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
+    $toplevel setName "toplevel"
+    set topleveldir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topleveldir"]
+    set wormholedir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormholedir"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    
+    # $toplevel setDirector $topleveldir
+    $toplevel setManager $mgr
+    
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $wormhole "actorRcvr" 3]
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $wormhole "actorSend" 3]
+
+    set tok1 [java::new ptolemy.data.Token]
+    $actorSend setToken $tok1 5.0 0 
+    $actorSend setToken $tok1 15.0 1
+    $actorSend setToken $tok1 25.0 2
+
+    set ioprcvr [$actorRcvr getPort "input"]
+    set iopsend [$actorSend getPort "output"]
+    set rel [$wormhole connect $ioprcvr $iopsend "rel"]
+
+    $mgr run
+
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
+    set time2 [$actorRcvr getAfterTime 2]
+
+    list $time0 $time1 $time2
+
+} {5.0 15.0 25.0}
