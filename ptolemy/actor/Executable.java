@@ -57,12 +57,24 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * This method is called to request the return of execution control
+     * to the . When this method is called, control should be 
+     * returned to the executive director or manager that is controlling
+     * this object. This method is
+     * intended to ensure that actors with unbounded execution in the
+     * fire method
+     * can be made to relenquish execution control back to the manager.
+     */
+    // public void endfire(); 
+    
     /** This fires an actor and may be invoked several times between
-     *  invocations of prefire() and postfire(). It may produce output
-     *  data. Typically, the fire() method performs the computation associated
-     *  with an actor. In general, the fire method should avoid updating the 
-     *  internal state of the actor (which should be done in postfire,
-     *  instead).
+     *  invocations of prefire() and postfire(). Output data may
+     *  (and normally will) be produced during the fire method. 
+     *  Typically, the fire() method performs the computation associated
+     *  with an actor. This method is not required to have bounded 
+     *  execution.  However, after endFire() is called, this method should
+     *  return in bounded time.
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
@@ -82,7 +94,7 @@ public interface Executable {
      *  It returns true if the execution can proceed into the next iteration.
      *  This method typically wraps up an iteration, which may involve
      *  updating local state. In an opaque, non-atomic entity, it may also
-     *  transfer output data.
+     *  transfer output data. The execution of this method should be bounded.
      *
      *  @return True if the execution can continue.
      *  @exception IllegalActionException If postfiring is not permitted.
@@ -95,6 +107,7 @@ public interface Executable {
      *  this method will typically check preconditions for an iteration, if
      *  there are any. In an opaque, non-atomic entity,
      *  it may move data into an inner subsystem.
+     *  The execution of this method should be bounded.
      *
      *  @return True if the iteration can proceed.
      *  @exception IllegalActionException If prefiring is not permitted.
@@ -118,10 +131,11 @@ public interface Executable {
      */
     public void terminate();
 
-    /** This method should be invoked exactly once per execution
+    /** This method is invoked exactly once per execution
      *  of an application.  None of the other action methods should be
      *  be invoked after it.  It finalizes an execution, typically closing
-     *  files, displaying final results, etc.
+     *  files, displaying final results, etc.  When this method is called, 
+     *  no further execution should occur.  
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */

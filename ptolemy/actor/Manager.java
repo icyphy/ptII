@@ -46,36 +46,37 @@ import java.util.Date;			// For timing measurements
 //// Manager
 /**
 A Manager is a domain-independent object that manages the execution of
-a model.   It provides several methods to control execution with: run()
+a model.   It provides several methods to control execution: run()
 startRun(), pause(), resume(), terminate(), and finish().
 Most often, methods in this object will be called by a
 graphical user interface.  However, it is possible to manually call
 these methods from a java object, a java applet, or an interactive
 prompt, such as Tcl Blend.
+<p>
 Because user interaction will likely be occurring asynchronously to the
 execution of the model, it is important that all the processing for the
-model occur in a separate thread.   The Manager is responsible for creating
-and managing the Java thread in which execution begins, although some
-domains may spawn additional threads of their own.
+model occur in a separate thread.   The Manager has the ability to start 
+executing a model in the current model, or it can create
+and manage a separate Java thread in which execution begins.  Notice that 
+this does not preclude domains from spawning additional threads of their own.  
 <p>
-Note that the Manager class implements the Runnable interface with the run()
-method implements the execution of the model. The run() method call is a
+The Manager class implements the Runnable interface.   The run() method of 
+interface begins the the execution of a model. The run() method call is a
 blocking method call, in the sense that the flow of execution will be returned
 to the caller only after the run() method finishes. On the other hand, the
 startRun() method call is a non-blocking method call. It creates a separate
 thread running the execution and the flow of execution will be returned
-immediately to the caller.
+immediately to the caller.  Notice that because the Manager is a runnable
+object, execution can also be started in a separate thread using the 
+Thread(Runnable) constructor.
 <p>
 Manager also tries to optimize the simulation by making the workspace
-<i>write-protected</i> during the iteration period when all the
-directors 'agree'.
-Calling getReadAccess() and doneReading() on a <i>write-protected</i>
-workspace will return immediately (No writer, no problem). On the other hand,
-calling getWriteAccess() and doneWriting() on a <i>write-protected</i>
-workspace will result in an exception being thrown, so don't write-protect the
-workspace if write access will ever be needed. A domain-specific director, by
-default, will not 'agree' to have the workspace write-protected. To override
-the default behaviour, override the Director._writeAccessPreference() method.
+read-only during the iteration period when none of the 
+directors in the model require write access. It calls needWriteAccess() on 
+the director of the toplevel composite, and if this method returns false, 
+then the manager will set the workspace to be read-only during each iteration
+of the system.  Notice that although the workspace is read-only, mutations 
+may still occur, if they are queued with the manager.
 
 @author Steve Neuendorffer, Lukito Muliadi
 // Contributors: Mudit Goel, Edward A. Lee, John S. Davis II
@@ -110,7 +111,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
-     *  @param workspace Object for synchronization and version tracking
+     *  @param workspace Object for synchronization and version tracking.
      *  @param name Name of this Manager.
      */
     public Manager(Workspace workspace, String name) {
@@ -122,10 +123,10 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the ExecutionListener to the set of ExecutionListeners.
-     *  The ExecutionListener will be notified when the appropriate
-     *  ExecutionEvents occur.
-     *  @param an ExecutionListener
+    /** Add the execution listener to the set of execution listeners.
+     *  The execution listener will be notified when the appropriate
+     *  execution events occur.
+     *  @param el An execution listener.
      */
     public void addExecutionListener(ExecutionListener el) {
         if(el == null) return;
@@ -138,24 +139,25 @@ public final class Manager extends NamedObj implements Runnable {
      *  with respect to other methods in Manager that control the simulation 
      *  thread. This method is non-blocking.
      */
-    public synchronized void finish() {
-        _keepIterating = false;
-        _isPaused = false;
-	getToplevel().finish();
-        if(_simulationThread != null) {
-            synchronized(_simulationThread) {
-                _simulationThread.notify();
+    public void finish() {
+        synchronized(this) {
+            _keepIterating = false;
+            _isPaused = false;
+            getToplevel().finish();
+            if(_simulationThread != null) {
+                synchronized(_simulationThread) {
+                    _simulationThread.notify();
+                }
             }
         }
     }
 
-    /** Encapsulate the Exception with an ExecutionEvent and call
-     *  ExecutionError in all the ExecutionListeners.   If there are
-     *  no ExecutionListeners, then print the exception's stack trace on
-     *  the console.
+    /** Encapsulate the exception within an execution event and issue an
+     *  executionError event to all the Execution listeners.   In 
+     *  addition, print the exception's stack trace on the console.
      *
-     *  @param e The Exception
-     **/
+     *  @param e The exception.
+     */
     public void fireExecutionError(Exception e) {
         // if any exceptions get up to this level, then we have to tell
         // the gui by encapsulating in an event.
@@ -170,7 +172,7 @@ public final class Manager extends NamedObj implements Runnable {
     /** Return the toplevel composite actor for which this manager
      *  controls execution.   This composite actor does not have a parent, and
      *  contains the entire hierarchy for an execution.
-     *  @return The CompositeActor that this Manager is responsible for.
+     *  @return The composite actor that this manager is responsible for.
      */
     public CompositeActor getToplevel() {
         return _toplevel;
@@ -187,7 +189,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  execution pause at the next available opportunity between toplevel
      *  iterations.   When the pause flag is detected, the
      *  simulation thread will suspend itself and issue the
-     *  ExecutionPaused ExecutionEvent to all ExecutionListeners.
+     *  executionPaused execution event to all execution listeners.
      *  This thread is synchronized so that it runs atomically with respect to
      *  the other methods in manager that control the simulation thread.
      *  This call is non-blocking.
@@ -196,10 +198,10 @@ public final class Manager extends NamedObj implements Runnable {
         if(_keepIterating) _isPaused = true;
     }
 
-    /** Remove the ExecutionListener to the set of ExecutionListeners.
-     *  The ExecutionListener will be no longer be notified when
-     *  ExecutionEvents occur.
-     *  @param an ExecutionListener
+    /** Remove the execution listener from the set of execution listeners.
+     *  The execution listener will be no longer be notified when
+     *  execution events occur.
+     *  @param el An execution listener
      */
     public void removeExecutionListener(ExecutionListener el) {
         if(el == null) return;
@@ -209,9 +211,9 @@ public final class Manager extends NamedObj implements Runnable {
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
-     *  This method is write-synchronized on the workspace.
-     *  @exception TypeConflictException If type conflict is detected in
-     *   the containing TypedCompositeActor.
+     *  This method requires write access on the workspace.
+     *  @exception TypeConflictException If there is a type conflict anywhere
+     *  in the model.
      */
     public void resolveTypes()
 	    throws TypeConflictException {
@@ -291,12 +293,11 @@ public final class Manager extends NamedObj implements Runnable {
      *  the other methods in manager that control the simulation thread.
      */
     public synchronized void resume() {
+        if(_simulationThread == null) return;
         if(_keepIterating && _isPaused) {
             _isPaused = false;
-            if(_simulationThread != null) {
-                synchronized (_simulationThread) {
-                    _simulationThread.notify();
-                }
+            synchronized (_simulationThread) {
+                _simulationThread.notify();
             }
         }
     }
@@ -310,45 +311,39 @@ public final class Manager extends NamedObj implements Runnable {
      * If postfire returns false, then execution is finished by calling
      * wrapup() on the toplevel composite actor to clean up the execution.
      * <p>
-     * The execution is performed by the
-     * current thread. I.e. The execution is performed in 'foreground' and
+     * The execution is performed by the current thread. In other words, 
+     * execution is performed in the foreground and
      * the method returns only after the execution finishes.  However, it is
      * possible for other threads to come in and pause(), resume(),
      * terminate() or finish() the execution of the simulation.
-     * To start the simulation in 'background', use the startRun() method.
-     * startRun() creates a new thread which executes this run() method and
-     * then returns immediately.
+     * To start execution in the background, use the startRun() method.
+     * <p> 
+     * If execution of the model is already in progress, then this method 
+     * returns immediately.
+     * @see Manager#startRun()
      */
     public void run() {
+        // ensure that we only have one execution running.
+        synchronized(this) {
+            if (_simulationThread == null) {
+                // set the execution control variables.
+                 _simulationThread = Thread.currentThread();
+                 _keepIterating = true;
+                 _isPaused = false;
+                 _iteration = 0;
+                 _typeResolved = false;
+            } else {
+                System.out.println("The model is already executing. " + 
+                        "Either wait for it to end, or call " +
+                        "finish() or terminate().");
+                return;
+            }
+        }
+
         // Used for profiling;
         long startTime = (new Date()).getTime();
 
-        if (_simulationThread == null) {
-            // If the simulation is started by calling the run() method
-            // (as opposed to calling the startRun() method) then
-            // _simulationThread will not be initialized, i.e. equal to null.
-            _simulationThread = Thread.currentThread();
-        } else {
-            System.out.println("There's already a thread running the " +
-                    "simulation. Either wait for it to end, or call " +
-                    "terminate() or finish().");
-            return;
-        }
-
         CompositeActor toplevel = ((CompositeActor)getToplevel());
-
-        // ensure that we only have one execution running.
-        synchronized(this) {
-            // Check if the execution is still iterating.
-            if(_keepIterating) {
-                System.out.println("The simulation is still iterating.");
-                return;
-            }
-            _keepIterating = true;
-            _isPaused = false;
-            _iteration = 0;
-	    _typeResolved = false;
-        }
 
         // Notify all the listeners that execution has started.
         ExecutionEvent event = new ExecutionEvent(this);
@@ -367,7 +362,6 @@ public final class Manager extends NamedObj implements Runnable {
                 // _keepIterating is set to false (presumably by stop())
                 // postfire() returns false.
                 while (_keepIterating && _iterate()) {
-
                     try {
                         // if a pause has been requested
                         if(_isPaused) {
@@ -375,12 +369,14 @@ public final class Manager extends NamedObj implements Runnable {
                             event =
                                 new ExecutionEvent(this, _iteration);
                             _fireExecutionEvent(
-                                    _ExecutionEventType.EXECUTIONPAUSED, event);
+                                    _ExecutionEventType.EXECUTIONPAUSED, 
+                                    event);
 
                             synchronized (_simulationThread) {
                                 // suspend this thread until
                                 // somebody wakes us up.
-                                while(_isPaused)
+                                while(_keepIterating && 
+                                        _isPaused)
                                     _simulationThread.wait();
                             }
 
@@ -424,44 +420,49 @@ public final class Manager extends NamedObj implements Runnable {
             fireExecutionError(e);
         }
 
-        // The simulation is finished, the thread has finished its job.
-        _simulationThread = null;
-
         long endTime = (new Date()).getTime();
         System.out.println("ptolemy.actor.Manager run(): elapsed time: "
                 + (endTime - startTime) + " ms");
+
+        // The simulation is finished, the thread has finished its job.
+        _simulationThread = null;
+
     }
 
     /** Start an execution that will run for an unspecified number of
      *  toplevel iterations.   This will normally be stopped by
      *  calling finish(), terminate(), or returning false in a postfire method.
-     *  This method is non-blocking, i.e. it runs on 'background'
-     *  <p>
-     *  If this method is called while the simulation is still running, then
-     *  the call is 'buffered' and the simulation will rerun itself
-     *  immediately after the current running simulation ends. Since this
-     *  method is synchronized, it is not possible to call this method
-     *  while there is a 'buffered' run request.
+     *  This method is non-blocking.  In other words, the execution of the
+     *  model occurs in the background.  The effect of this method is call the
+     *  run method in a separate thread.
+     * <p> 
+     * If execution of the model is already in progress, then this method 
+     * returns immediately.
      *  @see Manager#run()
      */
     public synchronized void startRun() {
 
-        if(_keepIterating) return;
-
-        // If the previous run hasn't totally finished yet, then be sure
-        // it is good and dead before continuing.
-
-        if(_simulationThread != null) {
-            _simulationThread.stop();
-            try {
-                _simulationThread.join();
-            }
-            catch (InterruptedException e) {
-                // Well, if we bothered to kill it, then this should
-                // always get thrown, so just ignore it.
-            }
-            _simulationThread = null;
-        }
+     /*
+      *    I've commented this stuff out because it's bogus... I want
+      *    to see if anything breaks.
+      *  if(_keepIterating) return;
+      *
+      *  // If the previous run hasn't totally finished yet, then be sure
+      *  // it is good and dead before continuing.
+      *
+      *  if(_simulationThread != null) {
+      *      _simulationThread.stop();
+      *      try {
+      *          _simulationThread.join();
+      *      }
+      *      catch (InterruptedException e) {
+      *          // Well, if we bothered to kill it, then this should
+      *          // always get thrown, so just ignore it.
+      *      }
+      *      _simulationThread = null;
+      *  }
+      */
+        // This will execute Manager.run() in a separate thread.
         Thread futureRunningThread = new PtolemyThread(this);
         futureRunningThread.start();
     }
@@ -481,48 +482,51 @@ public final class Manager extends NamedObj implements Runnable {
      *  <p>
      *  In this class, we kill the main execution thread and call 
      *  terminate on the toplevel compositeActor. Execution listeners are 
-     *  also notified that execution was terminated.
+     *  also notified of an executionTerminated event.
      *  <p>
      *  This method is not synchronized because we want it to
      *  happen as soon as possible, no matter what.
      */
     public void terminate() {
-
-        // kill the main thread and wait for it to die.
-        if(_simulationThread != null) {
-            _simulationThread.stop();
-            try {
-                _simulationThread.join();
+        try {
+            // kill the main thread and wait for it to die.
+            if(_simulationThread != null) {
+                _simulationThread.stop();
+                try {
+                    _simulationThread.join();
+                }
+                catch (InterruptedException e) {
+                    // This will usually get thrown, since we are
+                    // forcibly terminating
+                    // the thread.   We just ignore it.
+                }
             }
-            catch (InterruptedException e) {
-                // This will usually get thrown, since we are
-                // forcibly terminating
-                // the thread.   We just ignore it.
-            }
-            _simulationThread = null;
+            // Terminate the entire hierarchy as best we can.
+            CompositeActor toplevel = ((CompositeActor)getToplevel());
+            toplevel.terminate();
+            
+            // notify all execution listeners that execution was terminated.
+            ExecutionEvent event = new ExecutionEvent(this);
+            _fireExecutionEvent(_ExecutionEventType.EXECUTIONTERMINATED, 
+                    event);
         }
-        // Terminate the entire hierarchy as best we can.
-        CompositeActor toplevel = ((CompositeActor)getToplevel());
-        toplevel.terminate();
-
-        // notify all execution listeners that execution was terminated.
-        ExecutionEvent event = new ExecutionEvent(this);
-        _fireExecutionEvent(_ExecutionEventType.EXECUTIONTERMINATED, event);
-
-        _keepIterating = false;
-        _isPaused = false;
+        finally {
+                _simulationThread = null;
+                _keepIterating = false;
+                _isPaused = false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Make this Manager the Manager of the specified composite
-     *  actor. If the CompositeActor is not null, then the Manager is 
-     *  removed from the directory of the workspace.  If the CompositeActor
-     *  is null, then the MAnager is *not* returned to the directory of the
+    /** Make this manager the manager of the specified composite
+     *  actor. If the composite actor is not null, then the manager is 
+     *  removed from the directory of the workspace.  If the composite actor
+     *  is null, then the mnager is <b>not</b> returned to the directory of the
      *  workspace, which may result in it being garbage collected.
      *  This method should not be called directly.  Instead, call
-     *  setManager of the CompositeActor class (or a derived class).
+     *  setManager in the CompositeActor class (or a derived class).
      */
     protected void _makeManagerOf(CompositeActor ca) {
         if (ca != null) {
@@ -556,7 +560,6 @@ public final class Manager extends NamedObj implements Runnable {
                 l.executionTerminated(event);
             else if(type == _ExecutionEventType.ITERATIONSTARTED)
                 l.executionIterationStarted(event);
-
         }
     }
 
@@ -569,7 +572,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  returns false, then the execution will be terminated.
      *  This method is read-synchronized on the workspace.
      *
-     *  @return True if postfire() returns true.
+     *  @return true, If postfire() returns true.
      *  @exception IllegalActionException If any of the called methods
      *   throws it.
      */
@@ -674,33 +677,38 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The toplevel CompositeActor that contains this Manager
+    // The toplevel composite actor that contains this manager, and
+    // that this manager is responsible for executing.
     private CompositeActor _toplevel = null;
 
-    // indicate whether the execution should keep iterating.
-    // This flag is set to false to indicate an early end. The execution will
-    // progress until the end of this iteration and that's it.
+    // Indicate whether the execution should keep iterating.
+    // This flag is set to false when finish is called.  If this flag is
+    // false at the end of an iteration, then execution will wrapup.
     private boolean _keepIterating;
 
-    // a flag to request that simulation is paused.
+    // A flag to request a pause in execution.  If this flag is true
+    // at the start of a toplevel iteration, then pause the execution thread
+    // until the flag becomes false again.
     private boolean _isPaused;
 
-    // Count the number of iterations completed.
+    // Count the number of toplevel iterations completed.
     private int _iteration;
 
-    // A flag to indicate whether the workspace will be read-only during
+    // A flag to indicate if the workspace should be set read-only during
     // an iteration (i.e. during prefire(), fire() and postfire()).
     private boolean _needWriteAccessDuringIteration;
 
     // _simulationThread is the thread that's executing the run() method.
-    // It should be non-null whenever the simulation is still running (i.e.
-    // the run() method hasn't finish yet) and should be set to null after
-    // simulation ends.
+    // It should be non-null whenever the model is executing (i.e.
+    // the run() method hasn't finished yet) and should be set to null after
+    // execution ends.
     private Thread _simulationThread;
 
-    // Listeners for ExecutionEvent.
+    // Listeners for execution events.
     private HashedSet _ExecutionListeners;
 
-    // An indicator of whether type resolution needs to be done.
+    // An indicator of whether type resolution is valid.  If the flag is 
+    // false at the start of a toplevel iteration, then type resolution will
+    // be executed again.
     private boolean _typeResolved = false;
 }
