@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.math.SignalProcessing;
+import ptolemy.math.SampleGenerator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RaisedCosine
@@ -189,17 +190,18 @@ public class RaisedCosine extends FIR {
         if(len <= 0) {
             throw new IllegalActionException(this, "Invalid length");
         }
-        double[][] tps = new double[1][len];
-        int center = len/2;
-        for (int i = 0; i < len; i++) {
-            if (sqrt) {
-                tps[0][i] = SignalProcessing.sqrtRaisedCosine(i - center,
-                        inter, ebw);
-            } else {
-                tps[0][i] = SignalProcessing.raisedCosine(i - center,
-                        inter, ebw);
-            }
-        }
+
+        double [][] tps = new double[1][];
+        double center = len * 0.5;
+
+        SampleGenerator rcSg = sqrt ? 
+         (SampleGenerator) 
+         new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
+         (SampleGenerator)
+         new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
+
+        tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
+
         taps.setToken(new DoubleMatrixToken(tps));
         super.initialize();
     }
