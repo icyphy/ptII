@@ -355,8 +355,10 @@ public class InterfaceAutomaton extends FSMActor {
      *  <p>
      *  For input and output transitions, this method also renames the ports
      *  associated with the renamed transitions, if these ports are created
-     *  already. For internal transitions, this method renames the parameter
-     *  associated with the renamed transition.
+     *  already. This is done regardless of whether there are instances of
+     *  transitions that correspond to the ports. For internal transitions,
+     *  this method renames the parameter associated with the renamed
+     *  transition.
      *  @param nameMap A map between the old and the new label names.
      *  @exception IllegalActionException If the new name is not legal.
      *  @exception NameDuplicationException If the requested name change will
@@ -392,6 +394,18 @@ public class InterfaceAutomaton extends FSMActor {
                 }
             }
         }
+
+	// for ports that do not have corresponding transitions, rename the
+	// ports
+        iterator = portList().iterator();
+	while (iterator.hasNext()) {
+	    TypedIOPort port = (TypedIOPort)iterator.next();
+	    String oldName = port.getName();
+	    String newName = (String)nameMap.get(oldName);
+	    if (newName != null) {
+	        port.setName(newName);
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
