@@ -34,18 +34,8 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source ../../../util/testsuite/testDefs.tcl
+    source testDefs.tcl
 } {}
-
-# Load up Tcl procs to print out enums
-if {[info procs _testEntityLinkedRelations] == "" } then { 
-    source ../../../util/testsuite/testEnums.tcl
-}
-
-if {[info procs enumToFullNames] == "" } then { 
-    source ../../../util/testsuite/enums.tcl
-}
-
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1

@@ -34,16 +34,9 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source ../../../util/testsuite/testDefs.tcl
+    source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then { 
-     source ../../../util/testsuite/enums.tcl
-}
-
-if {[info procs description2TclBlend] == "" } then { 
-     source ../../../util/testsuite/description.tcl
-}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
