@@ -29,8 +29,9 @@ package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.Mutation; // FIXME: this will change to kernel.event
+import ptolemy.kernel.event.*;
 import ptolemy.data.*;
+
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -194,23 +195,18 @@ public class ProcessDirector extends Director {
         return true;
     }
 
-    /** Add a mutation object to the mutation queue. These mutations
-     *  are executed when the _performMutations() method is called,
-     *  which in this class is in the fire() method.  This method
-     *  also arranges that the director gets notified of queueing of new 
-     *  mutations.
-     *  <p>
-     *  This method should be called only if the mutations are to be performed
-     *  immediately.
-     *  <p> FIXME: why does this method need readAccess
-     *  FIXME: this will change to use TopologyChangeRequest.
+    /** Request the director to process topology change requests
+     *  immediately. This should be called by clients that have
+     *  queued a request and require that the request be processed
+     *  immediately. The method does not return until requests
+     *  have been processed.
      *
-     *  @param mutation A object with a perform() and update() method that
-     *   performs a mutation and informs any listeners about it.
+     *  <p> FIXME: why does this method need readAccess?
+     *  <p> FIXME: why doesn't this throw TopologyChangeFailedException?
+     *
      */
-    public void queueMutation(Mutation mutation) {
+    public void processTopologyRequests() {
 	try {
-	    super.queueMutation(mutation);
 	    setPause();
 	    synchronized(this) {
 		_urgentMutations = true;
@@ -220,6 +216,7 @@ public class ProcessDirector extends Director {
 	    System.err.println(e.toString());
 	}
     }
+
     /** Pause the simulation. This method iterates through the set of 
      *  actors in the compositeActor and sets the pause flag of all 
      *  the receivers. It also sets the pause flag in all the output 
@@ -454,88 +451,11 @@ public class ProcessDirector extends Director {
     private LinkedList _threadList = new LinkedList();
 
     private boolean _pause = false;
-    private boolean _paused = false;
-    private boolean _mutate = true;
-    
     private boolean _simulationFinished = true;
-    
-    private boolean _terminate = false;
     private boolean _urgentMutations = false;
 
     private LinkedList _pausedReceivers = new LinkedList();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
