@@ -71,19 +71,10 @@ test FileUtilities-1.2 {binaryCopyURLToFile URL does not exist} {
     set fileExists0 [file exists doesnotexist]
     catch {java::call ptolemy.util.FileUtilities binaryCopyURLToFile \
 	       $sourceURL $destinationFile} errMsg
+    regsub {Exception:.*doesnot} $errMsg {Exception: ./doesnot} r2
 
-    # Windows vs. Unix	
-    if { "[java::field  java.io.File separator]" == "/" } {
-        set results [expr { "$errMsg" == \
-	    "java.io.FileNotFoundException: ./doesnotexist (No such file or directory)"}]
-
-    } else {
-        set results [expr { "$errMsg" == \
-	    "java.io.FileNotFoundException: .\doesnotexist (The system cannot find the file specified)"}]
-
-    }	
-    list $fileExists0 $results
-} {0 1}
+    list $fileExists0 $r2
+} {0 {java.io.FileNotFoundException: ./doesnotexist (The system cannot find the file specified)}}
 
 
 ######################################################################
