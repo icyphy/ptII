@@ -52,7 +52,15 @@ If the parameter is set from an expression, PtParser is used to generate
 a parse tree from the expression which can then be evaluated to a token.
 <p>
 The type of a Parameter is set by the first non-null Token placed in it.
-The type can be changed later via a method call. However the
+The type of the Token returned by getType() is the same as the type of 
+the Parameter. Thus even if a Parameter contains an IntToken, a 
+DoubleToken will be returned if the type of the Parameter is DoubleToken.
+The actual token contained by the Parameter is obtained by calling 
+getContainedToken(). The distinction between the Token contained by the 
+Parameter and the Token returned by getToken() is only in the type of 
+the Token: the data value will always be the same.
+<p>
+The type of a Parameter can be changed later via a method call. However the
 new type for the parameter must be able to contain the previous token.
 At any stage a new Token or expression can be given to the Parameter. The type
 of the new/resulting Token is checked to see if it can be converted to
@@ -70,13 +78,10 @@ appropriate container and name, then call setExpression() to set its value.
 <p>
 A Parameter can also be reset. If the Parameter was originally set from a
 Token, then this Token is placed again in the Parameter. If the Parameter
- was originally given an expression, then this expression is placed again
+was originally given an expression, then this expression is placed again
 in the Parameter and evaluated. Note that the type of the Token resulting
 from reset must be compatible the current Parameter type.
 <p>
-FIXME: this class comment needs to be cleaned up.
-<p>
-
 @author Neil Smyth
 @version $Id$
 @see ptolemy.kernel.util.Attribute
@@ -178,13 +183,7 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Parameter newobj = (Parameter)super.clone(ws);
-        if (_paramType != null) {
-            try {
-                newobj._paramType = (Class)_paramType.newInstance().getClass();
-            } catch (Exception ex) {
-                // do nothing as must be able to get a new instance
-            }
-        }
+        newobj._castToken = null;
         newobj._currentExpression = _currentExpression;
         newobj._dependencyLoop = false;
         newobj._initialExpression = _initialExpression;
@@ -192,6 +191,7 @@ public class Parameter extends Attribute implements ParameterListener {
         newobj._needsEvaluation = true;
         newobj._noTokenYet = _noTokenYet;
         newobj._origToken = _origToken;
+        newobj._paramType = _paramType;
         newobj._parser = null;
         newobj._parseTree = null;
         newobj._scope = null;
@@ -246,11 +246,12 @@ public class Parameter extends Attribute implements ParameterListener {
 			"reached a point which should not be reached.");
 	    }
 	    _token = _parseTree.evaluateParseTree();
+            _castToken = null;
 	    if (_noTokenYet) {
 		// This is the first token stored in this parameter.
 		_initialExpression = _currentExpression;
 		_noTokenYet = false;
-		setType(_token.getClass());
+		setType(_token);
 		// don't need to check type as first token in
 	    } else {
 		_checkType(_token);
@@ -260,6 +261,21 @@ public class Parameter extends Attribute implements ParameterListener {
 	    _dependencyLoop = false;
 	    workspace().doneReading();
 	}
+    }
+
+    /** Get the Token contained by this Parameter. It may be null. 
+     *  The token is not converted to the type of this Parameter.
+     *  @return The token contained by this parameter.
+     */
+    public ptolemy.data.Token getContainedToken() {
+        try {
+            if (_needsEvaluation) {
+                evaluate();
+            }
+        } catch (IllegalArgumentException ex) {
+            _token = null;
+        }
+        return _token;
     }
 
     /** Obtain a NamedList of the parameters that the value of this
@@ -325,8 +341,13 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
-    /** Get the Token this Parameter contains. It may be null.
-     *  @return The token contained by this parameter.
+    /** Get the Token this Parameter contains converted to the type of 
+     *  the Parameter. It may be null. This means that if the parameter 
+     *  is of type DoubleToken, and the Token currently contained by the 
+     *  Parameter if of type IntToken, then the IntToken is converted to 
+     *  a DoubleToken and this object is returned.
+     *  @return The token contained by this parameter converted to the 
+     *   type of this Parameter..
      */
     public ptolemy.data.Token getToken() {
         try {
@@ -336,14 +357,40 @@ public class Parameter extends Attribute implements ParameterListener {
         } catch (IllegalArgumentException ex) {
             _token = null;
         }
-        return _token;
+        if (_token == null) {
+            _castToken = null;
+        } else if (_castToken == null) {
+            // Need to convert the token contained by this parameter to
+            // the type of the Parameter.
+            if (_paramType == null) {
+                _castToken = null;
+            } else {
+                try {
+                    Object[] arg = new Object[1];
+                    arg[0] = _token;
+                    Object t = _convertMethod.invoke(null, arg);
+                    _castToken = (ptolemy.data.Token)t;
+                } catch (java.lang.reflect.InvocationTargetException e) {
+                    throw new InternalErrorException("Convert method failed:" +
+                            e.getTargetException().getMessage() +
+                            e.getTargetException().getClass().getName());
+                } catch (Exception e) {
+                    // Cannot happen: types should have already been checked.
+                    throw new InternalErrorException("Parameter.getToken: " +
+                            "could not convert Token contained by this " +
+                            "Parameter into the type of this Parameter." +
+                            e.getMessage() + e.getClass().getName());
+                }
+            }
+        }        
+        return _castToken;
     }
 
     /** Get the type of this Parameter. It may be null.
      *  @return The type of this parameter.
      */
     public Class getType() {
-        return _paramType;
+        return _paramType.getClass();
     }
 
     /** A Parameter which the expression in this Parameter references
@@ -489,21 +536,32 @@ public class Parameter extends Attribute implements ParameterListener {
      *   in this parameter.
      */
     public void setToken(ptolemy.data.Token token)
-          throws IllegalArgumentException {
+            throws IllegalArgumentException {
+        // Only change the Token stored in this Parameter if the type 
+        // of the new Token is compatible with the type of this Parameter.
+        ptolemy.data.Token prev = _token;
         _token = token;
+        try {
+            _checkType(_token);
+        } catch (IllegalArgumentException e) {
+            _token = prev;
+            throw e;
+        }
+
+        // New Token is compatible.
+        if ( (_token != null) && (_noTokenYet) ) {
+            _origToken = _token;
+            _noTokenYet = false;
+            setType(_token);
+        } 
         if (_parseTree != null) {
             _clearDependencies(_parseTree);
             _parseTree = null;
         }
+        _castToken = null;
         _currentExpression = null;
         _needsEvaluation = false;
-        if ( (_token != null) && (_noTokenYet) ) {
-            _origToken = _token;
-            _noTokenYet = false;
-            setType(_token.getClass());
-        } else {
-            _checkType(_token);
-        }
+        
         int id = ParameterEvent.SET_FROM_TOKEN;
         _notifyListeners(new ParameterEvent(id, this));
     }
@@ -512,27 +570,35 @@ public class Parameter extends Attribute implements ParameterListener {
      *  It must be possible to losslessly convert the currently
      *  contained Token to the new type, or else an exception will
      *  be thrown. If so, the state of the parameter is unchanged.
-     *  @param newType The class object representing the new type
+     *  @param newType The Token object whose type represents the new type
      *   of this parameter.
      *  @exception IllegalArgumentException If the new type
      *   is too restrictive for the currently contained token.
      */
-    public void setType(Class newType) throws IllegalArgumentException {
-        Class oldType = _paramType;
+    public void setType(ptolemy.data.Token newType) 
+            throws IllegalArgumentException {
+        ptolemy.data.Token  oldType = _paramType;
         _paramType = newType;
-        if (oldType == null) {
-            return;
-        }
         try {
-            _checkType(_token.getClass());
+            Class[] f = new Class[1];
+            f[0] = Token.class;
+            _convertMethod = _paramType.getClass().getMethod("convert", f);
+            if (oldType == null) {
+                return;
+            } else{
+                _checkType(_token);
+            }
         } catch (IllegalArgumentException ex) {
             _paramType = oldType;
-            String str = "Cannot set the type of Parameter " + getName();
-            str += " to type: " + newType.getName() + ", when the ";
-            str += "currently contained Token is of type: ";
-            str += _token.getClass().getName();
-            throw new IllegalArgumentException(str);
-        }
+            throw new IllegalArgumentException("Cannot set the type of " +
+                    "Parameter " + getName() + " to type: " + 
+                    newType.getClass().getName() + ", when the currently " +
+                    "contained Token is of type: " +  
+                    _token.getClass().getName());
+        } catch (NoSuchMethodException nsme) {
+            throw new InternalErrorException("Parameter.setType: "
+                    + "NoSuchMethodException: " + nsme.getMessage());
+        }        
     }
 
 
@@ -594,38 +660,30 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  Checks to see if the new token type is compatible with the initial
-     *  Token type stored. If the new Token cannot be converted in a lossless
-     *  manner to the original type, an exception is thrown.
-     *  @param tryType The class of the token that is trying to be placed
-     *   in the Parameter.
-     *  @exception IllegalArgumentException thrown if incompatible types
+    /*  Checks to see if the type of the new token is compatible with 
+     *  the type of this Parameter. If the new Token cannot be 
+     *  converted in a lossless manner to the type of this Parameter, 
+     *  an exception is thrown.
+     *  @param tryType The token whose type must be compatible with the 
+     *   type of this parameter.
+     *  @exception IllegalArgumentException If the type of the token is 
+     *   not compatible with the type of this parameter.
      */
-    private void _checkType(Class tryType)
+    private void _checkType(ptolemy.data.Token tryType)
             throws IllegalArgumentException {
-        int typeInfo = TypeLattice.compare(_paramType, tryType);
+        if (tryType == null || _paramType == null) {
+            return;
+        }
+        int typeInfo = TypeLattice.compare(_paramType.getClass(), 
+                tryType.getClass());
         if ( (typeInfo == CPO.HIGHER) || (typeInfo == CPO.SAME) ) {
             return;
         }
         // Incompatible type!
-        String str = "Cannot store a Token of type ";
-        str += tryType.getName() + " in a Parameter restricted to ";
-        str += "tokens of type " + _paramType.getName() + " or lower";
-        throw new IllegalArgumentException(str);
-    }
-
-    /* Checks to see if the new token type is compatible with the initial
-     *  Token type stored. If the new Token cannot be converted in a lossless
-     *  manner to the original type, an exception is thrown.
-     *  @param tok The token that is trying to be placed in the Parameter.
-     *  @exception IllegalArgumentException thrown if incompatible types
-     */
-    private void _checkType(ptolemy.data.Token tok)
-            throws IllegalArgumentException {
-        if (tok == null) return;
-        else {
-            _checkType(tok.getClass());
-        }
+        throw new IllegalArgumentException( "Cannot store a Token of type " +
+                tryType.getClass().getName() + " in a Parameter restricted " +
+                "to tokens of type " + _paramType.getClass().getName() + 
+                " or lower");
     }
 
    /*  Clear the dependencies this Parameter has registered
@@ -651,7 +709,6 @@ public class Parameter extends Attribute implements ParameterListener {
         }
         ASTPtLeafNode leaf = (ASTPtLeafNode)node;
         if (leaf._param != null) {
-            //System.out.println("Clearing dependence for " + getName() + " from " + leaf._param.getName());
             leaf._param.removeParameterListener(this);
         }
     }
@@ -668,6 +725,13 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+
+    // Caches the cast value of the current token to the Parameter type.
+    private Token _castToken = null;
+
+    // Stores the object representing the convert method for the current 
+    // Token that represents the type of this Parameter.
+    private java.lang.reflect.Method _convertMethod = null;
 
     // Stores the string used to set this expression. It is null if
     // the parameter was set using a token.
@@ -695,8 +759,8 @@ public class Parameter extends Attribute implements ParameterListener {
     // first token contained by the parameter was parsed from an expression.
     private ptolemy.data.Token _origToken;
 
-    // Stores the type information for this parameter.
-    private Class _paramType;
+    // Stores the token whose type represents the type of this Parameter.
+    private ptolemy.data.Token _paramType;
 
     // The parser used by this parameter to parse expressions.
     private PtParser _parser;
