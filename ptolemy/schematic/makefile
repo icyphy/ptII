@@ -40,7 +40,7 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#test doc demo
+DIRS = 		test doc demo
 
 CLASSPATH = ../..
 
@@ -65,7 +65,6 @@ JSRCS = \
 	SchematicElement.java \
 	SchematicEntity.java \
 	SchematicParameter.java \
-	SchematicParser.java \
 	SchematicPort.java \
 	SchematicRelation.java \
 	XMLElement.java
