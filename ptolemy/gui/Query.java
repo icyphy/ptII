@@ -41,14 +41,21 @@ import javax.swing.event.ChangeListener;
 //////////////////////////////////////////////////////////////////////////
 //// Query
 /**
-Create a query with various types of entry boxes and controls.
+Create a query with various types of entry boxes and controls.  Each type
+of entry box has a colon and space appended to the end of its label, to
+ensure uniformity.
+Here is one example of creating a query with a radio button:
+    query = new Query();
+    getContentPane().add(query);
+    String[] options = {"water", "soda", "juice", "none"};
+    query.addRadioButtons("radio", "Radio buttons", options, "water");
 
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
 */
 public class Query extends JPanel {
 
-    /** Construct a panel with no queries in it.
+    /** Construct a panel with no entries in it.
      */
     public Query() {
         _grid = new GridBagLayout();
@@ -87,16 +94,16 @@ public class Query extends JPanel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param values The list of possible choices.
-     *  @param defaultValue Default value (true for on).
+     *  @param defaultChoice Default choice (true for on).
      */
     public void addChoice(String name, String label,
-            String[] values, String defaultValue) {
+            String[] values, String defaultChoice) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JComboBox combobox = new JComboBox(values);
         combobox.setEditable(false);
         combobox.setBackground(Color.white);
-        combobox.setSelectedItem(defaultValue);
+        combobox.setSelectedItem(defaultChoice);
         _addPair(lbl, combobox);
         _entries.put(name, combobox);
         // Add the listener last so that there is no notification
@@ -108,15 +115,15 @@ public class Query extends JPanel {
      *  is set externally using the setDisplay() method.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param defaultValue Default string to display.
+     *  @param theValue Default string to display.
      */
-    public void addDisplay(String name, String label, String defaultValue) {
+    public void addDisplay(String name, String label, String theValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         // NOTE: JLabel would be a reasonable choice here, but at
         // least in the current version of swing, JLabel.setText() does
         // not work.
-        JTextArea displayField = new JTextArea(defaultValue, 1, 10);
+        JTextArea displayField = new JTextArea(theValue, 1, 10);
         displayField.setBackground(_background);
         _addPair(lbl, displayField);
         _entries.put(name, displayField);
@@ -124,8 +131,7 @@ public class Query extends JPanel {
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  To control the width of the box, call setTextWidth()
-     *  first.  To ensure uniformity, a colon and a space are appended
-     *  to the end of the label.
+     *  first.
      *  @param name The name used to identify the entry (when accessing
      *   the entry).
      *  @param label The label to attach to the entry.
@@ -155,7 +161,8 @@ public class Query extends JPanel {
         _listeners.add(listener);
     }
 
-    /** Create a bank of radio buttons.
+    /** Create a bank of radio buttons.  A radio button provides a list of
+     *  choices, only one of which may be chosen at a time.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param values The list of possible choices.
@@ -200,13 +207,26 @@ public class Query extends JPanel {
      *  @param name The name used to identify the slider.
      *  @param label The label to attach to the slider.     
      *  @param defaultValue Initial position of slider.
-     *  @param max Maximum value of slider.
-     *  @param min Minimum value of slider.
+     *  @param maximum Maximum value of slider.
+     *  @param minimum Minimum value of slider.
+     *  @exception IllegalArgumentException If the desired default value 
+     *   is not between the minimum and maximum.
      */
     public void addSlider(String name, String label, int defaultValue,
-            int min, int max) {
+            int minimum, int maximum)
+            throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
-        JSlider slider = new JSlider(min, max, defaultValue);
+        if (minimum > maximum) {
+            int temp = minimum;
+            minimum = maximum;
+            maximum = temp;
+        }
+        if ((defaultValue > maximum) || (defaultValue < minimum)) {
+            throw new IllegalArgumentException("Desired default " +
+            "value \"" + defaultValue + "\" does not fall " +
+            "between the minimum and maximum.");
+        }
+        JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(lbl, slider);
         _entries.put(name, slider);
         slider.addChangeListener(new SliderListener(name));
@@ -370,18 +390,19 @@ public class Query extends JPanel {
         }
     }
 
-    /** Set the displayed text of an item that has been added using
+    /** Set the displayed text of an entry that has been added using
      *  addDisplay.
      *  @param name The name of the entry.
      *  @param value The string to display.
-     *  @exception NoSuchElementException If there is no item with the
+     *  @exception NoSuchElementException If there is no entry with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
      *  @exception IllegalArgumentException If the entry is not a
      *   display.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public void setDisplay(String name, String value) {
+    public void setDisplay(String name, String value) 
+            throws  NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
@@ -397,23 +418,24 @@ public class Query extends JPanel {
         }
     }
 
-    /** For entries for which it is appropriate, if the second argument is
-     *  false, then it will be disabled.
+    /** For line, display, check box, slider, radio button, or choice 
+     *  entries made, if the second argument is false, then it will 
+     *  be disabled.
      *  @param name The name of the entry.
-     *  @param boole If false, disables the entry.
+     *  @param value If false, disables the entry.
      */
-    public void setEnabled(String name, boolean boole) {
+    public void setEnabled(String name, boolean value) {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
             name + " \" in the query box.");
         }
         if(result instanceof JComponent) {
-            ((JComponent)result).setEnabled(boole);
+            ((JComponent)result).setEnabled(value);
         } else if(result instanceof JRadioButton[]) {
             JRadioButton[] buttons = (JRadioButton[])result;
             for (int i = 0; i < buttons.length; i++) {
-                buttons[i].setEnabled(boole);
+                buttons[i].setEnabled(value);
             }
         }
     }
@@ -477,7 +499,7 @@ public class Query extends JPanel {
 
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
-     *  only the largest value specified actually affects the layout.
+     *  it only affects subsequent calls.
      *
      *  @param characters The preferred width.
      */
@@ -495,7 +517,8 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
 
-    public String stringValue(String name) throws NoSuchElementException {
+    public String stringValue(String name) 
+            throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
         if(result == null) {
             throw new NoSuchElementException("No item named \"" +
@@ -542,6 +565,7 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** The default width of entries created with addLine(). */
     public static final int DEFAULT_ENTRY_WIDTH = 12;
 
     ///////////////////////////////////////////////////////////////////
