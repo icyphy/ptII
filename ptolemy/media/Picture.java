@@ -45,7 +45,7 @@ import java.lang.*;
  *  @Version: $Id$
  */
 public class Picture extends Component {
-    
+
     /** Create an image with the specified width and height, in pixels.
      *  @param width The width in pixels.
      *  @param height The height in pixels.
