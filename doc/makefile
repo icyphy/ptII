@@ -161,7 +161,9 @@ HYBRIDSYSTEMSPACKAGES = \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.sdf.kernel \
-			ptolemy.domains.sdf.lib
+			ptolemy.domains.sdf.lib \
+			ptolemy.vergil.fsm.modal
+
 
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
@@ -242,7 +244,6 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.icon \
 			ptolemy.vergil.fsm \
 			ptolemy.vergil.fsm.ia \
-			ptolemy.vergil.fsm.modal \
 			ptolemy.vergil.kernel \
 			ptolemy.vergil.toolbox \
 			ptolemy.vergil.tree
