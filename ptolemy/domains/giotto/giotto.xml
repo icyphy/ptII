@@ -5,7 +5,8 @@
   <configure>
     <?moml
       <group>
-<property name="CodeGenerator" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator"/>
+      <doc>Giotto Domain</doc>
+	<property name="CodeGenerator" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator"/>
       </group>
     ?>
   </configure>
