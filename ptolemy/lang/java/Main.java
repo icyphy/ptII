@@ -72,7 +72,7 @@ public class Main {
     
     LinkedList units = new LinkedList();
     for (int f = fileStart; f < numArgs; f++) {
-        units.add(StaticResolution.load(args[f], true));
+        units.add(StaticResolution.load(args[f], 2));
     }
     
     Map nodeMap = NumberNodeVisitor.numberNodes(units);

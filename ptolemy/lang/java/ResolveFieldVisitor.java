@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -128,7 +129,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
          
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
                  
-        node.setProperty(DECL_KEY, StaticResolution.resolveCall(methods, node.getArgs()));    
+        node.setProperty(DECL_KEY, resolveCall(methods, node.getArgs()));    
         
         // checkFieldAccess omitted 
         
@@ -152,7 +153,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
          
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
                  
-        node.setProperty(DECL_KEY, StaticResolution.resolveCall(methods, node.getArgs()));            
+        node.setProperty(DECL_KEY, resolveCall(methods, node.getArgs()));            
         
         // checkFieldAccess(decl(), ctx->currentClass->decl()->superClass(),
 		   //true, true, true, ctx, position());        
@@ -327,7 +328,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
            EnvironIter methods = typeDecl.getEnviron().lookupFirstProper(
             typeDecl.getName(), CG_CONSTRUCTOR);
             
-           MethodDecl constructor = StaticResolution.resolveCall(methods, node.getArgs()); 
+           MethodDecl constructor = resolveCall(methods, node.getArgs()); 
            
            node.setProperty(DECL_KEY, constructor);                                 
         }
@@ -360,7 +361,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         EnvironIter methods = superDecl.getEnviron().lookupFirstProper(
          superDecl.getName(), CG_CONSTRUCTOR);
 
-        MethodDecl constructor = StaticResolution.resolveCall(methods, node.getSuperArgs()); 
+        MethodDecl constructor = resolveCall(methods, node.getSuperArgs()); 
            
         node.setProperty(CONSTRUCTOR_KEY, constructor);                                 
 
@@ -417,12 +418,69 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
               ApplicationUtility.error("no " + nameString + " method in " +
                 typeDecl.getName());
     	   } else {
-       	      d = StaticResolution.resolveCall(resolutions, methodArgs);
+       	      d = resolveCall(resolutions, methodArgs);
 		   }		   
         }
   
         node.getName().setProperty(DECL_KEY, d);
         //checkFieldAccess(d, typeDecl, thisAccess, isSuper, false, ctx, position());
+    }
+
+    public static MethodDecl resolveCall(EnvironIter methods, List args) {
+
+        Decl aMethod = methods.head();      
+        Decl d;
+   
+        LinkedList types = new LinkedList();
+      
+        LinkedList argTypes = new LinkedList();
+  
+        Iterator argsItr = args.iterator();
+      
+        while (argsItr.hasNext()) {
+           ExprNode expr = (ExprNode) argsItr.next();
+           argTypes.addLast(TypeUtility.type(expr));
+        }
+      
+        LinkedList matches = new LinkedList();
+                
+        while (methods.hasNext()) {
+           MethodDecl method = (MethodDecl) methods.next();
+           if (TypeUtility.isCallableWith(method, argTypes)) {
+              matches.addLast(method);
+           }          
+        }
+      
+        if (matches.size() == 0) {
+           ApplicationUtility.error("no matching " + aMethod.getName() +
+            "(" + TNLManip.toString(argTypes) + ")");
+        }
+       
+        Iterator matchesItr1 = matches.iterator();
+      
+        while (matchesItr1.hasNext()) {
+           MethodDecl m1 = (MethodDecl) matchesItr1.next();
+           Iterator matchesItr2 = matches.iterator();
+           boolean thisOne = true;
+         
+           while (matchesItr2.hasNext()) {
+              MethodDecl m2 = (MethodDecl) matchesItr2.next();
+              if (m1 == m2) {
+                continue; // get out of this inner loop      
+              }
+              if (!TypeUtility.isMoreSpecific(m1, m2) || TypeUtility.isMoreSpecific(m2, m1)) {
+                 thisOne = false; // keep looking
+                 continue; // get out of this inner loop      
+              }             
+           } 
+                   
+           if (thisOne) {
+              return m1;
+           }
+        }
+      
+        ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
+        return null;
     }
 
     protected static class FieldContext {

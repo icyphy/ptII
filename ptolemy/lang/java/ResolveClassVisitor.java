@@ -74,6 +74,23 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+        // find the outer class/interface, if applicable    
+        Object classDeclObj = args.get(0);
+        
+        if (classDeclObj instanceof ClassDecl) {                   
+           ClassDecl classDecl = (ClassDecl) classDeclObj;
+            
+           if (classDecl.category == CG_INTERFACE) {
+              // classes of an interface are always static and final, and 
+              // public if the interface is public                
+           
+             int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+
+             int modifiers = node.getModifiers();            
+             modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
+             node.setModifiers(modifiers);
+           }
+        }
 
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
@@ -125,9 +142,21 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         return null;
     }
 
-    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
+    public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {        
+        ClassDecl classDecl = (ClassDecl) args.get(0);
+
         int modifiers = node.getModifiers();
 
+        if (classDecl.category == CG_INTERFACE) {
+           // fields of an interface are always static and final, and 
+           // public if the interface is public                
+           
+           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+           
+           modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
+           node.setModifiers(modifiers);
+        }
+     
         String nameString = node.getName().getIdent();
 
         // Leftover from Titanium. Why??
@@ -159,10 +188,25 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+        // find the outer class/interface, if applicable    
+        Object classDeclObj = args.get(0);
+       
+        if (classDeclObj instanceof ClassDecl) {                   
+           ClassDecl classDecl = (ClassDecl) classDeclObj;
+            
+           if (classDecl.category == CG_INTERFACE) {
+              // inner interfaces of an interface are always static, and 
+              // public if the interface is public                
+           
+             int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-        // initialize the implements list.
-        // FIXME : what about the interfaces implemented by the interfaces in the list?
+             int modifiers = node.getModifiers();            
+             modifiers |= classPublic | STATIC_MOD;
+             node.setModifiers(modifiers);
+           }
+        }
+      
+        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         LinkedList declInterfaceList = new LinkedList();
 
@@ -191,9 +235,51 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me);
         childArgs.addLast(myEnviron);
 
+        /*
+        // Set implied modifiers of interface member nodes
+        Iterator memberItr = node.getMembers();
+        int publicModifier = (node.getModifiers() & PUBLIC_MOD);
+        
+        while (memberItr.hasNext()) {
+            TreeNode node = (TreeNode) memberItr.next();
+            
+            switch (node.classID()) {
+            
+              // methods are always abstract, and public if the interface is public
+              case METHODDECLNODE_ID:
+              {
+                MethodDeclNode methodDeclNode = (MethodDeclNode) node;
+                methodDeclNode.setModifiers(methodDeclNode.getModifiers() 
+                 | (publicModifier | ABSTRACT_MOD));
+              }
+              break;
+              
+              // classes and fields are always static and final, and public if the 
+              // interface is public
+              case FIELDDECLNODE_ID:
+              case CLASSDECLNODE_ID:
+              {
+                ModifiedNode modifiedNode = (ModifiedNode) node;
+                modifiedNode.setModifiers(modifiedNode.getModifiers() 
+                 | (publicModifier | STATIC_MOD | FINAL_MOD));              
+              }
+              break;
+              
+              // interfaces are always static, and public if the
+              // enclosing interface is public
+              case INTERFACEDECLNODE_ID:
+              {
+                InterfaceDeclNode interfaceDeckNode = (InterfaceDeclNode) node;
+                interfaceDeclNode.setModifiers(interfaceDeclNode.getModifiers() 
+                 | (publicModifier | STATIC_MOD | FINAL_MOD));              
+              }
+              break;
+        } */
+
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
-        // Set implied modifiers of interface members
+        /*
+        // Set implied modifiers of interface member decls               
         Iterator declItr = myEnviron.allProperDecls();
 
         while (declItr.hasNext()) {
@@ -204,22 +290,23 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             switch (decl.category) {
 
             case CG_METHOD:
-            modifiers |= (PUBLIC_MOD | ABSTRACT_MOD);
+            modifiers |= (publicModifier | ABSTRACT_MOD);
             break;
 
             case CG_FIELD:
             case CG_CLASS:
             modifiers |=
-             (PUBLIC_MOD | FINAL_MOD | STATIC_MOD);
+             (publicModifier | FINAL_MOD | STATIC_MOD);
             break;
 
             case CG_INTERFACE:
-            modifiers |= STATIC_MOD;
+            modifiers |= (publicModifier | STATIC_MOD);
             break;
 
             }
             decl.setModifiers(modifiers);
         }
+        */
 
         return null;
     }
@@ -294,9 +381,14 @@ public class ResolveClassVisitor extends ResolveVisitorBase
            if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
               modifiers |= FINAL_MOD;
            }
-           
-           node.setModifiers(modifiers);
+                      
+        } else {
+           // we are inside an interface, all methods are abstract,
+           // and public if the enclosing interface is public        
+           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;        
+           modifiers |= (classPublic | ABSTRACT_MOD);        
         }
+        node.setModifiers(modifiers);        
         
         if (node.getBody() == AbsentTreeNode.instance) {
            if ((modifiers & ABSTRACT_MOD) != 0) {
@@ -307,7 +399,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                   "synchronized, or native with abstract");
               }
            } else if ((modifiers & NATIVE_MOD) == 0) {
-              ApplicationUtility.error("abstract or native required on " +
+              ApplicationUtility.error("abstract or native modifier  required on " +
                " methods without a body");
            }
         } else if ((modifiers & (ABSTRACT_MOD | NATIVE_MOD)) != 0) {

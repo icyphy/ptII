@@ -822,7 +822,7 @@ MethodSignatureDeclaration :
     ThrowsOpt ';'
     {
      Modifier.checkMethodSignatureModifiers($1);
-      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+      $$ = new MethodDeclNode($1, (NameNode) $3,
                              (List) $5, (List) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));
@@ -831,7 +831,7 @@ MethodSignatureDeclaration :
      ThrowsOpt ';'
     {
       Modifier.checkMethodSignatureModifiers($1);
-      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+      $$ = new MethodDeclNode($1, (NameNode) $3,
                              (List) $5, (List) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));

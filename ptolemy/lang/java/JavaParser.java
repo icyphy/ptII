@@ -1123,7 +1123,7 @@ case 110:
 //#line 823 "jparser.y"
 {
      Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+      yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj,
                              (List) val_peek(4).obj, (List) val_peek(1).obj,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
@@ -1133,7 +1133,7 @@ case 111:
 //#line 832 "jparser.y"
 {
       Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+      yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj,
                              (List) val_peek(4).obj, (List) val_peek(1).obj,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));

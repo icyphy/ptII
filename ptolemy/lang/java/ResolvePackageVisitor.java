@@ -128,6 +128,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         decl.setSource(node);
         decl.setEnviron(env);
         
+        // FIXME : will this name be resolved???
+        
         NameNode typeName = new NameNode(AbsentTreeNode.instance, "<anon>");
         typeName.setProperty(DECL_KEY, decl);
         

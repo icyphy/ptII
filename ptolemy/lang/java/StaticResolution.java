@@ -246,63 +246,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return name;
         }
     }
-
-    public static MethodDecl resolveCall(EnvironIter methods, List args) {
-
-        Decl aMethod = methods.head();      
-        Decl d;
-   
-        LinkedList types = new LinkedList();
-      
-        LinkedList argTypes = new LinkedList();
-  
-        Iterator argsItr = args.iterator();
-      
-        while (argsItr.hasNext()) {
-           ExprNode expr = (ExprNode) argsItr.next();
-           argTypes.addLast(TypeUtility.type(expr));
-        }
-      
-        LinkedList matches = new LinkedList();
-                
-        while (methods.hasNext()) {
-           MethodDecl method = (MethodDecl) methods.next();
-           if (TypeUtility.isCallableWith(method, argTypes)) {
-              matches.addLast(method);
-           }          
-        }
-      
-        if (matches.size() == 0) {
-           ApplicationUtility.error("no matching " + aMethod.getName() +
-            "(" + TNLManip.toString(argTypes) + ")");
-        }
-       
-        Iterator matchesItr1 = matches.iterator();
-      
-        while (matchesItr1.hasNext()) {
-           MethodDecl m1 = (MethodDecl) matchesItr1.next();
-           Iterator matchesItr2 = matches.iterator();
-           boolean thisOne = true;
-         
-           while (matchesItr2.hasNext()) {
-              MethodDecl m2 = (MethodDecl) matchesItr2.next();
-              if (m1 == m2) {
-                continue; // get out of this inner loop      
-              }
-              if (!TypeUtility.isMoreSpecific(m1, m2) || TypeUtility.isMoreSpecific(m2, m1)) {
-                 thisOne = false; // keep looking
-                 continue; // get out of this inner loop      
-              }             
-           } 
-                   
-           if (thisOne) {
-              return m1;
-           }
-        }
-      
-        ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
-        return null;
-    }
        
     /** Return a NameNode corresponding to the name, which is qualified
      *  by '.'. If the name is the empty string, return an AbsentTreeNode.
@@ -355,7 +298,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
          pkgDecl, category);
          
         if (category == CG_METHOD) {
-           return resolveCall(environIter, methodArgs);       
+           return ResolveFieldVisitor.resolveCall(environIter, methodArgs);       
         }          
      
         // no check for multiple matches (this should be handled by
@@ -393,13 +336,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  relative or absolute. If primary is true, do full resolution of the 
      *  source. Otherwise do partial resolution only.
      */ 
-    public static CompileUnitNode load(String filename, boolean primary) {
-        return load(new File(filename), primary);
+    public static CompileUnitNode load(String filename, int pass) {
+        return load(new File(filename), pass);
     }
 
-    public static CompileUnitNode load(File file, boolean primary) {        
+    public static CompileUnitNode load(File file, int pass) {        
         try {
-          return loadCanonical(file.getCanonicalPath(), primary);
+          return loadCanonical(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
           ApplicationUtility.error(ioe.toString());
         } 
@@ -410,14 +353,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  primary is true, do full resolution of the source. Otherwise
      *  do partial resolution only.
      */ 
-    public static CompileUnitNode loadCanonical(String filename, 
-     boolean primary) {        
+    public static CompileUnitNode loadCanonical(String filename, int pass) {        
         System.out.println(">loading " + filename);
   
         CompileUnitNode loadedAST = null;
     
-        loadedAST = 
-         (CompileUnitNode) partiallyResolvedMap.get(filename);           
+        loadedAST = (CompileUnitNode) allPass0ResolvedMap.get(filename);           
                                   
         if (loadedAST == null) {
            loadedAST = parse(filename);
@@ -426,57 +367,58 @@ public class StaticResolution implements JavaStaticSemanticConstants {
               ApplicationUtility.error("Couldn't load " + filename);
            }
 
-           loadedAST.setProperty(IDENT_KEY, filename);    
-        
-           return load(loadedAST, primary);                          
-        } else {
-           if (!primary) {
-              return loadedAST;
-           }
-           
-           return resolvePass2(loadedAST);
-        }
+           loadedAST.setProperty(IDENT_KEY, filename);                                 
+        }         
+        return load(loadedAST, pass);                          
     }
         
     /** Load a CompileUnitNode that has just been parsed. Fully resolve the
      *  node if primary is true, otherwise just partially resolve it.
      */
-    public static CompileUnitNode load(CompileUnitNode node, boolean primary) {
-        node.setProperty(FULL_RESOLVE_KEY, new Boolean(primary));
-                                                                 
-        node = resolvePass1(node);            
-                                            
-        if (primary) {
-           node = resolvePass2(node);        
-        }            
-        
-        return node;
+    public static CompileUnitNode load(CompileUnitNode node, int pass) {                                                                        
+        switch (pass) {
+          case 0:
+          return resolvePass0(node);
+              
+          case 1:
+          return resolvePass1(node);              
+           
+          case 2:                    
+          return resolvePass2(node);              
+          
+          default:
+          ApplicationUtility.error("invalid pass number (" + pass + ")");
+        }                 
+        return null;
     }
     
-    /** Do pass 1 resolution on a CompileUnitNode that just been built by
+    /** Do pass 0 resolution on a CompileUnitNode that just been built by
      *  the parser. Return the resolved node. If a source file with the same 
-     *  canonical filename has already been pass 1 resolved, return the previous 
+     *  canonical filename has already been pass 0 resolved, return the previous 
      *  node. 
      */
-    public static CompileUnitNode resolvePass1(CompileUnitNode node) {    
-        String filename = (String) node.getProperty(IDENT_KEY);    
+    public static CompileUnitNode resolvePass0(CompileUnitNode node) {    
+        String filename = (String) node.getProperty(IDENT_KEY);            
                    
         if (filename != null) {
-           CompileUnitNode partiallyResolvedNode = 
-            (CompileUnitNode) partiallyResolvedMap.get(filename);           
+           CompileUnitNode pass0ResolvedNode = 
+            (CompileUnitNode) allPass0ResolvedMap.get(filename);           
             
-           if (partiallyResolvedNode != null) {
-              return partiallyResolvedNode;
+           if (pass0ResolvedNode != null) {
+              return pass0ResolvedNode;
            }         
         }
-
-        if (filename != null) {
-           partiallyResolvedMap.put(filename, node);
-        }            
          
         node.accept(new PackageResolutionVisitor(), null);    
-        node.accept(new ResolveClassVisitor(), null);
-        node.accept(new ResolveInheritanceVisitor(), null);
+        
+        pass0ResolvedList.add(node);        
+        
+        if (filename != null) {
+           allPass0ResolvedMap.put(filename, node);
+        }            
+                
+        //node.accept(new ResolveClassVisitor(), null);
+        //node.accept(new ResolveInheritanceVisitor(), null);
         
         //if (filename != null) {
         //   partiallyResolvedMap.put(filename, node);
@@ -484,30 +426,59 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         
         return node;
     }
+
+    /** Do pass 1 resolution on a CompileUnitNode. If a source file with the same 
+     *  canonical filename has already been pass 1 resolved, return the previous 
+     *  node. 
+     */
+    public static CompileUnitNode resolvePass1(CompileUnitNode node) {    
+        // ensure pass 0 has been run
+        node = resolvePass0(node);
+    
+        buildEnvironments();
+    
+        String filename = (String) node.getProperty(IDENT_KEY);    
+        
+        if (filename != null) {
+           // allow the node returned by pass 1 to be a different one
+           node = (CompileUnitNode) allPass1ResolvedMap.get(filename);                      
+        } 
+        
+        if (node == null) {
+           ApplicationUtility.error("Couldn't find " + filename +
+            " in pass 1 resolved map.");
+        } 
+        
+        return node;                                
+    }
+
         
     /** Do pass 2 resolution on a CompileUnitNode that has already been pass 1 
      *  resolved. Return the resolved node. If a source file with the same 
      *  canonical filename has already been pass 2 resolved, return the previous 
      *  node. 
      */
-    public static CompileUnitNode resolvePass2(CompileUnitNode node) {
+    public static CompileUnitNode resolvePass2(CompileUnitNode node) {        
+        // ensure pass 0 and pass 1 have been run
+        node = resolvePass1(node); // will call buildEnvironments()
+    
         String filename = (String) node.getProperty(IDENT_KEY);    
 
         if (filename != null) {
-           CompileUnitNode fullyResolvedNode = 
-            (CompileUnitNode) fullyResolvedMap.get(filename);           
+           CompileUnitNode pass2ResolvedNode = 
+            (CompileUnitNode) allPass2ResolvedMap.get(filename);           
             
-           if (fullyResolvedNode != null) {
-              return fullyResolvedNode;
-           }         
+           if (pass2ResolvedNode != null) {
+              return pass2ResolvedNode;
+           }                            
         }
-
-        if (filename != null) {
-           fullyResolvedMap.put(filename, node);              
-        }                   
                 
         node.accept(new ResolveNameVisitor(), null);     
         node.accept(new ResolveFieldVisitor(), null);                               
+          
+        if (filename != null) {
+           allPass2ResolvedMap.put(filename, node);              
+        }                             
           
         //if (filename != null) {
         //   fullyResolvedMap.put(filename, node);              
@@ -516,8 +487,32 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return node;
     }
     
-    public static final void importPackage(Environ env, NameNode name) {
+    public static final void buildEnvironments() {
+        
+        Iterator nodeItr = pass0ResolvedList.iterator();
+        
+        while (nodeItr.hasNext()) {
+              CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+              node.accept(new ResolveClassVisitor(), null);              
+        }
+           
+        nodeItr = pass0ResolvedList.iterator();
+        
+        while (nodeItr.hasNext()) {
+              CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+              node.accept(new ResolveInheritanceVisitor(), null);              
+              
+              String filename = (String) node.getDefinedProperty(IDENT_KEY);
+              
+              if (filename != null) {
+                 allPass1ResolvedMap.put(filename, node);
+              }
+        }
 
+        pass0ResolvedList.clear();                    
+    }
+        
+    public static final void importPackage(Environ env, NameNode name) {
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
          CG_PACKAGE);
 
@@ -572,17 +567,37 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final ClassDecl  ARRAY_CLASS_DECL;
     public static final FieldDecl  ARRAY_LENGTH_DECL;
     public static final MethodDecl ARRAY_CLONE_DECL;
-                
+        
+    /** A List containing values of CompileUnitNodes that have only been parsed
+     *  and have undergone package resolution, but not including nodes that
+     *  have undergone later stages of static resolution.
+     */
+    public static final List pass0ResolvedList = new LinkedList();
+
+    /** A Map containing values of CompileUnitNodes that have only been parsed
+     *  and have undergone package resolution, including nodes that
+     *  have undergone later stages of static resolution.
+     */
+    public static final Map allPass0ResolvedMap = new HashMap();
+                         
     /** A Map containing values of CompileUnitNodes that have been partially 
      *  resolved (including those that are also fully resolved), indexed by the 
      *  absolute pathname of the source file.
      */
-    public static final Map partiallyResolvedMap = new HashMap();
+    //public static final Map partiallyResolvedMap = new HashMap();
    
-    /** A Map containing values of CompileUnitNodes that have been fully 
-     *  resolved, indexed by the absolute pathname of the source file.
+    /** A Map containing values of CompileUnitNodes that have undergone
+     *  and have undergone package, class and inheritance resolution, 
+     *  including nodes that have undergone later stages of static 
+     *  resolution.
      */
-    public static final Map fullyResolvedMap = new HashMap();
+    public static final Map allPass1ResolvedMap = new HashMap();
+      
+    /** A Map containing values of all CompileUnitNodes that have undergone
+     *  name and field resolution, indexed by the absolute pathname of the 
+     *  source file.
+     */
+    public static final Map allPass2ResolvedMap = new HashMap();
     
     static {
         SYSTEM_PACKAGE  = new PackageDecl("", null);
@@ -623,9 +638,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
          
         CompileUnitNode arrayCompileUnitNode = new CompileUnitNode(
          javaLangName, new LinkedList(), TNLManip.cons(arrayClassNode));
+         
+        // give the CompileUnitNode a dummy name so it can be retrieved 
+        arrayCompileUnitNode.setProperty(IDENT_KEY, "<array>");
         
         // resolve the names of the virtual class  
-        load(arrayCompileUnitNode, false);
+        load(arrayCompileUnitNode, 0);
 
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
         ARRAY_ENVIRON = ARRAY_CLASS_DECL.getEnviron();        
@@ -637,5 +655,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
+        
+        buildEnvironments();
     }
 }

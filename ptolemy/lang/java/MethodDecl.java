@@ -43,6 +43,10 @@ import java.util.HashSet;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.TypeNode;
 
+/** A declaration of a method or constructor.
+ *
+ *  @author Jeff Tsay
+ */
 public class MethodDecl extends MemberDecl {
     public MethodDecl(String name, int category0, TypeNode type, int modifiers,
      TreeNode source, JavaDecl container, List paramList,

@@ -123,7 +123,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             " from " + fileName);
 
            // should set the source
-           StaticResolution.load(file, false);
+           StaticResolution.load(file, 0);
          
            if (_source == AbsentTreeNode.instance) {
 	           ApplicationUtility.error("file " + fileName +
@@ -149,10 +149,13 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         loadSource();
 
         // builds environments for all recently loaded classes, including this one
-        // StaticResolution.buildEnvironments();
+        StaticResolution.buildEnvironments();
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
+           ApplicationUtility.error("class " + _name + " did not load, " +
+            "using dummy environment.");
+                   
            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
            setSuperClass(StaticResolution.OBJECT_DECL);
