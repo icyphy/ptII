@@ -99,5 +99,6 @@ public class BackwardCompatibility {
         _filterList.add(new PortNameChanges());
         _filterList.add(new PropertyClassChanges());
         _filterList.add(new GRColorChanges());
+        _filterList.add(new RemoveProperties());
     }
 }

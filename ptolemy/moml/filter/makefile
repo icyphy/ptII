@@ -56,10 +56,11 @@ JSRCS = \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
 	ParameterNameChanges.java \
-        PortClassChanges.java \
+    PortClassChanges.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
-	RemoveGraphicalClasses.java
+	RemoveGraphicalClasses.java \
+	RemoveProperties.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
