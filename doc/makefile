@@ -88,16 +88,23 @@ OPTIONAL_FILES =	\
 	codeDoc \
 	uml
 
-ALLJSRCS =		ptolemy.plot \
+PTINYJSRCS = \
+			ptolemy.actor.lib \
+			ptolemy.actor.lib.conversions \
+			ptolemy.actor.lib.gui \
+			ptolemy.domains.ct.lib \
+			ptolemy.domains.de.lib \
+			ptolemy.domains.sdf.lib \
+			ptolemy.domains.sdf.lib.vq
+
+ALLJSRCS =		$(PTINYJSRCS) \
+			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
-			ptolemy.actor.lib \
-			ptolemy.actor.lib.conversions \
-			ptolemy.actor.lib.gui \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
@@ -114,8 +121,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.kernel \
-			ptolemy.domains.sdf.lib \
-			ptolemy.domains.sdf.lib.vq \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
@@ -219,6 +224,13 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLJSRCS) )
+
+
+codeDocPtiny/tree.html:
+	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDocPtiny $(PTINYJSRCS) )
 
 
 # We don't include common.mk since we don't use the compiler here
