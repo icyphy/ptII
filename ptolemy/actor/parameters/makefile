@@ -50,6 +50,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	DoubleRangeParameter.java \
 	FilePortParameter.java \
 	IntRangeParameter.java \
 	LocationParameter.java \

@@ -1,4 +1,4 @@
-/* A parameter with type integer with a limited range.
+/* A parameter with type double with a limited range.
 
 Copyright (c) 2001-2004 The Regents of the University of California.
 All rights reserved.
@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.parameters;
 
-import ptolemy.data.IntToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -38,16 +38,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// IntRangeParameter
+//// DoubleRangeParameter
 /**
-   This is a parameter with type integer with a limited range.
-   Its value is an integer token that is constrained to lie
+   This is a parameter with type double with a limited range and
+   limited precision.
+   Its value is an double token that is constrained to lie
    within the boundaries specified by its two parameters,
-   <i>min</i> and <i>max</i>.  These specify the minimum and maximum values.
+   <i>min</i> and <i>max</i>, inclusive.  Moreover, the values
+   are quantized so that there are exactly <i>precision</i>
+   values, uniformly spaced in the range.
    A user interface will typically use this
    information to represent the parameter value using a slider.
-   The default values for <i>min</i> and <i>max</i> are 0 and 100,
-   respectively, and the default value for this parameter is 50.
+   The default values for <i>min</i> and <i>max</i> are 0.0 and 1.0,
+   with a default value of 0.5.  The default <i>precision</i> is 100.
    <p>
    @author Edward A. Lee
    @version $Id$
@@ -55,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-public class IntRangeParameter extends Parameter {
+public class DoubleRangeParameter extends Parameter {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -70,20 +73,29 @@ public class IntRangeParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public IntRangeParameter(NamedObj container, String name)
+    public DoubleRangeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         min = new Parameter(this, "min");
-        min.setExpression("0");
-        min.setTypeEquals(BaseType.INT);
+        min.setExpression("0.0");
+        min.setTypeEquals(BaseType.DOUBLE);
         
         max = new Parameter(this, "max");
-        max.setExpression("100");
-        max.setTypeEquals(BaseType.INT);
+        max.setExpression("1.0");
+        max.setTypeEquals(BaseType.DOUBLE);
 
-        setExpression("50");
-        setTypeEquals(BaseType.INT);
+        precision = new Parameter(this, "precision");
+        precision.setExpression("100");
+        precision.setTypeEquals(BaseType.INT);
+
+        // We can't set a default value because then
+        // restore defaults will restore to this value,
+        // but this may be out of range for a particular
+        // application.
+        // setExpression("0.5");
+        
+        setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-2\" "
@@ -98,11 +110,16 @@ public class IntRangeParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The maximum value. This is has an integer value, and defaults to 100. */
+    /** The maximum value. This is has a double value, and defaults to 1.0. */
     public Parameter max;
 
-    /** The minimum value. This is has an integer value, and defaults to 0. */
+    /** The minimum value. This is has a double value, and defaults to 0.0. */
     public Parameter min;
+
+    /** The precision, which is the number of possible values.
+     *  This is has an integer value, and defaults to 100.
+     */
+    public Parameter precision;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -118,8 +135,9 @@ public class IntRangeParameter extends Parameter {
         if (attribute == max && !_inCheck) {
             try {
                 _inCheck = true;
-                int maxValue = ((IntToken)max.getToken()).intValue();
-                if (getCurrentValue() > maxValue) {
+                double maxValue = ((DoubleToken)max.getToken()).doubleValue();
+                double value = ((DoubleToken)getToken()).doubleValue();
+                if (value > maxValue) {
                     setToken(max.getToken());
                 }
             } finally {
@@ -128,8 +146,9 @@ public class IntRangeParameter extends Parameter {
         } else if (attribute == min  && !_inCheck) {
             try {
                 _inCheck = true;
-                int minValue = ((IntToken)min.getToken()).intValue();
-                if (getCurrentValue() < minValue) {
+                double minValue = ((DoubleToken)min.getToken()).doubleValue();
+                double value = ((DoubleToken)getToken()).doubleValue();
+                if (value < minValue) {
                     setToken(min.getToken());
                 }
             } finally {
@@ -139,40 +158,7 @@ public class IntRangeParameter extends Parameter {
             super.attributeChanged(attribute);
         }
     }
-
-    /** Return the current value of this parameter as an integer.
-     *  @return The current value.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
-     */
-    public int getCurrentValue() throws IllegalActionException {
-        return ((IntToken)getToken()).intValue();
-    }
-
-    /** Return the maximum value of this parameter as an integer.
-     *  @return The maximum value.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
-     */
-    public int getMaxValue() throws IllegalActionException {
-        return ((IntToken)max.getToken()).intValue();
-    }
-
-    /** Return the minimum value of this parameter.
-     *  @return The minimum value.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
-     */
-    public int getMinValue() throws IllegalActionException {
-        return ((IntToken)min.getToken()).intValue();
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -194,12 +180,12 @@ public class IntRangeParameter extends Parameter {
             super._setTokenAndNotify(newToken);
             return;
         }
-        if (newToken instanceof IntToken) {
+        if (newToken instanceof DoubleToken) {
             try {
                 _inCheck = true;
-                int minValue = ((IntToken)min.getToken()).intValue();
-                int maxValue = ((IntToken)max.getToken()).intValue();
-                int currentValue = ((IntToken)newToken).intValue();
+                double minValue = ((DoubleToken)min.getToken()).doubleValue();
+                double maxValue = ((DoubleToken)max.getToken()).doubleValue();
+                double currentValue = ((DoubleToken)newToken).doubleValue();
                 if (minValue <= currentValue && currentValue <= maxValue) {
                     // All is OK.
                     super._setTokenAndNotify(newToken);
@@ -216,7 +202,7 @@ public class IntRangeParameter extends Parameter {
             }
         }
         throw new IllegalActionException(this,
-                "Value is required to be an integer token.");
+                "Value is required to be a double token.");
     }
 
     ///////////////////////////////////////////////////////////////////
