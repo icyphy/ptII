@@ -80,10 +80,10 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 vergil:
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.vergil.Vergil
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.vergil.VergilApplication
 
 vergildebug:
-	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.vergil.Vergil
+	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.vergil.VergilApplication
 
 depend:
 	@echo "no dependencies in this directory"

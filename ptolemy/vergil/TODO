@@ -2,18 +2,19 @@ BUGS:
 Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
 Layout breaks when toolbar gets dragged to the bottom.
-Node deletion is broken when an edge is connected.
-plot: fill doesn't work when graph shrinks
 When a graph with no graphical information is loaded, then layout should be triggered.
 If an executed model refs other files, then those files should be relative to the model, not to the cwd of the editor.
 
 TODO:
 Snap to Grid.
 Director specification.
+Better Layout.
 Title box on each graph.
 Text Annotation.
 Better layout for Palette.
-Port to port direct connections.  (How should this work?)
 Icon drawing app.
 Better parameter configuration.
 Cut and Paste.
+
+DONE:
+Direct connections from Ports to Ports.

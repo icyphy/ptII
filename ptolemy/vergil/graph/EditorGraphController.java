@@ -176,7 +176,8 @@ public class EditorGraphController extends ViewerGraphController {
 		    throw new RuntimeException(ex.getMessage());
 		}
 	    }
-            getPortController().addNode(port, e.getLayerX(), e.getLayerY());
+            Node node = getPortController().createNode(port);
+            getPortController().addNode(node, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -205,8 +206,9 @@ public class EditorGraphController extends ViewerGraphController {
                 ex.printStackTrace();
                 throw new RuntimeException(ex.getMessage());
             }
+            Node node = getRelationController().createNode(vertex);
             getRelationController().addNode(
-                    vertex, e.getLayerX(), e.getLayerY());
+                    node, e.getLayerX(), e.getLayerY());
         }
     }
 

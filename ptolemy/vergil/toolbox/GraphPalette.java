@@ -74,15 +74,10 @@ public class GraphPalette extends JGraph {
 	setGraphPane(pane);
 	makeDraggable(this);
     }
-
+    
     public void addNode(Object object, double x, double y) {
-	_controller._entityController.addNode(object, x, y);
-    }
-
-    public void addEntity(Entity e, double x, double y) {
-        Node node = new BasicCompositeNode();
-	node.setSemanticObject(e);
-        _controller._entityController.addNode(node, x, y);
+        Node node = _controller._entityController.createNode(object);
+	_controller._entityController.addNode(node, x, y);
     }
 
     public Node getDraggedNode() {
@@ -140,6 +135,13 @@ public class GraphPalette extends JGraph {
 	    di.setConsuming(false);
 	}
 
+        /** Add the node to this graph editor and render it
+         * at the given location.
+         */
+        public void addNode(Node node, double x, double y) {
+            _entityController.addNode(node, x, y);
+        }
+        
         public void clearEdge(Edge edge) {
             throw new GraphException("PaletteController does not allow edges");
         }

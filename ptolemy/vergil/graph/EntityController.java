@@ -92,7 +92,7 @@ public class EntityController extends LocatableNodeController {
 
     /** Create a new node with the given semantic object and
      *  add it to the graph.  Draw the node at the given location.
-     */
+     
     public Node addNode(Object semanticObject, double x, double y) {
         GraphController controller = getController();
         Node node = controller.getGraphImpl().createCompositeNode(
@@ -107,6 +107,16 @@ public class EntityController extends LocatableNodeController {
         location[1] = y;
         setLocation(node, location);
         return node;
+    }
+    */
+    /** 
+     * Create a node with the given semantic object.  Get the graph 
+     * implementation and ask it to create a composite node.
+     */
+    public Node createNode(Object semanticObject) {
+        Node n = getController().getGraphImpl().createCompositeNode(
+                semanticObject); 
+        return n;
     }
 
     /** Draw the node and all the ports contained within the node.

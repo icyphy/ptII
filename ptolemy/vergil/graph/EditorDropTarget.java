@@ -136,7 +136,6 @@ public class EditorDropTarget extends DropTarget {
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
 		Icon sourceIcon = (Icon) data.getSemanticObject();
                 NamedObj sourceEntity = (NamedObj) sourceIcon.getContainer();
-                CompositeNode newNode;
                 Graph graph;
 
                 try {
@@ -150,9 +149,9 @@ public class EditorDropTarget extends DropTarget {
 		    Icon icon = (Icon) entity.getAttribute("_icon");
                     // FIXME it would be nice if this was not editor specific.
                     entity.setName(container.uniqueName(
-                            sourceEntity.getName()));
-		    ((EditorGraphController) gc).getEntityController()
-                        .addNode(icon, p.x, p.y);
+                            sourceEntity.getName()));  
+                    Node node = gc.getGraphImpl().createCompositeNode(icon);
+                    gc.addNode(node, p.x, p.y);
 		}
                 catch (Exception ex) {
                     ex.printStackTrace();

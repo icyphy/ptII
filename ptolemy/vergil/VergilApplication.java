@@ -72,7 +72,8 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 /**
-Vergil is the user interface for Ptolemy II.
+Vergil is an extensible high-level graphical interface for component-based
+design tools.  It is primarily aimed at Ptolemy II
 
 @author Steve Neuendorffer
 @contributor John Reekie
@@ -191,8 +192,8 @@ public class VergilApplication extends MDIApplication {
         public void actionPerformed(ActionEvent e) {
             JGraph jgraph = (JGraph) e.getSource();
             GraphPane graphPane = jgraph.getGraphPane();
-            EditorGraphController controller =
-                (EditorGraphController)graphPane.getGraphController();
+            GraphController controller =
+                (GraphController)graphPane.getGraphController();
             GraphImpl impl = controller.getGraphImpl();
             SelectionModel model = controller.getSelectionModel();
             Object selection[] = model.getSelectionAsArray();
@@ -223,10 +224,25 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
-    /** Return the entity library associated with this Vergil
+    /** Grab the keyboard focus when the component that this listener is
+     *  attached to is clicked on.
+     */
+    public class MouseFocusMover extends MouseAdapter {
+        public void mouseClicked(
+                MouseEvent mouseEvent) {
+	    Component component =
+                mouseEvent.getComponent();
+
+            if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+        }
+    }
+
+    /** Return the entity library for this application.
      */
     public CompositeEntity getEntityLibrary() {
-	return _entityLibrary;
+        return _entityLibrary;
     }
 
     /** Return the resources for this application.
@@ -244,7 +260,7 @@ public class VergilApplication extends MDIApplication {
     /** Get the title of this application
      */
     public String getTitle() {
-        return "Vergil Editor";
+        return "Vergil";
     }
 
     /** Initialize the palette in the.

@@ -84,13 +84,12 @@ public class LocatableNodeController extends NodeController {
     /** Add a node to this graph editor and render it
      * at the given location.
      */
-    public Node addNode(Object semanticObject, double x, double y) {
-        Node node = super.addNode(semanticObject, x, y);
+    public void addNode(Node node, double x, double y) {
+        super.addNode(node, x, y);
         double location[] = new double[2];
         location[0] = x;
         location[1] = y;
         setLocation(node, location);
-        return node;
     }
 
     /** Draw the node at it's location.
