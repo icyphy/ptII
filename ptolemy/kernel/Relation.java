@@ -36,7 +36,7 @@ notion of connection and can be point-to-point connections or nets.
 during transit. 
 @author John S. Davis, II
 @version $Id$
-@see pt.kernel.NamedObj.Particle
+@see pt.kernel.Particle
 */
 public class Relation extends NamedObj {
     /** 
