@@ -742,7 +742,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // the doc tag from any derived object that has
                         // not overridden the value of the doc tag.
                         try {
-                            List propagatedList = previous.propagateValue();
+                            previous.propagateValue();
                         } catch (IllegalActionException ex) {
                             // Propagation failed. Restore previous value.
                             previous.setExpression(previousValue);
@@ -2266,11 +2266,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         port = container.newPort(portName);
 
                         // Propagate.
-                        // FIXME: Propagated ports will not use newPort(),
-                        // but rather will use clone. Classes that rely
-                        // on newPort() to, e.g., create mirror ports,
-                        // like possibly IterateOverArray, will no longer
-                        // work!
+                        // NOTE: Propagated ports will not use newPort(),
+                        // but rather will use clone. Classes that override
+                        // newPort() to perform special actions will no longer
+                        // work, possibly!
                         port.propagateExistence();
                     } else {
                         // Classname is given.
@@ -2687,6 +2686,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     try {
                         vertex.propagateValue();
                         // Force MoML export since this is being set directly.
+                        // FIXME: Is this needed?
                         vertex.setPersistent(true);
                         _paramsToParse.add(vertex);
                     } catch (IllegalActionException ex) {
@@ -4255,6 +4255,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 _parser.getLineNumber(),
                                 _parser.getColumnNumber());
                     }
+                    // Propagate.
+                    property.propagateExistence();
 
                     if (value != null) {
                         if (property == null) {
@@ -4281,14 +4283,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         settable.setExpression(value);
                         // Since the value is being set directly,
                         // force MoML export.
+                        // FIXME: Is this necessary?
                         property.setPersistent(true);
                         _paramsToParse.add(property);
+
+                        // Propagate.
+                        property.propagateValue();
                     }
                     createdNew = true;
                     
-                    // Propagate.
-                    property.propagateExistence();
-
                 } catch (NameDuplicationException ex) {
                     // Ignore, so we can try to set the value.
                     // The createdNew variable will still be false.
@@ -4324,13 +4327,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     settable.setExpression(value);
                     
                     // Propagate.
-                    List propagatedList = property.propagateValue();
+                    property.propagateValue();
                     
                     // Force MoML export, since this value is
                     // being set directly.
+                    // FIXME: Is this necessary?
                     property.setPersistent(true);
                     _paramsToParse.add(property);
-                    _paramsToParse.addAll(propagatedList);
                 }
             }
             _pushContext();
