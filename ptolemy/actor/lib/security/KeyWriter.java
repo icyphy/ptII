@@ -57,26 +57,16 @@ import java.util.Enumeration;
 //// KeyWriter
 /** Read in a Key from the input port and write it out to a KeyStore.
 
-<p>Keystores are ways to manage keys and certificates.  A keystore file can
-be created by using the keytool binary that comes with Java.
-To create a simple keystore, run
-<pre>
-cd $PTII
-make ptKeystore
-</pre>
-which will create a keystore store password and key password is
-<pre>this.is.not.secure,it.is.for.testing.only</code>
-<br>The alias of the certificate will be <code>ptClaudius</code>
+<p>Keystores are ways to manage keys and certificates.
+See the {@link KeyStoreActor} documentation for more information about
+keystores.
 
 <p>The input is of type {@link KeyToken}.
 This actor does not support writing PublicKeys because
-PublicKeys require certificates.  To write a PublicKey to a keystore,
-use the <code>keytool</code> executable.
+PublicKeys require certificates.  Instead, to write a PublicKey/PrivateKey
+pair to a keystore, use the <code>keytool</code> executable.
 Currently, this actor only support writing SecretKeys and PrivateKeys
-with out certificates.
-
-<p>For more information about keystores, see
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
+to a keystore.
 
 @author  Christopher Brooks
 @version $Id$
@@ -115,6 +105,7 @@ public class KeyWriter extends KeyStoreActor {
      *  if there are problems setting the key.
      */
     public boolean postfire() throws IllegalActionException {
+        // See io.LineWriter for an example of an actor that writes to a file.
         if (input.hasToken(0)) {
             KeyToken keyToken = (KeyToken)input.get(0);
             java.security.Key key = (java.security.Key)keyToken.getValue(); 

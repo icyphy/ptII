@@ -1,5 +1,4 @@
-/* Read in a Keystore from a FileParameter, look up
-a Certificate and output a public or private key.
+/* Read in a keystore from a FileParameter and output a Key.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -56,23 +55,17 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
-/**  Read in a Keystore from a FileParameter, look up
-a Certificate and output a public or private key.
+/** 
+Read in a keystore from a FileParameter and output a Key.
 
-<p>Keystores are ways to manage keys and certificates.  A keystore file can
-be created by using the keytool binary that comes with Java.
-To create a simple keystore, run
-<pre>
-cd $PTII
-make ptKeystore
-</pre>
-which will create a keystore store password and key password is
-<pre>this.is.not.secure,it.is.for.testing.only</code>
-<br>The alias of the certificate will be <code>ptClaudius</code>
+<p>Keystores are ways to manage keys and certificates.  
+See the {@link KeyStoreActor} documentation for more information about
+keystores.
 
-<p>For more information, see
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
-<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keyotol.html">Keytool</a.
+<p>This class has many parameters, derived classes usually set some
+of the parameters to reasonable defaults and then hide them
+by setting the visibility to EXPERT.
+
 @see PrivateKeyReader
 @see PublicKeyReader
 @author  Christopher Hylands Brooks
@@ -128,7 +121,7 @@ public class KeyReader extends KeyStoreActor {
     public Parameter getPublicKey;
 
     /** The output port.  This port contains an KeyToken that contains
-     *  a java.security.Key
+     *  a java.security.Key.
      */
     public TypedIOPort output = null;
 
@@ -226,49 +219,49 @@ public class KeyReader extends KeyStoreActor {
         // We do this in initialize so that derived classes can
         // access _keyStore.
         if (_updateKeyNeeded) {
-        _updateAliases();
-        try {
-            if (!_verifyCertificate) {
-                if (_getPublicKey) {
-                    throw new IllegalActionException(this,
-                            "To get the public key, one must use "
-                            + "certificates, so the verifyCertificate "
-                            + "parameter must be set to true if the "
-                            + "getPublicKey parameter is true.");
-                }
-            } else {
-                Certificate certificate = _keyStore.getCertificate(_alias);
-                if (certificate == null) {
-                    throw new KeyStoreException("Failed to get certificate "
-                            + "for alias '" + _alias + "' from  keystore '"
-                            + fileOrURL.asURL() +
-                            "', keyStore: " + _keyStore);
-                }
-                PublicKey publicKey = certificate.getPublicKey();
-            
-                // FIXME: The testsuite needs to test this with an
-                // invalid certificate.
-                certificate.verify(publicKey);
-
-                if (certificate instanceof X509Certificate) {
-                    signatureAlgorithm.setExpression(
-                            ((X509Certificate)certificate)
-                            .getSigAlgName());
+            _loadKeyStore();
+            try {
+                if (!_verifyCertificate) {
+                    if (_getPublicKey) {
+                        throw new IllegalActionException(this,
+                                "To get the public key, one must use "
+                                + "certificates, so the verifyCertificate "
+                                + "parameter must be set to true if the "
+                                + "getPublicKey parameter is true.");
+                    }
                 } else {
-                    signatureAlgorithm.setExpression(
-                            "Unknown, certificate was not a X509 cert.");
+                    Certificate certificate = _keyStore.getCertificate(_alias);
+                    if (certificate == null) {
+                        throw new KeyStoreException("Failed to get certificate "
+                                + "for alias '" + _alias + "' from  keystore '"
+                                + fileOrURL.asURL() +
+                                "', keyStore: " + _keyStore);
+                    }
+                    PublicKey publicKey = certificate.getPublicKey();
+                    
+                    // FIXME: The testsuite needs to test this with an
+                    // invalid certificate.
+                    certificate.verify(publicKey);
+
+                    if (certificate instanceof X509Certificate) {
+                        signatureAlgorithm.setExpression(
+                                ((X509Certificate)certificate)
+                                .getSigAlgName());
+                    } else {
+                        signatureAlgorithm.setExpression(
+                                "Unknown, certificate was not a X509 cert.");
+                    }
+                    _key = publicKey;
+                }                    
+                if (!_getPublicKey) {
+                    _key = _keyStore.getKey(_alias,
+                            keyPassword.getExpression().toCharArray());
                 }
-                _key = publicKey;
-            }                    
-            if (!_getPublicKey) {
-                _key = _keyStore.getKey(_alias,
-                        keyPassword.getExpression().toCharArray());
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to get key store alias '" + _alias 
+                        + "' or certificate from " + fileOrURL.asURL());
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to get key store alias '" + _alias 
-                    + "' or certificate from " + fileOrURL.asURL());
-        }
         }
     }
 
@@ -283,9 +276,9 @@ public class KeyReader extends KeyStoreActor {
     private java.security.Key _key;
 
     // Set to true if fileOrURL has changed and the keyStore needs to be
-    // read in again and the aliases updated.
+    // read in.
     private boolean _updateKeyNeeded = true;
 
-    // True if we should verify the certificate
+    // True if we should verify the certificate.
     private boolean _verifyCertificate;
 }

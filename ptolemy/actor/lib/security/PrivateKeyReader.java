@@ -1,5 +1,4 @@
-/* An actor that reads a Keystore from a FileParameter and reads
-a PrivateKey
+/* Open a keystore from a FileParameter and output a PrivateKey.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -38,13 +37,13 @@ import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrivateKeyReader
-/** Read in a keystore file, look up a certificate by alias name and
-output the PrivateKey.
+/** Open a keystore from a FileParameter and output a PrivateKey.
 
 <p>This class is a wrapper class for {@link KeyReader} that always
 returns a private key.
 
 @see PublicKeyReader
+@see SecretKeyReader
 @see SignatureVerifier
 @author  Christopher Hylands Brooks
 @version $Id$

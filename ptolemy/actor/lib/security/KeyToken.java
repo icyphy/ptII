@@ -1,6 +1,6 @@
 /* Tokens that contain java.security.Keys
 
- Copyright (c) 2002-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -42,7 +43,7 @@ import java.security.Key;
 /**
 Tokens that contain java.security.Keys
 
-@author Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Based on TestToken by Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -72,6 +73,26 @@ public class KeyToken extends Token {
     public java.security.Key getValue() {
         return _value;
     }
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @return A boolean token that contains the value true if the
+     *  values and units of this token and the argument token are the same.
+     */
+    public final BooleanToken isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+        java.security.Key rightKey = ((KeyToken)rightArgument).getValue();
+        java.security.Key leftKey = getValue();
+        byte [] rightEncoded = rightKey.getEncoded();
+        byte [] leftEncoded = leftKey.getEncoded();
+        if (leftEncoded.equals(rightEncoded)) {
+            return BooleanToken.TRUE;
+        } else {
+            return BooleanToken.FALSE;
+        }
+    }
+
 
     public String toString() {
         return "KeyToken(" + _value + ")";

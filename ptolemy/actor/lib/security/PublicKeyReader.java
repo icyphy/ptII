@@ -1,4 +1,4 @@
-/* Open a Keystore from a FileParameter and output a PublicKey.
+/* Open a keystore from a FileParameter and output a PublicKey.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -37,12 +37,13 @@ import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PublicKeyReader
-/** Open a Keystore from a FileParameter and output a PublicKey.
+/** Open a keystore from a FileParameter and output a PublicKey.
 
 <p>This class is a wrapper class for {@link KeyReader} that always
 returns a public key.
 
 @see PrivateKeyReader
+@see SecretKeyReader
 @see SignatureSigner
 @author  Christopher Brooks
 @version $Id$
