@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	CTAssertion.java \
 	CTPeriodicSampler.java \
 	CTRateLimiter.java \
 	CTTriggeredSampler.java \
