@@ -109,6 +109,25 @@ DIVA_JAR="${PTII}/lib/diva.jar"
 
 DIVA_JFLAG=
 
+# JDK Version determined by running confTest.class and getting java.version
+JVERSION=@JVERSION@
+
+# See if we are running under JDK1.4.1 with XP
+if test "`uname -s`" = "CYGWIN_NT-5.1"; then
+   case "$JVERSION" in
+	1.4.1*)  
+        # There is a bug under JDK1.4.1 XP with Radeon display cards
+        # that causes XP to hang when exiting.  For details, see
+        # http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
+        # The workaround is to start the java interpreter with 
+        # -Dsun.java2d.d3d=false 
+        # or
+        # -Dsun.java2d.noddraw=true
+		J141BUGWORKAROUND=-Dsun.java2d.d3d=false 
+	;;	
+   esac
+fi
+
 #### Jode..  Java decompiler
 # The jode jar file.
 # JODE_JAR might contain ${JODE_DIR)
@@ -494,7 +513,7 @@ if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
 
 else
     # If JAVAHOME has spaces in it, we need to jump through hoops
-    str="\"$javac\" $jdbflags $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+    str="\"$javac\" $jdbflags $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 fi 
 if [ "$quiet" = "0" ]; then echo $str;fi
 eval exec $str
