@@ -327,7 +327,7 @@ PTJNI_DIR=@PTJNI_DIR@
 PTJNI_PROPERTIES=""
 if [ "$PTJNI_DIR" = "jni" ]; then
     # Properties for compiling
-    JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"@PTJAVA_DIR@\""
+    JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
 fi
 
 #### Joystick
@@ -386,10 +386,12 @@ SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
+TOSJARS=
+TOS_PROPERTIES=
 if [ ! -x "$TOSROOT" ]; then 
     TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
     TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
-    TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\"
+    TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
 fi
 
 #### X10 is the interface library for power line communication, see
