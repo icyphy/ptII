@@ -61,28 +61,28 @@ public class SignalProcessing {
      */
     public static class GaussianSampleGenerator implements SampleGenerator {
 
-      /** Construct a GaussianSampleGenerator.
-       *  @param mean The mean of the Gaussian function.
-       *  @param phase The standard deviation of the Gaussian function.
-       */
-      public GaussianSampleGenerator(double mean, double standardDeviation) {
-        _mean = mean;
-        _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
-        _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
-      }
+        /** Construct a GaussianSampleGenerator.
+         *  @param mean The mean of the Gaussian function.
+         *  @param phase The standard deviation of the Gaussian function.
+         */
+        public GaussianSampleGenerator(double mean, double standardDeviation) {
+            _mean = mean;
+            _oneOverVariance = 1.0 / (standardDeviation * standardDeviation);
+            _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
+        }
 
-      /** Return a sample of the Gaussian function, sampled at the
-       *  specified time.
-       */
-      public final double sampleAt(double time) {
-        double shiftedTime = time - _mean;
-        return _factor *
-         Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
-      }
+        /** Return a sample of the Gaussian function, sampled at the
+         *  specified time.
+         */
+        public final double sampleAt(double time) {
+            double shiftedTime = time - _mean;
+            return _factor *
+                Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
+        }
 
-      private final double _mean, _oneOverVariance, _factor;
-      private static final double ONE_OVER_SQRT_TWO_PI =
-       1.0 / Math.sqrt(2 * Math.PI);
+        private final double _mean, _oneOverVariance, _factor;
+        private static final double ONE_OVER_SQRT_TWO_PI =
+        1.0 / Math.sqrt(2 * Math.PI);
     }
 
     /** This class generates samples of a line with the specified
@@ -96,22 +96,22 @@ public class SignalProcessing {
      */
     public static class LineSampleGenerator implements SampleGenerator {
 
-      /** Construct a LineSampleGenerator.
-       *  @param slope The slope of the line.
-       *  @param yIntercept The y-intercept of the line.
-       */
-      public LineSampleGenerator(double slope, double yIntercept) {
-        _slope = slope;
-        _yIntercept = yIntercept;
-      }
+        /** Construct a LineSampleGenerator.
+         *  @param slope The slope of the line.
+         *  @param yIntercept The y-intercept of the line.
+         */
+        public LineSampleGenerator(double slope, double yIntercept) {
+            _slope = slope;
+            _yIntercept = yIntercept;
+        }
 
-      /** Return a sample of the line, sampled at the specified time.
-       */
-      public final double sampleAt(double time) {
-        return _slope * time + _yIntercept;
-      }
+        /** Return a sample of the line, sampled at the specified time.
+         */
+        public final double sampleAt(double time) {
+            return _slope * time + _yIntercept;
+        }
 
-      private final double _slope, _yIntercept;
+        private final double _slope, _yIntercept;
     }
 
     /** This class generates samples of a sawtooth wave with the specified
@@ -127,16 +127,16 @@ public class SignalProcessing {
          *  If it is 0.25, it begins at +0.5.
          */
         SawtoothSampleGenerator(double period, double phase) {
-          _period = period;
-          _phase = phase;
+            _period = period;
+            _phase = phase;
         }
 
         /** Return a sample of the sawtooth wave, sampled at the
          *  specified time.
          */
         public final double sampleAt(double time) {
-          double point = ((time / _period) + _phase + 0.5) % 1.0;
-          return 2.0 * point - 1.0;
+            double point = ((time / _period) + _phase + 0.5) % 1.0;
+            return 2.0 * point - 1.0;
         }
 
         private final double _period, _phase;
@@ -154,23 +154,23 @@ public class SignalProcessing {
      */
     public static class SinusoidSampleGenerator implements SampleGenerator {
 
-      /**
-       *  Construct a SinusoidSampleGenerator.
-       *  @param frequency The frequency of the cosine wave, in radians per
-       *  unit time.
-       *  @param phase The phase shift, in radians.
-       *  @param range The absolute value of the range of the wave.
-       */
-      public SinusoidSampleGenerator(double frequency, double phase) {
-        _frequency = frequency;
-        _phase = phase;
-      }
+        /**
+         *  Construct a SinusoidSampleGenerator.
+         *  @param frequency The frequency of the cosine wave, in radians per
+         *  unit time.
+         *  @param phase The phase shift, in radians.
+         *  @param range The absolute value of the range of the wave.
+         */
+        public SinusoidSampleGenerator(double frequency, double phase) {
+            _frequency = frequency;
+            _phase = phase;
+        }
 
-      public final double sampleAt(double time) {
-        return Math.cos(_frequency * time + _phase);
-      }
+        public final double sampleAt(double time) {
+            return Math.cos(_frequency * time + _phase);
+        }
 
-      private final double _frequency, _phase;
+        private final double _frequency, _phase;
     }
 
     /** This class generates samples of a raised cosine pulse, or if the
@@ -200,51 +200,51 @@ public class SignalProcessing {
      */
     public static class RaisedCosineSampleGenerator implements SampleGenerator {
 
-      /*  Construct a RaisedCosineSampleGenerator.
-       *  @param firstZeroCrossing The time of the first zero crossing,
-       *  after time zero. This would be the symbol interval in a
-       *  communications application of this pulse.
-       *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
-       */
-      public RaisedCosineSampleGenerator(double firstZeroCrossing,
-       double excess) {
-        _oneOverFZC = 1.0 / firstZeroCrossing;
-        _excess = excess;
-      }
-
-      /**  Return a sample of the raised cosine pulse, sampled at the
-       *  specified time.
-       */
-      public final double sampleAt(double time) {
-        if (time == 0.0) return 1.0;
-        double x = time * _oneOverFZC;
-        double s = sinc(Math.PI * x);
-
-        if (_excess == 0.0) return s;
-
-        x *= _excess;
-        double denominator = 1.0 - 4.0 * x * x;
-        // If the denominator is close to zero, take it to be zero.
-        if (close(denominator, 0.0)) {
-            return s * ExtendedMath.PI_OVER_4;
+        /*  Construct a RaisedCosineSampleGenerator.
+         *  @param firstZeroCrossing The time of the first zero crossing,
+         *  after time zero. This would be the symbol interval in a
+         *  communications application of this pulse.
+         *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
+         */
+        public RaisedCosineSampleGenerator(double firstZeroCrossing,
+                double excess) {
+            _oneOverFZC = 1.0 / firstZeroCrossing;
+            _excess = excess;
         }
-        return s * Math.cos(Math.PI * x) / denominator;
-      }
 
-      private final double _oneOverFZC;
-      private final double _excess;
+        /**  Return a sample of the raised cosine pulse, sampled at the
+         *  specified time.
+         */
+        public final double sampleAt(double time) {
+            if (time == 0.0) return 1.0;
+            double x = time * _oneOverFZC;
+            double s = sinc(Math.PI * x);
+
+            if (_excess == 0.0) return s;
+
+            x *= _excess;
+            double denominator = 1.0 - 4.0 * x * x;
+            // If the denominator is close to zero, take it to be zero.
+            if (close(denominator, 0.0)) {
+                return s * ExtendedMath.PI_OVER_4;
+            }
+            return s * Math.cos(Math.PI * x) / denominator;
+        }
+
+        private final double _oneOverFZC;
+        private final double _excess;
     }
 
     public static class SincSampleGenerator implements SampleGenerator {
-      public SincSampleGenerator(double firstZeroCrossing) {
-        _piOverFZC = Math.PI / firstZeroCrossing;
-      }
+        public SincSampleGenerator(double firstZeroCrossing) {
+            _piOverFZC = Math.PI / firstZeroCrossing;
+        }
 
-      public final double sampleAt(double time) {
-        return sinc(_piOverFZC * time);
-      }
+        public final double sampleAt(double time) {
+            return sinc(_piOverFZC * time);
+        }
 
-      private final double _piOverFZC;
+        private final double _piOverFZC;
     }
 
     /** This class generates samples of a square-root raised cosine pulse.
@@ -269,86 +269,86 @@ public class SignalProcessing {
      *  Kluwer Academic Publishers, Boston, 1994.
      */
     public static class SqrtRaisedCosineSampleGenerator implements
-     SampleGenerator {
+                                                                                                                SampleGenerator {
 
-      /** Construct a SqrtRaisedCosineSampleGenerator.
-       *  @param firstZeroCrossing The time of the first zero crossing of
-       *  the corresponding raised cosine pulse.
-       *  @param excess The excess bandwidth of the corresponding raised
-       *  cosine pulse.
-       */
-      public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
-       double excess) {
+        /** Construct a SqrtRaisedCosineSampleGenerator.
+         *  @param firstZeroCrossing The time of the first zero crossing of
+         *  the corresponding raised cosine pulse.
+         *  @param excess The excess bandwidth of the corresponding raised
+         *  cosine pulse.
+         */
+        public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
+                double excess) {
 
-        _excess = excess;
+            _excess = excess;
 
-        _oneOverFZC = 1.0 / firstZeroCrossing;
-        _sqrtFZC = Math.sqrt(firstZeroCrossing);
-        _squareFZC = firstZeroCrossing * firstZeroCrossing;
+            _oneOverFZC = 1.0 / firstZeroCrossing;
+            _sqrtFZC = Math.sqrt(firstZeroCrossing);
+            _squareFZC = firstZeroCrossing * firstZeroCrossing;
 
-        _onePlus  = (1.0 + _excess)* Math.PI * _oneOverFZC;
-        _oneMinus = (1.0 - _excess)* Math.PI * _oneOverFZC;
+            _onePlus  = (1.0 + _excess)* Math.PI * _oneOverFZC;
+            _oneMinus = (1.0 - _excess)* Math.PI * _oneOverFZC;
 
-        _fourExcess = 4.0 * _excess;
-        _eightExcessPI = 8.0 * _excess * Math.PI;
-        _sixteenExcess = 16.0 * _excess;
+            _fourExcess = 4.0 * _excess;
+            _eightExcessPI = 8.0 * _excess * Math.PI;
+            _sixteenExcess = 16.0 * _excess;
 
-        _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
-         _sqrtFZC;
-        _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
-        _fzcSqrtFZCOverEightExcessPI =
-         firstZeroCrossing * _sqrtFZC / _eightExcessPI;
-        _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
+            _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
+                _sqrtFZC;
+            _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
+            _fzcSqrtFZCOverEightExcessPI =
+                firstZeroCrossing * _sqrtFZC / _eightExcessPI;
+            _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
 
-        _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
-          _fourExcess;
-      }
-
-      /*  Return a sample of the raised cosine pulse, sampled at the
-       *  specified time.
-       *  @param time The time at which to sample the pulse.
-       *  @return A double.
-       */
-      public final double sampleAt(double time) {
-
-        if (time == 0.0) {
-            return _sampleAtZero;
+            _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
+                _fourExcess;
         }
 
-        double x = time * _oneOverFZC;
-        if (_excess == 0.0) {
-            return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
+        /*  Return a sample of the raised cosine pulse, sampled at the
+         *  specified time.
+         *  @param time The time at which to sample the pulse.
+         *  @return A double.
+         */
+        public final double sampleAt(double time) {
+
+            if (time == 0.0) {
+                return _sampleAtZero;
+            }
+
+            double x = time * _oneOverFZC;
+            if (_excess == 0.0) {
+                return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
+            }
+
+            double squareTime = time * time;
+            double oneMinusTime = _oneMinus * time;
+            double onePlusTime  = _onePlus * time;
+            // Check to see whether we will get divide by zero.
+
+            double denominator = squareTime * _sixteenExcess - _squareFZC;
+
+            if (close(denominator, 0.0)) {
+                double oneOverTime = 1.0 / time;
+
+                return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
+                    (_onePlus * Math.sin(onePlusTime) -
+                            _oneMinusFZCOverFourExcess * oneOverTime *
+                            Math.cos(oneMinusTime) +
+                            _fzcOverFourExcess * squareTime * Math.sin(oneMinusTime));
+            }
+            return _fourExcessOverPISqrtFZC *
+                (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
+                        (x * _fourExcess)) / (1.0 - _sixteenExcess * x * x);
         }
 
-        double squareTime = time * time;
-        double oneMinusTime = _oneMinus * time;
-        double onePlusTime  = _onePlus * time;
-        // Check to see whether we will get divide by zero.
-
-        double denominator = squareTime * _sixteenExcess - _squareFZC;
-
-        if (close(denominator, 0.0)) {
-            double oneOverTime = 1.0 / time;
-
-            return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
-             (_onePlus * Math.sin(onePlusTime) -
-              _oneMinusFZCOverFourExcess * oneOverTime *
-              Math.cos(oneMinusTime) +
-              _fzcOverFourExcess * squareTime * Math.sin(oneMinusTime));
-        }
-        return _fourExcessOverPISqrtFZC *
-         (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
-         (x * _fourExcess)) / (1.0 - _sixteenExcess * x * x);
-      }
-
-      private final double _oneOverFZC, _sqrtFZC, _squareFZC;
-      private final double _onePlus, _oneMinus;
-      private final double _excess, _fourExcess, _eightExcessPI;
-      private final double _sixteenExcess;
-      private final double _sampleAtZero;
-      private final double _fourExcessOverPISqrtFZC;
-      private final double _fzcSqrtFZCOverEightExcessPI;
-      private final double _fzcOverFourExcess, _oneMinusFZCOverFourExcess;
+        private final double _oneOverFZC, _sqrtFZC, _squareFZC;
+        private final double _onePlus, _oneMinus;
+        private final double _excess, _fourExcess, _eightExcessPI;
+        private final double _sixteenExcess;
+        private final double _sampleAtZero;
+        private final double _fourExcessOverPISqrtFZC;
+        private final double _fzcSqrtFZCOverEightExcessPI;
+        private final double _fzcOverFourExcess, _oneMinusFZCOverFourExcess;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -423,8 +423,8 @@ public class SignalProcessing {
         for (int i = 0; i<array1.length; i++) {
             for (int j = 0; j<array2.length; j++) {
                 reals[i+j] += array1[i].real * array2[j].real
-                        - array1[i].imag * array2[j].imag;
-                imags[i+j] += array1[i].imag * array2[j].real
+                    - array1[i].imag * array2[j].imag;
+                    imags[i+j] += array1[i].imag * array2[j].real
                         + array1[i].real * array2[j].imag;
             }
         }
@@ -473,28 +473,28 @@ public class SignalProcessing {
         _checkTransformArgs(x, order);
 
         if (type >= DCT_TYPES) {
-          throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
-           "DCT() : Bad DCT type");
+            throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
+                    "DCT() : Bad DCT type");
         }
 
         int size = 1 << order;
 
         // Make sure the tables have enough entries for the DCT computation
         if (order >  _FFCTGenLimit)
-           _FFCTTableGen(order);
+            _FFCTTableGen(order);
 
         double[] retval =  _DCT(x, size, order);
 
         switch (type) {
 
-          case DCT_TYPE_ORTHONORMAL:
-          double factor = Math.sqrt(2.0 / size);
-          retval = DoubleArrayMath.scale(retval, factor);
-          // no break here
+        case DCT_TYPE_ORTHONORMAL:
+            double factor = Math.sqrt(2.0 / size);
+            retval = DoubleArrayMath.scale(retval, factor);
+            // no break here
 
-          case DCT_TYPE_NORMALIZED:
-          retval[0] *= ExtendedMath.ONE_OVER_SQRT_2;
-          break;
+        case DCT_TYPE_NORMALIZED:
+            retval[0] *= ExtendedMath.ONE_OVER_SQRT_2;
+            break;
         }
 
         return retval;
@@ -544,66 +544,66 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] IDCT(double[] x, int order, int type) {
-       // check if order > 31
+        // check if order > 31
 
-       if (type >= DCT_TYPES) {
-          throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
-           "IDCT() : Bad DCT type");
-       }
+        if (type >= DCT_TYPES) {
+            throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
+                    "IDCT() : Bad DCT type");
+        }
 
-       int size    = 1 << order;
-       int twoSize = 2 << order;
+        int size    = 1 << order;
+        int twoSize = 2 << order;
 
-       // Generate scalefactors if necessary
-       if (_IDCTfactors[type][order] == null) {
-          _IDCTfactors[type][order] = new Complex[twoSize];
+        // Generate scalefactors if necessary
+        if (_IDCTfactors[type][order] == null) {
+            _IDCTfactors[type][order] = new Complex[twoSize];
 
-          double oneOverTwoSize = 1.0 / (double) twoSize;
+            double oneOverTwoSize = 1.0 / (double) twoSize;
 
-          double factor = 1.0;
-          double oneOverE0 = 2.0;
+            double factor = 1.0;
+            double oneOverE0 = 2.0;
 
-          switch (type) {
+            switch (type) {
             case DCT_TYPE_NORMALIZED:
-            factor = 2.0;
-            oneOverE0 = ExtendedMath.SQRT_2;
-            break;
+                factor = 2.0;
+                oneOverE0 = ExtendedMath.SQRT_2;
+                break;
 
             case DCT_TYPE_ORTHONORMAL:
-            factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
-            oneOverE0 = ExtendedMath.SQRT_2;
-            break;
+                factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
+                oneOverE0 = ExtendedMath.SQRT_2;
+                break;
 
             case DCT_TYPE_UNNORMALIZED:
-            factor = 2.0;
-            oneOverE0 = 1.0;
-            break;
-          }
+                factor = 2.0;
+                oneOverE0 = 1.0;
+                break;
+            }
 
-          _IDCTfactors[type][order][0] = new Complex(oneOverE0 * factor, 0.0);
+            _IDCTfactors[type][order][0] = new Complex(oneOverE0 * factor, 0.0);
 
-          for (int k = 1; k < twoSize; k++) {
-              Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
-              _IDCTfactors[type][order][k] = c.exp().scale(factor);
-          }
-       }
+            for (int k = 1; k < twoSize; k++) {
+                Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
+                _IDCTfactors[type][order][k] = c.exp().scale(factor);
+            }
+        }
 
-       Complex[] evenX = new Complex[twoSize];
-       Complex[] myFactors = _IDCTfactors[type][order];
+        Complex[] evenX = new Complex[twoSize];
+        Complex[] myFactors = _IDCTfactors[type][order];
 
-       // Convert to Complex, while multiplying by scalefactors
+        // Convert to Complex, while multiplying by scalefactors
 
-       evenX[0] = myFactors[0].scale(x[0]);
-       for (int k = 1; k < size; k++) {
-           evenX[k] = myFactors[k].scale(x[k]);
-           evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
-       }
-       evenX[size] = new Complex(0.0, 0.0);
+        evenX[0] = myFactors[0].scale(x[0]);
+        for (int k = 1; k < size; k++) {
+            evenX[k] = myFactors[k].scale(x[k]);
+            evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
+        }
+        evenX[size] = new Complex(0.0, 0.0);
 
-       double[] longOutput = IFFTRealOut(evenX, order + 1);
+        double[] longOutput = IFFTRealOut(evenX, order + 1);
 
-       // Truncate result
-       return DoubleArrayMath.resize(longOutput, size);
+        // Truncate result
+        return DoubleArrayMath.resize(longOutput, size);
     }
 
     /** Return a new array of Complex's which is the inverse FFT
@@ -835,7 +835,7 @@ public class SignalProcessing {
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
         if ((order - 2) >  _FFCTGenLimit) {
-           _FFCTTableGen(order - 2);
+            _FFCTTableGen(order - 2);
         }
 
         double[] imagPart = _sinDFT(x, size, order);
@@ -916,13 +916,13 @@ public class SignalProcessing {
         int halfN = size >> 1;
 
         if (x.length < size) {
-           x = DoubleArrayMath.resize(x, size);
+            x = DoubleArrayMath.resize(x, size);
         }
 
         // Make sure the tables have enough entries for the DCT computation
         // at size N/4
         if ((order - 2) >  _FFCTGenLimit) {
-           _FFCTTableGen(order - 2);
+            _FFCTTableGen(order - 2);
         }
 
         double[] realPart = _cosDFT(x, size, order);
@@ -947,9 +947,9 @@ public class SignalProcessing {
     public static final double[] generateWindow(int length, int windowType) {
 
         if (length < 1) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing.generateWindow() : length of " +
-            "window should be greater than 0.");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.generateWindow() : length of " +
+                    "window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -959,78 +959,78 @@ public class SignalProcessing {
         switch (windowType) {
 
         case WINDOW_TYPE_RECTANGULAR:
-        {
-          for (n = 0; n < length; n++) {
-              window[n] = 1.0;
-          }
-        }
-        break;
+            {
+                for (n = 0; n < length; n++) {
+                    window[n] = 1.0;
+                }
+            }
+            break;
 
         case WINDOW_TYPE_BARTLETT:
-        {
-          int halfM = M / 2;
-          double twoOverM = 2.0 / (double) M;
+            {
+                int halfM = M / 2;
+                double twoOverM = 2.0 / (double) M;
 
-          for (n = 0; n <= halfM; n++) {
-              window[n] = n * twoOverM;
-          }
+                for (n = 0; n <= halfM; n++) {
+                    window[n] = n * twoOverM;
+                }
 
-          for (n = halfM + 1; n < length; n++) {
-              window[n] = 2.0 - n * twoOverM;
-          }
-        }
-        break;
+                for (n = halfM + 1; n < length; n++) {
+                    window[n] = 2.0 - n * twoOverM;
+                }
+            }
+            break;
 
         case WINDOW_TYPE_HANNING:
-        {
-          double twoPiOverM = 2.0 * Math.PI / (double) M;
+            {
+                double twoPiOverM = 2.0 * Math.PI / (double) M;
 
-          for (n = 0; n < length; n++) {
-              window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
-          }
-        }
-        break;
+                for (n = 0; n < length; n++) {
+                    window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
+                }
+            }
+            break;
 
         case WINDOW_TYPE_HAMMING:
-        {
-          double twoPiOverM = 2.0 * Math.PI / (double) M;
+            {
+                double twoPiOverM = 2.0 * Math.PI / (double) M;
 
-          for (n = 0; n < length; n++) {
-              window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
-          }
-        }
-        break;
+                for (n = 0; n < length; n++) {
+                    window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
+                }
+            }
+            break;
 
         case WINDOW_TYPE_BLACKMAN:
-        {
-          double twoPiOverM = 2.0 * Math.PI / (double) M;
-          double fourPiOverM = 2.0 * twoPiOverM;
+            {
+                double twoPiOverM = 2.0 * Math.PI / (double) M;
+                double fourPiOverM = 2.0 * twoPiOverM;
 
-          for (n = 0; n < length; n++) {
-              window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) +
-                          0.08 * Math.cos(fourPiOverM * n);
-          }
-        }
-        break;
+                for (n = 0; n < length; n++) {
+                    window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) +
+                        0.08 * Math.cos(fourPiOverM * n);
+                }
+            }
+            break;
 
         case WINDOW_TYPE_BLACKMAN_HARRIS:
-        {
-          double twoPiOverM = 2.0 * Math.PI / (double) M;
-          double fourPiOverM = 2.0 * twoPiOverM;
-          double sixPiOverM = 3.0 * twoPiOverM;
+            {
+                double twoPiOverM = 2.0 * Math.PI / (double) M;
+                double fourPiOverM = 2.0 * twoPiOverM;
+                double sixPiOverM = 3.0 * twoPiOverM;
 
-          for (n = 0; n < length; n++) {
-              window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) +
-                          0.14128 * Math.cos(fourPiOverM * n) -
-                          0.01168 * Math.cos(sixPiOverM * n);
-          }
-        }
-        break;
+                for (n = 0; n < length; n++) {
+                    window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) +
+                        0.14128 * Math.cos(fourPiOverM * n) -
+                        0.01168 * Math.cos(sixPiOverM * n);
+                }
+            }
+            break;
 
         default:
-        throw new IllegalArgumentException(
-         "ptolemy.math.SignalProcessing.generateWindow() : Unknown window " +
-         "type (" + windowType + ").");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.generateWindow() : Unknown window " +
+                    "type (" + windowType + ").");
         }
 
         return window;
@@ -1048,17 +1048,17 @@ public class SignalProcessing {
      *  @see ptolemy.math.SampleGenerator
      */
     public static final double[] sampleWave(int length,
-     double startTime, double interval, SampleGenerator sampleGen) {
-      double time = startTime;
+            double startTime, double interval, SampleGenerator sampleGen) {
+        double time = startTime;
 
-      double[] retval = new double[length];
+        double[] retval = new double[length];
 
-      for (int t = 0; t < length; t++) {
-          retval[t] = sampleGen.sampleAt(time);
-          time += interval;
-      }
+        for (int t = 0; t < length; t++) {
+            retval[t] = sampleGen.sampleAt(time);
+            time += interval;
+        }
 
-      return retval;
+        return retval;
     }
 
     /** Return the "order" of a transform size, i.e. the base-2 logarithm
@@ -1068,15 +1068,15 @@ public class SignalProcessing {
      *  @return The order of the transform.
      */
     public static final int order(int size) {
-       if (size <= 0) {
-          throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : size of transform must be "+
-            "positive.");
-       }
+        if (size <= 0) {
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing : size of transform must be "+
+                    "positive.");
+        }
 
-       double m = Math.log(size)*_LOG2SCALE;
-       double exp = Math.ceil(m);
-       return (int) exp;
+        double m = Math.log(size)*_LOG2SCALE;
+        double exp = Math.ceil(m);
+        return (int) exp;
     }
 
     /** Given an array of pole locations, an array of zero locations, and a
@@ -1093,7 +1093,7 @@ public class SignalProcessing {
      *  frequency response.
      */
     public static final Complex[] poleZeroToFreq(Complex[] poles,
-     Complex[] zeros, Complex gain, int numsteps){
+            Complex[] zeros, Complex gain, int numsteps){
         double step = 2*Math.PI/numsteps;
         Complex[] freq = new Complex[numsteps];
 
@@ -1125,8 +1125,8 @@ public class SignalProcessing {
     public static final int nextPowerOfTwo(double x) {
         if (x <= 0.0) {
             throw new IllegalArgumentException(
-             "SignalProcessing.nextPowerOfTwo: argument (" + x +
-             ") is not a positive number.");
+                    "SignalProcessing.nextPowerOfTwo: argument (" + x +
+                    ") is not a positive number.");
         }
         double m = Math.log(x)*_LOG2SCALE;
         int exp = (int)Math.ceil(m);
@@ -1401,13 +1401,13 @@ public class SignalProcessing {
     // Throw an exception otherwise.
     private static void _checkTransformOrder(int order) {
         if (order < 0) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : order of transform must be "+
-            "non-negative.");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing : order of transform must be "+
+                    "non-negative.");
         } else if (order > 31) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : order of transform must be "+
-            "less than 32.");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing : order of transform must be "+
+                    "less than 32.");
         }
     }
 
@@ -1421,7 +1421,7 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-           x = DoubleArrayMath.resize(x, size);
+            x = DoubleArrayMath.resize(x, size);
         }
         return x;
     }
@@ -1436,7 +1436,7 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-           x = ComplexArrayMath.resize(x, size);
+            x = ComplexArrayMath.resize(x, size);
         }
         return x;
     }
@@ -1446,33 +1446,33 @@ public class SignalProcessing {
     private static double[] _cosDFT(double[] x, int size, int order) {
 
         switch (size) {
-          // Base cases for lower orders
-          case 0:
+            // Base cases for lower orders
+        case 0:
             return null; // should never be used
 
-          case 1:
+        case 1:
             {
-             double[] retval = new double[1];
-             retval[0] = x[0];
-             return retval;
+                double[] retval = new double[1];
+                retval[0] = x[0];
+                return retval;
             }
 
-          case 2:
+        case 2:
             {
-             double[] retval = new double[2];
-             retval[0] = x[0] + x[1];
-             retval[1] = x[0] - x[1];
-             return retval;
+                double[] retval = new double[2];
+                retval[0] = x[0] + x[1];
+                retval[1] = x[0] - x[1];
+                return retval;
             }
 
-          // Optimized base case for higher orders
-          case 4:
+            // Optimized base case for higher orders
+        case 4:
             {
-             double[] retval = new double[3];
-             retval[0] = x[0] + x[1] + x[2] + x[3];
-             retval[1] = x[0] - x[2];
-             retval[2] = x[0] - x[1] + x[2] - x[3];
-             return retval;
+                double[] retval = new double[3];
+                retval[0] = x[0] + x[1] + x[2] + x[3];
+                retval[1] = x[0] - x[2];
+                retval[2] = x[0] - x[1] + x[2] - x[3];
+                return retval;
             }
         }
 
@@ -1513,21 +1513,21 @@ public class SignalProcessing {
     private static double[] _sinDFT(double[] x, int size, int order) {
 
         switch (size) {
-          // Base cases for lower orders
-          case 0:
-          case 1:
-          case 2:
-          return null; // should never be used
+            // Base cases for lower orders
+        case 0:
+        case 1:
+        case 2:
+            return null; // should never be used
 
-          // Optimized base case for higher orders
-          case 4:
+            // Optimized base case for higher orders
+        case 4:
             {
-             double[] retval = new double[2];
-             // retval[0] = 0.0; // not necessary for Java,
-                                 // also not read
+                double[] retval = new double[2];
+                // retval[0] = 0.0; // not necessary for Java,
+                // also not read
 
-             retval[1] = x[1] - x[3];
-             return retval;
+                retval[1] = x[1] - x[3];
+                return retval;
             }
         }
 
@@ -1543,7 +1543,7 @@ public class SignalProcessing {
         for (int k = 0; k < quarterN; k++) {
             int twoIp = (k << 1) + 1;
             x3[k] = ((k & 1) == 1) ? (x[size - twoIp] - x[twoIp]) :
-                    (x[twoIp] - x[size - twoIp]);
+                (x[twoIp] - x[size - twoIp]);
         }
 
         double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
@@ -1571,16 +1571,16 @@ public class SignalProcessing {
         double[] retval;
 
         if (size == 1) {
-           retval = new double[1];
-           retval[0] = x[0];
-           return retval;
+            retval = new double[1];
+            retval[0] = x[0];
+            return retval;
         }
 
         if (size == 2) {
-           retval = new double[2];
-           retval[0] = x[0] + x[1];
-           retval[1] = ExtendedMath.ONE_OVER_SQRT_2 * (x[0] - x[1]);
-           return retval;
+            retval = new double[2];
+            retval[0] = x[0] + x[1];
+            retval[1] = ExtendedMath.ONE_OVER_SQRT_2 * (x[0] - x[1]);
+            return retval;
         }
 
         int halfN = size >> 1;
@@ -1653,7 +1653,7 @@ public class SignalProcessing {
 
     // Table of scalefactors for the IDCT.
     private static final Complex _IDCTfactors[][][] =
-     new Complex[DCT_TYPES][32][];
+    new Complex[DCT_TYPES][32][];
 
     // Various constants
     private static final double _LOG10SCALE = 1.0 / Math.log(10.0);
