@@ -36,6 +36,7 @@ package ptolemy.plot;
 import java.applet.Applet;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.awt.*;
 import java.net.*;              // Need URL
 
@@ -149,7 +150,8 @@ public class PlotApplet extends Applet {
             try {
                 showStatus("Reading data");
                 URL dataurl = new URL(getDocumentBase(), dataurlspec);
-                plot().read(dataurl.openStream());
+                InputStream in = dataurl.openStream();
+                _read(in);
                 showStatus("Done");
             } catch (MalformedURLException e) {
                 System.err.println(e.toString());
@@ -172,6 +174,18 @@ public class PlotApplet extends Applet {
      */
     public Plot plot() {
         return _myPlot;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Read the specified stream.  Derived classes may override this
+     *  to support other file formats.
+     *  @param in The input stream.
+     *  @exception IOException If the stream cannot be read.
+     */
+    protected void _read(InputStream in) throws IOException {
+        plot().read(in);
     }
 
     ///////////////////////////////////////////////////////////////////
