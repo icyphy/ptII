@@ -13,43 +13,43 @@
 #fi
 mailto=$1
 
-ADMDIR=/users/ptII/adm
+ADMDIR=/home/bldmastr/ptII/adm
 GENDIR=$ADMDIR/gen-1.0
 cd $GENDIR
 
 
 # Generate the mail message
-mailmsg=$ADMDIR/test/ptIInightly.mail
+mailmsg=$ADMDIR/logs/ptIInightly.mail
 
 echo "`date`" > $mailmsg
-echo "The Ptolemy II nightly build is run from a ptII user cronjob" >> $mailmsg
-echo "which runs ~ptII/adm/bin/ptIInightly" >> $mailmsg
+echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
+echo "See http://www.gigascale.org/buildmaster" >> $mailmsg
 
 # The log of the build
-ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
-(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
+#ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
+ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
+#(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
 
 # Remove logs older than 45 days
-find /users/ptII/logs -name "java[0-9]*" -mtime +45 -exec rm {} \;
+#find /users/ptII/logs -name "java[0-9]*" -mtime +45 -exec rm {} \;
 
 
-echo "The size of the Ptolemy II tar file:" >> $mailmsg
-ls -l $GENDIR/.gz >> $mailmsg
-echo "" >> $mailmsg
-echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
-echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-1.0"  >> $mailmsg
-echo "" >> $mailmsg
-echo "The links below are on the nightly build page:" >> $mailmsg
-echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
+#echo "The size of the Ptolemy II tar file:" >> $mailmsg
+#ls -l $GENDIR/.gz >> $mailmsg
+#echo "" >> $mailmsg
+#echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-1.0"  >> $mailmsg
+#echo "" >> $mailmsg
+#echo "The links below are on the nightly build page:" >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
 
-echo "" >> $mailmsg
+#echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
-echo "Errors during the build and test process in ~ptII:" >> $mailmsg
+echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
-echo "To see the complete build and test log, view:" >> $mailmsg
-echo "$ptbuildlog" >> $mailmsg
-echo "or" >> $mailmsg
-echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/logs/javalastnight" >> $mailmsg
+echo "To see the complete build and test log, see:" >> $mailmsg
+echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+
 # print out 'Entering directory' lines
 awk ' $0 ~ /Entering directory/ { indir=$0 }
       $0 ~ /\*\*\*/ { 	print indir
@@ -87,21 +87,21 @@ egrep 'deprecated\.' $ptbuildlog | egrep 'in (class|interface) ptolemy.' >> $mai
 
 #egrep '\*\*\*' $ptbuildlog >> $mailmsg
 
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
-echo "Errors during the tar file build, code coverage statistics " >> $mailmsg
-echo "process, jdk1.1 build, cvs checkout build:" >> $mailmsg
-echo "" >> $mailmsg
-echo "To see the complete tar file build and coverage log, view:" >> $mailmsg
-echo "/users/ptII/adm/test/ptIInightly.txt" >> $mailmsg
-echo "or" >> $mailmsg
-echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/test/ptIInightly.txt" >> $mailmsg
-echo "" >> $mailmsg
+#echo "" >> $mailmsg
+#echo "------------------------------------------------" >> $mailmsg
+#echo "Errors during the tar file build, code coverage statistics " >> $mailmsg
+#echo "process, jdk1.1 build, cvs checkout build:" >> $mailmsg
+#echo "" >> $mailmsg
+#echo "To see the complete tar file build and coverage log, view:" >> $mailmsg
+#echo "/users/ptII/adm/test/ptIInightly.txt" >> $mailmsg
+#echo "or" >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/test/ptIInightly.txt" >> $mailmsg
+#echo "" >> $mailmsg
 
-egrep '\*\*\*' $ADMDIR/test/ptIInightly.txt >> $mailmsg
+#egrep '\*\*\*' $ADMDIR/test/ptIInightly.txt >> $mailmsg
 
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
+#echo "" >> $mailmsg
+#echo "------------------------------------------------" >> $mailmsg
 #echo "Diffs between tonight's build and lastnight's build" >> $mailmsg
 # cat $ADMDIR/test/ptIInightly.diffs >> $mailmsg
 
@@ -116,14 +116,14 @@ echo "............................................................" >> $mailmsg
 echo "" >> $mailmsg
 # Note that we only grep for the tests run during code coverage
 # which only occurred on /export/tycho/tycho2
-egrep 'Total Tests' $ADMDIR/test/ptIInightly.txt | grep tycho/tycho2 >> $mailmsg
+egrep 'Total Tests' $ptbuildlog >> $mailmsg
 
 echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
 echo "Code Coverage Summary" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see code coverage, view:" >> $mailmsg
-echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly/js" >> $mailmsg
+echo "http://www.gigascale.org/ptolemy/nightly/coverage.html" >> $mailmsg
 echo "" >> $mailmsg
 sh $ADMDIR/bin/coveragesummary >> $mailmsg
 
@@ -132,7 +132,7 @@ echo "------------------------------------------------" >> $mailmsg
 echo "Test Failures during code coverage, JDK1.1 build" >> $mailmsg
 echo "or cvs build" >> $mailmsg
 echo "" >> $mailmsg
-egrep 'Total Tests' $ADMDIR/test/ptIInightly.txt |
+egrep 'Total Tests' $ptbuildlog |
     egrep -v '^Failed: 0' >> $mailmsg
 
 
