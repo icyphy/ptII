@@ -45,7 +45,7 @@ so the default implementation here triggers an exception.
 package pt.data;
 
 import pt.kernel.*;
-import pt.data.parser.*;
+// import pt.data.parser.*;
 
 public abstract class Token implements Cloneable {
 
@@ -159,13 +159,14 @@ public abstract class Token implements Cloneable {
     
     /** Return the Parser object associated with this Token. 
      */
+    /* FIXME
     public PtParser getParser() {
         if (_parser == null) {
             _parser = new PtParser();
         }
         return _parser;
     }
-
+    */
     /** Return the Publisher object associated with this Token. 
      */
     public TokenPublisher getPublisher() {
@@ -211,6 +212,7 @@ public abstract class Token implements Cloneable {
       * @param value The string to be parsed to get the tokens value
       * @param params The params that this tokens value can depend on
       */
+    /* FIXME
       public void setValue(String value, NamedList params) throws IllegalArgumentException {
           try {
               Token result;
@@ -225,7 +227,8 @@ public abstract class Token implements Cloneable {
           }     
           notifySubscribers();
       }         
-          
+      */
+
      /** This method should be overridden where appropriate in subclasses
      */
     public int size() {
@@ -245,5 +248,5 @@ public abstract class Token implements Cloneable {
     // the associated TokenPublisher
     private TokenPublisher _publisher;
     // the associated Parser
-    private PtParser _parser;
+    // private PtParser _parser;
 }
