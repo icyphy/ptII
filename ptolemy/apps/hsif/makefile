@@ -29,14 +29,42 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-shsif :
-	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif.xml data/hsif.xsl >shsif.xml
 
-thsif :
-	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif.xml data/hsif.xsl >thsif.xml
+# dealing with Global Variables
+g_pre_shsif :
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif.xml data/hsif_globalVariable_preprocessor.xsl >data/shsif_mid_g.xml
 
-phsif :
-	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/phsif.xml data/hsif.xsl >phsif.xml
+g_pre_thsif :
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif.xml data/hsif_globalVariable_preprocessor.xsl >data/thsif_mid_g.xml
 
-all:	shsif thsif phsif
+# dealing with the redundant nodes after g_pre_shif
+sg_pre_shsif : g_pre_shsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_g.xml data/hsif_slim_preprocessor.xsl >data/shsif_mid_sg.xml
+
+sg_pre_thsif : g_pre_thsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_g.xml data/hsif_slim_preprocessor.xsl >data/thsif_mid_sg.xml
+
+# dealing with Local Variables
+l_pre_shsif : sg_pre_shsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl >data/shsif_mid_l.xml
+
+l_pre_thsif : sg_pre_thsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_sg.xml data/hsif_localVariable_preprocessor.xsl >data/thsif_mid_l.xml
+
+# dealing with the redundant nodes after l_pre_shif
+sl_pre_shsif : l_pre_shsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_l.xml data/hsif_slim_preprocessor.xsl >data/shsif_mid_sl.xml
+
+sl_pre_thsif : l_pre_thsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_l.xml data/hsif_slim_preprocessor.xsl >data/thsif_mid_sl.xml
+
+# generating MoML files
+shsif : sl_pre_shsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/shsif_mid_sl.xml data/hsif.xsl >shsif.xml
+
+thsif : sl_pre_thsif
+	java -classpath ".;./saxon7.jar" net.sf.saxon.Transform data/thsif_mid_sl.xml data/hsif.xsl >thsif.xml
+
+# make all
+all:	shsif thsif
 
