@@ -49,6 +49,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	matlab
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 # Keep this list alphabetized.
 JSRCS = \
 	Engine.java \
@@ -66,6 +70,9 @@ all: jclass
 jclass: $(ROOT)/bin/ptmatlab.dll
 
 install: jclass jars
+	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in $PTII/lib"
+	@echo "for hosts that might not have gcc installed"
+	cp $(PTPACKAGE).jar $(ROOT)/lib
 
 depend:
 	@echo "no dependencies in this directory"
