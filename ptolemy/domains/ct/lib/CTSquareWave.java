@@ -47,6 +47,10 @@ director when the jump occurs. Single output source (Output type:double).
 @see ptolemy.domains.ct.kernel.CTActor
 */
 public class CTSquareWave extends CTActor {
+
+    public static final boolean VERBOSE = true;
+    public static final boolean DEBUG = true;
+
     /** Construct the CTSquareWave actor
      * @param container container of this actor 
      * @param name The name
@@ -66,6 +70,7 @@ public class CTSquareWave extends CTActor {
         _paramMinValue = new CTParameter(this, "MinimumValue",
                 new DoubleToken(_minValue));
         _frequency = (double)1.0;
+        _halfperiod = (double)1.0/((double)2.0*_frequency);
         _paramFrequency = new CTParameter(this, "Frequency", 
                 new DoubleToken(_frequency));
         _startFromMin = true;
@@ -93,23 +98,32 @@ public class CTSquareWave extends CTActor {
         _lastfliptime = dir.getStartTime();
         _isMin = ((BooleanToken)_paramStartFromMin.getToken()).booleanValue();
     }
+    
+    /** Always returns true. If the currentTime is greate than lastFlipTime
+     *  + _halfPeriod, then flip, and reset lastFlipTime.
+     */
+    public boolean prefire() throws IllegalActionException{
+        super.prefire();
+        CTDirector dir = (CTDirector) getDirector();
+        if(dir == null) {
+            throw new IllegalActionException( this, " Has no director.");
+        }
+        double now = dir.getCurrentTime();
+        double nextfliptime = _lastfliptime+_halfperiod;
+        if(nextfliptime <= now) {
+            //flip;
+            _isMin = !_isMin;
+            _lastfliptime = nextfliptime;
+        }
+        return true;
+    }
+     
 
     /** Output a token according to the waveform. 
      *    
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws  IllegalActionException{
-        CTDirector dir = (CTDirector) getDirector();
-        if(dir == null) {
-            throw new IllegalActionException( this, " Has no director.");
-        }
-        double now = dir.getCurrentTime();
-        double elapse = now - _lastfliptime;
-        // The signal is left continuous.
-        if(elapse > _halfperiod) {
-            _isMin = !_isMin;
-            _lastfliptime += _halfperiod;
-        }
         if(_isMin) {
             output.broadcast( new DoubleToken(_minValue) );
         } else {
@@ -122,39 +136,41 @@ public class CTSquareWave extends CTActor {
      *  a jump to the director. 
      *  @return Same as super.prefire()
      *  @exception IllegalActionException If there's no director.
-     
-    public boolean prefire() throws IllegalActionException{
-        if(super.prefire()) {
-            CTDirector dir = (CTDirector) getDirector();
-            if(dir == null) {
-                throw new IllegalActionException( this, " Has no director.");
-            }
-            //System.out.println("half period="+_halfperiod);
-            double now = dir.getCurrentTime();
-            if (_lastfliptime > now) {
-                _isMin = !_isMin;
-                _lastfliptime -= _halfperiod;
-            }
-            double nextfliptime = _lastfliptime + _halfperiod;
-            //System.out.println("next flip time="+nextfliptime);
-            if ((nextfliptime > now) && 
-                    (nextfliptime <(now+dir.currentStepSize()))) {
-                dir.registNextJumpTime(nextfliptime);
-            }
-            return true;
+     */
+    public boolean postfire() throws IllegalActionException{
+        CTDirector dir = (CTDirector) getDirector();
+        if(dir == null) {
+            throw new IllegalActionException( this, " Has no director.");
         }
-        return false;
-    }*/
+        //System.out.println("half period="+_halfperiod);
+        double now = dir.getCurrentTime();
+        double nextfliptime = _lastfliptime + _halfperiod;
+        //System.out.println("next flip time="+nextfliptime);
+        if ((nextfliptime > now) && 
+        (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
+            dir.fireAfterDelay(this, nextfliptime-now);
+        }  
+        return true;
+    }
         
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      *  FIXME: default values? negative frquency?
      */
     public synchronized void updateParams() {
+        if(VERBOSE) {
+            System.out.println("SquareWave updating parameters..");
+        }
         _maxValue = ((DoubleToken)_paramMaxValue.getToken()).doubleValue();
         _minValue = ((DoubleToken)_paramMinValue.getToken()).doubleValue();
         _frequency = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
         _halfperiod = (double)1.0/((double)2.0*_frequency);
+        if(DEBUG) {
+            System.out.println("_maxVaue=" + _maxValue);
+            System.out.println("_minVaue=" + _minValue);
+            System.out.println("_Frequency=" + _frequency);
+            System.out.println("_halfperiod=" + _halfperiod);
+        }
     }
 
     /** Single output port.
