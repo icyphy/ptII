@@ -100,20 +100,19 @@ public class ComSystem extends SDFApplet {
             matched.root.setToken(new BooleanToken(true));
 
             // Create and configure plotter
-            SequencePlotter plotter = new SequencePlotter(_toplevel, "plot");
+            SequenceScope plotter = new SequenceScope(_toplevel, "plot");
 
             // Place the plotter in the applet in such a way that it fills
             // the available space.
             plotter.place(getContentPane());
 
+            plotter.xUnit.setToken(new DoubleToken(1.0/16.0));
+            plotter.width.setToken(new IntToken(32));
+            plotter.persistence.setToken(new IntToken(512));
             plotter.plot.setBackground(getBackground());
-            plotter.plot.setGrid(false);
             plotter.plot.setTitle("Eye Diagram");
-            plotter.plot.setXRange(0.0, 32.0);
-            plotter.plot.setWrap(true);
             plotter.plot.setYRange(-1.3, 1.3);
-            plotter.plot.setMarksStyle("pixels");
-            plotter.plot.setPointsPersistence(512);
+            plotter.plot.setXLabel("Symbol intervals");
 
             _toplevel.connect(data.output, coder.input);
             _toplevel.connect(coder.output, shaper.input);
