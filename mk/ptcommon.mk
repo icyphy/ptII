@@ -414,7 +414,7 @@ jstest_jsimple:
 	@echo "jssummary -HTML -PROGRESS -OUTFILE=\$$HOME/public_html/private/js/coverage.html"
 	@echo "jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=\$$HOME/public_html/private/js"
 
-# Run the test_jsimple rule with the proper classpath  
+# Run the test_jgraphical rule with the proper classpath  
 jstest_jgraphical:
 	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
 		test_jgraphical
