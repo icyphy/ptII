@@ -201,7 +201,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-            "AtomicActor.newPort: Internal error: " + ex.getMessage());
+                    "AtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -218,7 +218,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         Director dir = getDirector();
         if (dir == null) {
             throw new IllegalActionException(this,
-            "Cannot create a receiver without a director.");
+                    "Cannot create a receiver without a director.");
         }
         return dir.newReceiver();
     }
@@ -312,41 +312,41 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+            ////                         protected methods                      ////
 
-    /** Override the base class to throw an exception if the added port
-     *  is not an instance of IOPort.  This method should not be used
-     *  directly.  Call the setContainer() method of the port instead.
-     *  This method does not set the container of the port to point to
-     *  this entity. It assumes that the port is in the same workspace
-     *  as this entity, but does not check.  The caller should check.
-     *  Derived classes may override this method to further constrain to
-     *  a subclass of IOPort. This method is <i>not</i> synchronized on
-     *  the workspace, so the caller should be.
-     *
-     *  @param port The port to add to this entity.
-     *  @exception IllegalActionException If the port class is not
-     *   acceptable to this entity, or the port has no name.
-     *  @exception NameDuplicationException If the port name coincides with a
-     *   name already in the entity.
-     */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(port instanceof IOPort)) {
-            throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
-        }
-        super._addPort(port);
-    }
+            /** Override the base class to throw an exception if the added port
+             *  is not an instance of IOPort.  This method should not be used
+             *  directly.  Call the setContainer() method of the port instead.
+             *  This method does not set the container of the port to point to
+             *  this entity. It assumes that the port is in the same workspace
+             *  as this entity, but does not check.  The caller should check.
+             *  Derived classes may override this method to further constrain to
+             *  a subclass of IOPort. This method is <i>not</i> synchronized on
+             *  the workspace, so the caller should be.
+             *
+             *  @param port The port to add to this entity.
+             *  @exception IllegalActionException If the port class is not
+             *   acceptable to this entity, or the port has no name.
+             *  @exception NameDuplicationException If the port name coincides with a
+             *   name already in the entity.
+             */
+            protected void _addPort(Port port)
+                    throws IllegalActionException, NameDuplicationException {
+                if (!(port instanceof IOPort)) {
+                    throw new IllegalActionException(this, port,
+                            "Incompatible port class for this entity.");
+                }
+                super._addPort(port);
+            }
 
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+            ////                         private variables                      ////
 
-    // Cached lists of input and output ports.
-    private transient long _inputPortsVersion = -1;
+            // Cached lists of input and output ports.
+            private transient long _inputPortsVersion = -1;
     private transient LinkedList _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient LinkedList _cachedOutputPorts;
