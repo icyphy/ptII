@@ -1,0 +1,186 @@
+/* A base class for attributes to be attached to instances of NamedObj.
+
+ Copyright (c) 1998 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Green (eal@eecs.berkeley.edu)
+
+*/
+
+package pt.kernel.util;
+
+
+//////////////////////////////////////////////////////////////////////////
+//// Attribute
+/**
+Attribute is a base class for attributes to be attached to instances
+of NamedObj.  This base class is itself a NamedObj, with the only
+extension being that it can have a container.  The setContainer()
+method puts this object on the list of attributes of the container.
+
+@author Edward A. Lee, Neil Smyth
+@version $Id$
+*/
+public class Attribute extends NamedObj {
+
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public Attribute() {
+	super();
+    }
+
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public Attribute(Workspace workspace) {
+	super(workspace, "");
+    }
+
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace,
+     *  unless the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of the attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public Attribute(NamedObj container, String name) 
+            throws IllegalActionException, NameDuplicationException {
+        super(container.workspace(), name);
+        setContainer(container);
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
+
+    /** Clone the object and register the clone in the workspace.
+     *  The result is an attribute with no container that
+     *  is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
+     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @return The cloned attribute.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        // NOTE: It is not actually necessary to override the base class
+        // method, but we do it anyway so that the exact behavior of this
+        // method is documented with the class.
+        return super.clone(ws);
+    }
+
+    /** Get the NamedObj that this Attribute is attached to.
+     *  @return The container, an instance of NamedObj.
+     */
+    public Nameable getContainer() {
+        return _container;
+    }
+    
+    /** Specify the container NamedObj, adding this attribute to the 
+     *  list of attributes in the container.  If the container already 
+     *  contains an attribute with the same name, then throw an exception 
+     *  and do not make any changes.  Similarly, if the container is 
+     *  not in the same workspace as this attribute, throw an exception.
+     *  If this attribute is already contained by the NamedObj, do nothing.
+     *  If the attribute already has a container, remove
+     *  this attribute from its attribute list first.  Otherwise, remove 
+     *  it from the list of objects in the workspace, if it is present.
+     *  If the argument is null, then remove it from its container.
+     *  It is not added to the workspace, so this could result in
+     *  this object being garbage collected.
+     *  Note that since an Attribute is a NamedObj, it can itself have
+     *  attributes.  However, recursive containment is not allowed, where
+     *  an attribute is an attribute of itself, or indirectly of any attribute
+     *  it contains.  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && workspace() != container.workspace()) {
+            throw new IllegalActionException(this, container,
+                "Cannot set container because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            if (deepContains(container)) {
+                throw new IllegalActionException(this, container,
+                "Attempt to construct recursive containment of attributes.");
+            }
+
+            NamedObj prevcontainer = (NamedObj)getContainer();
+            if (prevcontainer == container) return;
+            // Do this first, because it may throw an exception.
+            if (container != null) {
+                container._addAttribute(this);
+                if (prevcontainer == null) {
+                    workspace().remove(this);
+                }
+            }
+            _container = container;
+            if (prevcontainer != null) {
+                prevcontainer._removeAttribute(this);
+            }
+            workspace().incrVersion();
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+    
+    /** Clear references that are not valid in a cloned object. The clone()
+     *  method makes a field-by-field copy, which results
+     *  in invalid references to objects. 
+     *  In this class, this method reinitializes the private member, the
+     *  container, so that it is null.
+     *  @param ws The workspace that the cloned object is to be placed in.
+     */
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
+        _container = null;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private variables                        ////
+
+    private NamedObj _container;
+}
