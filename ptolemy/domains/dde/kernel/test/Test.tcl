@@ -1,4 +1,4 @@
-# Tests for the DDEReceiver class
+# Tests for the DDENullFBDelay class
 #
 # @Author: John S. Davis II
 #
@@ -59,50 +59,51 @@ set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 ######################################################################
 ####
 #
-test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
+test DDENullFBDelay-3.1 {Cycle real tokens} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
+    $dir setCompletionTime 26.0
     
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 5]
-    set actorSend1 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend1" 3]
-    set actorSend2 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend2" 3]
-    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "actorThru"]
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
+    set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
+    set fBack [java::new ptolemy.domains.dde.kernel.DDENullFBDelay $toplevel "fBack"]
 
     set tok1 [java::new ptolemy.data.Token]
-    
-    $actorSend1 setToken $tok1 $globalIgnoreTime 0 
-    $actorSend1 setToken $tok1 5.0 1 
-    $actorSend1 setToken $tok1 7.0 2 
-    
-    $actorSend2 setToken $tok1 4.0 0 
-    $actorSend2 setToken $tok1 6.0 1 
-    $actorSend2 setToken $tok1 8.0 2 
-    
-    set rcvrInPort [$actorRcvr getPort "input"]
-    set sendOutPort1 [$actorSend1 getPort "output"]
-    set sendOutPort2 [$actorSend2 getPort "output"]
-    set thruInPort [$actorThru getPort "input"]
-    set thruOutPort [$actorThru getPort "output"]
-    
-    $toplevel connect $sendOutPort2 $thruInPort
-    $toplevel connect $sendOutPort1 $thruInPort
-    $toplevel connect $thruOutPort $rcvrInPort
+    $actorSend setToken $tok1 5.0 0 
+    $actorSend setToken $tok1 15.0 1
+    $actorSend setToken $tok1 25.0 2
+
+    set rcvrIn [$actorRcvr getPort "input"]
+    set sendOut [$actorSend getPort "output"]
+    set joinIn [$join getPort "input"]
+    set joinOut [$join getPort "output"]
+    set forkIn [$fork getPort "input"]
+    set forkOut1 [$fork getPort "output1"]
+    set forkOut2 [$fork getPort "output2"]
+    set fBackIn [$fBack getPort "input"]
+    set fBackOut [$fBack getPort "output"]
+
+    $toplevel connect $sendOut $joinIn
+    $toplevel connect $joinOut $forkIn
+    $toplevel connect $forkOut2 $rcvrIn 
+    $toplevel connect $fBackOut $joinIn
+    $toplevel connect $fBackIn $forkOut1
 
     $mgr run
-    
+
     set time0 [$actorRcvr getAfterTime 0]
     set time1 [$actorRcvr getAfterTime 1]
     set time2 [$actorRcvr getAfterTime 2]
-    set time3 [$actorRcvr getAfterTime 3]
-    set time4 [$actorRcvr getAfterTime 4]
-    
-    list $time0 $time1 $time2 $time3 $time4 
-} {4.0 5.0 6.0 7.0 8.0}    
 
+    list $time0 $time1 $time2
+
+} {5.0 15.0 25.0}
 
 
 
