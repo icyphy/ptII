@@ -44,7 +44,22 @@ proc providers {} {
    set providers [java::call java.security.Security getProviders]
    for {set i 0} {$i < [$providers length]} {incr i} {
        set provider [$providers get $i]
+       puts "----"
        puts [$provider toString]
+       puts " info:  [$provider getInfo]"
+#        puts " entrys:"
+#        set entrySet [$provider entrySet]
+#        set entrys [$entrySet iterator]
+#        for {set i 0} {[$entrys hasNext]} {incr i} {
+# 	   puts [[$entrys next] toString]
+#        }
+
+       puts " keys:"
+       set keySet [$provider keySet]
+       set keys [$keySet iterator]
+       for {set j 0} {[$keys hasNext]} {incr j} {
+	   puts [$keys next]
+       }
    }
     puts "";
 }
@@ -61,9 +76,15 @@ proc algorithms {algorithm} {
 
 proc cryptoInfo {} {
     providers	   
+    algorithms AlgorithmParameterGenerator
+    algorithms AlgorithmParameters
     algorithms CIPHER
     algorithms KEYGENERATOR
     algorithms KEYPAIRGENERATOR
+    algorithms KEYSTORE
+    algorithms MAC
     algorithms MESSAGEDIGEST
+    algorithms SecureRandom
     algorithms SIGNATURE
+
 }
