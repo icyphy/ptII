@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (liuj)
-@AcceptedRating Red (liuj)
 */
 
 package ptolemy.domains.rtp.lib;
@@ -51,6 +48,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author  Jie Liu
    @version $Id$
+   @ProposedRating Red (liuj)
+   @AcceptedRating Red (liuj)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 

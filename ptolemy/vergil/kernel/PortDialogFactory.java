@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (johnr)
 */
 
 package ptolemy.vergil.kernel;
@@ -59,8 +57,8 @@ import diva.gui.toolbox.JContextMenu;
    @author Edward A. Lee and Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class PortDialogFactory implements MenuItemFactory {
 

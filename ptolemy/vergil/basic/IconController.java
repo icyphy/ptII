@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (johnr)
 */
 
 package ptolemy.vergil.basic;
@@ -67,8 +64,8 @@ import diva.graph.NodeRenderer;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class IconController extends ParameterizedNodeController {
 

@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (neuendor)
 */
 
 package ptolemy.domains.pbo.kernel;
@@ -114,6 +111,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author Steve Neuendorffer
    @version $Id$
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class PBOThreadDirector extends Director {
 

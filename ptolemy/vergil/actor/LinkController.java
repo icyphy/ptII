@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (johnr)
 */
 
 package ptolemy.vergil.actor;
@@ -64,15 +62,15 @@ import diva.gui.toolbox.MenuCreator;
 //////////////////////////////////////////////////////////////////////////
 //// LinkController
 /**
-   This class provides interaction techniques for edges that are to be connected
-   between ports and relations.  Standard interaction techniques for an
-   undirected edge are allowed.
+   This class provides interaction techniques for edges that are to be
+   connected between ports and relations.  Standard interaction
+   techniques for an undirected edge are allowed.
 
    @author Steve Neuendorffer, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class LinkController extends BasicEdgeController {
 

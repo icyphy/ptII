@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (liuj)
-@AcceptedRating Red (liuj)
-
 */
 
 package ptolemy.domains.rtp.kernel;
@@ -48,6 +45,8 @@ import ptolemy.kernel.util.InvalidStateException;
 
    @author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
    @version $Id$
+   @ProposedRating Red (liuj)
+   @AcceptedRating Red (liuj)
 */
 public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
