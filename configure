@@ -1100,11 +1100,11 @@ fi
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
 #--------------------------------------------------------------------
-# PTJAVA3D_DIR is set to dd3d and used in 
+# PTJAVA3D_DIR is set to gr and used in 
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
 PTJAVA3D_DIR=
-# We only need to look for Java3D if the dd3d demo is present
-JAVA3D_USER_DIR="$PTII/ptolemy/domains/dd3d"
+# We only need to look for Java3D if the gr demo is present
+JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
     echo "$ac_t""$JAVA3D_USER_DIR
@@ -1119,7 +1119,7 @@ echo "configure:1115: checking for Java 3D" >&5
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if $JAVAC java3dTest.java ; then
        echo "$ac_t""ok" 1>&6
-       PTJAVA3D_DIR=dd3d 
+       PTJAVA3D_DIR=gr 
     else
        echo "configure: warning: '$JAVAC java3dTest.java' failed.
     http://java.sun.com/products/java-media/3D/download.html
@@ -1500,7 +1500,7 @@ fi
 # Location of the JDK
 
 
-# Set to dd3d and used in 
+# Set to gr and used in 
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 
 
