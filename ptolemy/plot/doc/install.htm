@@ -89,6 +89,21 @@ JDK1.2.
 seem to cause problems with the start up scripts.  
 
 
+<li> If you choose the Microsoft jvm, which sometimes found at
+<CODE>c:\winnt\jview</CODE>, then the format window will not come up.
+This is probably because the format window uses Swing facilities that
+are not in <CODE>jview</CODE>
+
+<li> Ideally, Ptplot should be installed on machines with JDK1.2.
+It is best if you install Java before installing Ptplot.  However 
+The Installshield applet installer can download and install a JRE for you.
+Usually the JRE that can be downloaded via the Installshield applet installer 
+is JDK1.1.7B.  We were able to substitute in the JRE 1.2.2 .exe file
+so that under Windows, JRE1.2.2 is properly installed.  However, we
+were not able to get this to work under Solaris, it appears that
+the JRE1.2.2 installation hangs part way through the installation.
+As a result, JRE1.1.7B is the JRE that is optionally downloaded for Sparcs.
+
 </menu>
 
 <h2>Notes about building and installing</h2>
