@@ -547,10 +547,11 @@ public class SDFScheduler extends Scheduler {
             ComponentEntity a = (ComponentEntity)Entities.nextElement();
 
             if(a instanceof CompositeActor) {
-                Director containeddir = ((CompositeActor) a).getDirector();
-                if(containeddir instanceof StaticSchedulingDirector) {
+                Director containedDirector =
+                    ((CompositeActor) a).getDirector();
+                if(containedDirector instanceof StaticSchedulingDirector) {
                     Scheduler containedscheduler = 
-                        ((StaticSchedulingDirector) containeddir)
+                        ((StaticSchedulingDirector) containedDirector)
                         .getScheduler();
                     try {
                         containedscheduler.schedule();
