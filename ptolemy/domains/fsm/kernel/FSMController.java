@@ -40,6 +40,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.graph.Inequality;	/* Needed by javadoc */
 
+import java.util.Collections;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -268,7 +269,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
             if(_inputPortsVersion != workspace().getVersion()) {
                 // Update the cache.
                 LinkedList inports = new LinkedList();
-                Enumeration ports = getPorts();
+                Enumeration ports = Collections.enumeration(portList());
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isInput()) {
@@ -346,7 +347,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
             workspace().getReadAccess();
             if(_outputPortsVersion != workspace().getVersion()) {
                 _cachedOutputPorts = new LinkedList();
-                Enumeration ports = getPorts();
+                Enumeration ports = Collections.enumeration(portList());
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isOutput()) {
@@ -550,13 +551,13 @@ public class FSMController extends CompositeEntity implements TypedActor {
         } catch (IllegalActionException ex) {
         } catch (NameDuplicationException ex) {
         }
-        Enumeration states = getEntities();
+        Enumeration states = Collections.enumeration(entityList());
         FSMState state;
         while (states.hasMoreElements()) {
             state = (FSMState)states.nextElement();
             state.setupScope();
         }
-        Enumeration transitions = getRelations();
+        Enumeration transitions = Collections.enumeration(relationList());
         FSMTransition trans;
         while (transitions.hasMoreElements()) {
             trans = (FSMTransition)transitions.nextElement();
