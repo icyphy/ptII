@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configurer;
 import ptolemy.gui.Query;
