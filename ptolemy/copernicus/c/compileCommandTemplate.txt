@@ -11,5 +11,5 @@
  "--debug"
  ptolemy.copernicus.c.Main @modelPath@ -d @ptIIUserDirectory@
  -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.snapshot1 outdir:@targetPath@
+ -p wjtp.snapshot1 outdir:@ptIIUserDirectory@/@targetPath@
  @compileOptions@
