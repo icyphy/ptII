@@ -337,9 +337,6 @@ public class PitchShift {
      * <inputPeriodLength> is updated when <samplesLeftInPeriod> is 0.
      */
     private int samplesLeftInPeriod;
-    /* Output signal pitch = input signal pitch * pitchScaleFactor.
-     */
-    private double pitchScaleFactor;
     private int isUnvoiced;  // 1 if unvoice (no pitch), else set to 0.
     private int minimumPitchSamps; // This is minimumPitch converted to samples.
 }

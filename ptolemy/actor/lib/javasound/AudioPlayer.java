@@ -504,8 +504,5 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     // putSamples() method of SoundPlayback.
     private int _curElement;
     private Token[][] _inArray;
-    // Hard code the the fraction of of the buffer to put data
-    // at a time = 1/putFactor.
-    private int _putFactor;
     private boolean _safeToInitialize = false;
 }
