@@ -472,7 +472,7 @@ public class PlotBox extends Panel {
                 // The lowest label is shifted up slightly to avoid
                 // colliding with x labels.
                 int offset = 0;
-                if (ind > 0) offset = halflabelheight;
+                if (ind > 0 &&  ! _ylog) offset = halflabelheight;
                 graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
                 graphics.drawLine(_lrx,yCoord1,xCoord2,yCoord1);
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
