@@ -1294,8 +1294,10 @@ public class DEDirector extends Director {
             (_disabledActors != null && _disabledActors.contains(actor))) 
             return;
         
-        // Adjust time according time resolution
-        time = Utilities.round(time, getTimeResolution());
+        if (time != Double.NEGATIVE_INFINITY) {
+            // Adjust time according time resolution
+            time = Utilities.round(time, getTimeResolution());
+        }
         
         // Adjust the microdept
         int microstep = 0;
@@ -1376,8 +1378,10 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
-        // Adjust time according time resolution
-        time = Utilities.round(time, getTimeResolution());
+        if (time != Double.NEGATIVE_INFINITY) {
+            // Adjust time according time resolution
+            time = Utilities.round(time, getTimeResolution());
+        }
 
         Actor actor = (Actor) receiver.getContainer().getContainer();
         if (_eventQueue == null || 
