@@ -364,11 +364,12 @@ public class ConstVariableModelAnalysis {
             Variable variable, Entity changeContext) {
         Entity oldChangeContext = (Entity)
             _variableToChangeContext.get(variable);
+//         System.out.println("variable = " + variable);
+//         System.out.println("oldChangeContext = " + oldChangeContext);
+//         System.out.println("undatedChangeContext = " + changeContext);
         Entity newChangeContext = 
             _computeBound(changeContext, oldChangeContext);
-    //     System.out.println("variable = " + variable);
-//          System.out.println("oldChangeContext = " + oldChangeContext);
-//          System.out.println("newChangeContext = " + newChangeContext);
+//         System.out.println("newChangeContext = " + newChangeContext);
         if(newChangeContext != oldChangeContext) {
             if(newChangeContext != null) {
                 _variableToChangeContext.put(variable,
@@ -384,7 +385,7 @@ public class ConstVariableModelAnalysis {
     // exception.  If entity2 is null (corresponding to a static
     // change context), then return entity1.
     private final Entity _computeBound(Entity entity1, Entity entity2) {
-        if(entity2 == null) {
+        if(entity2 == null || entity2.equals(entity1)) {
             return entity1;
         } 
         if(entity2.deepContains(entity1)) {
