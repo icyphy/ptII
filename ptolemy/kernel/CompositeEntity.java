@@ -361,7 +361,11 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Get a contained entity by name.
+    /** Get a contained entity by name. If the name contains one or more
+     *  periods, then it is assumed to be the relative name of an
+     *  entity contained by one of the contained entities.  The
+     *  strings between the periods are the names of the entities
+     *  in the hierarchy.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
@@ -369,7 +373,23 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentEntity getEntity(String name) {
         try {
             workspace().getReadAccess();
-            return (ComponentEntity)_containedEntities.get(name);
+            int period = name.indexOf(".");
+            if (period < 0) {
+                return (ComponentEntity)_containedEntities.get(name);
+            } else {
+                Object match = _containedEntities.get(
+                        name.substring(0, period));
+                if (match == null) {
+                    return null;
+                } else {
+                    if (match instanceof CompositeEntity) {
+                        return ((CompositeEntity)match).getEntity(
+                                name.substring(period + 1));
+                    } else {
+                        return null;
+                    }
+                }
+            }
         } finally {
             workspace().doneReading();
         }
