@@ -193,6 +193,27 @@ public abstract class ChangeRequest {
         return _errorReported;
     }
 
+    /** Return true if the change represented by this request is
+     *  persistent.  That is, return true if the change affects the
+     *  MoML representation of the model. This might be used, for
+     *  example, by a user interface, to determine whether to mark
+     *  the model "modified," and hence, whether to prompt the user
+     *  to save the model if a window is closed.
+     *  <p>
+     *  This method returns <i>true</i> unless setPersistent()
+     *  has been called with an argument <i>false</i>.  It is up
+     *  to the creator of the change request to call that method
+     *  to indicate that the change is not persistent. There is
+     *  no automatic detection of whether the change is persistent.
+     *
+     *  @see #setPersistent(boolean)
+     *  @return True if the change represented by this request is
+     *   persistent.
+     */
+    public boolean isPersistent() {
+        return _persistent;
+    }
+
     /** Remove the given change listener from this request.
      *  The listener will no longer be
      *  notified when the change is executed, or the change fails.
@@ -243,6 +264,27 @@ public abstract class ChangeRequest {
         if (listeners != null) {
             _listeners = new LinkedList(listeners);
         }
+    }
+
+    /** Specify whether the change represented by this request is
+     *  persistent.  Call this method with argument <i>false</i> to
+     *  specify that the change does not affect the MoML representation
+     *  of the model. This might be used, for example, by a user
+     *  interface, to determine whether to mark the model "modified,"
+     *  and hence, whether to prompt the user to save the model if a
+     *  window is closed.
+     *  <p>
+     *  It is up to the creator of the change request to call this
+     *  method to indicate that the change is not persistent. There is
+     *  no automatic detection of whether the change is persistent.
+     *  By default, it is assumed to be persistent.
+     *
+     *  @see #isPersistent()
+     *  @param persistent False to indicate that the change represented
+     *   by this request is not persistent.
+     */
+    public void setPersistent(boolean persistent) {
+        _persistent = persistent;
     }
 
     /** Wait for execution (or failure) of this change request.
@@ -300,4 +342,7 @@ public abstract class ChangeRequest {
 
     // A flag indicating that this request has not been executed yet.
     private boolean _pending = true;
+
+    // A flag indicating that this change is persistent.
+    private boolean _persistent = true;
 }
