@@ -108,7 +108,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "add method not supported between";
+            String str = "add method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -197,7 +197,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "divide method not supported between";
+            String str = "divide method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + divisor.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -262,7 +262,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "isEqualTo method not supported between";
+            String str = "isEqualTo method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -341,7 +341,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "modulo method not supported between";
+            String str = "modulo method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -390,7 +390,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "multiply method not supported between";
+            String str = "multiply method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + rightFactor.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());

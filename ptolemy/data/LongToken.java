@@ -192,7 +192,7 @@ public class LongToken extends ScalarToken {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(
-                    "divide method not supported between"
+                    "divide method not supported between "
                     + this.getClass().getName() + " and "
                     + divisor.getClass().getName()
                     + ": " + ex.getMessage());
@@ -250,7 +250,7 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "equality method not supported between";
+            String str = "equality method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -321,7 +321,7 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "modulo method not supported between";
+            String str = "modulo method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -371,7 +371,7 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "multiply method not supported between";
+            String str = "multiply method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + rightFactor.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
@@ -429,7 +429,7 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "subtract method not supported between";
+            String str = "subtract method not supported between ";
             str = str + this.getClass().getName() + " and ";
             str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
