@@ -219,8 +219,8 @@ public class CSPDirector extends ProcessDirector {
     /** Set the current model time. It is intended for use when composing
      *  CSP with other timed domains.
      *  <P>
-     *  This method should only be called when no processes are delayed, as
-     *  the director stores the model time at which to resume them. If
+     *  This method should only be called when no processes are delayed, 
+     *  as the director stores the model time at which to resume them. If
      *  the current model time changed while one or more processes are
      *  delayed, then the state of the director would be undefined as
      *  the resumption time of the delayed processes would not be
@@ -236,7 +236,7 @@ public class CSPDirector extends ProcessDirector {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
 		    + " can only be called when no processes are delayed.");
         }
-        super.setCurrentTime(newTime);
+	super.setCurrentTime(newTime);
     }
 
     ///////////////////////////////////////////////////////////////////
