@@ -32,7 +32,7 @@
 ME =		doc
 
 # Sub directories to run make in.
-DIRS =		 coding design tutorial #internals #usersGuides
+DIRS =		 coding design tour tutorial  #internals #usersGuides
 
 # Root of Ptolemy II directory
 ROOT =		..
