@@ -121,7 +121,7 @@ public class LimitedRangeChannel extends DelayChannel {
      *  specified source port, assuming the source port transmits with
      *  the specified properties. The properties are an instance of
      *  RecordToken. If the properties have a "range" field given by
-     *  a double vlaue, then that value is assumed to be the range of the
+     *  a double value, then that value is assumed to be the range of the
      *  transmission. Otherwise, use the "range" field value of the
      *  <i>defaultProperties</i> as the range of the transmission. This
      *  method returns true if the distance between

@@ -61,7 +61,7 @@ channels by name, where the name is specified by the
 This port can be used on the boundary of wireless domain models.
 A port is outside wireless if an outside channel name is given and
 a wireless channel with the given name is contained by the container
-of the port's container(transparant hierarchy is not supported).
+of the port's container (transparent hierarchy is not supported).
 Specially, it will use the specified wireless channel to communicate
 on the outside. A port is inside wireless if an inside channel
 name is given and a wireless channel with the given name is

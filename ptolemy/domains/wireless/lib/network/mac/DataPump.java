@@ -122,7 +122,7 @@ public class DataPump extends MACActorBase {
     public TypedIOPort fromCs;
 
     /** The input port for transmission conformation from the physical
-     *  layer, including transmission start confirmation, transmiting
+     *  layer, including transmission start confirmation, transmitting
      *  data confirmation and transmission end confirmation.
      */
     public TypedIOPort fromPhysical;
@@ -138,7 +138,7 @@ public class DataPump extends MACActorBase {
     public TypedIOPort toProtocolRx;
 
     /** The output port that send transmission request to the physical
-     *  layer, including transmission start request, transmiting
+     *  layer, including transmission start request, transmitting
      *  data request and transmission end request.
      */
     public TypedIOPort toPhysical;

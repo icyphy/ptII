@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
    fields of the defaultProperties.
    <p>
    Anything that needs to know the locations of the sender and receiver
-   to alter the transimt properties should implement this interface.
+   to alter the transmit properties should implement this interface.
    For example, for a sender with a specific antenna pattern to send data
    to receivers, it needs to know each receiver's position and its own
    position to calculator the antenna gain. To do so, the sender can
