@@ -51,56 +51,99 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test Param-2.1 {Check constructors} {
-    set e [java::new {pt.kernel.Entity String} parent]
+test Parameter-2.0 {Check constructors} {
+    set e [java::new {pt.kernel.Entity String} entity]
     set tok [java::new  {pt.data.DoubleToken double} 4.5]
+    set ws [java::new pt.kernel.util.Workspace workspace]
 
-    set param1 [java::new pt.data.expr.Parameter $e id1 $tok]
-    
-    set param2 [java::new pt.data.expr.Parameter $e id2]
-    $param2 setTokenFromExpr "1.5"
+    set param1 [java::new pt.data.expr.Parameter]
+    set param2 [java::new pt.data.expr.Parameter $ws]
+    set param4 [java::new pt.data.expr.Parameter $e id1]
+    set param3 [java::new pt.data.expr.Parameter $e id2 $tok]    
     
     set name1 [$param1 getFullName]
-    set name2 [$param2 getFullName]
-    set value1 [[$param1 getToken] getValue]
-    set value2 [[$param2 getToken] getValue]
-    list $name1 $value1 $name2 $value2
-} {.parent.id1 4.5 .parent.id2 1.5}
+    set name2 [$param2 getFullName]    
+    set name3 [$param3 getFullName]
+    set name4 [$param4 getFullName]
+    set value3 [[$param3 getToken] getValue]
+    list $name1 $name2 $name3 $name4 $value3
+} {. workspace. .entity.id2 .entity.id1 4.5}
 
 #################################
 ####
 # This needs to extended to test type checking
-test Param-3.0 {Check setting the contained Token with another Token} {
-    set e [java::new {pt.kernel.Entity String} parent]
+test Parameter-3.1 {Check setting the contained Token with another Token} {
+    set e [java::new {pt.kernel.Entity String} entity]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
 
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param1 [java::new pt.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
     # Now put a new token into the Param
     set tok2 [java::new  {pt.data.DoubleToken double} 7.3]
-    $param1 {setToken pt.data.Token} $tok2
+    $param1 setToken $tok2
     
     set name2 [$param1 getFullName]
     set value2 [[$param1 getToken] getValue]
 
     list $name1 $value1 $name2 $value2
-} {.parent.id1 4.5 .parent.id1 7.3}
+} {.entity.id1 4.5 .entity.id1 7.3}
 
 #################################
 ####
 #
-test Param-4.0 {Check setting the contained Token from a String or another Token} {
+test Parameter-3.2 {Check type constriants on contained Token type} {
+    set e [java::new {pt.kernel.Entity String} entity]
+    set tok1 [java::new  {pt.data.IntToken int} 4]
+
+    set param1 [java::new pt.data.expr.Parameter $e id1 $tok1]
+    set name1 [$param1 getFullName]
+    set value1 [[$param1 getToken] getValue]
+
+    # Now put a new token into the Param
+    set tok2 [java::new  {pt.data.DoubleToken double} 7.3]
+    catch {$param1 setToken $tok2} errmsg
+    
+    set name2 [$param1 getFullName]
+    set value2 [[$param1 getToken] getValue]
+
+    list $name1 $value1 $errmsg
+} {.entity.id1 4 {java.lang.IllegalArgumentException: Cannot store a Token of type pt.data.DoubleToken in a Parameter restricted to tokens of type pt.data.IntTokenor lower}}
+#################################
+####
+#
+test Parameter-3.3 {Check type constriants: ok to put int in a double} {
+    set e [java::new {pt.kernel.Entity String} entity]
+    set tok1 [java::new  {pt.data.DoubleToken double} 4.4]
+
+    set param1 [java::new pt.data.expr.Parameter $e id1 $tok1]
+    set name1 [$param1 getFullName]
+    set value1 [[$param1 getToken] getValue]
+
+    # Now put a new token into the Param
+    set tok2 [java::new  {pt.data.IntToken int} 7]
+    catch {$param1 setToken $tok2} errmsg
+    
+    set name2 [$param1 getFullName]
+    set value2 [[$param1 getToken] getValue]
+
+    list $name1 $value1 $name2 $value2
+} {.entity.id1 4.4 .entity.id1 7}
+
+#################################
+####
+#
+test Parameter-4.0 {Check setting the contained Token from a String or another Token} {
     set e [java::new {pt.kernel.Entity String} parent]
     set param1 [java::new pt.data.expr.Parameter $e id1 ]
     $param1 setTokenFromExpr "1.6 + 8.3"
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] stringValue]
 
-    # Now put a new token into the Param
+    # Now put a new token into the Parameter
     set tok1 [java::new  {pt.data.DoubleToken double} 7.7]
-    $param1 {setToken pt.data.Token} $tok1    
+    $param1 setToken $tok1    
     set value2 [[$param1 getToken] stringValue]
 
     # Now set the Token contained from a String
@@ -108,8 +151,8 @@ test Param-4.0 {Check setting the contained Token from a String or another Token
     set value3 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
-    set tok2 [java::new  {pt.data.DoubleToken double} 3.3]
-    $param1 {setToken pt.data.Token} $tok2    
+    set tok2 [java::new pt.data.DoubleToken 3.3]
+    $param1 setToken $tok2    
     set value4 [[$param1 getToken] getValue]
 
     list $name1 $value1 $value2 $value3 $value4
@@ -118,7 +161,7 @@ test Param-4.0 {Check setting the contained Token from a String or another Token
 #################################
 ####
 #
-test Param-5.0 {Check reseting the Param to its original String} {
+test Parameter-5.0 {Check reseting the Parameter to its original String} {
     set e [java::new {pt.kernel.Entity String} parent]
     set param1 [java::new pt.data.expr.Parameter $e id1 ]
     $param1 setTokenFromExpr "1.6 + 8.3"
@@ -134,7 +177,7 @@ test Param-5.0 {Check reseting the Param to its original String} {
     $param1 reset
     set value3 [[$param1 getToken] getValue]
 
-    # Put a new Token in the Param from a String
+    # Put a new Token in the Parameter from a String
     $param1 setTokenFromExpr "((true) ? 5.5 : \"crap\")" 
     set value4 [[$param1 getToken] getValue]
     
@@ -145,27 +188,28 @@ test Param-5.0 {Check reseting the Param to its original String} {
     list $name1 $value1 $value2 $value3 $value4 $value5 
 } {.parent.id1 9.9 7.7 9.9 5.5 9.9}
 
+
 #################################
 ####
 #
-test Param-5.1 {Check reseting the Param to its original Token} {
+test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
+    set tok1 [java::new pt.data.DoubleToken 9.9]
+    set param1 [java::new pt.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
-    # Put a new token into the Param
-    set tok1 [java::new  {pt.data.DoubleToken double} 7.7]
-    $param1 {setToken pt.data.Token} $tok1    
+    # Put a new token into the Parameter from a String 
+    $param1 setTokenFromExpr "((true) ? 7.7 : \"crap\")" 
     set value2 [[$param1 getToken] getValue]
-
+    
     # Reset the Token 
     $param1 reset
     set value3 [[$param1 getToken] getValue]
 
-    # Put a new Token in the Param from a String
-    $param1 {setTokenFromExpr String} "((true) ? 5.5 : \"crap\")" 
+    # Put a new Token in the Param from a Token
+    set tok1 [java::new  pt.data.DoubleToken 5.5]
+    $param1 setToken $tok1    
     set value4 [[$param1 getToken] getValue]
     
     # Reset the Token 
@@ -178,7 +222,7 @@ test Param-5.1 {Check reseting the Param to its original Token} {
 #################################
 ####
 #
-test Param-6.0 {Check updating of Params that refer to other Params} {
+test Parameter-6.0 {Check updating of Parameters that refer to other Params} {
     set e [java::new {pt.kernel.Entity String} parent]
     set param1 [java::new pt.data.expr.Parameter $e id1 ]
     $param1 setTokenFromExpr 1.1
@@ -211,4 +255,24 @@ test Param-6.0 {Check updating of Params that refer to other Params} {
 
 #################################
 ####
-# check that depency cycles get broken/aren't allowed
+#
+test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
+    set e [java::new {pt.kernel.Entity String} parent]
+    set param1 [java::new pt.data.expr.Parameter $e id1 ]
+    $param1 setTokenFromExpr 1.1
+    $param1 setContainer $e
+
+    set tok1 [java::new pt.data.DoubleToken 9.9]
+    set param2 [java::new pt.data.expr.Parameter $e id2 $tok1]
+
+    set param3 [java::new pt.data.expr.Parameter $e id3]
+    $param3 setTokenFromExpr "id2 + id1"
+
+    set value1 [[$param1 getToken] stringValue]
+    set value2 [[$param2 getToken] stringValue]
+    set value3 [[$param3 getToken] stringValue]
+
+    catch {$param1 setTokenFromExpr "id3"} errmsg
+
+    list $value1 $value2 $value3 $errmsg
+} {1.1 9.9 11 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id3: id2 + id1}}
