@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Interface for defining how an object can be invoked.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -25,42 +25,44 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel;
+package pt.actors;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// Executable
 /** 
-Description of the class
-@author 
+This interface defines how an object can be invoked. This should be 
+implemented by classes Actor and Director
+@author Mudit Goel
 @version $Id$
-@see classname
-@see full-classname
 */
-public class NoName {
-    /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    public NoName() {
-    }
+public interface Executable {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    public int APublicMethod() {
-        return 1;
-    }
+    /** This fires an actor and maybe invoked several times between 
+     *  invocations of prefire() and postfire()
+     */
+    public void fire();
 
+    /** This method should be invoked exactly once during the lifetime of
+     *  an application. It maybe invoked again to restart an execution
+     */	
+    public void initialize();
+
+    /** This should be invoked before the first fire()
+     * @return the state of the actor. TRUE indicates that the fire() and 
+     *  postfire() methods can be invoked while FALSE indicates the opposite.
+     */
+    public boolean prefire();
+    
+    /** This should be invoked after the last fire() 
+     */
+    public void postfire();
+    
+    /** This should be called at the end of the execution
+     */
+    public void wrapup();
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
