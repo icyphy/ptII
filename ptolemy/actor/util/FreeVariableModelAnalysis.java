@@ -54,7 +54,7 @@ for all of the expressions in the model to be evaluatable.
 
 @author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 3.1
 */
 public class FreeVariableModelAnalysis {
 
