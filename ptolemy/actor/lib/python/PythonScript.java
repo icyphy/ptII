@@ -72,6 +72,17 @@ called by the {@link #fire() fire()} method of this actor. In the method body,
 is a parameter added to the actor. The Main class can provide other methods
 in the {@link ptolemy.actor.Executable Executable} interface as needed.
 <p>
+In the script, use <code>self.actor</code> to access the actor. For example,
+<code>self.actor.getDirector()</code> returns the current director of the
+actor. For debugging, use <code>self.actor.debug(someMessage)</code>. The
+final message sent to the debug listeners of the actor will have the string
+"From script: " inserted at the beginning. To avoid generating the debug
+message when there are no listeners, use:
+<pre>
+  if serf.actor.isDebugging() :
+    self.actor.debug(someMessage)
+</pre>
+<p>
 This class relies on Jython, which is a Java implementation of Python.
 Follow the links below for more information about the Python language,
 licensing, downloads, etc.
@@ -169,6 +180,13 @@ public class PythonScript extends TypedAtomicActor {
         _invokeMethod("initialize", null);
     }
 
+    /** Return true if this actor has at least one debug listener.
+     *  @return True if this actor has at least one debug listener.
+     */
+    public boolean isDebugging() {
+        return _debugging;
+    }
+
     /** Invoke the postfire() method if defined in the script. Return true
      *  when the method return value is not zero, or the method does not
      *  return a value, or the method is not defined in the script.
@@ -178,12 +196,13 @@ public class PythonScript extends TypedAtomicActor {
      *   postfire() method defined by the script.
      */
     public boolean postfire() throws IllegalActionException {
-        // boolean result = super.postfire();
+        boolean defaultResult = super.postfire();
         PyObject postfireResult = _invokeMethod("postfire", null);
         if (postfireResult != null) {
             return postfireResult.__nonzero__();
+        } else {
+            return defaultResult;
         }
-        return true;
     }
 
     /** Invoke the prefire() method if defined in the script. Return true
@@ -195,12 +214,13 @@ public class PythonScript extends TypedAtomicActor {
      *   prefire() method.
      */
     public boolean prefire() throws IllegalActionException {
-        // boolean result = super.prefire();
+        boolean defaultResult = super.prefire();
         PyObject prefireResult = _invokeMethod("prefire", null);
         if (prefireResult != null) {
             return prefireResult.__nonzero__();
+        } else {
+            return defaultResult;
         }
-        return true;
     }
 
     /** Create an instance of the Main class defined in the script.
@@ -213,12 +233,14 @@ public class PythonScript extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _object = _createObject();
+        _invokeMethod("preinitialize", null);
     }
 
     /** Invoke the stop() method if defined in the script. Ignore any error
      *  in calling the method.
      */
     public void stop() {
+        super.stop();
         try {
             _invokeMethod("stop", null);
         } catch (IllegalActionException e) {
@@ -232,6 +254,7 @@ public class PythonScript extends TypedAtomicActor {
      *  in calling the method.
      */
     public void stopFire() {
+        super.stopFire();
         try {
             _invokeMethod("stopFire", null);
         } catch (IllegalActionException e) {
@@ -245,6 +268,7 @@ public class PythonScript extends TypedAtomicActor {
      *  error in calling the method.
      */
     public void terminate() {
+        super.terminate();
         try {
             _invokeMethod("terminate", null);
         } catch (IllegalActionException e) {
@@ -260,7 +284,8 @@ public class PythonScript extends TypedAtomicActor {
      *   wrapup() method defined in the script.
      */
     public void wrapup() throws IllegalActionException {
-        _invokeMethod("stop", null);
+        super.wrapup();
+        _invokeMethod("wrapup", null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -274,12 +299,9 @@ public class PythonScript extends TypedAtomicActor {
      *  defined in the script.
      */
     private PyObject _createObject() throws IllegalActionException {
-        // create an instance using the interpreter
-        // this could also be accomplished by using the __call__ method
+        // create an instance by using the __call__ method
         // of the Main class object
-        String name = _mangleName(getName());
-        _interpreter.exec(name + " = " + _CLASS_NAME + "()");
-        PyObject object = _interpreter.get(name);
+        PyObject object = _class.__call__();
         if (object == null) {
             throw new IllegalActionException(this,
                     "Error in creating an instance of the Main class " +
@@ -289,7 +311,6 @@ public class PythonScript extends TypedAtomicActor {
         // first create an attribute "actor" on the object
         // the PyObject class does not allow adding a new attribute to the
         // object
-        _interpreter.exec(name + ".actor = 0");
         object.__setattr__("actor", new PyJavaInstance(this));
 
         // give the object access to attributes and ports of this actor
@@ -302,7 +323,6 @@ public class PythonScript extends TypedAtomicActor {
                         attribute.getName() + "\" as \"" +
                         mangledName + "\"");
             }
-            _interpreter.exec(name + "." + mangledName + " = 0");
             object.__setattr__(new PyString(mangledName),
                     new PyJavaInstance(attribute));
         }
@@ -315,7 +335,6 @@ public class PythonScript extends TypedAtomicActor {
                         port.getName() + "\" as \"" +
                         mangledName + "\"");
             }
-            _interpreter.exec(name + "." + mangledName + " = 0");
             object.__setattr__(new PyString(mangledName),
                     new PyJavaInstance(port));
         }
@@ -341,27 +360,30 @@ public class PythonScript extends TypedAtomicActor {
      *  cannot be initialized.
      */
     private void _evaluateScript() throws IllegalActionException {
-        try {
-            if (_interpreter == null) {
-                _interpreter = new PythonInterpreter();
+        synchronized (_interpreter) {
+            String pythonScript = script.getExpression();
+            try {
+                _interpreter.exec(pythonScript);
+            } catch (Exception ex) {
+                String message = ex.toString();
+                int i = message.indexOf("SyntaxError");
+                if (i >= 0) {
+                    message = message.substring(i);
+                }
+                throw new IllegalActionException(this,
+                        ex, "Error in evaluating script:\n" + message);
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot initialize python interpreter:");
-        }
-        String pythonScript = script.getExpression();
-        try {
-            _interpreter.exec(pythonScript);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this,
-                    ex, "Error in evaluating script:");
-        }
-        // get the class defined by the script
-        try {
-            _class = (PyClass)_interpreter.get(_CLASS_NAME);
-        } catch (ClassCastException ex) {
-            throw new IllegalActionException(this,
-                    "The script does not define a Main class.");
+            // get the class defined by the script
+            try {
+                _class = (PyClass)_interpreter.get(_CLASS_NAME);
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this,
+                        "The script does not define a Main class.");
+            }
+            if (_class == null) {
+                throw new IllegalActionException(this,
+                        "The script does not define a Main class.");
+            }
         }
     }
 
@@ -423,7 +445,7 @@ public class PythonScript extends TypedAtomicActor {
     private PyClass _class;
 
     // The python interpreter.
-    private PythonInterpreter _interpreter;
+    private static PythonInterpreter _interpreter = new PythonInterpreter();
 
     // Map from method name to PyMethod objects.
     private HashMap _methodMap = new HashMap();
