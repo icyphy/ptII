@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
