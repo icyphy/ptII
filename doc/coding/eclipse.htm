@@ -18,6 +18,7 @@
   <li><a href="#PtolemyPreferences">Importing the Ptolemy II specific preferences</a>
   <li><a href="#ByHand">Setting up for Ptolemy II By Hand<a>
   <li><a href="#tabs">Don't use tabs in the editor</a>
+  <li><a href="#assert">Proper Handling of Assert Statements</a>
   </menu>
 
 <li><a href="#UsingEclipse">Using Eclipse</a>
@@ -356,6 +357,14 @@ Check 'InsertSpace for tabs (see Code Formatter preference page)
 <li> Click Ok
 </ol>
 
+<h2><a name="#assert">Proper Handling of Assert Statements</a></h2>
+
+<ol>
+<li> Window -&gt;Preferences-&gt;Java-&gt;Compiler-&gt;Compliance and Classfiles
+<li> Select 1.4
+<li> Check Use default compliance settings
+<li> Click Ok
+</ol>
 
 <h2><a name="ignoreClassAndJar">Ignore .class and .jar files</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
@@ -521,8 +530,9 @@ a <code>https:</code> url, because it means we cannot use lynx
 or wget.
 </menu>
 
-<h3>Debugging CVS<h3>
-<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0"><code>http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0</code>
+<h3>Debugging CVS</h3>
+<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0"
+<code>http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0</code> </a>
 has instructions about how to enable debugging for cvs.
 <ol>
 <li>In your eclipse directory, create a <code>.options</code> file:
