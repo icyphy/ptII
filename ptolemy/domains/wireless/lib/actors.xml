@@ -23,7 +23,10 @@
 <entity name="NodeRandomizer" class="ptolemy.domains.wireless.lib.NodeRandomizer">
 </entity>
 
-<entity name="TransformPropert" class="ptolemy.domains.wireless.lib.TransformProperty">
+<entity name="TerrainProperty" class="ptolemy.domains.wireless.lib.TerrainProperty">
+</entity>
+
+<entity name="TransformProperty" class="ptolemy.domains.wireless.lib.TransformProperty">
 </entity>
 
 <entity name="Triangulator" class="ptolemy.domains.wireless.lib.Triangulator">
