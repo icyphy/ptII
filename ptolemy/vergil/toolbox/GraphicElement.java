@@ -57,7 +57,7 @@ public class GraphicElement extends Object {
      * @param attributes a CircularList from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
-    public GraphicElement (String type) {
+    public GraphicElement(String type) {
         _attributes = new HashMap();
         _type = type;
         _label = "";
@@ -137,7 +137,7 @@ public class GraphicElement extends Object {
     /**
      * Set the label for this graphic element.
      */
-    public void setLabel (String name) {
+    public void setLabel(String name) {
         _label = name;
     }
 

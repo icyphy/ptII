@@ -132,7 +132,7 @@ public class GraphPalette extends JGraph {
     }
 
     public class PaletteController extends GraphController {
-	public PaletteController (GraphPalette palette) {
+	public PaletteController(GraphPalette palette) {
 	    _portController = new PortController(this);
 	    _entityController = new EntityController(this);
 	    DragInteractor di = new NodeDnDInteractor(palette);
@@ -171,7 +171,7 @@ public class GraphPalette extends JGraph {
 	 * the controller does not yet have a reference to its pane
 	 * at that time.
 	 */
-	protected void initializeInteraction () {
+	protected void initializeInteraction() {
 	    GraphPane pane = getGraphPane();
       	}
 
@@ -183,14 +183,14 @@ public class GraphPalette extends JGraph {
 	    /** Create a new NodeDragInteractor and give it a pointer
 	     * to its controller to it can find other useful objects
 	     */
-	    public NodeDnDInteractor (GraphPalette palette) {
+	    public NodeDnDInteractor(GraphPalette palette) {
                 _palette = palette;
 	    }
 
             /** Respond to a mouse press in the palette by setting the
              *  palette's dragged node.
              */
-            public void mousePressed (LayerEvent layerEvent) {
+            public void mousePressed(LayerEvent layerEvent) {
                 Figure draggedFigure = layerEvent.getFigureSource();
                 _palette.setDraggedNode((Node)draggedFigure.getUserObject());
             }
@@ -198,7 +198,7 @@ public class GraphPalette extends JGraph {
             /** Respond to a mouse press in the palette by resetting the
              * palette's dragged node.
              */
-            public void mouseReleased (LayerEvent layerEvent) {
+            public void mouseReleased(LayerEvent layerEvent) {
                 _palette.setDraggedNode(null);
             }
 

@@ -62,7 +62,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (NamedObj container)
+    public XMLIcon(NamedObj container)
             throws NameDuplicationException, IllegalActionException {
        this(container, "_icon");
     }
@@ -72,7 +72,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (NamedObj container, String name)
+    public XMLIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _graphics = (LinkedList) new LinkedList();
@@ -81,7 +81,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
    /**
      * Add a new graphic element to the icon.
      */
-    public void addGraphicElement (GraphicElement g)
+    public void addGraphicElement(GraphicElement g)
             throws IllegalActionException {
         _graphics.add(g);
     }
@@ -116,7 +116,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * Test if this icon contains a graphic in the
      * given format.
      */
-    public boolean containsGraphicElement (GraphicElement g) {
+    public boolean containsGraphicElement(GraphicElement g) {
         return _graphics.contains(g);
     }
 
@@ -157,7 +157,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * Remove a graphic element from the icon. Throw an exception if
      * the graphic element is not contained in this icon
      */
-    public void removeGraphicElement (GraphicElement g)
+    public void removeGraphicElement(GraphicElement g)
             throws IllegalActionException {
         try {
             _graphics.remove(g);

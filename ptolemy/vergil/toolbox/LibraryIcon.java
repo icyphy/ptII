@@ -62,7 +62,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public LibraryIcon (NamedObj container)
+    public LibraryIcon(NamedObj container)
             throws NameDuplicationException, IllegalActionException {
         this(container, "_icon");
     }
@@ -70,7 +70,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     /**
      * Create a new icon with the name "_icon" in the given container.
      */
-    public LibraryIcon (NamedObj container, String name)
+    public LibraryIcon(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_iconName = "";
