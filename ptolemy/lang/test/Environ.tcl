@@ -207,3 +207,172 @@ test Environ-4.2 {copyDec with envs that share a declList} {
 } {[] has parent
 [] no parent
 }}
+
+
+######################################################################
+####
+#
+test Environ-5.1 {lookup} {
+    set declList [java::new java.util.LinkedList]
+    set parentEnv [java::new ptolemy.lang.Environ]
+    set listEnv [java::new ptolemy.lang.Environ $parentEnv $declList]
+    
+    set simpleDecl [java::new ptolemy.lang.Decl "my Decl" 1]
+    $listEnv add $simpleDecl
+
+    set simpleDeclWithSameName [java::new ptolemy.lang.Decl "my Decl" 1]
+    $listEnv add $simpleDeclWithSameName
+
+    set simpleDeclWithDifferentCategory \
+	    [java::new ptolemy.lang.Decl "my Decl" 2]
+    $listEnv add $simpleDeclWithDifferentCategory \
+
+    set simpleDeclWithDifferentName \
+	    [java::new ptolemy.lang.Decl "my other Decl" 1]
+    $listEnv add $simpleDeclWithDifferentName
+
+    set simpleDeclWithCategoryZero \
+	    [java::new ptolemy.lang.Decl "my Decl" 0]
+    $listEnv add $simpleDeclWithCategoryZero
+
+    set anotherSimpleDeclWithCategoryZero \
+	    [java::new ptolemy.lang.Decl "my Decl" 0]
+    $listEnv add $anotherSimpleDeclWithCategoryZero
+
+    set simpleDeclWithAnyCategory \
+	    [java::new ptolemy.lang.Decl "my Decl" \
+	    [java::field ptolemy.lang.Decl CG_ANY]]
+    $listEnv add $simpleDeclWithAnyCategory
+
+    # Add simpleDecl twice
+    $listEnv add $simpleDecl
+
+    # Place this at the end to catch any misses
+    set anyDecl [java::new ptolemy.lang.Decl \
+	    [java::field ptolemy.lang.Decl ANY_NAME] \
+	    [java::field ptolemy.lang.Decl CG_ANY]]
+    $listEnv add $anyDecl
+
+
+    set lookupDecl [$listEnv lookup "my Decl"]
+    list [$listEnv toString] \
+	    [$lookupDecl toString] \
+	    [$lookupDecl equals $simpleDecl] \
+	    [$lookupDecl equals $simpleDeclWithSameName]
+} {{[{my Decl, 1}, {my Decl, 1}, {my Decl, 2}, {my other Decl, 1}, {my Decl, 0}, {my Decl, 0}, {my Decl, -1}, {my Decl, 1}, {*, -1}] has parent
+[] no parent
+} {{my Decl, 1}} 1 1} 
+
+######################################################################
+####
+#
+test Environ-5.2 {lookup a decl that does not exist} {
+    # Uses setup from Environ-5.1 above
+    set lookupDecl [$listEnv lookup "not a Decl"]
+    list [$lookupDecl toString] \
+	    [$lookupDecl equals $simpleDecl] \
+	    [$lookupDecl equals $simpleDeclWithDifferentCategory]
+} {{{*, -1}} 1 1}
+
+######################################################################
+####
+#
+test Environ-6.1 {lookup(String, mask)} {
+    # Uses setup from Environ-5.1 above
+    set lookupDecl [$listEnv {lookup String int} "my Decl" 2]
+    list [$lookupDecl toString] \
+	    [$lookupDecl equals $simpleDecl] \
+	    [$lookupDecl equals $simpleDeclWithDifferentCategory]
+} {{{my Decl, 2}} 0 1}
+
+
+######################################################################
+####
+#
+test Environ-6.2 {lookup(String, more)} {
+    # Uses setup from Environ-5.1 above
+    set booleanArray [java::new {boolean[]}  {1} {}]
+    # Look up myDecl, which exists more than once
+    set lookupDecl \
+	    [$listEnv {lookup String {boolean[]}} "my Decl" $booleanArray]
+    list [$lookupDecl toString] \
+	    [$lookupDecl equals $simpleDecl] \
+	    [$booleanArray length] \
+	    [$booleanArray get 0]
+} {{{my Decl, 1}} 1 1 1}
+
+######################################################################
+####
+#
+test Environ-6.3 {lookup(String, mask, more)} {
+    # Uses setup from Environ-5.1 above
+    set booleanArray [java::new {boolean[]}  {1} {}]
+    # Look up my Decl, which exists more than once
+    set lookupDecl \
+	    [$listEnv {lookup String int {boolean[]}} \
+	    "my Decl" 2 $booleanArray]
+    list [$lookupDecl toString] \
+	    [$lookupDecl equals $simpleDecl] \
+	    [$lookupDecl equals $simpleDeclWithDifferentCategory] \
+	    [$booleanArray length] \
+	    [$booleanArray get 0]
+} {{{my Decl, 2}} 0 1 1 1}
+
+######################################################################
+####
+#
+test Environ-20.1 {allProperDecls)} {
+    # Uses setup from Environ-5.1 above
+    set environIter [$listEnv allProperDecls]
+    # objectsToStrings and iterToObjects are defined
+    # in ptII/util/testsuite/enums.tcl
+    list [objectsToStrings [iterToObjects $environIter]]
+} {{{{my Decl, 1}} {{my Decl, 1}} {{my Decl, 2}} {{my other Decl, 1}} {{my Decl, 0}} {{my Decl, 0}} {{my Decl, -1}} {{my Decl, 1}} {{*, -1}}}}
+
+######################################################################
+####
+#
+test Environ-21.1 {allProperDecls(mask))} {
+    # Uses setup from Environ-5.1 above
+    set environIter [$listEnv allProperDecls 1]
+    # objectsToStrings and iterToObjects are defined
+    # in ptII/util/testsuite/enums.tcl
+    list [objectsToStrings [iterToObjects $environIter]]
+} {}
+
+######################################################################
+####
+#
+test Environ-21.2 {allProperDecls(mask) with a different mask} {
+    # Uses setup from Environ-5.1 above
+    set environIter [$listEnv allProperDecls 2]
+    # objectsToStrings and iterToObjects are defined
+    # in ptII/util/testsuite/enums.tcl
+    list [objectsToStrings [iterToObjects $environIter]]
+} {}
+
+######################################################################
+####
+#
+test Environ-22.1 {allProperDecls(name))} {
+    # Uses setup from Environ-5.1 above
+    set environIter [$listEnv allProperDecls "my Decl"]
+    # objectsToStrings and iterToObjects are defined
+    # in ptII/util/testsuite/enums.tcl
+    list [objectsToStrings [iterToObjects $environIter]]
+} {{{{my Decl, 1}} {{my Decl, 1}} {{my Decl, 2}} {{my Decl, -1}} {{my Decl, 1}} {{*, -1}}}}
+
+
+######################################################################
+####
+#
+test Environ-23.1 {moreThanOne(name, mask)} {
+    # Uses setup from Environ-5.1 above
+    list \
+	    [$listEnv moreThanOne "my Decl" 0] \
+	    [$listEnv moreThanOne "my Decl" 1] \
+	    [$listEnv moreThanOne "my Decl" 2] \
+	    [$listEnv moreThanOne "my other Decl" 0] \
+	    [$listEnv moreThanOne "my other Decl" 1] \
+	    [$listEnv moreThanOne "my other Decl" 2]
+} {1 1 1 0 1 0}
