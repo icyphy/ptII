@@ -307,6 +307,7 @@ public class Plot extends PlotBox {
     /** Parse pxgraph style command line arguments.
      * This method exists only for backward compatibility with the X11 pxgraph
      * program.
+     * @return The number of arguments read.
      * @exception ptplot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
      */ 
@@ -582,6 +583,9 @@ public class Plot extends PlotBox {
     }
 
     /* Split pxgraphargs up into an array and call _parseArgs
+     * @return The number of arguments read.
+     * @exception ptplot.CmdLineArgException if there is a problem parsing
+     * the command line arguments passed in.
      */       
     public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
         // We convert the String to a Stream and then use a StreamTokenizer
