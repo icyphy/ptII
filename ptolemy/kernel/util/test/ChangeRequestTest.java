@@ -52,7 +52,7 @@ Test for ChangeRequest.
 @see ptolemy.kernel.util.ChangeRequest
 
 */
-public class ChangeRequestTest {
+public class ChangeRequestTest implements ChangeListener {
 
     /** Constructor.
      */
@@ -65,6 +65,7 @@ public class ChangeRequestTest {
         _top.setDirector(director);
         _top.setManager(_manager);
 
+        _top.addChangeListener(this);
         _const = new Const(_top, "const");
         _rec = new Recorder(_top, "rec");
         _top.connect(_const.output, _rec.input);
@@ -72,6 +73,41 @@ public class ChangeRequestTest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change request has been successfully executed by
+     *  doing nothing. This method is called after a change request
+     *  has been executed successfully.  In this class, we
+     *  do nothing.
+     *  @param change The change that has been executed, or null if
+     *   the change was not done via a ChangeRequest.
+     */
+    public void changeExecuted(ChangeRequest change) {
+    }
+
+    /** React to a change request that has resulted in an exception.
+     *  This method is called after a change request was executed,
+     *  but during the execution in an exception was thrown.
+     *  This method throws a runtime exception with a description
+     *  of the original exception.
+     *  @param change The change that was attempted or null if
+     *   the change was not done via a ChangeRequest.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // If we do not implement ChangeListener, then ChangeRequest
+        // will print any errors to stdout and continue.
+        // This causes no end of trouble with the test suite
+
+        // We can't throw and Exception here because this method in
+        // the base class does not throw Exception.
+
+	// In JDK1.4, we can construct exceptions from exceptions, but
+	// not in JDK1.3.1
+        //throw new RuntimeException(exception);
+
+	throw new RuntimeException(exception.toString());
+    }
+
 
     /** Finish a run.  Return the results.
      */
