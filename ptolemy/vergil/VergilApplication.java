@@ -264,31 +264,42 @@ public class VergilApplication extends MoMLApplication {
         // try to save another file.  The name of the entity gets
         // changed by the saveAs code.
 
-        String libraryName = StringUtilities.preferencesDirectory()
-            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
-        System.out.print("Opening user library " + libraryName + "...");
-        File file = new File(libraryName);
-        if (!file.isFile() || !file.exists()) {
-            try {
-                file.createNewFile();
-                FileWriter writer = new FileWriter(file);
-                writer.write("<entity name=\""
-                        + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
-                        + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
-                writer.close();
-            } catch (Exception ex) {
-                MessageHandler.error("Failed to create an empty user library:"
-                        + libraryName, ex);
+        String libraryName = null;
+        try {
+            libraryName = StringUtilities.preferencesDirectory()
+                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
+        } catch (Exception ex) {
+            System.out.println("Warning: Failed to get the preferences "
+                    + "directory (-sandbox always causes this): " + ex);
+        }
+        if (libraryName != null) {
+            System.out.print("Opening user library " + libraryName + "...");
+            File file = new File(libraryName);
+            if (!file.isFile() || !file.exists()) {
+                try {
+                    file.createNewFile();
+                    FileWriter writer = new FileWriter(file);
+                    writer.write("<entity name=\""
+                            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
+                            + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
+                    writer.close();
+                } catch (Exception ex) {
+                    MessageHandler.error("Failed to create an empty user "
+                            + "library: "
+                            + libraryName, ex);
+                }
+
+                // Load the user library.
+                try {
+                    openLibrary(configuration, file);
+                    System.out.println(" Done");
+                } catch (Exception ex) {
+                    MessageHandler.error("Failed to display user library.",
+                            ex);
+                }
             }
         }
 
-        // Load the user library.
-        try {
-            openLibrary(configuration, file);
-            System.out.println(" Done");
-        } catch (Exception ex) {
-            MessageHandler.error("Failed to display user library.", ex);
-        }
         return configuration;
     }
 
