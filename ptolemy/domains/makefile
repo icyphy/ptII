@@ -32,7 +32,7 @@
 ME =		ptolemy/domains
 
 # Domains, in alphabetical order
-DIRS =		csp ct dde de pn sc sdf
+DIRS =		csp ct dde de fsm pn sdf
 
 # Root of Ptolemy II directory
 ROOT =		../..

@@ -43,7 +43,7 @@ include $(CONFIG)
 
 EXTRA_SRCS = \
 
-# The files in design and img are not under sccs because they are binaries.
+# The files in design and img are not under CVS because they are binaries.
 MISC_FILES =	$(DIRS) design img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
@@ -70,10 +70,10 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.de.demo \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
+			ptolemy.domains.fsm.kernel \
+			ptolemy.domains.fsm.lib \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.lib \
-			ptolemy.domains.sc.kernel \
-			ptolemy.domains.sc.lib \
 			ptolemy.domains.sdf.demo \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
@@ -107,10 +107,10 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/de/demo/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
+			../ptolemy/domains/fsm/kernel/*.java \
+			../ptolemy/domains/fsm/lib/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/pn/lib/*.java \
-			../ptolemy/domains/sc/kernel/*.java \
-			../ptolemy/domains/sc/lib/*.java \
 			../ptolemy/domains/sdf/demo/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
