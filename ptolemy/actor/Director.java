@@ -86,10 +86,12 @@ public class Director extends NamedObj implements Executable {
     }
     
     public void registerNewActor(Actor actor) {
-        if (_listOfNewActors == null) {
-            _listOfNewActors = new LinkedList();
+        synchronized(workspace()) {
+            if (_listOfNewActors == null) {
+                _listOfNewActors = new LinkedList();
+            }
+            _listOfNewActors.insertLast(actor);
         }
-        _listOfNewActors.insertLast(actor);
     }
 
     public Enumeration getNewActors() {
