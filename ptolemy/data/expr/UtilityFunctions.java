@@ -160,7 +160,7 @@ public class UtilityFunctions {
      *  object allocation.  Note that requesting a garbage collection
      *  may change this value.
      *  @return The approximate number of bytes available.
-     *  @see #totalMemory
+     *  @see #totalMemory()
      */
     public static LongToken freeMemory() {
 	return new LongToken(Runtime.getRuntime().freeMemory());
@@ -193,7 +193,7 @@ public class UtilityFunctions {
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
      *  @deprecated Use
-     *  {@link ptolemy.util.StringUtilities.getProperty(String)}
+     *  {@link ptolemy.util.StringUtilities#getProperty(String)}
      *  instead
      */
     public static String getProperty(String propertyName) {
@@ -221,7 +221,7 @@ public class UtilityFunctions {
      *
      *  @param propertyName The name of property.
      *  @return A token containing the string value of the property.
-     *  @see ptolemy.util.StringUtilities(String)
+     *  @see ptolemy.util.StringUtilities#getProperty(String)
      */
     public static StringToken property(String propertyName) {
         return new StringToken(StringUtilities.getProperty(propertyName));
@@ -466,7 +466,7 @@ public class UtilityFunctions {
     /** Return the approximate number of bytes used by current objects
      *	and available for future object allocation.
      *  @return The total number of bytes used by the JVM.
-     *  @see #freeMemory
+     *  @see #freeMemory()
      */
     public static LongToken totalMemory() {
 	return new LongToken(Runtime.getRuntime().totalMemory());

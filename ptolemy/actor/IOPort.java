@@ -298,7 +298,7 @@ public class IOPort extends ComponentPort {
      *  appropriate receivers.  If there are no destination receivers,
      *  or if this is not an output port, then do nothing.  Some of
      *  this method is read-synchronized on the workspace.
-     *  @see #sendClear()
+     *  @see #sendClear(int )
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
@@ -2077,7 +2077,7 @@ public class IOPort extends ComponentPort {
      *  then do nothing.
      *  Some of this method is read-synchronized on the workspace.
      *  @see #broadcastClear()
-     *  @see #sendClearInside()
+     *  @see #sendClearInside(int)
      *  @param channelIndex The index of the channel, from 0 to width-1
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
@@ -2116,7 +2116,7 @@ public class IOPort extends ComponentPort {
      *  destination inside receivers on the specified channel,
      *  or if the channel index is out of bounds, then do nothing.
      *  Some of this method is read-synchronized on the workspace.
-     *  @see #sendClear()
+     *  @see #sendClear(int)
      *  @param channelIndex The index of the channel, from 0 to insideWidth-1.
      *  @exception IllegalActionException If a receiver does not support
      *   clear().

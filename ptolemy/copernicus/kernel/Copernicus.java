@@ -518,7 +518,7 @@ public class Copernicus {
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
-     *  @see substitute(String, Map, String)
+     *  @see #substitute(String, Map, String)
      */
     public static void substitute(BufferedReader inputFile,
             Map substituteMap,
@@ -541,7 +541,7 @@ public class Copernicus {
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
-     *  @see substitute(BufferedReader, Map, String)
+     *  @see #substitute(BufferedReader, Map, String)
      */
     public static void substitute(String inputFileName,
             Map substituteMap,
