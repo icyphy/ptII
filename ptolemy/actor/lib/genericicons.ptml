@@ -27,6 +27,14 @@
 </xmlgraphic>
 </icon>
 
+<icon name="transformer">
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="orange"/>
+<polygon coords="30 10 10 20 30 30 50 20" fill="blue"/>
+</xmlgraphic>
+</icon>
+
+
 <terminalstyle name="none">
 </terminalstyle>
 
