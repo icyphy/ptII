@@ -418,6 +418,14 @@ public class InterfaceAutomaton extends FSMActor {
         return (portList().size()==0);
     }
 
+    /** Return true if this automaton is empty; false otherwise.
+     *  @return true if this automaton is empty; false otherwise.
+     */
+    public boolean isEmpty() {
+        List states = entityList();
+        return states.size() == 0;
+    }
+
     /** Create a new instance of InterfaceAutomatonTransition with the
      *  specified name in this actor, and return it.
      *  This method is write-synchronized on the workspace.
@@ -437,14 +445,6 @@ public class InterfaceAutomaton extends FSMActor {
         } finally {
             workspace().doneWriting();
         }
-    }
-
-    /** Return true if this automaton is empty; false otherwise.
-     *  @return true if this automaton is empty; false otherwise.
-     */
-    public boolean isEmpty() {
-        List states = entityList();
-        return states.size() == 0;
     }
 
     /** Return the names of the output ports as a Set.
