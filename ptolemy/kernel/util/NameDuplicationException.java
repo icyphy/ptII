@@ -40,8 +40,8 @@ public class NameDuplicationException extends GraphException {
      * @param duplicateName The name which has been duplicated.
      */	
     public NameDuplicationException(String duplicateName) {
-	 super();
-	 _duplicateName = duplicateName;
+        super();
+        _duplicateName = duplicateName;
     }
 
     /** 
@@ -49,8 +49,8 @@ public class NameDuplicationException extends GraphException {
      * @param duplicateName The name which has been duplicated.
      */	
     public NameDuplicationException(String message, String duplicateName) {
-	 super(message);
-	 _duplicateName = duplicateName;
+        super(message);
+        _duplicateName = duplicateName;
     }
 
     //////////////////////////////////////////////////////////////////////////

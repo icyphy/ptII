@@ -66,7 +66,7 @@ public class Port extends NamedObj {
      *  port to a relation to which it's already connected.
      */	
     public void connectToRelation(Relation relation) 
-        throws NullReferenceException {
+    throws NullReferenceException {
 
 	if( relation == null )
 	    throw new NullReferenceException( 
@@ -112,8 +112,8 @@ public class Port extends NamedObj {
      */
     public void disconnect(Relation relation) {
 
-    if ( _relationsList != null ) _relationsList.dissociate(relation);
-    return;
+        if ( _relationsList != null ) _relationsList.dissociate(relation);
+        return;
     } 
 
 

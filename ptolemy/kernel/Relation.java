@@ -123,7 +123,7 @@ public abstract class Relation extends NamedObj {
      */	
     public int numberOfConnections() {
 	if( _portList == null ) {
-	     return 0;
+            return 0;
 	}
         return _portList.size();
     }
@@ -150,10 +150,10 @@ public abstract class Relation extends NamedObj {
     ////                         inner classes                            ////
 
     // Class PortEnumeration
-   /** Wrapper class for returning an emumeration of Ports. It uses the 
-    *  enumerate() method provided by CrossRefList
-    *  @see CrossRefList
-    */
+    /** Wrapper class for returning an emumeration of Ports. It uses the 
+     *  enumerate() method provided by CrossRefList
+     *  @see CrossRefList
+     */
 
     private class PortEnumeration implements Enumeration {
 
@@ -178,14 +178,14 @@ public abstract class Relation extends NamedObj {
             if (!_skip) return (Port)_XRefEnum.nextElement();
             else {
                 Port nextPort = (Port)_XRefEnum.nextElement();
-                   // do not wish to skip any port in the enumeration
-                   if (_exceptPort == null) return nextPort; 
-                   //  skip the desired Port in the enumeration
-                   if (nextPort == _exceptPort) {
-                       nextPort = (Port)_XRefEnum.nextElement();
-                   }
-                   return nextPort;
-               }
+                // do not wish to skip any port in the enumeration
+                if (_exceptPort == null) return nextPort; 
+                //  skip the desired Port in the enumeration
+                if (nextPort == _exceptPort) {
+                    nextPort = (Port)_XRefEnum.nextElement();
+                }
+                return nextPort;
+            }
         }
 
         private Enumeration _XRefEnum;
