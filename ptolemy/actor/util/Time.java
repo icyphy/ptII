@@ -87,7 +87,7 @@ public class Time implements Comparable {
      */
     public void add(double timeValue) {
         _time = _time + timeValue;
-        _time = Utilities.round(_time, _timeResolution);
+        _time = Utilities.round(_time, _getTimeResolution());
     }
 
     /** Increase the time by the time value specified by the time object.
@@ -131,24 +131,11 @@ public class Time implements Comparable {
         return _time;
     }
 
-    /** Set the time resolution.
-     *  @throws IllegalActionException If the timeResolution parameter
-     *  is not in scientific notation or the mantissa is not 1. 
-     */
-    public void setTimeResolution(double timeResolution) 
-        throws IllegalActionException {
-        // FIXME: check whether the new time resolution is
-        // in scientific notation or the mantissa is 1.
-        // FIXME: Time resolution may only be changed by a director.
-        // How to enforce that? 
-        _timeResolution = timeResolution;
-    }
-
     /** Set the time value.
      *  @param newTime The new time value.
      */
     public void setTimeValue(double newTime) {
-        _time = Utilities.round(newTime, _timeResolution);
+        _time = Utilities.round(newTime, _getTimeResolution());
     }
 
     /** Decrease the time by the given double value.
@@ -156,7 +143,7 @@ public class Time implements Comparable {
      */
     public void subtract(double timeValue) {
         _time = _time - timeValue;
-        _time = Utilities.round(_time, _timeResolution);
+        _time = Utilities.round(_time, _getTimeResolution());
     }
 
     /** Decrease the time by the time value specified by the time object.
@@ -195,19 +182,27 @@ public class Time implements Comparable {
     // Initialize the states. Throw an illegalActionException if the
     // given container argument is neither a director or an actor.
     private void _init(Executable container) throws IllegalActionException {
-        if (container instanceof Actor) {
-            _timeResolution = 
-                ((Actor)container).getDirector().getTimeResolution();
-        } else if (container instanceof Director) {
-            _timeResolution = 
-                ((Director)container).getTimeResolution();
-        } else{
+        if (!(_container instanceof Actor) 
+            && !(_container instanceof Director)) {
             throw new IllegalActionException("Can not create " +
                 "a Time object because the container is neither " +
                 "a director nor an actor.");
         }
         _container = container;
-        _time = Utilities.round(0.0, _timeResolution);
+        _time = 0.0;
+    }
+
+    // If the container is a director, get its time resolution. 
+    // If the container is an actor, get the time resolution of its director.
+    // Because we already check the container type in the constructor,
+    // and there is no way to change the container, we do not check 
+    // again in this method.
+    private double _getTimeResolution() {
+        if (_container instanceof Actor) {
+            return ((Actor)_container).getDirector().getTimeResolution();
+        } else {
+            return ((Director)_container).getTimeResolution();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -216,6 +211,4 @@ public class Time implements Comparable {
     private Executable _container;
     // The time value.
     private double _time;
-    // The time resolution.
-    private double _timeResolution;
 }
