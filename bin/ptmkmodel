@@ -165,7 +165,7 @@ CLASSPATH =	\$(ROOT)
 
 # Get configuration info
 CONFIG =	\$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+include \$(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	$model
