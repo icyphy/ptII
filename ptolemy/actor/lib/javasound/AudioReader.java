@@ -29,7 +29,7 @@
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
-package ptolemy.apps.etherealSting;
+package ptolemy.actor.lib.javasound;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.DoubleToken;
