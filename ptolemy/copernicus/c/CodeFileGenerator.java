@@ -90,7 +90,7 @@ public class CodeFileGenerator extends CodeGenerator {
             _context.addIncludeFile("\"java/io/PrintStream.h\"");
         }
 
-        if (!_context.getSingleClassMode()) {
+        if (!Context.getSingleClassMode()) {
             _context.addIncludeFile("\"strings.h\"");
             _context.addIncludeFile("\"pccg_runtime.h\"");
         }
@@ -294,7 +294,7 @@ public class CodeFileGenerator extends CodeGenerator {
         code.append("\n" + _indent(1) + "/* Superclass pointer */\n");
         code.append(_indent(1) + argumentReference +
                 CNames.superclassPointerName() + " = ");
-        if (!_context.getSingleClassMode() && source.hasSuperclass()) {
+        if (!Context.getSingleClassMode() && source.hasSuperclass()) {
             // If the superclass is not required, comment it out and
             // replace it with a null.
             if (!RequiredFileGenerator.isRequired(source

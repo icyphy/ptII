@@ -344,7 +344,7 @@ public class MethodCodeGenerator {
         if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
         units = body.getUnits().iterator();
 
-        if (!_context.getSingleClassMode()) {
+        if (!Context.getSingleClassMode()) {
             code.append(_generateMethodPrologue(tracker, visitor));
         }
         else {
@@ -455,7 +455,7 @@ public class MethodCodeGenerator {
         //Exception-catching in the body.
         Iterator units = body.getUnits().iterator();
         boolean handle_exceptions = tracker.trapsExist()
-            && (!_context.getSingleClassMode());
+            && (!Context.getSingleClassMode());
 
         while (units.hasNext()) {
             Unit unit = (Unit)(units.next());

@@ -82,7 +82,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
         // Generate the method table. Constructors are included since they
         // operate on class instances.
-        if (_context.getSingleClassMode()) {
+        if (Context.getSingleClassMode()) {
             _context.setDisableImports();
         }
         String inheritedMethods = _generateMethodPointers(
@@ -172,7 +172,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // Pointer to superclass structure.
         code.append(_indent(1));
         if (source.hasSuperclass()
-                && !_context.getSingleClassMode()
+                && !Context.getSingleClassMode()
                 && RequiredFileGenerator.isRequired(source.getSuperclass())) {
             code.append(_comment("Pointer to superclass structure"));
             code.append(_indent(1));
@@ -195,13 +195,13 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // The pointer declaration is commented out if we are in single
         // class mode.
         code.append(_indent(1) + _comment("Pointer to array class"));
-        if (_context.getSingleClassMode()) {
+        if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _openComment);
         }
         code.append(_indent(1) + CNames.classNameOf(
                 Scene.v().getSootClass("java.lang.Object")) +
                 " array_class;\n");
-        if (_context.getSingleClassMode()) {
+        if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _closeComment);
         }
         code.append("\n");

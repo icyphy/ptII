@@ -739,7 +739,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         // Do not do exception-management in single-class mode.
-        if ((!_context.getSingleClassMode()) && exceptionsExist) {
+        if ((!Context.getSingleClassMode()) && exceptionsExist) {
             _push("\n"
                     + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
                     + indent + "epc = caller_epc;\n"
@@ -766,7 +766,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         // Do not do exception-management in single-class mode.
-        if ((!_context.getSingleClassMode()) && exceptionsExist) {
+        if ((!Context.getSingleClassMode()) && exceptionsExist) {
             _push("\n"
                     + indent + "memcpy(env, caller_env, sizeof(jmp_buf));\n"
                     + indent + "epc = caller_epc;\n"
@@ -939,7 +939,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 // If we are generating code in single class mode, then
                 // we are not supporting inheritance, so ignore invocation
                 // of the superclass constructor.
-            } else if (_context.getSingleClassMode()) {
+            } else if (Context.getSingleClassMode()) {
                 return;
             } else {
                 v.getBase().apply(this);
@@ -975,7 +975,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param v The static invoke expression.
      */
     public void caseStaticInvokeExpr(StaticInvokeExpr v) {
-        if (!_context.getSingleClassMode()) {
+        if (!Context.getSingleClassMode()) {
             String includeFileName =
                 v.toString().substring(v.toString().indexOf('<')+1,
                         v.toString().indexOf(':'));

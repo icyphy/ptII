@@ -171,7 +171,7 @@ public class CWriter extends SceneTransformer {
             // Generate other required files.
             // FIXME: Improve exception handling here.
             try {
-                RFG.generateTransitiveClosureOf(classPath,
+                RequiredFileGenerator.generateTransitiveClosureOf(classPath,
                         sootClass.getName());
             } catch (IOException exception) {
                 throw new RuntimeException("Could not generate transitive "

@@ -98,7 +98,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Runtime include files
         headerCode.append("/* Runtime Include Files */\n");
-        if (!_context.getSingleClassMode()) {
+        if (!Context.getSingleClassMode()) {
             headerCode.append("#include \"pccg_array.h\"\n\n");
         }
         else {
@@ -196,7 +196,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append(fileName);
 
-            if (_context.getSingleClassMode()) {
+            if (Context.getSingleClassMode()) {
                 headerCode.append(" */");
             }
 
@@ -221,7 +221,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append(fileName);
 
-            if (_context.getSingleClassMode()) {
+            if (Context.getSingleClassMode()) {
                 headerCode.append(" */");
             }
 

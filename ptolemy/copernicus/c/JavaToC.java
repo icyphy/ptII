@@ -117,7 +117,7 @@ public class JavaToC {
 
         if (!generateSingleClass) {
             // Generate other required files.
-            RFG.generateTransitiveClosureOf(classPath, className);
+            RequiredFileGenerator.generateTransitiveClosureOf(classPath, className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);

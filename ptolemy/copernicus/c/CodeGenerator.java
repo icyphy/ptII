@@ -72,7 +72,7 @@ public abstract class CodeGenerator {
      *  (see {@link Context#getSingleClassMode()}).
      */
     public void setSingleClassMode() {
-        _context.setSingleClassMode();
+        Context.setSingleClassMode();
     }
 
     ///////////////////////////////////////////////////////////////////
