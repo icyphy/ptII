@@ -140,6 +140,20 @@ public class Constants {
         _table.put("NaN", new DoubleToken(Double.NaN));
         _table.put("Infinity", new DoubleToken(Double.POSITIVE_INFINITY));
 
+        // numerical bounds
+        _table.put("MaxUnsignedByte", new UnsignedByteToken(255));
+        _table.put("MinUnsignedByte", new UnsignedByteToken(0));
+        _table.put("MaxInt", new IntToken(Integer.MAX_VALUE));
+        _table.put("MinInt", new IntToken(Integer.MIN_VALUE));
+        _table.put("MaxLong", new LongToken(Long.MAX_VALUE));
+        _table.put("MinLong", new LongToken(Long.MIN_VALUE));
+        _table.put("MaxDouble", new DoubleToken(Double.MAX_VALUE));
+        _table.put("MinDouble", new DoubleToken(Double.MIN_VALUE));
+        _table.put("PositiveInfinity", new DoubleToken(Double.POSITIVE_INFINITY));
+        _table.put("NegativeInfinity", new DoubleToken(Double.NEGATIVE_INFINITY));
+
+
+
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);
         _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
