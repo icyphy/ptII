@@ -257,6 +257,13 @@ troubleshootingVergil.htm: troubleshooting.htm
 whatsnew.htm: ptII$(PTVERSION).release.htm
 	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
 
+update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
+		whatsnew.htm
+	cvs commit -m "Master files changed" \
+		ptII$(PTVERSION).releaseVergil.htm \
+		troubleshootingVergil.htm \
+		whatsnew.htm
+
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
