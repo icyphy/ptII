@@ -50,9 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = ApplianceController.java \
 	LampController.java \
-	LevelSensor.java \
+	LevelListener.java \
 	Listener.java \
-	CommandSensor.java \
+	CommandListener.java \
 	Receiver.java \
 	Sender.java \
 	X10Interface.java
