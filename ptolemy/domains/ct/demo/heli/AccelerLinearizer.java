@@ -46,15 +46,10 @@ Linearization of the Acceler mode
 Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
 Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 @author  Jie Liu
-@version %Id%
+@version $Id$
 */
 public class AccelerLinearizer extends CTActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public AccelerLinearizer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -167,7 +162,6 @@ public class AccelerLinearizer extends CTActor{
     ////                         public methods                    ////
 
     /** Compute the output.
-     *
      *  @exception IllegalActionException If there's no input token
      *        when needed.
      */

@@ -1,6 +1,6 @@
 /* Linearization of the Climb mode.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,15 +46,10 @@ Linearization of the Climb mode
 Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
 Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 @author  Jie Liu
-@version %Id%
+@version $Id$
 */
 public class ClimbLinearizer extends CTActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public ClimbLinearizer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
