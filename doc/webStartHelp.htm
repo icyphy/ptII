@@ -10,6 +10,10 @@ to download the Java Web Start client.  That client includes a JVM and
 an application manager that allows the user to configure Web Start and
 any downloaded Web Start applications.
 
+ <p>You can try downloading Ptolemy II as a Web Start application
+by going to
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.0/webstart.htm#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII2.0/webstart.htm</CODE></a>
+
 <p>Web Start Features:
 <menu>
 <li> Support for multiple JVMS
@@ -500,6 +504,12 @@ sometimes the app starts up without checking for updates.
 <menu>
 <li><a href="http://www.geocities.com/vamp201/jwsfaq.html#badmimetype" target="_top">Unofficial FAQ about bad mime type</a>
 <li><a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71152" target="_top">Question about cookies</a>
+
+<h4>Spaces in path names</h4>
+Web Start does not work very well if the pathname to the 
+<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+to place your Ptolemy II tree in a directory that does not have spaces
+in the path name if you plan on using Web Start.
 
 </body>
 </html>
