@@ -111,17 +111,19 @@ public abstract class ColtRandomSource extends RandomSource
     /** Override the changeFailed method in ChangeListener.
      *  No defined processing.
      */
-    public void changeFailed(ChangeRequest req, Exception e)
-    {
-        //System.err.println("Changed failed");
+    public void changeFailed(ChangeRequest req, Exception e) {
+        if (_debugging) {
+            _debug("Changed failed?" + req + "\n" + e);
+        }
     }
 
     /** Override the changeExecuted method in ChangeListener.
      *  When a change is made, setup the correct randomNumberGenerator.
      */
-    public void changeExecuted(ChangeRequest req)
-    {
-        //System.err.println("Request desc: " + req.getDescription());
+    public void changeExecuted(ChangeRequest req) {
+        if (_debugging) {
+            _debug("Request desc: " + req.getDescription());
+        }
 
         if (-1 != req.getDescription().indexOf("seed")) {
             try {
@@ -221,8 +223,14 @@ public abstract class ColtRandomSource extends RandomSource
         seed.addChangeListener(this);
 
         if (_randomNumberGenerator == null) {
-            System.err.println("Unable to create randomNumberGenerator!");
+            throw new InternalErrorException(this, null,
+                    "Unable to create randomNumberGenerator!");
         }
+        if (_debugging) {
+            _debug("ColtRandomSource: random number generator = "
+                    + randomNumberGeneratorClass);
+        }
+
         return randomNumberGeneratorClass;
     }
 
