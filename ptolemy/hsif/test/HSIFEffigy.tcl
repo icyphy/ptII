@@ -40,11 +40,16 @@ if {[info procs jdkCapture] == "" } then {
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+ set VERBOSE 1
 
 ######################################################################
 ####
 #
+
+if {[string compare removeGraphicalClasses [info procs removeGraphicalClasses]] != 0} \
+        then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+} {}
 
 test HSIFEffigy.1.1 {Convert the Thermostat demo using the configuration} {
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -76,6 +81,7 @@ test HSIFEffigy-1.2 {Parse the results from converting the Thermostat HSIF model
     set moml [string range $hsifOutput [expr {$start - 2}] end]
 
     $parser reset    	
+    removeGraphicalClasses $parser
     set toplevel [$parser parse $moml]
 
     set composite [java::cast ptolemy.actor.CompositeActor $toplevel]
