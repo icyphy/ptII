@@ -810,11 +810,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    link.setTail(null);
 		    link.setRelation(null);
 		    // and queue a new change request to clean up the model
-		    ChangeRequest request = 
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error
+		    ChangeRequest changeRequest = 
 			new MoMLChangeRequest(PtolemyGraphModel.this, 
 					      getToplevel(),
 					      failmoml.toString());
-		    getToplevel().requestChange(request);
+		    getToplevel().requestChange(changeRequest);
 		}
 		
 		public void changeExecuted(ChangeRequest change) {
@@ -895,11 +897,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    link.setTail(null);
 		    link.setRelation(null);
 		    // and queue a new change request to clean up the model
-		    ChangeRequest request = 
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error
+		    ChangeRequest changeRequest = 
 			new MoMLChangeRequest(PtolemyGraphModel.this, 
 					      getToplevel(),
 					      failmoml.toString());
-		    getToplevel().requestChange(request);
+		    getToplevel().requestChange(changeRequest);
 		}
 		
 		public void changeExecuted(ChangeRequest change) {
