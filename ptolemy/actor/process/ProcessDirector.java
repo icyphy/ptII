@@ -123,8 +123,8 @@ public class ProcessDirector extends Director {
         return newobj;
     }
 
-    /** Waits till the detection of a deadlock. Then handles the deadlock
-     *  and returns.
+    /** Wait till the detection of a deadlock. Then handle the deadlock
+     *  and return.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire()
