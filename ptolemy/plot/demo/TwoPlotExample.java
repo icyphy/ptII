@@ -32,7 +32,10 @@ package ptolemy.plot.demo;
 // This class is not in the ptolemy.plot package so that it is a
 // more realistic example.
 import ptolemy.plot.*;
-import java.awt.*;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import javax.swing.JFrame;
 
 // The java.io imports are only necessary for the right hand plot.
 import java.io.File;
@@ -53,7 +56,7 @@ java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
 @author Christopher Hylands
 @version $Id$
 */
-public class TwoPlotExample extends Frame {
+public class TwoPlotExample extends JFrame {
 
     /** We use a constructor here so that we can call methods
      *  directly on the Frame.  The main method is static
@@ -127,14 +130,14 @@ public class TwoPlotExample extends Frame {
         // Layout the two plots
         GridBagLayout gridbag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
-        setLayout(gridbag);
+        getContentPane().setLayout(gridbag);
 
         // Handle the leftPlot
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
         gridbag.setConstraints(leftPlot, c);
-        add(leftPlot);
+        getContentPane().add(leftPlot);
 
         // Handle the rightPlot
         c.gridx = 1;
@@ -144,7 +147,7 @@ public class TwoPlotExample extends Frame {
         c.weightx = 1.0;
         c.weighty = 1.0;
         gridbag.setConstraints(rightPlot, c);
-        add(rightPlot);
+        getContentPane().add(rightPlot);
 
         show();
     }

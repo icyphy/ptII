@@ -28,11 +28,22 @@
 */
 package ptolemy.plot;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Hashtable;
-import java.io.*;
-import java.awt.datatransfer.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EPSGraphics
@@ -364,9 +375,9 @@ public class EPSGraphics extends PtolemyGraphics {
             output.flush();
         } else {
             // Write to clipboard instead
-            // NOTE: This doesn't work at least with jdk 1.1.4.
+            // NOTE: This doesn't work at least with jdk 1.3beta
             if (_clipboard == null) {
-                _clipboard = new Clipboard("UCB Plot");
+                _clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             }
             StringSelection sel = new StringSelection(_buffer.toString());
             _clipboard.setContents(sel, sel);

@@ -31,10 +31,23 @@ package ptolemy.plot;
 
 import ptolemy.gui.*;
 
-import java.awt.*;
+import javax.swing.KeyStroke;
 import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Event;
+import java.awt.Graphics;
+import java.awt.PrintJob;
 import java.awt.event.*;
+import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
 import java.util.StringTokenizer;
@@ -42,7 +55,6 @@ import java.util.Vector;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one
-//   - Convert to use swing, especially for the menu.
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFrame
@@ -76,7 +88,7 @@ field is set once in the constructor and immutable afterwards.
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
 */
-public class PlotFrame extends Frame {
+public class PlotFrame extends JFrame {
 
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
@@ -105,62 +117,90 @@ public class PlotFrame extends Frame {
     public PlotFrame(String title, PlotBox plotArg) {
         super(title);
 
+        // Background color is a light grey.
+        setBackground(new Color(0xe5e5e5));
+
         if (plotArg == null) {
             plot = new Plot();
         } else {
             plot = plotArg;
         }
 
+        _fileMenu.setMnemonic(KeyEvent.VK_F);
+        _editMenu.setMnemonic(KeyEvent.VK_E);
+        _specialMenu.setMnemonic(KeyEvent.VK_S);
+
         // File menu
-        MenuItem[] fileMenuItems = {
-            // FIXME: These shortcuts are not right.
-            new MenuItem("Open", new MenuShortcut(KeyEvent.VK_O)),
-            new MenuItem("Save", new MenuShortcut(KeyEvent.VK_S)),
-            new MenuItem("SaveAs", new MenuShortcut(KeyEvent.VK_A)),
-            new MenuItem("Export", new MenuShortcut(KeyEvent.VK_E)),
-            new MenuItem("Print", new MenuShortcut(KeyEvent.VK_P)),
-            new MenuItem("Close", new MenuShortcut(KeyEvent.VK_W)),
+        JMenuItem[] fileMenuItems = {
+            new JMenuItem("Open", KeyEvent.VK_O),
+            new JMenuItem("Save", KeyEvent.VK_S),
+            new JMenuItem("SaveAs", KeyEvent.VK_A),
+            new JMenuItem("Export", KeyEvent.VK_E),
+            new JMenuItem("Print", KeyEvent.VK_P),
+            new JMenuItem("Close", KeyEvent.VK_C),
         };
+        // Open button = ctrl-o.
+        fileMenuItems[0].setAccelerator(
+            KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+
+        // Save button = ctrl-s.
+        fileMenuItems[1].setAccelerator(
+            KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+
+        // Print button = ctrl-p.
+        fileMenuItems[4].setAccelerator(
+            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+
+        // Close button = ctrl-w.
+        fileMenuItems[5].setAccelerator(
+            KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+
         FileMenuListener fml = new FileMenuListener();
         // Set the action command and listener for each menu item.
         for(int i = 0; i < fileMenuItems.length; i++) {
-            fileMenuItems[i].setActionCommand(fileMenuItems[i].getLabel());
+            fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
             fileMenuItems[i].addActionListener(fml);
             _fileMenu.add(fileMenuItems[i]);
         }
         _menubar.add(_fileMenu);
 
         // Edit menu
-        MenuItem format = new MenuItem("Format");
+        JMenuItem format = new JMenuItem("Format", KeyEvent.VK_F);
         FormatListener formatListener = new FormatListener();
         format.addActionListener(formatListener);
         _editMenu.add(format);
         _menubar.add(_editMenu);
 
         // Special menu
-        MenuItem[] specialMenuItems = {
-            // FIXME: These shortcuts are not right.
-            new MenuItem("About", null),
-            new MenuItem("Help", new MenuShortcut(KeyEvent.VK_H)),
-            new MenuItem("Clear", new MenuShortcut(KeyEvent.VK_R)),
-            new MenuItem("Fill", new MenuShortcut(KeyEvent.VK_F)),
-            new MenuItem("Sample plot", null),
+        JMenuItem[] specialMenuItems = {
+            new JMenuItem("About", KeyEvent.VK_A),
+            new JMenuItem("Help", KeyEvent.VK_H),
+            new JMenuItem("Clear", KeyEvent.VK_C),
+            new JMenuItem("Fill", KeyEvent.VK_F),
+            new JMenuItem("Sample plot", KeyEvent.VK_S),
         };
         SpecialMenuListener sml = new SpecialMenuListener();
         // Set the action command and listener for each menu item.
         for(int i = 0; i < specialMenuItems.length; i++) {
             specialMenuItems[i].setActionCommand(
-                    specialMenuItems[i].getLabel());
+                    specialMenuItems[i].getText());
             specialMenuItems[i].addActionListener(sml);
             _specialMenu.add(specialMenuItems[i]);
         }
         _menubar.add(_specialMenu);
 
-        setMenuBar(_menubar);
+        setJMenuBar(_menubar);
 
-        add("Center", plot);
+        getContentPane().add(plot, BorderLayout.CENTER);
         // FIXME: This should not be hardwired in here.
         setSize(500, 300);
+
+        // Center.
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+        setLocation(x, y);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +209,7 @@ public class PlotFrame extends Frame {
     /** Create a sample plot.
      */
     public void samplePlot() {
-        _filename = null;
+        _file = null;
         _directory = null;
         plot.samplePlot();
     }
@@ -186,22 +226,22 @@ public class PlotFrame extends Frame {
 
 
     /** @serial Menubar for this frame. */
-    protected MenuBar _menubar = new MenuBar();
+    protected JMenuBar _menubar = new JMenuBar();
 
     /** @serial Edit menu for this frame. */
-    protected Menu _editMenu = new Menu("Edit");
+    protected JMenu _editMenu = new JMenu("Edit");
 
     /** @serial File menu for this frame. */
-    protected Menu _fileMenu = new Menu("File");
+    protected JMenu _fileMenu = new JMenu("File");
 
     /** @serial Special menu for this frame. */
-    protected Menu _specialMenu = new Menu("Special");
+    protected JMenu _specialMenu = new JMenu("Special");
 
-    /** @serial directory that contains the input file. */
-    protected String _directory = null;
+    /** @serial Directory that contains the input file. */
+    protected File _directory = null;
 
-    /** @serial name of the input file. */
-    protected String _filename = null;
+    /** @serial The input file. */
+    protected File _file = null;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -466,21 +506,31 @@ public class PlotFrame extends Frame {
      *  Currently, the only supported format is EPS.
      */
     protected void _export() {
-        FileDialog filedialog = new FileDialog(this, "Export EPS to...");
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setDialogTitle("Export EPS to...");
         if (_directory != null) {
-            filedialog.setDirectory(_directory);
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically an absurd directory inside the O/S installation.
+            // So we use the current directory instead.
+            String cwd = System.getProperty("user.dir");
+            if (cwd != null) {
+                fileDialog.setCurrentDirectory(new File(cwd));
+            }
         }
-        filedialog.setFile("plot.eps");
-        filedialog.setVisible(true);
-        String filename = filedialog.getFile();
-        if (filename == null) return;
-        String directory = filedialog.getDirectory();
-        File file = new File(directory, filename);
-        try {
-            FileOutputStream fout = new FileOutputStream(file);
-            plot.export(fout);
-        } catch (IOException ex) {
-            Message msg = new Message("Error exporting plot: " + ex);
+        // FIXME: Can't seem to suggest a filename... Following fails
+        // compile:
+        // fileDialog.setSelectedFile("plot.eps");
+        int returnVal = fileDialog.showDialog(this, "Export");
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileDialog.getSelectedFile();
+            try {
+                FileOutputStream fout = new FileOutputStream(file);
+                plot.export(fout);
+            } catch (IOException ex) {
+                Message msg = new Message("Error exporting plot: " + ex);
+            }
         }
     }
 
@@ -497,73 +547,63 @@ public class PlotFrame extends Frame {
     /** Open a new file and plot its data.
      */
     protected void _open() {
-        FileDialog filedialog = new FileDialog(this, "Select a plot file");
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setDialogTitle("Select a plot file");
+
+        // Filter file names.
+        // NOTE: This filter is not built in yet... add this when it is.
+        // It is not worth the trouble to design our own filter.
+        // ExtensionFileFilter filter = new ExtensionFileFilter();
+        // filter.addExtension("plt");
+        // filter.addExtension("xml");
+        // filter.setDescription("Plot files");
+        // fileDialog.addChoosableFileFilter(filter);
+
         if (_directory != null) {
-            filedialog.setDirectory(_directory);
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically an absurd directory inside the O/S installation.
+            // So we use the current directory instead.
+            String cwd = System.getProperty("user.dir");
+            if (cwd != null) {
+                fileDialog.setCurrentDirectory(new File(cwd));
+            }
         }
-        filedialog.setVisible(true);
-        String filename = filedialog.getFile();
-        if (filename == null) return;
-        _directory = filedialog.getDirectory();
-        File file = new File(_directory, filename);
-        String dir = file.getParent();
-        if (dir != null) {
-            // NOTE: It's not clear why the file separator is needed
-            // here on the end, but it is...
-            _directory = dir + File.separator;
+        int returnVal = fileDialog.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            _file = fileDialog.getSelectedFile();
+            setTitle(_file.getName());
+            _directory = fileDialog.getCurrentDirectory();
+            try {
+                plot.clear(true);
+                _read(new URL("file", null, _directory.getAbsolutePath()),
+                         new FileInputStream(_file));
+                plot.repaint();
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this,
+                "File not found:\n" + ex.toString(),
+                "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this,
+                "Error reading input:\n" + ex.toString(),
+                "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        _filename = null;
-        try {
-            plot.clear(true);
-            _read(new URL("file", null, _directory), new FileInputStream(file));
-            plot.repaint();
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(this,
-            "File not found:\n" + ex.toString(),
-            "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this,
-            "Error reading input:\n" + ex.toString(),
-            "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
-        }
-        _filename = filename;
     }
 
     /** Print the plot.
      */
     protected void _print() {
-        // The awt uses properties to set the defaults:
-        // awt.print.destination   - can be "printer" or "file"
-        // awt.print.printer       - print command
-        // awt.print.fileName      - name of the file to print
-        // awt.print.numCopies     - obvious
-        // awt.print.options       - options to pass to the print command
-        // awt.print.orientation   - can be "portrait" or "landscape"
-        // awt.print.paperSize     - can be "letter", "legal", "executive"
-        //                           or "a4"
-
-        // Accept the defaults... But if you want to change them,
-        // do something like this...
-        // Properties newprops = new Properties();
-        // newprops.put("awt.print.destination", "file");
-        // newprops.put("awt.print.fileName", _outputFile);
-        // PrintJob printjob = getToolkit().getPrintJob(this,
-        //      getTitle(), newprops);
-        PrintJob printjob = getToolkit().getPrintJob(this,
-                getTitle(), null);
-        if (printjob != null) {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintable(plot);
+        if (job.printDialog()) {
             try {
-                Graphics printgraphics = printjob.getGraphics();
-                if (printgraphics != null) {
-                    // Print only the plot frame.
-                    try {
-                        plot.printAll(printgraphics);
-                    } finally {
-                        printgraphics.dispose();
-                    }
-                }
-            } finally {
-                printjob.end();
+                job.print();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                "Printing failed:\n" + ex.toString(),
+                "Print Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -579,14 +619,13 @@ public class PlotFrame extends Frame {
         plot.read(in);
     }
 
-    /** Save the plot to the current file, determined by the _directory
-     *  and _filename protected variables.
+    /** Save the plot to the current file, determined by the
+     *  and _file protected variable.
      */
     protected void _save() {
-        if (_filename != null) {
-            File file = new File(_directory, _filename);
+        if (_file != null) {
             try {
-                FileOutputStream fout = new FileOutputStream(file);
+                FileOutputStream fout = new FileOutputStream(_file);
                 plot.write(fout);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
@@ -601,16 +640,29 @@ public class PlotFrame extends Frame {
     /** Query the user for a filename and save the plot to that file.
      */
     protected void _saveAs() {
-        FileDialog filedialog = new FileDialog(this, "Save plot as...");
+
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setDialogTitle("Save plot as...");
         if (_directory != null) {
-            filedialog.setDirectory(_directory);
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically an absurd directory inside the O/S installation.
+            // So we use the current directory instead.
+            String cwd = System.getProperty("user.dir");
+            if (cwd != null) {
+                fileDialog.setCurrentDirectory(new File(cwd));
+            }
         }
-        filedialog.setFile("plot.xml");
-        filedialog.setVisible(true);
-        _filename = filedialog.getFile();
-        if (_filename == null) return;
-        _directory = filedialog.getDirectory();
-        _save();
+        // FIXME: Can't seem to suggest a file name:
+        // fileDialog.setCurrentFile("plot.xml");
+        int returnVal = fileDialog.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            _file = fileDialog.getSelectedFile();
+            setTitle(_file.getName());
+            _directory = fileDialog.getCurrentDirectory();
+            _save();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -677,7 +729,7 @@ public class PlotFrame extends Frame {
 
     class FileMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            MenuItem target = (MenuItem)e.getSource();
+            JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             if (actionCommand.equals("Open")) _open();
             else if (actionCommand.equals("Save")) _save();
@@ -685,18 +737,28 @@ public class PlotFrame extends Frame {
             else if (actionCommand.equals("Export")) _export();
             else if (actionCommand.equals("Print")) _print();
             else if (actionCommand.equals("Close")) _close();
+
+            // NOTE: The following should not be needed, but there jdk1.3beta
+            // appears to have a bug in swing where repainting doesn't
+            // properly occur.
+            repaint();
         }
     }
 
     class FormatListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             _editFormat();
+
+            // NOTE: The following should not be needed, but there jdk1.3beta
+            // appears to have a bug in swing where repainting doesn't
+            // properly occur.
+            repaint();
         }
     }
 
     class SpecialMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            MenuItem target = (MenuItem)e.getSource();
+            JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             if (actionCommand.equals("About")) {
                 _about();
@@ -711,6 +773,11 @@ public class PlotFrame extends Frame {
                 plot.clear(true);
                 samplePlot();
             }
+
+            // NOTE: The following should not be needed, but there jdk1.3beta
+            // appears to have a bug in swing where repainting doesn't
+            // properly occur.
+            repaint();
         }
     }
 }

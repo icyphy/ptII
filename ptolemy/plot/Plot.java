@@ -32,7 +32,6 @@ package ptolemy.plot;
 // TO DO:
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation
-//   - fix missing fill button under MacOS8.x/Netscape4.04
 //
 // NOTE: The XOR drawing mode is needed in order to be able to erase
 // plotted points and restore the grid line, tick marks, and boundary
@@ -45,7 +44,7 @@ package ptolemy.plot;
 // given, unfortunately, in pixels.  This means that as resolutions
 // get better, this program may need to be adjusted.
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -58,7 +57,7 @@ import java.net.*;
  * invocation of the public methods of the class.
  * <p>
  * When calling the public methods, in most cases the changes will not
- * be visible until paint() is called.  To request that this
+ * be visible until paintComponent() is called.  To request that this
  * be done, call repaint().  One exception is addPoint(), which
  * makes the new point visible immediately if the plot is visible on
  * the screen.
@@ -215,6 +214,13 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
+
+        // NOTE: jdk 1.3beta has a bug exhibited here.
+        // The value of the second argument is corrupted the second
+        // time that samplePlot() calls this.  The print statement
+        // in samplePlot() shows that the value is correct before the call.
+        // System.out.println("x value in addPoint: " + x);
+
         if (_xlog) {
             if (x <= 0.0) {
                 System.err.println("Can't plot non-positive X values "+
@@ -483,46 +489,55 @@ public class Plot extends PlotBox {
      */
     public void samplePlot() {
         // Create a sample plot.
-        this.clear(true);
+        clear(true);
 
-        this.setTitle("Sample plot");
-        this.setYRange(-4, 4);
-        this.setXRange(0, 100);
-        this.setXLabel("time");
-        this.setYLabel("value");
-        this.addYTick("-PI", -Math.PI);
-        this.addYTick("-PI/2", -Math.PI/2);
-        this.addYTick("0", 0);
-        this.addYTick("PI/2", Math.PI/2);
-        this.addYTick("PI", Math.PI);
-        this.setMarksStyle("none");
-        this.setImpulses(true);
+        setTitle("Sample plot");
+        setYRange(-4, 4);
+        setXRange(0, 100);
+        setXLabel("time");
+        setYLabel("value");
+        addYTick("-PI", -Math.PI);
+        addYTick("-PI/2", -Math.PI/2);
+        addYTick("0", 0);
+        addYTick("PI/2", Math.PI/2);
+        addYTick("PI", Math.PI);
+        setMarksStyle("none");
+        setImpulses(true);
 
         boolean first = true;
         for (int i = 0; i <= 100; i++) {
-            this.addPoint(0, (double)i,
+            double xvalue = (double)i;
+
+            // NOTE: jdk 1.3beta has a bug exhibited here.
+            // The value of the second argument in the calls to addPoint()
+            // below is corrupted the second
+            // time that this method is called.  The print statement below
+            // shows that the value is correct before the call.
+            // System.out.println("x value: " + xvalue);
+
+            addPoint(0, xvalue,
                     5 * Math.cos(Math.PI * i/20), !first);
-            this.addPoint(1, (double)i,
+            addPoint(1, xvalue,
                     4.5 * Math.cos(Math.PI * i/25), !first);
-            this.addPoint(2, (double)i,
+            addPoint(2, xvalue,
                     4 * Math.cos(Math.PI * i/30), !first);
-            this.addPoint(3, (double)i,
+            addPoint(3, xvalue,
                     3.5* Math.cos(Math.PI * i/35), !first);
-            this.addPoint(4, (double)i,
+            addPoint(4, xvalue,
                     3 * Math.cos(Math.PI * i/40), !first);
-            this.addPoint(5, (double)i,
+            addPoint(5, xvalue,
                     2.5 * Math.cos(Math.PI * i/45), !first);
-            this.addPoint(6, (double)i,
+            addPoint(6, xvalue,
                     2 * Math.cos(Math.PI * i/50), !first);
-            this.addPoint(7, (double)i,
+            addPoint(7, xvalue,
                     1.5 * Math.cos(Math.PI * i/55), !first);
-            this.addPoint(8, (double)i,
+            addPoint(8, xvalue,
                     1 * Math.cos(Math.PI * i/60), !first);
-            this.addPoint(9, (double)i,
+            addPoint(9, xvalue,
                     0.5 * Math.cos(Math.PI * i/65), !first);
             first = false;
         }
-        this.repaint();
+        repaint();
     }
 
     /** Turn bars on or off (for bar charts).
@@ -726,7 +741,7 @@ public class Plot extends PlotBox {
      *  If the specified point is below the y axis or outside the
      *  x range, do nothing.  If the <i>clip</i> argument is true,
      *  then do not draw above the y range.
-     *  Note that paint() should be called before
+     *  Note that paintComponent() should be called before
      *  calling this method so that _xscale and _yscale are properly set.
      *  @param graphics The graphics context.
      *  @param dataset The index of the dataset.
@@ -915,9 +930,10 @@ public class Plot extends PlotBox {
      *  thread can use <code>wait()</code> to prevent it plotting
      *  points before the axes have been first drawn.  If the second
      *  argument is true, clear the display first.
-     *  This method is called by paint().  To cause it to be called you
-     *  would normally call repaint(), which eventually causes paint() to
-     *  be called.
+     *  This method is called by paintComponent().
+     *  To cause it to be called you
+     *  would normally call repaint(),
+     *  which eventually causes paintComponent() to be called.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
@@ -1534,7 +1550,7 @@ public class Plot extends PlotBox {
      * connected to the previous point.  That argument is also ignored
      * if the point is the first in the specified dataset.
      * The point is drawn on the screen only if is visible.
-     * Otherwise, it is drawn the next time paint() is called.
+     * Otherwise, it is drawn the next time paintComponent() is called.
      */
     private synchronized void _addPoint(
             int dataset, double x, double y, double yLowEB, double yHighEB,
@@ -1601,7 +1617,7 @@ public class Plot extends PlotBox {
     }
 
     /* Draw the specified point and associated lines, if any.
-     * Note that paint() should be called before
+     * Note that paintComponent() should be called before
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
@@ -1670,7 +1686,7 @@ public class Plot extends PlotBox {
     /* Erase the point at the given index in the given dataset.  If
      * lines are being drawn, also erase the line to the next points
      * (note: not to the previous point).
-     * Note that paint() should be called before
+     * Note that paintComponent() should be called before
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale.  It should be adequate to check isShowing()
      * before calling this.

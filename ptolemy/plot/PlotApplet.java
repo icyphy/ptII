@@ -33,11 +33,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
-import java.applet.Applet;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JApplet;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.awt.*;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -55,7 +56,7 @@ import java.net.MalformedURLException;
  *  @see PlotBox
  *  @see Plot
  */
-public class PlotApplet extends Applet {
+public class PlotApplet extends JApplet {
 
     /** Return a string describing this applet.
      *  @return A string describing the applet.
@@ -86,12 +87,11 @@ public class PlotApplet extends Applet {
      */
     public void init() {
         super.init();
-        setLayout(new BorderLayout());
 
         if (_plot == null) {
             _plot = newPlot();
         }
-        add("North", plot());
+        getContentPane().add(plot(), BorderLayout.NORTH);
 
         // Process the width and height applet parameters
         int width, height;

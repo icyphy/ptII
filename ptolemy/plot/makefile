@@ -45,7 +45,7 @@ include $(CONFIG)
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
-#    PlotBox.java, LogicAnalyzerFrame.java,
+#    PlotBox.java,
 #    PlotApplication.java, doc/main.htm, doc/changes.htm, doc/install.htm 
 PTVERSION =	3.1p1
 PTDIST =	ptplot$(PTVERSION)
@@ -84,8 +84,6 @@ JSRCS = \
 	Histogram.java \
 	HistogramApplet.java \
 	LogicAnalyzer.java \
-	LogicAnalyzerFrame.java \
-	Message.java \
 	Plot.java \
 	PlotApplet.java \
 	PlotApplication.java \
@@ -146,9 +144,6 @@ OPTIONAL_FILES = \
 	'PlotBox$$ZoomListener.class' \
 	'PlotLive$$StartButtonListener.class' \
 	'PlotLive$$StopButtonListener.class' \
-	'LogicAnalyzerFrame$$FileMenuListener.class' \
-	'LogicAnalyzerFrame$$PlotFilenameFilter.class' \
-	'LogicAnalyzerFrame$$SpecialMenuListener.class' \
 	'Plot$$Format.class' \
 	'PlotApplication$$1.class' \
 	'PlotFrame$$FileMenuListener.class' \

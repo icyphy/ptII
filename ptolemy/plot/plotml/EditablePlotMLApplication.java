@@ -36,9 +36,10 @@ package ptolemy.plot.plotml;
 import ptolemy.plot.EditablePlot;
 import ptolemy.gui.*;
 
-import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         ((EditablePlot)plot).setEditable(-1);
 
         // Edit menu
-        MenuItem select = new MenuItem("Edit Dataset");
+        JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_D);
         SelectListener selectListener = new SelectListener();
         select.addActionListener(selectListener);
         _editMenu.add(select);

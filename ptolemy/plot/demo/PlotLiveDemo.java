@@ -31,8 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.demo;
 
 import ptolemy.plot.*;
-import java.awt.*;
-import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
@@ -49,9 +47,6 @@ public class PlotLiveDemo extends PlotLive {
      *  Configure the title, axes, points style, and persistence.
      */
     public PlotLiveDemo() {
-        // NOTE: Prior to version 1.2, this was done in the init() method,
-        // which is now deprecated.
-        setTitle("Live Plot Demo");
         setYRange(-1, 1);
         setXRange(-1, 1);
         setPointsPersistence(60);

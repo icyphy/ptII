@@ -42,10 +42,10 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test PlotBox-1.1 {} {
-    set frame [java::new java.awt.Frame]
+    set frame [java::new javax.swing.JFrame]
     set plot [java::new ptolemy.plot.PlotBox]
     $frame pack
-    $frame {add java.lang.String java.awt.Component} "Center" $plot
+    [$frame getContentPane] add $plot
     $frame setSize 500 300
     $frame show
     $frame repaint

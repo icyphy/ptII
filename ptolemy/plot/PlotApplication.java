@@ -28,13 +28,13 @@
 */
 
 package ptolemy.plot;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.StringTokenizer;
 import java.net.URL;
 import java.net.MalformedURLException;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
@@ -138,6 +138,16 @@ public class PlotApplication extends PlotFrame {
                 System.exit(0);
             }
         });
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        try {
+            UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
+
         _parseArgs(args);
         if (args == null || args.length == 0) {
             samplePlot();
@@ -265,10 +275,10 @@ public class PlotApplication extends PlotFrame {
                 } catch (MalformedURLException ex) {
                     File file = new File(arg);
                     instream = new FileInputStream(file);
-                    File absFile = new File(file.getAbsolutePath());
-                    String dir = absFile.getParent() + File.separator;
-                    base = new URL("file", null, dir);
-                    _filename = arg;
+                    _file = new File(file.getAbsolutePath());
+                    title = _file.getName();
+                    _directory = _file.getParentFile();
+                    base = new URL("file", null, _directory.getAbsolutePath());
                 }
                 _read(base, instream);
             } else {

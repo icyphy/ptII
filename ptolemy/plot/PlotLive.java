@@ -29,9 +29,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.JButton;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
@@ -79,14 +79,14 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public void makeButtons() {
         if (_startButton == null) {
-            _startButton = new Button("start");
+            _startButton = new JButton("start");
             _startButton.addActionListener(new StartButtonListener());
             add(_startButton);
         }
         _startButton.setVisible(true);
 
         if (_stopButton == null) {
-            _stopButton = new Button("stop");
+            _stopButton = new JButton("stop");
             _stopButton.addActionListener(new StopButtonListener());
             add(_stopButton);
         }
@@ -146,14 +146,14 @@ public abstract class PlotLive extends Plot implements Runnable {
         super.setButtons(visible);
 
         if (_startButton == null) {
-            _startButton = new Button("start");
+            _startButton = new JButton("start");
             _startButton.addActionListener(new StartButtonListener());
             add(_startButton);
         }
         _startButton.setVisible(visible);
 
         if (_stopButton == null) {
-            _stopButton = new Button("stop");
+            _stopButton = new JButton("stop");
             _stopButton.addActionListener(new StopButtonListener());
             add(_stopButton);
         }
@@ -203,7 +203,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     private boolean _paused = false;
 
     /** @serial Start and Stop Buttons. */
-    private Button _startButton, _stopButton;
+    private JButton _startButton, _stopButton;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

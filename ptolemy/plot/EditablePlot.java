@@ -30,7 +30,8 @@
 
 package ptolemy.plot;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.Vector;
 import java.util.Stack;

@@ -33,12 +33,24 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Rectangle;
 import java.awt.event.*;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.awt.print.Paper;
 import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+import javax.swing.*;
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -56,7 +68,7 @@ import java.util.*;
  * through direct invocation of the public methods of the class.
  * <p>
  * When calling the methods, in most cases the changes will not
- * be visible until paint() has been called.  To request that this
+ * be visible until paintComponent() has been called.  To request that this
  * be done, call repaint().
  * <p>
  * A small set of key bindings are provided for convenience.
@@ -73,8 +85,7 @@ import java.util.*;
  * <p>
  * At this time, the two export commands produce encapsulated postscript
  * tuned for black-and-white printers.  In the future, more formats may
- * supported.  Also at this time (jdk 1.2), Java's interface the
- * clipboard does not work, so Cntr-c might not accomplish anything.
+ * supported.
  * Exporting to the clipboard and to standard output, in theory,
  * is allowed for applets, unlike writing to a file. Thus, these
  * key bindings provide a simple mechanism to obtain a high-resolution
@@ -188,13 +199,14 @@ import java.util.*;
  * @contributor Jun Wu (jwu@inin.com.au)
  * @version $Id$
  */
-public class PlotBox extends Panel {
+public class PlotBox extends JPanel implements Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
     /** Construct a plot box with a default configuration. */
     public PlotBox() {
+        setOpaque(true);
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
         addKeyListener(new CommandListener());
@@ -535,15 +547,9 @@ public class PlotBox extends Panel {
      *  only the axes.
      *  @param graphics The graphics context.
      */
-    public void paint(Graphics graphics) {
-        // Return the if size has not been set.
-        if (_buffer == null) return;
-
-        // Double buffer for maximally smooth rendering.
-        Graphics gBuffer = _buffer.getGraphics();
-        super.paint(gBuffer);
-        _drawPlot(gBuffer, true);
-        graphics.drawImage(_buffer, 0, 0, null);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        _drawPlot(graphics, true);
         // Acquire the focus so that key bindings work.
         requestFocus();
     }
@@ -632,6 +638,27 @@ public class PlotBox extends Panel {
                 in.close();
             } catch (IOException me) {}
         }
+    }
+
+    /** Print the plot to a printer, represented by the specified graphics
+     *  object.
+     *  @param graphics The context into which the page is drawn.
+     *  @param format The size and orientation of the page being drawn.
+     *  @param index The zero based index of the page to be drawn.
+     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     *  @exception PrinterException If the print job is terminated.
+     */
+    public int print(Graphics graphics, PageFormat format, int index)
+            throws PrinterException {
+        // We only print on one page.
+        if (index >= 1) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        graphics.translate((int)format.getImageableX(),
+                (int)format.getImageableY());
+        printAll(graphics);
+        return Printable.PAGE_EXISTS;
     }
 
     /** Read commands and/or plot data from an input stream in the old
@@ -726,7 +753,6 @@ public class PlotBox extends Panel {
     public void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
-        _buffer = createImage(width, height);
         super.setBounds(x, y, _width, _height);
     }
 
@@ -740,7 +766,7 @@ public class PlotBox extends Panel {
      */
     public void setButtons(boolean visible) {
         if (_fillButton == null) {
-            _fillButton = new Button("fill");
+            _fillButton = new JButton("fill");
             _fillButton.addActionListener(new FillButtonListener());
             add(_fillButton);
         }
@@ -805,7 +831,6 @@ public class PlotBox extends Panel {
     public void setSize(int width, int height) {
         _width = width;
         _height = height;
-        _buffer = createImage(width, height);
         super.setSize(width, height);
     }
 
@@ -889,16 +914,6 @@ public class PlotBox extends Panel {
         _ylowgiven = min;
         _yhighgiven = max;
         _setYRange(min, max);
-    }
-
-    /** Override update so that it doesn't clear the plot.
-     *  This prevents flashing of dynamic plots.
-     *  Note that this means that calls to update are not passed to
-     *  lightweight components.  But currently we have no lightweight
-     *  components, so this is not a problem.
-     */
-    public void update(Graphics g) {
-        paint(g);
     }
 
     /** Write the current data and plot configuration to the
@@ -992,9 +1007,9 @@ public class PlotBox extends Panel {
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
-     *  This method is called by paint().  To cause it to be called you
-     *  would normally call repaint(), which eventually causes paint() to
-     *  be called.
+     *  This method is called by paintComponent().  To cause it to be called you
+     *  would normally call repaint(), which eventually causes
+     *  paintComponent() to be called.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
@@ -1008,7 +1023,9 @@ public class PlotBox extends Panel {
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
         if (clearfirst) {
+            graphics.setColor(Color.white);
             graphics.clearRect(0, 0, drawRect.width, drawRect.height);
+            graphics.setColor(Color.black);
         }
 
         // If an error message has been set, display it and return.
@@ -1559,23 +1576,22 @@ public class PlotBox extends Panel {
     /** Display basic information in its own window.
      */
     protected void _help() {
-        Message message = new Message(
+        String message =
                 "Ptolemy plot package\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.1p1, Build: $Id$\n\n" +
                 "Key bindings:\n" +
-                // FIXME: When clipboard works. Also fix class comment.
-                // "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
+                "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
                 "   D: dump plot data to standard out\n" +
                 "   E: export plot to standard out (EPS format)\n" +
                 "   F: fill plot\n" +
                 "   H or ?: print help message (this message)\n" +
                 "   Cntr-D or Q: quit\n" +
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                null, null, 24, 60, TextArea.SCROLLBARS_NONE);
-        message.setTitle("About Ptolemy Plot Package");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
+        JOptionPane.showMessageDialog(this, message,
+                "Ptolemy Plot Help Window", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse a line that gives plotting information.  In this base
@@ -2589,9 +2605,6 @@ public class PlotBox extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial Image to draw onto to avoid flashing. */
-    private Image _buffer;
-
     /** @serial The file to be opened. */
     private String _filespec = null;
 
@@ -2646,7 +2659,7 @@ public class PlotBox extends Panel {
         _yticks = null, _yticklabels = null;
 
     // A button for filling the plot
-    private transient Button _fillButton = null;
+    private transient JButton _fillButton = null;
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
@@ -2794,20 +2807,21 @@ public class PlotBox extends Panel {
                 if (_control) {
                     // The "null" sends the output to the clipboard.
                     export(null);
-                    Message message = new Message(
+                    String message =
                             "Encapsulated PostScript (EPS) " +
-                            "exported to clipboard.",
-                            null, null, 1, 60, TextArea.SCROLLBARS_NONE);
-                    message.setTitle("Ptolemy Plot Message");
+                            "exported to clipboard.";
+                    JOptionPane.showMessageDialog(PlotBox.this, message,
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
                 break;
             case KeyEvent.VK_D:
                 if (!_control && _shift) {
                     write(System.out);
-                    Message message = new Message(
-                            "Plot data sent to standard out.",
-                            null, null, 1, 40, TextArea.SCROLLBARS_NONE);
-                    message.setTitle("Ptolemy Plot Message");
+                    String message = "Plot data sent to standard out.";
+                    JOptionPane.showMessageDialog(PlotBox.this, message,
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
                 if (_control) {
                     // xgraph and many other Unix apps use Control-D to exit
@@ -2817,11 +2831,12 @@ public class PlotBox extends Panel {
             case KeyEvent.VK_E:
                 if (!_control && _shift) {
                     export(System.out);
-                    Message message = new Message(
+                    String message =
                             "Encapsulated PostScript (EPS) " +
-                            "exported to standard out.",
-                            null, null, 1, 60, TextArea.SCROLLBARS_NONE);
-                    message.setTitle("Ptolemy Plot Message");
+                            "exported to standard out.";
+                    JOptionPane.showMessageDialog(PlotBox.this, message,
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
                 break;
             case KeyEvent.VK_F:

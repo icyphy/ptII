@@ -31,10 +31,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.*;
-import java.awt.*;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.applet.Applet;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplet
@@ -56,17 +58,17 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      */
     public void init() {
         super.init();
-        Panel controlPanel = new Panel();
-        add("South", controlPanel);
+        JPanel controlPanel = new JPanel();
+        getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
-        controlPanel.add(new Label("Data set to edit:"));
+        controlPanel.add(new JLabel("Data set to edit:"));
 
-        _choice = new Choice();
+        _choice = new JComboBox();
         controlPanel.add(_choice);
         for (int i = 0; i < ((Plot)plot()).getNumDataSets(); i++) {
-            _choice.add(plot().getLegend(i));
+            _choice.addItem(plot().getLegend(i));
         }
-        _choice.addItemListener(new ChoiceListener());
+        _choice.addActionListener(new ChoiceListener());
     }
 
     /**
@@ -106,13 +108,13 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     ////                         private variables                 ////
 
     // Choice widget for selecting the editable data set.
-    private Choice _choice;
+    private JComboBox _choice;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    private class ChoiceListener implements ItemListener {
-        public void itemStateChanged(ItemEvent e) {
+    private class ChoiceListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
             ((EditablePlot)plot()).setEditable(_choice.getSelectedIndex());
         }
     }

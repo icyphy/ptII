@@ -31,8 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.demo;
 
 import ptolemy.plot.*;
-import java.awt.*;
-import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotDemo
