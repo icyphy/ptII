@@ -48,7 +48,7 @@ package ptolemy.kernel.util;
 */
 
 public class TransientSingletonConfigurableAttribute
-    extends ConfigurableAttribute {
+    extends ConfigurableAttribute implements Singleton {
 
     // NOTE: This class does not extend SingletonConfigurableAttribute
     // even though the setContainer() method is identical.  The reason
