@@ -40,7 +40,7 @@ import ptolemy.data.expr.Parameter;
 /**
 Customer - Buffer - Server
 <p>
-This demo is similar to the MM1 demo, excpet that immediately after
+This demo is similar to the MM1 demo, expect that immediately after
 starting the model execution, pause() is called on the CSPDirector.
 When the model is successfully paused (the pause() method is blocking),
 resume() is called to allow the model execution to continue.
