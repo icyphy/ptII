@@ -35,6 +35,9 @@ import java.util.*;
 
 /** A simple message display with a close button.
  *  This will eventually replaced by a class from JFC.
+ *  This class is basically a duplicate of ptolemy/gui/Message
+ *  but PlotBox uses it so we have to have Message
+ *  if we are to create non-swing applets.
  *
  *  @author Christopher Hylands
  *  @version $Id$
