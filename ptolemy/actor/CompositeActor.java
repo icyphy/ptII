@@ -664,6 +664,9 @@ public class CompositeActor extends CompositeEntity
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
+        // because function dependency is not persistent,
+        // it gets reset each time the preinitialize method is called.
+        _functionDependency = null;
         if (_debugging) {
             _debug("Called preinitialize()");
         }

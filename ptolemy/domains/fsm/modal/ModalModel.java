@@ -312,6 +312,18 @@ public class ModalModel extends CTCompositeActor {
         }
     }
 
+    /** Reset internal non-persistent variables and invoke the
+     *  preinitialize() method of the CompositeActor. 
+     * 
+     *  @exception IllegalActionException If the preinitialize()
+     *  method of the CompositeActor throws a IllegalActionException.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // because function dependency is not persistent,
+        // it gets reset each time the preinitialize method is called.
+        _functionDependency = null;
+        super.preinitialize();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

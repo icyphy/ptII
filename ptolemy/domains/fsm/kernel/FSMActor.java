@@ -640,6 +640,10 @@ public class FSMActor extends CompositeEntity
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
+        // because function dependency is not persistent,
+        // it gets reset each time the preinitialize method is called.
+        _functionDependency = null;
+
         _stopRequested = false;
         _reachedFinalState = false;
         _newIteration = true;

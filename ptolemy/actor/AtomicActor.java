@@ -414,6 +414,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
             _debug("Called preinitialize()");
         }
         _stopRequested = false;
+        // because function dependency is not persistent,
+        // it gets reset each time the preinitialize method is called.
+        _functionDependency = null;
+
         // NOTE:  Receivers are also getting created
         // in connectionChanged().  Perhaps this is here to ensure
         // that the receivers are reset?
