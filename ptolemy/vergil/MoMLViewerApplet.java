@@ -30,9 +30,8 @@
 
 package ptolemy.vergil;
 
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.SizeAttribute;
@@ -44,9 +43,9 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorViewerGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet

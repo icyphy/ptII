@@ -31,6 +31,16 @@
 package ptolemy.vergil;
 
 // Ptolemy imports
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.net.URI;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.JNLPUtilities;
@@ -39,29 +49,15 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.ErrorHandler;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame; // VERGIL_USER_LIBRARY_NAME
-
-import javax.swing.SwingUtilities;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.URI;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 
 //////////////////////////////////////////////////////////////////////////
