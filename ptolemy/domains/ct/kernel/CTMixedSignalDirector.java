@@ -191,10 +191,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
-            if(_debugging) _debug(this.getFullName() +
+            if(_debugging) _debug(getFullName(),
                     "In event phase execution.");
             _eventPhaseExecution();
             _setEventPhase(false);
+            if(_debugging) _debug(getFullName(),
+                    "Request a refire at the current time." + 
+                    exe.getCurrentTime(), 
+                    "--END of fire");
             exe.fireAt(ca, exe.getCurrentTime());
             return;
         }
@@ -210,16 +214,30 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
-            if(_debugging) _debug("Resolved stepsize: "+getCurrentStepSize() +
-                    " One iteration from " + getCurrentTime());
+            if(_debugging) _debug(getName(),
+                    "Resolved stepsize: " + getCurrentStepSize() +
+                    " One iteration from " + getCurrentTime() +
+                    " to " + (getCurrentStepSize()+getCurrentTime()));
             _fireOneIteration();
             if (_isStoppedByEvent()) {
-                if(_debugging) _debug( this.getFullName() + " stop by event.");
+                if(_debugging) {
+                    _debug(getFullName() + " fire stopped by event.",
+                            "at " + getCurrentTime(), 
+                            "request refire at " + getCurrentTime(),
+                            "set Event phase to TRUE");
+                }
                 exe.fireAt(ca, getCurrentTime());
                 _setEventPhase(true);
                 return;
-            } else if (getCurrentTime() >= getIterationEndTime()) {
-                exe.fireAt(ca, getCurrentTime());
+            } else if (Math.abs(getCurrentTime()- getIterationEndTime())
+                       < getTimeResolution()) {
+                if(_debugging) {
+                    _debug(getFullName() + " fire stopped regularly.",
+                            "at " + getCurrentTime(), 
+                            "request refire at " + getIterationEndTime(),
+                            "set Event phase to FALSE");
+                }
+                exe.fireAt(ca, getIterationEndTime());
                 _setEventPhase(false);
                 return;
             }
@@ -312,10 +330,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // ca should have beed checked in _isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
-            if(_debugging) _debug("Outside Time = " + _outsideTime);
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
+            if(_debugging) _debug(getName(), "Outside Time = " + _outsideTime,
+                                  "NextIterationTime = " + nextIterTime,
+                                  "Infered run length = " + runlength);
             if(runlength < 0 ) {
                 throw new InvalidStateException(this, "Outside domain"
                         + " time collapse."
@@ -365,7 +385,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // fireAt(null, _outsideTime);
             // fireAt(null, getIterationEndTime());
             // Now it's guaranteed that the current time is the outside time.
-            if(_debugging) _debug("Iteration end time = " + getIterationEndTime());
+            if(_debugging) _debug(getName(), "Iteration end time = " + 
+                    getIterationEndTime(), "End of Prefire");
         }
         return true;
     }
@@ -414,7 +435,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Return true if the current phase of fire is event phase.
      */
     protected boolean _isEventPhase() {
-        return _inEventPhase;
+        return _inEventPhase ;
     }
 
     /** Return true if the current fire phase need to stop due to
