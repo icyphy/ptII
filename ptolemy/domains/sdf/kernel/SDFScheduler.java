@@ -44,6 +44,7 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.NotEditableParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -1420,7 +1421,7 @@ public class SDFScheduler extends Scheduler {
             // Use Variable rather than Parameter so that the change
             // is not persistent.
             buffer.append("<property name=\"bufferSize\" "
-                    + "class=\"ptolemy.data.expr.Variable\" "
+                    + "class=\"ptolemy.data.expr.NotEditableParameter\" "
                     +  "value=\"" + bufferSize + "\"/>\n");
             buffer.append("</relation>\n");
 
@@ -1533,7 +1534,7 @@ public class SDFScheduler extends Scheduler {
             try {
                 if (rateParameter == null) {
                     // Use Variable, not Parameter so that it's transient.
-                    rateParameter = new Variable(port, altName);
+                    rateParameter = new NotEditableParameter(port, altName);
                 }
                 rateParameter.setToken(new IntToken(value));
             } catch (KernelException ex) {
@@ -1575,7 +1576,7 @@ public class SDFScheduler extends Scheduler {
             try {
                 // Use Variable rather than Parameter so the
                 // value is transient.
-                parameter = new Variable(port, name, new IntToken(rate));
+                parameter = new NotEditableParameter(port, name, new IntToken(rate));
             } catch (KernelException exception) {
                 // This should never happen.
                 throw new InternalErrorException(exception.getMessage());
