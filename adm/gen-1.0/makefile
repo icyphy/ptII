@@ -422,7 +422,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/javasound \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/math \
