@@ -757,7 +757,7 @@ public class Plot extends PlotBox {
      * this causes any previously plotted points to be forgotten.
      * This method should be called before
      * <code>setPointsPersistence</code>.
-     * @exception java.io.NumberFormatException if the number is less
+     * @exception java.lang.NumberFormatException if the number is less
      * than 1 or greater than an internal limit (usually 63).
      */
     public void setNumSets (int numsets) throws NumberFormatException {
