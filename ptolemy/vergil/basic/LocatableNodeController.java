@@ -104,7 +104,9 @@ public class LocatableNodeController extends BasicNodeController {
         if (node instanceof Locatable) {
             Locatable object = (Locatable) node;
             double[] location = object.getLocation();
-            if (location != null) return true;
+            if (location != null && location.length == 2) {
+                return true;
+            }
         }
         return false;
     }
@@ -131,6 +133,11 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
+        if (location != null &&
+                location.length != 2) {
+            throw new RuntimeException("The location " + location +
+                    " is not valid");
+        }
 	if (node instanceof Locatable) {
             ((Locatable)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +

@@ -89,6 +89,18 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
 
+    /** Return a MoML String that will delete the given edge from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public abstract String getDeleteEdgeMoML(Object edge);
+
+    /** Return a MoML String that will delete the given node from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public abstract String getDeleteNodeMoML(Object edge);
+
     /** Return the model for the given composite object.
      *  In this base class, return an instance of CompositeEntityModel
      *  if the object is the root object of this graph model.

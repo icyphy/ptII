@@ -788,6 +788,118 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GraphController controller =
                 (GraphController)graphPane.getGraphController();
         SelectionModel model = controller.getSelectionModel();
+     
+        AbstractBasicGraphModel graphModel =
+            (AbstractBasicGraphModel)controller.getGraphModel();
+        Object selection[] = model.getSelectionAsArray();
+
+        Object userObjects[] = new Object[selection.length];
+        // First remove the selection.
+        for (int i = 0; i < selection.length; i++) {
+            userObjects[i] = ((Figure)selection[i]).getUserObject();
+            model.removeSelection(selection[i]);
+        }
+
+        // Holds a set of those elements whose deletion goes through MoML.
+        // This is the large majority of deleted objects.
+        // Currently the only exception are links from a port to nowhere.
+        HashSet namedObjNodeSet = new HashSet();
+        HashSet namedObjEdgeSet = new HashSet();
+        // Holds those elements whose deletion does not go through MoML. This
+        // is only links which are no connected to another port or a relation.
+        HashSet edgeSet = new HashSet();
+
+        // Generate the MoML to carry out the deletion
+        StringBuffer moml = new StringBuffer();
+        moml.append("<group>\n");
+ 
+        // Delete edges then nodes, since deleting relations may
+        // result in deleting links to that relation.
+        for (int i = 0; i < selection.length; i++) {
+            Object userObject = userObjects[i];
+            if (graphModel.isEdge(userObject)) {
+                NamedObj actual =
+                    (NamedObj)graphModel.getSemanticObject(userObject);
+                if (actual != null) {
+                    moml.append(graphModel.getDeleteEdgeMoML(userObject));
+                } else {
+                    edgeSet.add(userObject);
+                }
+            }
+        }
+        for (int i = 0; i < selection.length; i++) {
+            Object userObject = userObjects[i];
+            if (graphModel.isNode(userObject)) {
+                moml.append(graphModel.getDeleteNodeMoML(userObject));
+            }
+        }
+
+        moml.append("</group>\n");
+
+        // Have both MoML to perform deletion and set of objects whose
+        // deletion does not go through MoML. This set of objects
+        // should be very small and so far consists of only links that are not
+        // connected to a relation
+        try {
+            // First manually delete any objects whose deletion does not go
+            // through MoML and so are not undoable
+            // Note that we turn off event dispatching so that each individual
+            // removal does not trigger graph redrawing.
+            graphModel.setDispatchEnabled(false);
+            Iterator edges = edgeSet.iterator();
+            while (edges.hasNext()) {
+                Object nextEdge = edges.next();
+                if (graphModel.isEdge(nextEdge)) {
+                    graphModel.disconnectEdge(this, nextEdge);
+                }
+            }
+        }
+        finally {
+            graphModel.setDispatchEnabled(true);
+        }
+
+        // Next process the deletion MoML. This should be the large majority
+        // of most deletions.
+        try {
+            // Finally create and request the change
+            NamedObj object = (NamedObj)graphModel.getRoot();
+            NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
+            if (container == null) {
+                container = (NamedObj)object.getContainer();
+            }
+            if (container == null) {
+                container = object;
+            }
+
+            CompositeEntity toplevel = (CompositeEntity)container;
+            MoMLChangeRequest change =
+                    new MoMLChangeRequest(this, toplevel, moml.toString());
+            change.setUndoable(true);
+            toplevel.requestChange(change);
+        }
+        catch (Exception ex) {
+            MessageHandler.error("Delete failed, changeRequest was:" + moml,
+				 ex);
+        }
+        graphModel.dispatchGraphEvent(
+                new GraphEvent(
+                        this,
+                        GraphEvent.STRUCTURE_CHANGED,
+                        graphModel.getRoot()));
+
+    }
+
+    /** Delete the currently selected objects from this document.
+     */
+    public void deleteOld() {
+        // Note that we previously a delete was handled at the model level.
+        // Now a delete is handled by generating MoML to carry out the delete
+        // and handing that MoML to the parser
+
+        GraphPane graphPane = _jgraph.getGraphPane();
+        GraphController controller =
+                (GraphController)graphPane.getGraphController();
+        SelectionModel model = controller.getSelectionModel();
         // AbstractPtolemyGraphModel graphModel =
         //    (AbstractPtolemyGraphModel)controller.getGraphModel();
         AbstractBasicGraphModel graphModel =
@@ -812,27 +924,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // First make a set of all the semantic objects as they may
         // appear more than once
         for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof Figure) {
-                Object userObject = ((Figure)selection[i]).getUserObject();
-                if (graphModel.isEdge(userObject) ||
-                        graphModel.isNode(userObject)) {
-                    NamedObj actual =
-                            (NamedObj)graphModel.getSemanticObject(userObject);
-                    if (actual != null) {
-                        if (graphModel.isEdge(userObject)) {
-                            namedObjEdgeSet.add(actual);
-                        } else {
-                            namedObjNodeSet.add(actual);
-                        }
-                    }
-                    else {
-                        // Special case, do not handle through MoML but
-                        // simply delete which means this deletion is not
-                        // undoable
-                        edgeSet.add(userObject);
+            Object userObject = userObjects[i];
+            if (graphModel.isEdge(userObject) ||
+                    graphModel.isNode(userObject)) {
+                NamedObj actual =
+                    (NamedObj)graphModel.getSemanticObject(userObject);
+                if (actual != null) {
+                    if (graphModel.isEdge(userObject)) {
+                        namedObjEdgeSet.add(actual);
+                    } else {
+                        namedObjNodeSet.add(actual);
                     }
                 }
+                else {
+                    // Special case, do not handle through MoML but
+                    // simply delete which means this deletion is not
+                    // undoable
+                    edgeSet.add(userObject);
+                }
             }
+            
         }
         // Merge the two hashsets so that any edges get deleted first.
         // This is need to avoid problems with relations not existing due to

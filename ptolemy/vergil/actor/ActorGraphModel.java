@@ -140,6 +140,28 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         }
     }
 
+    /** Return a MoML String that will delete the given edge from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public String getDeleteEdgeMoML(Object edge) {
+        // Note: the abstraction here is rather broken.  Ideally this
+        // should look like getDeleteNodeMoML()
+        if (!(getEdgeModel(edge) instanceof LinkModel)) return "";
+	LinkModel model = (LinkModel)getEdgeModel(edge);
+	return model.getDeleteEdgeMoML(edge);
+    }
+
+    /** Return a MoML String that will delete the given node from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public String getDeleteNodeMoML(Object node) {
+	if (!(getNodeModel(node) instanceof NamedObjNodeModel)) return "";
+	NamedObjNodeModel model = (NamedObjNodeModel)getNodeModel(node);
+	return model.getDeleteNodeMoML(node);
+    }
+
     /** Return the model for the given composite object.
      *  In this class, return an instance of CompositeEntityModel
      *  if the object is the root object of this graph model, and return
@@ -350,8 +372,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
+        // Also remove links that link to ports which shouldn't be linked to.
 	// FIXME this could get expensive
-	Iterator links = _linkSet.iterator();
+	Iterator links = new LinkedList(_linkSet).iterator();
 	while (links.hasNext()) {
 	    Link link = (Link)links.next();
             // only consider links that are associated with this relation.
@@ -362,12 +385,21 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    Object tailObj = getSemanticObject(tail);
             if (tailObj != null && linkedPortList.contains(tailObj)) {
                 linkedPortList.remove(tailObj);
-	    }
+	    } else {
+                link.setHead(null);
+                link.setTail(null);
+                _linkSet.remove(link);
+            }
+
 	    Object head = link.getHead();
 	    Object headObj = getSemanticObject(head);
             if (headObj != null && linkedPortList.contains(headObj)) {
                 linkedPortList.remove(headObj);
-	    }
+	    } else {
+                link.setHead(null);
+                link.setTail(null);
+                _linkSet.remove(link);
+            }
 	}
 
 	// Count the linked ports.
@@ -484,6 +516,23 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  These ports are always contained by the root of this graph model.
      */
     public class ExternalPortModel extends NamedObjNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+	    Locatable location = (Locatable)node;
+	    ComponentPort port = (ComponentPort)location.getContainer();
+
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<deletePort name=\"" +
+                    port.getName(container) +
+                    "\"/>\n");
+            return moml.toString();
+        }
+
         /**
          * Return the graph parent of the given node.
          * @param node The node, which is assumed to be a port contained in
@@ -565,9 +614,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(port);
-            // System.out.println("Queueing Change request with: " + container);
 
-	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<deletePort name=\"" +
                     port.getName(container) +
@@ -587,6 +634,20 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      */
     public class IconModel extends NamedObjNodeModel
             implements CompositeNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+           
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+
+            String moml = "<deleteEntity name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+            return moml;
+        }
+
 	/**
 	 * Return the number of nodes contained in
 	 * this graph or composite node.
@@ -715,6 +776,31 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 return true;
             } else
                 return false;
+        }
+
+        /** Return a MoML String that will delete the given edge from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteEdgeMoML(Object edge) {
+	    final Link link = (Link)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+            NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    // This moml is parsed to execute the change
+	    StringBuffer moml = new StringBuffer();
+            // Make the request in the context of the container.
+            // JDK1.2.2 fails to compile the next line.
+            CompositeEntity container =
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+
+            // create moml to unlink any existing.
+            try {
+                _unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+            return moml.toString();
         }
 
         /** Return the head node of the given edge.
@@ -1137,6 +1223,20 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for ports that are contained in icons in this graph.
      */
     public class PortModel extends NamedObjNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
+           
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+
+            String moml = "<deletePort name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+            return moml;
+        }
+
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a port.
@@ -1241,6 +1341,21 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  ptolemy model.
      */
     public class VertexModel extends NamedObjNodeModel {
+        /** Return a MoML String that will delete the given node from the
+         *  Ptolemy model.
+         *  @return A valid MoML string.
+         */
+        public String getDeleteNodeMoML(Object node) {
+	    ComponentRelation deleteObj =
+                (ComponentRelation)((Vertex)node).getContainer();
+           
+            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            System.out.println("container = " + container.getFullName());
+            String moml = "<deleteRelation name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+            return moml;
+        }
+
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a Vertex.

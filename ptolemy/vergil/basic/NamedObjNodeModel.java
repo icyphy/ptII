@@ -48,6 +48,13 @@ public abstract class NamedObjNodeModel implements NodeModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Return a MoML String that will delete the given node from the
+     *  Ptolemy model.
+     *  @return A valid MoML string.
+     */
+    public abstract String getDeleteNodeMoML(Object node);
+
     /** Remove the specified node from the model. */
     public abstract void removeNode(Object eventSource, Object node);
 
