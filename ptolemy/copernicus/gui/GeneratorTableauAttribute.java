@@ -282,6 +282,8 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	return newObject;
 	*/
 	// Alphabetical
+        newObject.codeGenerator = (StringAttribute)
+            newObject.getAttribute("codeGenerator");
         newObject.compile = (Parameter)
             newObject.getAttribute("compile");
         newObject.compileOptions = (StringAttribute)
@@ -296,16 +298,20 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
             newObject.getAttribute("show");
+
+       	ChoiceStyle choiceStyle =
+            (ChoiceStyle) newObject.codeGenerator.getAttribute("style");
+        
         newObject.sootApplet = (StringAttribute)
-            newObject.getAttribute("sootApplet");
+            choiceStyle.getAttribute("sootApplet");
         newObject.sootC = (StringAttribute)
-            newObject.getAttribute("sootC");
+            choiceStyle.getAttribute("sootC");
         newObject.sootDeep = (StringAttribute)
-            newObject.getAttribute("sootDeep");
+            choiceStyle.getAttribute("sootDeep");
         newObject.sootJHDL = (StringAttribute)
-            newObject.getAttribute("sootJHDL");
+            choiceStyle.getAttribute("sootJHDL");
         newObject.sootShallow = (StringAttribute)
-            newObject.getAttribute("sootShallow");
+            choiceStyle.getAttribute("sootShallow");
 
         return newObject;
     }
@@ -324,7 +330,11 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 		    fieldValue = "ptolemy.kernel.util.StringAttribute "
 			+ ((StringAttribute)object).getExpression();
 		} else {
-		    fieldValue = object.toString();
+                    if (object == null) {
+                        fieldValue = null;
+                    } else {
+                        fieldValue = object.toString();
+                    }
 		}
 	    } catch (IllegalAccessException e) {
 		fieldValue = "IllegalAccessException?";
