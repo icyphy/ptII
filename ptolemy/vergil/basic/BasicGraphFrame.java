@@ -108,6 +108,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -244,6 +245,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "_vergilZoomFactor", Parameter.class);
             if (zoom != null) {
                 zoom(((DoubleToken)zoom.getToken()).doubleValue());
+                // Make sure the visibility is only expert.
+                zoom.setVisibility(Settable.EXPERT);
             }
             
             // Set the pan position.
@@ -255,6 +258,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         ((DoubleToken)panToken.getElement(0)).doubleValue(),
                         ((DoubleToken)panToken.getElement(1)).doubleValue());
                 setCenter(center);
+                // Make sure the visibility is only expert.
+                pan.setVisibility(Settable.EXPERT);
             }
             
         } catch (Exception ex) {
@@ -1454,6 +1459,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 zoom = new Parameter(getModel(), "_vergilZoomFactor");
             }
             zoom.setToken(new DoubleToken(scale));
+            // Make sure the visibility is only expert.
+            zoom.setVisibility(Settable.EXPERT);
             
             // Save the center, to record the pan state.
             Point2D center = getCenter();
@@ -1466,6 +1473,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             centerArray[0] = new DoubleToken(center.getX());
             centerArray[1] = new DoubleToken(center.getY());
             pan.setToken(new ArrayToken(centerArray));
+            // Make sure the visibility is only expert.
+            pan.setVisibility(Settable.EXPERT);
 
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
