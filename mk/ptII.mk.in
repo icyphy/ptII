@@ -46,7 +46,8 @@ exec_prefix =	@exec_prefix@
 # Source directory we are building from.
 srcdir =	@srcdir@
 
-# Directory in which to install scripts
+
+
 BIN_INSTALL_DIR =	$(exec_prefix)/bin
 
 # The home of the Java Developer's Kit (JDK)
@@ -121,6 +122,15 @@ LEJOS_DIR = @LEJOS_DIR@
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 CMKIT_DIR = @CMKIT_DIR@
+
+# Directory that contains gc.h, used in copernicus/c
+GC_INCLUDE_DIR = @GC_INCLUDE_DIR@
+
+# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+GC_LD_DIRECTIVE = @GC_LD_DIRECTIVE@
 
 # The 'javac' compiler.
 JAVAC = 	$(PTJAVA_DIR)/bin/javac
@@ -206,12 +216,6 @@ PTCOMM_DIR = @PTCOMM_DIR@
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
-
-# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
-# GC_malloc() can be found either in the default compiler location
-# or in $PTII/lib.
-# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
-PTGC_LD_DIRECTIVE = @PTGC_LD_DIRECTIVE@
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
