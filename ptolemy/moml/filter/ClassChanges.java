@@ -173,6 +173,10 @@ public class ClassChanges implements MoMLFilter {
         // Replaced FileAttribute with FileParameter in 3.2-devel
         _classChanges.put("ptolemy.kernel.attributes.FileAttribute",
                 "ptolemy.data.expr.FileParameter");
+
+        // SDFIOPort is obsolete as of 3.2-devel
+        _classChanges.put("ptolemy.domains.sdf.kernel.SDFIOPort",
+                "ptolemy.actor.TypedIOPort");
     }
     
     // Set of class names that are obsolete and should be simply

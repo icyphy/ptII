@@ -108,7 +108,6 @@ public class PropertyClassChanges implements MoMLFilter {
             return null;
         }
 
-
         if (attributeName.equals("name")) {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
@@ -117,12 +116,14 @@ public class PropertyClassChanges implements MoMLFilter {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     _newClass = (String)_propertyMap.get(attributeValue);
+                    _foundChange = true;
                 } else {
                     // Saw a name that did not match.
                     // However, we might have other names that
                     // did match, so keep looking
                     //_currentlyProcessingActorWithPropertyClassChanges = false;
                     _newClass = null;
+                    _foundChange = false;
                 }
             }
         }
@@ -144,7 +145,7 @@ public class PropertyClassChanges implements MoMLFilter {
                     (HashMap) _actorsWithPropertyClassChanges
                     .get(attributeValue);
             } else if (_currentlyProcessingActorWithPropertyClassChanges
-                    && _newClass != null) {
+                    && _foundChange) {
 
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
@@ -158,6 +159,7 @@ public class PropertyClassChanges implements MoMLFilter {
                     MoMLParser.setModified(true);
                 }
                 _newClass = null;
+                _foundChange = false;
                 return temporaryNewClass;
             } else if (  _currentlyProcessingActorWithPropertyClassChanges
                     && container != null
@@ -233,6 +235,9 @@ public class PropertyClassChanges implements MoMLFilter {
     // The new class name for the property we are working on.
     private static String _newClass;
 
+    // Keep track of whether a change was found.
+    private static boolean _foundChange;
+
     // Cache of map from old property names to new class names for
     // the actor we are working on.
     private static HashMap _propertyMap;
@@ -288,5 +293,74 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.domains.sdf.lib.vq.VQDecode",
                     inputOutputTypedIOPortClassChanges);
+
+        // SDF actors don't record rates.
+        HashMap rateParameterChanges = new HashMap();
+        rateParameterChanges.put("tokenProductionRate",
+                null);
+        rateParameterChanges.put("tokenConsumptionRate",
+                null);
+        rateParameterChanges.put("tokenInitProduction",
+                null);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.Autocorrelation",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.ArrayToSequence",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.BitsToInt",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.Chop",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.CountTrues",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.DownSample",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.DoubleToMatrix",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.FIR",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.FFT",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.IFFT",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.IntToBits",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.LineCoder",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.MatrixToDouble",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.MatrixToSequence",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.Repeat",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.SampleDelay",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.SequenceToArray",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.SequenceToMatrix",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.UpSample",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.VariableFIR",
+                rateParameterChanges);
     }
 }
