@@ -170,6 +170,9 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
     puts "adjusted modelPath: $modelPath"
     puts "modelName: $modelName"
 
+    # speedComparison uses this
+    set targetPackage ptolemy.copernicus.shallow.cg
+
     # If this is deep code gen, then check that the model is a flat sdf model
     if { ${codeGenType} == "Deep" } {
 	set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
@@ -192,6 +195,10 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
 	}
 	puts "We can run Deep codegen on $modelName"
+
+	# speedComparison uses this
+	set targetPackage ptolemy.copernicus.java.cg
+
     }
 
     set command compile${codeGenType}Demo
@@ -201,7 +208,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
     # make -C is a GNU make extension that changes to a directory
 #    set results ""
     set command compile${codeGenType}Demo
-    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]
+    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER= $command]
     puts $results
 #    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 #	puts $results
@@ -215,7 +222,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	    SOURCECLASS=$modelPath $command]
     puts $results
 
-    return [speedComparison $realModelPath $modelName]
+    return [speedComparison $realModelPath $modelName $targetPackage]
 } 
 
 
