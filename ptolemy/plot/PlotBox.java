@@ -641,7 +641,7 @@ public class PlotBox extends Applet {
             //Color col = Color.decode(name);
 	    Color col = new Color(Integer.parseInt(name,16));
 	    return col;
-	} catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {}
 	// FIXME: This is a poor excuse for a list of colors and values.
 	// We should use a hash table here.
 	// Note that Color decode() wants the values to start with 0x.
@@ -988,9 +988,9 @@ public class PlotBox extends Applet {
 		   return;
 	       }
 	   } catch (IOException ioe) {
-		   _errorMsg = new String [2];
-		   _errorMsg[0] = "Failure opening URL: " + dataurl;
-		   _errorMsg[1] = ioe.getMessage();
+               _errorMsg = new String [2];
+               _errorMsg[0] = "Failure opening URL: " + dataurl;
+               _errorMsg[1] = ioe.getMessage();
 	       return;
 	   }
 	}
@@ -1142,31 +1142,22 @@ public class PlotBox extends Applet {
 
     /**
      * Put a mark corresponding to the specified dataset at the
-     * specified x and y position.  In this base class, a point is a
-     * filled circle 6 pixels across.  Note that marks greater than
+     * specified x and y position.   The mark is drawn in the
+     * current color.  In this base class, a point is a
+     * filled rectangle 6 pixels across.  Note that marks greater than
      * about 6 pixels in size will not look very good since they will
-     * overlap axis labels and may not fit well in the legend.  The
-     * <i>connected</i> argument is ignored, but in derived classes,
-     * it specifies whether the point should be connected by a line to
-     * previously drawn points.  The <i>clip</i> argument, if
-     * <code>true</code>, states that the point should not be drawn if
-     * it is out of range.  The return value indicates whether the
-     * point is drawn.
+     * overlap axis labels and may not fit well in the legend.   The
+     * <i>clip</i> argument, if <code>true</code>, states
+     * that the point should not be drawn if
+     * it is out of range.
      */
-    protected boolean _drawPoint(Graphics graphics,
-				 int dataset, int xpos, int ypos,
-				 boolean connected, boolean clip) {
+    protected void _drawPoint(Graphics graphics,
+				 int dataset, long xpos, long ypos,
+				 boolean clip) {
         boolean pointinside = ypos <= _lry && ypos >= _uly && 
 	    xpos <= _lrx && xpos >= _ulx;
-        if (!pointinside && clip) {return false;}
-        // Points are only distinguished up to 10 data sets.
-        dataset %= 10;
-        if (_usecolor) {
-            graphics.setColor(_colors[dataset]);
-        }
-        graphics.fillOval(xpos-1, ypos-1, 3, 3);
-        graphics.setColor(_foreground);
-        return true;
+        if (!pointinside && clip) {return;}
+        graphics.fillRect((int)xpos-6, (int)ypos-6, 6, 6);
     }
 
     /** Hook for child classes to do any file preprocessing
@@ -1312,6 +1303,11 @@ public class PlotBox extends Applet {
     // Whether to draw a background grid.
     protected boolean _grid = true;
     
+    // Color of the background, settable from HTML.
+    protected Color _background = null;
+    // Color of the foreground, settable from HTML.
+    protected Color _foreground = null;
+
     // Derived classes can increment these to make space around the plot.
     protected int _topPadding = 10;
     protected int _bottomPadding = 5;
@@ -1330,6 +1326,9 @@ public class PlotBox extends Applet {
     protected boolean _usecolor = true;
 
     // Default _colors, by data set.
+    // There are 11 colors so that combined with the
+    // 10 marks of the Plot class, we can distinguish 110
+    // distinct data sets.
     static protected Color[] _colors = {
         new Color(0xcd0000),   // red3
         new Color(0x4a708b),   // skyblue4
@@ -1341,6 +1340,7 @@ public class PlotBox extends Applet {
         new Color(0x53868b),   // cadetblue4
         new Color(0xd2691e),   // chocolate
         new Color(0x556b2f),   // darkolivegreen
+        new Color(0x999999)   // grey
     };
         
     //////////////////////////////////////////////////////////////////////////
@@ -1365,16 +1365,14 @@ public class PlotBox extends Applet {
             String legend = (String) v.nextElement();
             // NOTE: relies on _legendDatasets having the same num. of entries.
             int dataset = ((Integer) i.nextElement()).intValue();
-            // NOTE: 6 pixel width of point assumed.
-            if (!_drawPoint(graphics, dataset, urx-3, ypos-3, false, false)) {
-                // Point was not drawn, perhaps because there is no mark.
-                // Draw a colored rectangle.
-                if (_usecolor) {
-                    graphics.setColor(_colors[dataset]);
-                }
-                graphics.fillRect(urx-6, ypos-6, 6, 6);
-                graphics.setColor(_foreground);
+            if (_usecolor) {
+                // Points are only distinguished up to the number of colors.
+                int color = dataset % _colors.length;
+                graphics.setColor(_colors[color]);
             }
+            _drawPoint(graphics, dataset, urx-3, ypos-3, false);
+
+            graphics.setColor(_foreground);
             int width = lfm.stringWidth(legend);
             if (width > maxwidth) maxwidth = width;
             graphics.drawString(legend, urx - 15 - width, ypos);
@@ -1590,9 +1588,6 @@ public class PlotBox extends Applet {
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
     private String _dataurl = null;
-
-    private Color _background = null;
-    private Color _foreground = null;
 
     // Set to true if we are reading in pxgraph format binary data.
     private boolean _binary = false;
