@@ -453,10 +453,15 @@ public class PtolemyPackage implements Module {
 		// createNodes(pane, "TreePane", library);
 	    JTree designTree = new JDesignTree(library);
 	    JScrollPane scrollPane = new JScrollPane(designTree);
-	    pane.setMinimumSize(new Dimension(200, 200));
-	    pane.setPreferredSize(new Dimension(200, 200));
+	    scrollPane.setMinimumSize(new Dimension(200, 200));
+	    scrollPane.setPreferredSize(new Dimension(200, 200));
 	    pane.setLayout(new BorderLayout());
 	    pane.add(scrollPane, BorderLayout.CENTER);
+	    
+	    JSplitPane splitPane = frame.getSplitPane();
+	    splitPane.resetToPreferredSizes();
+	    splitPane.validate();
+	    splitPane.repaint();
 	} 
     }
 
