@@ -161,7 +161,11 @@ public final class SignalProcessing {
      *  then only the first <i>size</i> elements of <i>x</i> are used.
      *  If <i>size</i> is greater than the length of <i>x</i>,
      *  then the data is implicitly zero-filled (i.e. it is assumed that
-     *  missing data has value zero).
+     *  missing data has value zero).  If an inverse DFT is being computed,
+     *  then zero filling is done in the middle of the argument array
+     *  (which corresponds to high frequencies).  If there are an odd number
+     *  of elements in the argument array, then the middle element is
+     *  replicated on either side of the zero fill.
      *
      *  @param x The data to transform
      *  @param order The log (base 2) of the size of the FFT
@@ -181,11 +185,26 @@ public final class SignalProcessing {
         int size = 1 << order;
         Complex[] result = new Complex[size];
         // Copy the array, zero filling if necessary.
-        for (int i = 0; i < size; i++) {
-            if (i < x.length) {
-                result[i] = new Complex(x[i].real, x[i].imag);
-            } else {
-                result[i] = new Complex();
+        if (inverse) {
+            // For the inverse FFT, need to zero-fill in the middle
+            // (high frequencies).
+            for (int i = 0; i < size/2; i++) {
+                if (i < x.length/2) {
+                    result[i] = new Complex(x[i].real, x[i].imag);
+                    int k = x.length-i-1;
+                    result[size-i-1] = new Complex(x[k].real, x[k].imag);
+                } else {
+                    result[i] = new Complex();
+                    result[size-i-1] = new Complex();
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (i < x.length) {
+                    result[i] = new Complex(x[i].real, x[i].imag);
+                } else {
+                    result[i] = new Complex();
+                }
             }
         }
         _fft(result, order, inverse);
