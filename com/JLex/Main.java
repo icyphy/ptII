@@ -4483,7 +4483,7 @@ class CError
         "Unexpected end-of-file found.",
         "Undefined or badly-formed JLex directive.",
         "Internal JLex error.",
-        "Unintialized state name.",
+        "Uninitialized state name.",
         "Badly formed macro definition.",
         "Syntax error.",
         "Missing brace at start of lexical action.",
