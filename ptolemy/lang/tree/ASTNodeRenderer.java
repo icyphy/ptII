@@ -57,8 +57,8 @@ public class ASTNodeRenderer extends DefaultTreeCellRenderer {
      *  @returns A component to put into the JTree.
      */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
-             boolean selected, boolean expanded, boolean leaf,
-             int row, boolean hasFocus) {
+            boolean selected, boolean expanded, boolean leaf,
+            int row, boolean hasFocus) {
 	// FIXME: If nodes ever acquire a common class, fix this up.
         if (value instanceof List) {
             List list = (List)value;
