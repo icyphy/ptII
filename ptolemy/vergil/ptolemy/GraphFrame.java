@@ -448,8 +448,6 @@ public abstract class GraphFrame extends PtolemyTop
      */
     protected void _addMenus() {
 	super._addMenus();
-        // Enable the "New" item in the File menu.
-        _fileMenuItems[1].setEnabled(true);
 
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
@@ -468,12 +466,6 @@ public abstract class GraphFrame extends PtolemyTop
      *  The pane that is created.
      */
     protected abstract GraphPane _createGraphPane();
-
-    /** Open a new Ptolemy II model.
-     */
-    protected void _new() {
-        // FIXME: This should probably be handled in the base class.
-    }
 
     /** Write the model to the specified file.
      *  @param file The file to write to.
