@@ -119,7 +119,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.KernelRuntimeException;
 
 //////////////////////////////////////////////////////////////////////////

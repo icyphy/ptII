@@ -32,7 +32,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
 

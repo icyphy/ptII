@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.Workspace;
 
 // FIXME: replace this with per-class imports.

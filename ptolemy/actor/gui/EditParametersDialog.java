@@ -40,7 +40,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Frame;

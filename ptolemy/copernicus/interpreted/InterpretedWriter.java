@@ -34,7 +34,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 
 import soot.*;
 import soot.jimple.*;

@@ -286,7 +286,7 @@ public class StringUtilities {
      */
     public static String split(String longName) {
 	// In theory, this method should be in
-	// ptolemy.kernel.util.StringUtilities, but ptolemy.gui gets shipped
+	// ptolemy.util.StringUtilities, but ptolemy.gui gets shipped
 	// without StringUtilities, so we include it here
 
         if (longName == null) {

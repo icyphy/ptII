@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.Workspace;
 
 // Java imports.

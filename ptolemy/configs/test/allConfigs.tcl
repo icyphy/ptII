@@ -171,7 +171,7 @@ foreach i $configs {
 					Perhaps the field is a basic type?\n"
 				lappend results $msg
 			    } else {
-				set sanitizedName [java::call ptolemy.kernel.util.StringUtilities sanitizeName $dottedName]
+				set sanitizedName [java::call ptolemy.util.StringUtilities sanitizeName $dottedName]
 				if {"$sanitizedName" != "$field"} {
 				    set msg "\n\nIn '$className'\n\
 					    The getName() method returns\n \

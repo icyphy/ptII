@@ -38,7 +38,7 @@ import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.actor.gui.JNLPUtilities;
 
 import soot.*;

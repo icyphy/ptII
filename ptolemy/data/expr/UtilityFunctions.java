@@ -37,7 +37,7 @@ import ptolemy.data.StringToken;
 import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.data.*;
 
 import java.io.BufferedReader;
@@ -219,7 +219,7 @@ public class UtilityFunctions {
      *
      *  @param propertyName The name of property.
      *  @return A token containing the string value of the property.
-     *  @see ptolemy.kernel.util.StringUtilities(String)
+     *  @see ptolemy.util.StringUtilities(String)
      */
     public static StringToken property(String propertyName) {
         return new StringToken(StringUtilities.getProperty(propertyName));

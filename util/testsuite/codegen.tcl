@@ -203,7 +203,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	set modelName $model
     }
     # Get rid of any spaces in the name
-    set modelName [java::call ptolemy.kernel.util.StringUtilities \
+    set modelName [java::call ptolemy.util.StringUtilities \
 	    sanitizeName $modelName]
 
     #if {[string range $modelPath 0 2] == "../"} {
