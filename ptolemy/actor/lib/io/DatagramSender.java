@@ -171,7 +171,7 @@ public class DatagramSender extends TypedAtomicActor {
                     if (_debugging) _debug("Current socket port is "
                                        + _socket.getLocalPort());
 
-                    int portNum = 
+                    int portNum =
                         ((IntToken)(localPort.getToken())).intValue();
                     if (_debugging) _debug("Port number is " + portNum);
                     try {

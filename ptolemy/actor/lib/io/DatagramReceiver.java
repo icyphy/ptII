@@ -47,30 +47,30 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReceiver
 /**
-This actor creates a separate thread which stalls, awaiting reception of a 
-datagram packet.  That thread calls the director's fireAt (or eventually 
-fireAtCurrentTime) method each time it receives a packet, unless it has 
-to discard one to make room.  In that case, the new packet and 
-the packet(s) already queued within the actor may be reordered, but no 
-additional fireAt call is made because the number of packets awaiting 
+This actor creates a separate thread which stalls, awaiting reception of a
+datagram packet.  That thread calls the director's fireAt (or eventually
+fireAtCurrentTime) method each time it receives a packet, unless it has
+to discard one to make room.  In that case, the new packet and
+the packet(s) already queued within the actor may be reordered, but no
+additional fireAt call is made because the number of packets awaiting
 broadcast has not changed.
 <p>
 The fire() method assumes data is present to be broadcast.  When it copies
-the data from the packet buffer in preparation for broadcast, it 
+the data from the packet buffer in preparation for broadcast, it
 decrements the count of queued packets.
 <p>
-The part of the fire method that copies data from the packet buffer or 
+The part of the fire method that copies data from the packet buffer or
 parses it in place (if that's what the Ptolemy parser does) is
 synchronized so that it cannot execute concurrently with the thread's code
-for reordering the buffers and choosing whether and how to reorder them 
+for reordering the buffers and choosing whether and how to reorder them
 (since such choice may depend on the number of queued packets).
 
-There are two buffers for packet reception.  
+There are two buffers for packet reception.
 
-When fired, the actor broadcasts the packet's data but discards the 'from' 
+When fired, the actor broadcasts the packet's data but discards the 'from'
 address and port information
 
-This actor has a parameter 'port' for the local port number assigned to its 
+This actor has a parameter 'port' for the local port number assigned to its
 socket.
 
 Bash command netstat -an is very useful in seeing current port allocations!
@@ -111,8 +111,8 @@ public class DatagramReceiver extends TypedAtomicActor {
      */
     public Parameter overwrite;
 
-    /** Parameter directing whether to use the Ptolemy parser 
-     * to interpret the datagram contents or whether to copy 
+    /** Parameter directing whether to use the Ptolemy parser
+     * to interpret the datagram contents or whether to copy
      * the raw data to an output data type (or use 'serialize'?)
      */
     //public Parameter ...;
@@ -123,7 +123,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     /** React to the change of the given acttribute.
      *  If the parameter changed is <i>localPort</i> and the model is running
      *  (i.e. socket != null), then replace the
-     *  current socket with a socket on the new port number.  This 
+     *  current socket with a socket on the new port number.  This
      *  involves pausing the thread reading from the socket, creating a new
      *  socket and restarting the thread.  This is done even if the
      *  port number has not actually changed.
@@ -189,14 +189,14 @@ public class DatagramReceiver extends TypedAtomicActor {
         output.broadcast(_evalVar.getToken());
     }
 
-    /** Preinitialize this actor.  Create a new datagram socket and 
+    /** Preinitialize this actor.  Create a new datagram socket and
      *  initialize the thread that reads from the socket.  The thread
      *  will stay alive until the socket is closed.
      *  @exception IllegalActionException If the <i>localPort</i> parameter
      *  has a value of -1, or a socket could not be created.
      *  @exception NameDuplicationException Should not be thrown.
      */
-    public void preinitialize() throws IllegalActionException, 
+    public void preinitialize() throws IllegalActionException,
             NameDuplicationException {
         super.preinitialize();
 
@@ -228,7 +228,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             }
         }
         catch (SocketException ex) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "Failed to create a new socket:" + ex);
         }
 
@@ -241,7 +241,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     /** Wrapup execution of this actor.  Interrupt the thread that was
      *  created to read from the socket and close the socket.
-     *  @exception IllegalActionException If the thread or the socket 
+     *  @exception IllegalActionException If the thread or the socket
      *  was not created.
      */
     public void wrapup() throws IllegalActionException {
@@ -267,7 +267,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     // Variables used
     private DatagramPacket _receivePacket =
     new DatagramPacket(new byte[440],0,440);
-    private DatagramPacket _broadcastPacket = 
+    private DatagramPacket _broadcastPacket =
     new DatagramPacket(new byte[440],0,440);
     private int packetsAlreadyAwaitingFire = 0;
     private boolean _overwrite;
@@ -284,7 +284,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         /** Create a new thread to listen for packets at the socket
          * opened by the preinitialize method.
          */
-        public ListenerThread() {     
+        public ListenerThread() {
         }
 
         public void run() {
@@ -304,23 +304,23 @@ public class DatagramReceiver extends TypedAtomicActor {
 
                     // There are 2 datagram packet buffers.
 
-                    // If no data is already in the actor awaiting fire, 
-                    // then swap the buffers, increment the awaiting count, 
+                    // If no data is already in the actor awaiting fire,
+                    // then swap the buffers, increment the awaiting count,
                     // and call fireAt() ( or fireAtCurrentTime() ).
 
-                    // Else, data is already waiting.  I this case look 
-                    // to the overwrite parameter for guidance.  
+                    // Else, data is already waiting.  I this case look
+                    // to the overwrite parameter for guidance.
                     // If overwrite it true, then go ahead and swap anyway
                     // but do not increment the count or call fireAt()
                     // again.
 
-                    // If data is waiting AND overwrite is false, then 
+                    // If data is waiting AND overwrite is false, then
                     // don't prepare to call socket.receive again.
                     // Instead, exit the synchronized section, then block
                     // awaiting a call to fire and entry of its synched
                     // section.  When it exits its synched section, then
                     // enter a synched section here which swaps buffers,
-                    // increments the count, and calls fireAt().  Then 
+                    // increments the count, and calls fireAt().  Then
                     // go back around finally to the socket.receive call.
 
                     if(packetsAlreadyAwaitingFire == 0 || _overwrite) {
@@ -343,8 +343,8 @@ public class DatagramReceiver extends TypedAtomicActor {
 
                     // FIXME Need not be separate if, could be else of || above.
                     if(packetsAlreadyAwaitingFire != 0 && !_overwrite) {
-                        // FIXME I don't know how to await next exit by 
-                        // fire() from its synchronized section.  So I'll 
+                        // FIXME I don't know how to await next exit by
+                        // fire() from its synchronized section.  So I'll
                         // just overwrite the most recent packet by doing
                         // nothing and just calling socket.receive again.
                         if(_debugging) _debug("Overwriting latest packet.");

@@ -107,7 +107,7 @@ public class SerialComm extends TypedAtomicActor
         dataReceived.setOutput(true);
         dataReceived.setTypeEquals(new ArrayType(BaseType.INT));
 
-        serialPortName = new Parameter(this, "serialPortName", 
+        serialPortName = new Parameter(this, "serialPortName",
                 new StringToken("<UNKNOWN>"));
         serialPortName.setTypeEquals(BaseType.STRING);
 
@@ -129,14 +129,14 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The port that receives data to be sent via the serial port.  
-     *  This port has type integer array.  Each integer in the array is 
+    /** The port that receives data to be sent via the serial port.
+     *  This port has type integer array.  Each integer in the array is
      *  truncated to its least significant byte and output on the serial
      *  port.
      */
     public TypedIOPort dataToSend;
 
-    /** The port that sends data that has been received via the serial port. 
+    /** The port that sends data that has been received via the serial port.
      *  This port has type integer array.  All data available on the serial
      *  port is output in an integer array, one byte per integer.
      */
