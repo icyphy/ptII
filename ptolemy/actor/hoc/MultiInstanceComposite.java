@@ -177,8 +177,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         // Master only from here on
 
         if (getDirector() == null || getDirector().getContainer() != this) {
-            throw new IllegalActionException
-                (getFullName()+": must have a director, see javadoc.");
+            throw new IllegalActionException(this,
+                    getFullName() + "must have a director, see javadoc.");
         }
         int N = ((IntToken)nInstances.getToken()).intValue();
         // Make sure instance is correct (ignore any user errors :)
@@ -201,8 +201,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                     clone = (MultiInstanceComposite)
                         _cloneClone(container.workspace());
                 } catch (CloneNotSupportedException ex) {
-                    throw new IllegalActionException
-                        (this, "couldn't _cloneClone(): "+ex.toString());
+                    throw new IllegalActionException(this,
+                            "couldn't _cloneClone(): " + ex.toString());
                 }
                 try {
                     clone.setName(getName() + "_" + i);
@@ -218,10 +218,10 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             clone.getPort(port.getName());
                         List relations = port.linkedRelationList();
                         if (relations.size() > 1) {
-                            throw new IllegalActionException
-                                (getFullName() + ".preinitialize(): port " +
-                                        port.getName() + " can be linked to " +
-                                        "one relation only");
+                            throw new IllegalActionException(this,
+                                    getFullName() + ".preinitialize(): port "
+                                    + port.getName() + " can be linked to "
+                                    + "one relation only");
                         }
                         if (relations.size() < 1) {
                             continue;
@@ -242,10 +242,10 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                 otherPorts.next();
                             if (port.isOutput() &&
                                     !otherPort.isMultiport()) {
-                                throw new IllegalActionException
-                                    (getFullName()+ ".preinitialize(): "+
-                                            "output port "+port.getName()+
-                                            "must be connected to a multi-port");
+                                throw new IllegalActionException(this, 
+                                    getFullName() + ".preinitialize(): "
+                                    + "output port "+ port.getName()
+                                    + "must be connected to a multi-port");
                             }
                             if ((port.isInput() && otherPort.isOutput()) ||
                                     (port.isOutput() && otherPort.isInput())) {
@@ -275,8 +275,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                     clone._removeScopeExtendingAttribute();
 
                 } catch (NameDuplicationException ex) {
-                    throw new IllegalActionException
-                        (this, "couldn't clone/create:" + ex.toString());
+                    throw new IllegalActionException(this, ex,
+                            "couldn't clone/create");
                 }
                 // The clone is preinitialized only if it has just been
                 // created, otherwise the current director schedule will
@@ -376,7 +376,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         variable.getToken());
             }
         } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(getFullName()+ex.toString());
+            throw new IllegalActionException(this, ex,
+                    "Problem adding scope extending attribute");
         }
     }
 
@@ -397,8 +398,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             nInstances = new Parameter(this, "nInstances", new IntToken(1));
             instance = new Parameter(this, "instance", new IntToken(0));
         } catch (Exception ex) {
-            throw new InternalErrorException
-                (getFullName()+": "+ex.toString());
+            throw new InternalErrorException(this, ex,
+                    "Problem setting up instances or nInstances parameter");
         }
         _isMasterCopy = true;
         _attachText("_iconDescription", "<svg>\n" +
@@ -423,7 +424,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             if (scopeExtender != null)
                 scopeExtender.setContainer(null);
         } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(getFullName()+ex.toString());
+            throw new IllegalActionException(this, ex,
+                    "Problem removing scope extending attribute");
         }
     }
 
