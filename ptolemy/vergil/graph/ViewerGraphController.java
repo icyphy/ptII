@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
+import ptolemy.vergil.ptolemy.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
@@ -222,8 +223,9 @@ public class ViewerGraphController extends CompositeGraphController {
 	}	
 	
 	public NamedObj _getObjectFromFigure(Figure source) {
-	    // FIXME
-	    return null;
+	    PtolemyDocument d = 
+		(PtolemyDocument) VergilApplication.getInstance().getCurrentDocument();
+	    return d.getModel();
 	}
     };
 }
