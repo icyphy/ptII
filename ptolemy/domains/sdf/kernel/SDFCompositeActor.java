@@ -35,7 +35,6 @@ import ptolemy.actor.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
-import ptolemy.debug.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFCompositeActor
@@ -154,8 +153,8 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         Debug.println("getting connectedrate");
         int connectedrate = ((DataflowActor) connectedActor).
             getTokenProductionRate(connectedPort);
-
         Debug.println((new Integer(connectedrate)).toString());
+
         Debug.println("getting firing");
         int firing = scheduler.getFiringCount(connectedActor);
         Debug.println((new Integer(firing)).toString());
@@ -201,9 +200,11 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         Debug.println("getting connectedrate");
         int connectedrate = ((DataflowActor) connectedActor).
             getTokenConsumptionRate(connectedPort);
+        Debug.println((new Integer(connectedrate)).toString());
 
         Debug.println("getting firing");
         int firing = scheduler.getFiringCount(connectedActor);
+        Debug.println((new Integer(firing)).toString());
 
         Debug.println("return rate of:" + (new Integer(connectedrate*firing)).intValue());
         return connectedrate * firing;
