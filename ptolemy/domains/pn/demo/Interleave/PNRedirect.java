@@ -88,9 +88,9 @@ public class PNRedirect extends AtomicActor{
     }
 
     /** Sets the Initial Value parameter to the value specified
-     *  @param name This is the name of the parameter recognised by the actor
+     *  @param name This is the name of the parameter recognized by the actor
      *  @param valueString This is the value to be assigned to the parameter
-     *  @throws IllegalActionException If the parameter is not recognised
+     *  @throws IllegalActionException If the parameter is not recognized
      */
     public void setParam(String name, String valueString)
 	    throws IllegalActionException {
