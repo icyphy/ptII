@@ -233,44 +233,10 @@ public class Location extends SingletonAttribute
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
-        _expressionSet = false;
-        // If the location is unchanged, just return.
-        if (_location != null
-                && location != null
-                && _location.length == location.length) {
-            boolean match = true;
-            for (int i = 0; i < location.length; i++) {
-                if (_location[i] != location[i]) {
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
-                return;
-            }
-        }
-        
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        _setModifiedFromClass();
-
-        // Copying location array into member array _location
-        // Just referencing _location to location isn't enough, we need
-        // to maintain a local copy of the double array.
-        _location = new double[location.length];
-        for(int i = 0; i < location.length; i++) {
-            _location[i] = location[i];
-        }
-
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
-        if (_valueListeners != null) {
-            Iterator listeners = _valueListeners.iterator();
-            while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
-                listener.valueChanged(this);
-            }
+        boolean changed = _setLocation(location);
+        if (changed) {
+            // Make sure the new value is exported in MoML.  EAL 12/03.
+            _setModifiedFromClass();
         }
     }
 
@@ -323,10 +289,58 @@ public class Location extends SingletonAttribute
             }
         }
         // Set and notify.
-        setLocation(location);
+        _setLocation(location);
         // The above call sets _expressionSet to false, which is incorrect.
         // We know from above that it is true.
         _expressionSet = true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
+    /** Set the location without altering the modified status.
+     *  @param location The location.
+     *  @return True if the location was modified.
+     */
+    private boolean _setLocation(double[] location)
+            throws IllegalActionException {
+        _expressionSet = false;
+        // If the location is unchanged, return false.
+        if (_location != null
+                && location != null
+                && _location.length == location.length) {
+            boolean match = true;
+            for (int i = 0; i < location.length; i++) {
+                if (_location[i] != location[i]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return false;
+            }
+        }
+
+        // Copying location array into member array _location
+        // Just referencing _location to location isn't enough, we need
+        // to maintain a local copy of the double array.
+        _location = new double[location.length];
+        for(int i = 0; i < location.length; i++) {
+            _location[i] = location[i];
+        }
+
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
