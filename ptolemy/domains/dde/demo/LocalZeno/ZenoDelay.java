@@ -87,13 +87,13 @@ public class ZenoDelay extends ListenFBDelay {
     /** While the current time is less then 50.0, return the delay
      *  value as specified in the super class. After the current
      *  time has exceeded 50, return a delay value of 0.001 for
-     *  200 firings. After the 200 firings are complete, resume
+     *  1000 firings. After the 1000 firings are complete, resume
      *  returning the super class delay value.
      * @return The delay value depending upon whether time has
      *  exceeded 50.0.
      */
     public double getDelay() {
-	if( _cntr < 200 ) {
+	if( _cntr < 1000 ) {
 	    if( getCurrentTime() < 50.0 ) {
 		return super.getDelay();
 	    } else {
