@@ -45,7 +45,9 @@ DIRS = 	demo #test
 
 CLASSPATH =	..
 # Order matters here.
-JSRCS = \
+
+# Sources that compile under JDK1.0.2 and later
+JSRCS1_0 = \
 	CmdLineArgException.java \
 	Message.java \
 	PlotBox.java \
@@ -55,13 +57,17 @@ JSRCS = \
 	PlotLive.java \
 	PlotLiveDemo.java \
 	PlotPoint.java \
-	Pxgraph.java
+
+# Sources that require JDK1.1 and later.
+JSRCS1_1 = 	Pxgraph.java
+
+JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
 EXTRA_SRCS = $(JSRCS) pxgraph testpxgraph index.html
 
 MISC_FILES = demo doc #test 
 
-JCLASS = \
+JCLASS1_0 = \
 	CmdLineArgException.class \
 	Message.class \
 	PlotBox.class \
@@ -70,8 +76,11 @@ JCLASS = \
 	PlotDemo.class \
 	PlotLive.class \
 	PlotLiveDemo.class \
-	PlotPoint.class \
-	Pxgraph.class
+	PlotPoint.class
+
+JCLASS1_1 = Pxgraph.class
+
+JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
 all: $(EXTRA_SRCS) jclass 
 	chmod a+x pxgraph testpxgraph
