@@ -125,7 +125,7 @@ public class MoMLAttribute extends Attribute {
      *   This argument is ignored.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @see isPersistent()
+     *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
