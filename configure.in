@@ -529,11 +529,14 @@ fi
 #       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
 #--------------------------------------------------------------------
 #
-# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
 # GC_malloc() can be found either in the default compiler location
 # or in $PTII/lib.
-# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
-PTGC_LD_DIRECTIVE=
+# GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+GC_LD_DIRECTIVE=
+
+# GC_DIR is set to the directory where GC can be found
+GC_DIR=
 
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
@@ -561,8 +564,8 @@ else
        else
            if test -f "$PTII/lib/libgc.a"; then
 	      # FIXME: what about Windows?
-	      PTGC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
-	      AC_MSG_RESULT(use $PTGC_LD_DIRECTIVE)
+	      GC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
+	      AC_MSG_RESULT(use $GC_LD_DIRECTIVE)
            else 
 	      if test -d "$PTII/vendors/gc/gc6.1"; then
                   AC_MSG_WARN([Failed to find GC_malloc(), but 
@@ -585,9 +588,27 @@ else
 	      fi
            fi 
        fi
-
     fi
+   AC_MSG_CHECKING([for gc.h])
+   AC_ARG_WITH(gc_include_dir, [  --with-gc-include=DIR       use gc.h from DIR
+                          defaults to \$PTII/vendors/gc/gc/include],
+	GC_INCLUDE_DIR=$withval,
+	GC_INCLUDE_DIR=$PTII/vendors/gc/gc/include)
 
+   if test -f "$GC_INCLUDE_DIR/gc.h"; then
+       AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
+   else 
+       if test -f "$PTII/vendors/gc/gc6.1/include/gc.h"; then
+           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.1/include
+	   AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
+       else	   	   
+           AC_MSG_WARN([Failed to gc.h
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator])
+       fi
+   fi
 fi
 
 
@@ -1388,6 +1409,12 @@ else
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
+	    	    AC_PATH_PROG(CYGPATH, cygpath)		    	
+	  	    if test "${CYGPATH:-none}" != "none"; then
+			# If we are under Windows, run cygpath -w to fix up
+			# path
+			MATLAB=`"$CYGPATH" -w "$MATLAB"`
+		    fi	
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
@@ -1724,6 +1751,15 @@ AC_SUBST(COMMAPI_DIR)
 # If Commapi is present, then set to yes, otherwise set to no
 AC_SUBST(COMMAPI_PRESENT)
 
+# Directory that contains gc.h, used in copernicus/c
+AC_SUBST(GC_INCLUDE_DIR)
+
+# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+AC_SUBST(GC_LD_DIRECTIVE)
+
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
@@ -1796,12 +1832,6 @@ AC_SUBST(PTCC)
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
 #
 AC_SUBST(PTCOMM_DIR)
-
-# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
-# GC_malloc() can be found either in the default compiler location
-# or in $PTII/lib.
-# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
-AC_SUBST(PTGC_LD_DIRECTIVE)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
