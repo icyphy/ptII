@@ -218,7 +218,7 @@ public class RatingTaglet implements Taglet {
                             });
                 tagletMap.put(tagName, legacyTagletObject);
             } catch (Throwable throwable) {
-                throw new RuntimeException("Failed to find '"
+                throw new RuntimeException("Problem with the '"
                         + legacyTagletClassName + "' class: " + throwable);
 
             }
