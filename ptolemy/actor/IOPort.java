@@ -1,6 +1,6 @@
 /* A port supporting message passing.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -228,7 +228,7 @@ public class IOPort extends ComponentPort {
             message += " on opaque input ports.";
             throw new IllegalActionException(this, message);
         }
-
+        System.out.println("in create receivers in IOPort");
         int portWidth = getWidth();
         if (portWidth <= 0) return;
 
@@ -239,21 +239,24 @@ public class IOPort extends ComponentPort {
         if (_localReceiversTable == null) {
             _localReceiversTable = new Hashtable();
         }
-
+        
         Enumeration relations = linkedRelations();
         while (relations.hasMoreElements()) {
             IORelation relation = (IORelation) relations.nextElement();
             boolean insideLink = isInsideLinked(relation);
             int width = relation.getWidth();
 
-            // There is a list of receivers for this relation.
-            // Check to see that the width is valid, since it's
-            // possible that the width of the port has changed since
-            // this list was constructed.
-            Receiver[][] result =
-                (Receiver[][])_localReceiversTable.get(relation);
-            if (result.length != width){
+            Receiver[][] result = null;
+            if(_localReceiversTable.containsKey(relation) ) {
+                // There is a list of receivers for this relation.
+                // Check to see that the width is valid, since it's
+                // possible that the width of the port has changed since
+                // this list was constructed.
+                result = (Receiver[][])_localReceiversTable.get(relation);
+            }
+            if ((result == null) || (result.length != width)) {
                 changed = true;
+                result = new Receiver[width][1];
                 if (insideLink) {
                     // Inside links need to have receivers compatible
                     // with the local director.  We need to create those
@@ -268,6 +271,7 @@ public class IOPort extends ComponentPort {
                     // Create a new set of receivers compatible with the
                     // executive director.
                     for (int i = 0; i< width; i++) {
+                        System.out.println("crerateing a newreceiver");
                         // This throws an exception if there is no director.
                         result[i][0] = _newReceiver();
                     }
