@@ -52,9 +52,9 @@ public class TimedPrimeExample {
         Workspace ws = new Workspace("ws");
         CompositeActor myUniverse = new CompositeActor(ws);
         myUniverse.setName("Prime_example");
-	Manager exec = new Manager("exec");
+	Manager exec = new Manager(ws, "exec");
 	myUniverse.setManager(exec);
-	TimedPNDirector local = new TimedPNDirector("Local");
+	TimedPNDirector local = new TimedPNDirector(ws, "Local");
 	myUniverse.setDirector(local);
         TimedRamp ramp = new TimedRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
