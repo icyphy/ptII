@@ -339,8 +339,19 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @deprecated Use the method with a Type argument instead.
      */
     public void setTypeEquals(Class c) throws IllegalArgumentException {
-	BaseType type = BaseType.classToBaseType(c);
-	setTypeEquals(type);
+	try {
+	    Token token = (Token)c.newInstance();
+	    setTypeEquals(token.getType());
+
+	} catch (InstantiationException ie) {
+	    throw new IllegalArgumentException(
+		"TypedIOPort.setTypeEquals(Class): Cannot create a " +
+		"token from the specified Class object. " + ie.getMessage());
+	} catch (IllegalAccessException iae) {
+	    throw new IllegalArgumentException(
+		"TypedIOPort.setTypeEquals(Class): Cannot create a " +
+		"token from the specified Class object. " + iae.getMessage());
+	}
     }
 
     /** Set the type of this port. The type is represented by an instance

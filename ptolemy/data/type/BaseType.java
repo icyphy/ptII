@@ -52,25 +52,6 @@ public class BaseType implements Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the BaseType corresponding to the specified Class object.
-     *  @param c A Class.
-     *  @return A BaseType.
-     *  @exception IllegalArgumentException If the specified class does not
-     *   corresponds to a BaseType.
-     *  @deprecated
-     */
-    public static BaseType classToBaseType(Class c)
-	    throws IllegalArgumentException {
-
-	BaseType type = (BaseType)_classToBaseType.get(c);
-	if (type == null) {
-	    throw new IllegalArgumentException("BaseType.classToBaseType: " +
-		"the specified class does not corresponds to a BaseType.");
-	}
-
-	return type;
-    }
-
     /** Convert the specified token to a token having the type
      *  represented by this object.
      *  @param t A token.
@@ -82,14 +63,6 @@ public class BaseType implements Type {
 	    throws IllegalActionException {
 	return _convertOp.convert(t);
     }
-
-    /*  Return the class object for the token whose type is represented
-     *  by this object.
-     *  @return An instance of Class.
-     */
-//    public Class getTokenClass() {
-//	return _tokenClass;
-//    }
 
     /** Test if the argument token is compatible with this type. The method
      *  returns true if this type is NAT, since any type is a substitution
@@ -351,12 +324,6 @@ public class BaseType implements Type {
 	_tokenClass = c;
 	_name = name;
 	_convertOp = op;
-
-	if (_classToBaseType == null) {
-	    _classToBaseType = new Hashtable();
-	}
-
-	_classToBaseType.put(_tokenClass, this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -365,10 +332,6 @@ public class BaseType implements Type {
     private Class _tokenClass;
     private String _name;
     private ConvertOperator _convertOp;
-
-    // Hashtable mapping a java.lang.Class to a BaseType. This is purely
-    // for backward compatibility in Typeable.setTypeEquals(Class).
-    private static Hashtable _classToBaseType;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private interface                    ////
