@@ -57,7 +57,7 @@
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="lineColor">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
@@ -95,7 +95,7 @@ attributes with visual elements.</text></svg></configure>
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="lineColor">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="1024.0">
         </property>
@@ -103,6 +103,8 @@ attributes with visual elements.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 120.0">
         </property>
+    </property>
+    <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
     </property>
     <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
         <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 365.0">
