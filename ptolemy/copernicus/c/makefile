@@ -54,7 +54,8 @@ JSRCS = \
     CSwitch.java \
     HeaderFileGenerator.java \
     JavaToC.java \
-	Main.java
+	Main.java \
+    MethodListGenerator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
