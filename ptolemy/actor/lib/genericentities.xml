@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
+<model name="modulation" class="ptolemy.actor.TypedCompositeActor">
+  <doc>
+	Generic domain polymorphic actors
+  </doc>
+
+  <!-- Define the actors -->
+  <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
+    <rendition class="ptolemy.schematic.util.EditorIcon">
+<!--    	<configure src="generic.transformer"/>-->
+    </rendition>
+  </entity>
+  
+  <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+    <rendition class="ptolemy.schematic.util.EditorIcon">
+  <!--  	<configure src="generic.sink"/> -->
+    </rendition>
+  </entity>
+
+</model>
