@@ -685,7 +685,7 @@ else
 fi
 
 if test -z "$PTCALTROP_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop/"
 else
    # Note that jasminclasses.jar in soot also includes java_cup
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -723,7 +723,7 @@ else
 	CHIC_DIR=$PTII/lib)
 
     if test -f "$CHIC_DIR/chic.jar"; then
-	AC_MSG_RESULT([$CHIC_DIR])
+	AC_MSG_RESULT(ok)
 	# We found chic
 	PTCHIC_DIR=chic
     else  
@@ -734,15 +734,15 @@ else
     If it is not present, you will not be able to use the Chic facilities
     or run the demonstrations in ptolemy/chic.])
 	# Note that we don't substitute in the ${PTII} here
-	CHIC_DIR='${PTII}/lib/'
+	CHIC_DIR='${PTII}/lib'
     fi
 fi
 
 if test -z "$PTCHIC_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
+	<classpathentry kind=\"lib\" path=\"$CHIC_DIR/chic.jar\"/> "
 fi 
 
 #--------------------------------------------------------------------
@@ -777,7 +777,7 @@ else
 	COMMAPI_DIR=$PTII/vendors/sun/commapi)
 
     if test -f "$COMMAPI_DIR/comm.jar"; then
-	AC_MSG_RESULT([$COMMAPI_DIR])
+	AC_MSG_RESULT([ok])
 	# Subdirectories that contains Java Communications API specific code
 	PTLEGO_DIR=lego
 	PTCOMM_DIR=comm
@@ -807,7 +807,7 @@ else
     esac
     if test $PTCYGWIN = "yes"; then
        AC_MSG_CHECKING([for win32com.dll ])
-       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
+       if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
            AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
        else   
            AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
@@ -2148,7 +2148,7 @@ else
 fi
 
 if test -z "$PTPSDF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$PSDF_DIR/mapss.jar\"/> "
