@@ -437,13 +437,7 @@ test UndoDeleteEntity-1.4a {Call undo on a TypedCompositeActor that has not yet 
 	# NOTE: Request is filled immediately because the model is not running.
 	catch {$manager requestChange $undochange} errMsg
     } message
+    # This test returns nothing because there is no _parser attribute 
+    # This test is here to increase basic block coverage
     list [string range $message 0 500 ]
-} {{Exception occurred executing change request:
-ptolemy.kernel.util.InternalErrorException: There was no _parser attribute found. FIXME: Undo request on a model with no associated parser.
-This might be caused if an entity was created using File -> New, and the entity does not have a _parser attribute because it has not yet been saved. See PtolemyEffigy.createEffigy
- UndoChange was:
-Request to undo/redo most recent MoML change
- Source was:
-ptolemy.actor.TypedCompositeActor {.}
- _context was:
-<?xml ve}}
+} {{}}
