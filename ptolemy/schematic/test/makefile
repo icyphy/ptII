@@ -50,7 +50,12 @@ JSIMPLE_TESTS = \
 	Icon.tcl \
 	IconLibrary.tcl \
 	PTMLParser.tcl \
+	Schematic.tcl \
 	SchematicElement.tcl \
+	SchematicEntity.tcl \
+	SchematicParameter.tcl \
+	SchematicPort.tcl \
+	SchematicRelation.tcl \
 	XMLElement.tcl
 
 
