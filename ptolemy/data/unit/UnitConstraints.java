@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
 
@@ -179,7 +179,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     /**
-     * @return
+     * @return The constraints.
      */
     public Vector getConstraints() {
         return _constraints;
@@ -187,8 +187,9 @@ public class UnitConstraints implements UnitPresentation {
 
     /**
      * @param ce
-     * @return
+     * @return The constraints on the argument
      */
+    // TODO: Move this method to ComponentEntity.
     public Vector getConstraints(ComponentEntity ce) {
         List unitsAttrs =
             ce.attributeList(ptolemy.data.unit.UnitAttribute.class);
@@ -202,7 +203,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     /**
-     * @return
+     * @return The number of constraints.
      */
     public int getNumConstraints() {
         return _constraints.size();
@@ -210,7 +211,7 @@ public class UnitConstraints implements UnitPresentation {
 
     /**
      * @param port
-     * @return
+     * @return The Unit expression on the port.
      */
     public UnitExpr getUnitExpr(IOPort port) {
         UnitAttribute ua = (UnitAttribute) (port.getAttribute("_units"));
@@ -222,7 +223,7 @@ public class UnitConstraints implements UnitPresentation {
 
     /**
      * @param modelBindings
-     * @return
+     * @return A human readable form of the constraints.
      */
     public String humanReadableForm(Bindings modelBindings) {
         StringBuffer retv = new StringBuffer("Constraints\n");

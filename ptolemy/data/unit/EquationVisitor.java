@@ -23,8 +23,8 @@
 
                                    PT_COPYRIGHT_VERSION_3
                                    COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 
 package ptolemy.data.unit;
@@ -58,7 +58,7 @@ public abstract class EquationVisitor {
     /** Visit a UnitEquation by visiting the left and right sides of the
      * equation.
      * @param uEquation The UnitEquation to visit.
-     * @return
+     * @return Null, can be overriden in a concrete visitor.
      * @exception IllegalActionException Not thrown in this base class
      */
     protected Object _visitUnitEquation(UnitEquation uEquation)
@@ -70,7 +70,7 @@ public abstract class EquationVisitor {
 
     /** Visit a UnitExpr by visiting the UnitRerms.
      * @param unitExpr The UnitExpr to visit.
-     * @return
+     * @return Null, can be overriden in a concrete visitor.
      * @exception IllegalActionException Not thrown in this base class
      */
     protected Object _visitUnitExpr(UnitExpr unitExpr)
@@ -87,7 +87,7 @@ public abstract class EquationVisitor {
     /** Visit a UnitTerm by visiting the UnitExpr if there is one. This method
      * will almost certainly be overridden in a subclass.
      * @param uTerm The UnitTerm to visit.
-     * @return
+     * @return Null, can be overriden in a concrete visitor.
      * @exception IllegalActionException Not thrown in this base class
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)

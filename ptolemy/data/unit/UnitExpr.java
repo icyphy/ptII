@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
 
@@ -68,8 +68,8 @@ public class UnitExpr {
         return retv;
     }
 
-    /**
-     * @return
+    /** Create a shallow copy of this UnitExpr.
+     * @return The new UnitExpr.
      */
     public UnitExpr copy() {
         UnitExpr retv = new UnitExpr();

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
 
@@ -125,7 +125,7 @@ public class Unit implements UnitPresentation {
     }
 
     /** Divide this Unit by the argument.
-     * @param The divisor unit.
+     * @param divisor The divisor unit.
      * @return This Unit divided by the argument.
      */
     public Unit divideBy(Unit divisor) {
@@ -158,21 +158,21 @@ public class Unit implements UnitPresentation {
     }
 
     /**
-     * @return
+     * @return The primary name.
      */
     public String getName() {
         return (String) (_names.elementAt(0));
     }
 
     /**
-     * @return
+     * @return The names.
      */
     public Vector getNames() {
         return _names;
     }
 
     /**
-     * @return
+     * @return The cancatenation of the names.
      */
     public String getNamesString() {
         String retv = null;
@@ -205,8 +205,8 @@ public class Unit implements UnitPresentation {
      * @param otherUnit
      * @return True if the Unit has the same type as the argument.
      */
-    public boolean hasSameType(Unit other) {
-        int otherType[] = other.getType();
+    public boolean hasSameType(Unit otherUnit) {
+        int otherType[] = otherUnit.getType();
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             if (_type[i] != otherType[i]) {
                 return false;

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
 
 */
 

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 
 package ptolemy.data.unit;
@@ -64,10 +64,10 @@ public class UnitEquation implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Return true if the equations are all satisfied.
      * @param equations
      * @param bindings
-     * @return
+     * @return True if the equations are all satisfied.
      */
     public static boolean areSatisfied(Vector equations, Bindings bindings) {
         for (int i = 0; i < equations.size(); i++) {
@@ -124,8 +124,8 @@ public class UnitEquation implements UnitPresentation {
         return _lhs.commonDesc() + _operator + _rhs.commonDesc();
     }
 
-    /**
-     * @return
+    /** Make a shallow copy of this Unit.
+     * @return A new Unit.
      */
     public UnitEquation copy() {
         UnitEquation uC = new UnitEquation();
@@ -137,7 +137,7 @@ public class UnitEquation implements UnitPresentation {
 
     /**
      * @param bindings
-     * @return
+     * @return The evaluated expression.
      */
     public String getEvaledExpression(Bindings bindings) {
         return _lhs.getEvaledExpression(bindings)
@@ -145,29 +145,29 @@ public class UnitEquation implements UnitPresentation {
             + _rhs.getEvaledExpression(bindings);
     }
 
-    /**
-     * @return
+    /** Get the left hand side.
+     * @return The left hand side.
      */
     public UnitExpr getLhs() {
         return _lhs;
     }
 
     /**
-     * @return
+     * @return The operator.
      */
     public String getOperator() {
         return _operator;
     }
 
     /**
-     * @return
+     * @return The right hand side.
      */
     public UnitExpr getRhs() {
         return _rhs;
     }
 
     /**
-     * @return
+     * @return The source of this equation.
      */
     public NamedObj getSource() {
         return _source;
@@ -175,7 +175,7 @@ public class UnitEquation implements UnitPresentation {
 
     /**
      * @param modelBindings
-     * @return
+     * @return A human readable form.
      */
     public String humanReadableForm(Bindings modelBindings) {
         String retv =
@@ -183,9 +183,9 @@ public class UnitEquation implements UnitPresentation {
         return retv;
     }
 
-    /**
+    /** Return true if this equation is satisfied.
      * @param bindings
-     * @return
+     * @return True if this equation is satisfied.
      */
     public boolean isSatisfied(Bindings bindings) {
         Boolean retv = null;

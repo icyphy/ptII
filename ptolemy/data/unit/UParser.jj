@@ -35,8 +35,8 @@ PARSER_BEGIN(UParser)
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 
 package ptolemy.data.unit;
@@ -52,7 +52,7 @@ This file implements a Unit parser for Ptolemy II using the
 JavaCC parser generator.
 
 @author Rowland R Johnson
-@version $Id: UParser.jj,v 1.1 2004-03-19 02:42:51 rowland Exp $
+@version $Id: UParser.jj,v 1.2 2004-03-19 18:29:54 rowland Exp $
 @since Ptolemy II 3.1
 */
 
@@ -63,11 +63,15 @@ public class UParser {
     public UParser() {
         this(new StringReader(""));
     }
-   
-    public UnitExpr parseUnitExpr(String stringIn)
+
+    /** Parse a unit expression.
+     * @param expression
+     * @exception ParseException If parsing error is encountered.
+     */
+    public UnitExpr parseUnitExpr(String expression)
 	throws ParseException {
 
-        Reader reader = new StringReader(stringIn);
+        Reader reader = new StringReader(expression);
         this.ReInit(reader);
 	// Parse the expression to obtain the parse tree
 	UnitExpr unitExpr = uExpr();
@@ -75,14 +79,14 @@ public class UParser {
     }
 
 
-    /**
+    /** Parse a set of equations separated by semicolons.
      * @param expression
-     * @param equations
+     * @exception ParseException If parsing error is encountered.
      */
-    public Vector parseEquations(String stringIn)
+    public Vector parseEquations(String expression)
 	throws ParseException {
 
-	Reader reader = new StringReader(stringIn);
+	Reader reader = new StringReader(expression);
 	this.ReInit(reader);
 	// Parse the expression to obtain the parse tree
 	Vector _equations = Equations();

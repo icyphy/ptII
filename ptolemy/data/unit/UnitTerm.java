@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
 
@@ -84,7 +84,7 @@ public class UnitTerm implements UnitPresentation {
 
     /** Make a shallow copy of this UnitTerm. That is, the underlying Unit or
      *  UnitExpr is not copied.
-     * @return Copy of this UnitTerm
+     * @return The copy of this UnitTerm
      */
     public UnitTerm copy() {
         UnitTerm retv = new UnitTerm();
@@ -120,7 +120,7 @@ public class UnitTerm implements UnitPresentation {
 
     /**
      * @param bindings
-     * @return
+     * @return The evaled expression.
      */
     public String getEvaledExpression(Bindings bindings) {
         if (isUnitExpr()) {
@@ -130,21 +130,32 @@ public class UnitTerm implements UnitPresentation {
             if (unit != null) {
                 return unit.toString();
             }
+        } else if (isUnit()) {
+            if (_unit != null) {
+                return _unit.toString();
+            }
         }
         return "null";
     }
 
     /**
-     * @return
+     * @return The exponent.
      */
     public int getExponent() {
         return _exponent;
     }
 
+    /**
+     * @return The type.
+     */
     public int getType() {
         return _type;
     }
 
+    /**
+     * @return The Unit.
+     * @exception IllegalActionException If this is not a Unit.
+     */
     public Unit getUnit() throws IllegalActionException {
         if (!isUnit()) {
             throw new IllegalActionException(this +" is not a Unit");
@@ -167,7 +178,7 @@ public class UnitTerm implements UnitPresentation {
     }
 
     /** Invert this UnitTerm.
-     * @return The invers of this UnitTerm.
+     * @return The inverse of this UnitTerm.
      */
     public UnitTerm invert() {
         UnitTerm retv = copy();
@@ -201,7 +212,7 @@ public class UnitTerm implements UnitPresentation {
 
     /**
      * @param multiplicand
-     * @return
+     * @return The product of this Unit and the argument.
      * @exception IllegalActionException If either this UnitTerm or the
      * multiplicand is not a Unit.
      */
@@ -216,7 +227,7 @@ public class UnitTerm implements UnitPresentation {
     }
 
     /**
-     * @return
+     * @return The reduced Unit.
      */
     public UnitTerm reduce() {
         if (_exponent != 1 && isUnit()) {
@@ -236,21 +247,21 @@ public class UnitTerm implements UnitPresentation {
     }
 
     /**
-     * @param exponent
+     * @param exponent The exponent.
      */
     public void setExponent(int exponent) {
         _exponent = exponent;
     }
 
     /**
-     * @param t
+     * @param type The Unit type.
      */
-    public void setType(int t) {
-        _type = t;
+    public void setType(int type) {
+        _type = type;
     }
 
     /**
-     * @param unit
+     * @param unit The Unit.
      */
     public void setUnit(Unit unit) {
         _type = UNIT;
@@ -258,7 +269,7 @@ public class UnitTerm implements UnitPresentation {
     }
 
     /**
-     * @param expr
+     * @param expr The Unit Expression.
      */
     public void setUnitExpr(UnitExpr expr) {
         _type = UNITEXPR;
@@ -305,7 +316,7 @@ public class UnitTerm implements UnitPresentation {
 
     /**
      * @param visitor
-     * @return
+     * @return The result of visiting the UnitTerm.
      */
     public Object visit(EquationVisitor visitor)
         throws IllegalActionException {

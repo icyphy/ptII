@@ -24,8 +24,8 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 
 package ptolemy.data.unit;
@@ -42,6 +42,7 @@ JavaCC parser generator.
 
 @author Rowland R Johnson
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class UParser implements UParserConstants {
@@ -52,10 +53,14 @@ public class UParser implements UParserConstants {
         this(new StringReader(""));
     }
 
-    public UnitExpr parseUnitExpr(String stringIn)
+    /** Parse a unit expression.
+     * @param expression
+     * @exception ParseException If parsing error is encountered.
+     */
+    public UnitExpr parseUnitExpr(String expression)
         throws ParseException {
 
-        Reader reader = new StringReader(stringIn);
+        Reader reader = new StringReader(expression);
         this.ReInit(reader);
         // Parse the expression to obtain the parse tree
         UnitExpr unitExpr = uExpr();
@@ -63,14 +68,14 @@ public class UParser implements UParserConstants {
     }
 
 
-    /**
+    /** Parse a set of equations separated by semicolons.
      * @param expression
-     * @param equations
+     * @exception ParseException If parsing error is encountered.
      */
-    public Vector parseEquations(String stringIn)
+    public Vector parseEquations(String expression)
         throws ParseException {
 
-        Reader reader = new StringReader(stringIn);
+        Reader reader = new StringReader(expression);
         this.ReInit(reader);
         // Parse the expression to obtain the parse tree
         Vector _equations = Equations();
@@ -377,31 +382,6 @@ String tidied, x;
     finally { jj_save(1, xla); }
   }
 
-  final private boolean jj_3R_9() {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_6() {
-    if (jj_3R_7()) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_13() {
-    if (jj_scan_token(INTEGER)) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_3() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(17)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(19)) return true;
-    }
-    return false;
-  }
-
   final private boolean jj_3R_12() {
     if (jj_scan_token(DOUBLE)) return true;
     return false;
@@ -422,15 +402,15 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3_2() {
-    if (jj_scan_token(SEMICOLON)) return true;
-    if (jj_3R_4()) return true;
-    return false;
-  }
-
   final private boolean jj_3_1() {
     if (jj_3R_3()) return true;
     if (jj_scan_token(POWER)) return true;
+    return false;
+  }
+
+  final private boolean jj_3_2() {
+    if (jj_scan_token(SEMICOLON)) return true;
+    if (jj_3R_4()) return true;
     return false;
   }
 
@@ -462,6 +442,31 @@ String tidied, x;
 
   final private boolean jj_3R_8() {
     if (jj_3R_3()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_9() {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_6() {
+    if (jj_3R_7()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_13() {
+    if (jj_scan_token(INTEGER)) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_3() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(17)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(19)) return true;
+    }
     return false;
   }
 

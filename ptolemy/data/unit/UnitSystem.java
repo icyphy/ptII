@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
+@Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.data.unit;
