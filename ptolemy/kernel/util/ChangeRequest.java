@@ -85,9 +85,11 @@ public abstract class ChangeRequest {
      */
     public synchronized void execute() {
         _exception = null;
+        boolean needToReport = false;
         try {
             _execute();
         } catch (Exception ex) {
+            needToReport = true;
             _exception = ex;
         }
         if (_listeners != null) {
@@ -97,8 +99,18 @@ public abstract class ChangeRequest {
                 if (_exception == null) {
                     listener.changeExecuted(this);
                 } else {
+                    needToReport = false;
                     listener.changeFailed(this, _exception);
                 }
+            }
+        }
+        if (needToReport) {
+            // There are no listeners, so if there was an exception,
+            // we print it to standard error.
+            if (_exception != null) {
+                System.err.println(
+                        "Exception occurred executing change request:");
+                _exception.printStackTrace();
             }
         }
         _pending = false;
