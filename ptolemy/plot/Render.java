@@ -93,16 +93,25 @@ public class Render extends PlotBox {
     /** Create a sample image.
      */
     public synchronized void samplePlot() {
-        // Create a sample plot.
-        clear(true);
-        setGrid(false);
+        // This needs to be done in the event thread.
+        Runnable sample = new Runnable() {
+            public void run() {
+                synchronized (Render.this) {
 
-        setTitle("Sample image");
-        setXRange(-1.0, 1.0);
-        setYRange(-1.0, 1.0);
+                    // Create a sample plot.
+                    clear(true);
+                    setGrid(false);
 
-        // FIXME fill in.
+                    setTitle("Sample image");
+                    setXRange(-1.0, 1.0);
+                    setYRange(-1.0, 1.0);
+                    
+                    // FIXME fill in.
 
+                }
+            }
+        };
+        _deferIfNecessary(sample);
         repaint();
     }
 

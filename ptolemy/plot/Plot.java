@@ -46,7 +46,6 @@ package ptolemy.plot;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.EventQueue;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -449,59 +448,76 @@ public class Plot extends PlotBox {
         _sawfirstdataset = false;
     }
 
-    /** Create a sample plot.
+    /** Create a sample plot.  This is not actually done immediately
+     *  unless the calling thread is the event dispatch thread.
+     *  Instead, it is deferred to the event dispatch thread.
+     *  It is important that the calling thread not hold a synchronize
+     *  lock on the Plot object, or deadlock will result (unless the
+     *  calling thread is the event dispatch thread).
      */
     public synchronized void samplePlot() {
-        // Create a sample plot.
-        clear(true);
-
-        setTitle("Sample plot");
-        setYRange(-4, 4);
-        setXRange(0, 100);
-        setXLabel("time");
-        setYLabel("value");
-        addYTick("-PI", -Math.PI);
-        addYTick("-PI/2", -Math.PI/2);
-        addYTick("0", 0);
-        addYTick("PI/2", Math.PI/2);
-        addYTick("PI", Math.PI);
-        setMarksStyle("none");
-        setImpulses(true);
-
-        boolean first = true;
-        for (int i = 0; i <= 100; i++) {
-            double xvalue = (double)i;
-
-            // NOTE: jdk 1.3beta has a bug exhibited here.
-            // The value of the second argument in the calls to addPoint()
-            // below is corrupted the second
-            // time that this method is called.  The print statement below
-            // shows that the value is correct before the call.
-            // System.out.println("x value: " + xvalue);
-
-            addPoint(0, xvalue,
-                    5 * Math.cos(Math.PI * i/20), !first);
-            addPoint(1, xvalue,
-                    4.5 * Math.cos(Math.PI * i/25), !first);
-            addPoint(2, xvalue,
-                    4 * Math.cos(Math.PI * i/30), !first);
-            addPoint(3, xvalue,
-                    3.5* Math.cos(Math.PI * i/35), !first);
-            addPoint(4, xvalue,
-                    3 * Math.cos(Math.PI * i/40), !first);
-            addPoint(5, xvalue,
-                    2.5 * Math.cos(Math.PI * i/45), !first);
-            addPoint(6, xvalue,
-                    2 * Math.cos(Math.PI * i/50), !first);
-            addPoint(7, xvalue,
-                    1.5 * Math.cos(Math.PI * i/55), !first);
-            addPoint(8, xvalue,
-                    1 * Math.cos(Math.PI * i/60), !first);
-            addPoint(9, xvalue,
-                    0.5 * Math.cos(Math.PI * i/65), !first);
-            first = false;
-        }
-        repaint();
+        // This needs to be done in the event thread.
+        Runnable sample = new Runnable() {
+            public void run() {
+                synchronized (Plot.this) {
+                    // Create a sample plot.
+                    clear(true);
+                    
+                    setTitle("Sample plot");
+                    setYRange(-4, 4);
+                    setXRange(0, 100);
+                    setXLabel("time");
+                    setYLabel("value");
+                    addYTick("-PI", -Math.PI);
+                    addYTick("-PI/2", -Math.PI/2);
+                    addYTick("0", 0);
+                    addYTick("PI/2", Math.PI/2);
+                    addYTick("PI", Math.PI);
+                    setMarksStyle("none");
+                    setImpulses(true);
+                    
+                    boolean first = true;
+                    for (int i = 0; i <= 100; i++) {
+                        double xvalue = (double)i;
+                        
+                        // NOTE: jdk 1.3beta has a bug exhibited here.
+                        // The value of the second argument in the calls
+                        // to addPoint() below is corrupted the second
+                        // time that this method is called.  The print
+                        // statement below shows that the value is
+                        // correct before the call.
+                        // System.out.println("x value: " + xvalue);
+                        // For some bizarre reason, this problem goes
+                        // away when this code is executed in the event
+                        // dispatch thread.
+                        
+                        addPoint(0, xvalue,
+                                5 * Math.cos(Math.PI * i/20), !first);
+                        addPoint(1, xvalue,
+                                4.5 * Math.cos(Math.PI * i/25), !first);
+                        addPoint(2, xvalue,
+                                4 * Math.cos(Math.PI * i/30), !first);
+                        addPoint(3, xvalue,
+                                3.5* Math.cos(Math.PI * i/35), !first);
+                        addPoint(4, xvalue,
+                                3 * Math.cos(Math.PI * i/40), !first);
+                        addPoint(5, xvalue,
+                                2.5 * Math.cos(Math.PI * i/45), !first);
+                        addPoint(6, xvalue,
+                                2 * Math.cos(Math.PI * i/50), !first);
+                        addPoint(7, xvalue,
+                                1.5 * Math.cos(Math.PI * i/55), !first);
+                        addPoint(8, xvalue,
+                                1 * Math.cos(Math.PI * i/60), !first);
+                        addPoint(9, xvalue,
+                                0.5 * Math.cos(Math.PI * i/65), !first);
+                        first = false;
+                    } // for
+                } // synchronized
+                repaint();
+            } // run method
+        }; // Runnable class
+        _deferIfNecessary(sample);
     }
 
     /** Turn bars on or off (for bar charts).  Note that this is a global
@@ -556,7 +572,7 @@ public class Plot extends PlotBox {
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
      */
-    public void setImpulses(boolean on) {
+    public synchronized void setImpulses(boolean on) {
         _impulses = on;
     }
 
@@ -1557,7 +1573,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called by _executeDeferredActions().
+     * be called via _deferIfNecessary().
      */
     private void _addPoint(
             int dataset, double x, double y, double yLowEB, double yHighEB,
@@ -1616,14 +1632,14 @@ public class Plot extends PlotBox {
         pt.originalx = x;
 
         // Modify x if wrapping.
-        if(_wrap && _xRangeGiven) {
-            double width = _xhighgiven - _xlowgiven;
-            if (x < _xlowgiven) {
-                x += width*Math.floor(1.0 + (_xlowgiven-x)/width);
-            } else if (x > _xhighgiven) {
-                x -= width*Math.floor(1.0 + (x-_xhighgiven)/width);
+        if(_wrap) {
+            double width = _wrapHigh - _wrapLow;
+            if (x < _wrapLow) {
+                x += width*Math.floor(1.0 + (_wrapLow-x)/width);
+            } else if (x > _wrapHigh) {
+                x -= width*Math.floor(1.0 + (x-_wrapHigh)/width);
                 // NOTE: Could quantization errors be a problem here?
-                if (x == _xlowgiven) x = _xhighgiven;
+                if (x == _wrapLow) x = _wrapHigh;
             }
         }
 
@@ -1650,7 +1666,7 @@ public class Plot extends PlotBox {
         // If this is the first point in the dataset, clear the connected bit.
         if (size == 0) {
             pt.connected = false;
-        } else if(_wrap && _xRangeGiven) {
+        } else if(_wrap) {
             // Do not connect points if wrapping...
             PlotPoint old = (PlotPoint)(pts.elementAt(size-1));
             if (old.x > x) pt.connected = false;
@@ -1720,9 +1736,9 @@ public class Plot extends PlotBox {
             _drawPlotPoint(graphics, dataset, pts.size() - 1);
         }
 
-        if(_wrap && _xRangeGiven && x == _xhighgiven) {
+        if(_wrap && x == _wrapHigh) {
             // Plot a second point at the low end of the range.
-            _addPoint(dataset, _xlowgiven, y, yLowEB, yHighEB, false, errorBar);
+            _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
         }
     }
 
@@ -1733,7 +1749,7 @@ public class Plot extends PlotBox {
      * 
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called by _executeDeferredActions().
+     * be called via _deferIfNecessary().
      */
     private void _clear(boolean format) {
         super.clear(format);
@@ -1769,7 +1785,7 @@ public class Plot extends PlotBox {
      * 
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called by _executeDeferredActions().
+     * be called via _deferIfNecessary().
      */
     private void _clear(int dataset) {
         _checkDatasetIndex(dataset);
@@ -1780,51 +1796,6 @@ public class Plot extends PlotBox {
         // this with JDK1.1 for use in JDK1.1 browsers
         _points.setElementAt(new Vector(), dataset);
         repaint();
-    }
-
-    /* If this method is called in the event thread, then simply
-     * execute the specified action.  Otherwise,
-     * if there are already deferred actions, then add the specified
-     * one to the list.  Otherwise, create a list of deferred actions,
-     * if necessary, and request that the list be processed in the
-     * event dispatch thread.
-     *
-     * Note that it does not work nearly as well to simply schedule
-     * the action yourself on the event thread because if there are a
-     * large number of actions, then the event thread will not be able
-     * to keep up.  By grouping these actions, we avoid this problem.
-     *
-     * This method is not synchronized, so the caller should be.
-     */
-    private void _deferIfNecessary(Runnable action) {
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request or add to a pending request.
-        if(EventQueue.isDispatchThread()) {
-            action.run();
-        } else {
-            if (!_actionsDeferred) {
-                if (_deferredActions == null) {
-                    _deferredActions = new LinkedList();
-                }
-                Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here risks causing
-                    // deadlock.  Don't do it!
-                    SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-            }
-            // Add the specified action to the list of actions to perform.
-            _deferredActions.add(action);
-            _actionsDeferred = true;
-        }
     }
 
     /* Draw the specified point and associated lines, if any.
@@ -1904,7 +1875,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called by _executeDeferredActions().
+     * be called via _deferIfNecessary().
      */
     private void _erasePoint(int dataset, int index) {
         _checkDatasetIndex(dataset);
@@ -1987,26 +1958,6 @@ public class Plot extends PlotBox {
         }
     }
 
-    // Execute all actions pending on the deferred action list.
-    // The list is cleared and the _actionsDeferred variable is set
-    // to false, even if one of the deferred actions fails.
-    // This method should only be invoked in the event dispatch thread.
-    // It is synchronized, so the integrity of the deferred actions list
-    // is ensured, since modifications to that list occur only in other
-    // synchronized methods.
-    private synchronized void _executeDeferredActions() {
-        try {
-            Iterator actions = _deferredActions.iterator();
-            while (actions.hasNext()) {
-                Runnable action = (Runnable)actions.next();
-                action.run();
-            }
-        } finally {
-            _actionsDeferred = false;
-            _deferredActions.clear();
-        }
-    }
-
     /* Rescale so that the data that is currently plotted just fits.
      * This overrides the base class method to ensure that the protected
      * variables _xBottom, _xTop, _yBottom, and _yTop are valid.
@@ -2015,7 +1966,7 @@ public class Plot extends PlotBox {
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
-     * be called by _executeDeferredActions().
+     * be called via _deferIfNecessary().
      */
     private void _fillPlot() {
         if (_xyInvalid) {
@@ -2058,12 +2009,6 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial Indicator of whether actions are deferred. */
-    private boolean _actionsDeferred = false;
-
-    /** @serial List of deferred actions. */
-    private List _deferredActions;
 
     /** @serial Number of points to persist for. */
     private int _pointsPersistence = 0;
