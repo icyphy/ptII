@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testDeux" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, -3, 1036, 780}}">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 664]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 33, 934, 544}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 426]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -47,8 +49,18 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 40.0]">
         </property>
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 230.0]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\cxh\ptII\jni\demo\jni\README.htm">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.5, 213.0}">
     </property>
     <entity name="testDeuxItestDeux" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -59,12 +71,6 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 295.0">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,double" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -97,13 +103,6 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 360.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -119,18 +118,9 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 220.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
         </property>
@@ -138,12 +128,8 @@ See the Visual Project associated jnitestDeux.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 405.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 320.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">

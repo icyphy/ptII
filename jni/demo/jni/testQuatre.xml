@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testQuatre" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -12, 1036, 780}}">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 664]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 5, 1005, 753}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 635]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -39,7 +41,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 215.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -57,8 +59,18 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 70.0]">
         </property>
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 595.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.720400423617, 339.1194953918457}">
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\cxh\ptII\jni\demo\jni\README.htm">
     </property>
     <entity name="testDeuxItestDeux" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -68,13 +80,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testDeux&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 500.0">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,double" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -101,15 +107,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[397.0, 102.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="testTroisIfnTest" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -119,13 +118,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 443.5">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.67203521728516, 66.0836181640625]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -154,15 +147,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 640.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 390.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Clock4" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -176,15 +162,8 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="91.0, 763.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 525.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="testDeuxItestDeux2" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -194,13 +173,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testDeux&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="680.0, 295.0">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,double" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 40.0]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -223,13 +196,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 498.5">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.67203521728516, 121.0836181640625]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -254,13 +221,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 558.5">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.67203521728516, 181.0836181640625]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -285,13 +246,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 618.5">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.67203521728516, 241.0836181640625]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -316,13 +271,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 678.5">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.67203521728516, 301.0836181640625]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -347,13 +296,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="438.409423828125, 734.43994140625">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.08145904541016, 371.5235595703125]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -380,13 +323,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="438.409423828125, 789.43994140625">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.08145904541016, 426.5235595703125]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -413,13 +350,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="442.909423828125, 848.43994140625">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[251.58145904541016, 485.5235595703125]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -444,13 +375,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="437.909423828125, 908.43994140625">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.58145904541016, 545.5235595703125]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -475,13 +400,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testTrois&quot;">
         </property>
         <doc> to dko</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="437.909423828125, 968.43994140625">
-        </property>
-        <property name="in" class="jni.Argument" value="true,false,false,long[]" >
-        </property>
-        <property name="inout" class="jni.Argument" value="true,true,false,long[]" >
-        </property>
-        <property name="ret" class="jni.Argument" value="false,false,true,double" >
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.58145904541016, 605.5235595703125]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -503,20 +422,14 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 75, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="935.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 90.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -528,19 +441,19 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="540.0, 305.0">
+        <vertex name="vertex1" value="[447.0, 52.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="540.0, 315.0">
+        <vertex name="vertex1" value="[447.0, 62.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="206.0, 763.5">
+        <vertex name="vertex1" value="[115.0, 525.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="206.0, 643.5">
+        <vertex name="vertex1" value="[113.0, 390.5]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -555,7 +468,7 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
     <link port="testDeuxItestDeux.inoutin" relation="relation4"/>
     <link port="testDeuxItestDeux.inoutout" relation="relation5"/>
     <link port="testDeuxItestDeux.ret" relation="relation7"/>
-    <link port="Clock2.output" relation="relation"/>
+    <link port="Clock2.output" relation="relation4"/>
     <link port="testTroisIfnTest.in" relation="relation8"/>
     <link port="testTroisIfnTest.inoutin" relation="relation6"/>
     <link port="testTroisIfnTest.ret" relation="relation4"/>

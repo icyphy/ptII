@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="meaningOfLife" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 128, 815, 516}}">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 2, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -17,6 +17,16 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 70.0]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\cxh\ptII\jni\demo\jni\README.htm">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="meaningOfLifeImeaningOfLife" class="jni.GenericJNIActor">
         <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -28,8 +38,6 @@
         <doc> An actor able to call a native function </doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 140.0">
         </property>
-        <property name="output" class="jni.Argument" value="false,false,true,double" >
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -39,16 +47,10 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 210.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
