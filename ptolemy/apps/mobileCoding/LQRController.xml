@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LQRController" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="maxForce" class="ptolemy.data.expr.Parameter" value="3.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -356,9 +356,9 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 1051, 751}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[836, 642]">
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -396,7 +396,7 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 645.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 585.0">
             </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -409,7 +409,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 690.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 690.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -464,22 +464,8 @@
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <doc>Output the current time.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 640.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="time*vbeta">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="inputTime*vbeta/10">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -487,12 +473,12 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 640.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 640.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="time" class="ptolemy.actor.TypedIOPort">
+            <port name="inputTime" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
             <port name="vbeta" class="ptolemy.actor.TypedIOPort">
@@ -635,18 +621,27 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 840.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 835.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
         </entity>
+        <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 630.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="550.0, 690.0">
+            <vertex name="vertex1" value="505.0, 690.0">
             </vertex>
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="655.0, 640.0">
@@ -657,8 +652,6 @@
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="670.0, 585.0">
@@ -672,8 +665,12 @@
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="output" relation="relation6"/>
-        <link port="trigger" relation="relation8"/>
+        <link port="trigger" relation="relation2"/>
         <link port="Const.output" relation="relation4"/>
         <link port="RecordAssembler.output" relation="relation6"/>
         <link port="RecordAssembler.r" relation="relation9"/>
@@ -683,10 +680,9 @@
         <link port="RecordAssembler.theta" relation="relation7"/>
         <link port="RecordAssembler.vtheta" relation="relation4"/>
         <link port="Const2.output" relation="relation9"/>
-        <link port="Const2.trigger" relation="relation8"/>
-        <link port="CurrentTime.output" relation="relation2"/>
+        <link port="Const2.trigger" relation="relation2"/>
         <link port="Expression.output" relation="relation5"/>
-        <link port="Expression.time" relation="relation2"/>
+        <link port="Expression.inputTime" relation="relation13"/>
         <link port="Expression.vbeta" relation="relation4"/>
         <link port="Const3.output" relation="relation3"/>
         <link port="Expression2.output" relation="relation7"/>
@@ -702,6 +698,7 @@
         <link port="Expression4.output" relation="relation10"/>
         <link port="Expression4.input" relation="relation"/>
         <link port="MonitorValue.input" relation="relation5"/>
+        <link port="WallClockTime.output" relation="relation13"/>
     </entity>
     <entity name="convert to polar" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 420.0">
@@ -1344,39 +1341,6 @@
         <link port="PhaseUnwrap2.output" relation="relation10"/>
         <link port="Const3.output" relation="relation11"/>
         <link port="Const4.output" relation="relation14"/>
-    </entity>
-    <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 362, 508, 348}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="persistence" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 315.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedScope</title>
-<xRange min="0.028999999999989257" max="0.9959999999999898"/>
-<yRange min="0.29312306506153607" max="0.36614530501122894"/>
-<wrap/>
-<default marks="pixels"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 430.0">
@@ -4044,48 +4008,12 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 340.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 350.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="510.0, 430.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="290.0, 430.0">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="405.0, 440.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -4124,6 +4052,8 @@
         <vertex name="vertex1" value="115.0, 400.0">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="input" relation="relation14"/>
     <link port="output" relation="relation7"/>
     <link port="trajectory generator.output" relation="relation12"/>
@@ -4136,8 +4066,6 @@
     <link port="compute error forces.input" relation="relation2"/>
     <link port="compute error forces.left" relation="relation10"/>
     <link port="compute error forces.right" relation="relation3"/>
-    <link port="TimedScope.input" relation="relation10"/>
-    <link port="TimedScope.input" relation="relation3"/>
     <link port="AddSubtract.plus" relation="relation15"/>
     <link port="AddSubtract.plus" relation="relation10"/>
     <link port="AddSubtract.output" relation="relation"/>
@@ -4158,7 +4086,4 @@
     <link port="3:ExtractVehicle.output" relation="relation11"/>
     <link port="Force Map2.output" relation="relation13"/>
     <link port="Force Map2.input" relation="relation"/>
-    <link port="Display.input" relation="relation12"/>
-    <link port="Display.input" relation="relation6"/>
-    <link port="Display2.input" relation="relation16"/>
 </entity>
