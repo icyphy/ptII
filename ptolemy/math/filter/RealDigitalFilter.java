@@ -517,7 +517,7 @@ public class RealDigitalFilter extends DigitalFilter{
     /** Update the cached pole and zero locations of all the factors.  If 
      * a zero  is close to a pole, they will not be returned.  
     */
-    private void _updatePolesZeroes() {
+    protected void _updatePolesZeroes() {
         
         LinkedList zeroesList = new LinkedList();
         LinkedList polesList = new LinkedList();

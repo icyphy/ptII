@@ -301,7 +301,7 @@ public abstract class DigitalFilter extends Filter{
      * is close to a pole, they will not be returned.  This method should
      * be overwritten in the derived classes.
      */
-    private abstract void _updatePolesZeroes();
+    protected abstract void _updatePolesZeroes();
 
     
     /**
