@@ -202,10 +202,10 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
-jnlp_all: $(KEYSTORE) jnlp_sign $(JNLPS) 
+jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
-	rm -f $(JNLPS) $(SIGNED_DIR)
+	rm -rf $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
 	rm -f  $(ALL_JNLP_JARS) 
 
@@ -258,7 +258,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	"$(JAR)" -uf $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
-	cp -p $(DSP_MAIN_JAR) `dirname$(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
+	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
@@ -347,8 +347,7 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
-jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
-jnlp_sign1: 
+jnlp_sign: $(JNLPS) $(KEYSTORE)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
