@@ -73,7 +73,7 @@ public class ClusterNodesAnalysis extends Analysis {
 
     /** Construct an instance of this class with a given analyzer.
      *
-     *  @param graph The given graph.
+     *  @param analyzer The analyzer to use.
      */
     public ClusterNodesAnalysis(ClusterNodesTransformer analyzer) {
         super(analyzer);;

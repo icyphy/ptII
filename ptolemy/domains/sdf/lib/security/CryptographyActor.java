@@ -212,12 +212,12 @@ public class CryptographyActor extends TypedAtomicActor {
     /** Convert a byte array to a key Object using an ObjectStream.
      *  The byte array must be the result of the ObjectOutputStream of a Key.
      *
-     * @param key the object whose byte array value is determined.
-     * @return the byte array of the key object.
+     * @param keyBytes The array of bytes to be converted to a Key.
+     * @return the Key object
      * @exception IllegalActionException if IOException or ClassNotFound
      *  exceptions occurs.
      */
-    protected Key _bytesToKey(byte keyBytes[])throws IllegalActionException{
+    protected Key _bytesToKey(byte keyBytes[]) throws IllegalActionException {
         try {
             ByteArrayInputStream byteArrayInputStream;
             ObjectInputStream objectInputStream;
