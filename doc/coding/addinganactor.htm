@@ -28,22 +28,16 @@ binary, that you have a <CODE>make</CODE> binary and other tools installed,
 that Ptolemy II has been installed, and that <CODE>$PTII/configure</CODE>
 and <CODE>make</CODE> have been run.  For details about the
 installation process, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/ptII1.0/doc/install.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/ptII1.0/doc/install.htm</CODE></a>
+<a href="../install.htm"><CODE>$PTII/doc/install.htm</CODE></a>
  <p>Under Windows 2000 with JDK1.3 and Cygwin, to do the setup, I did:
 <pre>
-bash-2.04$ PTII=c:\\Program\ Files\\Ptolemy\\Ptolemy\ II\ 1.0.1
+bash-2.04$ PTII=c:\\Program\ Files\\Ptolemy\\Ptolemy\ II\ 2.0.1
 bash-2.04$ export PTII
 bash-2.04$ cd "$PTII"
 bash-2.04$ ./configure
-bash-2.04$ make &gt;&amp; make.out
+bash-2.04$ make fast &gt;&amp; make.out
 </pre>
-If <CODE>configure</CODE> has problems, check to make sure your path
-includes your jdk1.3/bin directory.  To check, use the <CODE>echo</CODE> command.
-<pre>
-bash-2.04$ echo $PATH
-</pre>
-Configure and make usually generate a few errors.  Errors do not
-necessarily indicate failure of the process.
+Configure and make usually generate a few warnings.
 
  <p>Below are the steps necessary to add an actor:
 <ol>
@@ -164,31 +158,38 @@ To:
 <pre>
 bash-2.04$ vergil
 </pre>
-If this does not work, you may not have created an alias for vergil.  Try specifying the full path name, like this.
+
+If this does not work, you may not have created an alias for vergil.
+Try specifying the full path name, like this.
+
 <pre>
 bash-2.04$ "$PTII/bin/vergil"
 </pre>
 
-<li> In Vergil, click on <u>File</u>-&gt;<u>New</u>-&gt;<u>Graph Editor</u><p>
+<li> In Vergil, click on
+<code>File</code>-&gt;<code>New</code>-&gt;<code>Graph
+Editor</code><p>
 
-<li> In the Graph Editor window, click on <u>actor library</u>-&gt;<u>sources</u>.
-The Ramp2 actor will appear. <p>
+<li> In the Graph Editor window, click on <code>actor
+library</code>-&gt;<code>sources</code>.  The Ramp2 actor will
+appear. <p>
 
 <li>  To test the Ramp2 actor:
 <ol>
 <li> Drag the Ramp2 actor over to the main canvas on the right
 
-<li> Clock on <u>actor library</u> -&gt; <u>sinks</u> and drag a Display actor
-over to the main canvas
+<li> Clock on <code>actor library</code> -&gt; <code>sinks</code> and
+drag a Display actor over to the main canvas
 
 <li> Connect the two actors by left clicking on the output
 of the ramp2 actor and dragging over to the input of the Display actor
 
-<li> Select <u>director library</u> -&gt; <u>SDF</u> and drag the SDF director
-over to the right window
+<li> Select <code>director library</code> -&gt; <code>SDF</code> and
+drag the SDF director over to the right window
 
-<li> Select <u>View</u> -&gt; <u>Run</u> and change the number of iterations
-from <CODE>0</CODE> to <CODE>10</CODE>, then hit the Run button.
+<li> Select <code>View</code> -&gt; <code>Run</code> and change the
+number of iterations from <CODE>0</CODE> to <CODE>10</CODE>, then hit
+the Run button.
 
 <li> You should see the numbers from 0 to 18 in the display
 
@@ -228,13 +229,14 @@ and it contains one actor, <CODE>Ramp2</CODE>:
 </pre>
 
  <p>The palette and menus are determined by configuration files.
-There are one or more configuration files for each pallet.
+There are one or more configuration files for each palette.
 Their filenames, as of May 2002, are shown below.  For the latest
 information, check the configuration file one level above these,
 which is usually named 
-<CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE>
+<a href="../../ptolemy/configs/vergilConfiguration.xml"><CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE></a>
+
 <pre>
-<u>pallet</u>            <u>configuration file(s)</u>
+<b>palette</b>            <b>configuration file(s)</b>
 
 utilities         $PTII/ptolemy/configs/utilitiesLibrary.xml
 
@@ -251,18 +253,19 @@ more libraries    $PTII/ptolemy/domains/domains.xml
                   $PTII/ptolemy/matlab/matlab.xml
                   $PTII/ptolemy/actor/lib/matrix.xml
                   $PTII/ptolemy/actor/lib/test.xml
-	          $PTII/ptolemy/apps/apps.xml"/>
+	          $PTII/ptolemy/apps/apps.xml
 </pre>
 
-We want to add our new pallet, myactors.xml, to the actor library pallet
-so we will add it's filename to 
+We want to add our new palette, <code>myactors.xml</code>,
+to the actor library palette so we will add <code>myactors.xml</code> to
 <CODE>$PTII/ptolemy/configs/ptinyActors.xml</CODE>.
-Note that we want our new pallet to be a sub 
-pallet of the actor library pallet,
-just as the sources pallet is.  The <CODE>input</CODE> statements 
-below do not cause the inputted pallet to be a sub pallet.  
-Sub-palleting is caused by the <CODE>entity</CODE>
-statement in the 4th line of your myactors.xml file.
+Note that we want our new palette to be a sub pallet of the actor
+library palette, just as the sources palette is.  The
+<CODE>input</CODE> statements below do not cause the palette
+named by the <code>source</code> parameter
+to be a sub palette.  Sub-paletting is caused by the
+<CODE>entity</CODE> statement in the 4th line of your myactors.xml
+file.
 
  <p>In <CODE>ptolemy/configs/ptinyActors.xml</CODE> we change
 <pre>
