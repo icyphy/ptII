@@ -46,8 +46,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
+# Testsuite uses runDemo
+runDemo: demo
 demo:
-	"$(JAVA)" -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@modelName@
+	"$(JAVA)" -Xfuture -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@modelName@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
