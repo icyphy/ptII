@@ -88,9 +88,12 @@ public class CodeFileGenerator extends CodeGenerator {
             _context.addIncludeFile("<time.h>");
         }
         else {
-            _context.addIncludeFile("<sys/time.h>");
+	    // This used to include sys/time.h, but
+	    // under Linux, CLOCKS_PER_SEC is defined in
+	    // /usr/include/bits/time.h, which is included by
+	    // /usr/include/time.h
+            _context.addIncludeFile("<time.h>");
         }
-
 
         // This file cannot be auto-detected because its called from a
         // runtime method.
