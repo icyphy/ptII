@@ -156,7 +156,7 @@ public class Display extends Sink implements Placeable {
      */
     public Parameter rowsDisplayed;
 
-    /** The flat indicating whether this display actor suppress 
+    /** The flag indicating whether this display actor suppress 
      *  blank lines. The default value is false. 
      */
     public Parameter suppressBlankLines;
@@ -537,7 +537,7 @@ public class Display extends Sink implements Placeable {
     // The scroll pane.
     private JScrollPane _scrollPane;
 
-    // The flat indicating whether the blank lines will be suppressed.
+    // The flag indicating whether the blank lines will be suppressed.
     private boolean _suppressBlankLines = false;
     
     // A specification for the window properties of the frame.
