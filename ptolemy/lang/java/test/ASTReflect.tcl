@@ -934,7 +934,13 @@ test ASTReflect-14.1 {check out } {
          }}} 
     {SuperClass {NameNode { 
                  {Ident Object} 
-                 {Qualifier {AbsentTreeNode {leaf}}} 
+                 {Qualifier {NameNode { 
+                             {Ident lang} 
+                             {Qualifier {NameNode { 
+                                         {Ident java} 
+                                         {Qualifier {AbsentTreeNode {leaf}}} 
+                                       }}} 
+                           }}} 
                }}} 
   }}}} 
   {Imports  {}} 
@@ -1031,7 +1037,13 @@ test ASTReflect-17.1 {check out a simple class} {
        }}} 
   {SuperClass {NameNode { 
                {Ident Object} 
-               {Qualifier {AbsentTreeNode {leaf}}} 
+               {Qualifier {NameNode { 
+                           {Ident lang} 
+                           {Qualifier {NameNode { 
+                                       {Ident java} 
+                                       {Qualifier {AbsentTreeNode {leaf}}} 
+                                     }}} 
+                         }}} 
              }}} 
 }}}
 } {1}
@@ -1067,7 +1079,13 @@ test ASTReflect-18.1 {check out a simple class with an import} {
        }}} 
   {SuperClass {NameNode { 
                {Ident Object} 
-               {Qualifier {AbsentTreeNode {leaf}}} 
+               {Qualifier {NameNode { 
+                           {Ident lang} 
+                           {Qualifier {NameNode { 
+                                       {Ident java} 
+                                       {Qualifier {AbsentTreeNode {leaf}}} 
+                                     }}} 
+                         }}} 
              }}} 
 }}}}
 
@@ -1122,7 +1140,13 @@ test ASTReflect-20.1 {check out superclasses} {
        }}} 
   {SuperClass {NameNode { 
                {Ident Object} 
-               {Qualifier {AbsentTreeNode {leaf}}} 
+               {Qualifier {NameNode { 
+                           {Ident lang} 
+                           {Qualifier {NameNode { 
+                                       {Ident java} 
+                                       {Qualifier {AbsentTreeNode {leaf}}} 
+                                     }}} 
+                         }}} 
              }}} 
 }}}}
 
