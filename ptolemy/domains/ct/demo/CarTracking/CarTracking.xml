@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -2]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -88,11 +88,11 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 265.0">
+        <property name="_location" class="ptolemy.moml.Location" value="35.0, 215.0">
         </property>
     </property>
     <entity name="leading car" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 140.0">
+        <property name="_location" class="ptolemy.moml.Location" value="95.0, 140.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
         </property>
@@ -178,6 +178,12 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="265.0, 240.0">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -220,6 +226,12 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.moml.Location" value="40.0, 215.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -329,7 +341,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         <link port="TimedSinewave.output" relation="relation10"/>
     </entity>
     <entity name="following car" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="435.0, 115.0">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 110.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 450]">
         </property>
@@ -1173,6 +1185,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="700.0, 230.0">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -1290,7 +1308,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="TimedPlotter.input" relation="relation5"/>
     </entity>
     <entity name="communication channel" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0, 100.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 406]">
         </property>
@@ -1435,6 +1453,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.moml.Location" value="405.0, 169.5">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1466,6 +1490,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.moml.Location" value="125.0, 350.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1532,7 +1562,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="Const22.trigger" relation="relation23"/>
     </entity>
     <entity name="distance monitor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="575.0, 140.0">
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 140.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
@@ -1711,6 +1741,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.moml.Location" value="200.0, 125.0">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -1724,6 +1760,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.moml.Location" value="205.0, 250.0">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1823,11 +1865,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="350.0, 210.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="370.0, 180.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 180.0">
         </vertex>
     </relation>
     <link port="leading car.package" relation="relation"/>
