@@ -36,16 +36,14 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
+/** Create an increasing sequence of integer tokens,
+starting with value zero, and incrementing by one.
+This actor is aware of the rate that is set on its port and
+will create the proper number of tokens with every firing.
 
-/**
- * Create an increasing sequence of integer tokens,
- * starting with value zero, and incrementing by one.
- * This actor is aware of the rate that is set on its port and
- * will create the proper number of tokens with every firing.
- *
- * @version $Id$
- * @author Steve Neuendorffer
- */
+@version $Id$
+@author Steve Neuendorffer
+*/
 public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
