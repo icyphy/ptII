@@ -134,6 +134,7 @@ JSRCS = \
 	TrigFunction.java \
 	Uniform.java \
 	URLReader.java \
+	URLDirectoryReader.java \
 	VariableClock.java \
 	WallClockTime.java \
 	Writer.java

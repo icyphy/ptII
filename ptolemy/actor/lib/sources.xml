@@ -59,6 +59,10 @@
 
 <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine"/>
 
+<entity name="URLDirectoryReader" class="ptolemy.actor.lib.URLDirectoryReader">
+<doc>Read a directory and output each file or subdirectory</doc>
+</entity>
+
 <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
 <doc>Create a sequence of uniformly distributed random numbers</doc>
 </entity>
