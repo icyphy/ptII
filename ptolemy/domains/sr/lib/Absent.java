@@ -69,8 +69,14 @@ public class Absent extends Undefined {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
         output.sendClear(0);
+    }
+    
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() {
+        removeDependency(trigger, output);
     }
 
 }
