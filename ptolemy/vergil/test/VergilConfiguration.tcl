@@ -70,6 +70,21 @@ proc expandConfiguration {configuration} {
     $parser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
+    # Add optional .xml files to be skipped to this list.
+    set inputFileNamesToSkip [java::new java.util.LinkedList]
+    # Alphabetical please
+    $inputFileNamesToSkip add "/apps/apps.xml"
+    $inputFileNamesToSkip add "/comm/comm.xml"
+    $inputFileNamesToSkip add "/experimentalDirectors.xml"
+    $inputFileNamesToSkip add "/lib/interactive.xml"
+    $inputFileNamesToSkip add "/jai/jai.xml"
+    $inputFileNamesToSkip add "/jmf/jmf.xml"
+    $inputFileNamesToSkip add "/jxta/jxta.xml"
+    $inputFileNamesToSkip add "/matlab.xml"
+
+    # Tell the parser to skip inputting the above files
+    java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
+
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
     removeGraphicalClasses $parser
@@ -119,57 +134,7 @@ test VergilConfiguration-1.2.1 {make sure that everything inside the Hybrid conf
 ####
 #
 test VergilConfiguration-1.3 {make sure that everything inside the Full configuration (with the matlab and serial actors removed) can be expanded} {
-    # Remove the matlab lines from vergilConfiguration.xml
-
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set loader [[$parser getClass] getClassLoader]
-
-    set URL [$loader getResource "ptolemy/configs/full/configuration.xml"]
-    puts "URL of vergilConfiguration.xml: [$URL toString]"
-    if { "$tcl_platform(host_platform)" == "windows"} {
-	set inFile [string range [$URL getPath] 1 end]
-    } else {
-	set inFile [$URL getPath]
-    }
-
-    puts "file name vergilConfiguration.xml: $inFile"
-
-    # See if jxta is present
-    set jxta 1
-    if [catch {java::info superclass net.jxta.resolver.QueryHandler} \
-	    err] { 
-	puts "net.jxta.resolver.QueryHandler not found, skipping jxta"
-	set jxta 0
-    }
-
-
-    set infd [open $inFile]
-    set outfd [open vergilConfigurationNoMatlabNoSerialNoAppsNoJMF.xml "w"]
-    while {![eof $infd]} {
-	set linein [gets $infd]
-	regsub -all {.*matlab.*} $linein {} lineout
-	# Filter out the serial actor because it does not work under Unix,
-	# which is where the nightly build is run
-	regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
-	# Filter out apps
-	regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
-	# Filter out jmf
-	regsub -all {.*jmf/jmf.xml.*} $lineout3 {} lineout4
-	# Filter out interactive icons
-	regsub -all {.*lib/interactive.xml.*} $lineout4 {} lineout5
-	# Filter out jxta
-	if {$jxta == 1} {
-	    set lineout6 $lineout5
-	} else {
-	    # Filter out jxta
-	    regsub -all {.*jxta/jxta.xml.*} $lineout5 {} lineout6
-	}
-	puts $outfd $lineout6
-    }
-    close $infd
-    close $outfd
-
-    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoAppsNoJMF.xml"
+    expandConfiguration "ptolemy/configs/full/configuration.xml"
 } {0}
 
 
