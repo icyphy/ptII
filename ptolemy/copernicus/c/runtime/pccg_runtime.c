@@ -32,25 +32,27 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 #include "pccg.h"
 #include "pccg_runtime.h"
+#include <stdlib.h>
+
+#ifdef GC
+#include "include/gc.h"
+#define malloc(x) GC_MALLOC(x)
+#endif
 
 /* Data to enable exception-catching */
 jmp_buf env;
 int epc;
 _EXCEPTION_INSTANCE exception_id;
 
-/** FIXME: Remove this.
- *  PCCG implementation of the instanceof operator.
+void* PCCG_malloc(size_t size) {
+    void* block;
+    /* Allocate memory. */
+    block = malloc(size);
 
-boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
-        PCCG_CLASS *checkType) {
-    PCCG_CLASS *p = operand->class;
-    do {
-        if (p == checkType) {
-            return true;
-        } else {
-            p = (PCCG_CLASS *)(p->superclass);
-        }
-    } while (p != null);
-    return false;
+    #ifdef sun
+        /* Zero out allocated memory */
+        memset(block, 0, size);
+    #endif
+
+    return block;
 }
-*/

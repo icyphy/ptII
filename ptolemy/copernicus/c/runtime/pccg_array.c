@@ -33,6 +33,7 @@ Run-time C code generation functionality for translation of arrays.
 #include <stdarg.h>
 #include <stdlib.h>
 #include "pccg_array.h"
+#include "string.h"
 
 #ifdef GC
 #include "include/gc.h"
@@ -93,9 +94,12 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     /* Allocate memory for the outermost array. */
 #ifdef sun
     new_array = memalign(8, first_dimension_size* first_element_size);
+    /* Zero out the allocated memory. */
+    memset(new_array, 0, (first_dimension_size * first_element_size));
 #else
     new_array = malloc(first_dimension_size * first_element_size);
 #endif
+
 
     /* If this is an array of arrays, its elements must be pointers to the
        sub-arrays. It is not sufficient to merely allocate memory. The
@@ -112,10 +116,14 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
 
     /* FIXME: this is not quite right */ 
 #ifdef sun
-    result = (PCCG_ARRAY_INSTANCE *) memalign(8, sizeof(result));
+    result = (PCCG_ARRAY_INSTANCE *) memalign(8, sizeof(PCCG_ARRAY_INSTANCE));
+    /* FIXME: Remove this.
+      result = (PCCG_ARRAY_INSTANCE *) memalign(8, sizeof(result));
+    */
 #else
     result = (PCCG_ARRAY_INSTANCE *) malloc(sizeof(PCCG_ARRAY_INSTANCE));
 #endif
+    
     result->class = &GENERIC_ARRAY_CLASS;
     result->array_data = new_array;
     result->array_length = first_dimension_size;

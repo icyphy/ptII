@@ -50,4 +50,7 @@ extern _EXCEPTION_INSTANCE exception_id;
     ((PCCG_CLASS_PTR)operand->class)->instanceOf\
     ((PCCG_CLASS_PTR)operand->class, checkIndex)
 
+/* Function to allocate zeroed-out, garbage-collectible memory */
+void* PCCG_malloc(size_t size);
+
 #endif

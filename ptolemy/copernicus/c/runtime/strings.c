@@ -48,14 +48,12 @@ _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
 {
     _STRING_INSTANCE_STRUCT s; /* dummy string structure */
     iA1_char charArrayStruct;
-    int sizeOfArray;
   
     s = (_STRING_INSTANCE_STRUCT)malloc(sizeof(struct _STRING_INSTANCE_STRUCT));
     /* Initialize charArrayStruct.
        FIXME: "class" not initialized in charArrayStruct.
      */
     charArrayStruct = malloc(sizeof(PCCG_ARRAY_INSTANCE));
-    sizeOfArray = strlen(charArray) * sizeof(char);
     charArrayStruct->array_data = charArray ; 
     /*FIXME: array_length should be a COPY of charArray. memcpy may be
       needed.

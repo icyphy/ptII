@@ -40,14 +40,27 @@ Run-time C code generation functionality for translation of arrays.
    to work.
 */
 
-#define PCCG_ARRAY_ACCESS(base, element_type, index) \
-        (((element_type*)((base)->array_data))[(index)])
-
 /* Given a pointer to an array instance structure, return the
  * length of the associated array.
  */
 #define PCCG_ARRAY_LENGTH(array) \
         (((PCCG_ARRAY_INSTANCE_PTR)(array))->array_length)
+
+/*Without runtime bounds check.*/
+#define PCCG_ARRAY_ACCESS(base, element_type, index) \
+        (((element_type*)((base)->array_data))[(index)])
+
+/* With runtime bounds check 
+#define PCCG_ARRAY_ACCESS(base, element_type, index) \
+        (((element_type*)((base)->array_data))\
+        [(((index)<(PCCG_ARRAY_LENGTH(base)))? \
+        (index) \
+        :(printf("Array bounds error\n")))])
+*/
+
+
+
+
 
 
 /* Structure that implements instances of array objects. 
