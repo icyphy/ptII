@@ -151,6 +151,74 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
+    /** Override the method in the super class to do type checking.
+     *  If the specified token has the resolved type of this IOPort, or
+     *  the token can be converted to the resolved type losslessly, the
+     *  token is allowed to be sent to all receivers connected to the
+     *  specified channel. Otherwise, IllegalActionException is thrown.
+     *  Before putting the token into the destination receivers, this
+     *  method also finds the resolved type of the input IOPort containing
+     *  the receivers, and tests if the token is an instance of that type.
+     *  If not, this method will convert the token to the type of the
+     *  input IOPort. The conversion is done by calling the convert()
+     *  method of the token representing the resolved type of the input
+     *  IOport.
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @param channelindex The index of the channel, from 0 to width-1
+     *  @param token The token to send
+     *  @exception CloneNotSupportedException If the token cannot be cloned
+     *   and there is more than one destination.
+     *  @exception IllegalActionException If the port is not an output,
+     *   or if the index is out of range, or the specified token cannot be
+     *   converted to the resolved type of this IOPort.
+     */
+    public void send(int channelindex, Token token)
+            throws CloneNotSupportedException, IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            if (!isOutput()) {
+                throw new IllegalActionException(this,
+                        "send: Tokens can only be sent from an output port.");
+            }
+            if (channelindex >= getWidth() || channelindex < 0) {
+                throw new IllegalActionException(this,
+                        "send: channel index is out of range.");
+            }
+	    int compare = TypeCPO.compare(token, _resolvedType);
+	    if (compare == CPO.STRICT_GREATER ||
+		compare == CPO.INCOMPARABLE) {
+		throw new IllegalActionException(this,
+			"send: token has wrong type.");
+	    }
+
+            Receiver[][] fr = getRemoteReceivers();
+            if (fr == null || fr[channelindex] == null) return;
+            boolean first = true;
+            for (int j = 0; j < fr[channelindex].length; j++) {
+		TypedIOPort port =
+			(TypedIOPort)fr[channelindex][j].getContainer();
+		Token desttype = port.resolvedType();
+		if (desttype.getClass().isInstance(token)) {
+                    if (first) {
+                    	fr[channelindex][j].put(token);
+                    	first = false;
+                    } else {
+                    	fr[channelindex][j].put((Token)(token.clone()));
+                    }
+		} else {
+		    Token newtoken = desttype.convert(token);
+		    // since token is not an instance of the destination
+		    // type, convert will always return a new instance.
+		    // So no clone needed.
+                    fr[channelindex][j].put(newtoken);
+		}
+            }
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     /** Sets the resolved type.
      *  This is a method in the InequalityTerm interface.
      *  This method is write-synchronized on the workspace.
