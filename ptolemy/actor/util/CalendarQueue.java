@@ -511,6 +511,14 @@ public class CalendarQueue implements Debuggable {
         int currentBucket = _minBucket;
         long virtualBucket = _minVirtualBucket;
         long minimumNextVirtualBucket = Long.MAX_VALUE;
+
+        // If we have not found a value, then foundValue is false
+        // We used to check minimumNextVirtualBucket to see if
+        // it was equal to Long.MAX_VALUE, but this causes problems
+        // because it means CQComparator.getVirtualBinNumber can no longer
+        // return ong.MAX_VALUE.
+        boolean foundValue = false;
+
         int nextStartBucket = _minBucket;
 
         // Keep track of where we are in each bucket.
@@ -554,7 +562,15 @@ public class CalendarQueue implements Debuggable {
 
                 long nextVirtualBucket = _cqComparator.getVirtualBinNumber(nextInBucket);
 
-                if (nextVirtualBucket < minimumNextVirtualBucket) {
+                // Note that getVirtualBinNumber can return Long.MAX_VALUE
+                // which means the we should probably check to see if
+                // nextVirtualBucket <= minimumNextVirtualBucket.  However,
+                // this will cause problems if the getVirtualBinNumber()
+                // returns something other than Long.MAX_VALUE that
+                // is the same as minimumNextVirtualBucket.
+                if (nextVirtualBucket < minimumNextVirtualBucket 
+                        || nextVirtualBucket == Long.MAX_VALUE) {
+                    foundValue = true;
                     minimumNextVirtualBucket = nextVirtualBucket;
                     nextStartBucket = currentBucket;
                 }
@@ -571,13 +587,14 @@ public class CalendarQueue implements Debuggable {
             // If one round of search has elapsed,
             // then increment the virtual bucket.
             if (currentBucket == nextStartBucket) {
-                if (minimumNextVirtualBucket == Long.MAX_VALUE) {
+                if (!foundValue) {
                     throw new InternalErrorException(
                             "Queue is empty, but size() is not zero! It is: "
                             + _queueSize);
                 }
 
                 virtualBucket = minimumNextVirtualBucket;
+                foundValue = false;
                 minimumNextVirtualBucket = Long.MAX_VALUE;
             }
         }
