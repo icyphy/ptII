@@ -245,7 +245,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // Note: SequentialClock getCurrentTime() calls don't have to rewritten
         // for DT because this actor is a pure source without any trigger.
-        // All calls to getCurrentTime will return the global time of the system.
+        // All calls to getCurrentTime will return the global time of
+        // the system.
 
         // Schedule the first firing.
         double currentTime = getDirector().getCurrentTime();
