@@ -191,7 +191,7 @@ public class CTSaberSubsys extends CTActor
                     }
                     int locsep = line.indexOf(' ');
                     if (locsep < 0) continue;
-                    String nname = line.substring(0,locsep);
+                    String nname = line.substring(0, locsep);
                     _debug(getFullName() + "gets dc var "+ nname);
                     if(_porttable.containsKey(nname)) {
                         TypedIOPort po = (TypedIOPort)_porttable.get(nname);
@@ -199,7 +199,7 @@ public class CTSaberSubsys extends CTActor
                             double pd = _parseNumber(line, locsep,
                                     line.length());
                             _debug(getFullName() + " gets var value: "+pd);
-                            _outtoken[outindex]=new DoubleToken(pd);
+                            _outtoken[outindex] = new DoubleToken(pd);
                                 //po.broadcast(_outtoken[outindex]);
                             _outpvalue.put(po, _outtoken[outindex]);
                             outindex ++;
@@ -437,7 +437,7 @@ public class CTSaberSubsys extends CTActor
 
     /** parse input from saber.
      */
-    protected double _parseNumber(String text, int begpt, int endpt){
+    protected double _parseNumber(String text, int begpt, int endpt) {
         int locm = text.indexOf('m', begpt);
         int locn, locu;
         double number;
