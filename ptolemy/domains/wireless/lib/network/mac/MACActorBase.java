@@ -426,6 +426,9 @@ public class MACActorBase extends NetworkActorBase {
     protected static final String[] DataPacketFields = {"kind", "name", "protocolVer", "Type", "Subtype",
             "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
             "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4"};
+            
+    protected static final String[] BackoffDoneMsgFields = {"kind", "cnt"};
+    
     
 
   
