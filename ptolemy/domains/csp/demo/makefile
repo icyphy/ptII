@@ -57,26 +57,14 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
-install: all
 
-bus:	
-	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
+install: jclass jars
 
-busGraphic:	
-	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionGraphic
-
-# 'make clean' removes everything in KRUFT
-KRUFT = diningapplet.jar
-
-depend:
-	@echo "no dependencies in this directory"
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
 
 
