@@ -78,7 +78,7 @@ value CDATA ""
 type (string|double|doubleArray) #REQUIRED>
 
 <!-- port elements will be parsed into class SchematicPort -->
-<!ELEMENT port EMPTY>
+<!ELEMENT port (graphic)*>
 <!ATTLIST port
 name ID #REQUIRED
 input (true|false) "false"
