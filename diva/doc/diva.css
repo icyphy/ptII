@@ -1,0 +1,78 @@
+H1 {
+	text-align : left;
+	font-size: large;
+	margin-top : 2em;
+}
+
+H2 {
+	font-size : medium;
+}
+
+H1, H2, H3, H4 { 
+	/* Yuck */
+	font-family: helvetica, sans-serif
+}
+
+DT {
+	margin-bottom: 12;
+	padding-top: 6;
+}
+
+LI {
+	padding-top: 6;
+}
+
+BODY {
+        background: #faf0e6
+
+	/** Really want only left or right, but Netscape
+	 * doesn't support it...
+  	 */
+	/* Netscape is a pile of junk.... should marry Visual Page
+	border: solid red thin;
+	*/
+
+	/****
+	  Don't set margins, as navbars get screwed up
+		margin-left : 4em;
+		margin-top : 1em;
+		margin-right : 4em;
+	*/
+}
+
+/*
+Some stuff we might want to change
+over time...
+   CODE { font-family: monospace }
+   A:link { color: blue }          
+   A:visited { color: red }        
+   A:active { color: lime } 
+*/
+
+/****
+This one is now obsolete -- body tags appear to work
+correctly in current versions of Netscape at least
+DIV.body {
+	margin-top : 1em;
+	margin-left : 4em;
+	margin-right : 4em;
+}
+*/
+
+/****
+This is all obsolete, as Visual Page is too stupid to
+deal with <DIV> and trashes them.
+
+DIV.navigation {
+	text-align: center;
+}
+
+DIV.navbar {
+	text-align: center;
+}
+
+DIV.footer {
+	text-align: center;
+}
+
+*/
