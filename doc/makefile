@@ -93,6 +93,7 @@ VERGIL_DOCS = \
 
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
+		design/usingVergil/usingVergil.jar \
 		img/img.jar
 
 # All the doc/ files that are referred to by files in ptolemy/config
