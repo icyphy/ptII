@@ -414,7 +414,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 Iterator iterator = transformers.iterator();
                 while (iterator.hasNext()) {
                     PropertyTransformer transformer
-                            = (PropertyTransformer)iterator.next();
+                        = (PropertyTransformer)iterator.next();
                     result = transformer.transformProperties(
                             result, source, destination);
                 }
@@ -424,7 +424,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             Iterator iterator = _propertyTransformers.iterator();
             while (iterator.hasNext()) {
                 PropertyTransformer transformer
-                        = (PropertyTransformer)iterator.next();
+                    = (PropertyTransformer)iterator.next();
                 result = transformer.transformProperties(
                         result, source, destination);
             }
