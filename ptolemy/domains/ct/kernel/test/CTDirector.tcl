@@ -171,7 +171,7 @@ test CTDirector-2.2 {set Parameters by expression} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 10.0 0.1 0.0001 20 1.0 1e-05 10.1 100.0 0.1 1e-11 1e-06}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 10.0 0.5 0.4 10 0.3 0.2 10.1 100.0 0.1 1e-11 0.1}
 
 ######################################################################
 ####  Test set parameters, same as above, but uses setToken
@@ -246,7 +246,7 @@ test CTDirector-2.2a {set Parameters} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 10.0 10.0 0.1 0.0001 20 1.0 1e-05 10.1 100.0 0.1 1e-11 1e-06}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 10.0 10.0 0.5 0.4 10 0.3 0.2 10.1 100.0 0.1 1e-11 0.1}
 
 
 test CTDirector-2.3 {sets and gets} {
@@ -265,7 +265,7 @@ test CTDirector-2.4 {suggested next step greater than max step} {
     #Note: Use above set up.
     $dir setSuggestedNextStepSize 0.5
     list [$dir getSuggestedNextStepSize]
-} {0.5}
+} {0.3}
 
 #############################################################################
 #### Test set suggested next step size, it is less than the maximum
