@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
     <director name="PNDirector" class="ptolemy.domains.pn.kernel.BasePNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">

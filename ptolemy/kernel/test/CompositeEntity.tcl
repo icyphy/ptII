@@ -929,7 +929,7 @@ test CompositeEntity-18.0 {test exportMoML} {
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="e1" class="ptolemy.kernel.CompositeEntity">
     <property name="a1" class="ptolemy.kernel.util.Attribute">
     </property>

@@ -337,7 +337,7 @@ test Parameter-13.0 {Test exportMoML} {
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter">
     </property>
@@ -349,7 +349,7 @@ test Parameter-13.1 {Test exportMoML} {
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter" value="3">
     </property>
@@ -361,7 +361,7 @@ test Parameter-13.2 {Test exportMoML} {
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter" value="&quot;Test String&quot;">
     </property>
