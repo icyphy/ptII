@@ -307,7 +307,11 @@ public class StringUtilities {
                         + "invoked with -Dptolemy.ptII.dir"
                         + "=\"$PTII\"");
             }
-            System.setProperty("ptolemy.ptII.dir", home);
+            try {
+                System.setProperty("ptolemy.ptII.dir", home);
+            } catch (SecurityException security) {
+                // Ignore, we are probably running as an applet or -sandbox
+            }
             return home;
         }
         if (property == null) {
