@@ -15,19 +15,7 @@ echo %tycho\java\plot\pxgraph.bat does not exist! exiting.
 exit
 :tychoexists
 
-echo Starting Tycho with $TYCHO = "%tycho%"
+rem echo Starting Plotter with $TYCHO = "%tycho%"
 
-if not "%1" == "-java" goto jdb
-rem Run Java
-rem cd %tycho%\java\tycho
-java -classpath %classpath%;%java_home%\lib\classes.zip;%tycho%\java plot.Pxgraph
-goto end
+java -classpath %classpath%;%java_home%\lib\classes.zip;%tycho%\java plot.Pxgraph %1 %2 %3 %4 %5 %6 %7 %8 %9
 
-:jdb
-if not "%1" == "-jdb" goto end
-rem Run Java Debugger (jdb)
-rem cd %tycho%\java\tycho
-jdb -classpath %classpath%;%java_home%\lib\classes.zip;%tycho%\java plot.Pxgraph
-goto end
-
-:end
