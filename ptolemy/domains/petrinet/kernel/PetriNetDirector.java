@@ -93,25 +93,25 @@ public class PetriNetDirector extends Director {
     }
 
 
-// we will have three kinds of fire, fire one transition,
-// fire one round transitions, and fire till no more
-// transitions can fire. The director should have all the
-// three parameters to choose. The implementation details
-// are minor differences. We have implemented two methods
-// the fire one transition, and fire one round transition.
-// we have not implemented the fire all transitions till
-// no more transitions to fire yet.
+    // we will have three kinds of fire, fire one transition,
+    // fire one round transitions, and fire till no more
+    // transitions can fire. The director should have all the
+    // three parameters to choose. The implementation details
+    // are minor differences. We have implemented two methods
+    // the fire one transition, and fire one round transition.
+    // we have not implemented the fire all transitions till
+    // no more transitions to fire yet.
 
-//  
-// second problem is to choose from all the ready transition which one
-// to fire, and when it fires, it changes the state, and
-// we again to choose from many of the ready states
-// until no more transitions can fire.
-// the current method just fire the transition sequentially.
+    //  
+    // second problem is to choose from all the ready transition which one
+    // to fire, and when it fires, it changes the state, and
+    // we again to choose from many of the ready states
+    // until no more transitions can fire.
+    // the current method just fire the transition sequentially.
 
 
 
- public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 
 
         Nameable container = getContainer();
@@ -123,31 +123,31 @@ public class PetriNetDirector extends Director {
                 .deepEntityList().iterator();
      
             while (actors.hasNext()) {
-                 Transformer actor = (Transformer) actors.next();
+                Transformer actor = (Transformer) actors.next();
 
                 if (actor instanceof Transition)  {
-                  System.out.println("this is " + actor.getName()
-                        + " ************************************************************** " );               
-                 Transition transition = (Transition) actor;
-                 if (transition.prefire()) {
-                       System.out.println("ready to fire transition********");     
-                       transition.fire();
-                       }
-                 else 
-                       System.out.println("not ready to fire transition********");
+                    System.out.println("this is " + actor.getName()
+                            + " ************************************************************** " );               
+                    Transition transition = (Transition) actor;
+                    if (transition.prefire()) {
+                        System.out.println("ready to fire transition********");     
+                        transition.fire();
+                    }
+                    else 
+                        System.out.println("not ready to fire transition********");
                 }
 
             }
         }
-   }
+    }
 
  
-// this method is about the same as the above fire method, except that
-// it returns after one fire.
-// we can further extend this to make it fire a specific transition.
+    // this method is about the same as the above fire method, except that
+    // it returns after one fire.
+    // we can further extend this to make it fire a specific transition.
 
 
- public void fireOnce() throws IllegalActionException {
+    public void fireOnce() throws IllegalActionException {
 
 
         Nameable container = getContainer();
@@ -159,26 +159,26 @@ public class PetriNetDirector extends Director {
                 .deepEntityList().iterator();
      
             while (actors.hasNext()) {
-                 Transformer actor = (Transformer) actors.next();
+                Transformer actor = (Transformer) actors.next();
 
                 if (actor instanceof Transition)  {
 
-                  System.out.println("this is " + actor.getName()
-                        + " ************************************************************** " );
+                    System.out.println("this is " + actor.getName()
+                            + " ************************************************************** " );
                 
-                 Transition transition = (Transition) actor;
-                 if (transition.prefire()) {
-                       System.out.println("ready to fire transition********");     
-                       transition.fire();
-                       return;          
-                       }
-                 else 
-                       System.out.println("not ready to fire transition********");
+                    Transition transition = (Transition) actor;
+                    if (transition.prefire()) {
+                        System.out.println("ready to fire transition********");     
+                        transition.fire();
+                        return;          
+                    }
+                    else 
+                        System.out.println("not ready to fire transition********");
                 }
 
             }
         }
-   }
+    }
 
    
 

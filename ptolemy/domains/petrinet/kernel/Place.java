@@ -75,10 +75,10 @@ public class Place extends Transformer {
         output.setMultiport(true);
 
 
-   //  We need multiport, but each channel has only one link.
-   // however, at this moment, we do not check how many links we have 
-   // from one place to one transition.
-   // yuke
+        //  We need multiport, but each channel has only one link.
+        // however, at this moment, we do not check how many links we have 
+        // from one place to one transition.
+        // yuke
 
 
 
@@ -106,17 +106,17 @@ public class Place extends Transformer {
     }
 
     public void increaseMarking(int i) {
-         _currentMarking=_currentMarking +i;
+        _currentMarking=_currentMarking +i;
     }
 
     public void decreaseMarking(int i) {
-         _currentMarking=_currentMarking - i;
+        _currentMarking=_currentMarking - i;
     }
     public void printMarking() {
         System.out.println("the current marking is " + _currentMarking);
     }
 
-   /** Set the current marking equal to the initial marking.
+    /** Set the current marking equal to the initial marking.
      *  @exception IllegalActionException If the initialMarking parameter
      *   throws it.
      */
