@@ -279,6 +279,13 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
  	    Link link = (Link)links.next();
             Relation relation = link.getRelation();
             if (relation == null) continue;
+            // Undo needs this: Check that the relation hasn't been removed
+            if (relation.getContainer() == null) {
+                link.setHead(null);
+                link.setTail(null);
+                links.remove();
+                continue;
+            }
             boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
                     getRoot(), this);
             boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
