@@ -594,15 +594,15 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
+    public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
+        _resetCurrentHDFFSM = resetCurrentHDFFSM;
+    }
+
     /** Set the number of firings per iteration of this director.
      *  @param firings Number of firings per iteration of this director.
      */
     public void setFiringsPerScheduleIteration(int firings) {
         _firingsPerScheduleIteration = firings;
-    }
-
-    public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
-        _resetCurrentHDFFSM = resetCurrentHDFFSM;
     }
 
     /** Return true if data are transferred from the input port of
