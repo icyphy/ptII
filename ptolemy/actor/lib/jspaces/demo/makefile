@@ -31,12 +31,12 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/lib/jspaces
+ME =		ptolemy/actor/lib/jspaces/demo
 
-DIRS = 		util demo
+DIRS = 		Stock
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
 JINI_JAR =	$(JINI_JAR_PATH)/jini-jspaces.jar
@@ -58,11 +58,7 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	IndexEntry.java \
-	Publisher.java \
-	Subscriber.java \
-	TokenEntry.java 
+JSRCS = 
 
 EXTRA_SRCS =	$(JSRCS)
 

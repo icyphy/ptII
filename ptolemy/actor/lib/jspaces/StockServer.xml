@@ -1,5 +1,0 @@
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="stockServer" class="ptolemy.actor.lib.jspaces.StockServer">
-</model>
-
