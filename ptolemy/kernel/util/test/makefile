@@ -50,7 +50,6 @@ JSRCS = \
 	PtestWorkspace.java \
 	TestDE.java \
 	TestDebugEvent.java \
-	TestInvalidStateException.java \
 	TestNullNamedObj.java \
 	TestWorkspace.java \
 	TestWorkspace2.java

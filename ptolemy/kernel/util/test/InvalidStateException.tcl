@@ -171,31 +171,6 @@ test InvalidStateException-8.1 {Create a InvalidStateException with a \
 } {{.n3, .n2, .n1: Detail Message}}
 
 
-######################################################################
-####
-#
-test InvalidStateException-9.1 {Test _getName: \
-	Create a TestInvalidStateException with a \
-	NamedObj that has no name and a detail string } {
-    # We use TestInvalidStateException so that we
-    # can test InvalidStateException _getName()
-    set n1 [java::new ptolemy.kernel.util.NamedObj]
-    set pe [java::new {ptolemy.kernel.util.test.TestInvalidStateException \
-	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
-    list [$pe getMessage] [$pe getName $n1]
-} {{.: Detail String} {<Unnamed Object>}}
-
-######################################################################
-####
-#
-test InvalidStateException-9.2 {Test _getName: \
-	Create a InvalidStateException with a \
-	NamedObj that has a name  and a detail string} {
-    set n1 [java::new ptolemy.kernel.util.NamedObj "My NamedObj"]
-    set pe [java::new {ptolemy.kernel.util.test.TestInvalidStateException \
-	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
-    list [$pe getMessage] [$pe getName $n1]
-} {{.My NamedObj: Detail String} {My NamedObj}}
 
 ######################################################################
 ####   Test enumeration constructor
