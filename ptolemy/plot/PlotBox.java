@@ -665,8 +665,8 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Get the current plot rectangle.
      *  Note that Rectangle returned by this method is calculated
-     *  from the values of {@link _ulx}, {@link _uly},
-     *  {@link lrx} and {@link _lry}.  The value passed in by
+     *  from the values of {@link #_ulx}, {@link #_uly},
+     *  {@link #_lrx} and {@link #_lry}.  The value passed in by
      *  setPlotRectangle() is not directly used, thus calling
      *  getPlotRectangle() may not return the same rectangle that
      *  was passed in with setPlotRectangle().
@@ -724,7 +724,7 @@ public class PlotBox extends JPanel implements Printable {
         return _xlog;
     }
 
-    /** Get the X range. If {@link setXRange(double, double)} has been
+    /** Get the X range. If {@link #setXRange(double, double)} has been
      *  called, then this method returns the values passed in as
      *  arguments to setXRange(double, double).  If setXRange(double,
      *  double) has not been called, then this method returns the
@@ -790,7 +790,7 @@ public class PlotBox extends JPanel implements Printable {
         return _ylog;
     }
 
-    /** Get the Y range. If {@link setYRange(double, double)} has been
+    /** Get the Y range. If {@link #setYRange(double, double)} has been
      *  called, then this method returns the values passed in as
      *  arguments to setYRange(double, double).  If setYRange(double,
      *  double) has not been called, then this method returns the
