@@ -293,7 +293,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement root;
     private XmlParser parser = new XmlParser();
     private static final boolean DEBUG = false;
-    private static final String XMLLOCATION = "file:/users/neuendor
+    private static final String XMLLOCATION = "file:/users/neuendor/"
 
 }
 
