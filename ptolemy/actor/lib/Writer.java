@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
-// Java imports.
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -39,8 +38,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-// Ptolemy imports.
 
+//////////////////////////////////////////////////////////////////////////
+//// Writer
 /**
 This actor reads tokens from any number of input channels and writes
 their string values to the specified writer.  A newline character
@@ -52,7 +52,7 @@ this actor writes to the standard output.
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
- */
+*/
 public class Writer extends Sink {
 
     /** Construct an actor with the given container and name.

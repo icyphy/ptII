@@ -82,7 +82,7 @@ called "test.txt", then <i>sourceURL</i> should be set to
 @author  Jie Liu
 @version $Id$
 @since Ptolemy II 2.0
- */
+*/
 public abstract class URLReader extends Source {
 
     /** Construct an actor with the given container and name.
