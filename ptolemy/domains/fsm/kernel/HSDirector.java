@@ -52,6 +52,8 @@ system model.
 <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
 Hierarchical Hybrid System Simulation</a> describes how hybrid system models
 are built and simulated in Ptolemy II.
+<p>
+Note: this class is still under development.
 
 @author Xiaojun Liu
 @version $Id$

@@ -44,6 +44,8 @@ associated FSMActor of this action.
 <p>
 There is no reset() method in the Actor interface. This action just calls
 the initialize() method of the refinement.
+<p>
+Note: this class is still under development.
 
 @author Xiaojun Liu
 @version $Id$
