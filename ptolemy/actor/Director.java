@@ -426,7 +426,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(scale), where the scale is the number
+     *  double with a value of 10^(-1*timeScale), where the scale is the number
      *  of the digits for the fractional part. See {@link #getTimeScale()}.
      *  @return The time resolution of the model.
      */
