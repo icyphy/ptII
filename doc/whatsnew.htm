@@ -6,12 +6,12 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0.1 Release Notes</title>
+<title>Ptolemy II 2.2 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
 <!--whatsnew-->
-<h2>Major Features that are new in Ptolemy 2.0 </h2>
+<h2>Major Features that are new in Ptolemy 2.2 </h2>
 <menu>
 
 <li> <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.htm">Modal Models</a>
@@ -34,7 +34,7 @@ that will generate .class files for non-hierarchical SDF models
 
  <br>Note that the code generator will not work in an applet, but will
 work with Web Start, the Windows installer and the standard configure
-and build.
+and build
 
 <li> <a href="codeDoc/ptolemy/data/unit/package-summary.html">ptolemy.data.unit</a> -
 <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units Demo</a>
@@ -61,7 +61,7 @@ system on a per-model basis.
 (Jie Liu) - an implementation of a model of
 computation based on priority-driven multitasking, as common in
 real-time operating systems (RTOSs), but with more deterministic
-behavior;
+behavior
 
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">Synchronous/Reactive Domain</a>:
 (Primary Author: Paul Whitaker, Contributors: Elaine Cheong, John Reekie)
@@ -80,16 +80,16 @@ via the web.
 	<li> Annotations - It is now much easier to annotate a model with
 	text.
 	<li> Parameters - The model can display top level parameter
-	names and values.
-	<li> Snap to grid - It is now much easier to line up actors.
-	<li> Panner, zoom - The panner and zoom facilities make.
-	it easier to navigate large.
-	<li> Improved FSM editor.
+	names and values
+	<li> Snap to grid - It is now much easier to line up actors
+	<li> Panner, zoom - The panner and zoom facilities make
+	it easier to navigate large
+	<li> Improved FSM editor
 	<li> Animation - It is now possible to show which actors are firing
 	when.
 	<li> Better icons - Some icons such as Const, Scale and Expression
 	will display their values.  
-	<li> Set data types of ports.
+	<li> Set data types of ports
 	<li> Java Virtual Machine properties window - JVM Properties
 	can be queried and garbage collection requested.
 	<li> <a href="../ptolemy/domains/ct/doc/signal_types.htm">Documentation for setting CT signal types</a>
@@ -98,7 +98,7 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 
 </menu>
 
-<h2>Other Features that are new in Ptolemy II 2.0</h2>
+<h2>Other Features that are new in Ptolemy II 2.2</h2>
 
 <ul>
 
@@ -127,7 +127,7 @@ that Matlab be installed on your local machine.
  <a href="codeDoc/ptolemy/matlab/package-summary.html">Java class documentation</a>
  <li> <a href="../ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab Expression Demonstration</a> -
  Windows only, requires that Matlab be installed locally, will not work within
- an applet, but will work with Web Start.
+ an applet, but will work with Web Start
  </menu>
 
 <li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
@@ -154,7 +154,7 @@ use this attribute to manage backward compatibility.
 (Winthrop Williams, Steve Neuendorffer) - A new Token supporting
 unsigned bytes.
 
- <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
+ <!-- Tcl shell is not shipping in 2.2, it makes the download larger.-->
 
 </ul>
 
@@ -179,7 +179,7 @@ unsigned bytes.
  A thermostat model where the refinements of the
  modes in the state machine are the same model.
  <li> <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units</a>
- A demonstration of the Units facility.
+ A demonstration of the Units facility
  </menu>
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	 Discrete Event
@@ -264,6 +264,10 @@ A composite demo with a Giotto model embedded in a DE model.
 <dt> <a href="codeDoc/ptolemy/actor/lib/Accumulator.html"><code>Accumulator</code></a>
 <dd> (Edward A. Lee)
 An actor that outputs the sum of the inputs so far.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
+<dd> (Steve Neuendorffer)
+A polymorphic multiplexor with boolean select.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/BooleanMultiplexor.html"><code>BooleanMultiplexor</code></a> 
 <dd> (Steve Neuendorffer)
@@ -476,7 +480,7 @@ An actor that converts a matrix to sequence of output tokens.
 
 
 <h2>Backward compatibility issues</h2>
-Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 2.0.
+Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 2.2.
 
  <p>The MoMLParser has been extended to include a list of backward
 compatibility filters that look for actors that have changed while
