@@ -97,9 +97,9 @@ public interface ExecutionListener {
 
     /** Called to report a successful start of execution.   This method
      *  indicates that it was valid for execution to begin, and that any
-     *  initialization performed within the manager thread, such as 
+     *  initialization performed within the manager thread, such as
      *  creating a thread for the simulation, has completed successfully.
-     *  It does not imply that the initialize method was successfully 
+     *  It does not imply that the initialize method was successfully
      *  called on all the actors, only that the manager thread is ready
      *  begin execution of the model.
      *
