@@ -86,56 +86,6 @@ The objective is to swing the pendulum up and then balance it.
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 390.0">
         </property>
     </property>
-    <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
-        <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.copernicus.gui.GeneratorTableauAttribute$GeneratorTableauEditorFactory">
-        </property>
-        <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="applet">
-            <doc name="tooltip">Type of code generator to run.</doc>
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="sootDeep" class="ptolemy.kernel.util.StringAttribute" value="deep">
-                </property>
-                <property name="sootApplet" class="ptolemy.kernel.util.StringAttribute" value="applet">
-                </property>
-                <property name="sootC" class="ptolemy.kernel.util.StringAttribute" value="c">
-                </property>
-                <property name="sootJHDL" class="ptolemy.kernel.util.StringAttribute" value="jhdl">
-                </property>
-                <property name="sootShallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
-                </property>
-            </property>
-        </property>
-        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Show generated code.</doc>
-        </property>
-        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Compile generated code.</doc>
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc name="tooltip">Execute generated code.</doc>
-        </property>
-        <property name="directory" class="ptolemy.kernel.util.StringAttribute" value="d:\tmp\ptII\ptolemy\domains\gr\demo">
-            <doc name="tooltip">Directory into which to put generated code.</doc>
-        </property>
-        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:\tmp\ptII;.&quot;">
-            <doc name="tooltip">Options to pass to the compiler.</doc>
-        </property>
-        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;d:\tmp\ptII;.&quot;">
-            <doc name="tooltip">Options to use when executing the code.</doc>
-        </property>
-        <property name="packageName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.gr.demo">
-            <doc name="tooltip">Package name for the generated classes.</doc>
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 6, 992, 682}}">
     </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
