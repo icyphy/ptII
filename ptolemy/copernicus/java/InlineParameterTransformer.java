@@ -335,7 +335,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // constructor.  It is easier to
                                     // just deal with it now...
                                   
-                                    // Create a new two-argument contructor.
+                                    // Create a new two-argument constructor.
                                     box.setValue(Jimple.v().newSpecialInvokeExpr(
                                             (Local)r.getBase(), constructorWithoutToken,
                                             r.getArg(0), r.getArg(1)));                                      
