@@ -722,7 +722,7 @@ test Parameter-17.5 {String mode parameters} {
 } {{"a"} a}
 
 test Parameter-17.6 {String mode parameters} {
-	$p2 setExpression {a $p1 $(p1) a ${p1} a}
+	$p2 setExpression {a $p1 $(p1) a ${p1} a $$a}
     set t [$p2 getToken]
     [java::cast ptolemy.data.StringToken $t] stringValue
-} {a a a a a a}
+} {a a a a a a $a}

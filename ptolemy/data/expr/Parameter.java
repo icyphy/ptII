@@ -479,7 +479,10 @@ public class Parameter extends Variable {
                         parsedTo = dollar + 2;
                         break;
                     }
-                    dollar += 1;
+                    // Look for the next dollar sign.
+                    parsedTo = dollar + 2;
+                    dollar = expression.indexOf("$", parsedTo);
+                    continue;
                 }
                 // We now know the dollar is not a $$.
                 // See whether the identifier is bracketed with
