@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Demonstrations for JNI interface</title>
+</head>
+<body>
+<h1>Demonstrations for JNI interface</h1>
+
+To run the JNI demos:
+<ol>
+<li> run <code>make all</code>
+<br>which will create the shared libraries
+<li> run <code>make demo</code>
+<br>which will start up Vergil with the proper classpath and path
+<li> For each model, select <code>JNI</code> -&gt; 
+<code>Generate C Interface</code>
+<br>which will create the interface code in the
+<a href="jni"><code>jni</code></a> directory
+and compile it
+<li> Because of a bug that deletes all the relations,
+the easiest thing to do is to exit vergil and 
+restart using <code>make demo</code>.  
+<br>An alternative is 
+to close and reopen each model.
+<bt>Another alternative is to redraw the model
+<li>Run each model 
+<ol>
+<ul>
+<li><a href="../../../doc/codeDoc/jni/JNIUtilities.htm">JNIUtilities documentation</a>
+<li><a href="../../../doc/codeDoc/jni/GenericJNIActor.htm">GenericJNIActor documentation</a>
+</ul>
+
+</body>
+</html>
