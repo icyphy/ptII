@@ -29,6 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME = 		ptolemy/domains/fsm/demo/Blending
+
 # Root of the Java directory
 ROOT =		../../../../..
 
