@@ -1,7 +1,7 @@
 /* A Queue with optional history and capacity, performing blocking reads 
    and blocking writes.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
