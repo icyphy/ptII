@@ -356,6 +356,7 @@ public class Transition extends ComponentRelation {
     public boolean isEnabled() throws IllegalActionException {
         try {
             Token tok = _guard.getToken();
+            if (tok == null) return false;
             return ((BooleanToken)tok).booleanValue();
         } catch (UnknownResultException ex) {
             return false;
