@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 #PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =		BlockGraphToDotty.java \
+		JHDLUnsupportedException.java \
 		DirectedGraphToDotty.java \
 		Label.java \
 		MuxNode.java \

@@ -84,6 +84,9 @@ all: jclass
 
 install: all
 
+test1: all
+	java ptolemy.copernicus.jhdl.CircuitGenerator ptolemy.copernicus.jhdl.test.hwgentest method1
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 

@@ -1,4 +1,4 @@
-/* 
+/* Dataflow representation of a Soot Block
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -92,16 +92,20 @@ import ptolemy.copernicus.jhdl.util.GraphNode;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.SynthesisToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
-
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph
 /**
  * This class will take a Soot block and create a ptolemy 
- * DirectedGraph.
+ * DirectedGraph. Since a single block (i.e. Basic Block) is acyclic,
+ * this graph will also be acyclic.
  *
-
+ * The weights of the ptolemy.graph.Node objects created for this
+ * graph are the semantic objects that the Node represents. In most
+ * cases, these objects are of type soot.Value.
+ *
+ *
 @author Mike Wirthlin and Matthew Koecher
 @version $Id$
 @since Ptolemy II 2.0
@@ -111,9 +115,18 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     /**
      * Constructor iterates through the statements found within the
-     * Block to create a dataflow graph of the block behavior.
+     * Block to create a dataflow graph of the block behavior. 
+     * This method uses several internal (protected) methods to
+     * create this graph.
+     *
+     * @param block Basic block that will used to create a dataflow graph
+     * @see ptolemy.copernicus.jhdl.BlockDataFlowGraph#_processAssignStmt(AssignStmt)
+     * @see BlockDataFlowGraph#_processIdentityStmt(IdentityStmt)
+     * @see BlockDataFlowGraph#_processInvokeStmt(InvokeStmt)
+     * @see BlockDataFlowGraph#_processReturnStmt(ReturnStmt)
+     *
      **/
-    public BlockDataFlowGraph(Block block) throws IllegalActionException {
+    public BlockDataFlowGraph(Block block) throws JHDLUnsupportedException {
 
 	super();
 	_block = block;	
@@ -126,8 +139,12 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
 	    // Process all Stmt units in this graph
 	    Stmt stmt = (Stmt)units.next();
-	    if (DEBUG) System.out.println("Statement "+stmt.getClass().getName()+
+	    if (DEBUG) System.out.println("Statement "+
+					  stmt.getClass().getName()+
 					  "="+stmt);
+	    // Each statement is treated differently. Search for the
+	    // appropriate statement type and process it according
+	    // to its semantics.
 	    if(stmt instanceof AssignStmt) {
 		_processAssignStmt((AssignStmt) stmt);
 	    } else if(stmt instanceof IdentityStmt) {
@@ -135,9 +152,9 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    } else if(stmt instanceof InvokeStmt) {
 		_processInvokeStmt((InvokeStmt) stmt);
 	    } else if(stmt instanceof ReturnStmt) {
-		// return statements do not affect dataflow
+		_processReturnStmt((ReturnStmt) stmt);
 	    } else if(stmt instanceof ReturnVoidStmt) {
-		// return statements do not affect dataflow
+		// a return void statement does not affect dataflow.
 	    } else if(stmt instanceof IfStmt) {
 		// if statements shoudl be last statement in basic block.
 		// No data flow is added at this point - control flow
@@ -153,8 +170,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 		// No data flow is added at this point - control flow
 		// analysis may look at this statement at a later time.
 	    } else {
-		throw new IllegalActionException("Unsupported statement="+
-						 stmt.getClass().getName());
+		throw new JHDLUnsupportedException("Unsupported statement="+
+						   stmt.getClass().getName());
 	    }
 	}
     }
@@ -163,16 +180,25 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	return _requiredNodeSet;
     }
 
-    /** This method will remove internal variable nodes. **/
-    public void trimStackVariableNodes() throws IllegalActionException {
+    /** This method will iterate through the graph and remove Nodes 
+     * corresponding to Local references in the original byte codes.
+     **/
+    public void removeLocalNodes() throws JHDLUnsupportedException {
 	ArrayList al = new ArrayList();
 	for (Iterator i = nodes().iterator(); i.hasNext();) {
 	    Node node = (Node) i.next();
-	    Value nvalue = (Value) node.weight();
-	    if (inputEdgeCount(node) == 1 &&
-		outputEdgeCount(node) == 1 &&
-		(nvalue instanceof Local) &&
-		((Local)nvalue).getName().startsWith("$")) {
+	    Object weight = node.weight();
+
+	    // A Node is a removable if the following conditions are met:
+	    // - it has only one direct predecessor
+	    // - it has only one direct successor
+	    // - it corresponds to a Local in the original Soot representation
+	    if (inputEdgeCount(node) == 1
+//		&& outputEdgeCount(node) == 1
+		&& (weight instanceof Local) 
+//  		&& ((Local)nvalue).getName().startsWith("$")
+		) {
+
 		// Found a stack variable.
 		//System.out.println("trim "+((Local)nvalue).getName());
 
@@ -185,21 +211,22 @@ public class BlockDataFlowGraph extends DirectedGraph {
 		    if (sourceNode == null) {
 			sourceNode = s;
 		    } else
-			throw new IllegalActionException("More than one source to a stack variable");
+			// Should never get here
+			throw new JHDLUnsupportedException("More than one source to a stack variable");
 		}
 		if (sourceNode == null)
-		    throw new IllegalActionException("No source to a stack variable");
+		    // Should never get here
+		    throw new JHDLUnsupportedException("No source to a stack variable");
 
 		// 2. Identify all outgoing edges of stack variable node. 
 		//    Remove these edges and add a new edge with same weight,
 		//    and originating from sourceNode.
 		for (Iterator j=outputEdges(node).iterator();j.hasNext();) {
 		    Edge e = (Edge) j.next();
-		    Object weight = e.weight();
-		    if (weight == null)
-			addEdge(sourceNode,e.sink());
+		    if (e.hasWeight())
+			addEdge(sourceNode,e.sink(),e.weight());
 		    else
-			addEdge(sourceNode,e.sink(),weight);
+			addEdge(sourceNode,e.sink());
 		}
 		// 3. Remove stack variable node
 		al.add(node);
@@ -278,28 +305,48 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     /**
      * This method will evaluate AssignStmt statements and add
-     * the corresponding dataflow to the graph.
+     * a new Node in the dataflow graph representing the new assigned
+     * Value.
+     * If necessary, a node will also be created for the "rightOp" of
+     * the assignment statement. Much of the work associated with
+     * this method is creating the graph structures associated with
+     * the expression represented by the "rightOp". Several 
+     * internal protected methods are used to generate dataflow
+     * graph components for the rightOp of the assignment.<p>
+     *
+     * This method will also create a dependency edge between the
+     * Node representing the "rightOp" and the Node representing the
+     * "leftOp".
+     *
+     * @see BlockDataFlowGraph#_processUnopExpr(UnopExpr)
+     * @see BlockDataFlowGraph#_processBinopExpr(BinopExpr)
+     * @see BlockDataFlowGraph#_processLocal(Local)
+     * @see BlockDataFlowGraph#_processInstanceFieldRef(InstanceFieldRef)
+     * @see BlockDataFlowGraph#_processInstanceInvokeExpr(InstanceInvokeExpr)
+     * @see BlockDataFlowGraph#_processConstant(Constant)
+     * @see BlockDataFlowGraph#_processStaticFieldRef(StaticFieldRef)
      **/
     protected void _processAssignStmt(AssignStmt stmt) 
-	throws IllegalActionException {
+	throws JHDLUnsupportedException {
 	
 	// Create Node for LeftOp
 	Value leftOp = stmt.getLeftOp();
 	Node leftOpNode = null;
 	if (leftOp instanceof Local) {
-	    leftOpNode = _addNodeValueWeight(leftOp);
+	    leftOpNode = _createValueWeightedNode(leftOp);
 	} else if(leftOp instanceof InstanceFieldRef) {
 	    leftOpNode = _createInstanceFieldRefNode((InstanceFieldRef)leftOp);
 	} else {
-	    throw new IllegalActionException("Unsupported Left AssignOp="+
+	    throw new JHDLUnsupportedException("Unsupported Left AssignOp=" +
 					     leftOp.getClass().getName());
 	}
                                 
 	// Create Node for RightOp
 	Value rightOp = stmt.getRightOp();
 	Node rightOpNode = null;
-	if (DEBUG) System.out.println("Expression "+rightOp.getClass().getName()+
-				      "="+rightOp);
+	if (DEBUG) System.out.println("Expression " +
+				      rightOp.getClass().getName() +
+				      "=" + rightOp);
 	if (rightOp instanceof UnopExpr){
 	    rightOpNode = _processUnopExpr( (UnopExpr) rightOp);
 	} else if (rightOp instanceof BinopExpr){
@@ -317,7 +364,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	} else if(rightOp instanceof StaticFieldRef){
 	    rightOpNode = _processStaticFieldRef((StaticFieldRef) rightOp);
 	} else {
-	    throw new IllegalActionException("Unsupported Assign Statement right op="+
+	    throw new JHDLUnsupportedException("Unsupported Assign Statement right op="+
 					     rightOp.getClass().getName());
 	}
 	addEdge(rightOpNode,leftOpNode);
@@ -332,22 +379,36 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	if (DEBUG) System.out.println("IdentityStmt left="+
 				      leftOp.getClass().getName()+
 				      " right="+rightOp.getClass().getName());
-	Node leftOpNode= _addNodeValueWeight(leftOp);
+	Node leftOpNode= _createValueWeightedNode(leftOp);
 	Node rightOpNode = _getNodeFromValue(rightOp);
 	addEdge(rightOpNode, leftOpNode);
     }
 
 
     protected void _processInvokeStmt(InvokeStmt stmt) 
-	throws IllegalActionException {
+	throws JHDLUnsupportedException {
 
 	Value op = stmt.getInvokeExpr();
 	if(op instanceof InstanceInvokeExpr) {
 	    _createInstanceInvokeExprNode( (InstanceInvokeExpr) op);
 	} else {
-	    throw new IllegalActionException("Unsupported Invoke Expression="+
-					     op.getClass().getName());
+	    throw new 
+		JHDLUnsupportedException("Unsupported Invoke Expression="+
+					 op.getClass().getName());
 	}
+    }
+
+    /**
+     * This method will add a Node for the ReturnStmt and add an edge
+     * from the Value being returned and this new ReturnStmt Node.
+     * The weight of the new Node is the ReturnStmt.
+     **/
+    protected Node _processReturnStmt(ReturnStmt stmt) {
+	Value returnedValue = stmt.getOp();
+	Node returnedNode = _getNodeFromValue(returnedValue);
+	Node newNode = addNodeWeight(stmt);
+	addEdge(returnedNode,newNode);
+	return newNode;
     }
 
     /**
@@ -355,15 +416,15 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * Return a Node in the dataflow graph that represents the result.
      **/
     protected Node _processUnopExpr(UnopExpr expr) 
-	throws IllegalActionException {
+	throws JHDLUnsupportedException {
 	if (expr instanceof NegExpr){
-	    Node n = _addNodeValueWeight(expr);
+	    Node n = _createValueWeightedNode(expr);
 	    Value rightValue=expr.getOp();
 	    Node rv = _getNodeFromValue(rightValue);
 	    addEdge(rv,n);
 	    return n;
 	} else {
-	    throw new IllegalActionException("Unsupported Unary Operator="+
+	    throw new JHDLUnsupportedException("Unsupported Unary Operator="+
 					     expr.getClass().getName());
 	}	
     }
@@ -374,7 +435,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     protected Node _processBinopExpr(BinopExpr expr) {
 	Value rightValue1=expr.getOp1();
 	Value rightValue2=expr.getOp2();
-	Node n = _addNodeValueWeight(expr);		    
+	Node n = _createValueWeightedNode(expr);		    
 	Node r1n = _getNodeFromValue(rightValue1);
 	Node r2n = _getNodeFromValue(rightValue2);
 	addEdge(r1n,n,"op1");
@@ -425,7 +486,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     protected Node _createInstanceFieldRefNode(InstanceFieldRef ifr) {
 	// create node for new field reference
-	Node n = _addNodeValueWeight(ifr);
+	Node n = _createValueWeightedNode(ifr);
 	// get node for base
 	Node b = _getNodeFromValue(ifr.getBase());
 	// add edge between base and ifr
@@ -443,14 +504,15 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	}
 	    
 	// Add node 
-	Node n = _addNodeValueWeight(iie);
+	Node n = _createValueWeightedNode(iie);
 	Node b = _getNodeFromValue(iie.getBase());
 	// Add link to base 
 	addEdge(b,n,"base");
 
 	// add argument links
 	int argCount=0;
-	for(Iterator arguments = iie.getArgs().iterator();arguments.hasNext();) {
+	for(Iterator arguments = iie.getArgs().iterator();
+	    arguments.hasNext();) {
 	    Value argument = (Value)arguments.next();
 	    Node a_n = _getNodeFromValue(argument);
 	    addEdge(a_n,n,new Integer(argCount++));
@@ -460,9 +522,9 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     /**
      * This method adds a "Value" weighted Node to the graph and
-     * adds a Map between the value and the new Node.
+     * adds a mapping between the value and the new Node in _nodeMap.
      **/
-    protected Node _addNodeValueWeight(Value v) {
+    protected Node _createValueWeightedNode(Value v) {
 	Node n = addNodeWeight(v);
 	_nodeMap.put(v,n);
 	return n;
@@ -478,7 +540,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     protected Node _getNodeFromValue(Value value) {
 	Node n=null;
 	if (!containsNodeWeight(value)) {
-	    n = _addNodeValueWeight(value);
+	    n = _createValueWeightedNode(value);
 	    return n;
 	} else {
 	    return (Node)_nodeMap.get(value);
@@ -516,7 +578,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    BlockDataFlowGraph dataFlowGraph=null;
 	    try {
 		dataFlowGraph=new BlockDataFlowGraph(block);
-	    } catch (IllegalActionException e) {
+	    } catch (JHDLUnsupportedException e) {
 		System.err.println(e);
 	    }
 	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
