@@ -119,28 +119,14 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return The new ProcessDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CompositeProcessDirector newobj = (CompositeProcessDirector)super.clone(ws);
-        return newobj;
+        CompositeProcessDirector newObj = 
+	        (CompositeProcessDirector)super.clone(ws);
+	newObj._onFirstIteration = _onFirstIteration;
+	newObj._inputBranchController = _inputBranchController;
+	newObj._outputBranchController = _outputBranchController;
+	newObj._blockedRcvrs = _blockedRcvrs;
+        return newObj;
     }
-
-    /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return.
-     *  This method is synchronized on the director.
-     *  @exception IllegalActionException If a derived class throws it.
-    public void fire() throws IllegalActionException {
-	Workspace workspace = workspace();
-        synchronized (this) {
-            while( !_areActorsDeadlocked() ) {
-		workspace.wait(this);
-            }
-            if( _areActorsDeadlocked() ) {
-                _notDone = _resolveDeadlock();
-            } else {
-		_notDone = true;
-	    }
-        }
-    }
-     */
 
     /** Return the input branch controller of this director. If
      *  this method is called prior to the invocation of 
@@ -207,8 +193,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return A new MailboxBoundaryReceiver.
      */
     public Receiver newReceiver() {
-        // FIXME return new MailboxBoundaryReceiver();
-        return new Mailbox();
+        return new MailboxBoundaryReceiver();
     }
 
     /** Return false if the model has reached a deadlock and can
@@ -319,11 +304,11 @@ public class CompositeProcessDirector extends ProcessDirector {
         System.out.println(_name+": controller about to end iteration");
         _inputBranchController.deactivateBranches();
         System.out.println(_name+": controller finished ending iteration");
-        try {
-            throw new Exception();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+//         try {
+//             throw new Exception();
+//         } catch(Exception e) {
+//             e.printStackTrace();
+//         }
         while( !_inputBranchController.isBlocked() ) {
             System.out.println(_name+": controller about to wait");
             workspace.wait(this);
@@ -396,6 +381,24 @@ public class CompositeProcessDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if the count of active processes in the container is 0.
+     *  Otherwise return true. Derived classes must override this method to
+     *  return true to any other forms of deadlocks that they might introduce.
+     * @return true if there are no active processes in the container.
+     */
+    protected synchronized boolean _areActorsDeadlocked() {
+        if( _getBlockedActorsCount() >= _getActiveActorsCount() ) {
+            return true;
+        }
+	return false;
+    }
+
+    /**
+     */
+    protected synchronized int _getBlockedActorsCount() {
+	return _blockedRcvrs.size();
+    }
+
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
      *  encouraged to override this method as necessary for domain
@@ -435,32 +438,64 @@ public class CompositeProcessDirector extends ProcessDirector {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-        if( _areActorsExternallyBlocked() ) {
-            try {
-                while( !_inputBranchController.isBlocked() ) {
-                    wait();
+	Workspace workspace = workspace();
+	if( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
+	    System.out.println("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDDDDD!!!");
+	    if( _inputBranchController.isBlocked() ) {
+                while( !_outputBranchController.isBlocked() ) {
+                    workspace.wait(this);
                 }
-                // registerBlockedRcvrsWithContainer();
-                wait();
-            } catch( InterruptedException e ) {
-                // FIXME: Do Something
-            }
-            
-        }
-            
-        /*
-        if( _areActorsExternallyBlocked() ) {
-            while( !_outputBranchController.isBlocked() ) {
-                wait();
-            }
-        }
-        */
-        
+		stopInputBranchController();
+		stopOutputBranchController();
+                _registerBlockedRcvrsWithContainer();
+		return true;
+	    } else if( _outputBranchController.isBlocked() ) {
+		stopInputBranchController();
+		stopOutputBranchController();
+                _registerBlockedRcvrsWithContainer();
+		return true;
+	    }
+	}
+
+	if( !_areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
+	    if( _inputBranchController.isBlocked() ) {
+                while( !_outputBranchController.isBlocked() ) {
+                    workspace.wait(this);
+                }
+		stopInputBranchController();
+		stopOutputBranchController();
+		return _resolveInternalDeadlock();
+	    } else if( _outputBranchController.isBlocked() ) {
+		stopInputBranchController();
+		stopOutputBranchController();
+		return _resolveInternalDeadlock();
+	    } else {
+                while( !_outputBranchController.isBlocked() ) {
+                    workspace.wait(this);
+                }
+		stopInputBranchController();
+		stopOutputBranchController();
+		return _resolveInternalDeadlock();
+	    }
+	}
+
+	return false;
+    }
+
+    /**
+     */
+    protected boolean _resolveInternalDeadlock() throws IllegalActionException {
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
+	System.out.println("SHONUFF");
 	return false;
     }
 
     /** 
-     * @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _areActorsExternallyBlocked() {
     	Iterator blockedRcvrIter = _blockedRcvrs.iterator();
@@ -564,6 +599,11 @@ public class CompositeProcessDirector extends ProcessDirector {
         return _inputControllerIsBlocked;
     }
         
+    /**
+     */
+    protected void _registerBlockedRcvrsWithContainer() {
+    }
+
     /** 
      */
     public synchronized boolean registerBlockedBranchReceiversWithExecutive() {
