@@ -1,6 +1,6 @@
 # Tests for the StringToken class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Yuhong Xiong
 #
 # @Version: $Id$
 #
@@ -66,19 +66,115 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 ######################################################################
 ####
 # 
-# test StringToken-4.1 {Create an empty instance and clone} {
-#     set p [java::new ptolemy.data.StringToken]
-#     set q [$p clone]
-#     $q getValue
-# } {}
+test StringToken-2.3 {Create an non-empty instance} {
+    set p [java::new ptolemy.data.StringToken foo]
+    list [$p toString] [$p stringValue] [$p getValue]
+} {ptolemy.data.StringToken(foo) foo foo}
 
 ######################################################################
 ####
 # 
-# test StringToken-4.2 {Create a non empty instance and clone} {
-#     set n [java::new {java.lang.String String} foo]
-#     set p [java::new ptolemy.data.StringToken $n]
-#     set q [$p clone]
-#     list [$p toString] [$q toString]
-# } {ptolemy.data.StringToken(foo) ptolemy.data.StringToken(foo)}
+test StringToken-3.0 {Test adding Strings} {
+    set p1 [java::new ptolemy.data.StringToken foo]
+    set p2 [java::new ptolemy.data.StringToken bar]
+    set res [$p1 add $p2]
+
+    list [$res toString]
+} {ptolemy.data.StringToken(foobar)}
+
+######################################################################
+####
+# 
+test DoubleToken-3.1 {Test adding String and boolean} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.BooleanToken boolean} true]
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.StringToken(footrue) ptolemy.data.StringToken(truefoo) ptolemy.data.StringToken(truefoo)}
+
+######################################################################
+####
+# 
+test DoubleToken-3.2 {Test adding String and long} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.LongToken long} 3]
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.StringToken(foo3) ptolemy.data.StringToken(3foo) ptolemy.data.StringToken(3foo)}
+
+######################################################################
+####
+# 
+test DoubleToken-3.3 {Test adding String and int} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.IntToken int} 4]
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.StringToken(foo4) ptolemy.data.StringToken(4foo) ptolemy.data.StringToken(4foo)}
+
+######################################################################
+####
+# 
+test DoubleToken-3.4 {Test adding String and Complex} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set c [java::new {ptolemy.math.Complex double double} 3.3 4.4]
+    set tok2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
+
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{ptolemy.data.StringToken(foo3.3 + 4.4i)} {ptolemy.data.StringToken(3.3 + 4.4ifoo)} {ptolemy.data.StringToken(3.3 + 4.4ifoo)}}
+
+######################################################################
+####
+# 
+test DoubleToken-3.5 {Test adding String and double} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set res1 [$tok1 add $tok2]
+    set res2 [$tok1 addR $tok2]
+
+    set res3 [$tok2 add $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {ptolemy.data.StringToken(foo2.5) ptolemy.data.StringToken(2.5foo) ptolemy.data.StringToken(2.5foo)}
+
+######################################################################
+####
+# 
+test StringToken-4.0 {Test equals} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.StringToken} foo]
+    set tok3 [java::new {ptolemy.data.StringToken} bar]
+
+    set res1 [$tok1 {equals ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {equals ptolemy.data.Token} $tok3]
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+
+######################################################################
+####
+# 
+test StringToken-4.0 {Test equals} {
+    set tok1 [java::new {ptolemy.data.StringToken} 33]
+    set tok2 [java::new {ptolemy.data.IntToken int} 33]
+
+    catch {[$tok1 {equals ptolemy.data.Token} $tok2]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken and ptolemy.data.IntToken}}
 
