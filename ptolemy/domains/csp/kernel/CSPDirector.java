@@ -231,17 +231,21 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
-        Iterator actors =
-            ((CompositeActor)getContainer()).deepEntityList().iterator();
-        while ( _delayedActorList.size() > 0 ) {
-            DelayListLink value =
-                (DelayListLink)_delayedActorList.get(0);
-            value._actor._cancelDelay();
-            _delayedActorList.remove(0);
-            _actorsDelayed--;
+        try {
+            _inWrapup = true;
+            while ( _delayedActorList.size() > 0 ) {
+                DelayListLink value =
+                    (DelayListLink)_delayedActorList.get(0);
+                value._actor._cancelDelay();
+                _delayedActorList.remove(0);
+                _actorsDelayed--;
+            }
+            super.wrapup();
+        } finally {
+            _inWrapup = false;
         }
-        super.wrapup();
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -268,6 +272,10 @@ public class CSPDirector extends CompositeProcessDirector {
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor)
             throws InvalidStateException {
+        if (_inWrapup) {
+            actor._cancelDelay();
+            return;
+        }
         if (delta < 0.0) {
             throw new InvalidStateException(((Nameable)actor).getName() +
                     ": delayed for negative time.");
@@ -408,6 +416,13 @@ public class CSPDirector extends CompositeProcessDirector {
     // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.
     private List _delayedActorList;
+
+    // Set to true when the director enters the wrapup() method. Any call
+    // to _actorDelayed() when this flag is true will simply cancel the
+    // delay and return. The purpose is to avoid the deadlock that happens
+    // when an actor is delayed after the director calls super.wrapup() in
+    // which it waits for all actors to stop.
+    private boolean _inWrapup = false;
 
     private static double TOLERANCE = Math.pow(10, -10);
 
