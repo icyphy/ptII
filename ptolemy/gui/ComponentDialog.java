@@ -149,7 +149,7 @@ public class ComponentDialog extends JDialog {
     /** Return the label of the button that triggered closing the
      *  dialog, or an empty string if none.
      */
-    public String buttonPressed () {
+    public String buttonPressed() {
         return _buttonPressed;
     }
 
