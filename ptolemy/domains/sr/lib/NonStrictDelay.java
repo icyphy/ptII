@@ -86,7 +86,7 @@ public class NonStrictDelay extends Transformer {
                 _currentToken = AbsentToken.ABSENT;
             }
         }
-        
+
         if (_previousToken != null) {
             if (_previousToken == AbsentToken.ABSENT) {
                 output.sendAbsent(0);
@@ -105,7 +105,7 @@ public class NonStrictDelay extends Transformer {
         super.initialize();
     }
 
-    /** Update the buffer variables to allow the inputs received to be 
+    /** Update the buffer variables to allow the inputs received to be
      *  sent as outputs.
      *  @exception IllegalActionException If there is no director.
      */
@@ -123,7 +123,7 @@ public class NonStrictDelay extends Transformer {
     // current iteration.
     private Token _previousToken;
 
-    // The most recent token received on the current iteration to be 
+    // The most recent token received on the current iteration to be
     // output on the next iteration.
     private Token _currentToken;
 

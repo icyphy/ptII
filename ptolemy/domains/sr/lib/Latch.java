@@ -47,13 +47,13 @@ the actor is fired until a new token is received.  No tokens are output until
 the first token is received at the input.
 
 <p>Note that this actor is not really a latch in the classical sense
-of the term since it is missing a trigger.  This actor will not 
+of the term since it is missing a trigger.  This actor will not
 be of much use in the DE domain, see the DE Sampler actor for
 an alternative.  This actor is useful in domains with non-strict semantics
 like SR and Giotto.
 
 <p>FIXME: This actor should be modified to handle multiports, but under SR
-a multiport version of this actor hangs in 
+a multiport version of this actor hangs in
 $PTII/ptolemy/actor/lib/test/auto/Latch.xml
 
 @see ptolemy.domains.de.lib.Sampler

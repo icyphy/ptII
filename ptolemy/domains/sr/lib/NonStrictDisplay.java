@@ -43,7 +43,7 @@ import javax.swing.text.BadLocationException;
 Display the values of the tokens arriving on the input channels along
 with the associated time in a text area on the screen.  If the value is
 undefined or known to be absent, that information is indicated instead.
-Each input token is written on a separate line.  The input type can be 
+Each input token is written on a separate line.  The input type can be
 of any type.  If the input happens to be a StringToken,
 then the surrounding quotation marks are stripped before printing
 the value of the token.  Thus, string-valued tokens can be used to
@@ -75,7 +75,7 @@ public class NonStrictDisplay extends Display {
     ////                         public methods                    ////
 
     /** Read at most one token from each input channel and display its
-     *  string value along with the current time on the screen.  Each 
+     *  string value along with the current time on the screen.  Each
      *  value is terminated with a newline character.
      *  @exception IllegalActionException If there is no director.
      */
@@ -103,7 +103,7 @@ public class NonStrictDisplay extends Display {
 
             // Append a newline character.
             if (width > i + 1) textArea.append("\n");
-            
+
             // Regrettably, the default in swing is that the top
             // of the textArea is visible, not the most recent text.
             // So we have to manually move the scrollbar.

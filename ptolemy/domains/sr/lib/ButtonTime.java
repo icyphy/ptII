@@ -1,4 +1,4 @@
-/* An actor that generates the current wall clock time in response to a 
+/* An actor that generates the current wall clock time in response to a
    click of a button.
 
 @Copyright (c) 1998-2001 The Regents of the University of California.
@@ -100,7 +100,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
         }
     }
 
-    /** Create a button on the screen, if necessary. If a graphical 
+    /** Create a button on the screen, if necessary. If a graphical
      *  container has
      *  not been specified, place the button into its own frame.
      *  Otherwise, place it in the specified container.
@@ -223,7 +223,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
             try {
                 _buttonPressed = true;
 
-                // JDK1.2 bug: WallClockTime._getCurrentTime() is 
+                // JDK1.2 bug: WallClockTime._getCurrentTime() is
                 // protected, but not accessible here.
                 double firingTime = _getCurrentTime(); // JDK1.2 bug
 

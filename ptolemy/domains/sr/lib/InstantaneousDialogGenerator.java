@@ -42,11 +42,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// InstantaneousDialogGenerator
 /**
-An actor that generates instantaneous dialog with a LookupTable.  This actor 
-outputs incrementing integers on the <i>indexOutput</i> port.  A server is 
-expected to receive an index number and output a token associated with this 
-index, which the client receives on the <i>dataInput</i> port.  The client 
-then outputs this token on the <i>dataOutput</i> port.  All ports are single 
+An actor that generates instantaneous dialog with a LookupTable.  This actor
+outputs incrementing integers on the <i>indexOutput</i> port.  A server is
+expected to receive an index number and output a token associated with this
+index, which the client receives on the <i>dataInput</i> port.  The client
+then outputs this token on the <i>dataOutput</i> port.  All ports are single
 ports.
 
 @author Paul Whitaker

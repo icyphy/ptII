@@ -137,7 +137,7 @@ public class NonStrictLogicFunction extends LogicFunction {
 
     /** Nullify results that cannot be asserted due to unknown inputs.
      */
-    private BooleanToken _nullifyIncompleteResults(BooleanToken inValue) 
+    private BooleanToken _nullifyIncompleteResults(BooleanToken inValue)
             throws IllegalActionException {
         BooleanToken outValue = inValue;;
         if (!input.isKnown()) {
