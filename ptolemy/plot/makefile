@@ -75,8 +75,8 @@ JSRCS = \
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) \
-	PtolemyGraphics1_1.java \
-	PtolemyGraphics1_2.java \
+	PtolemyGraphics1_1.java.in \
+	PtolemyGraphics1_2.java.in \
 	copyright.txt \
 	index.html \
 	ptplot \
@@ -137,12 +137,16 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 # See the class comment in PtolemyGraphics1_2 for the complete story
 
 # There are two files:
-# PtolemyGraphics1_1.java and PtolemyGraphics1_2.java
+# PtolemyGraphics1_1.java.in and PtolemyGraphics1_2.java.in
+#
+# These files have java.in suffixes so that the rule that runs javadoc
+# for all of the Ptolemy II packages does not attempt to create documentation
+# for these files.
 # 
-# PtolemyGraphics1_2.java extends Graphics, and has a method body
+# PtolemyGraphics1_2.java.in extends Graphics, and has a method body
 # for the new bogus method Sun introduced into the Graphics class in JDK 1.2
 #
-# PtolemyGraphics1_1.java extends Graphics, and has no methods
+# PtolemyGraphics1_1.java.in extends Graphics, and has no methods
 # 
 # $PTII/conf/confTest.java is a small Java application that simply
 # prints the value of the java.version property.
@@ -166,20 +170,20 @@ install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 # so that we can look for the "1.2" substring.  If we don't do this,
 # then the version number from JDK1.2.1 etc. will not match properly.
 #
-PtolemyGraphics.java: PtolemyGraphics1_1.java PtolemyGraphics1_2.java \
+PtolemyGraphics.java: PtolemyGraphics1_1.java.in PtolemyGraphics1_2.java.in \
 				$(ROOT)/mk/ptII.mk
 	@case "$(JVERSION)" in \
 	1.2*) \
 	    echo "configure determined that java.version='$(JVERSION)'"; \
 	    echo " so we are running JDK1.2 or later."; \
-	    echo 'Copying PtolemyGraphics1_2.java to PtolemyGraphics.java'; \
-	    cp PtolemyGraphics1_2.java PtolemyGraphics.java; \
+	    echo "Copying PtolemyGraphics1_2.java.in to PtolemyGraphics.java"; \
+	    cp PtolemyGraphics1_2.java.in PtolemyGraphics.java; \
 	    ;; \
 	*) \
 	    echo "configure determined that java.version='$(JVERSION)'"; \
 	    echo " so we are not running JDK1.2 or later."; \
-	    echo 'Copying PtolemyGraphics1_1.java to PtolemyGraphics.java'; \
-	    cp PtolemyGraphics1_1.java PtolemyGraphics.java; \
+	    echo "Copying PtolemyGraphics1_1.java.in to PtolemyGraphics.java"; \
+	    cp PtolemyGraphics1_1.java.in PtolemyGraphics.java; \
 	    ;; \
 	esac
 
