@@ -61,7 +61,7 @@ public class TokenMgrError extends Error
     static final int LOOP_DETECTED = 3;
 
     /**
-    * Indicates the reason why the exception is thrown. It will have
+    * @serial Indicates the reason why the exception is thrown. It will have
     * one of the above 4 values.
     */
     int errorCode;
