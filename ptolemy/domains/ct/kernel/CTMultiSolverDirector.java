@@ -492,8 +492,12 @@ public class CTMultiSolverDirector extends CTDirector {
                 // different sample rates, each feeding a Display, will
                 // result in blank lines in the displays, indicating
                 // absent inputs. EAL 12/31/02.
+                // FIXME: CTCompositeActor imiplements CTEventGenerator
+                // interface. It may consume events and generate more 
+                // events.
                 if (actor instanceof CTEventGenerator
-                        && !((CTEventGenerator)actor).hasCurrentEvent()) {
+                        && !((CTEventGenerator)actor).hasCurrentEvent()
+                        && !(actor instanceof CTCompositeActor)) {
                     continue;
                 }
                 if (_debugging) {

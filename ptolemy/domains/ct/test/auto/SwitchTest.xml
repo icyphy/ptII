@@ -4,7 +4,7 @@
 <entity name="SwitchTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 508]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -55,6 +55,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 35.0">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 240.0">
@@ -76,8 +78,35 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 572}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 839, 626}}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Note at time 1.5, the EventSource generates an event and the event 
+triggers the continuous time composite actor to output a new value. 
+This new value is sampled by the periodicSampler. At this time, 
+the model works as a discrete system. </text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 400.0">
+        </property>
     </property>
     <entity name="EventSource" class="ptolemy.domains.ct.lib.EventSource">
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -87,6 +116,8 @@ CTDirector to schedule and execute the model correctly.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 60.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -101,7 +132,11 @@ CTDirector to schedule and execute the model correctly.
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
+        <property name="IODependence" class="ptolemy.actor.IODependence">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 190.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -125,7 +160,11 @@ CTDirector to schedule and execute the model correctly.
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="IODependence" class="ptolemy.actor.IODependence">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 190.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -203,6 +242,8 @@ CTDirector to schedule and execute the model correctly.
         </port>
     </entity>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+        <property name="IODependence" class="ptolemy.actor.IODependence">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 105.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -214,6 +255,8 @@ CTDirector to schedule and execute the model correctly.
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 29.0">
             </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -346,6 +389,8 @@ CTDirector to schedule and execute the model correctly.
             <link port="sine.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="constant" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="IODependence" class="ptolemy.actor.IODependence">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="259.0, 176.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -414,6 +459,8 @@ CTDirector to schedule and execute the model correctly.
             <link port="output" relation="relation"/>
         </entity>
         <entity name="sinewave" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="IODependence" class="ptolemy.actor.IODependence">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="263.0, 257.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -506,6 +553,8 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -528,13 +577,15 @@ CTDirector to schedule and execute the model correctly.
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9553242920833, 0.8253139225488, 0.6215843888267, 0.3623359738043, 0.0707278141974, 1.0, -0.5048081143107, -0.7373256220607, -0.9039746195803, -0.9898705765073}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9553242920833, 0.8253139225488, 0.6215843888267, 0.3623359738043, 1.0, 1.0,  -0.5048081143107, -0.7373256220607, -0.9039746195803, -0.9898705765073}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 130.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
