@@ -340,7 +340,17 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             _scheduleElement = new Firing(actor);
             setIterationCount(expression);
         }
-
+    
+        /**
+         * Output a string representation of this symbolic firing.
+         */
+        public String toString() {
+            String result = "Fire Actor " 
+                    + ((Firing)_scheduleElement).getActor().toString();
+            if (getIterationCount() > 1)
+                result += " " + getIterationCount() + " times";
+            return result;
+        }
     }
 
     /** A schedule whose iteration count is given by an expression.
@@ -357,7 +367,20 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             _scheduleElement = schedule;
             setIterationCount(expression);
         }
- 
+
+        /** Return a string representation of this symbolic schedule.
+         *  @return The string representation.
+         */
+        public String toString() {
+            Schedule schedule = (Schedule)_scheduleElement;
+            String result = "Execute Symbolic Schedule{\n";
+            result += schedule.toString();
+            result += "}";
+            if (getIterationCount() > 1) {
+                result += " " + getIterationCount() + " times";
+            }
+            return result; 
+        }
     }
 
     /** Scope implementation with local caching. */
