@@ -329,6 +329,10 @@ public class AppletWriter extends SceneTransformer {
 
         classMap.put("ptolemy.actor.gui.MoMLApplet",
                 "ptolemy/ptsupport.jar");
+        // classMap.put("ptolemy.actor.lib.python.PythonScript",
+        //                 "lib/jython.jar");
+        // classMap.put("caltrop.ptolemy.actors.CalInterpreter",
+        //                 "lib/ptCal.jar");
         classMap.put(director.getClass().getName(),
                 _domainJar);
         classMap.put("ptolemy.vergil.MoMLViewerApplet",
@@ -401,11 +405,18 @@ public class AppletWriter extends SceneTransformer {
                                           );
                 }
 
+                // Under Web Start, if there was a space in the
+                // pathname, the space will have been converted to %20
+                // but looking up a file will fail if the file has
+                // a space in it and we are looking for a %20.
+                classResource = StringUtilities
+                    .substitute(classResource, "%20", " "); 
+
                 // We need to actually look up the file to deal with
                 // the various C:/ptII, c:/ptII, c:\ptII, C:\ptII possibilities
-                //
                 String canonicalClassResource =
                     UtilityFunctions.findFile(classResource);
+
                 String canonicalPtIIDirectory =
                     UtilityFunctions.findFile(_ptIIDirectory);
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
