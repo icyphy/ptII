@@ -37,14 +37,14 @@
   <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" value="8"></property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-             <property name="TokenConsumptionRate" value="1"></property>
-             <property name="TokenInitProduction" value="0"></property>
-             <property name="TokenProductionRate" value="0"></property>
+             <property name="tokenConsumptionRate" value="1"></property>
+             <property name="tokenInitProduction" value="0"></property>
+             <property name="tokenProductionRate" value="0"></property>
         </port>
         <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-             <property name="TokenConsumptionRate" value="0"></property>
-             <property name="TokenInitProduction" value="0"></property>
-             <property name="TokenProductionRate" value="1"></property>
+             <property name="tokenConsumptionRate" value="0"></property>
+             <property name="tokenInitProduction" value="0"></property>
+             <property name="tokenProductionRate" value="1"></property>
         </port>
  </entity>
 

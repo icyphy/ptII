@@ -52,14 +52,14 @@ shows the effects of the use of finite precision.
        <property name="taps" value="firTaps"></property>
        <property name="interpolation"  value="1"></property>
        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="1"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="0"></property>
+               <property name="tokenConsumptionRate"  value="1"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="0"></property>
        </port>
        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="0"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="1"></property>
+               <property name="tokenConsumptionRate"  value="0"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="1"></property>
        </port>
   </entity>
 
@@ -67,14 +67,14 @@ shows the effects of the use of finite precision.
        <property name="taps" value="quantizeFirTaps"></property>
        <property name="interpolation"  value="1"></property>
        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="1"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="0"></property>
+               <property name="tokenConsumptionRate"  value="1"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="0"></property>
        </port>
        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="0"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="1"></property>
+               <property name="tokenConsumptionRate"  value="0"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="1"></property>
        </port>
   </entity>
 
@@ -89,14 +89,14 @@ shows the effects of the use of finite precision.
        <property name="taps" value="fixFirTaps"></property>
        <property name="interpolation"  value="1"></property>
        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="1"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="0"></property>
+               <property name="tokenConsumptionRate"  value="1"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="0"></property>
        </port>
        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-               <property name="TokenConsumptionRate"  value="0"></property>
-               <property name="TokenInitProduction"  value="0"></property>
-               <property name="TokenProductionRate"  value="1"></property>
+               <property name="tokenConsumptionRate"  value="0"></property>
+               <property name="tokenInitProduction"  value="0"></property>
+               <property name="tokenProductionRate"  value="1"></property>
        </port>
  </entity>
 
