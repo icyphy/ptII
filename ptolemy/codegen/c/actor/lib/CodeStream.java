@@ -34,11 +34,13 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStreamReader;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.util.FileUtilities;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Jackie
@@ -67,31 +69,59 @@ public class CodeStream {
     public void append(CodeStream codeBlock) {
         _stream.append(codeBlock.toString());
     }
-
-    public void appendCodeBlock(String name) throws IOException {
-        // read from .c file
-        URL file = FileUtilities.nameToURL(_cgHelper.getClass().toString(), null, null);
-
-        // fetch the code within the file
-        StringBuffer codeBlock = _fetchCodeBlock(file, name);
-
-        // append to stream
-        append(codeBlock);
+   
+    /**
+     * To append an specific code block
+     * @throws IllegalActionException
+     */
+    public void appendCodeBlock(String blockName) throws IllegalActionException {
+        _appendCodeBlock(_cgHelper.getClass().toString(), blockName);
     }
 
+    /**
+     * To append an nameless code block
+     * e.g. the file contains only one code block 
+     * @throws IllegalActionException
+     */
+    public void appendCodeBlock() throws IllegalActionException {
+        _appendCodeBlock(_cgHelper.getClass().toString(), ""); 
+    }
+
+    private void _appendCodeBlock(String className, String blockName) throws IllegalActionException {
+        try {
+            BufferedReader br = FileUtilities.openForReading(_filePath + className+"txt", null, null);
+
+            StringBuffer codeBlock = _fetchCodeBlock(br, blockName);     // fetch the code within the file            
+            append(codeBlock);                                              // append to stream            
+
+        } catch (IOException e) {
+            throw new IllegalActionException ("Cannot open file: " + className + ".c");
+        } 
+    }
+    
     /**
      * @param file
      * @param name
      * Given the name of the CodeBlock,
-     * @return the string representation of the code within the file
-     * @exception IOException
-     */
-    private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
-
-        StringBuffer codeInFile = new StringBuffer((String) file.getContent());
-        int startIndex = codeInFile.lastIndexOf(_startCodeBlock1 + name + _startCodeBlock2) + 1;
-        int endIndex = codeInFile.indexOf(_endCodeBlock1 + name + _endCodeBlock2) - 1;
-
+	 * @return the string representation of the code within the file
+     * @throws IOException
+     * @throws IllegalActionException
+	 */
+	private static StringBuffer _fetchCodeBlock(BufferedReader br, String blockName) throws IOException, IllegalActionException {        
+        StringBuffer codeInFile = new StringBuffer();
+        String s = br.readLine();
+        while (s != null) {
+            codeInFile.append(s);
+            s = br.readLine();
+        }
+        
+        String startHeader = _startCodeBlock1 + blockName + _startCodeBlock2;
+        int startIndex = codeInFile.indexOf(startHeader) + startHeader.length();
+        int endIndex = codeInFile.indexOf(_endCodeBlock1 + blockName + _endCodeBlock2);
+        
+        if (endIndex <= startIndex)
+        	throw new IllegalActionException ("Cannot find codeBlock (" + blockName + ")");
+        
         return new StringBuffer(codeInFile.substring(startIndex, endIndex));
     }
 
@@ -107,15 +137,42 @@ public class CodeStream {
      * The symbol style that indicates the start of a code block
      * (ex. _startCodeBlock1 + codeBlockName + _startCodeBlock2)
      */
-    private String _startCodeBlock1 = "//****";
-    private String _startCodeBlock2 = "****";
-
-
+    private static String _startCodeBlock1 = "/****";
+    private static String _startCodeBlock2 = "****";
+    
+        
     /**
      * The symbol style that indicates the end of a code block
      * (ex. _endCodeBlock1 + codeBlockName + _endCodeBlock2)
      */
-    private String _endCodeBlock1 = "****";
-    private String _endCodeBlock2 = "****//";
+    private static String _endCodeBlock1 = "****";
+    private static String _endCodeBlock2 = "****/";
+    
+    
+    
+    // FIXME: where's the file path for the .c files??
+    private static String _filePath = "C:\\Program Files\\eclipse\\workspace\\ptII\\ptolemy\\codegen\\c\\actor\\lib\\";
+            // "xxxxxxCLASSPATHxxxxxx/" + /ptII/ptolemy/codegen/c/actor/lib/"; //"xxxxxxCLASSPATHxxxxxx/";
 
+    private static String _appendCodeBlock_testing(String className, String blockName) throws IllegalActionException, IOException {
+        //try {
+            BufferedReader br = FileUtilities.openForReading(_filePath + className+".c", null, null);
+            StringBuffer codeBlock = _fetchCodeBlock(br, blockName);     // fetch the code within the file            
+            return codeBlock.toString();
+        //} catch (IOException e) {
+        //    throw new IllegalActionException ("Cannot open file: " + className + ".c");
+        //} 
+    }
+
+    public static void main(String[] arg) throws IOException, IllegalActionException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    	String className, blockName;
+        System.out.println("testing-----------------");
+        System.out.println("please input class name: ");
+        //className = in.readLine();
+        System.out.println("please input code block name: ");
+        //blockName = in.readLine();
+        
+        System.out.println(CodeStream._appendCodeBlock_testing("Accumulator", "codeBlock"));
+    }
 }
