@@ -524,7 +524,8 @@ public class PlotBox extends Panel {
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
                     graphics.setColor(_foreground);
                 }
-                int labxpos = xCoord1 - _labelFontMetrics.stringWidth(xticklabel)/2;
+                int labxpos = xCoord1 -
+                    _labelFontMetrics.stringWidth(xticklabel)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(xticklabel, labxpos,
                         _lry + 3 + labelheight);
