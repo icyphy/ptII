@@ -134,12 +134,12 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of DoubleToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of DoubleToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below DoubleToken in the type hierarchy, it is converted to
      *  an instance of DoubleToken or one of the subclasses of
-     *  DoubleToken and returned. If non of the above condition is
+     *  DoubleToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a DoubleToken.
      *  @return A DoubleToken.
@@ -421,7 +421,7 @@ public class DoubleToken extends ScalarToken {
      *  subtracted from the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param leftArg The token to add this Token to.
+     *  @param leftArg The token to subtract this Token from.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.

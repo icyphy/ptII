@@ -88,12 +88,12 @@ public class BooleanToken extends Token {
     }
 
     /** Convert the specified token into an instance of BooleanToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of BooleanToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below BooleanToken in the type hierarchy, it is converted to
      *  an instance of BooleanToken or one of the subclasses of
-     *  BooleanToken and returned. If non of the above condition is
+     *  BooleanToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a BooleanToken.
      *  @return A BooleanToken.

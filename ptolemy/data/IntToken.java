@@ -127,12 +127,12 @@ public class IntToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of IntToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of IntToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below IntToken in the type hierarchy, it is converted to
      *  an instance of IntToken or one of the subclasses of
-     *  IntToken and returned. If non of the above condition is
+     *  IntToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a IntToken.
      *  @return A IntToken.

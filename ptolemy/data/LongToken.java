@@ -116,12 +116,12 @@ public class LongToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of LongToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of LongToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below LongToken in the type hierarchy, it is converted to
      *  an instance of LongToken or one of the subclasses of
-     *  LongToken and returned. If non of the above condition is
+     *  LongToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a LongToken.
      *  @return A LongToken.

@@ -64,12 +64,12 @@ public class ObjectToken extends Token {
     ////                         public methods                    ////
 
     /** Convert the specified token into an instance of ObjectToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of ObjectToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below ObjectToken in the type hierarchy, it is converted to
      *  an instance of ObjectToken or one of the subclasses of
-     *  ObjectToken and returned. If non of the above condition is
+     *  ObjectToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to an ObjectToken.
      *  @return An ObjectToken.

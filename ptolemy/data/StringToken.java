@@ -113,12 +113,12 @@ public class StringToken extends Token {
     }
 
     /** Convert the specified token into an instance of StringToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below StringToken in the type hierarchy, it is converted to
      *  an instance of StringToken or one of the subclasses of
-     *  StringToken and returned. If non of the above condition is
+     *  StringToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a StringToken.
      *  @return A StringToken
