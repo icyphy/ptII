@@ -49,7 +49,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositeEntityModel;
 import diva.graph.GraphEvent;
-import diva.graph.GraphModel;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.NodeModel;
