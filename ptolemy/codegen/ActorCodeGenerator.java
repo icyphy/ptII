@@ -177,9 +177,15 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         try {
             sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
         } catch (IOException e) {
-            throw new RuntimeException("regenerated source code not found " +
-                    "for entity " + actorInfo.actor +
-                    " in source file " + sourceName);
+            throw new RuntimeException("regenerated source code not found "
+                    + "for entity " + actorInfo.actor
+                    + " in source file " + sourceName
+                    + ".  The problem is likely your CLASSPATH."
+                    + " For example, if you are generating code in the"
+                    + " cg.ramp package, then be sure that your CLASSPATH"
+                    + " is set to the directory that contains the cg"
+                    + " directory.  Usually, we generate code in $PTII/cg,"
+                    + " so having the CLASSPATH set to $PTII solves this.");
         }
 
         String filename = sourceFile.toString();
