@@ -41,7 +41,7 @@ import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.*;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 //// PNApplet
 /**
 A base class for applets that use the PN domain.
@@ -52,19 +52,18 @@ It provides a "Go" button to run the model.
 */
 public class PNApplet extends PtolemyApplet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-
-/** Describe the applet parameters.
- *  @return An array describing the applet parameters.
- */
-public String[][] getParameterInfo() {
-    String basepinfo[][] = super.getParameterInfo();
-    String[][] pinfo = new String[basepinfo.length + 2][];
-    for (int i = 0; i < basepinfo.length; i++) {
-        pinfo[i] = basepinfo[i];
-    }
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String basepinfo[][] = super.getParameterInfo();
+        String[][] pinfo = new String[basepinfo.length + 2][];
+        for (int i = 0; i < basepinfo.length; i++) {
+            pinfo[i] = basepinfo[i];
+        }
     String newinfo[][] = {
         {"initial_queue_capacity", "", "Capacity of the queues in PN"},
         {"defaultcapacity", "1", "default capacity of queues"}
