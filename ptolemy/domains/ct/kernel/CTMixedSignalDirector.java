@@ -467,7 +467,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
         // Don't need to consider breakpoint.
         _setFireBeginTime(getCurrentTime());
-        while(getCurrentTime() < getOutsideTime()) {
+        while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
     }
