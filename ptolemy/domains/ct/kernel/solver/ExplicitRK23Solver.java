@@ -81,7 +81,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
      */
     public void resolveStates() throws IllegalActionException {
         if(VERBOSE) {
-            System.out.println("FE: resolveState().");
+            System.out.println("RK23: resolveState().");
         }
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
@@ -186,9 +186,10 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         try {
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getLTETolerant();
+            double h = dir.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             double[] k = integrator.getAuxVariables(); 
-            double lte = Math.abs(k[0]*_E[0] + k[1]*_E[1]
+            double lte = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
                                 + k[2]*_E[2] + f* _E[3]);
             //k[3] is Local Truncation Error
             integrator.setAuxVariables(3, lte);
@@ -227,7 +228,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         double lte = (integrator.getAuxVariables())[3];
         double h = dir.getCurrentStepSize();
         double errtol = dir.getLTETolerant();
-        double newh = 2.0*h;
+        double newh = 5.0*h;
         if(lte>dir.getValueAccuracy()) {
             newh = h* Math.max(0.5, 0.8*Math.pow((errtol/lte), 1.0/_order));
         }

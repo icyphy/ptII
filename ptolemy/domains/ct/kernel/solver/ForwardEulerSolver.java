@@ -50,8 +50,6 @@ No error control is performed.
 */
 public class ForwardEulerSolver extends FixedStepSolver{
 
-    public static final boolean VERBOSE = true;
-    public static final boolean DEBUG = true;
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in

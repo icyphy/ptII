@@ -47,9 +47,6 @@ Base class for variable step size (with local error control) ODE solvers.
 */
 public abstract class VariableStepSolver extends ODESolver{
 
-    public static final boolean DEBUG = true;
-    public static final boolean VERBOSE = true;
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -141,7 +138,7 @@ public abstract class VariableStepSolver extends ODESolver{
             throw new InvalidStateException(this, dir,
                 " has no scheduler.");
         }
-        double newh = dir.getCurrentStepSize()*2.0;
+        double newh = dir.getCurrentStepSize()*5.0;
         Enumeration errCtrlActors = sch.errorControlActors();
         while(errCtrlActors.hasMoreElements()) {
             CTErrorControlActor eca = 

@@ -47,6 +47,10 @@ are shared by all the switchable solvers.
 @version $Id$
 */
 public abstract class ODESolver extends NamedObj {
+    
+    public static final boolean VERBOSE = false;
+    public static final boolean DEBUG = false;
+
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.

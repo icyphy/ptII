@@ -127,6 +127,11 @@ public class CTSingleSolverDirector extends CTDirector {
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
+        if(STAT) {
+            NSTEP=0;
+            NFUNC=0;
+            NFAIL=0;
+        }
         if(VERBOSE) {
             System.out.println("updating parameters");
         }
@@ -187,19 +192,7 @@ public class CTSingleSolverDirector extends CTDirector {
             setScheduleValid(true);
         }
         updateParameters();
-        setCurrentODESolver(_defaultSolver);
-        double nearestBP = ((Double)getBreakPoints().first()).doubleValue() -
-                           getCurrentTime();
-        setCurrentStepSize(Math.min(nearestBP, getSuggestedNextStepSize()));
-        // prefire all the actors.
-        boolean ready = true;
-        CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
-            ready = ready && a.prefire();
-        }
-        return ready;
+        return true;
    }
 
    /**  Fire the system for one iteration.
@@ -213,7 +206,8 @@ public class CTSingleSolverDirector extends CTDirector {
             updateStates(); // call postfire on all actors 
             return;
         }
-        ODESolver solver = getCurrentODESolver();
+        //Refine step size
+        setCurrentStepSize(getSuggestedNextStepSize());
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
         // If now is a break point, remove the break point from table;
@@ -232,9 +226,22 @@ public class CTSingleSolverDirector extends CTDirector {
                 }
             }
         }
-        solver.iterate();
-        produceOutput();
-        updateStates(); // call postfire on all actors 
+        //chhose ODE solver
+        setCurrentODESolver(_defaultSolver);
+        // prefire all the actors.
+        boolean ready = true;
+        CompositeActor ca = (CompositeActor) getContainer();
+        Enumeration actors = ca.deepGetEntities();
+        while(actors.hasMoreElements()) {
+            Actor a = (Actor) actors.nextElement();
+            ready = ready && a.prefire();
+        }
+        if(ready) {
+            ODESolver solver = getCurrentODESolver();  
+            solver.iterate();
+            produceOutput();
+            updateStates(); // call postfire on all actors 
+        }
     }
 
 
@@ -254,7 +261,7 @@ public class CTSingleSolverDirector extends CTDirector {
     /** wrapup . Show the statistics.
      */
     public void wrapup() throws IllegalActionException{
-        if(DEBUG) {
+        if(STAT) {
             System.out.println("**************STATISTICS***************");
             System.out.println("Total # of STEPS "+NSTEP);
             System.out.println("Total # of Function Evaluation "+NFUNC);

@@ -51,9 +51,9 @@ It maintains a break point table to record all the break points.
 public abstract class CTDirector extends StaticSchedulingDirector 
         implements ParameterListener{
 
-    public static final boolean VERBOSE = true;
-    public static final boolean DEBUG = true;
-    public static final boolean STAT = true;
+    public static final boolean VERBOSE = false;
+    public static final boolean DEBUG = false;
+    public static final boolean STAT = false;
     public int NSTEP = 0;
     public int NFUNC = 0;
     public int NFAIL = 0;
@@ -420,6 +420,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
         newsolver._makeSolverOf(this);
         return newsolver;
+    }
+
+   /** Indicate whether this director would like to have write access
+     *  during its iteration. By default, the return value is true, indicating
+     *  the need for a write access.
+     *
+     *  @return True if this director need write access, false otherwise.
+     */ 
+    protected boolean _writeAccessPreference() { 
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////
