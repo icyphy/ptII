@@ -229,7 +229,7 @@ test ComponentPort-3.3e {test insidePorts with null links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="E1" class="ptolemy.kernel.CompositeEntity">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttributes" value="3.0-devel">
     </property>
     <port name="P3" class="ptolemy.kernel.ComponentPort">
     </port>
@@ -261,7 +261,7 @@ test ComponentPort-3.3f {test insidePorts with null inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="E1" class="ptolemy.kernel.CompositeEntity">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttributes" value="3.0-devel">
     </property>
     <port name="P1" class="ptolemy.kernel.ComponentPort">
     </port>
