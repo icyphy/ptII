@@ -1,19 +1,29 @@
-<!-- $Id$-->
-<HTML>
-<HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6">
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Discrete Event Threaded Actor Demonstration</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Discrete Event Threaded Actor Demonstration</H1>
 
 <CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
+<APPLET name="ABROApplet"
+   archive="ptolemy/domains/de/demo/demo.jar,
+	ptolemy/domains/de/de.jar,
+	ptolemy/ptsupport.jar"
+   code=ptolemy.domains.de.demo.ABROApplet.class
+   codebase=../../../..
+   width=600 height=400>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a threaded demo
+here.</I>
 
-<H3>
-DE Simulation:</H3>
-The following applet demonstrates the design of a threaded actor in Ptolemy
-II DE domain. The demo is taken from ABRO specification described in
-Esterel language primer. The specification is as follow:
+
+This applet demonstrates the design of a threaded actor in the Ptolemy
+II DE domain. The demo is taken from the ABRO specification described in
+the Esterel language primer. The specification is as follow:
 <pre>
 	Emit an output O as soon as two inputs A and B have occured. 
 	Reset this behavior each time the input R occurs.
@@ -38,24 +48,6 @@ with its state machine description. As such, it also suffers from
 <I>exponential state explosion</I> of state machine description in the form
 of <I>exponential code length expansion</I>. Future research will
 emphasize on ways to avoid this (e.g. Esterel like style).
-<p>
-You can interact with the applet by choosing the stop time of the simulation.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
-<CENTER>
-<P><APPLET name="ABROApplet"
-   bgcolor=#FAF0E6
-   archive="ptolemy/domains/de/demo/demo.jar,
-	ptolemy/domains/de/de.jar,
-	ptolemy/ptsupport.jar"
-   code=ptolemy.domains.de.demo.ABROApplet.class
-   codebase=../../../..
-   width=600 height=400>
-<param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
-here.</I>
-<BR></APPLET></CENTER>
 
 <P>This applet is implemented by
 <TT><A HREF="ABROApplet.java">ABROApplet.java</A></TT>.
@@ -82,9 +74,7 @@ actor) connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <IMG SRC="img/ABRODiagram.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
-</BODY>
-</HTML>
+<I>Add text describing the applet</I>
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
