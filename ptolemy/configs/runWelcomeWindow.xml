@@ -5,6 +5,7 @@
   <entity name="doc" class="ptolemy.actor.gui.Effigy">
     <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
       <property name="url" value="ptolemy/configs/intro.htm"/>
+      <property name="size" value="500x330"/>
     </entity>
   </entity>
 </entity>
