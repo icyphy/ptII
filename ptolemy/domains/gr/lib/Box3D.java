@@ -121,16 +121,6 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the value of the length parameter
-     *  @return the length of the box
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getLength() throws IllegalActionException {
-        double value = ((DoubleToken) xLength.getToken()).doubleValue();
-        return value / 2.0;
-    }
-
     /** Return the value of the height parameter
      *  @return the height of the box
      *  @exception IllegalActionException If the value of some parameters can't
@@ -138,6 +128,16 @@ public class Box3D extends GRShadedShape {
      */
     private double _getHeight() throws IllegalActionException  {
         double value = ((DoubleToken) yHeight.getToken()).doubleValue();
+        return value / 2.0;
+    }
+
+    /** Return the value of the length parameter
+     *  @return the length of the box
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    private double _getLength() throws IllegalActionException {
+        double value = ((DoubleToken) xLength.getToken()).doubleValue();
         return value / 2.0;
     }
 

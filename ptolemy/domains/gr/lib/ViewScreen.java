@@ -176,65 +176,20 @@ public class ViewScreen extends GRActor implements Placeable {
     public Parameter verticalResolution;
 
 
-        /** The background color, given as a 3-element array representing
-         *  rgb color
-         */
-        public Parameter backgroundColor;
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The background color, given as a 3-element array representing
+     *  rgb color
+     */
+    public Parameter backgroundColor;
 
 
-    public void place(Container container) {
-        GraphicsConfiguration config =
-            SimpleUniverse.getPreferredConfiguration();
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        int horizontalDimension = 400;
-        int verticalDimension = 400;
-
-        try {
-            horizontalDimension = _getHorizontalResolution();
-            verticalDimension = _getVerticalResolution();
-        } catch (Exception e) {
-            // FIXME handle this
-        }
-
-        if (_canvas == null) {
-            _canvas = new Canvas3D(config);
-        }
-        if (container == null) {
-            _frame = new JFrame("ViewScreen");
-            _frame.getContentPane().add(_canvas, BorderLayout.CENTER);
-            _canvas.setSize(new Dimension(horizontalDimension,
-                    verticalDimension));
-            _frame.setSize(horizontalDimension+50,verticalDimension);
-            if (_simpleUniverse == null) {
-                _simpleUniverse = new SimpleUniverse(_canvas);
-            }
-            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
-            _frame.setVisible(true);
-        } else {
-            container.add("Center",_canvas);
-            _canvas.setSize(new Dimension(horizontalDimension,
-                    verticalDimension));
-            if (_simpleUniverse == null) {
-                _simpleUniverse = new SimpleUniverse(_canvas);
-            }
-            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
-
-            /* FIXME: experimental code for changing views.
-               TransformGroup VPTG = new TransformGroup();
-               VPTG = _simpleUniverse.getViewingPlatform()
-               .getMultiTransformGroup().getTransformGroup(0);
-               Transform3D VPT3D = new Transform3D();
-               //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
-               //      new Point3d(0.0, 0.0, 0.0),
-               //      new Vector3d(0.0, 1.0, 0.0));
-               //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
-               //VPT3D.rotX(Math.PI/2.0);
-               VPT3D.rotX(Math.PI/2);
-               VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
-
-               VPTG.setTransform(VPT3D);
-            */
-        }
+    public void addChild(Node node) {
+        _userTransformation.addChild(node);
     }
 
 
@@ -278,7 +233,8 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_simpleUniverse == null) {
             _simpleUniverse = new SimpleUniverse(_canvas);
         }
-        Enumeration branches = _simpleUniverse.getLocale().getAllBranchGraphs();
+        Enumeration branches
+            = _simpleUniverse.getLocale().getAllBranchGraphs();
 
         while (branches.hasMoreElements()) {
             BranchGroup branchGroup = (BranchGroup) branches.nextElement();
@@ -368,7 +324,8 @@ public class ViewScreen extends GRActor implements Placeable {
         if (addLights) {
                 BranchGroup lightRoot = new BranchGroup();
 
-                AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
+                AmbientLight lightA
+                    = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
                 lightA.setInfluencingBounds(_bounds);
                 lightRoot.addChild(lightA);
 
@@ -380,7 +337,8 @@ public class ViewScreen extends GRActor implements Placeable {
                 lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
                 lightRoot.addChild(lightD1);
 
-                _simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
+                _simpleUniverse.getViewer().getView()
+                    .setLocalEyeLightingEnable(true);
                 _simpleUniverse.addBranchGraph(lightRoot);
 
             }
@@ -393,6 +351,61 @@ public class ViewScreen extends GRActor implements Placeable {
     }
 
 
+    public void place(Container container) {
+        GraphicsConfiguration config =
+            SimpleUniverse.getPreferredConfiguration();
+
+        int horizontalDimension = 400;
+        int verticalDimension = 400;
+
+        try {
+            horizontalDimension = _getHorizontalResolution();
+            verticalDimension = _getVerticalResolution();
+        } catch (Exception e) {
+            // FIXME handle this
+        }
+
+        if (_canvas == null) {
+            _canvas = new Canvas3D(config);
+        }
+        if (container == null) {
+            _frame = new JFrame("ViewScreen");
+            _frame.getContentPane().add(_canvas, BorderLayout.CENTER);
+            _canvas.setSize(new Dimension(horizontalDimension,
+                    verticalDimension));
+            _frame.setSize(horizontalDimension+50,verticalDimension);
+            if (_simpleUniverse == null) {
+                _simpleUniverse = new SimpleUniverse(_canvas);
+            }
+            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+            _frame.setVisible(true);
+        } else {
+            container.add("Center",_canvas);
+            _canvas.setSize(new Dimension(horizontalDimension,
+                    verticalDimension));
+            if (_simpleUniverse == null) {
+                _simpleUniverse = new SimpleUniverse(_canvas);
+            }
+            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+
+            /* FIXME: experimental code for changing views.
+               TransformGroup VPTG = new TransformGroup();
+               VPTG = _simpleUniverse.getViewingPlatform()
+               .getMultiTransformGroup().getTransformGroup(0);
+               Transform3D VPT3D = new Transform3D();
+               //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
+               //      new Point3d(0.0, 0.0, 0.0),
+               //      new Vector3d(0.0, 1.0, 0.0));
+               //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
+               //VPT3D.rotX(Math.PI/2.0);
+               VPT3D.rotX(Math.PI/2);
+               VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
+
+               VPTG.setTransform(VPT3D);
+            */
+        }
+    }
+
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _userTransformation.getTransform(_lastTransform);
@@ -403,11 +416,6 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.startRenderer();
         }
         _isSceneGraphInitialized = false;
-    }
-
-
-    public void addChild(Node node) {
-        _userTransformation.addChild(node);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -426,6 +434,24 @@ public class ViewScreen extends GRActor implements Placeable {
      */
     protected Node _getNodeObject() {
          return null;
+    }
+
+    /** Makes the background for the viewScreen
+     *
+     *  @return javax.media.j3d.Background
+     *  @exception IllegalActionException If unable to read the color
+     * parameter.
+     */
+    protected Background _makeBackground() throws IllegalActionException {
+            DoubleMatrixToken colorVector =
+                    (DoubleMatrixToken) backgroundColor.getToken();
+            Color3f color = new Color3f();
+
+        color.x = (float) colorVector.getElementAt(0, 0);
+        color.y = (float) colorVector.getElementAt(0, 1);
+        color.z = (float) colorVector.getElementAt(0, 2);
+
+            return new Background(color);
     }
 
     /**
@@ -459,23 +485,6 @@ public class ViewScreen extends GRActor implements Placeable {
         }
     }
 
-    /** Makes the background for the viewScreen
-     *
-     *  @return javax.media.j3d.Background
-     *  @exception IllegalActionException If unable to read the color parameter;
-     */
-    protected Background _makeBackground() throws IllegalActionException {
-            DoubleMatrixToken colorVector =
-                    (DoubleMatrixToken) backgroundColor.getToken();
-            Color3f color = new Color3f();
-
-        color.x = (float) colorVector.getElementAt(0, 0);
-        color.y = (float) colorVector.getElementAt(0, 1);
-        color.z = (float) colorVector.getElementAt(0, 2);
-
-            return new Background(color);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _getHorizontalResolution() throws IllegalActionException {
@@ -484,6 +493,11 @@ public class ViewScreen extends GRActor implements Placeable {
 
     private int _getVerticalResolution() throws IllegalActionException {
         return ((IntToken) verticalResolution.getToken()).intValue();
+    }
+
+    private boolean _isIterationSynchronized() throws IllegalActionException {
+        return ((BooleanToken)
+                iterationSynchronized.getToken()).booleanValue();
     }
 
     private boolean _isRotatable() throws IllegalActionException  {
@@ -496,11 +510,6 @@ public class ViewScreen extends GRActor implements Placeable {
 
     private boolean _isTranslatable() throws IllegalActionException  {
         return ((BooleanToken) translatable.getToken()).booleanValue();
-    }
-
-    private boolean _isIterationSynchronized() throws IllegalActionException {
-        return ((BooleanToken)
-                iterationSynchronized.getToken()).booleanValue();
     }
 
     private boolean _shouldShowAxes() throws IllegalActionException {
