@@ -103,9 +103,10 @@ install: jclass $(PTCLASSJAR)
 demo: compileDemo runDemo
 timeDemo: compileDemo timeOrthoCommDemo
 
-# OrthogonalCom - There is no .xml file for this model
+# OrthogonalCom
 MODEL =			OrthogonalCom
-SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+#SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+SOURCECLASS =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
 #  make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
@@ -133,7 +134,8 @@ SOOT_USER_ARGS =
 WATCH_DOG_TIMEOUT =     600000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		200
-ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
+#ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
+
 compileDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
@@ -200,9 +202,9 @@ treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
 		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX).jar \
-			$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-			-class $(SOURCECLASS) \
-			-iterations $(ITERATIONS) | tail -1
+			$(JAVA) ptolemy.actor.gui.MoMLSimpleApplication \
+			$(SOURCECLASS) \
+			| tail -1
 	ls -l $(TREESHAKE_PREFIX).jar
 	@rm -f  $(STATSFILE)
 runTreeShakeWithoutCodegen:
@@ -211,9 +213,9 @@ runTreeShakeWithoutCodegen:
 	do \
 		$(JAVA) \
 			-classpath $(TREESHAKE_PREFIX).jar \
-			ptolemy.actor.gui.CompositeActorApplication \
-			-class $(SOURCECLASS) \
-			-iterations $(ITERATIONS) | tail -1 | \
+			ptolemy.actor.gui.MoMLSimpleApplication \
+			$(SOURCECLASS) \
+			| tail -1 | \
 			tee -a $(STATSFILE); \
 	done
 	$(ROOT)/util/testsuite/memorystats "$(MODEL) interpreted" < $(STATSFILE)
