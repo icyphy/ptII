@@ -118,7 +118,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      *   to use if the model does not have a library.
      */
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         // Override the default help file.
@@ -165,12 +165,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-                new JMenuItem("Listen to Director", KeyEvent.VK_L),
-                new JMenuItem("Normal Information", KeyEvent.VK_N),
-                new JMenuItem("Verbose Information", KeyEvent.VK_V),
-                new JMenuItem("Animate Execution", KeyEvent.VK_A),
-                new JMenuItem("Stop Animating", KeyEvent.VK_S),
-            };
+            new JMenuItem("Listen to Director", KeyEvent.VK_L),
+            new JMenuItem("Normal Information", KeyEvent.VK_N),
+            new JMenuItem("Verbose Information", KeyEvent.VK_V),
+            new JMenuItem("Animate Execution", KeyEvent.VK_A),
+            new JMenuItem("Stop Animating", KeyEvent.VK_S),
+        };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -313,8 +313,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         // Dialog to ask for a delay time.
                         Query query = new Query();
                         query.addLine("delay",
-                            "Time (in ms) to hold highlight",
-                            Long.toString(_lastDelayTime));
+                                "Time (in ms) to hold highlight",
+                                Long.toString(_lastDelayTime));
 
                         ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
                                 "Delay for Animation", query);
@@ -347,18 +347,18 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                 }
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
-                                    "Invalid time, which is required "
-                                    + "to be an integer", ex);
+                                        "Invalid time, which is required "
+                                        + "to be an integer", ex);
                             }
                         } else {
                             MessageHandler.error(
-                                "Cannot find the director. Possibly this "
-                                + "is because this is a class, not an "
-                                + "instance.");
+                                    "Cannot find the director. Possibly this "
+                                    + "is because this is a class, not an "
+                                    + "instance.");
                         }
                     } else {
                         MessageHandler.error(
-                            "Model is not an actor. Cannot animate.");
+                                "Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -378,7 +378,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             } catch (KernelException ex) {
                 try {
                     MessageHandler.warning("Failed to create debug listener: "
-                        + ex);
+                            + ex);
                 } catch (CancelException exception) {
                 }
             }
@@ -401,8 +401,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public CreateHierarchyAction() {
             super("CreateHierarchy");
             putValue("tooltip",
-                "Create a TypedCompositeActor that contains the"
-                + " selected actors.");
+                    "Create a TypedCompositeActor that contains the"
+                    + " selected actors.");
 
             //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
             //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
@@ -468,7 +468,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     }
 
                     PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                                                               .getContainer();
+                        .getContainer();
                     Configuration configuration = (Configuration) effigy
                         .toplevel();
                     NamedObj library = configuration.getEntity("actor library");
@@ -514,7 +514,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller = _jgraph.getGraphPane()
-                                                    .getGraphController();
+                    .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                     .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
@@ -575,7 +575,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller = _jgraph.getGraphPane()
-                                                    .getGraphController();
+                    .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                     .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
@@ -628,8 +628,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             super("Automatic Layout");
             putValue("tooltip", "Layout the Graph (Ctrl+T)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_T,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_T,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
         }
 
@@ -668,7 +668,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
             if (!(object instanceof Entity)) {
                 throw new KernelRuntimeException("Could not save in "
-                    + "library, '" + object + "' is not an Entity");
+                        + "library, '" + object + "' is not an Entity");
             }
 
             Entity entity = (Entity) object;

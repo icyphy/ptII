@@ -54,7 +54,7 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
-        StringAttribute attributeToEdit, int rows, int columns, String title) {
+            StringAttribute attributeToEdit, int rows, int columns, String title) {
         super(title);
         this._factory = factory;
         _attributeToEdit = attributeToEdit;

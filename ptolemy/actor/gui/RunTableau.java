@@ -74,15 +74,15 @@ public class RunTableau extends Tableau {
      *   an entity with the specified name.
      */
     public RunTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
 
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                "Cannot run a model that is not a CompositeActor." + " It is: "
-                + model);
+                    "Cannot run a model that is not a CompositeActor." + " It is: "
+                    + model);
         }
 
         CompositeActor actor = (CompositeActor) model;
@@ -95,11 +95,11 @@ public class RunTableau extends Tableau {
                 actor.setManager(new Manager(actor.workspace(), "manager"));
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to set manager.  This can occur if "
-                    + "you try to run a non-toplevel model that "
-                    + "is a component of a toplevel model.  "
-                    + "The solution is invoke View -> Run while in a "
-                    + "toplevel window.");
+                        "Failed to set manager.  This can occur if "
+                        + "you try to run a non-toplevel model that "
+                        + "is a component of a toplevel model.  "
+                        + "The solution is invoke View -> Run while in a "
+                        + "toplevel window.");
             }
 
             manager = actor.getManager();
@@ -143,9 +143,9 @@ public class RunTableau extends Tableau {
             super._addMenus();
 
             JMenuItem[] debugMenuItems = {
-                    new JMenuItem("Listen to Manager", KeyEvent.VK_M),
-                    new JMenuItem("Listen to Director", KeyEvent.VK_D),
-                };
+                new JMenuItem("Listen to Manager", KeyEvent.VK_M),
+                new JMenuItem("Listen to Director", KeyEvent.VK_D),
+            };
 
             // NOTE: This has to be initialized here rather than
             // statically because this method is called by the constructor
@@ -207,7 +207,7 @@ public class RunTableau extends Tableau {
                     } catch (KernelException ex) {
                         try {
                             MessageHandler.warning(
-                                "Failed to create debug listener: " + ex);
+                                    "Failed to create debug listener: " + ex);
                         } catch (CancelException exception) {
                         }
                     }
@@ -228,7 +228,7 @@ public class RunTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -282,7 +282,7 @@ public class RunTableau extends Tableau {
          *   an attribute already in the container.
          */
         public TopFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

@@ -83,7 +83,7 @@ public class PasswordStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public PasswordStyle(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -111,8 +111,8 @@ public class PasswordStyle extends ParameterEditorStyle {
         String defaultValue = "";
         defaultValue = container.getExpression();
         query.addPassword(name, name, defaultValue,
-            PtolemyQuery.preferredBackgroundColor(container),
-            PtolemyQuery.preferredForegroundColor(container));
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

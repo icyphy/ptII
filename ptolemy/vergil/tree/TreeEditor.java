@@ -79,7 +79,7 @@ public class TreeEditor extends JFrame {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println(
-                "usage : ptolemy.vergil.tree.TreeEditor file.java");
+                    "usage : ptolemy.vergil.tree.TreeEditor file.java");
             return;
         }
 

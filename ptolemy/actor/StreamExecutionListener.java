@@ -75,7 +75,7 @@ public class StreamExecutionListener implements ExecutionListener {
      */
     public void executionFinished(Manager manager) {
         _output.println("Completed execution with "
-            + manager.getIterationCount() + " iterations");
+                + manager.getIterationCount() + " iterations");
     }
 
     /** Report that the manager has changed state by printing a

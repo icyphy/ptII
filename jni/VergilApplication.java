@@ -109,7 +109,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration()
-        throws Exception {
+            throws Exception {
         URL configurationURL = new URL("ptolemy/configs/jni/configuration.xml");
         return _readConfiguration(configurationURL);
     }
@@ -121,7 +121,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration()
-        throws Exception {
+            throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         // FIXME: This code is Dog slow for some reason.

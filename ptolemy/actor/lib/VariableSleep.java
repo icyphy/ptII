@@ -67,7 +67,7 @@ public class VariableSleep extends Transformer {
      *   actor with this name.
      */
     public VariableSleep(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         defaultSleepTime = new Parameter(this, "defaultSleepTime",
                 new LongToken(0));
@@ -118,7 +118,7 @@ public class VariableSleep extends Transformer {
 
                 if (_debugging) {
                     _debug(getName() + ": Wait for " + _sleepTime
-                        + " milliseconds.");
+                            + " milliseconds.");
                 }
 
                 Thread.sleep(_sleepTime);

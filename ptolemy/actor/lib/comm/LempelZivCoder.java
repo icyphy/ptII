@@ -61,7 +61,7 @@ public class LempelZivCoder extends Transformer {
      *   actor with this name.
      */
     public LempelZivCoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
@@ -98,14 +98,14 @@ public class LempelZivCoder extends Transformer {
           // length of the input.
           int length = _current.length();
           _previousIndex =
-              _codeBook.indexOf(_current.substring(0, length - 2));
+          _codeBook.indexOf(_current.substring(0, length - 2));
           output.send(0, new IntToken(_previousIndex));
           if (_current.endsWith("1")) {
-              output.send(0, new IntToken(1));
+          output.send(0, new IntToken(1));
           } else {
-              output.send(0, new IntToken(0));
+          output.send(0, new IntToken(0));
           }
-        }*/}
+          }*/}
 
     /** Initialize the actor by creating the code book containing
      *  only one empty string "".

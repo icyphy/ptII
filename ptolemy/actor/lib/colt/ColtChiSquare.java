@@ -69,7 +69,7 @@ public class ColtChiSquare extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtChiSquare(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

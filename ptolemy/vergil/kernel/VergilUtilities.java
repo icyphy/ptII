@@ -84,15 +84,15 @@ public class VergilUtilities {
         try {
             if (StringUtilities.getProperty("ptolemy.ptII.MacOS").equals("true")) {
                 System.out.println("ptolemy.ptII.MacOS = "
-                    + "true property detected");
+                        + "true property detected");
                 return true;
             }
         } catch (SecurityException ex) {
             if (!_printedSecurityExceptionMessage) {
                 _printedSecurityExceptionMessage = true;
                 System.out.println("Warning: Failed to get the "
-                    + "ptolemy.ptII.MacOS property "
-                    + "(-sandbox always causes this)");
+                        + "ptolemy.ptII.MacOS property "
+                        + "(-sandbox always causes this)");
             }
         }
 

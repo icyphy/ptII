@@ -122,7 +122,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForPortsTransformer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
@@ -136,7 +136,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
     private void _replacePortCalls(SootClass actorClass, ComponentEntity actor) {
         // Loop through all the methods in the class.
         for (Iterator methods = actorClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
@@ -147,7 +147,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                 units.hasNext();) {
                 Stmt unit = (Stmt) units.next();
 
                 if (!unit.containsInvokeExpr()) {
@@ -215,7 +215,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
     // of an port in that object, return a new field ref that
     // refers to that port.  If no reference is found, then return null.
     private Value _createPortField(Local baseLocal, String name, Unit unit,
-        LocalDefs localDefs) {
+            LocalDefs localDefs) {
         // FIXME: This is not enough.
         RefType type = (RefType) baseLocal.getType();
         Entity entity = (Entity) ModelTransformer.getObjectForClass(type
@@ -254,7 +254,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
      *  otherwise return null.
      */
     private static DefinitionStmt _getFieldDef(Local local, Unit location,
-        LocalDefs localDefs) {
+            LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {
@@ -263,7 +263,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
 
             if (value instanceof CastExpr) {
                 return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,
-                    localDefs);
+                        localDefs);
             } else if (value instanceof FieldRef) {
                 return stmt;
             } else {
@@ -284,7 +284,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
     // ports of the given object that are expected
     // to exist in the given class
     private void _getPortFields(SootClass theClass, Entity container,
-        Entity object) {
+            Entity object) {
         for (Iterator ports = object.portList().iterator(); ports.hasNext();) {
             Port port = (Port) ports.next();
 
@@ -306,8 +306,8 @@ public class FieldsForPortsTransformer extends SceneTransformer
 
             if (!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
-                    + " declares field for port " + port.getFullName()
-                    + " but it has type " + type);
+                        + " declares field for port " + port.getFullName()
+                        + " but it has type " + type);
                 continue;
             } else {
                 SootClass fieldClass = ((RefType) type).getSootClass();
@@ -315,15 +315,15 @@ public class FieldsForPortsTransformer extends SceneTransformer
                 if (!SootUtilities.derivesFrom(fieldClass,
                             PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
-                        + " declares field for port " + port.getFullName()
-                        + " but it has type " + fieldClass.getName());
+                            + " declares field for port " + port.getFullName()
+                            + " but it has type " + fieldClass.getName());
                     continue;
                 }
             }
 
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC)
-                | Modifier.FINAL | Modifier.PUBLIC); // | Modifier.PRIVATE);
+                    | Modifier.FINAL | Modifier.PUBLIC); // | Modifier.PRIVATE);
 
             field.addTag(new ValueTag(port));
             _portToFieldMap.put(port, field);
@@ -335,7 +335,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
     }
 
     private void _indexExistingFields(SootClass actorClass,
-        ComponentEntity actor) {
+            ComponentEntity actor) {
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
         _getPortFields(actorClass, actor, actor);

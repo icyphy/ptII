@@ -74,7 +74,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *   an entity with the specified name.
      */
     public ExecShellTableau(ExecShellEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _frame = new ExecShellFrame(this);
         setFrame(_frame);
@@ -83,7 +83,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             _interpreter = Runtime.getRuntime().exec("bash -i");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to create Process");
+                    "Failed to create Process");
         }
     }
 
@@ -115,7 +115,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *  The output automatically gets a trailing newline appended.
      */
     public void stderr( /*final*/
-        String text) {
+            String text) {
         _frame._shellTextArea.appendJTextArea(text + "\n");
     }
 
@@ -154,7 +154,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public ExecShellFrame(Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -194,7 +194,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -215,7 +215,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             // effigy.  Is this what we want?
             if (effigy instanceof ExecShellEffigy) {
                 return new ExecShellTableau((ExecShellEffigy) effigy,
-                    "ExecShellTableau");
+                        "ExecShellTableau");
             } else {
                 return null;
             }
@@ -293,7 +293,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 }
             } catch (final IOException io) {
                 stderr("IOException: "
-                    + ptolemy.kernel.util.KernelException.stackTraceToString(io));
+                        + ptolemy.kernel.util.KernelException.stackTraceToString(io));
             }
         } catch (InterruptedException e) {
             //_interpreter.destroy();
@@ -309,7 +309,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
         _StreamReaderThread(InputStream inputStream, String streamType,
-            ExecShellTableau execShellTableau) {
+                ExecShellTableau execShellTableau) {
             _inputStream = inputStream;
             _streamType = streamType;
             _execShellTableau = execShellTableau;
@@ -324,7 +324,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _execShellTableau.stdout( /*_streamType + ">" +*/
-                        line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _execShellTableau.stderr("IOException: " + ioe);

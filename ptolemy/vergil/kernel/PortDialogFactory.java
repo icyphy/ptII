@@ -102,8 +102,8 @@ public class PortDialogFactory implements MenuItemFactory {
                     if (parent instanceof Frame) {
                         DialogTableau dialogTableau = DialogTableau
                             .createDialog((Frame) parent, _configuration,
-                                ((TableauFrame) parent).getEffigy(),
-                                PortConfigurerDialog.class, (Entity) target);
+                                    ((TableauFrame) parent).getEffigy(),
+                                    PortConfigurerDialog.class, (Entity) target);
 
                         if (dialogTableau != null) {
                             dialogTableau.show();
@@ -125,8 +125,8 @@ public class PortDialogFactory implements MenuItemFactory {
                     if (parent instanceof Frame) {
                         DialogTableau dialogTableau = DialogTableau
                             .createDialog((Frame) parent, _configuration,
-                                ((TableauFrame) parent).getEffigy(),
-                                UnitConstraintsDialog.class, (Entity) target);
+                                    ((TableauFrame) parent).getEffigy(),
+                                    UnitConstraintsDialog.class, (Entity) target);
 
                         if (dialogTableau != null) {
                             dialogTableau.show();

@@ -93,7 +93,7 @@ public abstract class FunctionDependency extends Attribute {
      *   an entity with the specified name.
      */
     public FunctionDependency(Entity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // NOTE:
@@ -135,8 +135,8 @@ public abstract class FunctionDependency extends Attribute {
         // ensure that the input port is inside the dependency graph
         if (!inputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The input port "
-                + inputPort.getName() + " does not belong to the " + "actor "
-                + getContainer().getName());
+                    + inputPort.getName() + " does not belong to the " + "actor "
+                    + getContainer().getName());
         }
 
         Collection reachableOutputs = _dependencyGraph.reachableNodes(_dependencyGraph
@@ -163,8 +163,8 @@ public abstract class FunctionDependency extends Attribute {
         // ensure that the output port is inside the dependency graph
         if (!outputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The output port "
-                + outputPort.getName() + " does not belong to the " + "actor "
-                + getContainer().getName());
+                    + outputPort.getName() + " does not belong to the " + "actor "
+                    + getContainer().getName());
         }
 
         Collection backwardReachableInputs = _dependencyGraph
@@ -183,7 +183,7 @@ public abstract class FunctionDependency extends Attribute {
     /** Add this attribute to the given container.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         _functionDependencyVersion = -1;
     }
@@ -209,7 +209,7 @@ public abstract class FunctionDependency extends Attribute {
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
             Iterator outputs = ((Actor) getContainer()).outputPortList()
-                                .listIterator();
+                .listIterator();
 
             while (outputs.hasNext()) {
                 // add an edge from the input port to the output port
@@ -252,7 +252,7 @@ public abstract class FunctionDependency extends Attribute {
         }
 
         Iterator outputs = ((Actor) getContainer()).outputPortList()
-                            .listIterator();
+            .listIterator();
 
         while (outputs.hasNext()) {
             IOPort output = (IOPort) outputs.next();

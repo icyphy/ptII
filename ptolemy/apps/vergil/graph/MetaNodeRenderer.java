@@ -27,10 +27,10 @@ import ptolemy.actor.*;
 import ptolemy.apps.vergil.graph.util.FigureToken;
 
 /**
-A factory which creates and returns a NodeFigure given a node input
-to render.
+   A factory which creates and returns a NodeFigure given a node input
+   to render.
 
-@author Steve Neuendorffer
+   @author Steve Neuendorffer
 */
 public class MetaNodeRenderer extends TypedCompositeActor
     implements NodeRenderer {
@@ -41,13 +41,13 @@ public class MetaNodeRenderer extends TypedCompositeActor
     public MetaNodeRenderer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-            output = new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(FigureToken.TYPE);
     }
 
     public TypedIOPort output;
 
-   /** Clone the actor into the specified workspace. This calls the
+    /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.
      *  @param workspace The workspace for the new object.
@@ -74,13 +74,13 @@ public class MetaNodeRenderer extends TypedCompositeActor
      */
     public Figure render(Object node) {
         try {
-        prefire();
-        fire();
-        postfire();
-        Receiver[][] receivers = output.getInsideReceivers();
-        FigureToken token = (FigureToken)receivers[0][0].get();
-        System.out.println("Figure = " + token.getFigure());
-        return token.getFigure();
+            prefire();
+            fire();
+            postfire();
+            Receiver[][] receivers = output.getInsideReceivers();
+            FigureToken token = (FigureToken)receivers[0][0].get();
+            System.out.println("Figure = " + token.getFigure());
+            return token.getFigure();
         } catch (Exception ex) {
             ex.printStackTrace();
             return new BasicRectangle(0,0,10,10);

@@ -71,7 +71,7 @@ public class LevelListener extends Receiver {
      *   actor with this name.
      */
     public LevelListener(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.

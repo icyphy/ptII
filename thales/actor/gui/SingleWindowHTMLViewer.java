@@ -129,7 +129,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
                                 });
                             popUpMenu.add(close);
                             popUpMenu.show((Component) e.getSource(), e.getX(),
-                                e.getY());
+                                    e.getY());
                         }
                     }
                 }
@@ -265,7 +265,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
                     if (tableau != null) {
                         fillMainFrame(((Tableau) tableau).getFrame()
-                                       .getJMenuBar());
+                                .getJMenuBar());
                         _statusBar.setVisible(false);
                     }
                 } else {

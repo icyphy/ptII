@@ -95,7 +95,7 @@ public class BooleanNotExpr implements UnopExpr {
     public boolean equivTo(Object o) {
         if (o instanceof BooleanNotExpr) {
             return getOpBox().getValue().equivTo(((BooleanNotExpr) o).getOpBox()
-                                                  .getValue());
+                    .getValue());
         }
 
         return false;

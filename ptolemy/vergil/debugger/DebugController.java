@@ -74,7 +74,7 @@ public class DebugController extends SingletonConfigurableAttribute
      *   attribute already in the container.
      */
     public DebugController(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
         setPersistent(false);

@@ -135,8 +135,8 @@ public class Picture extends Canvas {
     public void setImage(int[] pixels) throws IllegalArgumentException {
         if (pixels.length != (_width * _height)) {
             throw new IllegalArgumentException(
-                "setImage: Specified image size does not"
-                + "match that of the component.");
+                    "setImage: Specified image size does not"
+                    + "match that of the component.");
         }
 
         _pixels = pixels;

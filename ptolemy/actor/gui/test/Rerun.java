@@ -34,51 +34,51 @@ import ptolemy.actor.gui.MoMLSimpleApplication;
 //// Rerun
 
 /**
-Run a MoML model over and over again.
-This class reads in a MoML file and executes it over and over again.
-The time and memory usage stats are printed on stdout.
+   Run a MoML model over and over again.
+   This class reads in a MoML file and executes it over and over again.
+   The time and memory usage stats are printed on stdout.
 
-For example to run a model 100 times:
-<pre>
-cd $PTII/ptolemy/actor/gui/test
-java -classpath $PTII ptolemy.actor.gui.test.Rerun ../../lib/test/auto/Sinewave.xml
-</pre>
+   For example to run a model 100 times:
+   <pre>
+   cd $PTII/ptolemy/actor/gui/test
+   java -classpath $PTII ptolemy.actor.gui.test.Rerun ../../lib/test/auto/Sinewave.xml
+   </pre>
 
-To run the model 10 times:
-<pre>
-java -classpath $PTII ptolemy.actor.gui.test.Rerun 10 ../../lib/test/auto/Sinewave.xml
-</pre>
+   To run the model 10 times:
+   <pre>
+   java -classpath $PTII ptolemy.actor.gui.test.Rerun 10 ../../lib/test/auto/Sinewave.xml
+   </pre>
 
-To create a ptplot file of the times and memory:
-<pre>
-awk '{  t[NR] = $1;
-        m[NR] = substr($4, 0, length($4) - 1);
-        f[NR] = substr($6, 0, length($6) - 1);
-     }
- END {  print "dataset: time (ms)";
-        for (i=1;i<=NR;i++) {print i, t[i]};
-        print "dataset: memory (K)";
-        for (i=1;i<=NR;i++) {print i, m[i]};
-        print "dataset: free (K)";
-        for (i=1;i<=NR;i++) {print i, f[i]};
-     }' /tmp/t > /tmp/t.plt
+   To create a ptplot file of the times and memory:
+   <pre>
+   awk '{  t[NR] = $1;
+   m[NR] = substr($4, 0, length($4) - 1);
+   f[NR] = substr($6, 0, length($6) - 1);
+   }
+   END {  print "dataset: time (ms)";
+   for (i=1;i<=NR;i++) {print i, t[i]};
+   print "dataset: memory (K)";
+   for (i=1;i<=NR;i++) {print i, m[i]};
+   print "dataset: free (K)";
+   for (i=1;i<=NR;i++) {print i, f[i]};
+   }' /tmp/t > /tmp/t.plt
 
-<pre>
+   <pre>
 
-@author Christopher Hylands Brooks
-@version $Id$
-@since Ptolemy II 4.1
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (cxh)
+   @author Christopher Hylands Brooks
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Rerun extends MoMLSimpleApplication {
     /** Parse the xml file and run it.
-    *  @param xmlFileName A string that refers to an MoML file that
-    *  contains a Ptolemy II model.  The string should be
-    *  a relative pathname.
-    *  @exception Throwable If there was a problem parsing
-    *  or running the model.
-    */
+     *  @param xmlFileName A string that refers to an MoML file that
+     *  contains a Ptolemy II model.  The string should be
+     *  a relative pathname.
+     *  @exception Throwable If there was a problem parsing
+     *  or running the model.
+     */
     public Rerun(String xmlFileName) throws Throwable {
         super(xmlFileName);
     }
@@ -101,7 +101,7 @@ public class Rerun extends MoMLSimpleApplication {
                     runs = Integer.parseInt(args[0]) - 1;
                 } catch (Exception ex) {
                     System.err.println("Failed to parse '" + args[0]
-                        + "', using " + runs + " instead.");
+                            + "', using " + runs + " instead.");
                     ex.printStackTrace();
                 }
 
@@ -111,9 +111,9 @@ public class Rerun extends MoMLSimpleApplication {
                     xmlFileName = args[0];
                 } else {
                     throw new IllegalArgumentException(
-                        "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
-                        + "    Where reRuns is an integer, "
-                        + "defaults to 100");
+                            "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
+                            + "    Where reRuns is an integer, "
+                            + "defaults to 100");
                 }
             }
 

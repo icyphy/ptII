@@ -130,7 +130,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
                         if (centered != null) {
                             boolean isCentered = ((BooleanToken) ((Parameter) centered)
-                                .getToken()).booleanValue();
+                                    .getToken()).booleanValue();
 
                             if (isCentered) {
                                 newX = childBounds.getCenterX();
@@ -158,7 +158,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             }
         } else {
             throw new InternalErrorException(
-                "No child figure for the manipulator!");
+                    "No child figure for the manipulator!");
         }
     }
 
@@ -246,7 +246,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             BoundsGeometry geometry = parent.getGeometry();
 
             parent.getChild().transform(CanvasUtilities.computeTransform(
-                    parent.getChild().getBounds(), geometry.getBounds()));
+                                                parent.getChild().getBounds(), geometry.getBounds()));
         }
 
         private SnapConstraint _snapConstraint;

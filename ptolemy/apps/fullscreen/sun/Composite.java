@@ -1,6 +1,6 @@
 /*
-* @(#)Composite.java   1.2 98/07/31
-*/
+ * @(#)Composite.java   1.2 98/07/31
+ */
 
 import java.lang.Integer;
 import java.awt.*;
@@ -16,7 +16,7 @@ import javax.swing.*;
 /*
  * This applet renders an ellipse overlapping a rectangle with the compositing rule and
  * alpha value selected by the user.
-*/
+ */
 
 public class Composite extends JApplet implements ItemListener {
     CompPanel comp;
@@ -93,11 +93,11 @@ public class Composite extends JApplet implements ItemListener {
         validate();
     }
 
-/*
- * Detects a change in either of the Choice components.  Resets the variable corresponding
- * to the Choice whose state is changed.  Invokes changeRule in CompPanel with the current
- * alpha and composite rules.
-*/
+    /*
+     * Detects a change in either of the Choice components.  Resets the variable corresponding
+     * to the Choice whose state is changed.  Invokes changeRule in CompPanel with the current
+     * alpha and composite rules.
+     */
     public void itemStateChanged(ItemEvent e) {
         if ( e.getStateChange() != ItemEvent.SELECTED ) {
             return;
@@ -115,8 +115,8 @@ public class Composite extends JApplet implements ItemListener {
     public static void main(String s[]) {
         JFrame f = new JFrame("Composite");
         f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {System.exit(0);}
-        });
+                public void windowClosing(WindowEvent e) {System.exit(0);}
+            });
         JApplet applet = new Composite();
         f.getContentPane().add("Center", applet);
         applet.init();
@@ -134,14 +134,14 @@ class CompPanel extends JPanel {
 
     public CompPanel(){}
 
-// Resets the alpha and composite rules with selected items.
+    // Resets the alpha and composite rules with selected items.
     public void changeRule(String a, int rule) {
         alpha = Float.valueOf(a).floatValue();
         ac = AlphaComposite.getInstance(getRule(rule), alpha);
         repaint();
     }
 
-// Gets the requested compositing rule.
+    // Gets the requested compositing rule.
     public int getRule(int rule) {
         int alphaComp = 0;
         switch ( rule ) {

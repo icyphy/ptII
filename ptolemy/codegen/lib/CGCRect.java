@@ -1,11 +1,11 @@
 /* Rect, CGC domain: CGCRect.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCRect.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,13 +20,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRect
 /**
-Generates a rectangular pulse of height "height" (default 1.0).
-and width "width" (default 8).  If "period" is greater than zero,
-then the pulse is repeated with the given period.
+   Generates a rectangular pulse of height "height" (default 1.0).
+   and width "width" (default 8).  If "period" is greater than zero,
+   then the pulse is repeated with the given period.
 
- @Author Kennard White Contributor(s): SDF version by J. T. Buck
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCRect.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Kennard White Contributor(s): SDF version by J. T. Buck
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCRect.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRect extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -60,8 +60,8 @@ public class CGCRect extends ClassicCGCActor {
         count = new Parameter(this, "count");
         count.setExpression("0");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -74,22 +74,22 @@ public class CGCRect extends ClassicCGCActor {
     /**
      *  Height of the rectangular pulse. parameter with initial value "1.0".
      */
-     public Parameter height;
+    public Parameter height;
 
     /**
      *  Width of the rectangular pulse. parameter with initial value "8".
      */
-     public Parameter width;
+    public Parameter width;
 
     /**
      *  If greater than zero, the period of the pulse stream. parameter with initial value "0".
      */
-     public Parameter period;
+    public Parameter period;
 
     /**
      *  Internal counting state. parameter with initial value "0".
      */
-     public Parameter count;
+    public Parameter count;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,14 +98,14 @@ public class CGCRect extends ClassicCGCActor {
      */
     public void  generateFireCode() {
 
-addCode(cbMain);
-     }
+        addCode(cbMain);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String cbMain =
-        "                $ref(output) = ($ref(count) < $val(width)) ? $val(height) : 0.0;\n"
-        + "                ++$ref(count);\n"
-        + "                if ( $val(period) > 0 && $ref(count) >= $val(period) )\n"
-        + "                    $ref(count) = 0;\n";
+    "                $ref(output) = ($ref(count) < $val(width)) ? $val(height) : 0.0;\n"
+    + "                ++$ref(count);\n"
+    + "                if ( $val(period) > 0 && $ref(count) >= $val(period) )\n"
+    + "                    $ref(count) = 0;\n";
 }

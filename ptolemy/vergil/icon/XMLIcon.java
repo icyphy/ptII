@@ -92,7 +92,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public XMLIcon(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
 
         try {
@@ -108,7 +108,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      */
     public XMLIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _paintedList = null;
         _description = null;

@@ -93,11 +93,11 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @exception XmlException If the name or value is null.
      */
     public void attribute(String name, String value, boolean specified)
-        throws XmlException {
+            throws XmlException {
         if (name == null) {
             throw new XmlException("Attribute has no name",
-                _currentExternalEntity(), _parser.getLineNumber(),
-                _parser.getColumnNumber());
+                    _currentExternalEntity(), _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
 
         // NOTE: value may be null if attribute default is #IMPLIED.
@@ -167,7 +167,7 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @exception XmlException If called.
      */
     public void error(String message, String systemID, int line, int column)
-        throws XmlException {
+            throws XmlException {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
@@ -343,7 +343,7 @@ public class PlotBoxMLParser extends HandlerBase {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg, _currentExternalEntity(),
-                    _parser.getLineNumber(), _parser.getColumnNumber());
+                        _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
 
@@ -378,10 +378,10 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @param message The message to issue if the reference is null.
      */
     protected void _checkForNull(Object object, String message)
-        throws XmlException {
+            throws XmlException {
         if (object == null) {
             throw new XmlException(message, _currentExternalEntity(),
-                _parser.getLineNumber(), _parser.getColumnNumber());
+                    _parser.getLineNumber(), _parser.getColumnNumber());
         }
     }
 

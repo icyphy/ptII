@@ -81,7 +81,7 @@ public class TaskReporter extends Sink {
      *   actor with this name.
      */
     public TaskReporter(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -126,7 +126,7 @@ public class TaskReporter extends Sink {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                .getToken()).stringValue());
+                                                         .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -179,7 +179,7 @@ public class TaskReporter extends Sink {
             } catch (CorbaIllegalActionException e) {
                 //e.printStackTrace();
                 throw new IllegalActionException(this,
-                    " failed to send result back because: " + e.getMessage());
+                        " failed to send result back because: " + e.getMessage());
             }
         }
     }
@@ -205,9 +205,9 @@ public class TaskReporter extends Sink {
 
             //resolve the remote consumer reference in Naming
             NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
-                    .getToken()).stringValue(), "Multi");
+                                                               .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                (coordinatorName.getToken()).toString());
+                    (coordinatorName.getToken()).toString());
 
             NameComponent[] path = { namecomp };
             _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
@@ -215,11 +215,11 @@ public class TaskReporter extends Sink {
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                " initialize ORB failed. Please make sure the "
-                + "naming server has already started and the "
-                + "ORBInitProperty parameter and look up names are "
-                + "configured correctly. " + "the error message is: "
-                + ex.getMessage());
+                    " initialize ORB failed. Please make sure the "
+                    + "naming server has already started and the "
+                    + "ORBInitProperty parameter and look up names are "
+                    + "configured correctly. " + "the error message is: "
+                    + ex.getMessage());
         }
     }
 

@@ -34,64 +34,64 @@ import java.util.Hashtable;
    A class that keeps track of compiler options. All options are stored as
    key-value string pairs. Possible options are:
 
-    <p>
-    <b> verbose </b><br>
-    <i>true/false</i> Turns verbose mode on or off.
+   <p>
+   <b> verbose </b><br>
+   <i>true/false</i> Turns verbose mode on or off.
 
-    <p>
-    <b> compileMode </b> <br>
-    <i>singleClass</i> compiles only the given class, <br>
-    <i>full</i> generates all required files.
+   <p>
+   <b> compileMode </b> <br>
+   <i>singleClass</i> compiles only the given class, <br>
+   <i>full</i> generates all required files.
 
-    <p>
-    <b> pruneLevel </b> <br>
-    <i> 0 </i> no code pruning done. <br>
-    <i> 1 </i> Code Pruning done by CallGraphPruner.
+   <p>
+   <b> pruneLevel </b> <br>
+   <i> 0 </i> no code pruning done. <br>
+   <i> 1 </i> Code Pruning done by CallGraphPruner.
 
-    <p>
-    <b> vta </b> <br>
-    <i> true/false </i> Whether or not to perform Variable Type Analysis.
+   <p>
+   <b> vta </b> <br>
+   <i> true/false </i> Whether or not to perform Variable Type Analysis.
 
-    <p>
-    <b> lib </b> <br>
-    stores the path to the directory where library of generated files is
-    stored.
+   <p>
+   <b> lib </b> <br>
+   stores the path to the directory where library of generated files is
+   stored.
 
-    <p>
-    <b> gcDir </b> <br>
-    stores the path to the directory containing the garbage colloector. Not
-    using this option turns the collector off.
+   <p>
+   <b> gcDir </b> <br>
+   stores the path to the directory containing the garbage colloector. Not
+   using this option turns the collector off.
 
-    <p>
-    <b> target </b> <br>
-    <i> C6000 </i> The TMS320C6xxx series of processors. <br>
-    The target platform. A blank refers to a generic unix-like system. This
-    includes Cygwin installations on windows.
+   <p>
+   <b> target </b> <br>
+   <i> C6000 </i> The TMS320C6xxx series of processors. <br>
+   The target platform. A blank refers to a generic unix-like system. This
+   includes Cygwin installations on windows.
 
-    <p>
-    <b> runtimeDir </b> <br>
-    The path to the runtime directory.
+   <p>
+   <b> runtimeDir </b> <br>
+   The path to the runtime directory.
 
-    <p>
-    <b> ptII </b> <br>
-    The path to the ptII directory.
+   <p>
+   <b> ptII </b> <br>
+   The path to the ptII directory.
 
-    <p>
-    <b> compulsoryMethods </b> <br>
-    A semicolon-separated list of methods for which code must always be generated.
-    If more than one such entity is to be specified, the entire list may be
-    enclosed within double quotes. The complete method subsignature of the form
-    <pre> returnType class.method(arg1, arg2 ... ) </pre>
-    must be specified.
+   <p>
+   <b> compulsoryMethods </b> <br>
+   A semicolon-separated list of methods for which code must always be generated.
+   If more than one such entity is to be specified, the entire list may be
+   enclosed within double quotes. The complete method subsignature of the form
+   <pre> returnType class.method(arg1, arg2 ... ) </pre>
+   must be specified.
 
-    <p>
-    <b> cFlags </b> <br>
-    The GCC flags to be used in the makefile.
+   <p>
+   <b> cFlags </b> <br>
+   The GCC flags to be used in the makefile.
 
-    <p>
-    <b>reportEntities</b> <br>
-    <i> true/false </i> whether to output a summary of the number of classes,
-    methods and fields (entities) generated.
+   <p>
+   <b>reportEntities</b> <br>
+   <i> true/false </i> whether to output a summary of the number of classes,
+   methods and fields (entities) generated.
 
 
    @author Ankush Varma
@@ -148,7 +148,7 @@ public class Options {
             return false;
         } else {
             throw new RuntimeException(
-                "Stored value cannot be converted to boolean.");
+                    "Stored value cannot be converted to boolean.");
         }
     }
 

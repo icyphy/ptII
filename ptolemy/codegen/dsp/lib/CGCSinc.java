@@ -57,7 +57,7 @@ public class CGCSinc extends ClassicCGCActor {
      *   an actor already in the container.
      */
     public CGCSinc(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new ClassicPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);

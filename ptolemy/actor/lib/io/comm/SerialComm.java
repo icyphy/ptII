@@ -143,7 +143,7 @@ public class SerialComm extends TypedAtomicActor
      *   actor with this name.
      */
     public SerialComm(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         dataToSend = new TypedIOPort(this, "dataToSend");
@@ -265,7 +265,7 @@ public class SerialComm extends TypedAtomicActor
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == serialPortName) || (attribute == baudRate)) {
             /* Do nothing */
 
@@ -290,8 +290,8 @@ public class SerialComm extends TypedAtomicActor
 
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                    "minimumOutputSize is required "
-                    + "to be strictly positive.");
+                        "minimumOutputSize is required "
+                        + "to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
             _maximumOutputSize = ((IntToken) maximumOutputSize.getToken())
@@ -299,8 +299,8 @@ public class SerialComm extends TypedAtomicActor
 
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                    "maximumOutputSize is required "
-                    + "to be strictly positive.");
+                        "maximumOutputSize is required "
+                        + "to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
             _discardOldData = ((BooleanToken) discardOldData.getToken())
@@ -346,8 +346,8 @@ public class SerialComm extends TypedAtomicActor
 
                 if (_debugging) {
                     _debug(
-                        "Writing bytes from the input port to the serial port: "
-                        + inputLength);
+                            "Writing bytes from the input port to the serial port: "
+                            + inputLength);
                 }
 
                 for (int j = 0; j < inputLength; j++) {
@@ -364,7 +364,7 @@ public class SerialComm extends TypedAtomicActor
 
             if (_debugging) {
                 _debug("Number of input bytes available on the serial port: "
-                    + bytesAvailable);
+                        + bytesAvailable);
             }
 
             // NOTE: This needs _minimumOutputSize to be at least 1.
@@ -373,7 +373,7 @@ public class SerialComm extends TypedAtomicActor
                 try {
                     if (_debugging) {
                         _debug("Blocking waiting for minimum number of bytes: "
-                            + _minimumOutputSize);
+                                + _minimumOutputSize);
                     }
 
                     wait();
@@ -381,12 +381,12 @@ public class SerialComm extends TypedAtomicActor
 
                     if (_debugging) {
                         _debug(
-                            "Number of input bytes available on the serial port: "
-                            + bytesAvailable);
+                                "Number of input bytes available on the serial port: "
+                                + bytesAvailable);
                     }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this,
-                        "Thread interrupted waiting for serial port data.");
+                            "Thread interrupted waiting for serial port data.");
                 }
             }
 
@@ -434,8 +434,8 @@ public class SerialComm extends TypedAtomicActor
                 if (available >= _minimumOutputSize) {
                     if (_debugging) {
                         _debug(
-                            "Calling fireAtCurrentTime() to deal with additional bytes: "
-                            + available);
+                                "Calling fireAtCurrentTime() to deal with additional bytes: "
+                                + available);
                     }
 
                     getDirector().fireAtCurrentTime(this);
@@ -467,8 +467,8 @@ public class SerialComm extends TypedAtomicActor
             // The 2000 above is 2000mS to open the port, otherwise time out.
             int bits_per_second = ((IntToken) (baudRate.getToken())).intValue();
             _serialPort.setSerialPortParams(bits_per_second,
-                SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
-                SerialPort.PARITY_NONE);
+                    SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
 
             _serialPort.addEventListener(this);
             _serialPort.notifyOnDataAvailable(true);
@@ -481,7 +481,7 @@ public class SerialComm extends TypedAtomicActor
             _stopFireRequested = false;
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Communication port initialization failed.");
+                    "Communication port initialization failed.");
         }
     }
 
@@ -509,8 +509,8 @@ public class SerialComm extends TypedAtomicActor
         } catch (Exception ex) {
             // This will only occur if the model is not running.
             throw new KernelRuntimeException(this, null, ex,
-                "Failure calling fireAtCurrentTime() "
-                + "from the event listener.");
+                    "Failure calling fireAtCurrentTime() "
+                    + "from the event listener.");
         }
     }
 

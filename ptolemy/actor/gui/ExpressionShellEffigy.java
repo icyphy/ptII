@@ -70,7 +70,7 @@ public class ExpressionShellEffigy extends Effigy {
      *   an entity already in the container.
      */
     public ExpressionShellEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -137,7 +137,7 @@ public class ExpressionShellEffigy extends Effigy {
          *   an entity already in the container.
          */
         public ShellFactory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -166,9 +166,9 @@ public class ExpressionShellEffigy extends Effigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
-            URL input) throws Exception {
+                URL input) throws Exception {
             return new ExpressionShellEffigy(container,
-                container.uniqueName("effigy"));
+                    container.uniqueName("effigy"));
         }
     }
 }

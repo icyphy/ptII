@@ -91,9 +91,9 @@ public class ClassStructureGenerator extends CodeGenerator {
         String introducedMethods = _generateMethodPointers(MethodListGenerator
                 .getNewMethods(source), "New public and protected methods")
             + _generateMethodPointers(MethodListGenerator.getConstructors(
-                    source), "Constructors")
+                                              source), "Constructors")
             + _generateMethodPointers(MethodListGenerator.getPrivateMethods(
-                    source), "Private methods");
+                                              source), "Private methods");
 
         if (((_context.getSingleClassMode()) || inheritedMethods.equals(""))
                 && introducedMethods.equals("")) {
@@ -157,7 +157,7 @@ public class ClassStructureGenerator extends CodeGenerator {
         // The size of a instances of this class. This needed for cloning
         // objects of this class.
         code.append(_indent(1)
-            + _comment("The memory needed by instances of this class."));
+                + _comment("The memory needed by instances of this class."));
         code.append(_indent(1) + "long instance_size;\n\n");
 
         // Pointer to superclass structure.
@@ -171,7 +171,7 @@ public class ClassStructureGenerator extends CodeGenerator {
             code.append(" ");
         } else {
             code.append(_comment("Placeholder for pointer to superclass"
-                    + " structure"));
+                                + " structure"));
             code.append(_indent(1));
             code.append("void *");
         }
@@ -193,8 +193,8 @@ public class ClassStructureGenerator extends CodeGenerator {
         }
 
         code.append(_indent(1)
-            + CNames.classNameOf(Scene.v().getSootClass("java.lang.Object"))
-            + " array_class;\n");
+                + CNames.classNameOf(Scene.v().getSootClass("java.lang.Object"))
+                + " array_class;\n");
 
         if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _closeComment);
@@ -208,10 +208,10 @@ public class ClassStructureGenerator extends CodeGenerator {
 
         // Generate function that resolves the "instanceof" operator.
         code.append(_indent(1)
-            + _comment("Function for handling the "
-                + "\"instanceof\" operator."));
+                + _comment("Function for handling the "
+                        + "\"instanceof\" operator."));
         code.append(_indent(1) + "short (*instanceOf)"
-            + "(PCCG_CLASS_PTR, long int);\n\n");
+                + "(PCCG_CLASS_PTR, long int);\n\n");
 
         return code.toString();
     }
@@ -300,7 +300,7 @@ public class ClassStructureGenerator extends CodeGenerator {
                 // required type if it is an array.
                 if (method.getReturnType() instanceof ArrayType) {
                     _context.addArrayInstance(CNames.typeNameOf(
-                            method.getReturnType()));
+                                                      method.getReturnType()));
                 }
             }
         }
@@ -370,11 +370,11 @@ public class ClassStructureGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-        "**********************************" + _commentEnd + "\n";
+    "**********************************" + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment = _commentStart
-        + "**********************************\n";
+    + "**********************************\n";
 }

@@ -83,11 +83,11 @@ public class JNLPApplication {
         if (_invokedFromAMenu()) {
             try {
                 System.setProperty("user.dir",
-                    StringUtilities.getProperty("user.home"));
+                        StringUtilities.getProperty("user.home"));
             } catch (Exception ex) {
                 // Don't crash here, just print a message and move on
                 System.out.println("Warning, could not get user.home property "
-                    + "or set user.dir property:");
+                        + "or set user.dir property:");
                 ex.printStackTrace();
             }
         }
@@ -117,7 +117,7 @@ public class JNLPApplication {
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
     // which is an Error, not and Exception.
     private static void _errorAndExit(String message, String[] args,
-        Throwable throwable) {
+            Throwable throwable) {
         StringBuffer argsBuffer = new StringBuffer("Command failed");
 
         if (args.length > 0) {

@@ -65,7 +65,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *   an attribute already in the container.
      */
     public ImageIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -137,7 +137,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *   completely loaded; true otherwise.
      */
     public boolean imageUpdate(Image image, int infoflags, int x, int y,
-        int width, int height) {
+            int width, int height) {
         if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
             // NOTE: Incredibly stupidly, when Java calls this method
             // with a new width and height, it hasn't set those fields
@@ -166,9 +166,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             // Trigger this by issuing a change request.
 
             /* FIXME
-            requestChange(new ChangeRequest(this, "Dummy change request") {
-                protected void _execute() {}
-            });
+               requestChange(new ChangeRequest(this, "Dummy change request") {
+               protected void _execute() {}
+               });
             */
             /* NOTE: Probably not needed. */
             Runnable doRepaint = new Runnable() {

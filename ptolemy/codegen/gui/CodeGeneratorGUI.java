@@ -214,22 +214,22 @@ public class CodeGeneratorGUI extends PtolemyFrame {
             });
 
         goButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    exec.updateStatusBar("Starting " + codeGenerator
-                            + " code generation.");
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        exec.updateStatusBar("Starting " + codeGenerator
+                                + " code generation.");
 
-                    StringBuffer code = new StringBuffer();
-                    codeGenerator.generateCode(code);
-                    exec.updateStatusBar(code.toString());
+                        StringBuffer code = new StringBuffer();
+                        codeGenerator.generateCode(code);
+                        exec.updateStatusBar(code.toString());
 
-                    exec.updateStatusBar("Code generation "
-                            + "complete.");
-                } catch (Exception ex) {
-                    MessageHandler.error("Code generation failed.",
-                            ex);
+                        exec.updateStatusBar("Code generation "
+                                + "complete.");
+                    } catch (Exception ex) {
+                        MessageHandler.error("Code generation failed.",
+                                ex);
+                    }
                 }
-            }
-        });
+            });
     }
 }

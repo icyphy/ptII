@@ -95,24 +95,24 @@ public class ConstructorSpecializer extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("ConstructorSpecializer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
                     || SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.compositeActorClass)
+                            PtolemyUtilities.compositeActorClass)
                     || SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.attributeClass)) {
+                            PtolemyUtilities.attributeClass)) {
                 if (theClass.declaresFieldByName(
                             ModelTransformer.getContainerFieldName())) {
                     for (Iterator methods = theClass.getMethods().iterator();
-                            methods.hasNext();) {
+                         methods.hasNext();) {
                         SootMethod method = (SootMethod) methods.next();
 
                         if (method.getName().equals("<init>")
@@ -139,8 +139,8 @@ public class ConstructorSpecializer extends SceneTransformer
                                 .retrieveActiveBody();
 
                             for (Iterator units = body.getUnits()
-                                                      .snapshotIterator();
-                                    units.hasNext();) {
+                                     .snapshotIterator();
+                                 units.hasNext();) {
                                 Stmt unit = (Stmt) units.next();
 
                                 if (unit instanceof IdentityStmt) {
@@ -154,8 +154,8 @@ public class ConstructorSpecializer extends SceneTransformer
                                             ValueBox box = identityStmt
                                                 .getRightOpBox();
                                             box.setValue(Jimple.v()
-                                                               .newParameterRef(method
-                                                    .getParameterType(0), 0));
+                                                    .newParameterRef(method
+                                                            .getParameterType(0), 0));
                                         }
                                     }
                                 }

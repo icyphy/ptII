@@ -74,7 +74,7 @@ public class DoubleRangeParameter extends Parameter {
      *   an attribute already in the container.
      */
     public DoubleRangeParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         min = new Parameter(this, "min");
@@ -97,10 +97,10 @@ public class DoubleRangeParameter extends Parameter {
         setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
-            + "width=\"60\" height=\"4\" " + "style=\"fill:white\"/>\n"
-            + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
-            + "style=\"fill:grey\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
+                + "width=\"60\" height=\"4\" " + "style=\"fill:white\"/>\n"
+                + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
+                + "style=\"fill:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ public class DoubleRangeParameter extends Parameter {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == max) && !_inCheck) {
             try {
                 _inCheck = true;
@@ -175,7 +175,7 @@ public class DoubleRangeParameter extends Parameter {
      *   or its value is out of range.
      */
     protected void _setTokenAndNotify(Token newToken)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_inCheck) {
             super._setTokenAndNotify(newToken);
             return;
@@ -196,15 +196,15 @@ public class DoubleRangeParameter extends Parameter {
                 }
 
                 throw new IllegalActionException(this,
-                    "Value is required to lie between " + min + " and " + max
-                    + ".");
+                        "Value is required to lie between " + min + " and " + max
+                        + ".");
             } finally {
                 _inCheck = false;
             }
         }
 
         throw new IllegalActionException(this,
-            "Value is required to be a double token.");
+                "Value is required to be a double token.");
     }
 
     ///////////////////////////////////////////////////////////////////

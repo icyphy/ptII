@@ -49,13 +49,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.actor.lib.hoc.ApplyFunction
- */
+@author Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 0.4
+@Pt.ProposedRating Green (neuendor)
+@Pt.AcceptedRating Yellow (neuendor)
+@see ptolemy.actor.lib.hoc.ApplyFunction
+*/
 public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -66,7 +66,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
      *   actor with this name.
      */
     public ApplyFunctionOverSequence(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -172,7 +172,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
 
         if (type.getReturnType() instanceof ArrayType) {
             output.setTypeEquals(((ArrayType) type.getReturnType())
-                .getElementType());
+                    .getElementType());
             _outputRate = DFUtilities.getTokenProductionRate(output);
         } else {
             output.setTypeEquals(type.getReturnType());

@@ -67,7 +67,7 @@ public class HuffmanCoder extends HuffmanBasic {
      *   actor with this name.
      */
     public HuffmanCoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.

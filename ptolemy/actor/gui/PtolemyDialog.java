@@ -64,7 +64,7 @@ import ptolemy.util.MessageHandler;
 */
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
     public PtolemyDialog(String title, DialogTableau dialogTableau,
-        Frame owner, Entity target, Configuration configuration) {
+            Frame owner, Entity target, Configuration configuration) {
         super(title);
         _owner = owner;
         _dialogTableau = dialogTableau;

@@ -66,7 +66,7 @@ public class ApplyFunction extends TypedAtomicActor {
      *  @param workspace The workspace that will list the actor.
      */
     public ApplyFunction(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -83,7 +83,7 @@ public class ApplyFunction extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public ApplyFunction(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");

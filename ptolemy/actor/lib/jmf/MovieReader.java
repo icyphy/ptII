@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    outputs each frame as a JMFImageToken.
 
    <p>Note that not all formats are supported, for details, see the JMF faq at:
-<a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
+   <a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
 
    @author James Yeh
    @version $Id$
@@ -82,12 +82,12 @@ public class MovieReader extends Source implements ControllerListener {
      *   actor with this name.
      */
     public MovieReader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression(
-            "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+                "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  invalid.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             URL url = fileOrURL.asURL();
 
@@ -125,7 +125,7 @@ public class MovieReader extends Source implements ControllerListener {
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
                         url = new URL(JNLPUtilities.saveJarURLAsTempFile(
-                                    url.toString(), "JMFMovieReader", null, null));
+                                              url.toString(), "JMFMovieReader", null, null));
                         _dataSource = Manager.createDataSource(url);
                     } catch (Exception ex2) {
                         // Ignore this exception, throw the original.
@@ -188,11 +188,11 @@ public class MovieReader extends Source implements ControllerListener {
             _player = Manager.createPlayer(_dataSource);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to create a player for the data source. "
-                + "Note that you may need to run jmfinit, which is found "
-                + "in the JMF directory, for example c:/Program Files/"
-                + "JMF2.1.1/bin.  The data source was: "
-                + _dataSource.getLocator().toExternalForm());
+                    "Failed to create a player for the data source. "
+                    + "Note that you may need to run jmfinit, which is found "
+                    + "in the JMF directory, for example c:/Program Files/"
+                    + "JMF2.1.1/bin.  The data source was: "
+                    + _dataSource.getLocator().toExternalForm());
         }
 
         _player.addControllerListener(this);
@@ -201,11 +201,11 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (!_waitForState(Controller.Realized)) {
             throw new IllegalActionException(null,
-                "Failed to realize player, last controller event was: "
-                + _stateTransitionEvent + "\nThe data source was: "
-                + _dataSource.getLocator().toExternalForm()
-                + "\nNote that not all formats are supported, see:\n"
-                + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
+                    "Failed to realize player, last controller event was: "
+                    + _stateTransitionEvent + "\nThe data source was: "
+                    + _dataSource.getLocator().toExternalForm()
+                    + "\nNote that not all formats are supported, see:\n"
+                    + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
         }
 
         String framePostioningControlName = "javax.media.control.FramePositioningControl";
@@ -213,10 +213,10 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (_framePositioningControl == null) {
             throw new IllegalActionException(this,
-                "Failed to get Frame Positioning Control '"
-                + framePostioningControlName + "' possible controls are:\n"
-                + _controlNames() + "\nThe data source was: "
-                + _dataSource.getLocator().toExternalForm());
+                    "Failed to get Frame Positioning Control '"
+                    + framePostioningControlName + "' possible controls are:\n"
+                    + _controlNames() + "\nThe data source was: "
+                    + _dataSource.getLocator().toExternalForm());
         }
 
         String frameGrabbingControlName = "javax.media.control.FrameGrabbingControl";
@@ -224,19 +224,19 @@ public class MovieReader extends Source implements ControllerListener {
 
         if (_frameGrabbingControl == null) {
             throw new IllegalActionException(this,
-                "Failed to get Frame Grabbing Control '"
-                + frameGrabbingControlName + "' possible controls are:\n"
-                + _controlNames() + "\nThe data source was: "
-                + _dataSource.getLocator().toExternalForm());
+                    "Failed to get Frame Grabbing Control '"
+                    + frameGrabbingControlName + "' possible controls are:\n"
+                    + _controlNames() + "\nThe data source was: "
+                    + _dataSource.getLocator().toExternalForm());
         }
 
         _player.prefetch();
 
         if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(this,
-                "Failed to prefetch player, last controller event was: "
-                + _stateTransitionEvent + "\nThe data source was: "
-                + _dataSource.getLocator().toExternalForm());
+                    "Failed to prefetch player, last controller event was: "
+                    + _stateTransitionEvent + "\nThe data source was: "
+                    + _dataSource.getLocator().toExternalForm());
         }
 
         //load first frame
@@ -275,8 +275,8 @@ public class MovieReader extends Source implements ControllerListener {
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed block the processor until it state"
-                    + " transition completed.");
+                        "Failed block the processor until it state"
+                        + " transition completed.");
             }
         }
 

@@ -62,12 +62,12 @@ import java.lang.reflect.InvocationTargetException;
 
 /** Base class for Colt random sources.
 
-   @author David Bauer and Kostas Oikonomou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
- */
+@author David Bauer and Kostas Oikonomou
+@version $Id$
+@since Ptolemy II 4.1
+@Pt.ProposedRating Red (cxh)
+@Pt.AcceptedRating Red (cxh)
+*/
 public abstract class ColtRandomSource extends RandomSource
     implements ChangeListener {
     /** Construct an actor with the given container and name.
@@ -79,7 +79,7 @@ public abstract class ColtRandomSource extends RandomSource
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _index = 0;
@@ -139,7 +139,7 @@ public abstract class ColtRandomSource extends RandomSource
                 _seed = ((LongToken) (seed.getToken())).longValue();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                    "Failed to get Colt seed");
+                        "Failed to get Colt seed");
             }
 
             return;
@@ -218,8 +218,8 @@ public abstract class ColtRandomSource extends RandomSource
      * randomNumberGenerator or seed attribute.
      */
     protected Parameter _getRandomNumberGeneratorClass(
-        CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         randomNumberGeneratorClass = (Parameter) container.getAttribute(
                 "randomNumberGenerator");
         seed = (Parameter) container.getAttribute("seed");
@@ -250,12 +250,12 @@ public abstract class ColtRandomSource extends RandomSource
 
         if (_randomNumberGenerator == null) {
             throw new InternalErrorException(this, null,
-                "Unable to create randomNumberGenerator!");
+                    "Unable to create randomNumberGenerator!");
         }
 
         if (_debugging) {
             _debug("ColtRandomSource: random number generator = "
-                + randomNumberGeneratorClass);
+                    + randomNumberGeneratorClass);
         }
 
         return randomNumberGeneratorClass;
@@ -275,8 +275,8 @@ public abstract class ColtRandomSource extends RandomSource
     /** The list of available RandomElement classes.
      */
     protected String[] _randomNumberGeneratorClassNames = {
-            "DRand", "MersenneTwister (MT19937)", "Ranecu", "Ranlux", "Ranmar"
-        };
+        "DRand", "MersenneTwister (MT19937)", "Ranecu", "Ranlux", "Ranmar"
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -92,7 +92,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException, IOException {
+            throws NameDuplicationException, IllegalActionException, IOException {
         super(container, name);
 
         deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
@@ -148,7 +148,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Joystick.attributeChanged(): " + attribute);
         }
@@ -219,7 +219,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to create a joystick instance");
+                    "Failed to create a joystick instance");
         }
 
         _joy.setDeadZone(deadZoneValue);

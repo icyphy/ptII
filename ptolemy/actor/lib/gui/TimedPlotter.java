@@ -64,7 +64,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *   actor with this name.
      */
     public TimedPlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -103,7 +103,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
                 // NOTE: We assume the superclass ensures this cast is safe.
                 ((Plot) plot).addPoint(i + offset, currentTimeValue,
-                    currentValue, true);
+                        currentValue, true);
             }
         }
 

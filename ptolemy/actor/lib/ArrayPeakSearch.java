@@ -98,7 +98,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayPeakSearch(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set Parameters.
@@ -347,7 +347,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
                 if (_debugging) {
                     _debug("-- Checking input with value " + indata
-                        + " at index " + i);
+                            + " at index " + i);
                 }
 
                 if (searchValley) {
@@ -430,7 +430,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                     if ((indata < dipThreshold) && (localMax > squelchValue)) {
                         if (_debugging) {
                             _debug("** Found a peak with value " + localMax
-                                + " at index " + localMaxIndex);
+                                    + " at index " + localMaxIndex);
                         }
 
                         resultIndices.add(new IntToken(localMaxIndex));
@@ -471,9 +471,9 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             }
 
             Token[] resultPeaksArray = (Token[]) resultPeaks.toArray(new Token[resultPeaks
-                    .size()]);
+                                                                             .size()]);
             Token[] resultIndicesArray = (Token[]) resultIndices.toArray(new Token[resultIndices
-                    .size()]);
+                                                                                 .size()]);
 
             peakValues.send(0, new ArrayToken(resultPeaksArray));
             peakIndices.send(0, new ArrayToken(resultIndicesArray));

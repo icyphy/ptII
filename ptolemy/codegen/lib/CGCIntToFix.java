@@ -1,11 +1,11 @@
 /* IntToFix, CGC domain: CGCIntToFix.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCIntToFix.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCIntToFix
 /**
-Convert a floating-point input to an fixed-point output.
-<p>
-This star converts a int value to a fix value with the specified precision.
-If the output precision is not specified, the precision is determined at
-runtime according to the incoming int value.
+   Convert a floating-point input to an fixed-point output.
+   <p>
+   This star converts a int value to a fix value with the specified precision.
+   If the output precision is not specified, the precision is determined at
+   runtime according to the incoming int value.
 
- @Author J.Weiss
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFix.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author J.Weiss
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCIntToFix.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntToFix extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -52,29 +52,29 @@ public class CGCIntToFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /**
-Input int type
-     */
+       Input int type
+    */
     public ClassicPort input;
 
     /**
-Output fix type
-     */
+       Output fix type
+    */
     public ClassicPort output;
 
     /**
      *  Precision of the output in bits or empty if unspecified.
-If the value of the double cannot be represented by the number of bits
-specified in the precision parameter, then the output is set to its maximum
-value (or minimum for negative magnitudes). parameter with initial value "".
-     */
-     public Parameter OutputPrecision;
+     If the value of the double cannot be represented by the number of bits
+     specified in the precision parameter, then the output is set to its maximum
+     value (or minimum for negative magnitudes). parameter with initial value "".
+    */
+    public Parameter OutputPrecision;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -83,43 +83,43 @@ value (or minimum for negative magnitudes). parameter with initial value "".
      */
     public void  begin() {
 
-// if the precision for the output port is not defined
-                // - neither by this nor the successor star -, the actual
-                // precision is determined at runtime
+        // if the precision for the output port is not defined
+        // - neither by this nor the successor star -, the actual
+        // precision is determined at runtime
 
-                if (!output.precision().isValid())
-                        output.setAttributes(A_VARPREC);
-     }
+        if (!output.precision().isValid())
+            output.setAttributes(A_VARPREC);
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-super.generateInitializeCode();
-                output.setPrecision(OutputPrecision);
-     }
+        super.generateInitializeCode();
+        output.setPrecision(OutputPrecision);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-// insert code to clear overflow flag
-                super.clearOverflow();
+        // insert code to clear overflow flag
+        super.clearOverflow();
 
-                if (output.attributes() & AB_VARPREC)
-                     addCode(setprec);
+        if (output.attributes() & AB_VARPREC)
+            addCode(setprec);
 
-                addCode(assign);
+        addCode(assign);
 
-                // insert code to test overflow flag
-                super.checkOverflow();
-     }
+        // insert code to test overflow flag
+        super.checkOverflow();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String setprec =
-        "                FIX_SetPrecisionFromDouble($precision(output),(double)((int)$ref(input)));\n";
+    "                FIX_SetPrecisionFromDouble($precision(output),(double)((int)$ref(input)));\n";
 
     public String assign =
-        "                FIX_DoubleAssign($ref(output),(double)((int)$ref(input)));\n";
+    "                FIX_DoubleAssign($ref(output),(double)((int)$ref(input)));\n";
 }

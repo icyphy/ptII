@@ -77,7 +77,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @param workspace The workspace that will contain the attribute
      *  that is being constructed.
 
-     */
+    */
     public ChoiceStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
         super(workspace);
@@ -93,7 +93,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public ChoiceStyle(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -123,7 +123,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
         String name = container.getName();
         List paramList = attributeList(Settable.class);
         Settable[] choices = (Settable[]) paramList.toArray(new Settable[paramList
-                .size()]);
+                                                                    .size()]);
         String[] values = new String[choices.length];
 
         for (int i = 0; i < choices.length; i++) {
@@ -132,8 +132,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
 
         String defaultChoice = container.getExpression();
         query.addChoice(name, name, values, defaultChoice, _isEditable,
-            PtolemyQuery.preferredBackgroundColor(container),
-            PtolemyQuery.preferredForegroundColor(container));
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 

@@ -131,7 +131,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Entity(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
         _portList = new NamedList(this);
     }
@@ -175,7 +175,7 @@ public class Entity extends InstantiableNamedObj {
                 } catch (KernelException ex) {
                     workspace.remove(newEntity);
                     throw new InvalidStateException(this,
-                        "Failed to clone an Entity: " + ex.getMessage());
+                            "Failed to clone an Entity: " + ex.getMessage());
                 }
             }
 
@@ -192,26 +192,26 @@ public class Entity extends InstantiableNamedObj {
                             // Names that end in Port are ok.
                             if (fieldName.endsWith("Port")) {
                                 port = newEntity.getPort(fieldName.substring(
-                                            0, fieldName.length() - 4));
+                                                                 0, fieldName.length() - 4));
                             }
 
                             if (port == null) {
                                 throw new IllegalActionException(this,
-                                    "Could not find a port named '" + fieldName
-                                    + "' or '" + fieldName + "Port'. "
-                                    + "This can occur when the name of "
-                                    + "the "
-                                    + "variable does not match the name "
-                                    + "passed to the constructor of the "
-                                    + "actor.\n" + "Right:\n" + "    "
-                                    + fieldName + " = new TypedIOPort(this, "
-                                    + "\"" + fieldName + "\", true, false);\n"
-                                    + "Right:\n" + "    " + fieldName
-                                    + " = new TypedIOPort(this, " + "\""
-                                    + fieldName + "Port\", true, false);\n"
-                                    + "Wrong:\n" + "    " + fieldName
-                                    + " = new TypedIOPort(this, "
-                                    + "\"foo\", true, false);");
+                                        "Could not find a port named '" + fieldName
+                                        + "' or '" + fieldName + "Port'. "
+                                        + "This can occur when the name of "
+                                        + "the "
+                                        + "variable does not match the name "
+                                        + "passed to the constructor of the "
+                                        + "actor.\n" + "Right:\n" + "    "
+                                        + fieldName + " = new TypedIOPort(this, "
+                                        + "\"" + fieldName + "\", true, false);\n"
+                                        + "Right:\n" + "    " + fieldName
+                                        + " = new TypedIOPort(this, " + "\""
+                                        + fieldName + "Port\", true, false);\n"
+                                        + "Wrong:\n" + "    " + fieldName
+                                        + " = new TypedIOPort(this, "
+                                        + "\"foo\", true, false);");
                             }
                         }
 
@@ -423,7 +423,7 @@ public class Entity extends InstantiableNamedObj {
      *   with the specified name.
      */
     public Port newPort(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -470,7 +470,7 @@ public class Entity extends InstantiableNamedObj {
                 } catch (KernelException ex) {
                     // Should not be thrown.
                     throw new InternalErrorException(
-                        "Internal error in Port constructor!" + ex.getMessage());
+                            "Internal error in Port constructor!" + ex.getMessage());
                 }
             }
         } finally {
@@ -487,7 +487,7 @@ public class Entity extends InstantiableNamedObj {
      *   this entity contains ports with links.
      */
     public final void setClassDefinition(boolean isClass)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (isClass && !isClassDefinition()) {
             // Converting from an instance to a class.
             // Check that there are no links
@@ -499,8 +499,8 @@ public class Entity extends InstantiableNamedObj {
 
                 if (port.numLinks() > 0) {
                     throw new IllegalActionException(this,
-                        "Cannot convert an entity to a class definition "
-                        + "while it contains ports with links.");
+                            "Cannot convert an entity to a class definition "
+                            + "while it contains ports with links.");
                 }
             }
         }
@@ -584,7 +584,7 @@ public class Entity extends InstantiableNamedObj {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _portList.append(port);
     }
 
@@ -651,7 +651,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
 
         Iterator ports = portList().iterator();

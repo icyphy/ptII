@@ -66,7 +66,7 @@ public class LineAttribute extends ShapeAttribute {
      *   an attribute already in the container.
      */
     public LineAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         x = new Parameter(this, "x");
@@ -105,7 +105,7 @@ public class LineAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == x) || (attribute == y)) {
             double xValue = ((DoubleToken) x.getToken()).doubleValue();
             double yValue = ((DoubleToken) y.getToken()).doubleValue();

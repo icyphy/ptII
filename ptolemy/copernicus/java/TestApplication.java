@@ -105,7 +105,7 @@ public class TestApplication implements ChangeListener {
             File f = new File(xmlFilename);
             URL url = f.toURL();
             System.err.println("Warning: Parsing '" + xmlFilename
-                + "' failed: ");
+                    + "' failed: ");
             ex.printStackTrace();
             System.err.println(" Trying '" + url + "'");
 
@@ -130,7 +130,7 @@ public class TestApplication implements ChangeListener {
             }
 
             System.out.println("TestApplication: Setting Iterations to "
-                + iterations.getToken());
+                    + iterations.getToken());
         }
 
         Manager manager = new Manager(toplevel.workspace(), "TestApplication");
@@ -143,9 +143,9 @@ public class TestApplication implements ChangeListener {
         long totalMemory1 = runtime.totalMemory() / 1024;
         long freeMemory1 = runtime.freeMemory() / 1024;
         System.out.println("Spent " + (startTime - _parseStartTime)
-            + " ms. creating the model.");
+                + " ms. creating the model.");
         System.out.println(modelName + ": Stats before execution:    "
-            + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
+                + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
 
         // Second, we run and print memory stats.
         manager.execute();
@@ -156,7 +156,7 @@ public class TestApplication implements ChangeListener {
                 freeMemory2);
 
         System.out.println(modelName + ": Execution stats:           "
-            + standardStats);
+                + standardStats);
 
         // Third, we gc and print memory stats.
         System.gc();
@@ -165,7 +165,7 @@ public class TestApplication implements ChangeListener {
         long totalMemory3 = runtime.totalMemory() / 1024;
         long freeMemory3 = runtime.freeMemory() / 1024;
         System.out.println(modelName + ": After Garbage Collection:  "
-            + Manager.timeAndMemory(startTime, totalMemory3, freeMemory3));
+                + Manager.timeAndMemory(startTime, totalMemory3, freeMemory3));
 
         // Print out the standard stats at the end
         // so as not to break too many scripts

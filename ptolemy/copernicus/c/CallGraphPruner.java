@@ -62,9 +62,9 @@ import soot.options.SparkOptions;
 
    @author Ankush Varma
    @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (ankush)
-@Pt.AcceptedRating Red (ssb)
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (ankush)
+   @Pt.AcceptedRating Red (ssb)
 */
 public class CallGraphPruner {
     /** Dummy constructor to allow inheritance.*/
@@ -301,7 +301,7 @@ public class CallGraphPruner {
      * implementing a method in <i>methods </i>.
      */
     protected HashSet _getMethodsRequiredByInheritance(Collection classSet,
-        Collection methodSet) {
+            Collection methodSet) {
         HashSet requiredMethodSet = new HashSet();
 
         Iterator classes = classSet.iterator();
@@ -437,7 +437,7 @@ public class CallGraphPruner {
                     } else {
                         _gray.removeFirst();
                         System.out.println("CallGraphPruner._growTree: "
-                            + "Removed an undeclared method\n");
+                                + "Removed an undeclared method\n");
                     }
                 } else if (node instanceof SootField) {
                     _processField((SootField) node);
@@ -461,7 +461,7 @@ public class CallGraphPruner {
      */
     protected boolean _isLeaf(SootMethod method) {
         return (method.isNative()
-        || OverriddenMethodGenerator.isOverridden(method));
+                || OverriddenMethodGenerator.isOverridden(method));
     }
 
     /** Performs the appropriate operations for the discovery of a new
@@ -539,7 +539,7 @@ public class CallGraphPruner {
             if (method.isConcrete()
                     && !OverriddenMethodGenerator.isOverridden(method)) {
                 Iterator traps = method.retrieveActiveBody().getTraps()
-                                       .iterator();
+                    .iterator();
 
                 while (traps.hasNext()) {
                     Trap trap = (Trap) traps.next();
@@ -641,7 +641,7 @@ public class CallGraphPruner {
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
             System.out.println(
-                "Setting all un-overridden classes to library classes ...");
+                    "Setting all un-overridden classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();

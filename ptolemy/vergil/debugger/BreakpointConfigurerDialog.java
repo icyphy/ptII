@@ -64,14 +64,14 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
      *  target.
      */
     public BreakpointConfigurerDialog(Frame owner, Entity target,
-        BasicGraphController graphController) {
+            BasicGraphController graphController) {
         super(owner, "Configure breakpoints for " + target.getName(),
-            new BreakpointConfigurer(target, graphController), _moreButtons);
+                new BreakpointConfigurer(target, graphController), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         if (buttonPressed().equals("Help")) {
             QueryUtilities.openHTMLResource("ptolemy/vergil/debugger/breakpoints.htm",
-                owner);
+                    owner);
         }
     }
 
@@ -90,7 +90,7 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
                 ((BreakpointConfigurer) contents).apply();
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to handle closing of breakpoint "
-                    + "dialog.", throwable);
+                        + "dialog.", throwable);
             }
         }
     }

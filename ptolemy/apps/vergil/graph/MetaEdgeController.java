@@ -62,7 +62,7 @@ import ptolemy.kernel.*;
 public class MetaEdgeController extends CompositeEntity
     implements EdgeController {
 
-   /** The selection interactor for drag-selecting nodes
+    /** The selection interactor for drag-selecting nodes
      */
     private SelectionDragger _selectionDragger;
 
@@ -105,42 +105,42 @@ public class MetaEdgeController extends CompositeEntity
 
         // Create and set up the target for connectors
         /*    PerimeterTarget ct = new PerimeterTarget() {
-            // Accept the head if the model graph model allows it.
-            public boolean acceptHead (Connector c, Figure f) {
-                Object node = f.getUserObject();
-                Object edge = c.getUserObject();
-                MutableGraphModel model =
-                (MutableGraphModel)getController().getGraphModel();
-                if (model.isNode(node) &&
-                    model.isEdge(edge) &&
-                    model.acceptHead(edge, node)) {
-                        return super.acceptHead(c, f);
-                } else return false;
-            }
+        // Accept the head if the model graph model allows it.
+        public boolean acceptHead (Connector c, Figure f) {
+        Object node = f.getUserObject();
+        Object edge = c.getUserObject();
+        MutableGraphModel model =
+        (MutableGraphModel)getController().getGraphModel();
+        if (model.isNode(node) &&
+        model.isEdge(edge) &&
+        model.acceptHead(edge, node)) {
+        return super.acceptHead(c, f);
+        } else return false;
+        }
 
-            // Accept the tail if the model graph model allows it.
-            public boolean acceptTail (Connector c, Figure f) {
-                Object node = f.getUserObject();
-                Object edge = c.getUserObject();
-                MutableGraphModel model =
-                (MutableGraphModel)getController().getGraphModel();
-                if (model.isNode(node) &&
-                    model.isEdge(edge) &&
-                    model.acceptTail(edge, node)) {
-                        return super.acceptTail(c, f);
-                } else return false;
-            }
+        // Accept the tail if the model graph model allows it.
+        public boolean acceptTail (Connector c, Figure f) {
+        Object node = f.getUserObject();
+        Object edge = c.getUserObject();
+        MutableGraphModel model =
+        (MutableGraphModel)getController().getGraphModel();
+        if (model.isNode(node) &&
+        model.isEdge(edge) &&
+        model.acceptTail(edge, node)) {
+        return super.acceptTail(c, f);
+        } else return false;
+        }
 
-            // If we have any terminals, then return the connection
-            //  site of the terminal instead of a new perimeter site.
-            public Site getHeadSite(Figure f, double x, double y) {
-                if (f instanceof Terminal) {
-                    Site site = ((Terminal)f).getConnectSite();
-                    return site;
-                } else {
-                    return super.getHeadSite(f, x, y);
-                }
-            }
+        // If we have any terminals, then return the connection
+        //  site of the terminal instead of a new perimeter site.
+        public Site getHeadSite(Figure f, double x, double y) {
+        if (f instanceof Terminal) {
+        Site site = ((Terminal)f).getConnectSite();
+        return site;
+        } else {
+        return super.getHeadSite(f, x, y);
+        }
+        }
         };
         setConnectorTarget(ct);
         */
@@ -156,7 +156,7 @@ public class MetaEdgeController extends CompositeEntity
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-                        int end, double x, double y) {
+            int end, double x, double y) {
         MutableGraphModel model =
             (MutableGraphModel)getController().getGraphModel();
         Figure nf = getController().getFigure(node);
@@ -177,7 +177,7 @@ public class MetaEdgeController extends CompositeEntity
                 tailSite = getConnectorTarget().getTailSite(c, nf, x, y);
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
-                        "no valid site found for tail of new connector.");
+                            "no valid site found for tail of new connector.");
                 }
                 model.setEdgeTail(getController(), edge, node);
                 c.setTailSite(tailSite);
@@ -185,7 +185,7 @@ public class MetaEdgeController extends CompositeEntity
                 headSite = getConnectorTarget().getHeadSite(c, nf, x, y);
                 if (headSite == null) {
                     throw new RuntimeException("Invalid connector target: " +
-                        "no valid site found for head of new connector.");
+                            "no valid site found for head of new connector.");
                 }
                 model.setEdgeHead(getController(), edge, node);
                 c.setHeadSite(headSite);
@@ -263,7 +263,7 @@ public class MetaEdgeController extends CompositeEntity
             // Get a new tail site based on the tail figure.
             Rectangle2D bounds = tailFigure.getBounds();
             tailSite = getConnectorTarget().getTailSite(tailFigure,
-                bounds.getCenterX(), bounds.getCenterY());
+                    bounds.getCenterX(), bounds.getCenterY());
         }
 
         // If the head is not attached,
@@ -281,7 +281,7 @@ public class MetaEdgeController extends CompositeEntity
             // Get a new head site based on the head figure.
             Rectangle2D bounds = headFigure.getBounds();
             headSite = getConnectorTarget().getHeadSite(headFigure,
-                bounds.getCenterX(), bounds.getCenterY());
+                    bounds.getCenterX(), bounds.getCenterY());
         }
 
         // If we did have an old figure, throw it away.
@@ -292,8 +292,8 @@ public class MetaEdgeController extends CompositeEntity
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
         getController().dispatch(new GraphViewEvent(this,
-                                                GraphViewEvent.EDGE_DRAWN,
-                                                edge));
+                                         GraphViewEvent.EDGE_DRAWN,
+                                         edge));
         return c;
     }
 
@@ -368,10 +368,10 @@ public class MetaEdgeController extends CompositeEntity
         // FIXME: This is rather dangerous because it assumes a
         // basic selection renderer.
         /*        BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-            getEdgeInteractor().getSelectionRenderer();
-        ConnectorManipulator manipulator = (ConnectorManipulator)
-            selectionRenderer.getDecorator();
-        manipulator.setConnectorTarget(t);
+                  getEdgeInteractor().getSelectionRenderer();
+                  ConnectorManipulator manipulator = (ConnectorManipulator)
+                  selectionRenderer.getDecorator();
+                  manipulator.setConnectorTarget(t);
         */
     }
 
@@ -418,7 +418,7 @@ public class MetaEdgeController extends CompositeEntity
     /** Render the edge on the given layer between the two sites.
      */
     public Connector render(Object edge, FigureLayer layer,
-                               Site tailSite, Site headSite) {
+            Site tailSite, Site headSite) {
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
         ef.setInteractor(getEdgeInteractor());
         ef.setUserObject(edge);
@@ -456,7 +456,7 @@ public class MetaEdgeController extends CompositeEntity
                     break;
                 default:
                     throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
+                            "Cannot handle both ends of an edge being dragged.");
                 }
             } catch (GraphException ex) {
                 SelectionModel selectionModel =

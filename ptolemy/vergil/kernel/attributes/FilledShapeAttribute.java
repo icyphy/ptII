@@ -74,7 +74,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   an attribute already in the container.
      */
     public FilledShapeAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         width = new Parameter(this, "width");
@@ -132,7 +132,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == width) || (attribute == height))
                 && !_inAttributeChanged) {
             try {

@@ -79,7 +79,7 @@ public class Sleep extends Transformer {
      *   actor with this name.
      */
     public Sleep(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         sleepTime = new PortParameter(this, "sleepTime");
         sleepTime.setExpression("0L");
@@ -148,7 +148,7 @@ public class Sleep extends Transformer {
 
                 if (_debugging) {
                     _debug(getName() + ": Wait for " + sleepTimeValue
-                        + " milliseconds.");
+                            + " milliseconds.");
                 }
 
                 Thread.sleep(sleepTimeValue);

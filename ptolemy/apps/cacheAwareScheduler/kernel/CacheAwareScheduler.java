@@ -1,28 +1,28 @@
 /* A Cache aware scheduler for the chain-structured SDF graphs
 
- Copyright (c) 1998-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
@@ -70,20 +70,20 @@ import ptolemy.math.Fraction;
 //// CacheAwareScheduler
 /**
 
-   Notes:
-   1. At present, this scheduler can only handle chain structured graphs.
-   2. The _generateMPMBSchedule() function is specialized to generate
-      the MPM-MBScheudle for only 4 actor chain-structured graphs. This
-      function needs to be re-written if it has to support arbitrary length
-      chain-structured graphs. For more information, read documentation of
-      this function. Rest all functions and schedule generations are generic.
+Notes:
+1. At present, this scheduler can only handle chain structured graphs.
+2. The _generateMPMBSchedule() function is specialized to generate
+the MPM-MBScheudle for only 4 actor chain-structured graphs. This
+function needs to be re-written if it has to support arbitrary length
+chain-structured graphs. For more information, read documentation of
+this function. Rest all functions and schedule generations are generic.
 
-   @see ptolemy.domains.sdf.SDFScheduler
+@see ptolemy.domains.sdf.SDFScheduler
 
-   @author Sanjeev Kohli
-   @version $Id$
-   @since Ptolemy II 2.0
- */
+@author Sanjeev Kohli
+@version $Id$
+@since Ptolemy II 2.0
+*/
 
 public class CacheAwareScheduler extends SDFScheduler {
 
@@ -409,10 +409,10 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         cmp = imp + dmp;
         /*
-        System.out.println("IMP for MPMBS Schedule : " + imp);
-        System.out.println("DMP for MPMBS Schedule : " + dmp);
-        System.out.println("Total CMP for MPMBS Schedule : "
-                + cmp );
+          System.out.println("IMP for MPMBS Schedule : " + imp);
+          System.out.println("DMP for MPMBS Schedule : " + dmp);
+          System.out.println("Total CMP for MPMBS Schedule : "
+          + cmp );
         */
         // System.out.println();
         // System.out.println("MPMBS - CMP : " + cmp);
@@ -452,7 +452,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         System.out.println("IMP for SAMAS Schedule : " + imp);
         System.out.println("DMP for SAMAS Schedule : " + dmp);
         System.out.println("Total CMP for SAMAS Schedule : "
-             + cmp );
+                + cmp );
 
         //System.out.println("SAMAS - CMP : " + cmp );
         return cmp;
@@ -817,90 +817,90 @@ public class CacheAwareScheduler extends SDFScheduler {
             if (!actorsInISPM[successorNo]) {
                 if (tempISPMSize + _actorsRecord[successorNo].codeSize
                         > _instructionSPMSize) {
-                        // Temp Variables
-                        boolean foundActorToSwap = false;
-                        int swapActor = -1;
-                        int swapActorSize = 0;
-                        int maxActor = -1;
-                        int maxActorSize = 0;
-                        // To be used in case we need to remove a set of actors
-                        // to bring this successor in the I-Scratchpad.
-                        ArrayList swapActorList = new ArrayList();
-                        int swapListSize = 0;
+                    // Temp Variables
+                    boolean foundActorToSwap = false;
+                    int swapActor = -1;
+                    int swapActorSize = 0;
+                    int maxActor = -1;
+                    int maxActorSize = 0;
+                    // To be used in case we need to remove a set of actors
+                    // to bring this successor in the I-Scratchpad.
+                    ArrayList swapActorList = new ArrayList();
+                    int swapListSize = 0;
 
-                        while ((swapListSize + _instructionSPMSize - tempISPMSize) < _actorsRecord[successorNo].codeSize) {
-                            foundActorToSwap = false;
-                            maxActor = -1;
-                            swapActor = -1;
-                            maxActorSize = 0;
-                            swapActorSize = 0;
+                    while ((swapListSize + _instructionSPMSize - tempISPMSize) < _actorsRecord[successorNo].codeSize) {
+                        foundActorToSwap = false;
+                        maxActor = -1;
+                        swapActor = -1;
+                        maxActorSize = 0;
+                        swapActorSize = 0;
 
-                            for (int j = 0; j < _noOfActors; j++) {
-                                if (actorsInISPM[j]) {
-                                    if (!swapActorList.contains(new Integer(j))) {
-                                        if ((_actorsRecord[j].codeSize + swapListSize + _instructionSPMSize - tempISPMSize) >= _actorsRecord[successorNo].codeSize) {
-                                            if (foundActorToSwap == true) {
-                                                if (swapActorSize >
-                                                        _actorsRecord[j].codeSize) {
-                                                    // Replace the current swap actor
-                                                    // with this newly found smaller
-                                                    // size swap actor.
-                                                    swapActor = j;
-                                                    swapActorSize =
-                                                        _actorsRecord[j].codeSize;
-                                                }    // end of if (swapActorSize..)
-                                            }     // end of if (foundActorToSwap)
-                                            else {
-                                                foundActorToSwap = true;
+                        for (int j = 0; j < _noOfActors; j++) {
+                            if (actorsInISPM[j]) {
+                                if (!swapActorList.contains(new Integer(j))) {
+                                    if ((_actorsRecord[j].codeSize + swapListSize + _instructionSPMSize - tempISPMSize) >= _actorsRecord[successorNo].codeSize) {
+                                        if (foundActorToSwap == true) {
+                                            if (swapActorSize >
+                                                    _actorsRecord[j].codeSize) {
+                                                // Replace the current swap actor
+                                                // with this newly found smaller
+                                                // size swap actor.
                                                 swapActor = j;
                                                 swapActorSize =
                                                     _actorsRecord[j].codeSize;
-                                            }
-                                        } // end of finding the swap actor.
-                                        if (_actorsRecord[j].codeSize >
-                                                maxActorSize) {
-                                            maxActor = j;
-                                            maxActorSize =
+                                            }    // end of if (swapActorSize..)
+                                        }     // end of if (foundActorToSwap)
+                                        else {
+                                            foundActorToSwap = true;
+                                            swapActor = j;
+                                            swapActorSize =
                                                 _actorsRecord[j].codeSize;
-                                        }    // end of if (actorsRecord..)
-                                    }    // end of if (!swapActorList..)
-                                }    // end of if (actorsInISPM[j])
-                            }    // end of for (int j = 0;...) loop
+                                        }
+                                    } // end of finding the swap actor.
+                                    if (_actorsRecord[j].codeSize >
+                                            maxActorSize) {
+                                        maxActor = j;
+                                        maxActorSize =
+                                            _actorsRecord[j].codeSize;
+                                    }    // end of if (actorsRecord..)
+                                }    // end of if (!swapActorList..)
+                            }    // end of if (actorsInISPM[j])
+                        }    // end of for (int j = 0;...) loop
 
-                            if (foundActorToSwap) {
-                                swapActorList.add(new Integer(swapActor));
-                                swapListSize += swapActorSize;
-                            } else {
-                                swapActorList.add(new Integer(maxActor));
-                                swapListSize += maxActorSize;
-                            }
-                        } // end of while (swapListSize....)
+                        if (foundActorToSwap) {
+                            swapActorList.add(new Integer(swapActor));
+                            swapListSize += swapActorSize;
+                        } else {
+                            swapActorList.add(new Integer(maxActor));
+                            swapListSize += maxActorSize;
+                        }
+                    } // end of while (swapListSize....)
 
-                        Iterator tempActors = swapActorList.iterator();
-                        while (tempActors.hasNext()) {
-                            int tempSwapActor =
-                                ((Integer)tempActors.next()).intValue();
-                            int tempSwapActorSize =
-                                _actorsRecord[tempSwapActor].codeSize;
-                            // Add IMP to bring this successor by evicting
-                            // the swap actor. Also modify the contents of
-                            // the copy of instruction SPM (actorsInISPM)
-                            // and its size
-                            if (tempSwapActor < actorNo) penalty += 0;
-                            else if (tempSwapActor > actorNo)
-                                penalty +=
-                                    (multiplicationFactor * tempSwapActorSize);
-                            // if the current actor itself needs to be evicted
-                            // to bring the successor in I-Scratchpad then
-                            // we need to add the penalty for bringing the
-                            // current actor back to I-Scratchpad.
-                            else penalty += (multiplicationFactor * (tempSwapActorSize + _actorsRecord[successorNo].codeSize));
+                    Iterator tempActors = swapActorList.iterator();
+                    while (tempActors.hasNext()) {
+                        int tempSwapActor =
+                            ((Integer)tempActors.next()).intValue();
+                        int tempSwapActorSize =
+                            _actorsRecord[tempSwapActor].codeSize;
+                        // Add IMP to bring this successor by evicting
+                        // the swap actor. Also modify the contents of
+                        // the copy of instruction SPM (actorsInISPM)
+                        // and its size
+                        if (tempSwapActor < actorNo) penalty += 0;
+                        else if (tempSwapActor > actorNo)
+                            penalty +=
+                                (multiplicationFactor * tempSwapActorSize);
+                        // if the current actor itself needs to be evicted
+                        // to bring the successor in I-Scratchpad then
+                        // we need to add the penalty for bringing the
+                        // current actor back to I-Scratchpad.
+                        else penalty += (multiplicationFactor * (tempSwapActorSize + _actorsRecord[successorNo].codeSize));
 
-                            actorsInISPM[tempSwapActor] = false;
-                            tempISPMSize -= tempSwapActorSize ;
-                        }   // end of while (tempActors.hasNext())
-                        actorsInISPM[successorNo] = true;
-                        tempISPMSize += _actorsRecord[successorNo].codeSize;
+                        actorsInISPM[tempSwapActor] = false;
+                        tempISPMSize -= tempSwapActorSize ;
+                    }   // end of while (tempActors.hasNext())
+                    actorsInISPM[successorNo] = true;
+                    tempISPMSize += _actorsRecord[successorNo].codeSize;
                 }    // end of if (tempISPMSize + ...)
                 else {
                     // Simply bring this actor to the scratchpad's temporary
@@ -977,14 +977,14 @@ public class CacheAwareScheduler extends SDFScheduler {
         // is thrown with the names of the actors in the loop.
         Object[] cycleNodes =
             ((FunctionDependencyOfCompositeActor)functionDependency)
-                .getCycleNodes();
+            .getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
                     if (i > 0) names.append(", ");
                     names.append(((Nameable)cycleNodes[i])
-                        .getContainer().getFullName());
+                            .getContainer().getFullName());
                 }
             }
             throw new IllegalActionException(this.getContainer(),
@@ -1026,8 +1026,8 @@ public class CacheAwareScheduler extends SDFScheduler {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
                     if (directlyDependentOutputPorts != null &&
-                        !directlyDependentOutputPorts.contains(
-                            outputPort)) {
+                            !directlyDependentOutputPorts.contains(
+                                    outputPort)) {
                         // Skip the port without direct dependence.
                         continue;
                     }
@@ -1141,7 +1141,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                 if (currentActor != 0) {
                     MemoryAddress tempAddress = new MemoryAddress();
                     for (int p = 1;
-                        p <= _actorsRecord[currentActor].consumptionRate; p++) {
+                         p <= _actorsRecord[currentActor].consumptionRate; p++) {
                         tempAddress.setFields((currentActor-1),
                                 (_actorsRecord[currentActor].consumed + p));
                         if (_dataSPM.contains(tempAddress))
@@ -1183,7 +1183,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         // for it.
                         if (currentActor != (_noOfActors-1)) {
                             for (int p = 1;
-                                p<=_actorsRecord[currentActor].productionRate; p++) {
+                                 p<=_actorsRecord[currentActor].productionRate; p++) {
                                 MemoryAddress tempAddress =
                                     new MemoryAddress(currentActor,
                                             _actorsRecord[currentActor].produced+ p);
@@ -1229,7 +1229,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                     // production rate is zero, so, no need to check for it.
                     if (currentActor != (_noOfActors-1)) {
                         for (int p = 1;
-                            p<=_actorsRecord[currentActor].productionRate;p++) {
+                             p<=_actorsRecord[currentActor].productionRate;p++) {
                             MemoryAddress tempAddress =
                                 new MemoryAddress(currentActor,
                                         _actorsRecord[currentActor].produced+p);
@@ -1266,7 +1266,7 @@ public class CacheAwareScheduler extends SDFScheduler {
             if (!canPutMoreDataInDSPM) {
                 if (tempFiringsOfCurrentActor > 0) {
                     if (_calculateDMP(currentActor, tempMaxFirings,
-                            tempFiringsOfCurrentActor) >
+                                tempFiringsOfCurrentActor) >
                             _calculateIMP(currentActor, tempMaxFirings,
                                     tempFiringsOfCurrentActor)) {
 
@@ -1316,7 +1316,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                                 int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings - tempFiringsOfCurrentActor);
                                 if (_dataSPM.freeSpace() < tempProducedTokens) {
                                     int tem = _dataSPM.freeSpace();
-                                // Update the Data Miss Penalty (DMP)
+                                    // Update the Data Miss Penalty (DMP)
                                     _dataMissPenalty +=
                                         (_DREADTIME + _DWRITETIME) *
                                         (tempProducedTokens - tem);
@@ -1330,7 +1330,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                                 }  // end of if (_dataSPM.freeSpace()..)
                                 else {
                                     for (int p = 1;
-                                        p <= tempProducedTokens; p++) {
+                                         p <= tempProducedTokens; p++) {
                                         MemoryAddress tempAddress =
                                             new MemoryAddress(currentActor,
                                                     _actorsRecord[currentActor].produced+p);
@@ -1440,7 +1440,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                             }  // end of if (_dataSPM.freeSpace()..)
                             else {
                                 for (int p = 1;
-                                    p <= tempProducedTokens; p++) {
+                                     p <= tempProducedTokens; p++) {
                                     MemoryAddress tempAddress =
                                         new MemoryAddress(currentActor,
                                                 _actorsRecord[currentActor].produced + p);
@@ -1469,7 +1469,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                                     tempExtraFirings);
                         if (currentActor != (_noOfActors - 1)) {
                             _actorsRecord[currentActor + 1].inputTokensAvailable += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
-                                // Update the fireable field of the successor
+                            // Update the fireable field of the successor
                             _actorsRecord[currentActor + 1].fireable =
                                 _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
                         }    // end of if (currentActor != ....)
@@ -1537,7 +1537,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings - tempFiringsOfCurrentActor);
                         if (_dataSPM.freeSpace() < tempProducedTokens) {
                             int tem = _dataSPM.freeSpace();
-                                // Update the Data Miss Penalty (DMP)
+                            // Update the Data Miss Penalty (DMP)
                             _dataMissPenalty +=
                                 (_DREADTIME + _DWRITETIME) *
                                 (tempProducedTokens - tem);
@@ -1549,7 +1549,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         }  // end of if (_dataSPM.freeSpace()..)
                         else {
                             for (int p = 1;
-                                p <= tempProducedTokens; p++) {
+                                 p <= tempProducedTokens; p++) {
                                 MemoryAddress tempAddress =
                                     new MemoryAddress(currentActor, _actorsRecord[currentActor].produced + p);
                                 _dataSPM.add(tempAddress);
@@ -1751,14 +1751,14 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // FIXME. printing for debugging.
         /* System.out.println();
-        System.out.println("First schedule (MPMBS generation) is :");
-        System.out.println(schedules[0]);
-        System.out.println();
-        System.out.println("Alternatively it is : (" + fABCD + "(" + fA
-                + "A)(" + fBCD + "(" + fB + "B)(" + fCD + "(" + fC + "C)("
-                + fD + "D))))");
-        System.out.println("Its buffer requirement is : "
-                + bufferRequirement[0]);
+           System.out.println("First schedule (MPMBS generation) is :");
+           System.out.println(schedules[0]);
+           System.out.println();
+           System.out.println("Alternatively it is : (" + fABCD + "(" + fA
+           + "A)(" + fBCD + "(" + fB + "B)(" + fCD + "(" + fC + "C)("
+           + fD + "D))))");
+           System.out.println("Its buffer requirement is : "
+           + bufferRequirement[0]);
         */
 
         // Generating schedule 2 (index 1)
@@ -1813,14 +1813,14 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // FIXME. printing for debugging.
         /* System.out.println();
-        System.out.println("Second schedule (MPMBS generation) is :");
-        System.out.println(schedules[1]);
-        System.out.println();
-        System.out.println("Alternatively it is : (" + fABCD + "(" + fA
-                + "A)(" + fBCD + "(" + fBC + "(" + fB + "B)(" + fC + "C))("
-                + fD + "D)))");
-        System.out.println("Its buffer requirement is : "
-                + bufferRequirement[1]);
+           System.out.println("Second schedule (MPMBS generation) is :");
+           System.out.println(schedules[1]);
+           System.out.println();
+           System.out.println("Alternatively it is : (" + fABCD + "(" + fA
+           + "A)(" + fBCD + "(" + fBC + "(" + fB + "B)(" + fC + "C))("
+           + fD + "D)))");
+           System.out.println("Its buffer requirement is : "
+           + bufferRequirement[1]);
         */
 
         // Generating schedule 3 (index 2)
@@ -1874,14 +1874,14 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // FIXME. printing for debugging.
         /* System.out.println();
-        System.out.println("Third schedule (MPMBS generation) is :");
-        System.out.println(schedules[2]);
-        System.out.println();
-        System.out.println("Alternatively it is : (" + fABCD + "(" + fAB
-                + "(" + fA + "A)(" + fB + "B))(" + fCD + "(" + fC
-                + "C)(" + fD + "D)))");
-        System.out.println("Its buffer requirement is : "
-                + bufferRequirement[2]);
+           System.out.println("Third schedule (MPMBS generation) is :");
+           System.out.println(schedules[2]);
+           System.out.println();
+           System.out.println("Alternatively it is : (" + fABCD + "(" + fAB
+           + "(" + fA + "A)(" + fB + "B))(" + fCD + "(" + fC
+           + "C)(" + fD + "D)))");
+           System.out.println("Its buffer requirement is : "
+           + bufferRequirement[2]);
         */
 
         // Generating schedule 4 (index 3)
@@ -1935,14 +1935,14 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // FIXME. printing for debugging.
         /* System.out.println();
-        System.out.println("Fourth schedule (MPMBS generation) is :");
-        System.out.println(schedules[3]);
-        System.out.println();
-        System.out.println("Alternatively it is : (" + fABCD + "(" + fABC
-                + "(" + fAB + "(" + fA + "A)(" + fB + "B))("  + fC
-                + "C))(" + fD + "D))");
-        System.out.println("Its buffer requirement is : "
-                + bufferRequirement[3]);
+           System.out.println("Fourth schedule (MPMBS generation) is :");
+           System.out.println(schedules[3]);
+           System.out.println();
+           System.out.println("Alternatively it is : (" + fABCD + "(" + fABC
+           + "(" + fAB + "(" + fA + "A)(" + fB + "B))("  + fC
+           + "C))(" + fD + "D))");
+           System.out.println("Its buffer requirement is : "
+           + bufferRequirement[3]);
         */
 
         // Generating schedule 5 (index 4)
@@ -1996,14 +1996,14 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // FIXME. printing for debugging.
         /*System.out.println();
-        System.out.println("Fifth schedule (MPMBS generation) is :");
-        System.out.println(schedules[4]);
-        System.out.println();
-        System.out.println("Alternatively it is : (" + fABCD + "(" + fABC
-                + "(" + fA + "A)(" + fBC + "(" + fB + "B)("  + fC
-                + "C)))(" + fD + "D))");
-        System.out.println("Its buffer requirement is : "
-                + bufferRequirement[4]);
+          System.out.println("Fifth schedule (MPMBS generation) is :");
+          System.out.println(schedules[4]);
+          System.out.println();
+          System.out.println("Alternatively it is : (" + fABCD + "(" + fABC
+          + "(" + fA + "A)(" + fBC + "(" + fB + "B)("  + fC
+          + "C)))(" + fD + "D))");
+          System.out.println("Its buffer requirement is : "
+          + bufferRequirement[4]);
         */
         return schedules[minBufferScheduleIndex];
     }
@@ -2045,7 +2045,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         if (director instanceof SDFDirector) {
             token = ((SDFDirector)director).vectorizationFactor.getToken();
             _vectorizationFactor = ((IntToken)token).intValue();
-         }
+        }
         if (_vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
                     "The supplied vectorizationFactor must be " +
@@ -2067,11 +2067,11 @@ public class CacheAwareScheduler extends SDFScheduler {
             // _dataSPMSize = ((IntToken)token).intValue();
         }
         /*if (_dataSPMSize < 1) {
-            throw new NotSchedulableException(this,
-                    "The supplied dataScratchpadSize must be " +
-                    "a positive integer. " +
-                    "The given value was: " + _dataSPMSize);
-        }*/
+          throw new NotSchedulableException(this,
+          "The supplied dataScratchpadSize must be " +
+          "a positive integer. " +
+          "The given value was: " + _dataSPMSize);
+          }*/
         else if (_instructionSPMSize < 1) {
             throw new NotSchedulableException(this,
                     "The supplied instructionScratchpadSize must be " +
@@ -2199,7 +2199,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         System.out.println("(Scheduler) Vectorization Factor : " + _vectorizationFactor);
 
         for (int i = 0; i < _noOfActors; i++) {
-         // Printing the actor's parameters
+            // Printing the actor's parameters
             System.out.println("Actor " + (i+1) + "'s Consumption Rate is "
                     + _actorsRecord[i].consumptionRate);
             System.out.println("Actor " + (i+1) + "'s Production Rate is "

@@ -65,7 +65,7 @@ public class WatchDog {
                 public void run() {
                     try {
                         System.err.println("*** util.testsuite.WatchDog went "
-                            + "off after " + timeToDie + "ms.");
+                                + "off after " + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
                         ThreadGroup parent;
@@ -101,11 +101,11 @@ public class WatchDog {
 
                         if (_exitOnTimeOut) {
                             System.out.println("The string below is so that "
-                                + "the nightly build will notice");
+                                    + "the nightly build will notice");
                             System.out.println("Failed: 666  Total Tests: 0 "
-                                + "((Passed: 0, Newly Passed: 0)  "
-                                + "Known Failed: 0) "
-                                + "util.testsuite.WatchDog went off");
+                                    + "((Passed: 0, Newly Passed: 0)  "
+                                    + "Known Failed: 0) "
+                                    + "util.testsuite.WatchDog went off");
 
                             // Do not pass go, do not collect $200
                             System.exit(4);
@@ -127,11 +127,11 @@ public class WatchDog {
      */
     public void cancel() {
         System.out.println("util.testsuite.WatchDog.cancel(): canceling "
-            + (new Date()));
+                + (new Date()));
 
         if (_timer == null) {
             System.out.println("util.testsuite.WatchDog.cancel(): "
-                + "Warning: cancel called twice?");
+                    + "Warning: cancel called twice?");
         } else {
             _timer.cancel();
             _timer = null;

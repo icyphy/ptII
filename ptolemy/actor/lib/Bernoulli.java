@@ -64,7 +64,7 @@ public class Bernoulli extends RandomSource {
      *   actor with this name.
      */
     public Bernoulli(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.BOOLEAN);

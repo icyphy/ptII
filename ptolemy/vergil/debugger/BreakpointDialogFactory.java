@@ -108,17 +108,17 @@ public class BreakpointDialogFactory implements MenuItemFactory {
 
                         if (parent instanceof Frame) {
                             new BreakpointConfigurerDialog((Frame) parent,
-                                (Entity) target, _graphController);
+                                    (Entity) target, _graphController);
                         } else {
                             new BreakpointConfigurerDialog(null,
-                                (Entity) target, _graphController);
+                                    (Entity) target, _graphController);
                         }
                     } catch (Throwable throwable) {
                         // If we don't have a SDFDirector, then the error
                         // message will appear on stderr instead of in a
                         // dialog unless we catch the error here.
                         MessageHandler.error("Failed to create Breakpoint "
-                            + "dialog.", throwable);
+                                + "dialog.", throwable);
                     }
                 }
             };

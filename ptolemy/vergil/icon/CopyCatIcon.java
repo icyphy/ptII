@@ -68,7 +68,7 @@ public class CopyCatIcon extends XMLIcon {
      *   an attribute already in the container.
      */
     public CopyCatIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -113,7 +113,7 @@ public class CopyCatIcon extends XMLIcon {
                     // Look for an icon within the entity.
                     EditorIcon icon = null;
                     Iterator icons = entity.attributeList(EditorIcon.class)
-                                           .iterator();
+                        .iterator();
 
                     while (icons.hasNext()) {
                         icon = (EditorIcon) icons.next();
@@ -126,13 +126,13 @@ public class CopyCatIcon extends XMLIcon {
                         // _iconDescription attribute.
                         SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) entity
                             .getAttribute("_iconDescription",
-                                SingletonConfigurableAttribute.class);
+                                    SingletonConfigurableAttribute.class);
 
                         if (description != null) {
                             // Look for an icon description in my container.
                             SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
                                 .getAttribute("_iconDescription",
-                                    SingletonConfigurableAttribute.class);
+                                        SingletonConfigurableAttribute.class);
 
                             if (myDescription != null) {
                                 // Save my original description, in case I go
@@ -143,7 +143,7 @@ public class CopyCatIcon extends XMLIcon {
                                 }
 
                                 myDescription.configure(null, null,
-                                    description.getConfigureText());
+                                        description.getConfigureText());
                             }
                         }
                     }
@@ -155,11 +155,11 @@ public class CopyCatIcon extends XMLIcon {
                         // Look for an icon description in my container.
                         SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
                             .getAttribute("_iconDescription",
-                                SingletonConfigurableAttribute.class);
+                                    SingletonConfigurableAttribute.class);
 
                         if (myDescription != null) {
                             myDescription.configure(null, null,
-                                _originalDescription);
+                                    _originalDescription);
                         }
                     }
                 }

@@ -94,7 +94,7 @@ public class Reader extends Source {
      *   actor with this name.
      */
     public Reader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -138,7 +138,7 @@ public class Reader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == sourceURL) {
             try {
                 StringToken URLToken = (StringToken) sourceURL.getToken();
@@ -154,13 +154,13 @@ public class Reader extends Source {
                     } else {
                         URL url = new URL(_source);
                         java.io.BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                    url.openStream()));
+                                                                                   url.openStream()));
                         setReader(reader);
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "attributeChanged(" + attribute + ") failed");
+                        "attributeChanged(" + attribute + ") failed");
             }
         }
 
@@ -183,7 +183,7 @@ public class Reader extends Source {
      */
     public void initialize() throws IllegalActionException {
         System.out.println("actor.lib.Reader is obsolete, "
-            + "use actor.lib.DoubleReader instead");
+                + "use actor.lib.DoubleReader instead");
         _dataSize = output.getWidth();
         _data = new double[_dataSize];
         attributeChanged(sourceURL);
@@ -229,14 +229,14 @@ public class Reader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     public void setReader(java.io.BufferedReader reader)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "setReader(" + reader + ") failed");
+                    "setReader(" + reader + ") failed");
         }
 
         if (reader != null) {
@@ -256,7 +256,7 @@ public class Reader extends Source {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "wrapup(" + _reader + ") failed");
+                    "wrapup(" + _reader + ") failed");
         }
     }
 

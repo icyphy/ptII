@@ -143,7 +143,7 @@ public class CalendarQueue implements Debuggable {
      *  @param binCountFactor The bin count factor.
      */
     public CalendarQueue(CQComparator comparator, int minNumBuckets,
-        int binCountFactor) {
+            int binCountFactor) {
         this(comparator);
         _minNumBuckets = minNumBuckets;
         _queueBinCountFactor = binCountFactor;
@@ -393,7 +393,7 @@ public class CalendarQueue implements Debuggable {
                 Object minimumInBucket = _bucket[i].head.contents;
 
                 if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket
-                        + j)) {
+                            + j)) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
                     break;
@@ -423,7 +423,7 @@ public class CalendarQueue implements Debuggable {
             if (i == _minBucket) {
                 if (minSoFar == null) {
                     throw new InternalErrorException(
-                        "Queue is empty, but size() is not zero!");
+                            "Queue is empty, but size() is not zero!");
                 }
 
                 result = _takeFromBucket(indexOfMinimum);
@@ -536,8 +536,8 @@ public class CalendarQueue implements Debuggable {
             if (currentBucket == nextStartBucket) {
                 if (minimumNextVirtualBucket == Long.MAX_VALUE) {
                     throw new InternalErrorException(
-                        "Queue is empty, but size() is not zero! It is: "
-                        + _queueSize);
+                            "Queue is empty, but size() is not zero! It is: "
+                            + _queueSize);
                 }
 
                 virtualBucket = minimumNextVirtualBucket;
@@ -670,7 +670,7 @@ public class CalendarQueue implements Debuggable {
 
                     if (_debugging) {
                         _debug(">>>>>> decreasing number of buckets to: "
-                            + newSize);
+                                + newSize);
                     }
                 }
             }

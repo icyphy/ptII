@@ -96,7 +96,7 @@ public class EditIconFrame extends BasicGraphFrame {
      *   to use if the model does not have a library.
      */
     public EditIconFrame(EditorIcon entity, Tableau tableau,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         _dropTarget.setDropIntoEnabled(false);
@@ -118,7 +118,7 @@ public class EditIconFrame extends BasicGraphFrame {
     public void zoomReset() {
         JCanvas canvas = _jgraph.getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
-                                        .getTransform();
+            .getTransform();
         current.setToScale(_ZOOM_SCALE, _ZOOM_SCALE);
         canvas.getCanvasPane().setTransform(current);
         setCenter(new Point2D.Double(0.0, 0.0));
@@ -169,7 +169,7 @@ public class EditIconFrame extends BasicGraphFrame {
                     result = (CompositeEntity) parser.parse(null, source);
                 } catch (Exception e) {
                     throw new InternalErrorException(
-                        "Unable to open default icon editor library: " + e);
+                            "Unable to open default icon editor library: " + e);
                 }
             }
 
@@ -198,7 +198,7 @@ public class EditIconFrame extends BasicGraphFrame {
         // The background layer is a FigureLayer, despite the fact that
         // getBackgroundLayer() only returns a CanvasLayer.
         FigureLayer layer = (FigureLayer) _jgraph.getGraphPane()
-                                                 .getBackgroundLayer();
+            .getBackgroundLayer();
         layer.setVisible(true);
 
         BasicRectangle reference = new BasicRectangle(-30.0, -20.0, 60.0, 40.0,

@@ -1,28 +1,28 @@
 /*
-@Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2005 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
 
 */
@@ -57,7 +57,7 @@ public class CodeStream {
     }
 
     public void append(String codeBlock) {
-            _stream.append(codeBlock);
+        _stream.append(codeBlock);
     }
 
     public void append(StringBuffer codeBlock) {
@@ -69,7 +69,7 @@ public class CodeStream {
     }
 
     public void appendCodeBlock(String name) throws IOException {
-            // read from .c file
+        // read from .c file
         URL file = FileUtilities.nameToURL(_cgHelper.getClass().toString(), null, null);
 
         // fetch the code within the file
@@ -80,20 +80,20 @@ public class CodeStream {
     }
 
     /**
-         * @param file
-         * @param name
+     * @param file
+     * @param name
      * Given the name of the CodeBlock,
-         * @return the string representation of the code within the file
+     * @return the string representation of the code within the file
      * @exception IOException
-         */
-        private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
+     */
+    private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
 
         StringBuffer codeInFile = new StringBuffer((String) file.getContent());
         int startIndex = codeInFile.lastIndexOf(_startCodeBlock1 + name + _startCodeBlock2) + 1;
         int endIndex = codeInFile.indexOf(_endCodeBlock1 + name + _endCodeBlock2) - 1;
 
         return new StringBuffer(codeInFile.substring(startIndex, endIndex));
-        }
+    }
 
 
     /**

@@ -1,11 +1,11 @@
 /* RectToCx, CGC domain: CGCRectToCx.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCRectToCx.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRectToCx
 /**
-Convert real and imaginary parts to a complex output.
+   Convert real and imaginary parts to a complex output.
 
- @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectToCx.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author S. Ha
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectToCx.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRectToCx extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -46,9 +46,9 @@ public class CGCRectToCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -75,19 +75,19 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 2;
-     }
+        return 2;
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(body);
-     }
+        addCode(body);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String body =
-        "        $ref(output).real = $ref(real);\n"
-        + "        $ref(output).imag = $ref(imag);\n";
+    "        $ref(output).real = $ref(real);\n"
+    + "        $ref(output).imag = $ref(imag);\n";
 }

@@ -82,7 +82,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *   a period.
      */
     public DynamicEditorIcon(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -95,7 +95,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *   an attribute already in the container.
      */
     public DynamicEditorIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -165,7 +165,7 @@ public class DynamicEditorIcon extends EditorIcon {
 
                     if (_object == null) {
                         throw new NoSuchElementException(
-                            "The iterator is empty.");
+                                "The iterator is empty.");
                     } else {
                         Object object = _object;
                         _object = null;
@@ -175,7 +175,7 @@ public class DynamicEditorIcon extends EditorIcon {
 
                 public void remove() throws UnsupportedOperationException {
                     throw new UnsupportedOperationException(
-                        "The remove() operation is unsupported.");
+                            "The remove() operation is unsupported.");
                 }
 
                 private Object _object;

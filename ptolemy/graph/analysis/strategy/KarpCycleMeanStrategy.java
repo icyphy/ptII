@@ -133,7 +133,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-        + " based on Karp's algorithm.";
+            + " based on Karp's algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -257,13 +257,13 @@ public class KarpCycleMeanStrategy extends CachedStrategy
 
             for (int k = 0; k < n; k++) {
                 double maximumPathLengthToLevelK = ((Double) maximumPathLength[k]
-                    .get(node)).doubleValue();
+                        .get(node)).doubleValue();
                 double maximumPathLengthToLevelN = ((Double) maximumPathLength[n]
-                    .get(node)).doubleValue();
+                        .get(node)).doubleValue();
                 double cycleMeanValue = ((Double) (cycleMean.get(node)))
                     .doubleValue();
                 double testValue = ((maximumPathLengthToLevelN
-                    - maximumPathLengthToLevelK) / (n - k));
+                                            - maximumPathLengthToLevelK) / (n - k));
 
                 if (cycleMeanValue > testValue) {
                     cycleMean.put(node, new Double(testValue));
@@ -318,7 +318,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
 
     // Used for debugging purposes.
     private void _dumpVariable(HashMap[] maximumPathLength,
-        DirectedGraph directedCyclicGraph) {
+            DirectedGraph directedCyclicGraph) {
         Collection nodeCollection = directedCyclicGraph.nodes();
         int n = directedCyclicGraph.nodeCount();
 
@@ -328,7 +328,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
             while (nodes.hasNext()) {
                 Node node = (Node) nodes.next();
                 System.out.println(node + ":" + maximumPathLength[k].get(node)
-                    + "   ");
+                        + "   ");
             }
 
             System.out.println();

@@ -20,13 +20,13 @@
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-/**
- * Created on 01 sept. 2003
- *
- * If the present is considered as mature and necessary, it has to be merged
- * with the MoML parser.
- *
- */
+  /**
+  * Created on 01 sept. 2003
+  *
+  * If the present is considered as mature and necessary, it has to be merged
+  * with the MoML parser.
+  *
+  */
 package thales.actor.gui;
 
 
@@ -49,17 +49,17 @@ package thales.actor.gui;
 //import org.xml.sax.SAXException;
 
 /**
-<p>Titre : ModelValidator</p>
-<p>Description : A simple parser that delete empty parameters before opening
-a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
+   <p>Titre : ModelValidator</p>
+   <p>Description : A simple parser that delete empty parameters before opening
+   a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
 
- <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating @ProposedRating Red (jerome.blanc)
- @Pt.AcceptedRating @AcceptedRating
- */
+   <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+   @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating @ProposedRating Red (jerome.blanc)
+   @Pt.AcceptedRating @AcceptedRating
+*/
 public class ModelValidator {
     //    private DOMParser _parser;
     //    private URL _fileURL;

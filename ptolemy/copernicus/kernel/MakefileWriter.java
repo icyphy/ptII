@@ -78,7 +78,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
     public String getDefaultOptions() {
         return "templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT
-        + " overwrite:true";
+            + " overwrite:true";
     }
 
     public String getDeclaredOptions() {
@@ -101,7 +101,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *  want to copy jar files.
      */
     public static String codeBase(String targetPackage, String outputDirectory,
-        String ptIIDirectory) {
+            String ptIIDirectory) {
         // There is something a little bit strange
         // here, since we actually create the code in a sub
         // package of _targetPackage We could rename the
@@ -152,13 +152,13 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
                             codeBase = buffer2.toString();
                             System.out.println("MakefileWriter: codeBase was "
-                                + ".., recalculated to " + codeBase);
+                                    + ".., recalculated to " + codeBase);
                         }
                     } else {
                         System.out.println("WARNING: codeBase == .., which "
-                            + "usually means that there will be a problem "
-                            + "finding the jar files.  Resetting codeBase "
-                            + "to ., which will copy the jars");
+                                + "usually means that there will be a problem "
+                                + "finding the jar files.  Resetting codeBase "
+                                + "to ., which will copy the jars");
                         codeBase = ".";
                     }
                 }
@@ -205,7 +205,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("MakefileWriter.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         //System.out.println(_model.description());
         // Read in the GeneratorAttribute and use it for substitution
@@ -217,15 +217,15 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         if (_generatorAttributeFileName.length() == 0) {
             throw new InternalErrorException("Could not find "
-                + "_generatorAttributeFileName soot command line option. "
-                + "Usually, _generatorAttributeFileName contains the file "
-                + "name of the MoML that contains the GeneratorAttribute"
-                + "we are to use to create the makefile.  See "
-                + "ptolemy/copernicus/Copernicus.java for details");
+                    + "_generatorAttributeFileName soot command line option. "
+                    + "Usually, _generatorAttributeFileName contains the file "
+                    + "name of the MoML that contains the GeneratorAttribute"
+                    + "we are to use to create the makefile.  See "
+                    + "ptolemy/copernicus/Copernicus.java for details");
         }
 
         System.out.println("MakefileWriter: parsing "
-            + _generatorAttributeFileName);
+                + _generatorAttributeFileName);
 
         GeneratorAttribute generatorAttribute = null;
 
@@ -265,15 +265,15 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
             if (generatorAttribute == null) {
                 System.out.println("MakefileWriter: Warning, parsing '"
-                    + _generatorAttributeFileName
-                    + "' did not contain an attribute " + " called '"
-                    + Copernicus.GENERATOR_NAME + "'" + toplevel.exportMoML());
+                        + _generatorAttributeFileName
+                        + "' did not contain an attribute " + " called '"
+                        + Copernicus.GENERATOR_NAME + "'" + toplevel.exportMoML());
                 generatorAttribute = new GeneratorAttribute(toplevel,
                         Copernicus.GENERATOR_NAME);
             }
         } catch (Exception ex) {
             throw new InternalErrorException(_model, ex,
-                "Problem getting the" + " _generator attribute");
+                    "Problem getting the" + " _generator attribute");
         }
 
         _outputDirectory = PhaseOptions.getString(options, "outDir");
@@ -307,28 +307,28 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
             substituteMap.putAll(_addedSubstitutions);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(_model, ex,
-                "Problem generating substitution map from "
-                + generatorAttribute);
+                    "Problem generating substitution map from "
+                    + generatorAttribute);
         }
 
         if (overwrite || !(new File(_outputDirectory + "makefile")).isFile()) {
             try {
                 System.out.println("MakefileWriter: reading '"
-                    + _templateDirectory + "makefile.in'\n\t writing '"
-                    + _outputDirectory + "makefile'");
+                        + _templateDirectory + "makefile.in'\n\t writing '"
+                        + _outputDirectory + "makefile'");
 
                 Copernicus.substitute(_templateDirectory + "makefile.in",
-                    substituteMap, _outputDirectory + "makefile");
+                        substituteMap, _outputDirectory + "makefile");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print as well.
                 System.err.println("Problem writing makefile:" + ex);
                 ex.printStackTrace();
                 throw new InternalErrorException(_model, ex,
-                    "Problem writing the makefile");
+                        "Problem writing the makefile");
             }
         } else {
             System.out.println("MakefileWriter: not overwriting '"
-                + _outputDirectory + "makefile'");
+                    + _outputDirectory + "makefile'");
         }
 
         // Obfuscation script is optional
@@ -340,19 +340,19 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
             inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
         } catch (IOException ex) {
             System.out.println("Note: Optional obfuscation template not "
-                + "found (This can be ignored): " + ex);
+                    + "found (This can be ignored): " + ex);
         }
 
         if (inputFile != null) {
             try {
                 Copernicus.substitute(inputFile, substituteMap,
-                    _outputDirectory + "obfuscateScript.jos");
+                        _outputDirectory + "obfuscateScript.jos");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print
                 System.err.println("Problem writing obfuscation script:" + ex);
                 ex.printStackTrace();
                 throw new InternalErrorException(_model, ex,
-                    "Problem writing the makefile");
+                        "Problem writing the makefile");
             }
         }
     }
@@ -362,7 +362,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
     /** Return true if _possibleSubdirectory is a subdirectory of parent. */
     private static boolean _isSubdirectory(String parent,
-        String possibleSubdirectory) throws IOException {
+            String possibleSubdirectory) throws IOException {
         //System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
         //                           possibleSubdirectory);
         File parentFile = new File(parent);
@@ -370,8 +370,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
             throw new IOException("'" + parent + "' or '"
-                + possibleSubdirectory + "' is a file, "
-                + "it should be a directory");
+                    + possibleSubdirectory + "' is a file, "
+                    + "it should be a directory");
         }
 
         String parentCanonical = parentFile.getCanonicalPath();

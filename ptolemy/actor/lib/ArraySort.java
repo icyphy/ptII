@@ -67,7 +67,7 @@ public class ArraySort extends Transformer {
      *   actor with this name.
      */
     public ArraySort(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set Type Constraints.
@@ -138,7 +138,7 @@ public class ArraySort extends Transformer {
             }
 
             boolean allowDuplicatesValue = ((BooleanToken) allowDuplicates
-                .getToken()).booleanValue();
+                    .getToken()).booleanValue();
 
             if (!allowDuplicatesValue) {
                 // Strip out duplicates.

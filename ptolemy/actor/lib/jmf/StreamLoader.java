@@ -49,11 +49,11 @@ import ptolemy.kernel.util.NameDuplicationException;
     <p> This actor generates an ObjectToken that contains a DataSource.
     <p> This actor is typically connected to a {@link VideoPlayer} actor.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
+    @author James Yeh
+    @version $Id$
+    @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (cxh)
+    @Pt.AcceptedRating Red (cxh)
 */
 public class StreamLoader extends Source {
     /** Construct an actor with the given container and name.
@@ -65,7 +65,7 @@ public class StreamLoader extends Source {
      *   actor with this name.
      */
     public StreamLoader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");

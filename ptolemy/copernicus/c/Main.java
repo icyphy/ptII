@@ -57,6 +57,6 @@ public class Main extends ptolemy.copernicus.java.Main {
         addTransform(pack, "wjtp.finalSnapshotC", CWriter.v());
 
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
-            "cancel:true");
+                "cancel:true");
     }
 }

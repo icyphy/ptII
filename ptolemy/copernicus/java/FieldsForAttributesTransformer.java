@@ -119,7 +119,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForAttributesTransformer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
@@ -134,10 +134,10 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     }
 
     private void _replaceAttributeCalls(SootClass actorClass,
-        ComponentEntity actor) {
+            ComponentEntity actor) {
         // Replace calls to getAttribute with field references.
         for (Iterator methods = actorClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //       System.out.println("replaceAttributeCalls in " + method);
@@ -149,7 +149,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                 units.hasNext();) {
                 Stmt unit = (Stmt) units.next();
 
                 if (!unit.containsInvokeExpr()) {
@@ -189,7 +189,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                                 // type of the base is.
                                 Local baseLocal = (Local) r.getBase();
                                 _replaceGetAttributeMethod(actorClass, body,
-                                    box, baseLocal, name, unit, localDefs);
+                                        box, baseLocal, name, unit, localDefs);
                             } else {
                                 String string = "Attribute cannot be "
                                     + "statically determined";
@@ -220,8 +220,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     // invocation in the box with a reference to the appropriate field
     // for the attribute.
     private void _replaceGetAttributeMethod(SootClass theClass,
-        JimpleBody body, ValueBox box, Local baseLocal, String name, Unit unit,
-        LocalDefs localDefs) {
+            JimpleBody body, ValueBox box, Local baseLocal, String name, Unit unit,
+            LocalDefs localDefs) {
         if (_debug) {
             System.out.println("replacing getAttribute in " + unit);
         }
@@ -259,11 +259,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                 System.out.println(unit.getClass().toString());
                 System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(local,
-                        attributeField));
+                                     attributeField));
             } else {
                 throw new RuntimeException(
-                    "Failed to find field for attribute "
-                    + attribute.getFullName());
+                        "Failed to find field for attribute "
+                        + attribute.getFullName());
             }
         } else {
             // Otherwise, we have an attribute inside a port or
@@ -276,8 +276,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                 .getRightOp();
             SootField baseField = fieldRef.getField();
             _replaceGetAttributeMethod(theClass, body, box,
-                (Local) fieldRef.getBase(), baseField.getName() + "." + name,
-                definition, localDefs);
+                    (Local) fieldRef.getBase(), baseField.getName() + "." + name,
+                    definition, localDefs);
 
             //baseField.getDeclaringClass().getFieldByName(
             //    baseField.getName() + "_" + name);
@@ -292,7 +292,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
      *  otherwise return null.
      */
     private static DefinitionStmt _getFieldDef(Local local, Unit location,
-        LocalDefs localDefs) {
+            LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {
@@ -301,7 +301,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
 
             if (value instanceof CastExpr) {
                 return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,
-                    localDefs);
+                        localDefs);
             } else if (value instanceof FieldRef) {
                 return stmt;
             } else {
@@ -322,9 +322,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     // attributes of the given object that are expected
     // to exist in the given class
     private void _getAttributeFields(SootClass theClass, NamedObj container,
-        NamedObj object) {
+            NamedObj object) {
         for (Iterator attributes = object.attributeList().iterator();
-                attributes.hasNext();) {
+             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
             String fieldName = ModelTransformer.getFieldNameForAttribute(attribute,
@@ -344,8 +344,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
 
             if (!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
-                    + " declares field for attribute "
-                    + attribute.getFullName() + " but it has type " + type);
+                        + " declares field for attribute "
+                        + attribute.getFullName() + " but it has type " + type);
                 continue;
             } else {
                 SootClass fieldClass = ((RefType) type).getSootClass();
@@ -353,16 +353,16 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                 if (!SootUtilities.derivesFrom(fieldClass,
                             PtolemyUtilities.attributeClass)) {
                     System.out.println("Class " + theClass
-                        + " declares field for attribute "
-                        + attribute.getFullName() + " but it has type "
-                        + fieldClass.getName());
+                            + " declares field for attribute "
+                            + attribute.getFullName() + " but it has type "
+                            + fieldClass.getName());
                     continue;
                 }
             }
 
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC)
-                | Modifier.FINAL | Modifier.PUBLIC); // FIXME | Modifier.PRIVATE);
+                    | Modifier.FINAL | Modifier.PUBLIC); // FIXME | Modifier.PRIVATE);
 
             field.addTag(new ValueTag(attribute));
             _attributeToFieldMap.put(attribute, field);
@@ -373,7 +373,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     }
 
     private void _indexExistingFields(SootClass actorClass,
-        ComponentEntity actor) {
+            ComponentEntity actor) {
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
         _getAttributeFields(actorClass, actor, actor);

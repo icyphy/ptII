@@ -54,9 +54,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Neil E. Turner and Edward A. Lee
    @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (net)
-@Pt.AcceptedRating Green (net)
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (net)
+   @Pt.AcceptedRating Green (net)
 */
 public class StringSubstring extends Transformer {
     /** Construct an actor with the given container and name.
@@ -68,7 +68,7 @@ public class StringSubstring extends Transformer {
      *   actor with this name.
      */
     public StringSubstring(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create new parameters and ports.

@@ -96,7 +96,7 @@ public class PropertyClassChanges implements MoMLFilter {
      *   a new value if the value has changed.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // If you change this class, you should run before and after
         // timing tests on large moml files, a good command to run
         // is:
@@ -186,7 +186,7 @@ public class PropertyClassChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
         _foundChange = false;
     }
 
@@ -212,7 +212,7 @@ public class PropertyClassChanges implements MoMLFilter {
                 String oldProperty = (String) properties.next();
                 String newProperty = (String) propertyMap.get(oldProperty);
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty
-                    + "\n");
+                        + "\n");
             }
         }
 
@@ -256,10 +256,10 @@ public class PropertyClassChanges implements MoMLFilter {
 
         // Key = property name, Value = new class name
         expressionClassChanges.put("expression",
-            "ptolemy.kernel.util.StringAttribute");
+                "ptolemy.kernel.util.StringAttribute");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.Expression",
-            expressionClassChanges);
+                expressionClassChanges);
 
         // _hideName in visible attributes.
         HashMap hideNameClassChanges = new HashMap();
@@ -270,30 +270,30 @@ public class PropertyClassChanges implements MoMLFilter {
         // true, but we have no mechanism to set the value,
         // so we use an attribute.
         hideNameClassChanges.put("_hideName",
-            "ptolemy.kernel.util.SingletonAttribute");
+                "ptolemy.kernel.util.SingletonAttribute");
 
         _actorsWithPropertyClassChanges.put("ptolemy.kernel.util.Attribute",
-            hideNameClassChanges);
+                hideNameClassChanges);
 
         // MathFunction
         HashMap mathFunctionClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         mathFunctionClassChanges.put("function",
-            "ptolemy.data.expr.StringParameter");
+                "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.MathFunction",
-            mathFunctionClassChanges);
+                mathFunctionClassChanges);
 
         // TrigFunction
         HashMap trigFunctionClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         trigFunctionClassChanges.put("function",
-            "ptolemy.data.expr.StringParameter");
+                "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.TrigFunction",
-            trigFunctionClassChanges);
+                trigFunctionClassChanges);
 
         // MatlabExpression
         HashMap matlabClassChanges = new HashMap();
@@ -302,44 +302,44 @@ public class PropertyClassChanges implements MoMLFilter {
         matlabClassChanges.put("expression", "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.matlab.Expression",
-            matlabClassChanges);
+                matlabClassChanges);
 
         // DirectoryListing
         HashMap directoryListingClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         directoryListingClassChanges.put("directoryOrURL",
-            "ptolemy.actor.parameters.FilePortParameter");
+                "ptolemy.actor.parameters.FilePortParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.io.DirectoryListing",
-            directoryListingClassChanges);
+                directoryListingClassChanges);
 
         // ModelReference
         HashMap modelReferenceClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         modelReferenceClassChanges.put("modelFileOrURL",
-            "ptolemy.actor.parameters.FilePortParameter");
+                "ptolemy.actor.parameters.FilePortParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.hoc.ModelReference",
-            modelReferenceClassChanges);
+                modelReferenceClassChanges);
 
         // SRDirector
         HashMap srDirectorClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         srDirectorClassChanges.put("scheduler",
-            "ptolemy.data.expr.StringParameter");
+                "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sr.kernel.Director",
-            srDirectorClassChanges);
+                srDirectorClassChanges);
 
         // ModalModel
         HashMap modalModelClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
         modalModelClassChanges.put("directorClass",
-            "ptolemy.data.expr.StringParameter");
+                "ptolemy.data.expr.StringParameter");
 
         // Remove the _Director attribute, which does not help the modal model
         // to decide which director to choose. This attribugte will be
@@ -349,20 +349,20 @@ public class PropertyClassChanges implements MoMLFilter {
         modalModelClassChanges.put("_Director", "REMOVED!");
 
         _actorsWithPropertyClassChanges.put("ptolemy.domains.fsm.modal.ModalModel",
-            modalModelClassChanges);
+                modalModelClassChanges);
 
         // LevelCrossingDetector
         HashMap levelCrossingDetectorClassChanges = new HashMap();
         levelCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
         levelCrossingDetectorClassChanges.put("useDefaultEventValue", "REMOVED!");
         _actorsWithPropertyClassChanges.put("ptolemy.domains.ct.lib.LevelCrossingDetector",
-            levelCrossingDetectorClassChanges);
+                levelCrossingDetectorClassChanges);
 
         // ZeroCrossingDetector
         HashMap zeroCrossingDetectorClassChanges = new HashMap();
         zeroCrossingDetectorClassChanges.put("useEventValue", "REMOVED!");
         _actorsWithPropertyClassChanges.put("ptolemy.domains.ct.lib.ZeroCrossingDetector",
-            zeroCrossingDetectorClassChanges);
+                zeroCrossingDetectorClassChanges);
 
         // SDF actors don't record rates.
         HashMap rateParameterChanges = new HashMap();
@@ -370,44 +370,44 @@ public class PropertyClassChanges implements MoMLFilter {
         rateParameterChanges.put("tokenConsumptionRate", null);
         rateParameterChanges.put("tokenInitProduction", null);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Autocorrelation",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.ArrayToSequence",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.BitsToInt",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Chop",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.CountTrues",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.DownSample",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.DoubleToMatrix",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.FIR",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.FFT",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.IFFT",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.IntToBits",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.LineCoder",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.MatrixToDouble",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.MatrixToSequence",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Repeat",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.SampleDelay",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.SequenceToArray",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.SequenceToMatrix",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.UpSample",
-            rateParameterChanges);
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.VariableFIR",
-            rateParameterChanges);
+                rateParameterChanges);
     }
 }

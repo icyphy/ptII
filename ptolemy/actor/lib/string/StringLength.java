@@ -44,9 +44,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Edward A. Lee
    @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Green (net)
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (net)
 */
 public class StringLength extends Transformer {
     /** Construct an actor with the given container and name.
@@ -58,7 +58,7 @@ public class StringLength extends Transformer {
      *   actor with this name.
      */
     public StringLength(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set the types of the ports.

@@ -117,7 +117,7 @@ public abstract class GraphToDotty {
 
         //        byte nbytes[] = new byte[bbytes.length];
         if (!(((bbytes[0] >= 'a') && (bbytes[0] <= 'z'))
-                || ((bbytes[0] >= 'A') && (bbytes[0] <= 'Z')))) {
+                    || ((bbytes[0] >= 'A') && (bbytes[0] <= 'Z')))) {
             bbytes[0] = 'A';
         }
 

@@ -102,7 +102,7 @@ public class MobileModel extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public MobileModel(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -176,7 +176,7 @@ public class MobileModel extends TypedCompositeActor {
 
         if (modelString.getWidth() < 1) {
             throw new IllegalActionException(getName() + "need to have"
-                + "the modelString port be connected");
+                    + "the modelString port be connected");
         } else if (modelString.hasToken(0)) {
             StringToken str = null;
 
@@ -219,7 +219,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
 
                 throw new IllegalActionException(this, ex,
-                    "Problem parsing " + str.stringValue());
+                        "Problem parsing " + str.stringValue());
             }
         }
 
@@ -356,7 +356,7 @@ public class MobileModel extends TypedCompositeActor {
     /** Export the moml description of this.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -410,7 +410,7 @@ public class MobileModel extends TypedCompositeActor {
             }
         } catch (Exception ex) {
             throw new IllegalActionException("get an illegal action exception"
-                + "when create director" + ex);
+                    + "when create director" + ex);
         }
     }
 
@@ -468,7 +468,7 @@ public class MobileModel extends TypedCompositeActor {
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             delete.append("<deleteEntity name=\"" + entity.getName()
-                + "\" class=\"" + entity.getClass().getName() + "\"/>");
+                    + "\" class=\"" + entity.getClass().getName() + "\"/>");
         }
 
         Iterator relations = actor.relationList().iterator();
@@ -476,7 +476,7 @@ public class MobileModel extends TypedCompositeActor {
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
             delete.append("<deleteRelation name=\"" + relation.getName()
-                + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
+                    + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
         }
 
         delete.append("</group>");

@@ -79,8 +79,8 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     public MetaNodeRenderer(CompositeEntity container, String name,
             Shape nodeShape, Shape compositeShape,
             Paint nodeFill, Paint compositeFill, double compositeScale)
-        throws IllegalActionException, NameDuplicationException {
-            super(container, name);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
         setNodeShape(nodeShape);
         setNodeFill(nodeFill);
         setCompositeShape(compositeShape);

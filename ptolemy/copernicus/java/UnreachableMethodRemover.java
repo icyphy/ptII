@@ -94,7 +94,7 @@ public class UnreachableMethodRemover extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("UnreachableMethodRemover.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
@@ -105,7 +105,7 @@ public class UnreachableMethodRemover extends SceneTransformer
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // If we are in actor mode, then assert that all the
@@ -122,11 +122,11 @@ public class UnreachableMethodRemover extends SceneTransformer
             //  System.out.println("forcing interfaces of " + theClass);
             if (!theClass.isInterface()) {
                 for (Iterator interfaces = theClass.getInterfaces().iterator();
-                        interfaces.hasNext();) {
+                     interfaces.hasNext();) {
                     SootClass theInterface = (SootClass) interfaces.next();
 
                     _addMethodsFrom(forcedReachableMethodSet, theInterface,
-                        theClass);
+                            theClass);
                 }
             }
         }
@@ -146,7 +146,7 @@ public class UnreachableMethodRemover extends SceneTransformer
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods...
@@ -168,7 +168,7 @@ public class UnreachableMethodRemover extends SceneTransformer
     }
 
     private void _addMethodsFrom(Set forcedReachableMethodSet,
-        SootClass theInterface, SootClass theClass) {
+            SootClass theInterface, SootClass theClass) {
         // Except for InequalityTerm...
         if (theInterface.getName().equals("ptolemy.graph.InequalityTerm")) {
             return;
@@ -189,9 +189,9 @@ public class UnreachableMethodRemover extends SceneTransformer
         }
 
         for (Iterator superInterfaces = theInterface.getInterfaces().iterator();
-                superInterfaces.hasNext();) {
+             superInterfaces.hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
-                (SootClass) superInterfaces.next(), theClass);
+                    (SootClass) superInterfaces.next(), theClass);
         }
     }
 
@@ -205,7 +205,7 @@ public class UnreachableMethodRemover extends SceneTransformer
 
             if (method != null) {
                 System.out.println("Assuming method " + method
-                    + " is reachable");
+                        + " is reachable");
                 methodSet.add(method);
             }
         }

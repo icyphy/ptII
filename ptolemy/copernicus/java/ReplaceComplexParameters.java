@@ -109,7 +109,7 @@ public class ReplaceComplexParameters extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ReplaceComplexParameters.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         _options = options;
         _phaseName = phaseName;
@@ -121,7 +121,7 @@ public class ReplaceComplexParameters extends SceneTransformer
     // Replac ComplexParameters and ParameterPorts in all classes,
     // starting at the bottom of the hierarchy...
     private void _replaceComplexParametersIn(SootClass modelClass,
-        CompositeActor model) {
+            CompositeActor model) {
         Director director = model.getDirector();
 
         copyAttributesOtherThanVariable(model);
@@ -137,7 +137,7 @@ public class ReplaceComplexParameters extends SceneTransformer
 
             // Loop over all the model instance classes.
             for (Iterator entities = model.deepEntityList().iterator();
-                    entities.hasNext();) {
+                 entities.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
 
                 // recurse.
@@ -171,14 +171,14 @@ public class ReplaceComplexParameters extends SceneTransformer
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileParameter, and FileParameter)
             if ((attribute instanceof StringAttribute
-                    && !attribute.getClass().equals(StringAttribute.class))
+                        && !attribute.getClass().equals(StringAttribute.class))
                     || (attribute instanceof Parameter
-                    && !attribute.getClass().equals(Parameter.class))) {
+                            && !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
 
                 if (_debug) {
                     System.out.println("ComplexAttribute = " + attribute
-                        + " Class = " + className);
+                            + " Class = " + className);
                 }
 
                 SootClass attributeClass = Scene.v().loadClassAndSupport(className);
@@ -240,12 +240,12 @@ public class ReplaceComplexParameters extends SceneTransformer
                 // of the old attribute with construction of the
                 // copied class.
                 for (Iterator classes = Scene.v().getApplicationClasses()
-                                             .iterator(); classes.hasNext();) {
+                         .iterator(); classes.hasNext();) {
                     SootClass theClass = (SootClass) classes.next();
 
                     if (theClass != newClass) {
                         _replaceObjectTypesInClass(theClass, attribute,
-                            attributeClass, newClass);
+                                attributeClass, newClass);
                     }
                 }
             }
@@ -253,7 +253,7 @@ public class ReplaceComplexParameters extends SceneTransformer
 
         // Loop over all the attributes of the actor
         for (Iterator attributes = object.attributeList(Attribute.class)
-                                         .iterator(); attributes.hasNext();) {
+                 .iterator(); attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
             copyAttributesOtherThanVariable(attribute);
@@ -265,10 +265,10 @@ public class ReplaceComplexParameters extends SceneTransformer
     // namedObjAnalysis to pick up only references to the given
     // object.
     private void _replaceObjectTypesInClass(SootClass theClass,
-        NamedObj object, SootClass oldClass, SootClass newClass) {
+            NamedObj object, SootClass oldClass, SootClass newClass) {
         if (_debug) {
             System.out.println("replacing objects in " + theClass + " for "
-                + object);
+                    + object);
         }
 
         // FIXME: deal with inner classes.
@@ -352,7 +352,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                     ModelTransformer.getObjectForClass(theClass));
 
             for (Iterator locals = newBody.getLocals().iterator();
-                    locals.hasNext();) {
+                 locals.hasNext();) {
                 Local local = (Local) locals.next();
                 Type type = local.getType();
 
@@ -395,9 +395,9 @@ public class ReplaceComplexParameters extends SceneTransformer
                         if (SootUtilities.derivesFrom(oldClass,
                                     r.getField().getDeclaringClass())
                                 && newClass.declaresFieldByName(
-                                    r.getField().getName())) {
+                                        r.getField().getName())) {
                             r.setField(newClass.getFieldByName(
-                                    r.getField().getName()));
+                                               r.getField().getName()));
 
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
@@ -478,7 +478,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                         } catch (Exception ex) {
                             if (_debug) {
                                 System.out.println("Exception on invoke = "
-                                    + ex);
+                                        + ex);
                             }
 
                             continue;

@@ -288,9 +288,9 @@ public class BoundaryDetector {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                        + "is both an input and output can not be "
-                        + "properly dealt with by "
-                        + "PNQueueReceiver.isInsideBoundary");
+                            + "is both an input and output can not be "
+                            + "properly dealt with by "
+                            + "PNQueueReceiver.isInsideBoundary");
                 }
 
                 _insideBoundaryCacheIsOn = true;
@@ -341,9 +341,9 @@ public class BoundaryDetector {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                        + "is both an input and output can not be "
-                        + "properly dealt with by "
-                        + "PNQueueReceiver.isInsideBoundary");
+                            + "is both an input and output can not be "
+                            + "properly dealt with by "
+                            + "PNQueueReceiver.isInsideBoundary");
                 }
 
                 _outsideBoundaryCacheIsOn = true;

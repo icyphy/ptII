@@ -67,7 +67,7 @@ public class QueryUtilities {
         try {
             // Note: call Thread.currentThread() so this works in Web Start
             URL doc = Thread.currentThread().getContextClassLoader()
-                            .getResource(urlName);
+                .getResource(urlName);
 
             // Try to use the configuration, if we can.
             boolean success = false;

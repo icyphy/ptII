@@ -198,10 +198,10 @@ public final class CrossRefList implements Serializable {
      *   itself.
      */
     public synchronized void insertLink(int index, CrossRefList farList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (farList == this) {
             throw new IllegalActionException(
-                "CrossRefLink.link: Illegal self-link.");
+                    "CrossRefLink.link: Illegal self-link.");
         }
 
         ++_listVersion;
@@ -252,10 +252,10 @@ public final class CrossRefList implements Serializable {
      *  itself.
      */
     public synchronized void link(CrossRefList farList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (farList == this) {
             throw new IllegalActionException(
-                "CrossRefLink.link: Illegal self-link.");
+                    "CrossRefLink.link: Illegal self-link.");
         }
 
         ++_listVersion;
@@ -548,8 +548,8 @@ public final class CrossRefList implements Serializable {
         public boolean hasMoreElements() {
             if (_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
-                    "CrossRefList.hasMoreElements(): "
-                    + "The list has been modified.");
+                        "CrossRefList.hasMoreElements(): "
+                        + "The list has been modified.");
             }
 
             if (_ref == null) {
@@ -566,7 +566,7 @@ public final class CrossRefList implements Serializable {
         public Object nextElement() throws NoSuchElementException {
             if (_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException("CrossRefList.nextElement(): "
-                    + "The list has been modified.");
+                        + "The list has been modified.");
             }
 
             if (_ref == null) {

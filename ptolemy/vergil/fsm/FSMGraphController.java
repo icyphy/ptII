@@ -118,7 +118,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar,
-            _newOutputMultiportAction);
+                _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutMultiportAction);
 
@@ -186,7 +186,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _stateController.getNodeInteractor())
-        .addInteractor(_linkCreator);
+            .addInteractor(_linkCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -308,12 +308,12 @@ public class FSMGraphController extends FSMViewerGraphController {
 
                 // get the actual attach site.
                 tailSite = getEdgeController(link).getConnectorTarget()
-                               .getTailSite(c, source, event.getLayerX(),
-                        event.getLayerY());
+                    .getTailSite(c, source, event.getLayerX(),
+                            event.getLayerY());
 
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: "
-                        + "no valid site found for tail of new connector.");
+                            + "no valid site found for tail of new connector.");
                 }
 
                 // And reattach the connector.
@@ -351,7 +351,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                new Integer(KeyEvent.VK_W));
+                    new Integer(KeyEvent.VK_W));
         }
 
         /** Execute the action. */

@@ -76,7 +76,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *   an attribute already in the container.
      */
     public AttributeValueAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -105,7 +105,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == attributeName) {
             _setAttributeName(attributeName.getExpression());
         } else if (attribute == displayWidth) {
@@ -208,7 +208,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected void _setAttributeName(String attributeName)
-        throws IllegalActionException {
+            throws IllegalActionException {
         NamedObj container = (NamedObj) getContainer();
 
         if (container != null) {

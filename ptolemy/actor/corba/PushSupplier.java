@@ -77,7 +77,7 @@ public class PushSupplier extends Sink {
      *   actor with this name.
      */
     public PushSupplier(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -114,7 +114,7 @@ public class PushSupplier extends Sink {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                .getToken()).stringValue());
+                                                         .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -163,8 +163,8 @@ public class PushSupplier extends Sink {
                 }
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException"
-                    + ex.getMessage());
+                        "remote actor throws IllegalActionException"
+                        + ex.getMessage());
             }
         }
     }
@@ -190,9 +190,9 @@ public class PushSupplier extends Sink {
 
             //resolve the remote consumer reference in Naming
             NameComponent namecomp = new NameComponent(((StringToken) remoteConsumerName
-                    .getToken()).stringValue(), "");
+                                                               .getToken()).stringValue(), "");
             _debug(getName(), " looking for name: ",
-                (remoteConsumerName.getToken()).toString());
+                    (remoteConsumerName.getToken()).toString());
 
             NameComponent[] path = { namecomp };
 
@@ -213,28 +213,28 @@ public class PushSupplier extends Sink {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         _debug("thread is interrupted when trying to find"
-                            + "remote consumer");
+                                + "remote consumer");
                     }
                 } catch (Exception exp) {
                     // ignor here and retry.
                     _debug(
-                        "failed to resolve the remote consumer. will try again.");
+                            "failed to resolve the remote consumer. will try again.");
 
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex1) {
                         _debug("thread is interrupted when trying to find"
-                            + "remote consumer");
+                                + "remote consumer");
                     }
                 }
             }
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                " initialize ORB failed. Please make sure the "
-                + "naming server has already started and the "
-                + "ORBInitProperty parameter is configured correctly. "
-                + "the error message is: " + ex.getMessage());
+                    " initialize ORB failed. Please make sure the "
+                    + "naming server has already started and the "
+                    + "ORBInitProperty parameter is configured correctly. "
+                    + "the error message is: " + ex.getMessage());
         }
     }
 

@@ -127,7 +127,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Get the current style.
             boolean foundOne = false;
             Iterator styles = ((NamedObj) param).attributeList(ParameterEditorStyle.class)
-                               .iterator();
+                .iterator();
             ParameterEditorStyle foundStyle = null;
 
             while (styles.hasNext()) {
@@ -152,7 +152,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                 for (int i = 0; i < _parameterStyles.length; i++) {
                     if (foundOne
                             && (_parameterStyles[i].getClass() == foundStyle
-                            .getClass())) {
+                                    .getClass())) {
                         defaultIndex = count;
 
                         if (foundStyle.acceptable(param)) {
@@ -167,10 +167,10 @@ public class StyleConfigurer extends Query implements QueryListener {
             }
 
             String[] styleArray = (String[]) styleList.toArray(new String[styleList
-                    .size()]);
+                                                                       .size()]);
 
             addChoice(param.getName(), param.getName(), styleArray,
-                styleArray[defaultIndex]);
+                    styleArray[defaultIndex]);
         }
 
         // Add the expert mode box.
@@ -200,7 +200,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                     moml.append("<deleteProperty name=\"_expertMode\"/>");
                 } else {
                     moml.append("<property name=\"_expertMode\" "
-                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                            + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
                 }
             }
         } else {
@@ -209,7 +209,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             ParameterEditorStyle found = null;
 
             for (int i = 0; (i < _parameterStyles.length) && (found == null);
-                    i++) {
+                 i++) {
                 if (getStringValue(name).equals(_parameterStyles[i].getName())) {
                     found = _parameterStyles[i];
                 }
@@ -222,7 +222,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             moml.append("<property name=\"" + param.getName() + "\">");
 
             Iterator styles = param.attributeList(ParameterEditorStyle.class)
-                                   .iterator();
+                .iterator();
             boolean foundOne = false;
 
             while (styles.hasNext()) {
@@ -230,7 +230,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 
                 ParameterEditorStyle style = (ParameterEditorStyle) styles.next();
                 moml.append("<deleteProperty name=\"" + style.getName()
-                    + "\"/>\n");
+                        + "\"/>\n");
             }
 
             if (foundOne) {
@@ -300,7 +300,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                             param.setExpression((String) entry.getValue());
                         } catch (IllegalActionException ex) {
                             throw new InternalErrorException(
-                                "Cannot restore style value!");
+                                    "Cannot restore style value!");
                         }
                     }
                 }

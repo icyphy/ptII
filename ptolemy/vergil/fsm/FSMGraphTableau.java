@@ -64,7 +64,7 @@ public class FSMGraphTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public FSMGraphTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -79,15 +79,15 @@ public class FSMGraphTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public FSMGraphTableau(PtolemyEffigy container, String name,
-        LibraryAttribute defaultLibrary)
-        throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
 
         if (!(model instanceof FSMActor)) {
             throw new IllegalActionException(this,
-                "Cannot edit a model that is not an FSMActor.");
+                    "Cannot edit a model that is not an FSMActor.");
         }
 
         createGraphFrame((FSMActor) model, defaultLibrary);
@@ -116,7 +116,7 @@ public class FSMGraphTableau extends Tableau {
      *   one.
      */
     public void createGraphFrame(CompositeEntity model,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
 
         try {
@@ -146,7 +146,7 @@ public class FSMGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

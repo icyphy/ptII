@@ -1,11 +1,11 @@
 /* Integrator, CGC domain: CGCIntegrator.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCIntegrator.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,28 +20,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCIntegrator
 /**
-An integrator with leakage, limits, and reset.
-With the default parameters, input samples are simply accumulated,
-and the running sum is the output.  To prevent any resetting in the
-middle of a run, connect a d.c. source with value 0.0 to the "reset"
-input.  Otherwise, whenever a non-zero is received on this input,
-the accumulated sum is reset to the current input (i.e. no feedback).
+   An integrator with leakage, limits, and reset.
+   With the default parameters, input samples are simply accumulated,
+   and the running sum is the output.  To prevent any resetting in the
+   middle of a run, connect a d.c. source with value 0.0 to the "reset"
+   input.  Otherwise, whenever a non-zero is received on this input,
+   the accumulated sum is reset to the current input (i.e. no feedback).
 
-Limits are controlled by the "top" and "bottom" parameters.
-If top greater than or equal to bottom, no limiting is performed (default).  Otherwise,
-the output is kept between "bottom" and "top".  If "saturate" = YES,
-saturation is performed.  If "saturate" = NO, wrap-around is performed
-(default).  Limiting is performed before output.
+   Limits are controlled by the "top" and "bottom" parameters.
+   If top greater than or equal to bottom, no limiting is performed (default).  Otherwise,
+   the output is kept between "bottom" and "top".  If "saturate" = YES,
+   saturation is performed.  If "saturate" = NO, wrap-around is performed
+   (default).  Limiting is performed before output.
 
-Leakage is controlled by the "feedbackGain" state (default 1.0).
-The output is the data input plus feedbackGain*state, where state
-is the previous output.
-<p>
-<a name="filter, integrator"></a>
+   Leakage is controlled by the "feedbackGain" state (default 1.0).
+   The output is the data input plus feedbackGain*state, where state
+   is the previous output.
+   <p>
+   <a name="filter, integrator"></a>
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIntegrator.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCIntegrator.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntegrator extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -83,8 +83,8 @@ public class CGCIntegrator extends ClassicCGCActor {
         state = new Parameter(this, "state");
         state.setExpression("0.0");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -107,27 +107,27 @@ public class CGCIntegrator extends ClassicCGCActor {
     /**
      *  The gain on the feedback path. parameter with initial value "1.0".
      */
-     public Parameter feedbackGain;
+    public Parameter feedbackGain;
 
     /**
      *  The upper limit. parameter with initial value "0.0".
      */
-     public Parameter top;
+    public Parameter top;
 
     /**
      *  The lower limit. parameter with initial value "0.0".
      */
-     public Parameter bottom;
+    public Parameter bottom;
 
     /**
      *  Saturate if YES, wrap around otherwise. parameter with initial value "YES".
      */
-     public Parameter saturate;
+    public Parameter saturate;
 
     /**
      *  An internal state. parameter with initial value "0.0".
      */
-     public Parameter state;
+    public Parameter state;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -136,73 +136,73 @@ public class CGCIntegrator extends ClassicCGCActor {
      */
     public int  myExecTime() {
 
-int x = 0;
-                if (spread > 0.0) {
-                        if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean x = 3;
-                        else x = 5;
-                }
-                return 3 + x + 2;
-     }
+        int x = 0;
+        if (spread > 0.0) {
+            if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean x = 3;
+                else x = 5;
+        }
+        return 3 + x + 2;
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
 
-addDeclaration(declarations);
-     }
+        addDeclaration(declarations);
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-spread = ((DoubleToken)((top).getToken())).doubleValue() - ((DoubleToken)((bottom).getToken())).doubleValue();
-     }
+        spread = ((DoubleToken)((top).getToken())).doubleValue() - ((DoubleToken)((bottom).getToken())).doubleValue();
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(integrate);
-            if (spread > 0.0)
-                if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean
-                    addCode(limitWithSat);
-                else
-                    addCode(limitWithoutSat);
-            addCode(write);
-     }
+        addCode(integrate);
+        if (spread > 0.0)
+            if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean
+                addCode(limitWithSat);
+            else
+                addCode(limitWithoutSat);
+        addCode(write);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declarations =
-        "            double $starSymbol(t);\n";
+    "            double $starSymbol(t);\n";
 
     public String integrate =
-        "            if ($ref(reset) != 0) {\n"
-        + "                $starSymbol(t) = $ref(data);\n"
-        + "            } else {\n"
-        + "                $starSymbol(t) = $ref(data) +\n"
-        + "                        $val(feedbackGain) * $ref(state);\n"
-        + "            }\n";
+    "            if ($ref(reset) != 0) {\n"
+    + "                $starSymbol(t) = $ref(data);\n"
+    + "            } else {\n"
+    + "                $starSymbol(t) = $ref(data) +\n"
+    + "                        $val(feedbackGain) * $ref(state);\n"
+    + "            }\n";
 
     public String limitWithSat =
-        "            /* Limiting is in effect */\n"
-        + "            /* Take care of the top */\n"
-        + "            if ($starSymbol(t) > $val(top)) $starSymbol(t) = $val(top);\n"
-        + "            /* Take care of the bottom */\n"
-        + "            if ($starSymbol(t) < $val(bottom)) $starSymbol(t) = $val(bottom);\n";
+    "            /* Limiting is in effect */\n"
+    + "            /* Take care of the top */\n"
+    + "            if ($starSymbol(t) > $val(top)) $starSymbol(t) = $val(top);\n"
+    + "            /* Take care of the bottom */\n"
+    + "            if ($starSymbol(t) < $val(bottom)) $starSymbol(t) = $val(bottom);\n";
 
     public String limitWithoutSat =
-        "            /* Limiting is in effect */\n"
-        + "            /* Take care of the top */\n"
-        + "            if ($starSymbol(t) > $val(top))\n"
-        + "                do $starSymbol(t) -= ($val(top) - $val(bottom));\n"
-        + "                while ($starSymbol(t) > $val(top));\n"
-        + "            /* Take care of the bottom */\n"
-        + "            if ($starSymbol(t) < $val(bottom))\n"
-        + "                do $starSymbol(t) += ($val(top) - $val(bottom));\n"
-        + "                while ($starSymbol(t) < $val(bottom));\n";
+    "            /* Limiting is in effect */\n"
+    + "            /* Take care of the top */\n"
+    + "            if ($starSymbol(t) > $val(top))\n"
+    + "                do $starSymbol(t) -= ($val(top) - $val(bottom));\n"
+    + "                while ($starSymbol(t) > $val(top));\n"
+    + "            /* Take care of the bottom */\n"
+    + "            if ($starSymbol(t) < $val(bottom))\n"
+    + "                do $starSymbol(t) += ($val(top) - $val(bottom));\n"
+    + "                while ($starSymbol(t) < $val(bottom));\n";
 
     public String write =
-        "            $ref(output) = $starSymbol(t);\n"
-        + "            $ref(state) = $starSymbol(t);\n";
+    "            $ref(output) = $starSymbol(t);\n"
+    + "            $ref(state) = $starSymbol(t);\n";
 }

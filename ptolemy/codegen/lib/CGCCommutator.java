@@ -1,11 +1,11 @@
 /* Commutator, CGC domain: CGCCommutator.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCCommutator.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,17 +20,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCCommutator
 /**
-Takes N input streams (where N is the number of inputs) and
-synchronously combines them into one output stream.
-It consumes B input particles from each
-input (where B is the blockSize), and produces N*B particles on the
-output.
-The first B particles on the output come from the first input,
-the next B particles from the next input, etc.
+   Takes N input streams (where N is the number of inputs) and
+   synchronously combines them into one output stream.
+   It consumes B input particles from each
+   input (where B is the blockSize), and produces N*B particles on the
+   output.
+   The first B particles on the output come from the first input,
+   the next B particles from the next input, etc.
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCommutator.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCommutator.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCommutator extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -53,8 +53,8 @@ public class CGCCommutator extends ClassicCGCActor {
         blockSize = new Parameter(this, "blockSize");
         blockSize.setExpression("1");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -72,7 +72,7 @@ public class CGCCommutator extends ClassicCGCActor {
     /**
      *  Number of particles in a block. parameter with initial value "1".
      */
-     public Parameter blockSize;
+    public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -81,41 +81,41 @@ public class CGCCommutator extends ClassicCGCActor {
      */
     public int  myExecTime() {
 
-return ((IntToken)((blockSize).getToken())).intValue()*2*input.numberPorts();
-     }
+        return ((IntToken)((blockSize).getToken())).intValue()*2*input.numberPorts();
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-int n = input.numberPorts();
-                input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
-                output.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
-     }
+        int n = input.numberPorts();
+        input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+        output.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-StringBuffer out = new StringBuffer();
-                if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
-                for (int i = input.numberPorts()-1; i >= 0; i--) {
-                    int port = input.numberPorts() - i;
-                    if (((IntToken)((blockSize).getToken())).intValue() > 1) {
-                        out.append("\tfor (j = ");
-                        out.append(((IntToken)((blockSize).getToken())).intValue()-1);
-                        out.append("; j >= 0; j--)\n");
-                        out.append("\t\t$ref2(output,j+");
-                        out.append(i*((IntToken)((blockSize).getToken())).intValue());
-                        out.append(") = $ref2(input#" + port  + ",j");
-                   } else {
-                        out.append("\t$ref2(output,");
-                        out.append(i);
-                        out.append(") = $ref2(input#" + port  + ",0");
-                   }
-                   out.append(");\n");
-                   addCode(out);
-                   out.initialize();
-                }
-     }
+        StringBuffer out = new StringBuffer();
+        if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
+        for (int i = input.numberPorts()-1; i >= 0; i--) {
+            int port = input.numberPorts() - i;
+            if (((IntToken)((blockSize).getToken())).intValue() > 1) {
+                out.append("\tfor (j = ");
+                out.append(((IntToken)((blockSize).getToken())).intValue()-1);
+                out.append("; j >= 0; j--)\n");
+                out.append("\t\t$ref2(output,j+");
+                out.append(i*((IntToken)((blockSize).getToken())).intValue());
+                out.append(") = $ref2(input#" + port  + ",j");
+            } else {
+                out.append("\t$ref2(output,");
+                out.append(i);
+                out.append(") = $ref2(input#" + port  + ",0");
+            }
+            out.append(");\n");
+            addCode(out);
+            out.initialize();
+        }
+    }
 }

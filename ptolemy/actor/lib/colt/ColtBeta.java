@@ -69,7 +69,7 @@ public class ColtBeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBeta(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

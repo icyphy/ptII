@@ -86,9 +86,9 @@ public class ChicController extends AttributeController {
 
         // Add commands to invoke Chic
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new AsynchronousIOAction()));
+                                                new AsynchronousIOAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new SynchronousAGAction()));
+                                                new SynchronousAGAction()));
 
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new BidirectionalSynAction()));
@@ -101,7 +101,7 @@ public class ChicController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
         }
     }
 
@@ -118,7 +118,7 @@ public class ChicController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
         }
     }
 
@@ -136,9 +136,9 @@ public class ChicController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
-        + "Perhaps source code is not installed? "
-        + "You can obtain source code for Berkeley actors at: "
-        + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    + "Perhaps source code is not installed? "
+    + "You can obtain source code for Berkeley actors at: "
+    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -158,7 +158,7 @@ public class ChicController extends AttributeController {
 
             try {
                 ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.ASYNCHRONOUS_IO,
-                    false);
+                        false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {
@@ -204,13 +204,13 @@ public class ChicController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot look inside without a configuration.");
+                        "Cannot look inside without a configuration.");
                 return;
             }
 
@@ -228,7 +228,7 @@ public class ChicController extends AttributeController {
 
                 if (toRead != null) {
                     _configuration.openModel(null, toRead,
-                        toRead.toExternalForm());
+                            toRead.toExternalForm());
                 } else {
                     MessageHandler.error(_CANNOT_FIND_MESSAGE);
                 }
@@ -306,7 +306,7 @@ public class ChicController extends AttributeController {
 
             try {
                 ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.SYNCHRONOUS_AG,
-                    false);
+                        false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {

@@ -82,7 +82,7 @@ public class InternalErrorException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InternalErrorException(Nameable object, Throwable cause,
-        String detail) {
+            String detail) {
         super(object, null, cause, detail);
     }
 }

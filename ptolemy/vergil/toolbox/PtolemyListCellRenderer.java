@@ -46,10 +46,10 @@ import ptolemy.kernel.util.NamedObj;
 */
 public class PtolemyListCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value,
-        int index, boolean isSelected, boolean cellHasFocus) {
+            int index, boolean isSelected, boolean cellHasFocus) {
         DefaultListCellRenderer component = (DefaultListCellRenderer) super
             .getListCellRendererComponent(list, value, index, isSelected,
-                cellHasFocus);
+                    cellHasFocus);
 
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;

@@ -1,11 +1,11 @@
 /* Cos, CGC domain: CGCCos.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCCos.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCCos
 /**
-This star computes the sine of its input, in radians.
+   This star computes the sine of its input, in radians.
 
- @Author Soonhoi Ha
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCCos.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Soonhoi Ha
+   @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCCos.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCos extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -44,9 +44,9 @@ public class CGCCos extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -68,25 +68,25 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 23;        /* value taken from CG96Cos */
-     }
+        return 23;        /* value taken from CG96Cos */
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
 
-addInclude("<math.h>");
-     }
+        addInclude("<math.h>");
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(cosgen);
-     }
+        addCode(cosgen);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String cosgen =
-        "        $ref(output) = cos($ref(input));\n";
+    "        $ref(output) = cos($ref(input));\n";
 }

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
@@ -83,7 +83,7 @@ public class MultiBuffer {
      *  @return A Frame that can be used to display images.
      */
     public static Frame enterFullScreenMode(GraphicsDevice device,
-                                            int numberOfBuffers) {
+            int numberOfBuffers) {
         GraphicsEnvironment graphicsEnvironment =
             GraphicsEnvironment.getLocalGraphicsEnvironment();
 
@@ -91,7 +91,7 @@ public class MultiBuffer {
 
         GraphicsConfiguration gc = device.getDefaultConfiguration();
         Rectangle graphicsConfigurationBounds =
-                gc.getBounds();
+            gc.getBounds();
         Frame mainFrame = new Frame(gc);
         mainFrame.setUndecorated(true);
         mainFrame.setIgnoreRepaint(true);
@@ -101,7 +101,7 @@ public class MultiBuffer {
             MultiBuffer.chooseBestDisplayMode(device);
         }
         mainFrame.setLocation(graphicsConfigurationBounds.x,
-                              graphicsConfigurationBounds.y);
+                graphicsConfigurationBounds.y);
 
         mainFrame.createBufferStrategy(numberOfBuffers);
 
@@ -154,8 +154,8 @@ public class MultiBuffer {
      *  @see getBestDisplayMode(GraphicsDevice)
      */
     public static DisplayMode
-        getBestDisplayMode(GraphicsDevice device,
-                           DisplayMode[] bestDisplayModes) {
+    getBestDisplayMode(GraphicsDevice device,
+            DisplayMode[] bestDisplayModes) {
         // FIXME java.awt.GraphicsConfigTemplate might be another solution?
         // This method is based on a method from the Sun website.
 
@@ -169,9 +169,9 @@ public class MultiBuffer {
                 //System.out.println("MultiBuffer.getBestDisplayMode(): "
                 //                       + displayModeToString(modes[j]));
                 if (bestDisplayModes[i].getWidth() == modes[j].getWidth()
-                   && bestDisplayModes[i].getHeight() == modes[j].getHeight()
-                   && bestDisplayModes[i].getBitDepth()
-                    == modes[j].getBitDepth()
+                        && bestDisplayModes[i].getHeight() == modes[j].getHeight()
+                        && bestDisplayModes[i].getBitDepth()
+                        == modes[j].getBitDepth()
                     ) {
                     //System.out.println("MultiBuffer.getBestDisplayMode(): "
                     //                       + "returning: "
@@ -199,7 +199,7 @@ public class MultiBuffer {
      *  @see getBestDisplayMode(GraphicsDevice, DisplayMode[])
      */
     public static DisplayMode
-        getBestDisplayMode(GraphicsDevice device) {
+    getBestDisplayMode(GraphicsDevice device) {
         return getBestDisplayMode(device, _BEST_DISPLAY_MODES);
     }
 
@@ -213,17 +213,17 @@ public class MultiBuffer {
     public static String displayModeToString(DisplayMode mode) {
 
         return new String( mode.getWidth() + " x "
-                         + mode.getHeight() + ", "
-                         + (mode.getBitDepth()
-                            == DisplayMode.BIT_DEPTH_MULTI
-                            ? "BIT_DEPTH_MULTI"
-                            : (new Integer(mode.getBitDepth())).toString())
-                         + ", "
-                         + (mode.getRefreshRate()
-                            == DisplayMode.REFRESH_RATE_UNKNOWN
-                            ? "REFRESH_RATE_UNKNOWN"
-                            : (new Integer(mode.getRefreshRate())).toString())
-                          );
+                + mode.getHeight() + ", "
+                + (mode.getBitDepth()
+                        == DisplayMode.BIT_DEPTH_MULTI
+                        ? "BIT_DEPTH_MULTI"
+                        : (new Integer(mode.getBitDepth())).toString())
+                + ", "
+                + (mode.getRefreshRate()
+                        == DisplayMode.REFRESH_RATE_UNKNOWN
+                        ? "REFRESH_RATE_UNKNOWN"
+                        : (new Integer(mode.getRefreshRate())).toString())
+                           );
     }
 
     ///////////////////////////////////////////////////////////////////

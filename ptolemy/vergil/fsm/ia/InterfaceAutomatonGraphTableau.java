@@ -66,7 +66,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *   contains an object with the specified name.
      */
     public InterfaceAutomatonGraphTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -81,8 +81,8 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *   contains an object with the specified name.
      */
     public InterfaceAutomatonGraphTableau(PtolemyEffigy container, String name,
-        LibraryAttribute defaultLibrary)
-        throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, defaultLibrary);
     }
 
@@ -96,7 +96,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *   one.
      */
     public void createGraphFrame(CompositeEntity model,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         InterfaceAutomatonGraphFrame frame = new InterfaceAutomatonGraphFrame(model,
                 this, defaultLibrary);
 
@@ -127,7 +127,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

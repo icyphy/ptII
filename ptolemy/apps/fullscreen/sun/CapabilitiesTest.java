@@ -49,10 +49,10 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
     public CapabilitiesTest(GraphicsDevice dev) {
         super(dev.getDefaultConfiguration());
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent ev) {
-                System.exit(0);
-            }
-        });
+                public void windowClosing(WindowEvent ev) {
+                    System.exit(0);
+                }
+            });
         initComponents(getContentPane());
         GraphicsConfiguration[] gcs = dev.getConfigurations();
         for (int i = 0; i < gcs.length; i++) {
@@ -103,7 +103,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         JPanel imageCapsPanel = new JPanel(new GridLayout(2, 1));
         capsPanel.add(imageCapsPanel, BorderLayout.NORTH);
         imageCapsPanel.setBorder(BorderFactory.createTitledBorder(
-            "Image Capabilities"));
+                                         "Image Capabilities"));
         imageAccelerated.setEnabled(false);
         imageCapsPanel.add(imageAccelerated);
         imageTrueVolatile.setEnabled(false);
@@ -112,7 +112,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         JPanel bufferCapsPanel = new JPanel(new BorderLayout());
         capsPanel.add(bufferCapsPanel, BorderLayout.CENTER);
         bufferCapsPanel.setBorder(BorderFactory.createTitledBorder(
-            "Buffer Capabilities"));
+                                          "Buffer Capabilities"));
         // Buffer Access
         JPanel bufferAccessCapsPanel = new JPanel(new GridLayout(3, 1));
         bufferAccessCapsPanel.setPreferredSize(new Dimension(300, 88));
@@ -145,7 +145,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         // Front Buffer
         JPanel fbPanel = new JPanel(new GridLayout(2, 1));
         fbPanel.setBorder(BorderFactory.createTitledBorder(
-            "Front Buffer"));
+                                  "Front Buffer"));
         buffersPanel.add(fbPanel);
         fbPanel.add(fbAccelerated);
         fbAccelerated.setEnabled(false);
@@ -155,7 +155,7 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         JPanel bbPanel = new JPanel(new GridLayout(2, 1));
         bbPanel.setPreferredSize(new Dimension(250, 80));
         bbPanel.setBorder(BorderFactory.createTitledBorder(
-            "Back and Intermediate Buffers"));
+                                  "Back and Intermediate Buffers"));
         buffersPanel.add(bbPanel);
         bbPanel.add(bbAccelerated);
         bbAccelerated.setEnabled(false);

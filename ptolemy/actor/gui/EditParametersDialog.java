@@ -92,7 +92,7 @@ public class EditParametersDialog extends ComponentDialog
      */
     public EditParametersDialog(Frame owner, NamedObj target) {
         super(owner, "Edit parameters for " + target.getName(),
-            new Configurer(target), _moreButtons);
+                new Configurer(target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
@@ -135,7 +135,7 @@ public class EditParametersDialog extends ComponentDialog
 
             Query query = new Query();
             query.addChoice("delete", "Parameter to delete", attributeNames,
-                null, false);
+                    null, false);
 
             ComponentDialog dialog = new ComponentDialog(_owner,
                     "Delete a parameter for " + _target.getFullName(), query,
@@ -320,7 +320,7 @@ public class EditParametersDialog extends ComponentDialog
      *  @return The dialog that is created.
      */
     private ComponentDialog _openAddDialog(String message, String name,
-        String defValue, String className) {
+            String defValue, String className) {
         // Create a new dialog to add a parameter, then open a new
         // EditParametersDialog.
         _query = new Query();
@@ -343,7 +343,7 @@ public class EditParametersDialog extends ComponentDialog
 
         // Need to escape quotes in default value.
         String newDefValue = StringUtilities.escapeForXML(_query.getStringValue(
-                    "default"));
+                                                                  "default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
@@ -384,9 +384,9 @@ public class EditParametersDialog extends ComponentDialog
     ////                         private variables                 ////
     // Button labels.
     private static String[] _moreButtons = {
-            "Commit", "Add", "Remove", "Restore Defaults", "Preferences", "Help",
-            "Cancel"
-        };
+        "Commit", "Add", "Remove", "Restore Defaults", "Preferences", "Help",
+        "Cancel"
+    };
 
     // The owner window.
     private Frame _owner;

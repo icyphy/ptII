@@ -80,7 +80,7 @@ public class CycleExistenceAnalysis extends Analysis {
      */
     public String toString() {
         return "Cyclic existence analysis using the following analyzer:\n"
-        + analyzer().toString();
+            + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

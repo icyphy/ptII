@@ -76,7 +76,7 @@ public class JAIRotate extends Transformer {
      *   actor with this name.
      */
     public JAIRotate(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         degrees = new PortParameter(this, "degrees");
@@ -131,7 +131,7 @@ public class JAIRotate extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
 
@@ -145,7 +145,7 @@ public class JAIRotate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + typeName);
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == subSampleBits) {
             _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
@@ -206,7 +206,7 @@ public class JAIRotate extends Transformer {
 
         default:
             throw new IllegalActionException(
-                "Invalid value for interpolationType");
+                    "Invalid value for interpolationType");
         }
 
         RenderedOp newImage = JAI.create("Rotate", parameters);

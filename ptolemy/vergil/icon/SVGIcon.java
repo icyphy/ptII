@@ -83,7 +83,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *   a period.
      */
     public SVGIcon(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
 
         try {
@@ -99,7 +99,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      */
     public SVGIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         super.setContainer(container);
     }
@@ -133,7 +133,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         _bindToContainer(container);
     }
@@ -397,7 +397,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
 
         if (!name.equals("svg")) {
             throw new IllegalArgumentException("Input XML has a root"
-                + "name which is '" + name + "' instead of 'svg':" + root);
+                    + "name which is '" + name + "' instead of 'svg':" + root);
         }
 
         Iterator children = root.elements();
@@ -405,7 +405,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         while (children.hasNext()) {
             XmlElement child = (XmlElement) children.next();
             _createAttribute(child.getType(), child.getAttributeMap(),
-                child.getPCData());
+                    child.getPCData());
         }
     }
 
@@ -418,7 +418,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @return The double specified by this attribute.
      */
     private static String _getAttribute(Map map, String name,
-        String defaultValue) {
+            String defaultValue) {
         if (map.containsKey(name)) {
             return (String) map.get(name);
         } else {
@@ -446,7 +446,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  map of SVG attribute values.
      */
     private static void _processFilledShapeAttributeAttributes(
-        FilledShapeAttribute attribute, Map attributes) {
+            FilledShapeAttribute attribute, Map attributes) {
         _processShapeAttributeAttributes(attribute, attributes);
 
         String width = _getAttribute(attributes, "width", "10.0");
@@ -482,7 +482,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  map of SVG attribute values.
      */
     private static void _processShapeAttributeAttributes(
-        ShapeAttribute attribute, Map attributes) {
+            ShapeAttribute attribute, Map attributes) {
         // FIXME: set lineWidth and lineColor.
         _processLocation(attribute, attributes);
 

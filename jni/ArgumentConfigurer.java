@@ -76,9 +76,9 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                 Argument argument = (Argument) candidate;
                 setColumns(1);
                 addLine(argument.getName() + "Name",
-                    argument.getName() + "Name", argument.getName());
+                        argument.getName() + "Name", argument.getName());
                 addLine(argument.getName() + "CType",
-                    argument.getName() + "C or C++ Type", argument.getCType());
+                        argument.getName() + "C or C++ Type", argument.getCType());
 
                 Set optionsDefault = new HashSet();
 
@@ -95,7 +95,7 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                 }
 
                 addSelectButtons(argument.getName() + "Kind",
-                    argument.getName() + "Kind:", _optionsArray, optionsDefault);
+                        argument.getName() + "Kind:", _optionsArray, optionsDefault);
             }
         }
     }

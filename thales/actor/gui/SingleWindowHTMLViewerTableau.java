@@ -1,26 +1,26 @@
 /* Single Window HTML Viewer
 
- Copyright (c) 2003-2005 THALES.
- All rights reserved.
+Copyright (c) 2003-2005 THALES.
+All rights reserved.
 
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the
- above copyright notice and the following two paragraphs appear in all
- copies of this software.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
 
- IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
- SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
- OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
- UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
- Created on 01 sept. 2003
+Created on 01 sept. 2003
 
 */
 package thales.actor.gui;
@@ -44,16 +44,16 @@ import ptolemy.kernel.util.StringAttribute;
 
 
 /**
- <p>Titre : SingleWindowHTMLViewerTableau</p>
- <p>Description : Main Tableau for the SingleWindowHTMLViewer.</p>
- <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Yellow (jerome.blanc)
- @Pt.AcceptedRating Red (cxh)
+   <p>Titre : SingleWindowHTMLViewerTableau</p>
+   <p>Description : Main Tableau for the SingleWindowHTMLViewer.</p>
+   <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+   @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (jerome.blanc)
+   @Pt.AcceptedRating Red (cxh)
 
- */
+*/
 public class SingleWindowHTMLViewerTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  This creates an instance of HTMLViewer.  It does not make the frame
@@ -66,7 +66,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   attribute already in the container.
      */
     public SingleWindowHTMLViewerTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         url = new StringAttribute(this, "url");
@@ -92,7 +92,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == url) {
             String urlSpec = ((Settable) attribute).getExpression();
 
@@ -104,7 +104,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Cannot open URL: " + urlSpec);
+                        "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -126,7 +126,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

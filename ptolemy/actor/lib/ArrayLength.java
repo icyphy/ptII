@@ -59,7 +59,7 @@ public class ArrayLength extends Transformer {
      *   actor with this name.
      */
     public ArrayLength(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.

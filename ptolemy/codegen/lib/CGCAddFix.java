@@ -1,11 +1,11 @@
 /* AddFix, CGC domain: CGCAddFix.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCAddFix.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCAddFix
 /**
-Output the sum of the fixed-point inputs as a fixed-point value.
+   Output the sum of the fixed-point inputs as a fixed-point value.
 
- @Author Juergen Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAddFix.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Juergen Weiss
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCAddFix.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAddFix extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -61,9 +61,9 @@ public class CGCAddFix extends CGCFix {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -80,30 +80,30 @@ noInternalState();
 
     /**
      *  Flag that indicates whether or not to keep the precision of the arriving
-particles as is:  YES keeps the same precision, and NO casts them to the
-precision specified by the parameter "InputPrecision". parameter with initial value "YES".
-     */
-     public Parameter ArrivingPrecision;
+     particles as is:  YES keeps the same precision, and NO casts them to the
+     precision specified by the parameter "InputPrecision". parameter with initial value "YES".
+    */
+    public Parameter ArrivingPrecision;
 
     /**
      *  Precision of the input in bits.
-The input particles are only cast to this precision if the
-parameter "ArrivingPrecision" is set to NO. parameter with initial value "2.14".
-     */
-     public Parameter InputPrecision;
+     The input particles are only cast to this precision if the
+     parameter "ArrivingPrecision" is set to NO. parameter with initial value "2.14".
+    */
+    public Parameter InputPrecision;
 
     /**
      *  Precision of the output in bits and precision of the accumulation.
-When the value of the accumulation extends outside of the precision,
-the output is set to its maximum value (or minimum for negative
-magnitudes). parameter with initial value "2.14".
-     */
-     public Parameter OutputPrecision;
+     When the value of the accumulation extends outside of the precision,
+     the output is set to its maximum value (or minimum for negative
+     magnitudes). parameter with initial value "2.14".
+    */
+    public Parameter OutputPrecision;
 
     /**
      *  index for multiple input trace parameter with initial value "1".
      */
-     public Parameter index;
+    public Parameter index;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -112,45 +112,45 @@ magnitudes). parameter with initial value "2.14".
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-super.generateInitializeCode();
+        super.generateInitializeCode();
 
-                if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
-                    input.setPrecision(InputPrecision);
+        if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
+            input.setPrecision(InputPrecision);
 
-                output.setPrecision(OutputPrecision);
-     }
+        output.setPrecision(OutputPrecision);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-// insert code to clear overflow flag
-                super.clearOverflow();
+        // insert code to clear overflow flag
+        super.clearOverflow();
 
-                // avoid FIX_Assign if possible
-                if (input.numberPorts() == 2)
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Add($ref(output), $ref(input#1),$ref(input#2));\n"
+        // avoid FIX_Assign if possible
+        if (input.numberPorts() == 2)
+            { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                    "        FIX_Add($ref(output), $ref(input#1),$ref(input#2));\n"
 
-);          addCode(_str_);  }
+                    );          addCode(_str_);  }
 
-                else {
-                        // initialize sum
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Assign($ref(output),$ref(input#1));\n"
+        else {
+            // initialize sum
+            { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                    "        FIX_Assign($ref(output),$ref(input#1));\n"
 
-);          addCode(_str_);  }
+                    );          addCode(_str_);  }
 
-                        for (int i=2; i <= input.numberPorts(); i++) {
-                            index = i;
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Add($ref(output), $ref(output),$ref(input#index));\n"
+            for (int i=2; i <= input.numberPorts(); i++) {
+                index = i;
+                { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                        "        FIX_Add($ref(output), $ref(output),$ref(input#index));\n"
 
-);          addCode(_str_);  }
-                        }
-                }
+                        );          addCode(_str_);  }
+            }
+        }
 
-                // insert code to test overflow flag
-                super.checkOverflow();
-     }
+        // insert code to test overflow flag
+        super.checkOverflow();
+    }
 }

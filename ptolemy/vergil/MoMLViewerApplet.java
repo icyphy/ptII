@@ -106,8 +106,8 @@ public class MoMLViewerApplet extends MoMLApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newinfo = {
-                { "includeRunPanel", "", "Indicator to include run panel" },
-            };
+            { "includeRunPanel", "", "Indicator to include run panel" },
+        };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -130,7 +130,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         // Do not filter out graphical classes.
         return _createModel(workspace, false);
     }

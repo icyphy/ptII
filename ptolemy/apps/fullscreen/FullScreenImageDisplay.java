@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
@@ -60,15 +60,15 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// FullScreenImageDisplay
 /**
-This actor reads an Object token that is a java.awt.Image from the input
-and displays it in full screen mode on a GraphicsDevice that is
-determined from another input port.  The delayInMillis input port
-controls the delay between images.
+   This actor reads an Object token that is a java.awt.Image from the input
+   and displays it in full screen mode on a GraphicsDevice that is
+   determined from another input port.  The delayInMillis input port
+   controls the delay between images.
 
-@see ptolemy.apps.fullscreen.ImageReader
-@author  Christopher Hylands
-@version $Id$
- */
+   @see ptolemy.apps.fullscreen.ImageReader
+   @author  Christopher Hylands
+   @version $Id$
+*/
 public class FullScreenImageDisplay extends Sink {
 
     /** Construct an actor with the given container and name.
@@ -90,7 +90,7 @@ public class FullScreenImageDisplay extends Sink {
 
         exitFullScreenModeInWrapup =
             new Parameter(this, "exitFullScreenModeInWrapup",
-                          new BooleanToken(true));
+                    new BooleanToken(true));
         exitFullScreenModeInWrapup.setTypeEquals(BaseType.BOOLEAN);
 
         graphicsDevice = new TypedIOPort(this, "graphicsDevice", true, false);
@@ -141,9 +141,9 @@ public class FullScreenImageDisplay extends Sink {
             Image image = (Image) objectToken.getValue();
             if (image.getWidth(null) == -1 || image.getHeight(null) == -1) {
                 System.out.println("FullScreenImageDisplay.fire(): "
-                                   + "Warning: width and/or height was -1. "
-                                   + "This usually indicates that the "
-                                   + "pathname to the file was incorrect");
+                        + "Warning: width and/or height was -1. "
+                        + "This usually indicates that the "
+                        + "pathname to the file was incorrect");
             }
 
             Graphics2D graphics2D =
@@ -178,29 +178,29 @@ public class FullScreenImageDisplay extends Sink {
                 yOffset = (_bounds.height - height)/2;
             }
             graphics2D.drawImage(image, xOffset, yOffset,
-                                 width, height,
-                                 null);
+                    width, height,
+                    null);
             _bufferStrategy.show();
             graphics2D.dispose();
 
             if (1==0) {
-            // Loop through different alpha values.
-            // We draw a rectangle of the same color over and over
-            // again, which gives us a fast fade.
-            // We could try different functions on alpha here.
-            AlphaComposite alphaComposite = null;
-            float alpha = 0.05f;
-            for ( int m = 0; m < 100; m++) {
-                alphaComposite =
-                    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                                               alpha);
-                graphics2D = (Graphics2D) _bufferStrategy.getDrawGraphics();
-                graphics2D.setComposite(alphaComposite);
-                graphics2D.fillRect(_bounds.x, _bounds.y,
-                                    _bounds.width, _bounds.height);
-                graphics2D.dispose();
-                _bufferStrategy.show();
-            }
+                // Loop through different alpha values.
+                // We draw a rectangle of the same color over and over
+                // again, which gives us a fast fade.
+                // We could try different functions on alpha here.
+                AlphaComposite alphaComposite = null;
+                float alpha = 0.05f;
+                for ( int m = 0; m < 100; m++) {
+                    alphaComposite =
+                        AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                                alpha);
+                    graphics2D = (Graphics2D) _bufferStrategy.getDrawGraphics();
+                    graphics2D.setComposite(alphaComposite);
+                    graphics2D.fillRect(_bounds.x, _bounds.y,
+                            _bounds.width, _bounds.height);
+                    graphics2D.dispose();
+                    _bufferStrategy.show();
+                }
             }
             try {
                 Thread.sleep(delay);
@@ -217,7 +217,7 @@ public class FullScreenImageDisplay extends Sink {
             (GraphicsDevice)((ObjectToken)graphicsDevice.get(0)).getValue();
         if (!_inFullScreenMode) {
             _frame = MultiBuffer.enterFullScreenMode(_graphicsDeviceValue,
-                                                     input.getWidth());
+                    input.getWidth());
             _bounds = _frame.getBounds();
             _bufferStrategy = _frame.getBufferStrategy();
             _inFullScreenMode = true;
@@ -234,7 +234,7 @@ public class FullScreenImageDisplay extends Sink {
         // If exitFullScreenModeInWrapup is true, then call
         // exitFullScreenMode().
         if (((BooleanToken)(exitFullScreenModeInWrapup.getToken()))
-            .booleanValue()) {
+                .booleanValue()) {
             // The GraphicsDevice.setFullScreenWindow() docs say:
             // "When returning to windowed mode from an exclusive full-screen
             // window, any display changes made by calling"

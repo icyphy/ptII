@@ -70,7 +70,7 @@ public class StringIndexOf extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringIndexOf(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         searchFor = new PortParameter(this, "searchFor");

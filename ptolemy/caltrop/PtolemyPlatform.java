@@ -26,7 +26,7 @@
 
 
 
- */
+*/
 
 package ptolemy.caltrop;
 
@@ -82,7 +82,7 @@ import caltrop.interpreter.util.Platform;
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
- */
+*/
 public class PtolemyPlatform implements Platform {
 
     public Context context() {

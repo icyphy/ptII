@@ -86,7 +86,7 @@ public class DoubleReader extends URLReader {
      *   actor with this name.
      */
     public DoubleReader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

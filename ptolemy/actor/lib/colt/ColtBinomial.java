@@ -69,7 +69,7 @@ public class ColtBinomial extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBinomial(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);

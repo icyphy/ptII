@@ -71,7 +71,7 @@ public class BoxedValuesIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public BoxedValuesIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         displayWidth = new Parameter(this, "displayWidth");
@@ -168,7 +168,7 @@ public class BoxedValuesIcon extends XMLIcon {
         if (container != null) {
             StringBuffer buffer = new StringBuffer();
             Iterator settables = container.attributeList(Settable.class)
-                                          .iterator();
+                .iterator();
 
             while (settables.hasNext()) {
                 Settable settable = (Settable) settables.next();

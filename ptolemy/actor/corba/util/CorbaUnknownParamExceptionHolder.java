@@ -15,7 +15,7 @@ public final class CorbaUnknownParamExceptionHolder
     }
 
     public CorbaUnknownParamExceptionHolder(
-        ptolemy.actor.corba.util.CorbaUnknownParamException initialValue) {
+            ptolemy.actor.corba.util.CorbaUnknownParamException initialValue) {
         value = initialValue;
     }
 

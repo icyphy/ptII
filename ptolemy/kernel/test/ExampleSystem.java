@@ -63,7 +63,7 @@ public class ExampleSystem implements Serializable {
      *  be built.
      */
     public ExampleSystem()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
 
         // Create composite entities
@@ -124,33 +124,33 @@ public class ExampleSystem implements Serializable {
     /** Return the results as a String. */
     public String toString() {
         return ("----Methods of ComponentRelation----\n" + "linkedPorts:\n"
-        + printLinkedPorts(r1) + printLinkedPorts(r2) + printLinkedPorts(r3)
-        + printLinkedPorts(r4) + printLinkedPorts(r5) + printLinkedPorts(r6)
-        + printLinkedPorts(r7) + printLinkedPorts(r8) + printLinkedPorts(r9)
-        + printLinkedPorts(r10) + printLinkedPorts(r11) + printLinkedPorts(r12)
-        + "\ndeepLinkedPorts:\n" + printDeepLinkedPorts(r1)
-        + printDeepLinkedPorts(r2) + printDeepLinkedPorts(r3)
-        + printDeepLinkedPorts(r4) + printDeepLinkedPorts(r5)
-        + printDeepLinkedPorts(r6) + printDeepLinkedPorts(r7)
-        + printDeepLinkedPorts(r8) + printDeepLinkedPorts(r9)
-        + printDeepLinkedPorts(r10) + printDeepLinkedPorts(r11)
-        + printDeepLinkedPorts(r12) + "\n----Methods of ComponentPort----\n"
-        + "connectedPorts:\n" + printConnectedPorts(p0)
-        + printConnectedPorts(p1) + printConnectedPorts(p2)
-        + printConnectedPorts(p3) + printConnectedPorts(p4)
-        + printConnectedPorts(p5) + printConnectedPorts(p6)
-        + printConnectedPorts(p7) + printConnectedPorts(p8)
-        + printConnectedPorts(p9) + printConnectedPorts(p10)
-        + printConnectedPorts(p11) + printConnectedPorts(p12)
-        + printConnectedPorts(p13) + printConnectedPorts(p14)
-        + "\ndeepConnectedPorts:\n" + printDeepConnectedPorts(p0)
-        + printDeepConnectedPorts(p1) + printDeepConnectedPorts(p2)
-        + printDeepConnectedPorts(p3) + printDeepConnectedPorts(p4)
-        + printDeepConnectedPorts(p5) + printDeepConnectedPorts(p6)
-        + printDeepConnectedPorts(p7) + printDeepConnectedPorts(p8)
-        + printDeepConnectedPorts(p9) + printDeepConnectedPorts(p10)
-        + printDeepConnectedPorts(p11) + printDeepConnectedPorts(p12)
-        + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
+                + printLinkedPorts(r1) + printLinkedPorts(r2) + printLinkedPorts(r3)
+                + printLinkedPorts(r4) + printLinkedPorts(r5) + printLinkedPorts(r6)
+                + printLinkedPorts(r7) + printLinkedPorts(r8) + printLinkedPorts(r9)
+                + printLinkedPorts(r10) + printLinkedPorts(r11) + printLinkedPorts(r12)
+                + "\ndeepLinkedPorts:\n" + printDeepLinkedPorts(r1)
+                + printDeepLinkedPorts(r2) + printDeepLinkedPorts(r3)
+                + printDeepLinkedPorts(r4) + printDeepLinkedPorts(r5)
+                + printDeepLinkedPorts(r6) + printDeepLinkedPorts(r7)
+                + printDeepLinkedPorts(r8) + printDeepLinkedPorts(r9)
+                + printDeepLinkedPorts(r10) + printDeepLinkedPorts(r11)
+                + printDeepLinkedPorts(r12) + "\n----Methods of ComponentPort----\n"
+                + "connectedPorts:\n" + printConnectedPorts(p0)
+                + printConnectedPorts(p1) + printConnectedPorts(p2)
+                + printConnectedPorts(p3) + printConnectedPorts(p4)
+                + printConnectedPorts(p5) + printConnectedPorts(p6)
+                + printConnectedPorts(p7) + printConnectedPorts(p8)
+                + printConnectedPorts(p9) + printConnectedPorts(p10)
+                + printConnectedPorts(p11) + printConnectedPorts(p12)
+                + printConnectedPorts(p13) + printConnectedPorts(p14)
+                + "\ndeepConnectedPorts:\n" + printDeepConnectedPorts(p0)
+                + printDeepConnectedPorts(p1) + printDeepConnectedPorts(p2)
+                + printDeepConnectedPorts(p3) + printDeepConnectedPorts(p4)
+                + printDeepConnectedPorts(p5) + printDeepConnectedPorts(p6)
+                + printDeepConnectedPorts(p7) + printDeepConnectedPorts(p8)
+                + printDeepConnectedPorts(p9) + printDeepConnectedPorts(p10)
+                + printDeepConnectedPorts(p11) + printDeepConnectedPorts(p12)
+                + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
     }
 
     /** Print the linked ports for a given ComponentRelation. The ports
@@ -235,7 +235,7 @@ public class ExampleSystem implements Serializable {
      *  be built.
      */
     public static void main(String[] args)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }

@@ -56,7 +56,7 @@ public class ECSLSaturate extends Transformer {
      *   an actor already in the container.
      */
     public ECSLSaturate(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setMultiport(true);
     }

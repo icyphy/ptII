@@ -69,5 +69,5 @@ public interface ModelErrorHandler {
      *   error by throwing an exception.
      */
     public boolean handleModelError(NamedObj context,
-        IllegalActionException exception) throws IllegalActionException;
+            IllegalActionException exception) throws IllegalActionException;
 }

@@ -113,7 +113,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         try {
             WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
                 .getAttribute("_windowProperties",
-                    WindowPropertiesAttribute.class);
+                        WindowPropertiesAttribute.class);
 
             if (properties != null) {
                 properties.setProperties(this);
@@ -212,8 +212,8 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected void _help() {
         try {
             FileParameter helpAttribute = (FileParameter) getModel()
-                                                              .getAttribute("_help",
-                    FileParameter.class);
+                .getAttribute("_help",
+                        FileParameter.class);
             URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
@@ -327,7 +327,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // Update all the attributes that need updated.
                 if (_model != null) {
                     Iterator attributes = _model.attributeList(Attribute.class)
-                                                .iterator();
+                        .iterator();
 
                     while (attributes.hasNext()) {
                         Attribute attribute = (Attribute) attributes.next();
@@ -349,7 +349,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                     effigy = effigy.topEffigy();
                 } else if ((_query == null)
                         || ((_model.getContainer() != null)
-                        && !_query.getBooleanValue("submodel"))) {
+                                && !_query.getBooleanValue("submodel"))) {
                     effigy = effigy.masterEffigy();
                 }
 

@@ -167,12 +167,12 @@ public class PlotTableauFrame extends TableauFrame {
         _menubar.add(_specialMenu);
 
         JMenuItem[] specialMenuItems = {
-                new JMenuItem("Clear", KeyEvent.VK_C),
-                new JMenuItem("Export", KeyEvent.VK_E),
-                new JMenuItem("Fill", KeyEvent.VK_F),
-                new JMenuItem("Reset axes", KeyEvent.VK_R),
-                new JMenuItem("Sample plot", KeyEvent.VK_S),
-            };
+            new JMenuItem("Clear", KeyEvent.VK_C),
+            new JMenuItem("Export", KeyEvent.VK_E),
+            new JMenuItem("Fill", KeyEvent.VK_F),
+            new JMenuItem("Reset axes", KeyEvent.VK_R),
+            new JMenuItem("Sample plot", KeyEvent.VK_S),
+        };
         SpecialMenuListener sml = new SpecialMenuListener();
 
         // Set the action command and listener for each menu item.
@@ -226,7 +226,7 @@ public class PlotTableauFrame extends TableauFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                "plot.eps"));
+                                           "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
 
@@ -239,15 +239,15 @@ public class PlotTableauFrame extends TableauFrame {
                 plot.export(fout);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                    "Error exporting plot to '" + file + "': " + ex,
-                    "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                        "Error exporting plot to '" + file + "': " + ex,
+                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (fout != null) {
                     try {
                         fout.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                            + "on " + file);
+                                + "on " + file);
                         throwable.printStackTrace();
                     }
                 }
@@ -259,10 +259,10 @@ public class PlotTableauFrame extends TableauFrame {
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-            "PlotTableauFrame is a plot in a top-level window.\n"
-            + "  File formats understood: Ptplot ASCII.\n"
-            + "  Left mouse button: Zooming.", "About Ptolemy Plot",
-            JOptionPane.INFORMATION_MESSAGE);
+                "PlotTableauFrame is a plot in a top-level window.\n"
+                + "  File formats understood: Ptplot ASCII.\n"
+                + "  Left mouse button: Zooming.", "About Ptolemy Plot",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Print the plot.
@@ -276,8 +276,8 @@ public class PlotTableauFrame extends TableauFrame {
                 job.print();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                    "Printing failed:\n" + ex.toString(), "Print Error",
-                    JOptionPane.WARNING_MESSAGE);
+                        "Printing failed:\n" + ex.toString(), "Print Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -311,8 +311,8 @@ public class PlotTableauFrame extends TableauFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                    "Format Exception:\n" + exception.toString(),
-                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                        "Format Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -346,8 +346,8 @@ public class PlotTableauFrame extends TableauFrame {
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
                 JOptionPane.showMessageDialog(null,
-                    "Special Menu Exception:\n" + exception.toString(),
-                    "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                        "Special Menu Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

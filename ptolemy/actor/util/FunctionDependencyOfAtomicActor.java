@@ -54,10 +54,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    declares that its <i>output</i> port is independent of its <i>input</i>
    port by defining this method:
    <pre>
-        public void pruneDependencies() {
-            super.pruneDependencies();
-            removeDependency(input, output);
-        }
+   public void pruneDependencies() {
+   super.pruneDependencies();
+   removeDependency(input, output);
+   }
    </pre>
 
    @see FunctionDependency
@@ -80,7 +80,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(atomicActor, name);
     }
 

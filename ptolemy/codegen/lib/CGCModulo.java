@@ -1,11 +1,11 @@
 /* Modulo, CGC domain: CGCModulo.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCModulo.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,12 +20,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCModulo
 /**
-The output of this star is the input modulo the "modulo" parameter.
-The input and output are both float
+   The output of this star is the input modulo the "modulo" parameter.
+   The input and output are both float
 
- @Author Siamak Modjtahedi
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCModulo.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Siamak Modjtahedi
+   @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCModulo.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCModulo extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -49,9 +49,9 @@ public class CGCModulo extends ClassicCGCActor {
         modulo = new Parameter(this, "modulo");
         modulo.setExpression("1.0");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -69,7 +69,7 @@ noInternalState();
     /**
      *  The modulo parameter parameter with initial value "1.0".
      */
-     public Parameter modulo;
+    public Parameter modulo;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -78,40 +78,40 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 1;
-     }
+        return 1;
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
 
-addInclude("<math.h>");
-     }
+        addInclude("<math.h>");
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-if ( ((DoubleToken)((modulo).getToken())).doubleValue() == 0.0 ) {
-                    throw new IllegalActionException(this,
-                                    "The modulo parameter cannot be zero");
-                    return;
-                }
-     }
+        if ( ((DoubleToken)((modulo).getToken())).doubleValue() == 0.0 ) {
+            throw new IllegalActionException(this,
+                    "The modulo parameter cannot be zero");
+            return;
+        }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(decl);
-                addCode(out);
-     }
+        addCode(decl);
+        addCode(out);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String decl =
-        "        double dummy;\n";
+    "        double dummy;\n";
 
     public String out =
-        "        $ref(output) = modf((double)$ref(input)/(double)$ref(modulo), &dummy);\n";
+    "        $ref(output) = modf((double)$ref(input)/(double)$ref(modulo), &dummy);\n";
 }

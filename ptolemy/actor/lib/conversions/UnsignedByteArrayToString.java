@@ -61,7 +61,7 @@ public class UnsignedByteArrayToString extends Converter {
      *   actor with this name.
      */
     public UnsignedByteArrayToString(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));

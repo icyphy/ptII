@@ -1,11 +1,11 @@
 /* MpyCx, CGC domain: CGCMpyCx.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCMpyCx.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCMpyCx
 /**
-Output the complex product of the inputs.
+   Output the complex product of the inputs.
 
- @Author Jose Luis Pino
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCMpyCx.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Jose Luis Pino
+   @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCMpyCx.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMpyCx extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -45,9 +45,9 @@ public class CGCMpyCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -69,35 +69,35 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 4*input.numberPorts();
-     }
+        return 4*input.numberPorts();
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(startOp(input.numberPorts()));
+        addCode(startOp(input.numberPorts()));
         int i;
         for (i=2;i<=input.numberPorts();i++)
             addCode(doOp(i));
-     }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp (int i) {
         return
-        "        " + (i>1?"complex temp;":"/*Unit gain - no multiplication required*/") + "\n"
-        + "        $ref(output).real = $ref(input#1).real;\n"
-        + "        $ref(output).imag = $ref(input#1).imag;\n";
+            "        " + (i>1?"complex temp;":"/*Unit gain - no multiplication required*/") + "\n"
+            + "        $ref(output).real = $ref(input#1).real;\n"
+            + "        $ref(output).imag = $ref(input#1).imag;\n";
     }
 
     public String doOp (int i) {
         return
-        "        temp.real = $ref(output).real * $ref(input#" + i + ").real -\n"
-        + "                    $ref(output).imag * $ref(input#" + i + ").imag;\n"
-        + "        temp.imag = $ref(output).real * $ref(input#" + i + ").imag +\n"
-        + "                    $ref(output).imag * $ref(input#" + i + ").real;\n"
-        + "        $ref(output).real = temp.real;\n"
-        + "        $ref(output).imag = temp.imag;\n";
+            "        temp.real = $ref(output).real * $ref(input#" + i + ").real -\n"
+            + "                    $ref(output).imag * $ref(input#" + i + ").imag;\n"
+            + "        temp.imag = $ref(output).real * $ref(input#" + i + ").imag +\n"
+            + "                    $ref(output).imag * $ref(input#" + i + ").real;\n"
+            + "        $ref(output).real = temp.real;\n"
+            + "        $ref(output).imag = temp.imag;\n";
     }
 }

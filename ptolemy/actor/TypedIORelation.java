@@ -97,7 +97,7 @@ public class TypedIORelation extends IORelation {
      *   a relation already in the container.
      */
     public TypedIORelation(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -113,11 +113,11 @@ public class TypedIORelation extends IORelation {
      *   are not in the same workspace.
      */
     protected void _checkContainer(CompositeEntity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof TypedCompositeActor) && (container != null)) {
             throw new IllegalActionException(this, container,
-                "TypedIORelation can only be contained by "
-                + "TypedCompositeActor.");
+                    "TypedIORelation can only be contained by "
+                    + "TypedCompositeActor.");
         }
     }
 
@@ -130,7 +130,7 @@ public class TypedIORelation extends IORelation {
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                "TypedIORelation can only link to a TypedIOPort.");
+                    "TypedIORelation can only link to a TypedIOPort.");
         }
     }
 }

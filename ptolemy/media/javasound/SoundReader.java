@@ -121,7 +121,7 @@ public class SoundReader {
      *   returned by getSamples().
      */
     public SoundReader(String sourceURL, int getSamplesArraySize)
-        throws IOException {
+            throws IOException {
         _productionRate = getSamplesArraySize;
 
         // Create a URL corresponding to the sound file location.
@@ -141,7 +141,7 @@ public class SoundReader {
      *   returned by getSamples().
      */
     public SoundReader(URL soundURL, int getSamplesArraySize)
-        throws IOException {
+            throws IOException {
         _productionRate = getSamplesArraySize;
 
         // Open the specified sound file.
@@ -165,8 +165,8 @@ public class SoundReader {
             return _channels;
         } else {
             throw new IllegalStateException("SoundReader: "
-                + "getChannels() was called while audio capture was"
-                + " inactive (openFile() was never called).");
+                    + "getChannels() was called while audio capture was"
+                    + " inactive (openFile() was never called).");
         }
     }
 
@@ -182,8 +182,8 @@ public class SoundReader {
             return _sampleRate;
         } else {
             throw new IllegalStateException("SoundReader: "
-                + "getSampleRate() was called while audio capture was"
-                + " inactive (openFile() was never called).");
+                    + "getSampleRate() was called while audio capture was"
+                    + " inactive (openFile() was never called).");
         }
     }
 
@@ -220,8 +220,8 @@ public class SoundReader {
 
             if (_debug) {
                 System.out.println("SoundReader: getSamples(): "
-                    + "bytes available = "
-                    + _properFormatAudioInputStream.available());
+                        + "bytes available = "
+                        + _properFormatAudioInputStream.available());
             }
 
             // Capture audio from file.
@@ -229,7 +229,7 @@ public class SoundReader {
 
             if (_debug) {
                 System.out.println("SoundReader: getSamples(): "
-                    + "numBytesRead = " + numBytesRead);
+                        + "numBytesRead = " + numBytesRead);
             }
 
             if (numBytesRead == _data.length) {
@@ -242,7 +242,7 @@ public class SoundReader {
                 // that the end of the sound file has been reached.
                 if (_debug) {
                     System.out.println("SoundReader: getSamples(): "
-                        + "numBytesRead = -1, so " + "returning null now...");
+                            + "numBytesRead = -1, so " + "returning null now...");
                 }
 
                 return null;
@@ -260,9 +260,9 @@ public class SoundReader {
             }
         } else {
             throw new IllegalStateException("SoundReader: "
-                + "getSamples() was called while audio capture was"
-                + " inactive (openFile() was never called or "
-                + "closeFile has already been called).");
+                    + "getSamples() was called while audio capture was"
+                    + " inactive (openFile() was never called or "
+                    + "closeFile has already been called).");
         }
     }
 
@@ -304,9 +304,9 @@ public class SoundReader {
             return _sampleSizeInBits;
         } else {
             throw new IllegalStateException("SoundReader: "
-                + "getSampleSizeInBits() was called while "
-                + "audio capture was"
-                + " inactive (openFile() was never called).");
+                    + "getSampleSizeInBits() was called while "
+                    + "audio capture was"
+                    + " inactive (openFile() was never called).");
         }
     }
 
@@ -347,7 +347,7 @@ public class SoundReader {
 
         if (_debug) {
             System.out.println("SoundReader: sample size in bits = "
-                + _sampleSizeInBits);
+                    + _sampleSizeInBits);
         }
 
         _channels = origFormat.getChannels();
@@ -392,7 +392,7 @@ public class SoundReader {
      * array containing samples for channel m.
      */
     private double[][] _byteArrayToDoubleArray(byte[] byteArray,
-        int bytesPerSample, int channels) {
+            int bytesPerSample, int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         // Check if we need to reallocate.
@@ -437,7 +437,7 @@ public class SoundReader {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                        + (bytesPerSample * currChannel) + i];
+                            + (bytesPerSample * currChannel) + i];
                 }
 
                 int result = (_b[0] >> 7);

@@ -71,7 +71,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      * @param edgeProfits The costs associated with the edges of the graph.
      */
     public ParhiMaximumProfitToCostRatioStrategy(Graph graph,
-        ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
+            ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
         super(graph);
         _edgeProfits = edgeProfits;
         _edgeCosts = edgeCosts;
@@ -104,7 +104,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-        + " based on Parhi's algorithm.";
+            + " based on Parhi's algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -166,7 +166,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
 
                 for (int i = 0; i < delays; i++) {
                     Node addedNode = graphPlusDelaysAsNodes.addNodeWeight(new String(
-                                "D" + j + i));
+                                                                                  "D" + j + i));
                     _delayNodeList.add(addedNode);
 
                     Edge addedEdge = graphPlusDelaysAsNodes.addEdge(source,
@@ -177,7 +177,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
 
                 Edge lastAddedEdge = graphPlusDelaysAsNodes.addEdge(source, sink);
                 edgeProfitsMap.put(lastAddedEdge,
-                    new Double(_edgeProfits.toDouble(edge)));
+                        new Double(_edgeProfits.toDouble(edge)));
             } else {
                 edgeProfitsMap.put(edge, new Double(_edgeProfits.toDouble(edge)));
             }
@@ -190,7 +190,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         HashMap predecessorMap = new HashMap();
 
         for (Iterator delayNodes = _delayNodeList.iterator();
-                delayNodes.hasNext();) {
+             delayNodes.hasNext();) {
             Node delayNode = (Node) delayNodes.next();
             DirectedGraph thisRoundGraph = (DirectedGraph) graphPlusDelaysAsNodes
                 .clone();
@@ -220,7 +220,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                             thisRoundGraph.removeEdge(edge);
                         } else {
                             delayGraphProfitMap.put(edge,
-                                edgeProfitsMap.get(edge));
+                                    edgeProfitsMap.get(edge));
                         }
                     }
                 } else {
@@ -235,7 +235,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         }
 
         _makeFirstOrderLongestPathMatrix(D, graphPlusDelaysAsNodes,
-            predecessorMap);
+                predecessorMap);
 
         // create the delay graph on which the maximum cycle mean is going to
         // be executed.
@@ -253,10 +253,10 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
 
                 if (_firstOrderLongestPathMatrix[i][j] >= 0) {
                     if (!((source == sink)
-                            && (_firstOrderLongestPathMatrix[i][j] == 0))) {
+                                && (_firstOrderLongestPathMatrix[i][j] == 0))) {
                         Edge addedEdge = delayGraph.addEdge(source, sink);
                         delayGraphEdgeProfits.put(addedEdge,
-                            new Double(_firstOrderLongestPathMatrix[i][j]));
+                                new Double(_firstOrderLongestPathMatrix[i][j]));
                     }
                 }
             }
@@ -326,9 +326,9 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     // of longest distances from every node to every other node indexed
     // by the node label.
     private double[][] _makeFirstOrderLongestPathMatrix(HashMap D,
-        DirectedGraph graph, HashMap predecessorMap) {
+            DirectedGraph graph, HashMap predecessorMap) {
         _firstOrderLongestPathMatrix = new double[_delayNodeList.size()][_delayNodeList
-            .size()];
+                .size()];
 
         for (int i = 0; i < _delayNodeList.size(); i++) {
             for (int j = 0; j < _delayNodeList.size(); j++) {
@@ -336,7 +336,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Node row = (Node) _delayNodeList.get(j);
                 double value = 0;
                 double[] distances = (double[]) ((SingleSourceLongestPathAnalysis) (D
-                    .get(column))).distance();
+                                                         .get(column))).distance();
                 Node predecessor = (Node) (predecessorMap.get(row));
 
                 if ((i != j) || _delayNodeList.contains(predecessor)) {

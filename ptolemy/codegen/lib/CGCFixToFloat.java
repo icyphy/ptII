@@ -1,11 +1,11 @@
 /* FixToFloat, CGC domain: CGCFixToFloat.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCFixToFloat.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCFixToFloat
 /**
-Convert a fixed-point input to a floating-point output.
+   Convert a fixed-point input to a floating-point output.
 
- @Author J. Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFloat.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author J. Weiss
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCFixToFloat.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToFloat extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -44,20 +44,20 @@ public class CGCFixToFloat extends CGCFix {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /**
-Input fix type
-     */
+       Input fix type
+    */
     public ClassicPort input;
 
     /**
-Output float type
-     */
+       Output float type
+    */
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -67,10 +67,10 @@ Output float type
      */
     public void  generateFireCode() {
 
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        $ref(output) = FIX_Fix2Double($ref(input));"
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "        $ref(output) = FIX_Fix2Double($ref(input));"
 
-);          addCode(_str_);  }
+                );          addCode(_str_);  }
 
-     }
+    }
 }

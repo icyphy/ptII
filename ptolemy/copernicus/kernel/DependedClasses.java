@@ -51,16 +51,16 @@ import soot.util.queue.ChunkedQueue;
 
 
 /** Collect all the classes that a set of classes depends on.  This includes:
- Any superclass.
- Any interface.
- The declaring class of any field or method referenced from the class.
+    Any superclass.
+    Any interface.
+    The declaring class of any field or method referenced from the class.
 
- @author Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)
- */
+    @author Steve Neuendorffer
+    @version $Id$
+    @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (cxh)
+    @Pt.AcceptedRating Red (cxh)
+*/
 public class DependedClasses {
     /** Create a new set of classes that contains all of the classes that are
      *  required to load the given set of initial classes.
@@ -117,7 +117,7 @@ public class DependedClasses {
 
         // Grab the types of all fields.
         for (Iterator fields = theClass.getFields().iterator();
-                fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField) fields.next();
             Type type = field.getType();
 
@@ -127,13 +127,13 @@ public class DependedClasses {
         }
 
         for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
             for (Iterator types = method.getParameterTypes().iterator();
-                    types.hasNext();) {
+                 types.hasNext();) {
                 Type type = (Type) types.next();
 
                 if (type instanceof RefType) {
@@ -168,7 +168,7 @@ public class DependedClasses {
                 Unit unit = (Unit) units.next();
 
                 for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                        boxes.hasNext();) {
+                     boxes.hasNext();) {
                     ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
 
@@ -188,7 +188,7 @@ public class DependedClasses {
                         }
                     } else if (value instanceof NewExpr) {
                         SootClass refClass = ((NewExpr) value).getBaseType()
-                                              .getSootClass();
+                            .getSootClass();
 
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);

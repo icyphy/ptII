@@ -99,7 +99,7 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -173,7 +173,7 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -199,7 +199,7 @@ public class ParameterNameChanges implements MoMLFilter {
                 String oldProperty = (String) properties.next();
                 String newProperty = (String) propertyMap.get(oldProperty);
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty
-                    + "\n");
+                        + "\n");
             }
         }
 
@@ -240,20 +240,20 @@ public class ParameterNameChanges implements MoMLFilter {
         // Key = property name, Value = new class name
         pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
         _classesWithParameterNameChanges.put("ptolemy.domains.pn.kernel.PNDirector",
-            pnDirectorChanges);
+                pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
         HashMap variableDelayChanges = new HashMap();
         variableDelayChanges.put("defaultDelay", "delay");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.VariableDelay",
-            variableDelayChanges);
+                variableDelayChanges);
 
         // ServerDelay: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'
         HashMap serverChanges = new HashMap();
         serverChanges.put("serviceTime", "newServiceTime");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
-            serverChanges);
+                serverChanges);
     }
 }

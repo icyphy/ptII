@@ -69,7 +69,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtPoissonSlow(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);

@@ -1,28 +1,28 @@
 /* Actor for calculating the value of f, df/dx, df/dy, and df/dtheta
 
- Copyright (c) 2003-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (acataldo)
 @AcceptedRating Red (reviewmoderator)
 */
@@ -44,22 +44,22 @@ import ptolemy.kernel.util.Settable;
 //////////////////////////////////////////////////////////////////////////
 //// ImplicitSurface
 /**
-This takes state input from the aircraft, and outputs information on
-the implicit surface function, which represents the reachable set.
-This function is positive outside the reacable set, negative inside
-the reachable set, and 0 on the boundary of the reacable set.  Its
-value represents its distance to the reachable set, and, for positive
-values, the negative gradient points toward the shortest path the the
-reachable set.  This outputs the function value, the x gradient, the y
-gradient, and the theta gradient, given the current x, y, and theta
-value.
+   This takes state input from the aircraft, and outputs information on
+   the implicit surface function, which represents the reachable set.
+   This function is positive outside the reacable set, negative inside
+   the reachable set, and 0 on the boundary of the reacable set.  Its
+   value represents its distance to the reachable set, and, for positive
+   values, the negative gradient points toward the shortest path the the
+   reachable set.  This outputs the function value, the x gradient, the y
+   gradient, and the theta gradient, given the current x, y, and theta
+   value.
 
-The function file should be stored in
-$PTII/ptolemy/apps/softwalls/surfaces.
+   The function file should be stored in
+   $PTII/ptolemy/apps/softwalls/surfaces.
 
-@author Adam Cataldo
-@version $Id$
-@since Ptolemy II 2.0.1
+   @author Adam Cataldo
+   @version $Id$
+   @since Ptolemy II 2.0.1
 */
 public class ImplicitSurface extends TypedAtomicActor {
     /** Constructs an actor in the specified container with the specified
@@ -72,7 +72,7 @@ public class ImplicitSurface extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public ImplicitSurface(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         dx = new TypedIOPort(this, "dx", false, true);
@@ -255,16 +255,16 @@ public class ImplicitSurface extends TypedAtomicActor {
             new ThreeDFunction(dthetaFile, compressed, write);
     }
 
-//     /** Clears the the implicit surface function and gradient function.
-//      *  @exception IllegalActionException If the super class throws
-//      *  it.
-//      */
-//     public void wrapup() throws IllegalActionException {
-//         _surfaceFunction = null;
-//         _xGradientFunction = null;
-//         _yGradientFunction = null;
-//         _thetaGradientFunction = null;
-//     }
+    //     /** Clears the the implicit surface function and gradient function.
+    //      *  @exception IllegalActionException If the super class throws
+    //      *  it.
+    //      */
+    //     public void wrapup() throws IllegalActionException {
+    //         _surfaceFunction = null;
+    //         _xGradientFunction = null;
+    //         _yGradientFunction = null;
+    //         _thetaGradientFunction = null;
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -62,7 +62,7 @@ public class SimpleMult extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public SimpleMult(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input1 = new IntIOPort(this, "input1", true, false);

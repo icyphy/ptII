@@ -108,24 +108,24 @@ public class NamedObjEliminator extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         // First remove most method invocations that are not
         // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                    methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (unit.containsFieldRef()) {
@@ -141,18 +141,18 @@ public class NamedObjEliminator extends SceneTransformer
                                         .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newAssignStmt(((AssignStmt) unit)
-                                            .getLeftOp(), IntConstant.v(0)),
-                                        unit);
+                                            .newAssignStmt(((AssignStmt) unit)
+                                                    .getLeftOp(), IntConstant.v(0)),
+                                            unit);
                                 }
 
                                 body.getUnits().remove(unit);
                             } else if (field.getSubSignature().equals(PtolemyUtilities.stopRequestedField
-                                        .getSubSignature())) {
+                                               .getSubSignature())) {
                                 // Assume stops are not requested..
                                 if (unit instanceof AssignStmt
                                         && (box == ((AssignStmt) unit)
-                                        .getLeftOpBox())) {
+                                                .getLeftOpBox())) {
                                     body.getUnits().remove(unit);
                                 } else {
                                     box.setValue(IntConstant.v(0));
@@ -172,8 +172,8 @@ public class NamedObjEliminator extends SceneTransformer
                                         .getSubSignature())) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature()
-                                               .equals(PtolemyUtilities.setNameMethod
-                                        .getSubSignature())) {
+                                    .equals(PtolemyUtilities.setNameMethod
+                                            .getSubSignature())) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals("_debug")) {
                                 body.getUnits().remove(unit);
@@ -193,68 +193,68 @@ public class NamedObjEliminator extends SceneTransformer
                                         .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newAssignStmt(((AssignStmt) unit)
-                                            .getLeftOp(),
-                                            StringConstant.v(
-                                                _model.getFullName())), unit);
+                                            .newAssignStmt(((AssignStmt) unit)
+                                                    .getLeftOp(),
+                                                    StringConstant.v(
+                                                            _model.getFullName())), unit);
                                 }
 
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature()
-                                               .equals(PtolemyUtilities.getNameMethod
-                                        .getSubSignature())) {
+                                    .equals(PtolemyUtilities.getNameMethod
+                                            .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newAssignStmt(((AssignStmt) unit)
-                                            .getLeftOp(),
-                                            StringConstant.v(_model.getName())),
-                                        unit);
+                                            .newAssignStmt(((AssignStmt) unit)
+                                                    .getLeftOp(),
+                                                    StringConstant.v(_model.getName())),
+                                            unit);
                                 }
 
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature()
-                                               .equals(PtolemyUtilities.findEffigyMethod
-                                        .getSubSignature())) {
+                                    .equals(PtolemyUtilities.findEffigyMethod
+                                            .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newAssignStmt(((AssignStmt) unit)
-                                            .getLeftOp(), NullConstant.v()),
-                                        unit);
+                                            .newAssignStmt(((AssignStmt) unit)
+                                                    .getLeftOp(), NullConstant.v()),
+                                            unit);
                                 }
 
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature()
-                                               .equals(PtolemyUtilities.getModelURIMethod
-                                        .getSubSignature())) {
+                                    .equals(PtolemyUtilities.getModelURIMethod
+                                            .getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     SootClass uriClass = Scene.v()
-                                                              .loadClassAndSupport("java.net.URI");
+                                        .loadClassAndSupport("java.net.URI");
                                     RefType type = RefType.v(uriClass);
                                     SootMethod initMethod = uriClass.getMethod(
                                             "void <init>(java.lang.String)");
                                     Local local = (Local) ((AssignStmt) unit)
                                         .getLeftOp();
                                     String uriString = URIAttribute.getModelURI(_model)
-                                                                   .toString();
+                                        .toString();
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newAssignStmt(local,
-                                            Jimple.v().newNewExpr(type)), unit);
+                                            .newAssignStmt(local,
+                                                    Jimple.v().newNewExpr(type)), unit);
                                     body.getUnits().insertBefore(Jimple.v()
-                                                                       .newInvokeStmt(Jimple.v()
-                                                                                            .newSpecialInvokeExpr(local,
-                                                initMethod,
-                                                StringConstant.v(uriString))),
-                                        unit);
+                                            .newInvokeStmt(Jimple.v()
+                                                    .newSpecialInvokeExpr(local,
+                                                            initMethod,
+                                                            StringConstant.v(uriString))),
+                                            unit);
                                 }
 
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature()
-                                               .equals(PtolemyUtilities.handleModelErrorMethod
-                                        .getSubSignature())) {
+                                    .equals(PtolemyUtilities.handleModelErrorMethod
+                                            .getSubSignature())) {
                                 // Replace handleModelError with a throw clause.
                                 body.getUnits().insertBefore(Jimple.v()
-                                                                   .newThrowStmt(expr
-                                        .getArg(1)), unit);
+                                        .newThrowStmt(expr
+                                                .getArg(1)), unit);
                                 body.getUnits().remove(unit);
                             }
                         }
@@ -267,14 +267,14 @@ public class NamedObjEliminator extends SceneTransformer
 
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
                     || SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.compositeActorClass)
+                            PtolemyUtilities.compositeActorClass)
                     || SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.attributeClass)) {
+                            PtolemyUtilities.attributeClass)) {
                 //    System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
 
@@ -290,7 +290,7 @@ public class NamedObjEliminator extends SceneTransformer
                     method = theClass.getMethodByName("<init>");
                 } catch (RuntimeException ex) {
                     System.out.println("Could not get method <init> by name "
-                        + "from class " + theClass);
+                            + "from class " + theClass);
                     System.out.println("Methods = " + theClass.getMethods());
                     throw ex;
                 }
@@ -319,7 +319,7 @@ public class NamedObjEliminator extends SceneTransformer
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (unit.containsInvokeExpr()) {
@@ -336,9 +336,9 @@ public class NamedObjEliminator extends SceneTransformer
                                 //       + unit + " in method " + method);
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr((Local) expr
-                                        .getBase(),
-                                        PtolemyUtilities.objectConstructor,
-                                        Collections.EMPTY_LIST));
+                                                     .getBase(),
+                                                     PtolemyUtilities.objectConstructor,
+                                                     Collections.EMPTY_LIST));
                             }
                         }
                     } else if (unit instanceof IdentityStmt) {
@@ -353,7 +353,7 @@ public class NamedObjEliminator extends SceneTransformer
                                 //       System.out.println("found = " + identityStmt);
                                 ValueBox box = identityStmt.getRightOpBox();
                                 box.setValue(Jimple.v().newParameterRef(method
-                                        .getParameterType(0), 0));
+                                                     .getParameterType(0), 0));
 
                                 //    System.out.println("changed to: " + identityStmt);
                             } else {
@@ -365,9 +365,9 @@ public class NamedObjEliminator extends SceneTransformer
                                 // called.
                                 body.getUnits().remove(identityStmt);
                                 body.getUnits().insertBefore(Jimple.v()
-                                                                   .newAssignStmt(identityStmt
-                                        .getLeftOp(), NullConstant.v()),
-                                    body.getFirstNonIdentityStmt());
+                                        .newAssignStmt(identityStmt
+                                                .getLeftOp(), NullConstant.v()),
+                                        body.getFirstNonIdentityStmt());
                             }
                         } //  else if (value instanceof ThisRef) {
 
@@ -388,19 +388,19 @@ public class NamedObjEliminator extends SceneTransformer
 
         // Fix the specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                    methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (unit.containsInvokeExpr()) {
@@ -412,11 +412,11 @@ public class NamedObjEliminator extends SceneTransformer
                             // then switch to the modified constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
                             SootClass declaringClass = expr.getMethod()
-                                                           .getDeclaringClass();
+                                .getDeclaringClass();
 
                             if (expr.getMethod().getName().equals("<init>")
                                     && modifiedConstructorClassList.contains(
-                                        declaringClass)) {
+                                            declaringClass)) {
                                 // System.out.println(
                                 //                                         "replacing constructor invocation = "
                                 //                                         + unit + " in method " + method);
@@ -428,14 +428,14 @@ public class NamedObjEliminator extends SceneTransformer
                                     List args = new LinkedList();
                                     args.add(expr.getArg(0));
                                     box.setValue(Jimple.v()
-                                                       .newSpecialInvokeExpr((Local) expr
-                                            .getBase(), newConstructor, args));
+                                            .newSpecialInvokeExpr((Local) expr
+                                                    .getBase(), newConstructor, args));
                                 } else {
                                     // Replace with zero arg constructor.
                                     box.setValue(Jimple.v()
-                                                       .newSpecialInvokeExpr((Local) expr
-                                            .getBase(), newConstructor,
-                                            Collections.EMPTY_LIST));
+                                            .newSpecialInvokeExpr((Local) expr
+                                                    .getBase(), newConstructor,
+                                                    Collections.EMPTY_LIST));
                                 }
                             }
                         }
@@ -445,12 +445,12 @@ public class NamedObjEliminator extends SceneTransformer
         }
 
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                    methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 // System.out.println("method = " + method);
@@ -461,13 +461,13 @@ public class NamedObjEliminator extends SceneTransformer
                 TypeAssigner.v().transform(body, "nee.ta");
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     //        System.out.println("unit = " + unit);
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                            boxes.hasNext();) {
+                         boxes.hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
 
                         Value value = box.getValue();
@@ -482,7 +482,7 @@ public class NamedObjEliminator extends SceneTransformer
 
                     // If any locals are removable, then remove them.
                     for (Iterator locals = body.getLocals().snapshotIterator();
-                            locals.hasNext();) {
+                         locals.hasNext();) {
                         Local local = (Local) locals.next();
                         Type type = local.getType();
 
@@ -494,7 +494,7 @@ public class NamedObjEliminator extends SceneTransformer
 
                 // If any fields are removable, then remove them.
                 for (Iterator fields = theClass.getFields().snapshotIterator();
-                        fields.hasNext();) {
+                     fields.hasNext();) {
                     SootField field = (SootField) fields.next();
                     Type type = field.getType();
 
@@ -515,15 +515,15 @@ public class NamedObjEliminator extends SceneTransformer
                 //                 }
             }
         } /*
-         */
+           */
         // Remove all the interfaces that it implements??
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             for (Iterator interfaces = theClass.getInterfaces()
-                                               .snapshotIterator();
-                    interfaces.hasNext();) {
+                     .snapshotIterator();
+                 interfaces.hasNext();) {
                 SootClass theInterface = (SootClass) interfaces.next();
 
                 if (theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
@@ -549,17 +549,17 @@ public class NamedObjEliminator extends SceneTransformer
             if (SootUtilities.derivesFrom(refClass,
                         PtolemyUtilities.attributeClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.managerClass)
+                            PtolemyUtilities.managerClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.settableClass)
+                            PtolemyUtilities.settableClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.relationClass)
+                            PtolemyUtilities.relationClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.portClass)
+                            PtolemyUtilities.portClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.entityClass)
+                            PtolemyUtilities.entityClass)
                     || SootUtilities.derivesFrom(refClass,
-                        PtolemyUtilities.inequalityTermClass)) {
+                            PtolemyUtilities.inequalityTermClass)) {
                 return true;
             }
         }

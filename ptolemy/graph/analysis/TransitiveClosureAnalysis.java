@@ -86,7 +86,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public boolean pathExistence(Node startNode, Node endNode) {
         return ((TransitiveClosureAnalyzer) analyzer()).pathExistence(startNode,
-            endNode);
+                endNode);
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -96,7 +96,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public String toString() {
         return "Transitive closure analysis using the following analyzer:\n"
-        + analyzer().toString();
+            + analyzer().toString();
     }
 
     /** Compute the transitive closure of the graph under analysis in the

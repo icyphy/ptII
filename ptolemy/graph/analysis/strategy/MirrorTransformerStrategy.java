@@ -179,7 +179,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
             mirrorGraph = (Graph) (_graph.getClass().newInstance());
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
-                + "this one.\n" + exception + "\n");
+                    + "this one.\n" + exception + "\n");
         }
 
         // create new nodes for the mirror
@@ -217,7 +217,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new AnalysisException(
-                        "Can not clone the node weight.\n");
+                            "Can not clone the node weight.\n");
                 }
 
                 mirrorNode = new Node(mirrorWeight);
@@ -265,7 +265,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new RuntimeException(
-                        "Can not clone the edge weight.\n");
+                            "Can not clone the edge weight.\n");
                 }
 
                 mirrorEdge = new Edge(mirrorSource, mirrorSink, mirrorWeight);

@@ -39,38 +39,38 @@ import java.awt.event.*;
 
 public class HelloPP
     extends Canvas {
-  public void paint(Graphics g) {
-    Dimension d = getSize();
-    int cx = d.width / 2;
-    int cy = d.height / 2;
-    for (int x = 0; x < d.width; x++) {
-      if (x % 2 == 0) g.setColor(Color.black);
-      else g.setColor(Color.white);
-      g.drawLine(cx, cy, x, 0);
-      g.drawLine(cx, cy, x, d.height);
+    public void paint(Graphics g) {
+        Dimension d = getSize();
+        int cx = d.width / 2;
+        int cy = d.height / 2;
+        for (int x = 0; x < d.width; x++) {
+            if (x % 2 == 0) g.setColor(Color.black);
+            else g.setColor(Color.white);
+            g.drawLine(cx, cy, x, 0);
+            g.drawLine(cx, cy, x, d.height);
+        }
+        for (int y = 0; y < d.height; y++) {
+            if (y % 2 == 0) g.setColor(Color.black);
+            else g.setColor(Color.white);
+            g.drawLine(cx, cy, 0, y);
+            g.drawLine(cx, cy, d.width, y);
+        }
     }
-    for (int y = 0; y < d.height; y++) {
-      if (y % 2 == 0) g.setColor(Color.black);
-      else g.setColor(Color.white);
-      g.drawLine(cx, cy, 0, y);
-      g.drawLine(cx, cy, d.width, y);
-    }
-  }
 
-  public static void main(String[] args) {
-    final Frame f = new Frame("HelloPP");
-    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    f.setLocation(0, 0);
-    f.setSize(d.width, d.height);
-    Component c = new HelloPP();
-    f.add(c);
-    f.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent we) {
-        f.dispose();
-        System.exit(0);
-      }
-    });
-    f.setVisible(true);
-  }
+    public static void main(String[] args) {
+        final Frame f = new Frame("HelloPP");
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        f.setLocation(0, 0);
+        f.setSize(d.width, d.height);
+        Component c = new HelloPP();
+        f.add(c);
+        f.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent we) {
+                    f.dispose();
+                    System.exit(0);
+                }
+            });
+        f.setVisible(true);
+    }
 }
 

@@ -98,7 +98,7 @@ public class LineReader extends Source {
      *   actor with this name.
      */
     public LineReader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.STRING);
@@ -113,11 +113,11 @@ public class LineReader extends Source {
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
-            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+                + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ public class LineReader extends Source {
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             // NOTE: We do not want to close the file if the file
             // has not in fact changed.  We check this by just comparing
@@ -185,7 +185,7 @@ public class LineReader extends Source {
 
             if (linesToSkip < 0) {
                 throw new IllegalActionException(this,
-                    "The number of lines " + "to skip cannot be negative.");
+                        "The number of lines " + "to skip cannot be negative.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -335,8 +335,8 @@ public class LineReader extends Source {
 
                 if (_currentLine == null) {
                     throw new IllegalActionException(this,
-                        "The file '" + fileOrURL.stringValue() + "' does not "
-                        + "have enough lines.");
+                            "The file '" + fileOrURL.stringValue() + "' does not "
+                            + "have enough lines.");
                 }
             }
         } catch (IOException ex) {

@@ -120,7 +120,7 @@ public class Test {
         }
 
         System.out.println("Loading class " + classname + " method "
-            + methodname);
+                + methodname);
 
         if (!testClass.declaresMethodByName(methodname)) {
             System.err.println("Method " + methodname + " not found");

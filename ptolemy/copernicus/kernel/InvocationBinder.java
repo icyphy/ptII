@@ -72,7 +72,7 @@ public class InvocationBinder extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InvocationBinder.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         Filter instanceInvokesFilter = new Filter(new InstanceInvokeEdgesPred());
         String modifierOptions = "unsafe";
@@ -99,7 +99,7 @@ public class InvocationBinder extends SceneTransformer {
                 }
 
                 if (!instanceInvokesFilter.wrap(cg.edgesOutOf(container))
-                                              .hasNext()) {
+                        .hasNext()) {
                     continue;
                 }
 
@@ -161,7 +161,7 @@ public class InvocationBinder extends SceneTransformer {
                     // a new VirtualInvoke.
                     ValueBox box = s.getInvokeExprBox();
                     box.setValue(Jimple.v().newVirtualInvokeExpr((Local) ((InstanceInvokeExpr) ie)
-                            .getBase(), target, ie.getArgs()));
+                                         .getBase(), target, ie.getArgs()));
                 }
             }
         }

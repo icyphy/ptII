@@ -69,7 +69,7 @@ public class MirrorPort extends TypedIOPort {
      *   of a port already in the container.
      */
     public MirrorPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -131,7 +131,7 @@ public class MirrorPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if ((container == null) && (_associatedPort != null)
@@ -213,7 +213,7 @@ public class MirrorPort extends TypedIOPort {
      *  if there is one.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
 
         if ((_associatedPort != null)

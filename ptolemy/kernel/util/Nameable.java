@@ -107,5 +107,5 @@ public interface Nameable {
      *   contains an object with this name.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException;
+            throws IllegalActionException, NameDuplicationException;
 }

@@ -59,18 +59,18 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (eal)
  */
 public class StaticSchedulingCodeGenerator
-        extends CodeGenerator implements ActorCodeGenerator {
+    extends CodeGenerator implements ActorCodeGenerator {
 
-        /** Create a new instance of the C code generator.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception IllegalActionException
-         *  @exception NameDuplicationException
-         */
-        public StaticSchedulingCodeGenerator(NamedObj container, String name)
-                        throws IllegalActionException, NameDuplicationException {
-                super(container, name);
-        }
+    /** Create a new instance of the C code generator.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    public StaticSchedulingCodeGenerator(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
@@ -100,9 +100,9 @@ public class StaticSchedulingCodeGenerator
         Manager manager = container.getManager();
         if (manager == null) {
             CompositeActor toplevel = (CompositeActor)
-                    ((NamedObj)container).toplevel();
+                ((NamedObj)container).toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
-                toplevel.setManager(manager);
+            toplevel.setManager(manager);
         }
         try {
             manager.preinitializeAndResolveTypes();
@@ -141,7 +141,7 @@ public class StaticSchedulingCodeGenerator
         }
 
         StaticSchedulingDirector castDirector =
-                (StaticSchedulingDirector)director;
+            (StaticSchedulingDirector)director;
         Schedule schedule = castDirector.getScheduler().getSchedule();
 
         Iterator actorsToFire = schedule.iterator();
@@ -154,11 +154,11 @@ public class StaticSchedulingCodeGenerator
             // attribute. If it does, we should use that as the helper.
 
             //ActorCodeGenerator helperObject
-              //      = (ActorCodeGenerator)_getHelper((NamedObj)actor);
+            //      = (ActorCodeGenerator)_getHelper((NamedObj)actor);
             CodeGeneratorHelper helperObject
-                    = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
+                = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
             Variable firings = (Variable)((NamedObj)actor)
-                    .getAttribute("firingsPerIteration");
+                .getAttribute("firingsPerIteration");
             int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
             helperObject.setFiringsPerIteration(firingsPerIteration);
             for (int i = 0; i < firing.getIterationCount(); i ++) {

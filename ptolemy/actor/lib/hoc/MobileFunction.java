@@ -64,7 +64,7 @@ public class MobileFunction extends TypedAtomicActor {
      *  @param workspace The workspace that will list the actor.
      */
     public MobileFunction(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
@@ -85,7 +85,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public MobileFunction(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);

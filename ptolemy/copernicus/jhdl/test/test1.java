@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
 public class test1 extends TypedAtomicActor {
     public test1(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

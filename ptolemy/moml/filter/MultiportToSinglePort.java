@@ -85,7 +85,7 @@ public class MultiportToSinglePort implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);
         // This method gets called many times by the MoMLParser,
@@ -171,7 +171,7 @@ public class MultiportToSinglePort implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -184,12 +184,12 @@ public class MultiportToSinglePort implements MoMLFilter {
                 + "Below are the actors that are affected, along "
                 + "with the port name:\n");
         Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet()
-                                                                 .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             String actor = (String) actors.next();
             results.append("\t" + actor + "\n"
-                + (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
+                    + (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
         }
 
         return results.toString();
@@ -224,16 +224,16 @@ public class MultiportToSinglePort implements MoMLFilter {
 
         // Autocorrelation
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.domains.sdf.lib.Autocorrelation",
-            "output");
+                "output");
 
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.NonStrictTest",
-            "input");
+                "input");
 
         // In Ptolemy II 3.0.2, SOC_FSM_SR_HDE.xml has a Const with multiport.
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.Const",
-            "output");
+                "output");
 
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.gui.MatrixViewer",
-            "input");
+                "input");
     }
 }

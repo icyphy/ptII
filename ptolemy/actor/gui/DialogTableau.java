@@ -55,7 +55,7 @@ import ptolemy.util.MessageHandler;
    created dialog is non-modal.
    <p>
    There can be any number of instances of this class in an effigy, however,
-    there
+   there
    can only be one each for the model represented by the effigy, and one each of
    the actors that are part of the model.
 
@@ -77,12 +77,12 @@ public class DialogTableau extends Tableau {
      *   attribute already in the container.
      */
     public DialogTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
 
         if (!(container instanceof Effigy)) {
             throw new IllegalActionException(this,
-                "Effigy for Dialog must be an instance of " + "Effigy.");
+                    "Effigy for Dialog must be an instance of " + "Effigy.");
         }
 
         setName(name);
@@ -102,19 +102,19 @@ public class DialogTableau extends Tableau {
      *  @return DialogTableau
      */
     public static DialogTableau createDialog(Frame parent,
-        Configuration configuration, Effigy effigy, Class dialogClass,
-        Entity target) {
+            Configuration configuration, Effigy effigy, Class dialogClass,
+            Entity target) {
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
             // dialogClas on this entity.
             if (effigy instanceof Effigy) {
                 Iterator dialogs = effigy.entityList(DialogTableau.class)
-                                         .iterator();
+                    .iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                        .getFrame()));
+                                                            .getFrame()));
 
                     if ((existingDialog != null)
                             && (existingDialog.getClass() == dialogClass)
@@ -129,12 +129,12 @@ public class DialogTableau extends Tableau {
 
             if ((container != null) && (container instanceof PtolemyEffigy)) {
                 Iterator dialogs = ((PtolemyEffigy) container).entityList(DialogTableau.class)
-                                    .iterator();
+                    .iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                        .getFrame()));
+                                                            .getFrame()));
 
                     if ((existingDialog.getClass() == dialogClass)
                             && (dialogTableau.hasTarget(target))) {
@@ -178,14 +178,14 @@ public class DialogTableau extends Tableau {
 
             if (dialog == null) {
                 throw new KernelException(target, null,
-                    "Can't create a " + dialogClass);
+                        "Can't create a " + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);
             return newDialogTableau;
         } catch (Exception ex) {
             MessageHandler.error("Failed to create a DialogTableau for "
-                + target.getFullName(), ex);
+                    + target.getFullName(), ex);
         }
 
         return null;

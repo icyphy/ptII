@@ -1,11 +1,11 @@
 /* Expr, CGC domain: CGCExpr.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCExpr.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCExpr
 /**
-General expression evaluation.
+   General expression evaluation.
 
- @Author T. M. Parks
- @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCExpr.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author T. M. Parks
+   @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCExpr.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCExpr extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -65,8 +65,8 @@ public class CGCExpr extends ClassicCGCActor {
         runTime = new Parameter(this, "runTime");
         runTime.setExpression("2");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -84,27 +84,27 @@ public class CGCExpr extends ClassicCGCActor {
     /**
      *  Expression to evaulate. parameter with initial value "$ref(in#1)".
      */
-     public Parameter expr;
+    public Parameter expr;
 
     /**
      *  "DataType of `in` porthole, one of [float,int,complex,anytype]" parameter with initial value "float".
      */
-     public Parameter inDataType;
+    public Parameter inDataType;
 
     /**
      *  "DataType of `out` porthole, one of [float,int,complex,=in]" parameter with initial value "float".
      */
-     public Parameter outDataType;
+    public Parameter outDataType;
 
     /**
      *  List of necessary include files. parameter with initial value "<math.h>".
      */
-     public Parameter include;
+    public Parameter include;
 
     /**
      *  execution time parameter with initial value "2".
      */
-     public Parameter runTime;
+    public Parameter runTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -113,31 +113,31 @@ public class CGCExpr extends ClassicCGCActor {
      */
     public int  myExecTime() {
 
-return ((IntToken)((runTime).getToken())).intValue();
-     }
+        return ((IntToken)((runTime).getToken())).intValue();
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
 
-for (int i = 0; i < include.size(); i++)
+        for (int i = 0; i < include.size(); i++)
             addInclude(include[i]);
-     }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer();
         code.append("$ref(out) = " + expr  + ";\n");
         addCode(code);
-     }
+    }
 
     /**
      */
     public void preinitialize () {
 
-// We must change the porthole types at preinitialize time
+        // We must change the porthole types at preinitialize time
         // so that porthole type resolution works correctly.
         // That means we have to initialize the states ourselves.
         initState();
@@ -161,7 +161,7 @@ StringBuffer code = new StringBuffer();
             break;
         default:
             throw new IllegalActionException(this,"CGC Expr does not support the type",
-                            inDataType);
+                    inDataType);
             break;
         }
         letter = outDataType;
@@ -184,7 +184,7 @@ StringBuffer code = new StringBuffer();
             break;
         default:
             throw new IllegalActionException(this,"CGC Expr does not support the type",
-                            outDataType);
+                    outDataType);
             break;
         }
     }

@@ -106,10 +106,10 @@ public class LabeledList implements List {
     public boolean add(Object element) {
         if (element == null) {
             throw new IllegalArgumentException("Attempt to insert a null "
-                + "element");
+                    + "element");
         } else if (_labels.containsKey(element)) {
             throw new IllegalArgumentException("Attempt to insert a duplicate "
-                + "element." + _elementDump(element));
+                    + "element." + _elementDump(element));
         } else {
             _labels.put(element, new Integer(_elements.size()));
             _elements.add(element);
@@ -257,8 +257,8 @@ public class LabeledList implements List {
 
             if (label == null) {
                 throw new IllegalArgumentException(
-                    "The specified object is not"
-                    + " an element of this list. " + _elementDump(element));
+                        "The specified object is not"
+                        + " an element of this list. " + _elementDump(element));
             } else {
                 return label.intValue();
             }
@@ -310,7 +310,7 @@ public class LabeledList implements List {
             label = label(element);
         } catch (IllegalArgumentException exception) {
             throw new IllegalArgumentException("Attempt to remove a "
-                + "non-existent element. " + _elementDump(element));
+                    + "non-existent element. " + _elementDump(element));
         }
 
         _labels.remove(element);
@@ -413,7 +413,7 @@ public class LabeledList implements List {
         while (elements.hasNext()) {
             Object element = elements.next();
             result.append(((includeLabels) ? (label(element) + ": ") : "")
-                + element + (elements.hasNext() ? delimiter : ""));
+                    + element + (elements.hasNext() ? delimiter : ""));
         }
 
         return result.toString();
@@ -439,7 +439,7 @@ public class LabeledList implements List {
     // in an error message.
     private String _elementDump(Object element) {
         return "The offending element follows:\n"
-        + ((element == null) ? "null" : element) + "\n";
+            + ((element == null) ? "null" : element) + "\n";
     }
 
     // Fill in the labels map with the appropriate indices of

@@ -115,7 +115,7 @@ public abstract class CodeGenerator {
 
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                    + "CSwitch-generated include files"));
+                                      + "CSwitch-generated include files"));
         }
 
         while (includeFiles.hasNext()) {
@@ -250,7 +250,7 @@ public abstract class CodeGenerator {
             if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
                     _requiredTypeMap.put(source,
-                        CNames.includeFileNameOf(source));
+                            CNames.includeFileNameOf(source));
                 }
             }
         }

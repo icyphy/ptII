@@ -100,7 +100,7 @@ public class Configurer extends JPanel implements CloseListener {
 
         boolean foundOne = false;
         Iterator editors = object.attributeList(EditorPaneFactory.class)
-                                 .iterator();
+            .iterator();
 
         while (editors.hasNext()) {
             foundOne = true;
@@ -187,7 +187,7 @@ public class Configurer extends JPanel implements CloseListener {
                 public void run() {
                     // First check for changes.
                     Iterator parameters = _object.attributeList(Settable.class)
-                                                 .iterator();
+                        .iterator();
                     boolean hasChanges = false;
                     StringBuffer buffer = new StringBuffer("<group>\n");
 
@@ -202,10 +202,10 @@ public class Configurer extends JPanel implements CloseListener {
                                 hasChanges = true;
                                 buffer.append("<property name=\"");
                                 buffer.append(((NamedObj) parameter).getName(
-                                        _object));
+                                                      _object));
                                 buffer.append("\" value=\"");
                                 buffer.append(StringUtilities.escapeForXML(
-                                        oldValue));
+                                                      oldValue));
                                 buffer.append("\"/>\n");
                             }
                         }
@@ -243,7 +243,7 @@ public class Configurer extends JPanel implements CloseListener {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     Iterator parameters = _object.attributeList(Settable.class)
-                                                 .iterator();
+                        .iterator();
                     StringBuffer buffer = new StringBuffer("<group>\n");
                     final List parametersReset = new LinkedList();
 
@@ -259,10 +259,10 @@ public class Configurer extends JPanel implements CloseListener {
                                     && !newValue.equals(defaultValue)) {
                                 buffer.append("<property name=\"");
                                 buffer.append(((NamedObj) parameter).getName(
-                                        _object));
+                                                      _object));
                                 buffer.append("\" value=\"");
                                 buffer.append(StringUtilities.escapeForXML(
-                                        defaultValue));
+                                                      defaultValue));
                                 buffer.append("\"/>\n");
                                 parametersReset.add(parameter);
                             }
@@ -280,7 +280,7 @@ public class Configurer extends JPanel implements CloseListener {
                                 buffer.toString(), // MoML code
                                 null) { // base
                                 protected void _execute()
-                                    throws Exception {
+                                        throws Exception {
                                     super._execute();
 
                                     // Reset the derived level, which has the side
@@ -296,7 +296,7 @@ public class Configurer extends JPanel implements CloseListener {
                                             int derivedLevel = ((NamedObj) parameter)
                                                 .getDerivedLevel();
                                             ((NamedObj) parameter)
-                                            .setDerivedLevel(derivedLevel);
+                                                .setDerivedLevel(derivedLevel);
                                         }
                                     }
                                 }

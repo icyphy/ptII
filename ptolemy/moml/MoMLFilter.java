@@ -90,7 +90,7 @@ public interface MoMLFilter {
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue);
+            String attributeName, String attributeValue);
 
     /** Make modifications to the specified container, which is
      *  defined in a MoML element with the specified name.
@@ -109,7 +109,7 @@ public interface MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception;
+            throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).

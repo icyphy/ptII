@@ -65,11 +65,11 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  attributes and use those.
      */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
-        boolean selected, boolean expanded, boolean leaf, int row,
-        boolean hasFocus) {
+            boolean selected, boolean expanded, boolean leaf, int row,
+            boolean hasFocus) {
         DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
             .getTreeCellRendererComponent(tree, value, selected, expanded,
-                leaf, row, hasFocus);
+                    leaf, row, hasFocus);
 
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
@@ -118,8 +118,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                            "could not create icon in " + object
-                            + " even though one did not previously exist.");
+                                "could not create icon in " + object
+                                + " even though one did not previously exist.");
                     }
 
                     // Wow.. this is a confusing line of code.. :)
@@ -136,7 +136,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     // FIXME: This doesn't work with calling this
                     // on either this or component.
                     this.setToolTipText(((Documentation) tooltipAttribute)
-                        .getValue());
+                            .getValue());
                 } else {
                     String tip = Documentation.consolidate(object);
 

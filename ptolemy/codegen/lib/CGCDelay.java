@@ -1,11 +1,11 @@
 /* Delay, CGC domain: CGCDelay.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCDelay.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCDelay
 /**
-Bulk delay.
+   Bulk delay.
 
- @Author T. M. Parks
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCDelay.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author T. M. Parks
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCDelay.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCDelay extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCDelay extends ClassicCGCActor {
         delay = new Parameter(this, "delay");
         delay.setExpression("1");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -67,7 +67,7 @@ public class CGCDelay extends ClassicCGCActor {
     /**
      *  Number of delay samples. parameter with initial value "1".
      */
-     public Parameter delay;
+    public Parameter delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -76,44 +76,44 @@ public class CGCDelay extends ClassicCGCActor {
      */
     public void  generatePreinitializeCode() {
 
-if (!(int) delay) return;
+        if (!(int) delay) return;
         addDeclaration(declarations);
         addCode(init);
-     }
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-if (!(int) delay) forkInit(input,output);
-     }
+        if (!(int) delay) forkInit(input,output);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-if (!(int) delay) return;
+        if (!(int) delay) return;
         addCode(main);
-     }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declarations =
-        "        /* static so that buffer will be initialized to zero */\n"
-        + "        double $starSymbol(buffer)[$val(delay)];\n"
-        + "        int $starSymbol(index);\n";
+    "        /* static so that buffer will be initialized to zero */\n"
+    + "        double $starSymbol(buffer)[$val(delay)];\n"
+    + "        int $starSymbol(index);\n";
 
     public String init =
-        "        $starSymbol(index) = 0;\n"
-        + "    {\n"
-        + "        int i;\n"
-        + "        for (i = 0 ; i < $val(delay) ; i++)\n"
-        + "            $starSymbol(buffer)[i] = 0;\n"
-        + "    }\n";
+    "        $starSymbol(index) = 0;\n"
+    + "    {\n"
+    + "        int i;\n"
+    + "        for (i = 0 ; i < $val(delay) ; i++)\n"
+    + "            $starSymbol(buffer)[i] = 0;\n"
+    + "    }\n";
 
     public String main =
-        "        $ref(output) = $starSymbol(buffer)[$starSymbol(index)];\n"
-        + "        $starSymbol(buffer)[$starSymbol(index)] = $ref(input);\n"
-        + "        if ( ++$starSymbol(index) >= $val(delay) )\n"
-        + "            $starSymbol(index) -= $val(delay);\n";
+    "        $ref(output) = $starSymbol(buffer)[$starSymbol(index)];\n"
+    + "        $starSymbol(buffer)[$starSymbol(index)] = $ref(input);\n"
+    + "        if ( ++$starSymbol(index) >= $val(delay) )\n"
+    + "            $starSymbol(index) -= $val(delay);\n";
 }

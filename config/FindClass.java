@@ -91,7 +91,7 @@ public class FindClass {
 
             File directory = jarFileURLFile.getCanonicalFile();
             while ((directory = directory.getParentFile()) != null
-                   && foundInJavaHome == false) {
+                    && foundInJavaHome == false) {
                 if (directory.compareTo(javaHomeFile) == 0) {
                     foundInJavaHome = true;
                 }

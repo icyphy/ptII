@@ -94,7 +94,7 @@ public class URLDirectoryReader extends URLReader {
      *   actor with this name.
      */
     public URLDirectoryReader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -135,7 +135,7 @@ public class URLDirectoryReader extends URLReader {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == repeat) {
             _repeatFlag = ((BooleanToken) repeat.getToken()).booleanValue();
         } else if (attribute == endsWith) {
@@ -224,7 +224,7 @@ public class URLDirectoryReader extends URLReader {
      *  URL
      */
     private String[] _list(String source, String endsWith)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (source.startsWith("file:")) {
             return _listFile(source, endsWith);
         } else {
@@ -232,7 +232,7 @@ public class URLDirectoryReader extends URLReader {
                 return _listFileOrURL(source, endsWith);
             } catch (Exception ex) {
                 throw new IllegalActionException("Could not open '" + source
-                    + ": " + KernelException.stackTraceToString(ex));
+                        + ": " + KernelException.stackTraceToString(ex));
             }
         }
     }
@@ -250,7 +250,7 @@ public class URLDirectoryReader extends URLReader {
      *  nor a directory, or if there is some other problem.
      */
     private String[] _listFile(String source, String endsWith)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             URL sourceURL = new URL(source);
 
@@ -283,16 +283,16 @@ public class URLDirectoryReader extends URLReader {
                     return new String[] { file.toString() };
                 } else {
                     throw new IllegalActionException("'" + source
-                        + "' is neither a file " + "or a directory?");
+                            + "' is neither a file " + "or a directory?");
                 }
             } else {
                 // FIXME: handle urls here.
                 throw new IllegalActionException("'" + source + "' does not "
-                    + "have the file: protocol");
+                        + "have the file: protocol");
             }
         } catch (Exception ex) {
             throw new IllegalActionException("Could not open '" + source
-                + "' :" + ex);
+                    + "' :" + ex);
         }
     }
 
@@ -316,7 +316,7 @@ public class URLDirectoryReader extends URLReader {
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.  */
     private static String[] _listFileOrURL(String source, String endsWith)
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
         URL url = new URL(source);
         URLConnection urlConnection = url.openConnection();
         String contentType = urlConnection.getContentType();
@@ -324,12 +324,12 @@ public class URLDirectoryReader extends URLReader {
         if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain")) {
             throw new RuntimeException("Could not parse '" + source
-                + "', it is not \"text/html\", " + "or \"text/plain\", it is: "
-                + urlConnection.getContentType());
+                    + "', it is not \"text/html\", " + "or \"text/plain\", it is: "
+                    + urlConnection.getContentType());
         }
 
         BufferedReader in = new BufferedReader(new InputStreamReader(
-                    urlConnection.getInputStream()));
+                                                       urlConnection.getInputStream()));
 
         if (!contentType.startsWith("text/plain")
                 && !urlConnection.getURL().toString().endsWith("/")) {
@@ -337,7 +337,7 @@ public class URLDirectoryReader extends URLReader {
             // text/html urls _must_ end with / since the web server
             // will rewrite them for us.
             throw new RuntimeException("Could not parse '" + source
-                + "', it does not end with '/'");
+                    + "', it does not end with '/'");
         }
 
         if (!source.endsWith("/")) {

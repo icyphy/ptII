@@ -45,10 +45,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  @author Colin Cochran (contributor: Edward A. Lee)
  *  @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (ptolemy)
- */
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (ptolemy)
+*/
 public class Listener extends Receiver {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -59,7 +59,7 @@ public class Listener extends Receiver {
      *   actor with this name.
      */
     public Listener(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.

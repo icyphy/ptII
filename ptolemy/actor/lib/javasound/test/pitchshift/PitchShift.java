@@ -92,7 +92,7 @@ public class PitchShift {
      *  corresponding pitch) is set by <i>_pitchDetectorDelay</i>.
      */
     public double[] performPitchShift(double[] in, double[] pitchArray,
-        double pitchScaleIn) {
+            double pitchScaleIn) {
         minimumPitchSamps = (int) ((1 / minimumPitch) * _sampleRate);
 
         int inputPitchInPtr = 0;
@@ -185,7 +185,7 @@ public class PitchShift {
                     // Period scale factor.
                     periodRatio = 1.0 / (correctedPitchScale);
                     _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos
-                        + (int) (inputPeriodLength * periodRatio)) % ringBufSize;
+                            + (int) (inputPeriodLength * periodRatio)) % ringBufSize;
 
                     /* Do an OLA (in the output buffer)
                      * about the synthesis pitch
@@ -199,14 +199,14 @@ public class PitchShift {
                      * an audible impact, I think.
                      */
                     for (olaIndex = -inputPeriodLength;
-                            olaIndex <= inputPeriodLength; ++olaIndex) {
+                         olaIndex <= inputPeriodLength; ++olaIndex) {
                         windowVal = (1
-                            + Math.cos((Math.PI * olaIndex) / (float) inputPeriodLength)) * 0.5;
+                                + Math.cos((Math.PI * olaIndex) / (float) inputPeriodLength)) * 0.5;
 
                         _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos
-                        + ringBufSize) % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex
-                        + _inputRingBufWritePos) - minimumPitchSamps
-                        + ringBufSize) % ringBufSize]);
+                                               + ringBufSize) % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex
+                                                                                                                    + _inputRingBufWritePos) - minimumPitchSamps
+                                                                                                                   + ringBufSize) % ringBufSize]);
                     }
 
                     // Update loop condition variable.

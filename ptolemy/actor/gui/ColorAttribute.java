@@ -51,9 +51,9 @@ import ptolemy.kernel.util.NamedObj;
 
    @author Edward A. Lee
    @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (cxh)
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ColorAttribute extends Parameter {
     /** Construct an attribute with the given name contained by the
@@ -70,7 +70,7 @@ public class ColorAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public ColorAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }

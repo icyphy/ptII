@@ -1,11 +1,11 @@
 /* IntToBits, CGC domain: CGCIntToBits.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCIntToBits.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-        All rights reserved.
-        See the file $PTOLEMY/copyright for copyright notice,
-        limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCIntToBits
 /**
-Read the least significant nBits bits from an integer input,
-and output the bits as integers serially on the output,
-most significant bit first.
-<p>
+   Read the least significant nBits bits from an integer input,
+   and output the bits as integers serially on the output,
+   most significant bit first.
+   <p>
 
 
- @Author Jose Luis Pino
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCIntToBits.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Jose Luis Pino
+   @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCIntToBits.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCIntToBits extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -52,9 +52,9 @@ public class CGCIntToBits extends ClassicCGCActor {
         nBits = new Parameter(this, "nBits");
         nBits.setExpression("4");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -72,7 +72,7 @@ noInternalState();
     /**
      *  Number of bits to place in one word parameter with initial value "4".
      */
-     public Parameter nBits;
+    public Parameter nBits;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -81,16 +81,16 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return ((IntToken)((nBits).getToken())).intValue()*2;
-     }
+        return ((IntToken)((nBits).getToken())).intValue()*2;
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-/* Need (int) cast on sizeof to eliminate gcc warning */
+        /* Need (int) cast on sizeof to eliminate gcc warning */
         if (((IntToken)((nBits).getToken())).intValue() > int(sizeof(int)*8)) {
-StringBuffer message = new StringBuffer("nBits needs to be less than ");
+            StringBuffer message = new StringBuffer("nBits needs to be less than ");
             message.append(/*(unsigned int)(sizeof(int)*/ ( 16 *8));
             throw new IllegalActionException(this, message);
             return;
@@ -100,23 +100,23 @@ StringBuffer message = new StringBuffer("nBits needs to be less than ");
             return;
         }
         output.setSDFParams(((IntToken)((nBits).getToken())).intValue(),((IntToken)((nBits).getToken())).intValue()-1);
-     }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(readNwrite);
-     }
+        addCode(readNwrite);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String readNwrite =
-        "        int word;\n"
-        + "        int i = 0;\n"
-        + "        word = $ref(input);\n"
-        + "        for (; i < $val(nBits); i++) {\n"
-        + "             $ref(output,i) = (word & 1);\n"
-        + "            word >>= 1;\n"
-        + "        }\n";
+    "        int word;\n"
+    + "        int i = 0;\n"
+    + "        word = $ref(input);\n"
+    + "        for (; i < $val(nBits); i++) {\n"
+    + "             $ref(output,i) = (word & 1);\n"
+    + "            word >>= 1;\n"
+    + "        }\n";
 }

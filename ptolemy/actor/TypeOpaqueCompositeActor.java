@@ -98,7 +98,7 @@ public class TypeOpaqueCompositeActor extends CompositeActor
      *   an entity already in the container.
      */
     public TypeOpaqueCompositeActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -158,14 +158,14 @@ public class TypeOpaqueCompositeActor extends CompositeActor
      *   the name of another port already in the actor.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application
         // for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                "Incompatible port class for this actor.");
+                    "Incompatible port class for this actor.");
         }
 
         super._addPort(port);

@@ -106,7 +106,7 @@ public class Relation extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Relation(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
         _elementName = "relation";
     }
@@ -338,21 +338,21 @@ public class Relation extends NamedObj {
      *   an instance of CompositeEntity.
      */
     protected NamedObj _getContainedObject(NamedObj container,
-        String relativeName) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
             throw new InternalErrorException("Expected "
-                + container.getFullName()
-                + " to be an instance of ptolemy.kernel.CompositeEntity, "
-                + "but it is " + container.getClass().getName());
+                    + container.getFullName()
+                    + " to be an instance of ptolemy.kernel.CompositeEntity, "
+                    + "but it is " + container.getClass().getName());
         }
 
         Relation candidate = ((CompositeEntity) container).getRelation(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                "Expected " + candidate.getFullName()
-                + " to be an instance of " + getClass().getName()
-                + ", but it is " + candidate.getClass().getName());
+                    "Expected " + candidate.getFullName()
+                    + " to be an instance of " + getClass().getName()
+                    + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;

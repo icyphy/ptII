@@ -152,8 +152,8 @@ public class CompositePtolemyModel implements CompositeModel {
                 return location;
             } catch (Exception e) {
                 throw new InternalErrorException("Failed to create "
-                    + "location, even though one does not exist:"
-                    + e.getMessage());
+                        + "location, even though one does not exist:"
+                        + e.getMessage());
             }
         }
     }
@@ -175,7 +175,7 @@ public class CompositePtolemyModel implements CompositeModel {
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
             Iterator classes = ((CompositeEntity) composite).classDefinitionList()
-                                .iterator();
+                .iterator();
 
             while (classes.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) classes.next();
@@ -186,7 +186,7 @@ public class CompositePtolemyModel implements CompositeModel {
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
             Iterator entities = ((CompositeEntity) composite).entityList()
-                                 .iterator();
+                .iterator();
 
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
@@ -213,7 +213,7 @@ public class CompositePtolemyModel implements CompositeModel {
             // for FSMs, but it is harmless to include it, so there is no
             // real need to subclass this to remove it.
             Iterator relations = ((CompositeEntity) composite).relationList()
-                                  .iterator();
+                .iterator();
 
             while (relations.hasNext()) {
                 ComponentRelation relation = (ComponentRelation) relations.next();
@@ -247,7 +247,7 @@ public class CompositePtolemyModel implements CompositeModel {
                             vertex.propagateExistence();
                         } catch (Exception e) {
                             throw new InternalErrorException(
-                                "Failed to create a vertex! " + e.getMessage());
+                                    "Failed to create a vertex! " + e.getMessage());
                         }
                     }
                 }

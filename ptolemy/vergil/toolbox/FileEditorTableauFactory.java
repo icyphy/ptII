@@ -73,7 +73,7 @@ public class FileEditorTableauFactory extends TableauFactory {
      *   an attribute already in the container.
      */
     public FileEditorTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -110,9 +110,9 @@ public class FileEditorTableauFactory extends TableauFactory {
 
         if (!(attribute instanceof FileParameter)) {
             throw new IllegalActionException(object,
-                "Expected " + object.getFullName()
-                + " to contain a FileParameter named "
-                + attributeName.getExpression() + ", but it does not.");
+                    "Expected " + object.getFullName()
+                    + " to contain a FileParameter named "
+                    + attributeName.getExpression() + ", but it does not.");
         }
 
         URL url = ((FileParameter) attribute).asURL();

@@ -1,11 +1,11 @@
 /* Fix, CGC domain: CGCFix.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCFix.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCFix
 /**
-Based star for the fixed-point stars in the CGC domain.
+   Based star for the fixed-point stars in the CGC domain.
 
- @Author Juergen Weiss
- @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCFix.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Juergen Weiss
+   @Version $Id$, based on version 1.8 of /users/ptolemy/src/domains/cgc/stars/CGCFix.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFix extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -65,18 +65,18 @@ public class CGCFix extends ClassicCGCActor {
      * occurred during the simulation. parameter with initial value "NO".
      */
 
-     public Parameter ReportOverflow;
+    public Parameter ReportOverflow;
 
     /**
      *  counter for overflow errors parameter with initial value "0".
      */
-     public Parameter ov_cnt;
+    public Parameter ov_cnt;
 
     /**
      *  counter for overflow check operations parameter with initial
      *  value "0".
      */
-     public Parameter ck_cnt;
+    public Parameter ck_cnt;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -91,7 +91,7 @@ public class CGCFix extends ClassicCGCActor {
                 StringBuffer s = new StringBuffer(this.getFullName());
                 addCode(report_overflow(s.toString()));
             }
-     }
+    }
 
     /**
      */

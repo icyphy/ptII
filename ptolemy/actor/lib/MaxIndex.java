@@ -64,7 +64,7 @@ public class MaxIndex extends Transformer {
      *   an actor already in the container.
      */
     public MaxIndex(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);

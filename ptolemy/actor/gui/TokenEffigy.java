@@ -76,7 +76,7 @@ public class TokenEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public TokenEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -104,7 +104,7 @@ public class TokenEffigy extends Effigy {
      *   if the data is malformed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // The superclass does some handling of the url attribute.
         super.attributeChanged(attribute);
 
@@ -117,7 +117,7 @@ public class TokenEffigy extends Effigy {
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, null, ex,
-                    "Failed to read data: " + ex.getMessage());
+                        "Failed to read data: " + ex.getMessage());
             }
         }
     }
@@ -154,7 +154,7 @@ public class TokenEffigy extends Effigy {
         }
 
         LineNumberReader reader = new LineNumberReader(new InputStreamReader(
-                    input.openStream()));
+                                                               input.openStream()));
 
         while (true) {
             // NOTE: The following tolerates all major line terminators.
@@ -187,7 +187,7 @@ public class TokenEffigy extends Effigy {
                 }
             } catch (KernelException ex) {
                 throw new IOException("Error evaluating data expression: "
-                    + ex.getMessage());
+                        + ex.getMessage());
             }
         }
     }
@@ -261,7 +261,7 @@ public class TokenEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -289,7 +289,7 @@ public class TokenEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
-            URL input) throws Exception {
+                URL input) throws Exception {
             if (input != null) {
                 String extension = getExtension(input);
 

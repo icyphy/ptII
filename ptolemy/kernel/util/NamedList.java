@@ -111,12 +111,12 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void append(Nameable element)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         String newName = element.getName();
 
         if (newName == null) {
             throw new IllegalActionException(_container,
-                _NULL_NAME_EXCEPTION_STRING);
+                    _NULL_NAME_EXCEPTION_STRING);
         }
 
         // NOTE: Having to do this named lookup each time is expensive.
@@ -194,7 +194,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     public void insertAfter(String name, Nameable element)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
 
         if (index == -1) {
@@ -216,7 +216,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     public void insertBefore(String name, Nameable element)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
 
         if (index == -1) {
@@ -297,7 +297,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   on the list, or if the specified position is out of range.
      */
     public int moveToIndex(Nameable element, int index)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int priorIndex = _namedList.indexOf(element);
 
         if (priorIndex < 0) {
@@ -373,7 +373,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void prepend(Nameable element)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _insertAt(0, element);
     }
 
@@ -454,10 +454,10 @@ public final class NamedList implements Cloneable, Serializable {
      *   name that coincides with one already on the list.
      */
     private void _insertAt(int index, Nameable element)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (element.getName() == null) {
             throw new IllegalActionException(_container,
-                _NULL_NAME_EXCEPTION_STRING);
+                    _NULL_NAME_EXCEPTION_STRING);
         } else if (get(element.getName()) == null) {
             _namedList.add(index, element);
             return;

@@ -86,7 +86,7 @@ public class AnnotationEditorFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public AnnotationEditorFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _container = container;
     }
@@ -119,7 +119,7 @@ public class AnnotationEditorFactory extends EditorFactory {
             + "; fill:" + _fontProperties.getStringValue("fontColor") + "\">"
             + newText + "</text></svg></configure>";
         _iconDescription.requestChange(new MoMLChangeRequest(this,
-                _iconDescription, moml));
+                                               _iconDescription, moml));
     }
 
     /** Return a new widget for configuring the container.
@@ -181,7 +181,7 @@ public class AnnotationEditorFactory extends EditorFactory {
 
                                 if (colon > 0) {
                                     String property = token.substring(0, colon)
-                                                           .trim();
+                                        .trim();
 
                                     if (property.equals("fill")) {
                                         _fontColor = token.substring(colon + 1);
@@ -252,7 +252,7 @@ public class AnnotationEditorFactory extends EditorFactory {
 
             String[] sizes = { "9", "10", "11", "12", "14", "18", "24", "32" };
             _fontProperties.addChoice("fontSize", "font size", sizes,
-                _fontSize, true);
+                    _fontSize, true);
 
             // FIXME: Need a way to specify Italic, Bold (style).
             // Check SVG standard and SVGParser.
@@ -260,9 +260,9 @@ public class AnnotationEditorFactory extends EditorFactory {
             // This includes logical font names, per Font class in Java:
             // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
             String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                   .getAvailableFontFamilyNames();
+                .getAvailableFontFamilyNames();
             _fontProperties.addChoice("fontFamily", "font family", families,
-                _fontFamily, false);
+                    _fontFamily, false);
 
             // FIXME: Add a facility to invoke a color chooser using
             // JColorChooser.
@@ -274,7 +274,7 @@ public class AnnotationEditorFactory extends EditorFactory {
             // The last argument makes this editable.
             // Colors can be given in hex #rrggbb.
             _fontProperties.addChoice("fontColor", "font color", colors,
-                _fontColor, true);
+                    _fontColor, true);
 
             add(_fontProperties);
         }

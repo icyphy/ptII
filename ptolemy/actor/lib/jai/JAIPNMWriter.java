@@ -74,7 +74,7 @@ public class JAIPNMWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIPNMWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         writeRawData = new Parameter(this, "writeRawData");

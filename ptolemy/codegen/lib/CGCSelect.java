@@ -1,11 +1,11 @@
 /* Select, CGC domain: CGCSelect.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCSelect.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,14 +20,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSelect
 /**
-This star requires a BDF scheduler!
+   This star requires a BDF scheduler!
 
-If the value on the 'control' line is nonzero, trueInput
-is copied to the output; otherwise, falseInput is.
+   If the value on the 'control' line is nonzero, trueInput
+   is copied to the output; otherwise, falseInput is.
 
- @Author J. T. Buck
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSelect.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author J. T. Buck
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCSelect.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSelect extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCSelect extends ClassicCGCActor {
         control.setTypeEquals(BaseType.INT);
         output = new ClassicPort(this, "output", false, true);
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -81,36 +81,36 @@ public class CGCSelect extends ClassicCGCActor {
      */
     public int  myExecTime() {
 
-return 0;
-     }
+        return 0;
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-// all connected buffers must be size 1, for now.
-                // need to check this.
-                // FIXME: we can permit output to be > 1 by generating
-                // a copy of the (shared) input buffer to the output.
-                if (notone(output) || notone(trueInput) ||
-                    notone(falseInput) || notone(control))
-                        throw new IllegalActionException(this,
-                "Non-unity buffers connected to a Select not yet supported");
-                else {
-                        // make all the buffers overlap.
-                        output.embed(trueInput,0);
-                        output.embed(falseInput,0);
-                        trueInput.setRelation(DF_true,&control);
-                        falseInput.setRelation(DF_false,&control);
-                }
-     }
+        // all connected buffers must be size 1, for now.
+        // need to check this.
+        // FIXME: we can permit output to be > 1 by generating
+        // a copy of the (shared) input buffer to the output.
+        if (notone(output) || notone(trueInput) ||
+                notone(falseInput) || notone(control))
+            throw new IllegalActionException(this,
+                    "Non-unity buffers connected to a Select not yet supported");
+        else {
+            // make all the buffers overlap.
+            output.embed(trueInput,0);
+            output.embed(falseInput,0);
+            trueInput.setRelation(DF_true,&control);
+            falseInput.setRelation(DF_false,&control);
+        }
+    }
 
     /**
      */
     protected int notone (CGCPortHole& port) {
 
-return (port.numInitDelays() > 1 ||
-                                port.far()->numXfer() > 1);
+        return (port.numInitDelays() > 1 ||
+                port.far()->numXfer() > 1);
     }
 
 }

@@ -60,7 +60,7 @@ public class ProcessSink extends Sink {
      *   actor with this name.
      */
     public ProcessSink(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _name = name;
     }

@@ -115,7 +115,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("TypeSpecializer.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
@@ -125,7 +125,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         Hierarchy h = Scene.v().getActiveHierarchy();
 
         for (Iterator entities = _model.deepEntityList().iterator();
-                entities.hasNext();) {
+             entities.hasNext();) {
             Entity entity = (Entity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     options);
@@ -144,7 +144,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
      *  Exclude locals in the given set from the typing algorithm.
      */
     public static Map specializeTypes(boolean debug, SootClass theClass,
-        Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
+            Set unsafeLocals, TypeSpecializerAnalysis typeAnalysis) {
         if (debug) {
             System.out.println("updating types for " + theClass);
         }
@@ -160,7 +160,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         // use this information (for example, when converting
         // token types (like IntToken) to native types (like int).
         for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             if (debug) {
@@ -170,7 +170,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
             Body body = method.retrieveActiveBody();
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                 units.hasNext();) {
                 Unit unit = (Unit) units.next();
 
                 //System.out.println("unit = " + unit);
@@ -198,7 +198,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                             }
 
                             box.setValue(Jimple.v().newNewArrayExpr(newType,
-                                    newArrayExpr.getSize()));
+                                                 newArrayExpr.getSize()));
                         }
                     }
                 }
@@ -216,7 +216,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 }
 
                 if (!PtolemyUtilities.isTokenType(assignStmt.getLeftOp()
-                                                                .getType())) {
+                            .getType())) {
                     continue;
                 }
 
@@ -280,8 +280,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                             newType);
                     body.getLocals().add(tempLocal);
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(tempLocal,
-                            Jimple.v().newCastExpr(assignStmt.getRightOp(),
-                                newType)), unit);
+                                                         Jimple.v().newCastExpr(assignStmt.getRightOp(),
+                                                                 newType)), unit);
                     assignStmt.setRightOp(tempLocal);
                 }
 
@@ -291,7 +291,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
         // Loop through all the fields and update the types.
         for (Iterator fields = theClass.getFields().iterator();
-                fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField) fields.next();
 
             if (debug) {
@@ -303,7 +303,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
             if ((refType != null)
                     && SootUtilities.derivesFrom(refType.getSootClass(),
-                        PtolemyUtilities.tokenClass)) {
+                            PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
 
                 if (debug) {
@@ -322,12 +322,12 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                         && specializedType.isInstantiable()) {
                     if (debug) {
                         System.out.println("updating type tag of " + field
-                            + " to " + typeAnalysis.getSpecializedType(field));
+                                + " to " + typeAnalysis.getSpecializedType(field));
                     }
 
                     field.removeTag("_CGType");
                     field.addTag(new TypeTag(typeAnalysis.getSpecializedType(
-                                field)));
+                                                     field)));
                 }
 
                 map.put(field, typeAnalysis.getSpecializedType(field));
@@ -335,7 +335,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         }
 
         for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             if (debug) {
@@ -360,7 +360,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
     }
 
     private static ptolemy.data.type.Type _getReplacementTokenType(
-        Value value, TypeSpecializerAnalysis typeAnalysis) {
+            Value value, TypeSpecializerAnalysis typeAnalysis) {
         if (value instanceof FieldRef) {
             FieldRef ref = (FieldRef) value;
             SootField field = ref.getField();

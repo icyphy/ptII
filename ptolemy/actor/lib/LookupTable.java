@@ -80,7 +80,7 @@ public class LookupTable extends Transformer {
      *   actor with this name.
      */
     public LookupTable(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set parameters.

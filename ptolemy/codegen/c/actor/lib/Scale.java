@@ -45,24 +45,24 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Scale extends CCodeGeneratorHelper {
 
-        /** FIXME
-         *
-         */
-        public Scale(ptolemy.actor.lib.Scale actor) {
+    /** FIXME
+     *
+     */
+    public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-        public void generateFireCode(StringBuffer stream)
-                throws IllegalActionException {
+    public void generateFireCode(StringBuffer stream)
+            throws IllegalActionException {
         stream.append(processCode(_codeBlock));
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
     protected String _codeBlock = "$ref(output)"
-            + " = $val(factor) * $ref(input); \n";
+    + " = $val(factor) * $ref(input); \n";
 }

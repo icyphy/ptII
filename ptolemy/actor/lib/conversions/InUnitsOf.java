@@ -73,7 +73,7 @@ public class InUnitsOf extends Transformer {
      *   actor with this name.
      */
     public InUnitsOf(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         units = new Parameter(this, "units", new DoubleToken(1.0));
 

@@ -1,28 +1,28 @@
 /*
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2003-2005 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
 
 
@@ -69,30 +69,30 @@ import caltrop.interpreter.util.ImportUtil;
 //////////////////////////////////////////////////////////////////////////
 ////AbstractCalInterpreter
 /**
- This class is the base class for actors that interpret CAL source
- inside the Ptolemy II framework. It configures itself according to an
- {@link caltrop.interpreter.ast.Actor Actor} data structure (setting
- up ports, parameters, types etc.) and then proceeds to execute as the
- actor by interpreting the actions using the {@link
- ptolemy.caltrop.ddi.util.DataflowActorInterpreter
- DataflowActorInterpreter} infrastructure.
+   This class is the base class for actors that interpret CAL source
+   inside the Ptolemy II framework. It configures itself according to an
+   {@link caltrop.interpreter.ast.Actor Actor} data structure (setting
+   up ports, parameters, types etc.) and then proceeds to execute as the
+   actor by interpreting the actions using the {@link
+   ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+   DataflowActorInterpreter} infrastructure.
 
- <p> The actor interpreter is configured by a context that injects the
- appropriate <tt>Token</tt>-based value system into the evaluation of
- the actions. This is implemented in the class {@link
- ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
+   <p> The actor interpreter is configured by a context that injects the
+   appropriate <tt>Token</tt>-based value system into the evaluation of
+   the actions. This is implemented in the class {@link
+   ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
 
- <p> For further documentation on CAL, see the
- <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
+   <p> For further documentation on CAL, see the
+   <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
- @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Yellow (neuendor)
- @Pt.AcceptedRating Red (cxh)
- @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
- @see caltrop.interpreter.Context
- @see PtolemyPlatform
+   @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (cxh)
+   @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+   @see caltrop.interpreter.Context
+   @see PtolemyPlatform
 */
 abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
@@ -178,8 +178,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      * @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-          super.postfire();
-          return _ddi.postfire();
+        super.postfire();
+        return _ddi.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -351,11 +351,11 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Process actor import statements
     private Environment _extendEnvWithImports(
             Environment env, Import[] imports) {
-          Environment newEnv =
+        Environment newEnv =
             ImportUtil.handleImportList(env, importHandlers, imports);
-          if (newEnv == null)
+        if (newEnv == null)
             throw new RuntimeException("Failed to process import list.");
-          return newEnv;
+        return newEnv;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -386,14 +386,14 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // List of import handlers.
     private static List importHandlers;
     static {
-          importHandlers = new ArrayList();
-          importHandlers.add(
+        importHandlers = new ArrayList();
+        importHandlers.add(
                 new EnvironmentFactoryImportHandler(
                         PtolemyPlatform.thePlatform));
-          importHandlers.add(
+        importHandlers.add(
                 new CalScriptImportHandler(
                         PtolemyPlatform.thePlatform));
-          importHandlers.add(
+        importHandlers.add(
                 new ClassLoadingImportHandler(
                         PtolemyPlatform.thePlatform,
                         AbstractCalInterpreter.class.getClassLoader()));
@@ -402,11 +402,11 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Map of substitutions from CAL types to Ptolemy types.
     private static Map _typeReplacementMap;
     static {
-          _typeReplacementMap = new HashMap();
-          _typeReplacementMap.put("UINT8", "int");
-          _typeReplacementMap.put("UINT9", "int");
-          _typeReplacementMap.put("INT19", "int");
-          _typeReplacementMap.put("positive", "int");
+        _typeReplacementMap = new HashMap();
+        _typeReplacementMap.put("UINT8", "int");
+        _typeReplacementMap.put("UINT9", "int");
+        _typeReplacementMap.put("INT19", "int");
+        _typeReplacementMap.put("positive", "int");
     }
 
     private String _lastGeneratedActorName = null;

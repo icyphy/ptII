@@ -92,9 +92,9 @@ public class HierarchicalStateController extends StateController {
         super(controller, access);
 
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new AddRefinementAction()));
+                                                new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new RemoveRefinementAction()));
+                                                new RemoveRefinementAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,12 +147,12 @@ public class HierarchicalStateController extends StateController {
 
             // Default choices.
             String[] choiceClasses = {
-                    "ptolemy.domains.fsm.modal.Refinement",
-                    "ptolemy.domains.fsm.modal.ModalController"
-                };
+                "ptolemy.domains.fsm.modal.Refinement",
+                "ptolemy.domains.fsm.modal.ModalController"
+            };
             String[] choiceNames = {
-                    "Default Refinement", "State Machine Refinement"
-                };
+                "Default Refinement", "State Machine Refinement"
+            };
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
@@ -188,7 +188,7 @@ public class HierarchicalStateController extends StateController {
 
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
-                    + newName + ".");
+                        + newName + ".");
                 return;
             }
 
@@ -255,7 +255,7 @@ public class HierarchicalStateController extends StateController {
                                         && port instanceof IOPort) {
                                     try {
                                         ((RefinementPort) newPort)
-                                        .setMirrorDisable(true);
+                                            .setMirrorDisable(true);
 
                                         if (((IOPort) port).isInput()) {
                                             ((RefinementPort) newPort).setInput(true);
@@ -263,12 +263,12 @@ public class HierarchicalStateController extends StateController {
 
                                         if (((IOPort) port).isOutput()) {
                                             ((RefinementPort) newPort)
-                                            .setOutput(true);
+                                                .setOutput(true);
                                         }
 
                                         if (((IOPort) port).isMultiport()) {
                                             ((RefinementPort) newPort)
-                                            .setMultiport(true);
+                                                .setMultiport(true);
                                         }
 
                                         /* No longer needed since Yuhong modified
@@ -281,7 +281,7 @@ public class HierarchicalStateController extends StateController {
                                         */
                                     } finally {
                                         ((RefinementPort) newPort)
-                                        .setMirrorDisable(false);
+                                            .setMirrorDisable(false);
                                     }
                                 }
                             } finally {
@@ -363,7 +363,7 @@ public class HierarchicalStateController extends StateController {
             // Open a dialog to get the refinement name and class.
             Query query = new Query();
             query.addChoice("Refinement", "Refinement", choices, choices[0],
-                false);
+                    false);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
@@ -428,7 +428,7 @@ public class HierarchicalStateController extends StateController {
 
             if (!foundOne) {
                 Iterator transitions = immediateContainer.relationList()
-                                                         .iterator();
+                    .iterator();
 
                 while (transitions.hasNext()) {
                     NamedObj other = (NamedObj) transitions.next();

@@ -50,11 +50,11 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 
 
 /**
- @author Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SideEffectFreeInvocationRemover extends SceneTransformer {
     /** Construct a new transformer
@@ -78,18 +78,18 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("SideEffectFreeInvocationRemover.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         SideEffectAnalysis analysis = new SideEffectAnalysis();
 
         CallGraph callGraph = Scene.v().getCallGraph();
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-                classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             for (Iterator methods = theClass.getMethods().iterator();
-                    methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 _removeSideEffectFreeMethodCalls(method, callGraph, analysis);
             }
@@ -102,7 +102,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
      *  fields.
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
-        CallGraph callGraph, SideEffectAnalysis analysis) {
+            CallGraph callGraph, SideEffectAnalysis analysis) {
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
@@ -111,7 +111,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit) units.next();
             Value useValue;
 
@@ -149,7 +149,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 boolean removable = true;
 
                 for (Iterator i = new Targets(callGraph.edgesOutOf((Stmt) unit));
-                        i.hasNext() && removable;) {
+                     i.hasNext() && removable;) {
                     SootMethod targetMethod = (SootMethod) i.next();
 
                     // System.out.println("Checking Target = " + targetMethod);

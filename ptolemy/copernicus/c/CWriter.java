@@ -78,7 +78,7 @@ public class CWriter extends SceneTransformer {
      */
     public void internalTransform(String phaseName, Map options) {
         System.out.println("CWriter.internalTransform(" + phaseName + ", "
-            + options + ")");
+                + options + ")");
 
         // We use soot.Options to avoid confusion with
         // copernicus.c.options.
@@ -104,7 +104,7 @@ public class CWriter extends SceneTransformer {
         StringBuffer sourcesList = new StringBuffer();
 
         for (Iterator sootClasses = classList.iterator();
-                sootClasses.hasNext();) {
+             sootClasses.hasNext();) {
             SootClass sootClass = (SootClass) sootClasses.next();
 
             // Determine the base of the source code file names.
@@ -168,25 +168,25 @@ public class CWriter extends SceneTransformer {
              * Not needed because RequiredFileGenerator will take care of
              * it.
 
-            code = sGenerator.generate(sootClass);
-            FileHandler.write(fileName
-                    + StubFileGenerator.stubFileNameSuffix(),
-                    code);
-            code = hGenerator.generate(sootClass);
-            FileHandler.write(fileName + ".h", code);
-            code = cGenerator.generate(sootClass);
-            FileHandler.write(fileName + ".c", code);
-            sourcesList.append(" " + fileName + ".c");
+             code = sGenerator.generate(sootClass);
+             FileHandler.write(fileName
+             + StubFileGenerator.stubFileNameSuffix(),
+             code);
+             code = hGenerator.generate(sootClass);
+             FileHandler.write(fileName + ".h", code);
+             code = cGenerator.generate(sootClass);
+             FileHandler.write(fileName + ".c", code);
+             sourcesList.append(" " + fileName + ".c");
             */
 
             // Generate all required files, including the files for the
             // main class.
             try {
                 RequiredFileGenerator.generateTransitiveClosureOf(classPath,
-                    sootClass.getName());
+                        sootClass.getName());
             } catch (IOException exception) {
                 throw new RuntimeException("Could not generate transitive "
-                    + "closure during required file generation");
+                        + "closure during required file generation");
             }
 
             // Generate a main file, containing a C main function,
@@ -203,7 +203,7 @@ public class CWriter extends SceneTransformer {
         }
 
         MakefileWriter.addMakefileSubstitution("@cFiles@",
-            sourcesList.toString());
+                sourcesList.toString());
 
         _completedTransform = true;
     }

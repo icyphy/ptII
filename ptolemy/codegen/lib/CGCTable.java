@@ -1,11 +1,11 @@
 /* Table, CGC domain: CGCTable.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCTable.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCTable
 /**
-Implements a real-valued lookup table.  The "values" state contains the
-values to output; its first element is element zero.  An error occurs if
-an out of bounds value is received.
-<p>
-<a name="table lookup"></a>
+   Implements a real-valued lookup table.  The "values" state contains the
+   values to output; its first element is element zero.  An error occurs if
+   an out of bounds value is received.
+   <p>
+   <a name="table lookup"></a>
 
- @Author Joseph T. Buck
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCTable.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Joseph T. Buck
+   @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCTable.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCTable extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -56,9 +56,9 @@ public class CGCTable extends ClassicCGCActor {
         runTimeCheck = new Parameter(this, "runTimeCheck");
         runTimeCheck.setExpression("YES");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -76,12 +76,12 @@ noInternalState();
     /**
      *  "table of values to output" parameter with initial value "-1 1".
      */
-     public Parameter values;
+    public Parameter values;
 
     /**
      *  "If YES, check range of index at runtime, else omit" parameter with initial value "YES".
      */
-     public Parameter runTimeCheck;
+    public Parameter runTimeCheck;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -90,29 +90,29 @@ noInternalState();
      */
     public void  generatePreinitializeCode() {
 
-addInclude("<stdio.h>");
-     }
+        addInclude("<stdio.h>");
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(readIdx);
-                if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check);
-                addCode(lookup);
-     }
+        addCode(readIdx);
+        if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check);
+            addCode(lookup);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String readIdx =
-        "                int idx = $ref(input);\n";
+    "                int idx = $ref(input);\n";
 
     public String check =
-        "                if (idx < 0 || idx >= $size(values)) {\n"
-        + "                        fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
-        + "                        exit(1);\n"
-        + "                }\n";
+    "                if (idx < 0 || idx >= $size(values)) {\n"
+    + "                        fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
+    + "                        exit(1);\n"
+    + "                }\n";
 
     public String lookup =
-        "                $ref(output) = $ref2(values,idx);\n";
+    "                $ref(output) = $ref2(values,idx);\n";
 }

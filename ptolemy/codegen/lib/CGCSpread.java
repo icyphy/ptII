@@ -1,11 +1,11 @@
 /* Spread, CGC domain: CGCSpread.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCSpread.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,16 +20,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSpread
 /**
-Takes one input and produces multiple outputs.
-<p>
-This star does not generate any code. In multiprocessor code generation
-domain, this star will be automatically attached to a porthole whose
-outputs are passed to more than one destination (one ordinary block and
-one Send star, more than one Send stars, and so on.)
+   Takes one input and produces multiple outputs.
+   <p>
+   This star does not generate any code. In multiprocessor code generation
+   domain, this star will be automatically attached to a porthole whose
+   outputs are passed to more than one destination (one ordinary block and
+   one Send star, more than one Send stars, and so on.)
 
- @Author S. Ha
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCSpread.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author S. Ha
+   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCSpread.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSpread extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCSpread extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setMultiport(true);
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -71,26 +71,26 @@ public class CGCSpread extends ClassicCGCActor {
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-MPHIter iter(output);
-                CGCPortHole* p;
-                int loc = 0;
-                while ((p = (CGCPortHole*) iter++) != 0) {
-                        input.embed(*p, loc);
-                        loc += p->numXfer();
-                }
-     }
+        MPHIter iter(output);
+        CGCPortHole* p;
+        int loc = 0;
+        while ((p = (CGCPortHole*) iter++) != 0) {
+            input.embed(*p, loc);
+            loc += p->numXfer();
+        }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-     }
+    }
 
     /**
      */
     protected int amISpreadCollect () {
 
-return -1;
+        return -1;
     }
 
 }

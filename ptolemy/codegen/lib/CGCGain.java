@@ -1,11 +1,11 @@
 /* Gain, CGC domain: CGCGain.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCGain.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCGain
 /**
-Amplifier: output is input times "gain" (default 1.0).
+   Amplifier: output is input times "gain" (default 1.0).
 
- @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCGain.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author S. Ha
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCGain.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGain extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,9 +48,9 @@ public class CGCGain extends ClassicCGCActor {
         gain = new Parameter(this, "gain");
         gain.setExpression("1.0");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -68,7 +68,7 @@ noInternalState();
     /**
      *  Gain of the star. parameter with initial value "1.0".
      */
-     public Parameter gain;
+    public Parameter gain;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -77,13 +77,13 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 1;
-     }
+        return 1;
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode("$ref(output) = $val(gain) * $ref(input); \n");
-     }
+        addCode("$ref(output) = $val(gain) * $ref(input); \n");
+    }
 }

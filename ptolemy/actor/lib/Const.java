@@ -61,7 +61,7 @@ public class Const extends Source {
      *   actor with this name.
      */
     public Const(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value");
         value.setExpression("1");
@@ -70,9 +70,9 @@ public class Const extends Source {
         output.setTypeAtLeast(value);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-            + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

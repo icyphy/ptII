@@ -99,13 +99,13 @@ public class ClassDefinitionController extends ActorController {
         if (access == FULL) {
             // The following do not require a configuration.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _createInstanceAction));
+                                                    _createInstanceAction));
 
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _createSubclassAction));
+                                                    _createSubclassAction));
 
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _convertToInstanceAction));
+                                                    _convertToInstanceAction));
         }
 
         // Set up a listener to lay out the ports when graph changes.
@@ -138,11 +138,11 @@ public class ClassDefinitionController extends ActorController {
         // ports within that entity.
         GlobalLayout layout = new EntityLayout();
         controller.addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(layout) {
-                public void nodeDrawn(Object node) {
-                    layout(node);
-                }
-            }, portFilter));
+                                                new IncrLayoutAdapter(layout) {
+                                                    public void nodeDrawn(Object node) {
+                                                        layout(node);
+                                                    }
+                                                }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,10 +214,10 @@ public class ClassDefinitionController extends ActorController {
         if (((InstantiableNamedObj) object).isClassDefinition()) {
             if (subclass) {
                 moml.append("<class name=\"" + "SubclassOf" + object.getName()
-                    + "\" extends=\"" + object.getName() + "\"/>");
+                        + "\" extends=\"" + object.getName() + "\"/>");
             } else {
                 moml.append("<entity name=\"" + "InstanceOf" + object.getName()
-                    + "\" class=\"" + object.getName() + "\"/>");
+                        + "\" class=\"" + object.getName() + "\"/>");
             }
 
             moml.append("</group>");
@@ -293,8 +293,8 @@ public class ClassDefinitionController extends ActorController {
 
             if (hasDeferrals) {
                 MessageHandler.error("Cannot convert to instance because "
-                    + "there are instances and/or subclasses:\n"
-                    + names.toString());
+                        + "there are instances and/or subclasses:\n"
+                        + names.toString());
                 return;
             }
 
@@ -312,8 +312,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_N,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_N,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -337,8 +337,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {

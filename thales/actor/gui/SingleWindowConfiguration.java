@@ -95,7 +95,7 @@ public class SingleWindowConfiguration extends Configuration {
 
             if (model != null) {
                 Iterator factories = model.attributeList(TableauFactory.class)
-                                          .iterator();
+                    .iterator();
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
@@ -159,7 +159,7 @@ public class SingleWindowConfiguration extends Configuration {
                 // because removing the effigy may result in
                 // the application exiting.
                 MessageHandler.error("Failed to open tableau for "
-                    + effigy.identifier.getExpression(), ex);
+                        + effigy.identifier.getExpression(), ex);
 
                 try {
                     effigy.setContainer(null);
@@ -202,7 +202,7 @@ public class SingleWindowConfiguration extends Configuration {
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;
@@ -297,7 +297,7 @@ public class SingleWindowConfiguration extends Configuration {
                     }
 
                     effigy.identifier.setExpression(entityName + separator
-                        + entity.getName());
+                            + entity.getName());
 
                     // Set the uri of the effigy to that of
                     // the parent.
@@ -336,7 +336,7 @@ public class SingleWindowConfiguration extends Configuration {
      * @see ptolemy.actor.gui.Configuration#openModel(java.net.URL, java.net.URL, java.lang.String, ptolemy.actor.gui.EffigyFactory)
      */
     public Tableau openModel(URL base, URL in, String identifier,
-        EffigyFactory factory) throws Exception {
+            EffigyFactory factory) throws Exception {
         //ModelValidator validator = new ModelValidator();
         //validator.filter(base);
         return super.openModel(base, in, identifier, factory);

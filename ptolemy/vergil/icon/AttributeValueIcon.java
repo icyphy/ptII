@@ -69,7 +69,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public AttributeValueIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");

@@ -69,7 +69,7 @@ public class ColtNormal extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtNormal(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -118,7 +118,7 @@ public class ColtNormal extends ColtRandomSource {
     public boolean prefire() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken) standardDeviation
-            .getToken()).doubleValue();
+                .getToken()).doubleValue();
 
         ((Normal) _rng).setState(meanValue, standardDeviationValue);
         _current = ((Normal) _rng).nextDouble();

@@ -133,7 +133,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *   be resolved.
      */
     public MoMLChangeRequest(Object originator, NamedObj context,
-        String request, URL base) {
+            String request, URL base) {
         super(originator, request);
         _context = context;
         _base = base;
@@ -231,7 +231,7 @@ public class MoMLChangeRequest extends ChangeRequest {
 
             if (_context != null) {
                 System.out.println("------ in context "
-                    + _context.getFullName());
+                        + _context.getFullName());
             }
         }
 

@@ -75,7 +75,7 @@ public class ImageAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ImageAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -122,7 +122,7 @@ public class ImageAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == source) {
             URL url = source.asURL();
             Toolkit tk = Toolkit.getDefaultToolkit();

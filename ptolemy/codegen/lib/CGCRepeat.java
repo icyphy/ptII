@@ -1,11 +1,11 @@
 /* Repeat, CGC domain: CGCRepeat.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCRepeat.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,16 +20,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRepeat
 /**
-Repeats each input sample the specified number of times.
-<p>
-Repeat repeats each input Particle the specified number of times
-(<i>numTimes</i>) on the output.  Note that this is a sample rate
-change, and hence affects the number of invocations of downstream
-stars.
+   Repeats each input sample the specified number of times.
+   <p>
+   Repeat repeats each input Particle the specified number of times
+   (<i>numTimes</i>) on the output.  Note that this is a sample rate
+   change, and hence affects the number of invocations of downstream
+   stars.
 
- @Author S. Ha
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRepeat.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author S. Ha
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRepeat.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRepeat extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -51,9 +51,9 @@ public class CGCRepeat extends ClassicCGCActor {
         numTimes = new Parameter(this, "numTimes");
         numTimes.setExpression("2");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -71,7 +71,7 @@ noInternalState();
     /**
      *  Repetition factor. parameter with initial value "2".
      */
-     public Parameter numTimes;
+    public Parameter numTimes;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -80,28 +80,28 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return ((IntToken)((numTimes).getToken())).intValue();
-     }
+        return ((IntToken)((numTimes).getToken())).intValue();
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-output.setSDFParams(((IntToken)((numTimes).getToken())).intValue(),((IntToken)((numTimes).getToken())).intValue()-1);
-     }
+        output.setSDFParams(((IntToken)((numTimes).getToken())).intValue(),((IntToken)((numTimes).getToken())).intValue()-1);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-addCode(out);
-     }
+        addCode(out);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String out =
-        "        int i;\n"
-        + "        for (i = 0; i < $val(numTimes); i++) {\n"
-        + "                $ref(output, i) = $ref(input);\n"
-        + "        }\n";
+    "        int i;\n"
+    + "        for (i = 0; i < $val(numTimes); i++) {\n"
+    + "                $ref(output, i) = $ref(input);\n"
+    + "        }\n";
 }

@@ -59,7 +59,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
      *  @param superNode The super node that replaces the clustered nodes.
      */
     public ClusterNodesTransformerStrategy(Graph graph,
-        Collection nodeCollection, Node superNode) {
+            Collection nodeCollection, Node superNode) {
         super(graph);
         _nodeCollection = nodeCollection;
         _superNode = superNode;

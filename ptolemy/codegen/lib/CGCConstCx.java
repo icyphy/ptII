@@ -1,11 +1,11 @@
 /* ConstCx, CGC domain: CGCConstCx.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCConstCx.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCConstCx
 /**
-Output the complex constant.
+   Output the complex constant.
 
- @Author Jose Luis Pino
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstCx.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Jose Luis Pino
+   @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCConstCx.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCConstCx extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -50,9 +50,9 @@ public class CGCConstCx extends ClassicCGCActor {
         imag = new Parameter(this, "imag");
         imag.setExpression("0.0");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -65,12 +65,12 @@ noInternalState();
     /**
      *  Real part of DC value. parameter with initial value "0.0".
      */
-     public Parameter real;
+    public Parameter real;
 
     /**
      *  Imaginary part of DC value. parameter with initial value "0.0".
      */
-     public Parameter imag;
+    public Parameter imag;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,18 +79,18 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 0;
-     }
+        return 0;
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        $ref(output).real = $val(real);\n"
-"        $ref(output).imag = $val(imag);"
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "        $ref(output).real = $val(real);\n"
+                "        $ref(output).imag = $val(imag);"
 
-);          addCode(_str_);  }
+                );          addCode(_str_);  }
 
-     }
+    }
 }

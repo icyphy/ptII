@@ -72,7 +72,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @param name The name of this attribute.
      */
     public UpdatedValueIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -85,7 +85,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == attributeName) {
             // If we were previously associated with an attribute,
             // remove the listener.
@@ -151,7 +151,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
 
             // NOTE: Padding of 20.
             int width = (int) ((stringBounds.getWidth() * numberOfCharacters)
-                + 20);
+                    + 20);
             return new BasicRectangle(0, 0, width, 30, Color.white, 1);
         } catch (IllegalActionException ex) {
             // Should not be thrown.

@@ -97,14 +97,14 @@ public class InlineDirectorTransformer extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         SootClass modelClass = ModelTransformer.getModelClass();
         _inlineDirectorsIn(_model, modelClass, phaseName, options);
     }
 
     private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
-        String phaseName, Map options) {
+            String phaseName, Map options) {
         for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
 
@@ -113,7 +113,7 @@ public class InlineDirectorTransformer extends SceneTransformer
                         options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
                 _inlineDirectorsIn((CompositeActor) entity, compositeClass,
-                    phaseName, options);
+                        phaseName, options);
             }
         }
 
@@ -131,8 +131,8 @@ public class InlineDirectorTransformer extends SceneTransformer
                 inliner = new GiottoDirectorInliner();
             } else {
                 throw new RuntimeException("Inlining a director can not "
-                    + "be performed on a director of class "
-                    + model.getDirector().getClass().getName());
+                        + "be performed on a director of class "
+                        + model.getDirector().getClass().getName());
             }
 
             inliner.inlineDirector(model, modelClass, phaseName, options);
@@ -155,14 +155,14 @@ public class InlineDirectorTransformer extends SceneTransformer
 
             // Loop over all the methods...
             for (Iterator methods = theClass.getMethods().iterator();
-                    methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 // Loop over all the statements.
                 for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (!unit.containsInvokeExpr()) {

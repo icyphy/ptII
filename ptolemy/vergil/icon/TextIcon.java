@@ -66,7 +66,7 @@ public class TextIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public TextIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

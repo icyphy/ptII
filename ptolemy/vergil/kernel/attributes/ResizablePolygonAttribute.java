@@ -74,7 +74,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public ResizablePolygonAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         vertices = new Parameter(this, "vertices");
@@ -103,7 +103,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == vertices) || (attribute == width)
                 || ((attribute == height) && !_inAttributeChanged)) {
             // Check that the length of the array is even.
@@ -112,7 +112,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
             if ((length / 2) != ((length + 1) / 2)) {
                 throw new IllegalActionException(this,
-                    "Length of the vertices array is required to be even.");
+                        "Length of the vertices array is required to be even.");
             }
 
             try {
@@ -166,7 +166,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))
                     .doubleValue();
                 yPoints[j] = ((DoubleToken) verticesValue.getElement((2 * j)
-                        + 1)).doubleValue();
+                                      + 1)).doubleValue();
 
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];

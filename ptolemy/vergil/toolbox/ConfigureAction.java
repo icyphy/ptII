@@ -69,7 +69,7 @@ public class ConfigureAction extends FigureAction {
         // works for LookInsideAction to define a hotkey for look inside,
         // but it doesn't work here.
         putValue(GUIUtilities.ACCELERATOR_KEY,
-            KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ public class ConfigureAction extends FigureAction {
             // was throwing an exception here that was not being displayed
             // in the UI.
             MessageHandler.error("Failed to open a dialog to edit the target.",
-                throwable);
+                    throwable);
         }
     }
 

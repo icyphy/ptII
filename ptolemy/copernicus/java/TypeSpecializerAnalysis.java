@@ -130,7 +130,7 @@ public class TypeSpecializerAnalysis {
         // Get the variables.
         //  _collectVariables(theClass, _debug);
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-                classes.hasNext();) {
+             classes.hasNext();) {
             SootClass applicationClass = (SootClass) classes.next();
             _collectVariables(applicationClass, _debug);
         }
@@ -162,7 +162,7 @@ public class TypeSpecializerAnalysis {
 
                 while (inequalities.hasNext()) {
                     System.out.println("Inequality: "
-                        + inequalities.next().toString());
+                            + inequalities.next().toString());
                 }
 
                 System.err.println("Unsatisfied Inequalities:");
@@ -170,7 +170,7 @@ public class TypeSpecializerAnalysis {
 
                 while (inequalities.hasNext()) {
                     System.err.println("Inequality: "
-                        + inequalities.next().toString());
+                            + inequalities.next().toString());
                 }
             } catch (IllegalActionException ex) {
                 throw new RuntimeException("Error in type resolution");
@@ -231,7 +231,7 @@ public class TypeSpecializerAnalysis {
 
                 while (inequalities.hasNext()) {
                     System.out.println("Inequality: "
-                        + inequalities.next().toString());
+                            + inequalities.next().toString());
                 }
 
                 System.err.println("Unsatisfied Inequalities:");
@@ -239,7 +239,7 @@ public class TypeSpecializerAnalysis {
 
                 while (inequalities.hasNext()) {
                     System.err.println("Inequality: "
-                        + inequalities.next().toString());
+                            + inequalities.next().toString());
                 }
             } catch (IllegalActionException ex) {
                 throw new RuntimeException("Error in type resolution");
@@ -327,8 +327,8 @@ public class TypeSpecializerAnalysis {
      *  perform the inlining.
      */
     public void inlineTypeLatticeMethods(SootMethod method, Unit unit,
-        ValueBox box, StaticInvokeExpr expr, LocalDefs localDefs,
-        LocalUses localUses) throws IllegalActionException {
+            ValueBox box, StaticInvokeExpr expr, LocalDefs localDefs,
+            LocalUses localUses) throws IllegalActionException {
         SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass
             .getMethod("int compare(ptolemy.data.Token,ptolemy.data.Token)");
         SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass
@@ -337,10 +337,10 @@ public class TypeSpecializerAnalysis {
             .getMethod("int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
         SootMethod typeTypeCompareMethod = PtolemyUtilities.typeLatticeClass
             .getMethod(
-                "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+                    "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
         SootMethod leastUpperBoundMethod = PtolemyUtilities.typeLatticeClass
             .getMethod(
-                "ptolemy.data.type.Type leastUpperBound(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+                    "ptolemy.data.type.Type leastUpperBound(ptolemy.data.type.Type,ptolemy.data.type.Type)");
 
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
@@ -386,7 +386,7 @@ public class TypeSpecializerAnalysis {
             return;
         } else {
             throw new RuntimeException(
-                "attempt to inline unhandled typeLattice method: " + unit);
+                    "attempt to inline unhandled typeLattice method: " + unit);
         }
 
         //         System.out.println("specializer");
@@ -402,7 +402,7 @@ public class TypeSpecializerAnalysis {
     private void _collectVariables(SootClass entityClass, boolean debug) {
         // Loop through all the fields.
         for (Iterator fields = entityClass.getFields().iterator();
-                fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField) fields.next();
 
             // Ignore things that aren't reference types.
@@ -419,8 +419,8 @@ public class TypeSpecializerAnalysis {
                 }
 
                 _addInequality(debug, _solver,
-                    new ConstantTerm(tag.getType(), field),
-                    (InequalityTerm) _objectToInequalityTerm.get(field));
+                        new ConstantTerm(tag.getType(), field),
+                        (InequalityTerm) _objectToInequalityTerm.get(field));
             }
         }
     }
@@ -432,7 +432,7 @@ public class TypeSpecializerAnalysis {
 
         // Loop through all the methods.
         for (Iterator methods = entityClass.getMethods().iterator();
-                methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             Body body = method.retrieveActiveBody();
 
@@ -448,7 +448,7 @@ public class TypeSpecializerAnalysis {
 
             //   System.out.println("done computing aliases for " + method);
             for (Iterator locals = body.getLocals().iterator();
-                    locals.hasNext();) {
+                 locals.hasNext();) {
                 Local local = (Local) locals.next();
 
                 if (_unsafeLocals.contains(local)) {
@@ -458,7 +458,7 @@ public class TypeSpecializerAnalysis {
                 // Ignore things that aren't reference types.
                 Type type = local.getType();
                 _createInequalityTerm(debug, local, type,
-                    _objectToInequalityTerm);
+                        _objectToInequalityTerm);
             }
 
             for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
@@ -501,8 +501,8 @@ public class TypeSpecializerAnalysis {
                     // Still call getInequalityTerm because there may
                     // be side effects that cause type constraints.
                     _getInequalityTerm(method, debug,
-                        ((InvokeStmt) stmt).getInvokeExpr(), _solver,
-                        _objectToInequalityTerm, stmt, localDefs, localUses);
+                            ((InvokeStmt) stmt).getInvokeExpr(), _solver,
+                            _objectToInequalityTerm, stmt, localDefs, localUses);
                 }
             }
         }
@@ -515,7 +515,7 @@ public class TypeSpecializerAnalysis {
     // inequality term for the object.  retrieve the resolved type,
     // and return it.
     private static Type _getUpdateType(boolean debug, Object object, Type type,
-        Map objectToInequalityTerm) throws IllegalActionException {
+            Map objectToInequalityTerm) throws IllegalActionException {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
 
         if (tokenType != null) {
@@ -544,8 +544,8 @@ public class TypeSpecializerAnalysis {
                 // likely not correct.  FIXME: hack to get around the
                 // bogus type lattice.  This should be an exception.
                 System.out.println("Warning! Resolved type of " + object
-                    + " to " + newType
-                    + " which is more general than the old type " + type);
+                        + " to " + newType
+                        + " which is more general than the old type " + type);
                 newType = tokenType;
             }
 
@@ -562,7 +562,7 @@ public class TypeSpecializerAnalysis {
     // inequality term for the object.  retrieve the resolved type,
     // and return it.
     private Type _getUpdateType(Object object, Type type)
-        throws IllegalActionException {
+            throws IllegalActionException {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
 
         if (tokenType != null) {
@@ -591,8 +591,8 @@ public class TypeSpecializerAnalysis {
                 // likely not correct.  FIXME: hack to get around the
                 // bogus type lattice.  This should be an exception.
                 System.out.println("Warning! Resolved type of " + object
-                    + " to " + newType
-                    + " which is more general than the old type " + type);
+                        + " to " + newType
+                        + " which is more general than the old type " + type);
                 newType = tokenType;
             }
 
@@ -605,21 +605,21 @@ public class TypeSpecializerAnalysis {
     }
 
     public ptolemy.data.type.Type _getTokenType(Object object)
-        throws IllegalActionException {
+            throws IllegalActionException {
         InequalityTerm term = (InequalityTerm) _objectToInequalityTerm.get(object);
 
         if (term == null) {
             throw new RuntimeException("Attempt to get type for object "
-                + object + " with no inequality term!");
+                    + object + " with no inequality term!");
         }
 
         return (ptolemy.data.type.Type) term.getValue();
     }
 
     public static InequalityTerm _getInequalityTerm(SootMethod method,
-        boolean debug, Value value, InequalitySolver solver,
-        Map objectToInequalityTerm, Unit unit, LocalDefs localDefs,
-        LocalUses localUses) {
+            boolean debug, Value value, InequalitySolver solver,
+            Map objectToInequalityTerm, Unit unit, LocalDefs localDefs,
+            LocalUses localUses) {
         if (value instanceof StaticInvokeExpr) {
             StaticInvokeExpr r = (StaticInvokeExpr) value;
 
@@ -657,7 +657,7 @@ public class TypeSpecializerAnalysis {
                     try {
                         ptolemy.data.type.Type baseType = PtolemyUtilities
                             .getTypeValue(method, (Local) r.getBase(), unit,
-                                localDefs, localUses);
+                                    localDefs, localUses);
                         InequalityTerm baseTypeTerm = new ConstantTerm(baseType,
                                 r);
                         return baseTypeTerm;
@@ -721,16 +721,16 @@ public class TypeSpecializerAnalysis {
                     //                             returnValueTerm);
                     InequalityTerm returnValueTerm = new MonotonicFunction() {
                             public Object getValue()
-                                throws IllegalActionException {
+                                    throws IllegalActionException {
                                 if (firstArgTerm.getValue().equals(TypeLattice.lattice()
-                                                                                  .bottom())
+                                            .bottom())
                                         || finalBaseTerm.getValue().equals(TypeLattice.lattice()
-                                                                                          .bottom())) {
+                                                .bottom())) {
                                     return TypeLattice.lattice().bottom();
                                 }
 
                                 return TypeLattice.lattice().leastUpperBound(firstArgTerm
-                                    .getValue(), finalBaseTerm.getValue());
+                                        .getValue(), finalBaseTerm.getValue());
                             }
 
                             public InequalityTerm[] getVariables() {
@@ -772,7 +772,7 @@ public class TypeSpecializerAnalysis {
                     // type of the array.
                     ptolemy.data.type.ArrayType arrayType = new ptolemy.data.type.ArrayType(ptolemy.data.type.BaseType.UNKNOWN);
                     _addInequality(debug, solver, baseTerm,
-                        new VariableTerm(arrayType, r));
+                            new VariableTerm(arrayType, r));
 
                     InequalityTerm returnTypeTerm = (InequalityTerm) arrayType
                         .getElementTypeTerm();
@@ -780,27 +780,27 @@ public class TypeSpecializerAnalysis {
                 } else if (methodName.equals("getElementAsToken")) {
                     final InequalityTerm matrixTerm = baseTerm;
                     InequalityTerm returnTypeTerm = (InequalityTerm) new MonotonicFunction() {
-                                public Object getValue()
+                            public Object getValue()
                                     throws IllegalActionException {
-                                    if (matrixTerm.getValue() instanceof UnsizedMatrixType) {
-                                        UnsizedMatrixType type = (UnsizedMatrixType) matrixTerm
-                                            .getValue();
-                                        return type.getElementType();
-                                    } else {
-                                        return BaseType.UNKNOWN;
-                                    }
+                                if (matrixTerm.getValue() instanceof UnsizedMatrixType) {
+                                    UnsizedMatrixType type = (UnsizedMatrixType) matrixTerm
+                                        .getValue();
+                                    return type.getElementType();
+                                } else {
+                                    return BaseType.UNKNOWN;
                                 }
+                            }
 
-                                public InequalityTerm[] getVariables() {
-                                    if (matrixTerm.isSettable()) {
-                                        InequalityTerm[] terms = new InequalityTerm[1];
-                                        terms[0] = matrixTerm;
-                                        return terms;
-                                    } else {
-                                        return new InequalityTerm[0];
-                                    }
+                            public InequalityTerm[] getVariables() {
+                                if (matrixTerm.isSettable()) {
+                                    InequalityTerm[] terms = new InequalityTerm[1];
+                                    terms[0] = matrixTerm;
+                                    return terms;
+                                } else {
+                                    return new InequalityTerm[0];
                                 }
-                            };
+                            }
+                        };
 
                     return returnTypeTerm;
                 } else if (methodName.equals("absolute")) {
@@ -811,15 +811,15 @@ public class TypeSpecializerAnalysis {
                     return baseTerm;
                 }
             } else if (SootUtilities.derivesFrom(baseClass,
-                        PtolemyUtilities.componentPortClass)) {
+                               PtolemyUtilities.componentPortClass)) {
                 // If we are invoking a method on a port.
                 TypedIOPort port = (TypedIOPort) InlinePortTransformer
                     .getPortValue(method, (Local) r.getBase(), unit, localDefs,
-                        localUses);
+                            localUses);
 
                 if (port == null) {
                     throw new RuntimeException("Failed to find port for "
-                        + unit);
+                            + unit);
                 }
 
                 // Don't create constant terms for
@@ -855,7 +855,7 @@ public class TypeSpecializerAnalysis {
                         InequalityTerm secondArgTerm = (InequalityTerm) objectToInequalityTerm
                             .get(r.getArg(1));
                         _addInequality(debug, solver, secondArgTerm,
-                            portTypeTerm);
+                                portTypeTerm);
 
                         // Return type is void.
                         return null;
@@ -865,18 +865,18 @@ public class TypeSpecializerAnalysis {
                         InequalityTerm secondArgTerm = (InequalityTerm) objectToInequalityTerm
                             .get(r.getArg(1));
                         _addInequality(debug, solver, secondArgTerm,
-                            portTypeTerm);
+                                portTypeTerm);
 
                         // Return type is void.
                         return null;
                     }
                 }
             } else if (SootUtilities.derivesFrom(baseClass,
-                        PtolemyUtilities.attributeClass)) {
+                               PtolemyUtilities.attributeClass)) {
                 // If we are invoking a method on a port.
                 Attribute attribute = (Attribute) InlineParameterTransformer
                     .getAttributeValue(method, (Local) r.getBase(), unit,
-                        localDefs, localUses);
+                            localDefs, localUses);
 
                 if (attribute == null) {
                     // A method invocation with a null base is bogus,
@@ -896,7 +896,7 @@ public class TypeSpecializerAnalysis {
                             .get(r.getArg(0));
 
                         _addInequality(debug, solver, firstArgTerm,
-                            parameterTypeTerm);
+                                parameterTypeTerm);
 
                         // Return type is void.
                         return null;
@@ -910,7 +910,7 @@ public class TypeSpecializerAnalysis {
             // The type must be the same as the type of the
             // base of the array.
             return (InequalityTerm) objectToInequalityTerm.get(((ArrayRef) value)
-                .getBase());
+                    .getBase());
 
             // If we call getElement or arrayValue on an array
             // token, then the returned type is the element
@@ -1033,7 +1033,7 @@ public class TypeSpecializerAnalysis {
     }
 
     private static void _addInequality(boolean debug, InequalitySolver solver,
-        InequalityTerm lesser, InequalityTerm greater) {
+            InequalityTerm lesser, InequalityTerm greater) {
         if (debug) {
             System.out.println("lesser = " + lesser);
         }
@@ -1054,7 +1054,7 @@ public class TypeSpecializerAnalysis {
     }
 
     private static void _createInequalityTerm(boolean debug, Object object,
-        Type type, Map objectToInequalityTerm) {
+            Type type, Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
 
         if ((tokenType != null) && (objectToInequalityTerm.get(object) == null)) {
@@ -1122,7 +1122,7 @@ public class TypeSpecializerAnalysis {
 
         public String toString() {
             return "{ConstantTerm: value = " + _type + ", associated object = "
-            + _object + "}";
+                + _object + "}";
         }
 
         public void unfixValue() {
@@ -1204,8 +1204,8 @@ public class TypeSpecializerAnalysis {
 
         public String toString() {
             return "{VariableTerm: value = " + _currentType + ", depth = "
-            + PtolemyUtilities.getTypeDepth(_currentType)
-            + ", associated object = " + _object + "}";
+                + PtolemyUtilities.getTypeDepth(_currentType)
+                + ", associated object = " + _object + "}";
         }
 
         public void unfixValue() {

@@ -77,7 +77,7 @@ public class Ramp extends SequenceSource {
      *   actor with this name.
      */
     public Ramp(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         init = new Parameter(this, "init");
         init.setExpression("0");
@@ -89,10 +89,10 @@ public class Ramp extends SequenceSource {
         output.setTypeAtLeast(step);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<polygon points=\"-20,10 20,-10 20,10\" "
-            + "style=\"fill:grey\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<polygon points=\"-20,10 20,-10 20,10\" "
+                + "style=\"fill:grey\"/>\n" + "</svg>\n");
         _resultArray = new Token[1];
     }
 
@@ -182,8 +182,8 @@ public class Ramp extends SequenceSource {
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                    "Should not be thrown because we have already"
-                    + "verified that the tokens can be added");
+                        "Should not be thrown because we have already"
+                        + "verified that the tokens can be added");
             }
         }
 

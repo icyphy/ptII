@@ -1,28 +1,28 @@
 /* An attribute that manages generation of Giotto code.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (hyzheng)
 @AcceptedRating Red (hyzheng)
@@ -93,13 +93,13 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// CharonCodeGenerator
 /**
-This attribute is a visible attribute that when configured (by double
-clicking on it or by invoking Configure in the context menu) it generates
-Charon code and displays it a text editor.  It is up to the user to save
-the Charon code in an appropriate file, if necessary.
+   This attribute is a visible attribute that when configured (by double
+   clicking on it or by invoking Configure in the context menu) it generates
+   Charon code and displays it a text editor.  It is up to the user to save
+   the Charon code in an appropriate file, if necessary.
 
-@author Haiyang Zheng
-@version $Id:
+   @author Haiyang Zheng
+   @version $Id:
 */
 
 public class CharonCodeGenerator extends Attribute {
@@ -141,13 +141,13 @@ public class CharonCodeGenerator extends Attribute {
             _modeCode = "";
             if (!_initialize()) {
                 return "Can not generate code for this model!";
-                }
+            }
 
             String containerName = _container.getName();
 
             // the top level agent is a composite agent too.
             generatedCode += _compositeAgentCode(_container)
-                           + _modeCode;
+                + _modeCode;
 
 
         } catch (IllegalActionException ex) {
@@ -194,7 +194,7 @@ public class CharonCodeGenerator extends Attribute {
             if (charonAgent == null || ((BooleanToken) charonAgent.getToken()).booleanValue()) {
                 agentList.add(agent);
             }
-              }
+        }
         return agentList;
     }
 
@@ -243,12 +243,12 @@ public class CharonCodeGenerator extends Attribute {
      *  @return The composite agent code.
      */
 
-     // we assume the composite agent has no mode
-     // only atomic agent has mode
+    // we assume the composite agent has no mode
+    // only atomic agent has mode
     private String _compositeAgentCode(CompositeActor actor) throws IllegalActionException {
 
         if (FSMDirector.class.isInstance(actor.getDirector())) {
-//            System.out.println("in FSM");
+            //            System.out.println("in FSM");
             return _agentCode(actor);
         }
 
@@ -269,7 +269,7 @@ public class CharonCodeGenerator extends Attribute {
 
 
         if (outputPorts.size() > 1)
-          throw new IllegalActionException(" The agent has more than one output!");
+            throw new IllegalActionException(" The agent has more than one output!");
 
         // get the source subAgent name
         String outputAgentName = "";
@@ -277,26 +277,26 @@ public class CharonCodeGenerator extends Attribute {
         String sourceForOutputName = "";
 
         while (outputPortsIterator.hasNext()) {
-          TypedIOPort output = (TypedIOPort) outputPortsIterator.next();
-          outputPortName = output.getName();
-          ListIterator sourcePorts = output.insidePortList().listIterator();
+            TypedIOPort output = (TypedIOPort) outputPortsIterator.next();
+            outputPortName = output.getName();
+            ListIterator sourcePorts = output.insidePortList().listIterator();
 
 
-          TypedIOPort sourcePort = new TypedIOPort();
+            TypedIOPort sourcePort = new TypedIOPort();
 
-          while (sourcePorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort) sourcePorts.next();
-            if (port.isOutput()) {
-              if (sourcePort == null) {
-                throw new IllegalActionException(" The output has more than one source!");
-              } else {
-                sourcePort = port;
-                sourceForOutputName = sourcePort.getName();
-                Nameable sourceContainer = sourcePort.getContainer();
-                outputAgentName = sourceContainer.getName();
-              }
+            while (sourcePorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) sourcePorts.next();
+                if (port.isOutput()) {
+                    if (sourcePort == null) {
+                        throw new IllegalActionException(" The output has more than one source!");
+                    } else {
+                        sourcePort = port;
+                        sourceForOutputName = sourcePort.getName();
+                        Nameable sourceContainer = sourcePort.getContainer();
+                        outputAgentName = sourceContainer.getName();
+                    }
+                }
             }
-          }
 
 
         }
@@ -309,24 +309,24 @@ public class CharonCodeGenerator extends Attribute {
             CompositeActor subAgent = (CompositeActor)subAgentsIterator.next();
 
             if (outputAgentName.equals(subAgent.getName())) {
-              // the inside output actually is input to outside environment
-              subAgentConnectionOutputs += sourceForOutputName;
-              subAgentConnectionInputs += outputPortName;
+                // the inside output actually is input to outside environment
+                subAgentConnectionOutputs += sourceForOutputName;
+                subAgentConnectionInputs += outputPortName;
             }
 
             subAgentCode += "  agent "
-                          + subAgent.getName().toLowerCase() + " = "
-                          + subAgent.getName()
-                          + " ( ";
+                + subAgent.getName().toLowerCase() + " = "
+                + subAgent.getName()
+                + " ( ";
 
-                  if (actor.depthInHierarchy() == 0) {
+            if (actor.depthInHierarchy() == 0) {
                 subAgentCode += _agentParameterTokens((NamedObj)subAgent);
             } else {
                 subAgentCode += _agentParameters((NamedObj)subAgent, false);
             }
 
-                subAgentCode += " );"
-                          + _endLine;
+            subAgentCode += " );"
+                + _endLine;
 
             ListIterator subAgentInputs = subAgent.inputPortList().listIterator();
 
@@ -347,30 +347,30 @@ public class CharonCodeGenerator extends Attribute {
                             subAgentConnectionInputs += input.getName();
                         } else {
                             subAgentConnectionOutputs += ", "
-                                                       + source.getName();
+                                + source.getName();
                             subAgentConnectionInputs += ", "
-                                                      + input.getName();
+                                + input.getName();
                         }
                     }
                 }
                 if (privateVariable) {
                     if (privateVariables == "") {
                         privateVariables += "private analog real "
-                                          + input.getName();
+                            + input.getName();
                     } else {
                         privateVariables += ", "
-                                          + input.getName();
+                            + input.getName();
                     }
                 }
             }
 
             if (subAgentConnectionInputs.length() != 0) {
                 subAgentCode += "       [ "
-                              + subAgentConnectionInputs
-                              + " := "
-                              + subAgentConnectionOutputs
-                              + " ] ;"
-                              + _endLine;
+                    + subAgentConnectionInputs
+                    + " := "
+                    + subAgentConnectionOutputs
+                    + " ] ;"
+                    + _endLine;
             }
 
             compositeCodeString += _compositeAgentCode(subAgent);
@@ -393,10 +393,10 @@ public class CharonCodeGenerator extends Attribute {
         while (_inPorts.hasNext()) {
             if (inputString == "") {
                 inputString += "read analog real "
-                                 + ((NamedObj)_inPorts.next()).getName();
+                    + ((NamedObj)_inPorts.next()).getName();
             } else {
                 inputString += ", "
-                                 + ((NamedObj)_inPorts.next()).getName();
+                    + ((NamedObj)_inPorts.next()).getName();
             }
         }
         if (inputString != "") inputString += ";";
@@ -408,11 +408,11 @@ public class CharonCodeGenerator extends Attribute {
             String outportName = ((NamedObj)_outPorts.next()).getName();
             if (outputString == "") {
                 outputString += "write analog real "
-                                 + outportName;
+                    + outportName;
 
             } else {
                 outputString += ", "
-                                 + outportName;
+                    + outportName;
             }
         }
         if (outputString != "") outputString += ";";
@@ -420,19 +420,19 @@ public class CharonCodeGenerator extends Attribute {
         if (privateVariables.length() != 0) privateVariables += ";";
 
         compositeCodeString += " "
-                    + actor.getName()
-                    + " ( ";
+            + actor.getName()
+            + " ( ";
 
         if (actor.depthInHierarchy() != 0)
             compositeCodeString += _agentParameters((NamedObj)actor, true);
 
         compositeCodeString += " )" + _endLine
-                            + "{" + _endLine
-                            + "  " + outputString + _endLine
-                            + "  " + inputString + _endLine
-                            + "  " + privateVariables + _endLine
-                            + subAgentCode + _endLine
-                            + "}" + _endLine;
+            + "{" + _endLine
+            + "  " + outputString + _endLine
+            + "  " + inputString + _endLine
+            + "  " + privateVariables + _endLine
+            + subAgentCode + _endLine
+            + "}" + _endLine;
 
         return compositeCodeString;
     }
@@ -443,7 +443,7 @@ public class CharonCodeGenerator extends Attribute {
      *  @param typed indicates whether the parameters have type.
      *  @return string of parameters.
      */
-     private String _agentParameters(NamedObj agent, boolean typed) {
+    private String _agentParameters(NamedObj agent, boolean typed) {
 
         LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
         ListIterator parameters = parameterList.listIterator();
@@ -460,24 +460,24 @@ public class CharonCodeGenerator extends Attribute {
 
             if (parameterString == "") {
                 parameterString += prefix
-                                 + parameterName;
+                    + parameterName;
 
             } else {
                 parameterString += ", "
-                                 + prefix
-                                 + parameterName;
+                    + prefix
+                    + parameterName;
             }
         }
 
         return parameterString;
-     }
+    }
 
     /** Generate string of evaluated tokens of parameters of the agent.
      *
      *  @param agent whether the parameters belong to.
      *  @return string of evaluated parameters.
      */
-     private String _agentParameterTokens(NamedObj agent) throws IllegalActionException {
+    private String _agentParameterTokens(NamedObj agent) throws IllegalActionException {
 
         LinkedList parameterList = (LinkedList)agent.attributeList(Parameter.class);
         ListIterator parameters = parameterList.listIterator();
@@ -496,21 +496,21 @@ public class CharonCodeGenerator extends Attribute {
                 tokenString += tokenValue;
             } else {
                 tokenString += ", "
-                             + tokenValue;
+                    + tokenValue;
             }
         }
 
         return tokenString;
-     }
+    }
 
     /** Generate code for the agent.
      *
      *  @param CompositeActor The agent generated code from.
      *  @return The agent code.
      */
-     private String _agentCode(CompositeActor actor) throws IllegalActionException {
+    private String _agentCode(CompositeActor actor) throws IllegalActionException {
 
-//    System.out.println("dealing with " + actor.getFullName());
+        //    System.out.println("dealing with " + actor.getFullName());
         String codeString = "agent";
         String parameterString = "";
         String inputString = "";
@@ -524,30 +524,30 @@ public class CharonCodeGenerator extends Attribute {
 
         LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
 
-/*        Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
-        if (invariantPara  != null) {
-            invariantString = "inv { "
-                            + ((StringToken)invariantPara.getToken()).stringValue()
-                            + " } ";
-            //get rid of _invariant parameter
-            parameterList.remove(invariantPara);;
-            //FIXME: it seems that after getAttribute,
-            //the attribute does not exist?
-        }
-*/
+        /*        Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
+                  if (invariantPara  != null) {
+                  invariantString = "inv { "
+                  + ((StringToken)invariantPara.getToken()).stringValue()
+                  + " } ";
+                  //get rid of _invariant parameter
+                  parameterList.remove(invariantPara);;
+                  //FIXME: it seems that after getAttribute,
+                  //the attribute does not exist?
+                  }
+        */
 
         ListIterator assertions = _assertions(actor).listIterator();
 
         while (assertions.hasNext()) {
-          Assertion assertion = (Assertion) assertions.next();
-          if (invariantString.length() == 0) {
-            invariantString = "inv { "
-                            + assertion.assertion.getExpression();
-          } else {
-            invariantString += " ; "
-                             + assertion.assertion.getExpression();
-          }
-          invariantString += " } ";
+            Assertion assertion = (Assertion) assertions.next();
+            if (invariantString.length() == 0) {
+                invariantString = "inv { "
+                    + assertion.assertion.getExpression();
+            } else {
+                invariantString += " ; "
+                    + assertion.assertion.getExpression();
+            }
+            invariantString += " } ";
         }
 
         int parameterNumber = parameterList.size();
@@ -557,10 +557,10 @@ public class CharonCodeGenerator extends Attribute {
         while (_inPorts.hasNext()) {
             if (inputString == "") {
                 inputString += "read analog real "
-                                 + ((NamedObj)_inPorts.next()).getName();
+                    + ((NamedObj)_inPorts.next()).getName();
             } else {
                 inputString += ", "
-                                 + ((NamedObj)_inPorts.next()).getName();
+                    + ((NamedObj)_inPorts.next()).getName();
             }
         }
         if (inputString != "") inputString += ";";
@@ -584,15 +584,15 @@ public class CharonCodeGenerator extends Attribute {
 
             if (parameters.nextIndex() > (parameterNumber - outportNumber)) {
                 parameterForOutport = true;
-                  }
+            }
 
             if (parameterString == "") {
                 parameterString += "real "
-                                 + parameterName;
+                    + parameterName;
 
             } else {
                 parameterString += ", real "
-                                 + parameterName;
+                    + parameterName;
             }
 
             if (parameterForOutport) {
@@ -601,28 +601,28 @@ public class CharonCodeGenerator extends Attribute {
                     String outportName = ((NamedObj)_outPorts.next()).getName();
                     if (outputString == "") {
                         outputString += "write analog real "
-                                         + outportName;
+                            + outportName;
 
                     } else {
                         outputString += ", "
-                                         + outportName;
+                            + outportName;
                     }
                     initString += outportName
-                                + " = "
-                                + parameterName
-                                + " ;";
+                        + " = "
+                        + parameterName
+                        + " ;";
                 }
             } else {
 
                 if (modeParameterString == "") {
                     modeParameterString += parameterName;
                     typedModeParameterString += "real "
-                                              + parameterName;
+                        + parameterName;
                 } else {
                     modeParameterString += ", "
-                                         + parameterName;
+                        + parameterName;
                     typedModeParameterString += ", real "
-                                              + parameterName;
+                        + parameterName;
                 }
 
             }
@@ -634,59 +634,59 @@ public class CharonCodeGenerator extends Attribute {
         initString = "init { " + initString + " }";
 
         modeString = "mode top = "
-                   + actor.getName()
-                   + "TopMode"
-                   + " ( "
-                   + modeParameterString
-                   + " ) ;";
+            + actor.getName()
+            + "TopMode"
+            + " ( "
+            + modeParameterString
+            + " ) ;";
 
         codeString += " "
-                    + actor.getName()
-                    + " ( "
-                    + parameterString
-                    + " )" + _endLine
-                    + "{" + _endLine
-                    + "  " + outputString + _endLine
-                    + "  " + inputString + _endLine
-                    + "  " + initString + _endLine
-                    + "  " + modeString + _endLine
-                    + "}" + _endLine;
+            + actor.getName()
+            + " ( "
+            + parameterString
+            + " )" + _endLine
+            + "{" + _endLine
+            + "  " + outputString + _endLine
+            + "  " + inputString + _endLine
+            + "  " + initString + _endLine
+            + "  " + modeString + _endLine
+            + "}" + _endLine;
 
 
         if (FSMDirector.class.isInstance(actor.getDirector())) {
 
 
-                // mode code generation goes here.
+            // mode code generation goes here.
             _modeCode += "mode "
-                       + actor.getName()
-                       + "TopMode"
-                       + " ( "
-                       + typedModeParameterString
-                       + " )" + _endLine
-                       + "{" + _endLine
-                       + "  " + outputString + _endLine
-                       + "  " + inputString + _endLine;
+                + actor.getName()
+                + "TopMode"
+                + " ( "
+                + typedModeParameterString
+                + " )" + _endLine
+                + "{" + _endLine
+                + "  " + outputString + _endLine
+                + "  " + inputString + _endLine;
             // notice the _fsmModeCode(actor) will modify the _modeCode with transitions code
             // and return the mode code for each sub mode.(refinement)
             String subModeString = _fsmModeCode(((FSMDirector)actor.getDirector()).getController(), inputString, outputString);
-                   _modeCode +="  " + invariantString + _endLine
-                       + "}" + _endLine
-                       + subModeString;
+            _modeCode +="  " + invariantString + _endLine
+                + "}" + _endLine
+                + subModeString;
 
         } else {
             flowString = _graphToText(actor);
             _modeCode += "mode "
-                       + actor.getName()
-                       + "TopMode"
-                       + " ( "
-                       + typedModeParameterString
-                       + " )" + _endLine
-                       + "{" + _endLine
-                       + "  " + outputString + _endLine
-                       + "  " + inputString + _endLine
-                       + "  " + flowString + _endLine
-                       + "  " + invariantString + _endLine
-                       + "}" + _endLine;
+                + actor.getName()
+                + "TopMode"
+                + " ( "
+                + typedModeParameterString
+                + " )" + _endLine
+                + "{" + _endLine
+                + "  " + outputString + _endLine
+                + "  " + inputString + _endLine
+                + "  " + flowString + _endLine
+                + "  " + invariantString + _endLine
+                + "}" + _endLine;
         }
 
 
@@ -702,87 +702,87 @@ public class CharonCodeGenerator extends Attribute {
      *  @return The fsm submode code.
      */
 
-     private String _fsmModeCode(FSMActor fsm, String inputPorts, String outputPorts) throws IllegalActionException {
+    private String _fsmModeCode(FSMActor fsm, String inputPorts, String outputPorts) throws IllegalActionException {
         String subModeCode = "";
         String transitionString = "";
 
         transitionString += "  trans from default to "
-                        + fsm.getInitialState().getName() + _endLine
-                        + "  when ( true ) do { } " + _endLine;
+            + fsm.getInitialState().getName() + _endLine
+            + "  when ( true ) do { } " + _endLine;
 
         ListIterator stateIterator = fsm.entityList().listIterator();
 
         while (stateIterator.hasNext()) {
-          State st = (State) stateIterator.next();
+            State st = (State) stateIterator.next();
 
 
-          if (st.getRefinement() != null) {
-            Actor[] refinements = st.getRefinement();
-            CompositeActor refinement = (CompositeActor) refinements[0];
-            String stParameters = _agentParameters(refinement, false);
-            String typedStParameters = _agentParameters(refinement, true);
-            String flowString = "";
-            String invariantString = "";
+            if (st.getRefinement() != null) {
+                Actor[] refinements = st.getRefinement();
+                CompositeActor refinement = (CompositeActor) refinements[0];
+                String stParameters = _agentParameters(refinement, false);
+                String typedStParameters = _agentParameters(refinement, true);
+                String flowString = "";
+                String invariantString = "";
 
-            _modeCode += "  mode "
-                       + st.getName() + " = "
-                       + st.getName() + "Mode"
-                       + " ( "
-                       + stParameters
-                       + " );"
-                       + _endLine;
-
-
-
-            flowString = _graphToText(refinement);
+                _modeCode += "  mode "
+                    + st.getName() + " = "
+                    + st.getName() + "Mode"
+                    + " ( "
+                    + stParameters
+                    + " );"
+                    + _endLine;
 
 
-            ListIterator assertions = _assertions(refinement).listIterator();
-            while (assertions.hasNext()) {
-              Assertion assertion = (Assertion) assertions.next();
-              if (invariantString.length() == 0) {
-                invariantString = "inv { "
-                                + assertion.assertion.getExpression();
-              } else {
-                invariantString += " ; "
-                                 + assertion.assertion.getExpression();
-              }
-              invariantString += " } ";
+
+                flowString = _graphToText(refinement);
+
+
+                ListIterator assertions = _assertions(refinement).listIterator();
+                while (assertions.hasNext()) {
+                    Assertion assertion = (Assertion) assertions.next();
+                    if (invariantString.length() == 0) {
+                        invariantString = "inv { "
+                            + assertion.assertion.getExpression();
+                    } else {
+                        invariantString += " ; "
+                            + assertion.assertion.getExpression();
+                    }
+                    invariantString += " } ";
+                }
+
+                subModeCode += "mode "
+                    + st.getName() + "Mode "
+                    + "( "
+                    + typedStParameters
+                    + " )" + _endLine
+                    + "{" + _endLine
+                    + "  " + outputPorts + _endLine
+                    + "  " + inputPorts + _endLine
+                    + "  " + flowString + _endLine
+                    + "  " + invariantString + _endLine
+                    + "}" + _endLine;
+
+                LinkedList transitionList = new LinkedList();
+                transitionList.addAll(st.preemptiveTransitionList());
+                transitionList.addAll(st.nonpreemptiveTransitionList());
+                ListIterator transitionItr = transitionList.listIterator();
+                while (transitionItr.hasNext()) {
+                    Transition tr = (Transition) transitionItr.next();
+                    State newState = tr.destinationState();
+                    String guardString = tr.getGuardExpression();
+                    transitionString += "  trans from "
+                        + st.getName() + " to "
+                        + newState.getName() + _endLine
+                        + "  when ( " + guardString + ") " + _endLine
+                        + "  do {}" + _endLine;
+                }
             }
-
-            subModeCode += "mode "
-                         + st.getName() + "Mode "
-                         + "( "
-                         + typedStParameters
-                         + " )" + _endLine
-                         + "{" + _endLine
-                         + "  " + outputPorts + _endLine
-                         + "  " + inputPorts + _endLine
-                         + "  " + flowString + _endLine
-                         + "  " + invariantString + _endLine
-                         + "}" + _endLine;
-
-            LinkedList transitionList = new LinkedList();
-            transitionList.addAll(st.preemptiveTransitionList());
-            transitionList.addAll(st.nonpreemptiveTransitionList());
-            ListIterator transitionItr = transitionList.listIterator();
-            while (transitionItr.hasNext()) {
-                Transition tr = (Transition) transitionItr.next();
-                State newState = tr.destinationState();
-                String guardString = tr.getGuardExpression();
-                transitionString += "  trans from "
-                                + st.getName() + " to "
-                                + newState.getName() + _endLine
-                                + "  when ( " + guardString + ") " + _endLine
-                                + "  do {}" + _endLine;
-            }
-          }
         }
 
         _modeCode += transitionString + _endLine;
 
         return subModeCode;
-     }
+    }
 
     /** Transform the graphic block diagram to text expression.
      *  Assume container only contains atomic actors.
@@ -791,7 +791,7 @@ public class CharonCodeGenerator extends Attribute {
      *  @return txtExpression of graphic block diagram.
      */
 
-     private String _graphToText(CompositeActor container) throws IllegalActionException {
+    private String _graphToText(CompositeActor container) throws IllegalActionException {
         // It is not trivial to transform graph to text.
         // Here, we assume there is only one Integrator and one expression actor.
 
@@ -836,8 +836,8 @@ public class CharonCodeGenerator extends Attribute {
                     }
                 }
                 txtString += "diff { d("
-                           + outputName
-                           + ") == ";
+                    + outputName
+                    + ") == ";
             }
 
             // we trace the input of the integrator
@@ -862,16 +862,16 @@ public class CharonCodeGenerator extends Attribute {
                         if (Expression.class.isInstance(expressionActor)) {
                             Parameter expPara = (Parameter) expressionActor.getAttribute("expression");
                             txtString += expPara.getExpression()
-                                       + " ; } " + _endLine;
+                                + " ; } " + _endLine;
                         } else {
                             throw new IllegalActionException("This should be Expression Atomic Actor!");
                         }
                     }
                 }
             }
-         }
+        }
         return txtString;
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -901,7 +901,7 @@ public class CharonCodeGenerator extends Attribute {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration
-                        = ((TableauFrame)parent).getConfiguration();
+                    = ((TableauFrame)parent).getConfiguration();
 
                 NamedObj _container = (NamedObj)object.getContainer();
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(
@@ -910,7 +910,7 @@ public class CharonCodeGenerator extends Attribute {
                 configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                "Cannot generate code. Perhaps outside Vergil?");
+                        "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

@@ -83,7 +83,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute
      *   SingletonConfigurableAttribute.
      */
     public SingletonConfigurableAttribute(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -119,7 +119,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

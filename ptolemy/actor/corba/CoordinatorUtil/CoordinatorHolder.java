@@ -18,7 +18,7 @@ public final class CoordinatorHolder
     }
 
     public CoordinatorHolder(
-        ptolemy.actor.corba.CoordinatorUtil.Coordinator initialValue) {
+            ptolemy.actor.corba.CoordinatorUtil.Coordinator initialValue) {
         value = initialValue;
     }
 

@@ -1,28 +1,28 @@
 /*
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2003-2005 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
 
 */
@@ -361,7 +361,7 @@ public class Linpack {
      * blas daxpy,ddot
      **/
     final void dgesl(double[][] a, int lda, int n, int[] ipvt, double[] b,
-        int job) {
+            int job) {
         double t;
         int k;
         int kb;
@@ -425,7 +425,7 @@ public class Linpack {
      * jack dongarra, linpack, 3/11/78.
      **/
     final void daxpy(int n, double da, double[] dx, int dx_off, int incx,
-        double[] dy, int dy_off, int incy) {
+            double[] dy, int dy_off, int incy) {
         int i;
         int ix;
         int iy;
@@ -465,7 +465,7 @@ public class Linpack {
      * jack dongarra, linpack, 3/11/78.
      **/
     final double ddot(int n, double[] dx, int dx_off, int incx, double[] dy,
-        int dy_off, int incy) {
+            int dy_off, int incy) {
         double dtemp;
         int i;
         int ix;
@@ -549,7 +549,7 @@ public class Linpack {
 
             for (i = 0; i < n; i++) {
                 dtemp = (dx[ix + dx_off] < 0.0) ? (-dx[ix + dx_off])
-                                                : dx[ix + dx_off];
+                    : dx[ix + dx_off];
 
                 if (dtemp > dmax) {
                     itemp = i;
@@ -565,7 +565,7 @@ public class Linpack {
 
             for (i = 0; i < n; i++) {
                 dtemp = (dx[i + dx_off] < 0.0) ? (-dx[i + dx_off])
-                                               : dx[i + dx_off];
+                    : dx[i + dx_off];
 
                 if (dtemp > dmax) {
                     itemp = i;
@@ -645,7 +645,7 @@ public class Linpack {
      * m double [ldm][n2], matrix of n1 rows and n2 columns
      **/
     final void dmxpy(int n1, double[] y, int n2, int ldm, double[] x,
-        double[][] m) {
+            double[][] m) {
         int j;
         int i;
 
@@ -658,7 +658,7 @@ public class Linpack {
     }
 
     public void setCurrentRun(double mflops_result, double residn_result,
-        double time_result, double eps_result) {
+            double time_result, double eps_result) {
         this.mflops_result = mflops_result;
         this.residn_result = residn_result;
         this.time_result = time_result;

@@ -76,7 +76,7 @@ public class ExpressionCreator implements AtomicActorCreator {
      *  necessary.  The given entity is assumed to be an expression actor.
      */
     public SootClass createAtomicActor(Entity actor, String newClassName,
-        ConstVariableModelAnalysis constAnalysis, Map options) {
+            ConstVariableModelAnalysis constAnalysis, Map options) {
         Expression entity = (Expression) actor;
         SootClass entityClass = PtolemyUtilities.actorClass;
 
@@ -89,7 +89,7 @@ public class ExpressionCreator implements AtomicActorCreator {
         // Create methods that will compute and set the values of the
         // parameters of this actor.
         ModelTransformer.createAttributeComputationFunctions(entity, entity,
-            entityInstanceClass, constAnalysis);
+                entityInstanceClass, constAnalysis);
 
         // Record everything that the class creates.
         HashMap tempCreatedMap = new HashMap();
@@ -108,11 +108,11 @@ public class ExpressionCreator implements AtomicActorCreator {
             // Populate...
             // Initialize attributes that already exist in the class.
             ModelTransformer.createAttributes(body, entity, thisLocal, entity,
-                thisLocal, entityInstanceClass, tempCreatedMap);
+                    thisLocal, entityInstanceClass, tempCreatedMap);
 
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity, thisLocal,
-                entity, entityInstanceClass, tempCreatedMap);
+                    entity, entityInstanceClass, tempCreatedMap);
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -132,7 +132,7 @@ public class ExpressionCreator implements AtomicActorCreator {
                 nameToType.put(name, port.getType());
 
                 SootField field = new SootField(StringUtilities.sanitizeName(
-                            name) + "Token", type);
+                                                        name) + "Token", type);
                 entityInstanceClass.addField(field);
                 nameToField.put(name, field);
             }
@@ -176,24 +176,24 @@ public class ExpressionCreator implements AtomicActorCreator {
                     SootField portField = entityInstanceClass.getFieldByName(StringUtilities
                             .sanitizeName(name));
                     units.add(Jimple.v().newAssignStmt(portLocal,
-                            Jimple.v().newInstanceFieldRef(thisLocal, portField)));
+                                      Jimple.v().newInstanceFieldRef(thisLocal, portField)));
                     units.add(Jimple.v().newAssignStmt(hasTokenLocal,
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                PtolemyUtilities.hasTokenMethod,
-                                IntConstant.v(0))));
+                                      Jimple.v().newVirtualInvokeExpr(portLocal,
+                                              PtolemyUtilities.hasTokenMethod,
+                                              IntConstant.v(0))));
 
                     Stmt target = Jimple.v().newNopStmt();
                     units.add(Jimple.v().newIfStmt(Jimple.v().newEqExpr(hasTokenLocal,
-                                IntConstant.v(0)), target));
+                                                           IntConstant.v(0)), target));
                     units.add(Jimple.v().newAssignStmt(tokenLocal,
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                PtolemyUtilities.getMethod, IntConstant.v(0))));
+                                      Jimple.v().newVirtualInvokeExpr(portLocal,
+                                              PtolemyUtilities.getMethod, IntConstant.v(0))));
 
                     SootField tokenField = entityInstanceClass.getFieldByName(name
                             + "Token");
                     units.add(Jimple.v().newAssignStmt(Jimple.v()
-                                                             .newInstanceFieldRef(thisLocal,
-                                tokenField), tokenLocal));
+                                      .newInstanceFieldRef(thisLocal,
+                                              tokenField), tokenLocal));
                     units.add(target);
                 }
             }
@@ -215,9 +215,9 @@ public class ExpressionCreator implements AtomicActorCreator {
             SootField portField = entityInstanceClass.getFieldByName(name);
 
             units.add(Jimple.v().newAssignStmt(portLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, portField)));
+                              Jimple.v().newInstanceFieldRef(thisLocal, portField)));
             units.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(portLocal,
-                        PtolemyUtilities.sendMethod, IntConstant.v(0), local)));
+                                                       PtolemyUtilities.sendMethod, IntConstant.v(0), local)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -238,8 +238,8 @@ public class ExpressionCreator implements AtomicActorCreator {
             Stmt insertPoint = Jimple.v().newReturnVoidStmt();
             body.getUnits().add(insertPoint);
             ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                entity, body.getThisLocal(), entity, body.getThisLocal(),
-                entityInstanceClass);
+                    entity, body.getThisLocal(), entity, body.getThisLocal(),
+                    entityInstanceClass);
             LocalNameStandardizer.v().transform(body, "at.lns");
             LocalSplitter.v().transform(body, "at.ls");
         }

@@ -146,8 +146,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
                         System.out.println(
-                            "Object with no semantic object , class: "
-                            + userObject.getClass().getName());
+                                "Object with no semantic object , class: "
+                                + userObject.getClass().getName());
                     }
                 }
             }
@@ -206,11 +206,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // location is a vertex
             String momlInfo = ((NamedObj) locatable).getElementName();
             moml.append("<" + momlInfo + " name=\"" + locatable.getName()
-                + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
-                + "]\" />\n");
+                    + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
+                    + "]\" />\n");
             undoMoml.append("<" + momlInfo + " name=\"" + locatable.getName()
-                + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
-                + "]\" />\n");
+                    + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
+                    + "]\" />\n");
             moml.append("</" + containingElementName + ">\n");
             undoMoml.append("</" + containingElementName + ">\n");
         }

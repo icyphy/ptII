@@ -167,20 +167,20 @@ import ptolemy.util.FileUtilities;
 
    <ol>
    <li> If it is used in a transparent composite actor, then a token provided
-     to a FilePortParameter will never be read.  A transparent composite actor
-     is one without a director.
+   to a FilePortParameter will never be read.  A transparent composite actor
+   is one without a director.
 
-     <br>Workaround: Put a director in the composite.
+   <br>Workaround: Put a director in the composite.
 
    <li> Certain actors read parameter
-     values only during initialization.  During initialization, a
-     FilePortParameter can only have a value set via the parameter (it
-     can't have yet received a token).  So if the initial value
-     is set to the value of the FilePortParameter, then it will
-     see only the parameter value, never the value provided via the
-     port.
+   values only during initialization.  During initialization, a
+   FilePortParameter can only have a value set via the parameter (it
+   can't have yet received a token).  So if the initial value
+   is set to the value of the FilePortParameter, then it will
+   see only the parameter value, never the value provided via the
+   port.
 
-     <br>Workaround: Use a RunCompositeActor to contain the model.
+   <br>Workaround: Use a RunCompositeActor to contain the model.
 
    </ol>
 
@@ -205,7 +205,7 @@ public class FilePortParameter extends PortParameter {
      *   a parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -231,8 +231,8 @@ public class FilePortParameter extends PortParameter {
      *   an parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name,
-        ptolemy.data.Token token)
-        throws IllegalActionException, NameDuplicationException {
+            ptolemy.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -279,7 +279,7 @@ public class FilePortParameter extends PortParameter {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                "Failed to create a file with name '" + name + "'.");
+                    "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -298,10 +298,10 @@ public class FilePortParameter extends PortParameter {
 
         try {
             return FileUtilities.nameToURL(name, getBaseDirectory(),
-                getClass().getClassLoader());
+                    getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot read file '" + name + "'");
+                    "Cannot read file '" + name + "'");
         }
     }
 
@@ -430,7 +430,7 @@ public class FilePortParameter extends PortParameter {
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot open file for writing");
+                    "Cannot open file for writing");
         }
     }
 

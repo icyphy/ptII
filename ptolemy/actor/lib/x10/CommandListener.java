@@ -83,7 +83,7 @@ public class CommandListener extends Receiver {
      *   actor with this name.
      */
     public CommandListener(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.

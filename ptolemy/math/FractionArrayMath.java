@@ -73,7 +73,7 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction[] add(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.add");
         Fraction[] returnValue = new Fraction[length];
 
@@ -100,7 +100,7 @@ public class FractionArrayMath {
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
     public static final Fraction[] append(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -121,8 +121,8 @@ public class FractionArrayMath {
      *  @return A new array of doubles.
      */
     public static final Fraction[] append(final Fraction[] array1,
-        final int idx1, final int length1, final Fraction[] array2,
-        final int idx2, final int length2) {
+            final int idx1, final int length1, final Fraction[] array2,
+            final int idx2, final int length2) {
         Fraction[] returnValue = new Fraction[length1 + length2];
 
         if (length1 > 0) {
@@ -159,7 +159,7 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction dotProduct(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         int length = _commonLength(array1, array2,
                 "FractionArrayMath.dotProduct");
 
@@ -180,7 +180,7 @@ public class FractionArrayMath {
      * @return True if array1 == array2.
      */
     public static final boolean equals(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         boolean output = true;
 
         if (array1.length != array2.length) {
@@ -201,7 +201,7 @@ public class FractionArrayMath {
      *  IllegalArgumentException.
      */
     public static final Fraction[] multiply(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.multiply");
         Fraction[] returnValue = new Fraction[length];
 
@@ -251,7 +251,7 @@ public class FractionArrayMath {
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
     public static final Fraction[] subtract(final Fraction[] array1,
-        final Fraction[] array2) {
+            final Fraction[] array2) {
         int length = _commonLength(array1, array2, "FractionArrayMath.subtract");
         Fraction[] returnValue = new Fraction[length];
 
@@ -306,7 +306,7 @@ public class FractionArrayMath {
      *  format argument.
      */
     public static final String toString(final Fraction[] array,
-        String elementDelimiter, String vectorBegin, String vectorEnd) {
+            String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
@@ -336,22 +336,22 @@ public class FractionArrayMath {
      *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final Fraction[] array1,
-        final Fraction[] array2, String methodName) {
+            final Fraction[] array2, String methodName) {
         if (array1 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : first input array is null.");
+                    + "() : first input array is null.");
         }
 
         if (array2 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : second input array is null.");
+                    + "() : second input array is null.");
         }
 
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : input arrays must have the same length, "
-                + "but the first array has length " + array1.length
-                + " and the second array has length " + array2.length + ".");
+                    + "() : input arrays must have the same length, "
+                    + "but the first array has length " + array1.length
+                    + " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;

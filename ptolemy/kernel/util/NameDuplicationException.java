@@ -73,7 +73,7 @@ public class NameDuplicationException extends KernelException {
      *  @param container The would be container.
      */
     public NameDuplicationException(Nameable container,
-        Nameable wouldBeContainee) {
+            Nameable wouldBeContainee) {
         this(container, wouldBeContainee, null);
     }
 
@@ -87,23 +87,23 @@ public class NameDuplicationException extends KernelException {
      *  @param detail A message.
      */
     public NameDuplicationException(Nameable container,
-        Nameable wouldBeContainee, String detail) {
+            Nameable wouldBeContainee, String detail) {
         if (getFullName(container).equals("")) {
             // Note that if wouldBeContainee is null, then we get
             // the 'Attempt to insert object named "" into a'.
             // Note that if wouldBeContainee is the empty string, then we get
             // the 'Attempt to insert object named "<Unnamed Object>" into a'.
             _setMessage("Attempt to insert object named \""
-                + getName(wouldBeContainee)
-                + "\" into a container that already contains"
-                + " an object with that name."
-                + ((detail == null) ? "" : (" " + detail)));
+                    + getName(wouldBeContainee)
+                    + "\" into a container that already contains"
+                    + " an object with that name."
+                    + ((detail == null) ? "" : (" " + detail)));
         } else {
             _setMessage("Attempt to insert object named \""
-                + getName(wouldBeContainee) + "\" into container named \""
-                + getFullName(container)
-                + "\", which already contains an object with that name."
-                + ((detail == null) ? "" : (" " + detail)));
+                    + getName(wouldBeContainee) + "\" into container named \""
+                    + getFullName(container)
+                    + "\", which already contains an object with that name."
+                    + ((detail == null) ? "" : (" " + detail)));
         }
     }
 }

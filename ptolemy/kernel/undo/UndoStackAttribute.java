@@ -85,7 +85,7 @@ public class UndoStackAttribute extends SingletonAttribute {
      *   attribute already in the container.
      */
     public UndoStackAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -157,7 +157,7 @@ public class UndoStackAttribute extends SingletonAttribute {
 
                     if (_debugging) {
                         _debug("=======> Merging top two on undo stack:\n"
-                            + mergedAction);
+                                + mergedAction);
                     }
                 }
             }
@@ -181,14 +181,14 @@ public class UndoStackAttribute extends SingletonAttribute {
 
                 if (_debugging) {
                     _debug("=======> Merging action onto redo stack to get:\n"
-                        + mergedAction);
+                            + mergedAction);
                 }
 
                 _inUndo++;
             } else if (_inUndo == 1) {
                 if (_debugging) {
                     _debug("=======> Pushing action onto redo stack:\n"
-                        + action);
+                            + action);
                 }
 
                 _redoEntries.push(action);
@@ -199,8 +199,8 @@ public class UndoStackAttribute extends SingletonAttribute {
 
                 if (_debugging) {
                     _debug(
-                        "=======> Merging redo action onto undo stack to get:\n"
-                        + mergedAction);
+                            "=======> Merging redo action onto undo stack to get:\n"
+                            + mergedAction);
                 }
 
                 _undoEntries.push(mergedAction);
@@ -208,7 +208,7 @@ public class UndoStackAttribute extends SingletonAttribute {
             } else if (_inRedo == 1) {
                 if (_debugging) {
                     _debug("=======> Pushing redo action onto undo stack:\n"
-                        + action);
+                            + action);
                 }
 
                 _undoEntries.push(action);
@@ -216,7 +216,7 @@ public class UndoStackAttribute extends SingletonAttribute {
             } else {
                 if (_debugging) {
                     _debug("=======> Pushing action onto undo stack:\n"
-                        + action);
+                            + action);
                 }
 
                 _undoEntries.push(action);
@@ -302,7 +302,7 @@ public class UndoStackAttribute extends SingletonAttribute {
      *  @return An action that is a merger of the two specified actions.
      */
     private UndoAction _mergeActions(final UndoAction firstAction,
-        final UndoAction secondAction) {
+            final UndoAction secondAction) {
         return new UndoAction() {
                 public void execute() throws Exception {
                     firstAction.execute();
@@ -311,7 +311,7 @@ public class UndoStackAttribute extends SingletonAttribute {
 
                 public String toString() {
                     return "Merged action.\nFirst part:\n" + firstAction
-                    + "\n\nSecond part:\n" + secondAction;
+                        + "\n\nSecond part:\n" + secondAction;
                 }
             };
     }

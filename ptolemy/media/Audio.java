@@ -141,8 +141,8 @@ public class Audio {
         if ((magic[0] != 0x2E) || (magic[1] != 0x73) || (magic[2] != 0x6E)
                 || (magic[3] != 0x64)) {
             throw new IllegalArgumentException(
-                "ptolemy.media.Audio: bad magic number in "
-                + "stream header.  Not an audio file?");
+                    "ptolemy.media.Audio: bad magic number in "
+                    + "stream header.  Not an audio file?");
         }
 
         offset = input.readInt();
@@ -153,7 +153,7 @@ public class Audio {
 
         if ((offset < 0) || (offset > 10000)) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                + " offset value '" + offset + "' is out of range 0-10000");
+                    + " offset value '" + offset + "' is out of range 0-10000");
         }
 
         info = new byte[offset - 24];
@@ -161,12 +161,12 @@ public class Audio {
 
         if (format != 1) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                + " Sorry, only 8-bit mu-law encoded data can be read.");
+                    + " Sorry, only 8-bit mu-law encoded data can be read.");
         }
 
         if (numChannels != 1) {
             throw new IllegalArgumentException("ptolemy.media.Audio:"
-                + " Sorry, only one-channel audio data can be read.");
+                    + " Sorry, only one-channel audio data can be read.");
         }
 
         // Finally read the audio data.
@@ -338,7 +338,7 @@ public class Audio {
      *   not be declared explicitly
      */
     public static double[] readAudio(DataInputStream input)
-        throws IOException {
+            throws IOException {
         Audio audio = new Audio(input);
         return audio.toDouble(0);
     }
@@ -402,9 +402,9 @@ public class Audio {
     /** Return a readable representation of the header data. */
     public String toString() {
         return "file ID tag = " + new String(magic) + "\n" + "offset = "
-        + offset + "\n" + "size = " + size + "\n" + "format code = " + format
-        + "\n" + "sampleRate = " + sampleRate + "\n" + "number of channels = "
-        + numChannels + "\n" + "info field = " + new String(info).trim();
+            + offset + "\n" + "size = " + size + "\n" + "format code = " + format
+            + "\n" + "sampleRate = " + sampleRate + "\n" + "number of channels = "
+            + numChannels + "\n" + "info field = " + new String(info).trim();
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
@@ -464,7 +464,7 @@ public class Audio {
      *  @exception IOException If an I/O error occurs writing to the stream.
      */
     public static void writeAudio(double[] audio, DataOutputStream output)
-        throws IOException {
+            throws IOException {
         Audio obj = new Audio(audio);
         obj.write(output);
     }
@@ -483,17 +483,17 @@ public class Audio {
 
     // lookup table for the exponent.
     private static final byte[] exp_lut = {
-            0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4,
-            4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7
-        };
+        0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4,
+        4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
+        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+        7, 7, 7
+    };
 }

@@ -10,13 +10,13 @@ package ptolemy.actor.corba.CoordinatorUtil;
 public final class CorbaIllegalActionExceptionHolder
     implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException value =
-        null;
+    null;
 
     public CorbaIllegalActionExceptionHolder() {
     }
 
     public CorbaIllegalActionExceptionHolder(
-        ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException initialValue) {
+            ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException initialValue) {
         value = initialValue;
     }
 
@@ -27,11 +27,11 @@ public final class CorbaIllegalActionExceptionHolder
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-        .write(o, value);
+            .write(o, value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-        .type();
+            .type();
     }
 }

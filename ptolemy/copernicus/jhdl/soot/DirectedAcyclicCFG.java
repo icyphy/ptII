@@ -110,7 +110,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
      * create the topology of the graph.
      **/
     protected void _createGraph(BriefBlockGraph bbg)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Save Body
         _bbgraph = bbg;
 
@@ -150,7 +150,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 
         if (sources.size() > 1) {
             throw new IllegalActionException(
-                "There are more than one source nodes");
+                    "There are more than one source nodes");
         }
 
         _source = (Node) sources.iterator().next();

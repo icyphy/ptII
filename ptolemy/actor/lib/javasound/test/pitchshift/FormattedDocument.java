@@ -58,7 +58,7 @@ public class FormattedDocument extends PlainDocument {
     }
 
     public void insertString(int offs, String str, AttributeSet a)
-        throws BadLocationException {
+            throws BadLocationException {
         String currentText = getText(0, getLength());
         String beforeOffset = currentText.substring(0, offs);
         String afterOffset = currentText.substring(offs, currentText.length());
@@ -70,7 +70,7 @@ public class FormattedDocument extends PlainDocument {
         } catch (ParseException e) {
             Toolkit.getDefaultToolkit().beep();
             System.err.println("insertString: could not parse: "
-                + proposedResult);
+                    + proposedResult);
         }
     }
 

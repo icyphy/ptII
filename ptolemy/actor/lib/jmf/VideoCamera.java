@@ -117,7 +117,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *   actor with this name.
      */
     public VideoCamera(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         formatName = new StringAttribute(this, "formatName");
@@ -202,7 +202,7 @@ public class VideoCamera extends Source implements ControllerListener {
             _format = new RGBFormat();
         } else {
             throw new IllegalActionException(this,
-                "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
         }
 
         // Get the list of devices that are compatible with the
@@ -214,8 +214,8 @@ public class VideoCamera extends Source implements ControllerListener {
         // an exception.
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
-                "No video capture devices found by the "
-                + "Java Media Framework.");
+                    "No video capture devices found by the "
+                    + "Java Media Framework.");
         }
 
         // List the devices in the debug window.
@@ -245,10 +245,10 @@ public class VideoCamera extends Source implements ControllerListener {
             _processor = Manager.createProcessor(locator);
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Failed to create a processor for the media locator '"
-                + locator + "'. Note that you may need to run jmfinit, "
-                + "which is found in the JMF directory, for example "
-                + "c:/Program Files/JMF2.1.1/bin");
+                    "Failed to create a processor for the media locator '"
+                    + locator + "'. Note that you may need to run jmfinit, "
+                    + "which is found in the JMF directory, for example "
+                    + "c:/Program Files/JMF2.1.1/bin");
         }
 
         // Make this a control listener.
@@ -259,7 +259,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         if (!_waitForState(Processor.Configured)) {
             throw new IllegalActionException(
-                "Failed to configure the processor.");
+                    "Failed to configure the processor.");
         }
 
         // So I can use it as a player.
@@ -271,7 +271,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         if (trackControls == null) {
             throw new IllegalActionException(
-                "Failed to obtain track controls from the processor.");
+                    "Failed to obtain track controls from the processor.");
         }
 
         // Search for the track control for the video track (vs. audio).
@@ -289,7 +289,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // video track, then we throw an exception here.
         if (videoTrack == null) {
             throw new IllegalActionException(
-                "The input media does not contain a video track.");
+                    "The input media does not contain a video track.");
         }
 
         // Displays the video format in the debug window.
@@ -305,7 +305,7 @@ public class VideoCamera extends Source implements ControllerListener {
             videoTrack.setCodecChain(codec);
         } catch (UnsupportedPlugInException e) {
             throw new IllegalActionException(
-                "The process does not support codec plug ins.");
+                    "The process does not support codec plug ins.");
         }
 
         // Realize the processor.

@@ -1,11 +1,11 @@
 /* RectFix, CGC domain: CGCRectFix.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCRectFix.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,14 +20,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRectFix
 /**
-Generate a fixed-point rectangular pulse of height "height"
-(default 1.0) and width "width" (default 8).
-If "period" is greater than zero, then the pulse is repeated with the
-given period.
+   Generate a fixed-point rectangular pulse of height "height"
+   (default 1.0) and width "width" (default 8).
+   If "period" is greater than zero, then the pulse is repeated with the
+   given period.
 
- @Author Juergen Weiss
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectFix.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Juergen Weiss
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCRectFix.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRectFix extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -65,8 +65,8 @@ public class CGCRectFix extends CGCFix {
         OutputPrecision = new Parameter(this, "OutputPrecision");
         OutputPrecision.setExpression("2.14");
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -79,30 +79,30 @@ public class CGCRectFix extends CGCFix {
     /**
      *  Height of the rectangular pulse. parameter with initial value "1.0".
      */
-     public Parameter height;
+    public Parameter height;
 
     /**
      *  Width of the rectangular pulse. parameter with initial value "8".
      */
-     public Parameter width;
+    public Parameter width;
 
     /**
      *  If greater than zero, the period of the pulse stream. parameter with initial value "0".
      */
-     public Parameter period;
+    public Parameter period;
 
     /**
      *  Internal counting state. parameter with initial value "0".
      */
-     public Parameter count;
+    public Parameter count;
 
     /**
      *  Precision of the output in bits.
-The value of the "height" parameter is cast to this precision and then output.
-If the value cannot be represented by this precision,
-the output is set to its maximum value (or minimum for negative magnitudes). parameter with initial value "2.14".
-     */
-     public Parameter OutputPrecision;
+     The value of the "height" parameter is cast to this precision and then output.
+     If the value cannot be represented by this precision,
+     the output is set to its maximum value (or minimum for negative magnitudes). parameter with initial value "2.14".
+    */
+    public Parameter OutputPrecision;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,39 +111,39 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-super.generateInitializeCode();
-                // if the user specified an invalid precision string, the error
-                // will be automatically reported in the initialize method of
-                // class PrecisionState
-                output.setPrecision(OutputPrecision);
-     }
+        super.generateInitializeCode();
+        // if the user specified an invalid precision string, the error
+        // will be automatically reported in the initialize method of
+        // class PrecisionState
+        output.setPrecision(OutputPrecision);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_SetToZero($ref(output));\n"
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "        FIX_SetToZero($ref(output));\n"
 
-);          addCode(_str_);  }
+                );          addCode(_str_);  }
 
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        if ($ref(count) < $ref(width)) {\n"
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "        if ($ref(count) < $ref(width)) {\n"
 
-);          addCode(_str_);  }
-                super.clearOverflow();
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"                FIX_Assign($ref(output),$ref(height));\n"
+                );          addCode(_str_);  }
+        super.clearOverflow();
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "                FIX_Assign($ref(output),$ref(height));\n"
 
-);          addCode(_str_);  }
-                super.checkOverflow();
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        }\n"
-"        $ref(count)++;\n"
-"        if ($ref(period) > 0 && $ref(count) > $ref(period))\n"
-"                $ref(count) = 0;"
+                );          addCode(_str_);  }
+        super.checkOverflow();
+        { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                "        }\n"
+                "        $ref(count)++;\n"
+                "        if ($ref(period) > 0 && $ref(count) > $ref(period))\n"
+                "                $ref(count) = 0;"
 
-);          addCode(_str_);  }
+                );          addCode(_str_);  }
 
-     }
+    }
 }

@@ -86,7 +86,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ConstantLoopUnroller.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
 
@@ -163,7 +163,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
                             jumpStmt = ifStmt;
                         } else {
                             throw new RuntimeException(
-                                "Two jumps in conditional!");
+                                    "Two jumps in conditional!");
                         }
                     }
                 }
@@ -229,7 +229,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
                 initial = ((IntConstant) Evaluator.getConstantValueOf(counterStmt
-                        .getRightOp())).value;
+                                   .getRightOp())).value;
                 System.out.println("initial = " + initial);
             } else {
                 continue;

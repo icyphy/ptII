@@ -66,7 +66,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
      *   an attribute already in the container.
      */
     public AttributeExpressionAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -96,7 +96,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == attributeName) {
             _attributeName = attributeName.getExpression();
             _icon.setText(_getText());

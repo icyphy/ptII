@@ -181,11 +181,11 @@ public class MetaNodeController extends CompositeEntity
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities.translateTo(newFigure,
-                                        center.getX(), center.getY());
+                    center.getX(), center.getY());
         }
 
         getController().dispatch(new GraphViewEvent(this,
-            GraphViewEvent.NODE_DRAWN, node));
+                                         GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -205,7 +205,7 @@ public class MetaNodeController extends CompositeEntity
         _drawChildren(node);
 
         getController().dispatch(new GraphViewEvent(this,
-                             GraphViewEvent.NODE_DRAWN, node));
+                                         GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -253,7 +253,7 @@ public class MetaNodeController extends CompositeEntity
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionInteractor(
-            (NodeInteractor)getNodeInteractor());
+                (NodeInteractor)getNodeInteractor());
     }
 
     /**
@@ -275,7 +275,7 @@ public class MetaNodeController extends CompositeEntity
         // we assume that the model will remove any edges that are connected.
         model.removeNode(getController(), node);
         getController().getGraphPane().repaint();
-     }
+    }
 
     /**
      * Set the node interactor for this controller
@@ -315,7 +315,7 @@ public class MetaNodeController extends CompositeEntity
             throw new RuntimeException("Renderer " + renderer
                     + " could not be set");
         }
-     }
+    }
 
     /**
      * Render the given node using the node renderer.  Set the interactor

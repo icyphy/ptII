@@ -141,7 +141,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String basePath, String[] args)
-        throws Exception {
+            throws Exception {
         _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
@@ -398,7 +398,7 @@ public class MoMLApplication implements ExecutionListener {
                 try {
                     if (!absoluteFile.exists()) {
                         throw new IOException("File '" + absoluteFile
-                            + "' does not exist.");
+                                + "' does not exist.");
                     }
                 } catch (java.security.AccessControlException accessControl) {
                     IOException exception = new IOException(
@@ -430,11 +430,11 @@ public class MoMLApplication implements ExecutionListener {
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
                     specURL = Thread.currentThread().getContextClassLoader()
-                                    .getResource(spec);
+                        .getResource(spec);
 
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
-                            + "\") returned null.");
+                                + "\") returned null.");
                     } else {
                         // If we have a jar URL, convert spaces to %20
                         // so as to avoid multiple windows with the
@@ -495,7 +495,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [])
      */
     protected String _configurationUsage(String commandTemplate,
-        String[][] commandOptions, String[] commandFlags) {
+            String[][] commandOptions, String[] commandFlags) {
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
                 + "\n\n" + "Options that take values:\n");
         int i;
@@ -503,12 +503,12 @@ public class MoMLApplication implements ExecutionListener {
         // Print any command options from this class first
         for (i = 0; i < _commandOptions.length; i++) {
             result.append(" " + _commandOptions[i][0] + " "
-                + _commandOptions[i][1] + "\n");
+                    + _commandOptions[i][1] + "\n");
         }
 
         for (i = 0; i < commandOptions.length; i++) {
             result.append(" " + commandOptions[i][0] + " "
-                + commandOptions[i][1] + "\n");
+                    + commandOptions[i][1] + "\n");
         }
 
         result.append("\nFlags (do not take values):\n");
@@ -533,7 +533,7 @@ public class MoMLApplication implements ExecutionListener {
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
-                    + "specify alternative configurations:\n");
+                        + "specify alternative configurations:\n");
 
                 for (i = 0; i < configurationDirectories.length; i++) {
                     String configurationName = configurationDirectories[i]
@@ -576,13 +576,13 @@ public class MoMLApplication implements ExecutionListener {
 
                     if (printDefaultConfigurationMessage) {
                         result.append("\t\tuses " + configurationFileName
-                            + "\n");
+                                + "\n");
                     }
                 }
             }
         } catch (Exception ex) {
             result.append("Warning: Failed to find configuration(s) in '"
-                + _basePath + "'" + ex);
+                    + _basePath + "'" + ex);
         }
 
         return result.toString();
@@ -598,7 +598,7 @@ public class MoMLApplication implements ExecutionListener {
      *   configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration()
-        throws Exception {
+            throws Exception {
         return null;
     }
 
@@ -610,7 +610,7 @@ public class MoMLApplication implements ExecutionListener {
      *   configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration()
-        throws Exception {
+            throws Exception {
         return _createDefaultConfiguration();
     }
 
@@ -635,7 +635,7 @@ public class MoMLApplication implements ExecutionListener {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version " + VersionAttribute.CURRENT_VERSION
-                + ", Build $Id$");
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -712,7 +712,7 @@ public class MoMLApplication implements ExecutionListener {
 
                         if (directory == null) {
                             throw new InternalErrorException(
-                                "No model directory!");
+                                    "No model directory!");
                         }
 
                         String key = inURL.toExternalForm();
@@ -758,7 +758,7 @@ public class MoMLApplication implements ExecutionListener {
                             }
 
                             throw new Exception("Failed to parse '" + inURL
-                                + "'" + detailMessage, ex);
+                                    + "'" + detailMessage, ex);
                         }
                     }
                 } else {
@@ -789,8 +789,8 @@ public class MoMLApplication implements ExecutionListener {
                 if (arg.trim().startsWith("-")) {
                     if (i >= (args.length - 1)) {
                         throw new IllegalActionException("Cannot set "
-                            + "parameter " + arg + " when no value is "
-                            + "given.");
+                                + "parameter " + arg + " when no value is "
+                                + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -800,7 +800,7 @@ public class MoMLApplication implements ExecutionListener {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                        + arg);
+                            + arg);
                 }
             }
         }
@@ -848,11 +848,11 @@ public class MoMLApplication implements ExecutionListener {
                         model.requestChange(request);
 
                         /* Formerly (before the change request):
-                        ((Settable)attribute).setExpression(value);
-                        if (attribute instanceof Variable) {
-                            // Force evaluation so that listeners are notified.
-                            ((Variable)attribute).getToken();
-                        }
+                           ((Settable)attribute).setExpression(value);
+                           if (attribute instanceof Variable) {
+                           // Force evaluation so that listeners are notified.
+                           ((Variable)attribute).getToken();
+                           }
                         */
                     }
 
@@ -875,12 +875,12 @@ public class MoMLApplication implements ExecutionListener {
                                 director.requestChange(request);
 
                                 /* Formerly (before change request):
-                                ((Settable)attribute).setExpression(value);
-                                if (attribute instanceof Variable) {
-                                    // Force evaluation so that listeners
-                                    // are notified.
-                                    ((Variable)attribute).getToken();
-                                }
+                                   ((Settable)attribute).setExpression(value);
+                                   if (attribute instanceof Variable) {
+                                   // Force evaluation so that listeners
+                                   // are notified.
+                                   ((Variable)attribute).getToken();
+                                   }
                                 */
                             }
                         }
@@ -891,7 +891,7 @@ public class MoMLApplication implements ExecutionListener {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                    + "No parameter exists with name " + name);
+                        + "No parameter exists with name " + name);
             }
         }
 
@@ -916,7 +916,7 @@ public class MoMLApplication implements ExecutionListener {
      *   if the contents of the URL is not a configuration.
      */
     protected Configuration _readConfiguration(URL specificationURL)
-        throws Exception {
+            throws Exception {
         _parser.reset();
 
         Configuration toplevel = (Configuration) _parser.parse(specificationURL,
@@ -944,7 +944,7 @@ public class MoMLApplication implements ExecutionListener {
     protected String _usage() {
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
-            _commandFlags);
+                _commandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -958,14 +958,14 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-            "-help", "-run", "-runThenExit", "-test", "-version",
-        };
+        "-help", "-run", "-runThenExit", "-test", "-version",
+    };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            { "-class", "<classname>" },
-            { "-<parameter name>", "<parameter value>" },
-        };
+        { "-class", "<classname>" },
+        { "-<parameter name>", "<parameter value>" },
+    };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";

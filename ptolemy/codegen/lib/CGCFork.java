@@ -1,11 +1,11 @@
 /* Fork, CGC domain: CGCFork.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCFork.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,14 +20,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCFork
 /**
-Copy input to all outputs
-<p>
-Each input is copied to every output.  This is done by the way the buffers
-are laid out; no code is required.
+   Copy input to all outputs
+   <p>
+   Each input is copied to every output.  This is done by the way the buffers
+   are laid out; no code is required.
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCFork.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.12 of /users/ptolemy/src/domains/cgc/stars/CGCFork.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFork extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -46,9 +46,9 @@ public class CGCFork extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setMultiport(true);
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -70,13 +70,13 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 0;
-     }
+        return 0;
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-forkInit(input,output);
-     }
+        forkInit(input,output);
+    }
 }

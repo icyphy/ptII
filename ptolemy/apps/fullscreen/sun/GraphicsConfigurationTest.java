@@ -22,35 +22,35 @@ public class GraphicsConfigurationTest {
                 break;
             }
             System.out.println("GraphicsDevices[" + i + "]: "
-                               + graphicsDeviceType + " "
-                               + graphicsDevices[i]);
+                    + graphicsDeviceType + " "
+                    + graphicsDevices[i]);
             GraphicsConfiguration[] graphicsConfigurations =
                 graphicsDevices[i].getConfigurations();
             for (int j = 0; j < graphicsConfigurations.length; j++) {
                 System.out.println("GraphicsConfigurations[" + j + "]: "
-                                   + graphicsConfigurations[j]);
+                        + graphicsConfigurations[j]);
                 System.out.println("GraphicsConfigurations[" + j + "]"
-                                   + graphicsConfigurations[j]);
+                        + graphicsConfigurations[j]);
                 System.out.println("  ColorModel: "
-                                   + graphicsConfigurations[j]
-                                   .getColorModel());
+                        + graphicsConfigurations[j]
+                        .getColorModel());
                 System.out.println("  Bounds: "
-                                   + graphicsConfigurations[j].getBounds());
+                        + graphicsConfigurations[j].getBounds());
                 virtualBounds =
                     virtualBounds.union(graphicsConfigurations[j].getBounds());
-            BufferCapabilities bufferCapabilities =
-                graphicsConfigurations[j].getBufferCapabilities();
-            System.out.println("BufferCapabilities: "
-                               + bufferCapabilities
-                               + " getFlipContents:"
-                               + bufferCapabilities.getFlipContents()
-                               + " isFullScreenRequired:"
-                               + bufferCapabilities.isFullScreenRequired()
-                               + " isPageFlipping:"
-                               + bufferCapabilities.isPageFlipping()
-                               + " isMultiBufferAvailable:"
-                               + bufferCapabilities.isMultiBufferAvailable());
-           }
+                BufferCapabilities bufferCapabilities =
+                    graphicsConfigurations[j].getBufferCapabilities();
+                System.out.println("BufferCapabilities: "
+                        + bufferCapabilities
+                        + " getFlipContents:"
+                        + bufferCapabilities.getFlipContents()
+                        + " isFullScreenRequired:"
+                        + bufferCapabilities.isFullScreenRequired()
+                        + " isPageFlipping:"
+                        + bufferCapabilities.isPageFlipping()
+                        + " isMultiBufferAvailable:"
+                        + bufferCapabilities.isMultiBufferAvailable());
+            }
         }
     }
 }

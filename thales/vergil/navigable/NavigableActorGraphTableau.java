@@ -60,7 +60,7 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param workspace The workspace.
      */
     public NavigableActorGraphTableau(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -70,7 +70,7 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param name The name.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -81,8 +81,8 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name,
-        LibraryAttribute defaultLibrary)
-        throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
@@ -94,8 +94,8 @@ public class NavigableActorGraphTableau extends Tableau {
 
             if (!(model instanceof CompositeEntity)) {
                 throw new IllegalActionException(this,
-                    "Cannot graphically edit a model "
-                    + "that is not a CompositeEntity. Model is a " + model);
+                        "Cannot graphically edit a model "
+                        + "that is not a CompositeEntity. Model is a " + model);
             }
 
             CompositeEntity entity = (CompositeEntity) model;
@@ -142,7 +142,7 @@ public class NavigableActorGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

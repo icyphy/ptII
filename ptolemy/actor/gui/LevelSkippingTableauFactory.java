@@ -64,7 +64,7 @@ public class LevelSkippingTableauFactory extends TableauFactory {
      *   an attribute already in the container.
      */
     public LevelSkippingTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         entityName = new StringParameter(this, "entityName");

@@ -1,30 +1,30 @@
 /* Base class for code generator helper.
 
- Copyright (c) 2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 
 package ptolemy.codegen.kernel;
 
@@ -172,7 +172,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
                 && tokenizer.countTokens() != 5) {
             throw new IllegalActionException(_component,
-                        "Reference not found: " + name);
+                    "Reference not found: " + name);
         }
 
         // Get the referenced name.
@@ -380,7 +380,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // Do the trim so "$ ref (" can be recognized.
                 String token = (tokenizer.nextToken()).trim();
                 if ((token.equals("ref") || token.equals("val")
-                        || token.equals("size")) && tokenizer.hasMoreTokens()) {
+                            || token.equals("size")) && tokenizer.hasMoreTokens()) {
                     if (token.equals("ref")) {
                         flag = 1;
                     } else if (token.equals("val")) {
@@ -401,7 +401,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 if (name.trim().equals("")) {
                                     throw new IllegalActionException(_component,
                                             "Illegal expression: $" + token + "("
-                                                + name + ")");
+                                            + name + ")");
                                 }
                                 name = name.trim();
                                 if (flag == 1) {
@@ -471,7 +471,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             String token = tokenizer.nextToken();
             if (token.equals("#")) {
                 int channel = new Integer(tokenizer.nextToken().trim())
-                        .intValue();
+                    .intValue();
                 if (channel < 0) {
                     throw new IllegalActionException(_component,
                             "Invalid channel number in " + name);
@@ -480,7 +480,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (tokenizer.hasMoreTokens()) {
                     if (tokenizer.nextToken().equals(",")) {
                         int offset = new Integer(tokenizer.nextToken().trim())
-                                .intValue();
+                            .intValue();
                         if (offset < 0) {
                             throw new IllegalActionException(_component,
                                     "Invalid offset in" + name);
@@ -490,7 +490,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             } else if (token.equals(",")) {
                 int offset = new Integer(tokenizer.nextToken().trim())
-                        .intValue();
+                    .intValue();
                 if (offset < 0 || tokenizer.hasMoreTokens()) {
                     throw new IllegalActionException(_component,
                             "Invalid offset in " + name);

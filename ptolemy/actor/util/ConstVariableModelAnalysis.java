@@ -105,7 +105,7 @@ public class ConstVariableModelAnalysis {
      *  during analysis.
      */
     public ConstVariableModelAnalysis(Entity model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         this(model, Collections.EMPTY_SET);
     }
 
@@ -119,7 +119,7 @@ public class ConstVariableModelAnalysis {
      *  during analysis.
      */
     public ConstVariableModelAnalysis(Entity model, Set variableSet)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _variableToChangeContext = new HashMap();
 
         for (Iterator variables = variableSet.iterator(); variables.hasNext();) {
@@ -142,7 +142,7 @@ public class ConstVariableModelAnalysis {
      *  recomputing all of the information from scratch.
      */
     public void addDependencyDeclaration(DependencyDeclaration declaration)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _addDependencyDeclaration(declaration);
         _analyzeAllVariables();
     }
@@ -150,7 +150,7 @@ public class ConstVariableModelAnalysis {
     /** Return the analysis that is active for the given object.
      */
     public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CompositeActor toplevel = (CompositeActor) object.toplevel();
         Manager manager = toplevel.getManager();
 
@@ -179,10 +179,10 @@ public class ConstVariableModelAnalysis {
      *  not a constant parameter, as determined by this analysis.
      */
     public Token getConstantValue(Variable variable)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!isConstant(variable)) {
             throw new IllegalActionException(variable,
-                "This variable does not have a constant value.");
+                    "This variable does not have a constant value.");
         }
 
         return variable.getToken();
@@ -222,7 +222,7 @@ public class ConstVariableModelAnalysis {
         Set variableSet = new HashSet();
 
         for (Iterator i = _variableToChangeContext.keySet().iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             Object key = i.next();
             Object value = _variableToChangeContext.get(key);
 
@@ -247,7 +247,7 @@ public class ConstVariableModelAnalysis {
      */
     public boolean isIndependent(Variable variable) {
         if (_dependencyGraph.backwardReachableNodes(_dependencyGraph.node(
-                        variable)).size() > 0) {
+                                                            variable)).size() > 0) {
             return false;
         } else {
             return true;
@@ -263,7 +263,7 @@ public class ConstVariableModelAnalysis {
         Node targetNode = _getNode(variable);
 
         for (Iterator dependents = declaration.getDependents().iterator();
-                dependents.hasNext();) {
+             dependents.hasNext();) {
             Variable dependent = (Variable) dependents.next();
             Node dependentNode = _getNode(dependent);
 
@@ -306,7 +306,7 @@ public class ConstVariableModelAnalysis {
     // given map from each dynamic parameter deeply contained in the
     // given entity to the change context of that parameter.
     private void _collectConstraints(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (container instanceof Variable) {
             Variable variable = (Variable) container;
             _collectVariableConstraints(variable);
@@ -325,7 +325,7 @@ public class ConstVariableModelAnalysis {
             // with a port?
             if ((port != null) && (port.getWidth() > 0)) {
                 _updateChangeContext(parameter,
-                    (Entity) parameter.getContainer());
+                        (Entity) parameter.getContainer());
             }
         }
 
@@ -336,13 +336,13 @@ public class ConstVariableModelAnalysis {
             for (Iterator variables = list.iterator(); variables.hasNext();) {
                 Variable variable = (Variable) variables.next();
                 _updateChangeContext(variable,
-                    ((ExplicitChangeContext) container).getContext());
+                        ((ExplicitChangeContext) container).getContext());
             }
         }
 
         // Recurse through the whole model.
         for (Iterator attributes = container.attributeList().iterator();
-                attributes.hasNext();) {
+             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             _collectConstraints(attribute);
         }
@@ -351,14 +351,14 @@ public class ConstVariableModelAnalysis {
             CompositeEntity composite = (CompositeEntity) container;
 
             for (Iterator entities = composite.entityList().iterator();
-                    entities.hasNext();) {
+                 entities.hasNext();) {
                 _collectConstraints((Entity) entities.next());
             }
         }
 
         if (container instanceof Entity) {
             for (Iterator ports = ((Entity) container).portList().iterator();
-                    ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port) ports.next();
                 _collectConstraints(port);
             }
@@ -377,8 +377,8 @@ public class ConstVariableModelAnalysis {
             Entity changeContext = (Entity) _variableToChangeContext.get(variable);
 
             for (Iterator outputEdges = _dependencyGraph.outputEdges(node)
-                                                        .iterator();
-                    outputEdges.hasNext();) {
+                     .iterator();
+                 outputEdges.hasNext();) {
                 Node sinkNode = ((Edge) outputEdges.next()).sink();
                 Variable targetVariable = (Variable) sinkNode.getWeight();
 
@@ -404,7 +404,7 @@ public class ConstVariableModelAnalysis {
     // be at least the given change context.
     // return true if a change occurred
     private final boolean _updateChangeContext(Variable variable,
-        Entity changeContext) {
+            Entity changeContext) {
         Entity oldChangeContext = (Entity) _variableToChangeContext.get(variable);
 
         //         System.out.println("variable = " + variable);

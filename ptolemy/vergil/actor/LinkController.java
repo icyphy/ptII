@@ -227,7 +227,7 @@ public class LinkController extends BasicEdgeController {
 
                 if (relation instanceof TypedIORelation) {
                     StringAttribute _colorAttr = (StringAttribute) (relation
-                        .getAttribute("_color"));
+                            .getAttribute("_color"));
 
                     if (_colorAttr != null) {
                         String _color = _colorAttr.getExpression();
@@ -235,7 +235,7 @@ public class LinkController extends BasicEdgeController {
                     }
 
                     StringAttribute _explAttr = (StringAttribute) (relation
-                        .getAttribute("_explanation"));
+                            .getAttribute("_explanation"));
 
                     if (_explAttr != null) {
                         c.setToolTipText(_explAttr.getExpression());
@@ -260,7 +260,7 @@ public class LinkController extends BasicEdgeController {
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             ActorGraphModel model = (ActorGraphModel) getController()
-                                                          .getGraphModel();
+                .getGraphModel();
 
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
@@ -273,7 +273,7 @@ public class LinkController extends BasicEdgeController {
 
             default:
                 throw new IllegalStateException(
-                    "Cannot handle both ends of an edge being dragged.");
+                        "Cannot handle both ends of an edge being dragged.");
             }
 
             // Set the width correctly, so we know whether or not it

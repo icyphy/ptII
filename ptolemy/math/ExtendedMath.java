@@ -57,7 +57,7 @@ public class ExtendedMath {
         // FIXME: Is the range of the argument correct?
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
-                + "is required to be greater than 1.  Got " + x);
+                    + "is required to be greater than 1.  Got " + x);
         }
 
         return Math.log(x + Math.sqrt((x * x) - 1));

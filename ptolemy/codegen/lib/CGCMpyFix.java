@@ -1,11 +1,11 @@
 /* MpyFix, CGC domain: CGCMpyFix.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCMpyFix.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCMpyFix
 /**
-Output the product of the inputs, as a fixed-point value.
+   Output the product of the inputs, as a fixed-point value.
 
- @Author Jyergen Weiss
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCMpyFix.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Jyergen Weiss
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/stars/CGCMpyFix.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCMpyFix extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -61,9 +61,9 @@ public class CGCMpyFix extends CGCFix {
         index = new Parameter(this, "index");
         index.setExpression("1");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -80,30 +80,30 @@ noInternalState();
 
     /**
      *  Indicates whether or not to keep the precision of the arriving particles
-as they are:  YES keeps the same precision, and NO casts the inputs
-to the precision specified by the parameter "InputPrecision". parameter with initial value "YES".
-     */
-     public Parameter ArrivingPrecision;
+     as they are:  YES keeps the same precision, and NO casts the inputs
+     to the precision specified by the parameter "InputPrecision". parameter with initial value "YES".
+    */
+    public Parameter ArrivingPrecision;
 
     /**
      *  Sets the precision of the input in bits.
-The input particles are only cast to this precision if the
-parameter "ArrivingPrecision" is set to NO. parameter with initial value "2.14".
-     */
-     public Parameter InputPrecision;
+     The input particles are only cast to this precision if the
+     parameter "ArrivingPrecision" is set to NO. parameter with initial value "2.14".
+    */
+    public Parameter InputPrecision;
 
     /**
      *  Sets the precision of the output in bits.
-This is the precision that will hold the result of the product of the inputs.
-When the value of the product extends outside of the precision,
-the output is set to its maximum value (or minimum for negative magnitudes). parameter with initial value "2.14".
-     */
-     public Parameter OutputPrecision;
+     This is the precision that will hold the result of the product of the inputs.
+     When the value of the product extends outside of the precision,
+     the output is set to its maximum value (or minimum for negative magnitudes). parameter with initial value "2.14".
+    */
+    public Parameter OutputPrecision;
 
     /**
      *  index for multiple input trace parameter with initial value "1".
      */
-     public Parameter index;
+    public Parameter index;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -112,44 +112,44 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-super.generateInitializeCode();
+        super.generateInitializeCode();
 
-                if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
-                    input.setPrecision(InputPrecision);
-                output.setPrecision(OutputPrecision);
-     }
+        if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
+            input.setPrecision(InputPrecision);
+        output.setPrecision(OutputPrecision);
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-// insert code to clear overflow flag
-                super.clearOverflow();
+        // insert code to clear overflow flag
+        super.clearOverflow();
 
-                // avoid FIX_Assign if possible
-                if (input.numberPorts() == 2)
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Mul($ref(output), $ref(input#1),$ref(input#2));\n"
+        // avoid FIX_Assign if possible
+        if (input.numberPorts() == 2)
+            { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                    "        FIX_Mul($ref(output), $ref(input#1),$ref(input#2));\n"
 
-);          addCode(_str_);  }
+                    );          addCode(_str_);  }
 
-                else {
-                        // initialize the product
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Assign($ref(output),$ref(input#1));\n"
+        else {
+            // initialize the product
+            { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                    "        FIX_Assign($ref(output),$ref(input#1));\n"
 
-);          addCode(_str_);  }
+                    );          addCode(_str_);  }
 
-                        for (int i=2; i <= input.numberPorts(); i++) {
-                            index = i;
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        FIX_Mul($ref(output), $ref(output),$ref(input#index));\n"
+            for (int i=2; i <= input.numberPorts(); i++) {
+                index = i;
+                { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                        "        FIX_Mul($ref(output), $ref(output),$ref(input#index));\n"
 
-);          addCode(_str_);  }
-                        }
-                }
+                        );          addCode(_str_);  }
+            }
+        }
 
-                // insert code to test overflow flag
-                super.checkOverflow();
-     }
+        // insert code to test overflow flag
+        super.checkOverflow();
+    }
 }

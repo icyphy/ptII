@@ -104,9 +104,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-            _entityController._lookInsideAction);
+                _entityController._lookInsideAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-            _classDefinitionController._lookInsideAction);
+                _classDefinitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the actor being iterated.
@@ -239,7 +239,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         }
 
         throw new RuntimeException("Node with unknown semantic object: "
-            + object);
+                + object);
     }
 
     /** Set the configuration.  The configuration is used when

@@ -81,7 +81,7 @@ public class PlotTableau extends Tableau {
      *   attribute already in the container.
      */
     public PlotTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         uri = new URIAttribute(this, "uri");
@@ -103,14 +103,14 @@ public class PlotTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == uri) {
             try {
                 URL toRead = new URL(uri.getURI().toString());
                 _parseURL(toRead);
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Invalid URL specification.");
+                        "Invalid URL specification.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -125,8 +125,8 @@ public class PlotTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
-                "Frame for PlotTableau must be an instance of "
-                + "PlotTableauFrame.");
+                    "Frame for PlotTableau must be an instance of "
+                    + "PlotTableauFrame.");
         }
 
         super.setFrame(frame);
@@ -186,7 +186,7 @@ public class PlotTableau extends Tableau {
             }
         } catch (Exception ex) {
             MessageHandler.error("Failed to read plot data: "
-                + url.toExternalForm(), ex);
+                    + url.toExternalForm(), ex);
         }
     }
 
@@ -210,7 +210,7 @@ public class PlotTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

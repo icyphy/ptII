@@ -70,7 +70,7 @@ public class ArrayExtract extends Transformer {
      *   actor with this name.
      */
     public ArrayExtract(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set type constraints.
@@ -154,7 +154,7 @@ public class ArrayExtract extends Transformer {
             int extractLengthValue = ((IntToken) extractLength.getToken())
                 .intValue();
             int destinationPositionValue = ((IntToken) destinationPosition
-                .getToken()).intValue();
+                    .getToken()).intValue();
             int outputArrayLengthValue = ((IntToken) outputArrayLength.getToken())
                 .intValue();
 
@@ -168,18 +168,18 @@ public class ArrayExtract extends Transformer {
                 }
 
                 System.arraycopy(inputArray, sourcePositionValue, outputArray,
-                    destinationPositionValue, extractLengthValue);
+                        destinationPositionValue, extractLengthValue);
 
                 for (int i = destinationPositionValue + extractLengthValue;
-                        i < outputArrayLengthValue; i++) {
+                     i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
 
                 output.send(0, new ArrayToken(outputArray));
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                    "Parameter values out of range for the array supplied."
-                    + "inputArray has length" + inputArray.length);
+                        "Parameter values out of range for the array supplied."
+                        + "inputArray has length" + inputArray.length);
             }
         }
     }

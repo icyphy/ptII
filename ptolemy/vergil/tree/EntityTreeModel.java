@@ -224,7 +224,7 @@ public class EntityTreeModel implements TreeModel {
                         }
 
                         valueForPathChanged(new TreePath(path.toArray()),
-                            locality);
+                                locality);
                     }
                 });
         }

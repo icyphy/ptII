@@ -88,7 +88,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public CheckBoxStyle(Parameter container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -131,8 +131,8 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 
         if (!(getContainer() instanceof Parameter)) {
             throw new IllegalActionException(getContainer(),
-                "CheckBoxStyle can only be "
-                + "contained by instances of Parameter.");
+                    "CheckBoxStyle can only be "
+                    + "contained by instances of Parameter.");
         }
 
         Parameter param = (Parameter) getContainer();
@@ -140,8 +140,8 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 
         if (!(current instanceof BooleanToken)) {
             throw new IllegalActionException(getContainer(),
-                "CheckBoxStyle can only be "
-                + "used for boolean-valued parameters");
+                    "CheckBoxStyle can only be "
+                    + "used for boolean-valued parameters");
         }
 
         query.addCheckBox(name, name, ((BooleanToken) current).booleanValue());
@@ -159,10 +159,10 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && !(container instanceof Parameter)) {
             throw new IllegalActionException(this, container,
-                "CheckBoxStyle can only be contained by a Parameter.");
+                    "CheckBoxStyle can only be contained by a Parameter.");
         }
 
         super.setContainer(container);

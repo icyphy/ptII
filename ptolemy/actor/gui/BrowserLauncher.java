@@ -123,7 +123,7 @@ public class BrowserLauncher {
 
         if (BrowserLauncher.delayExit) {
             System.out.println("Delaying exit for 10 seconds because we"
-                + "may have copied a jar: file");
+                    + "may have copied a jar: file");
 
             try {
                 Thread.sleep(10000);
@@ -156,7 +156,7 @@ public class BrowserLauncher {
     public static void openURL(String url) throws IOException {
         if (!loadedWithoutErrors) {
             throw new IOException("Exception in finding browser: "
-                + errorMessage);
+                    + errorMessage);
         }
 
         if (!url.startsWith("http:")) {
@@ -183,8 +183,8 @@ public class BrowserLauncher {
 
                     if ((entryURL != null) && !url.startsWith("jar:")) {
                         System.out.println("BrowserLauncher: Could not "
-                            + "find '" + url + "', but '" + entryURL
-                            + "' was found.");
+                                + "find '" + url + "', but '" + entryURL
+                                + "' was found.");
                         url = entryURL.toString();
                     } else {
                         if (url.startsWith("jar:")) {
@@ -211,13 +211,13 @@ public class BrowserLauncher {
                             }
 
                             System.out.println("BrowserLauncher: Could not "
-                                + "find '" + old + "', but jar url'" + url
-                                + "' was found.");
+                                    + "find '" + old + "', but jar url'" + url
+                                    + "' was found.");
                         }
                     }
                 } catch (ClassNotFoundException ex) {
                     System.err.println("BrowserLauncher: Internal error, "
-                        + " Could not find " + refClassName);
+                            + " Could not find " + refClassName);
                 }
             }
         }
@@ -240,17 +240,17 @@ public class BrowserLauncher {
             try {
                 aeDesc = aeDescConstructor.newInstance(new Object[] { url });
                 putParameter.invoke(browser,
-                    new Object[] { keyDirectObject, aeDesc });
+                        new Object[] { keyDirectObject, aeDesc });
                 sendNoReply.invoke(browser, new Object[] {  });
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
-                    + "creating AEDesc: " + ite.getMessage());
+                        + "creating AEDesc: " + ite.getMessage());
             } catch (IllegalAccessException iae) {
                 throw new IOException("IllegalAccessException while "
-                    + "building AppleEvent: " + iae.getMessage());
+                        + "building AppleEvent: " + iae.getMessage());
             } catch (InstantiationException ie) {
                 throw new IOException("InstantiationException while "
-                    + "creating AEDesc: " + ie.getMessage());
+                        + "creating AEDesc: " + ie.getMessage());
             } finally {
                 // Encourage it to get disposed if it was created
                 aeDesc = null;
@@ -286,7 +286,7 @@ public class BrowserLauncher {
                 }
             } else {
                 throw new IOException("Unable to create an Internet "
-                    + "Config instance: " + result);
+                        + "Config instance: " + result);
             }
 
             break;
@@ -297,10 +297,10 @@ public class BrowserLauncher {
                 openURL.invoke(null, new Object[] { url });
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
-                    + "calling openURL: " + ite.getMessage());
+                        + "calling openURL: " + ite.getMessage());
             } catch (IllegalAccessException iae) {
                 throw new IOException("IllegalAccessException while "
-                    + "calling openURL: " + iae.getMessage());
+                        + "calling openURL: " + iae.getMessage());
             }
 
             break;
@@ -311,10 +311,10 @@ public class BrowserLauncher {
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
             Process process = Runtime.getRuntime().exec(new String[] {
-                        (String) browser, FIRST_WINDOWS_PARAMETER,
-                        SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
-                        '"' + url + '"'
-                    });
+                (String) browser, FIRST_WINDOWS_PARAMETER,
+                SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
+                '"' + url + '"'
+            });
 
             // This avoids a memory leak on some versions of Java on Windows.
             // That's hinted at in
@@ -324,7 +324,7 @@ public class BrowserLauncher {
                 process.exitValue();
             } catch (InterruptedException ie) {
                 throw new IOException("InterruptedException while "
-                    + "launching browser: " + ie.getMessage());
+                        + "launching browser: " + ie.getMessage());
             }
 
             break;
@@ -335,11 +335,11 @@ public class BrowserLauncher {
             // First, attempt to open the URL in a currently running
             // session of Netscape
             process = Runtime.getRuntime().exec(new String[] {
-                        (String) browser, NETSCAPE_REMOTE_PARAMETER,
+                (String) browser, NETSCAPE_REMOTE_PARAMETER,
                         
-                    NETSCAPE_OPEN_PARAMETER_START + url
-                        + NETSCAPE_OPEN_PARAMETER_END
-                    });
+                NETSCAPE_OPEN_PARAMETER_START + url
+                + NETSCAPE_OPEN_PARAMETER_END
+            });
 
             try {
                 exitCode = process.waitFor();
@@ -349,7 +349,7 @@ public class BrowserLauncher {
                 }
             } catch (InterruptedException ie) {
                 throw new IOException("InterruptedException while "
-                    + "launching browser: " + ie.getMessage());
+                        + "launching browser: " + ie.getMessage());
             }
 
             break;
@@ -364,8 +364,8 @@ public class BrowserLauncher {
 
         if (exitCode != 0) {
             throw new IOException("Process exec'd by BrowserLauncher returned "
-                + exitCode + "." + "\n url was: " + url + "\n browser was: "
-                + browser);
+                    + exitCode + "." + "\n url was: " + url + "\n browser was: "
+                    + browser);
         }
     }
 
@@ -588,7 +588,7 @@ public class BrowserLauncher {
      * does not cause any problems on other platforms.
      */
     private native static int ICLaunchURL(int instance, byte[] hint,
-        byte[] data, int len, int[] selectionStart, int[] selectionEnd);
+            byte[] data, int len, int[] selectionStart, int[] selectionEnd);
 
     private native static int ICStart(int[] instance, int signature);
 
@@ -613,15 +613,15 @@ public class BrowserLauncher {
                 aeDescClass = Class.forName("com.apple.MacOS.AEDesc");
 
                 aeTargetConstructor = aeTargetClass.getDeclaredConstructor(new Class[] {
-                            int.class
-                        });
+                    int.class
+                });
                 appleEventConstructor = appleEventClass.getDeclaredConstructor(new Class[] {
-                            int.class, int.class, aeTargetClass, int.class,
-                            int.class
-                        });
+                    int.class, int.class, aeTargetClass, int.class,
+                    int.class
+                });
                 aeDescConstructor = aeDescClass.getDeclaredConstructor(new Class[] {
-                            String.class
-                        });
+                    String.class
+                });
 
                 makeOSType = osUtilsClass.getDeclaredMethod("makeOSType",
                         new Class[] { String.class });
@@ -696,11 +696,11 @@ public class BrowserLauncher {
             try {
                 Class linker = Class.forName("com.apple.mrj.jdirect.Linker");
                 Constructor constructor = linker.getConstructor(new Class[] {
-                            Class.class
-                        });
+                    Class.class
+                });
                 linkage = constructor.newInstance(new Object[] {
-                            BrowserLauncher.class
-                        });
+                    BrowserLauncher.class
+                });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
                 return false;
@@ -766,14 +766,14 @@ public class BrowserLauncher {
                 Integer finderCreatorCode = (Integer) makeOSType.invoke(null,
                         new Object[] { FINDER_CREATOR });
                 Object aeTarget = aeTargetConstructor.newInstance(new Object[] {
-                            finderCreatorCode
-                        });
+                    finderCreatorCode
+                });
                 Integer gurlType = (Integer) makeOSType.invoke(null,
                         new Object[] { GURL_EVENT });
                 Object appleEvent = appleEventConstructor.newInstance(new Object[] {
-                            gurlType, gurlType, aeTarget, kAutoGenerateReturnID,
-                            kAnyTransactionID
-                        });
+                    gurlType, gurlType, aeTarget, kAutoGenerateReturnID,
+                    kAnyTransactionID
+                });
 
                 // Don't set browser = appleEvent because then the
                 // next time we call locateBrowser(), we'll get the

@@ -59,7 +59,7 @@ public class MonitorValue extends Sink {
      *   actor with this name.
      */
     public MonitorValue(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         value = new Parameter(this, "value");

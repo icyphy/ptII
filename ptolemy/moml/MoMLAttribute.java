@@ -79,7 +79,7 @@ public class MoMLAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public MoMLAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -106,7 +106,7 @@ public class MoMLAttribute extends Attribute {
      *  @param depth The depth in the hierarchy, to determine indenting.
      */
     public void writeMoMLDescription(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         if (_momlDescription.size() > 0) {
             Iterator strings = _momlDescription.iterator();
 
@@ -130,7 +130,7 @@ public class MoMLAttribute extends Attribute {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }

@@ -82,7 +82,7 @@ public class SideEffectAnalysis {
 
         // Process all the reachableMethods.
         for (Iterator reachableMethods = _reachables.listener();
-                reachableMethods.hasNext();) {
+             reachableMethods.hasNext();) {
             _addMethod((SootMethod) reachableMethods.next());
         }
 
@@ -97,7 +97,7 @@ public class SideEffectAnalysis {
                 _setEffectFlow(nextMethod, out);
 
                 for (Iterator invokers = new Sources(callGraph.edgesInto(
-                                nextMethod)); invokers.hasNext();) {
+                                                             nextMethod)); invokers.hasNext();) {
                     SootMethod invoker = (SootMethod) invokers.next();
 
                     if (_reachables.contains(invoker)) {
@@ -153,7 +153,7 @@ public class SideEffectAnalysis {
         if (flow == null) {
             if (_debug) {
                 System.out.println("SideEffectAnalysis: Method not found: "
-                    + method);
+                        + method);
             }
 
             return null;
@@ -176,7 +176,7 @@ public class SideEffectAnalysis {
         if (flow == null) {
             if (_debug) {
                 System.out.println("SideEffectAnalysis: Method not found: "
-                    + method);
+                        + method);
             }
 
             return true;
@@ -194,7 +194,7 @@ public class SideEffectAnalysis {
         if (flow == null) {
             if (_debug) {
                 System.out.println("SideEffectAnalysis: Method not found: "
-                    + method);
+                        + method);
             }
 
             return true;
@@ -237,7 +237,7 @@ public class SideEffectAnalysis {
 
         if (_debug) {
             System.out.println("output flow = " + out.hasEffects() + " "
-                + out.effectSet());
+                    + out.effectSet());
         }
 
         // A method has side effects if it sets the values of any fields.
@@ -251,14 +251,14 @@ public class SideEffectAnalysis {
             }
 
             for (Iterator boxes = unit.getDefBoxes().iterator();
-                    boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
                 if (value instanceof FieldRef) {
                     if (_debug) {
                         System.out.println(
-                            "SideEffectAnalysis: assigns to field");
+                                "SideEffectAnalysis: assigns to field");
                     }
 
                     out.addSideEffect(((FieldRef) value).getField());
@@ -267,7 +267,7 @@ public class SideEffectAnalysis {
                 if (value instanceof ArrayRef) {
                     if (_debug) {
                         System.out.println(
-                            "SideEffectAnalysis: assigns to array.");
+                                "SideEffectAnalysis: assigns to array.");
                     }
 
                     // Escape analysis might help in this case.
@@ -287,7 +287,7 @@ public class SideEffectAnalysis {
             Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                    boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value expr = box.getValue();
 
@@ -300,7 +300,7 @@ public class SideEffectAnalysis {
                         _mergeFlow(out, target);
                     } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType = ((InstanceInvokeExpr) expr).getBase()
-                                         .getType();
+                            .getType();
 
                         if (!(baseType instanceof RefType)) {
                             // We can invoke methods on arrays...
@@ -312,7 +312,7 @@ public class SideEffectAnalysis {
                                 .getSootClass(), invokedMethod);
 
                         for (Iterator targets = list.iterator();
-                                targets.hasNext();) {
+                             targets.hasNext();) {
                             SootMethod target = (SootMethod) targets.next();
                             _mergeFlow(out, target);
                         }
@@ -326,7 +326,7 @@ public class SideEffectAnalysis {
 
         if (_debug) {
             System.out.println("output flow = " + out.hasEffects() + " "
-                + out.effectSet());
+                    + out.effectSet());
         }
 
         return out;

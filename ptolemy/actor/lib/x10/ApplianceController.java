@@ -53,10 +53,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  * </ul>
  *@author Colin Cochran (contributor: Edward A. Lee)
  *@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (ptolemy)
-@Pt.AcceptedRating Yellow (ptolemy)
- */
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (ptolemy)
+ @Pt.AcceptedRating Yellow (ptolemy)
+*/
 public class ApplianceController extends Sender {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -67,7 +67,7 @@ public class ApplianceController extends Sender {
      *   actor with this name.
      */
     public ApplianceController(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports, each one is a multiport.

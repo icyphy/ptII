@@ -64,7 +64,7 @@ public class IdentityActor extends AtomicActor {
      *   an entity already in the container.
      */
     public IdentityActor(CompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new IOPort(this, "input");
         input.setInput(true);
@@ -89,7 +89,7 @@ public class IdentityActor extends AtomicActor {
             output.broadcast(in);
         } catch (NoTokenException e) {
             throw new IllegalActionException(this,
-                " No token available when firing.");
+                    " No token available when firing.");
         }
     }
 

@@ -62,7 +62,7 @@ public class Sender extends X10Interface {
      *   actor with this name.
      */
     public Sender(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports and port parameters.
@@ -116,7 +116,7 @@ public class Sender extends X10Interface {
      *  false otherwise.
      */
     protected boolean _hasTrueInput(TypedIOPort port)
-        throws NoTokenException, IllegalActionException {
+            throws NoTokenException, IllegalActionException {
         boolean hasTrue = false;
 
         if (port.getWidth() > 0) {

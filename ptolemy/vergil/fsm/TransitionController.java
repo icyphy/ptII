@@ -135,7 +135,7 @@ public class TransitionController extends BasicEdgeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
         }
     }
 
@@ -153,7 +153,7 @@ public class TransitionController extends BasicEdgeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
         }
     }
 
@@ -209,7 +209,7 @@ public class TransitionController extends BasicEdgeController {
 
             default:
                 throw new IllegalStateException(
-                    "Cannot handle both ends of an edge being dragged.");
+                        "Cannot handle both ends of an edge being dragged.");
             }
 
             // Make the arc rerender itself so that geometry is preserved
@@ -257,7 +257,7 @@ public class TransitionController extends BasicEdgeController {
 
                 try {
                     double exitAngle = ((DoubleToken) (transition.exitAngle
-                        .getToken())).doubleValue();
+                                                .getToken())).doubleValue();
 
                     // If the angle is too large, then truncate it to
                     // a reasonable value.
@@ -338,14 +338,14 @@ public class TransitionController extends BasicEdgeController {
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot look inside without a configuration.");
+                        "Cannot look inside without a configuration.");
                 return;
             }
 

@@ -74,7 +74,7 @@ public class Sequence extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Sequence(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set values parameter
@@ -148,7 +148,7 @@ public class Sequence extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         if ((enable.getWidth() == 0)
                 || (enable.hasToken(0)
-                && ((BooleanToken) enable.get(0)).booleanValue())) {
+                        && ((BooleanToken) enable.get(0)).booleanValue())) {
             ArrayToken valuesArray = (ArrayToken) values.getToken();
 
             if (_currentIndex < valuesArray.length()) {

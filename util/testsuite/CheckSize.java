@@ -110,28 +110,28 @@ public class CheckSize {
                                     ArrayToken vergilCenterToken = (ArrayToken) vergilCenter
                                         .getToken();
                                     x = ((ScalarToken) vergilCenterToken
-                                        .getElement(0)).doubleValue();
+                                            .getElement(0)).doubleValue();
                                     y = ((ScalarToken) vergilCenterToken
-                                        .getElement(1)).doubleValue();
+                                            .getElement(1)).doubleValue();
 
                                     if ((x != (((double) width) / 2.0))
                                             || (y != (((double) height) / 2.0))) {
                                         analysis.append(" Center([" + x + ", "
-                                            + y
-                                            + "]) is not centered, should be ["
-                                            + (((double) width) / 2.0) + ", "
-                                            + (((double) height) / 2.0) + "]");
+                                                + y
+                                                + "]) is not centered, should be ["
+                                                + (((double) width) / 2.0) + ", "
+                                                + (((double) height) / 2.0) + "]");
                                     }
                                 } catch (IllegalActionException ex) {
                                     analysis.append(" _vergilCenter malformed");
                                     analysis.append(KernelException
-                                        .stackTraceToString(ex));
+                                            .stackTraceToString(ex));
                                 }
                             }
                         } catch (IllegalActionException ex) {
                             analysis.append(" _vergilSize malformed");
                             analysis.append(KernelException.stackTraceToString(
-                                    ex));
+                                                    ex));
                         }
 
                         if (vergilZoom != null) {
@@ -142,12 +142,12 @@ public class CheckSize {
 
                                 if (zoom != 1.0) {
                                     analysis.append(" Zoom(" + zoom
-                                        + ") != 1.0");
+                                            + ") != 1.0");
                                 }
                             } catch (IllegalActionException ex) {
                                 analysis.append(" _vergilZoom malformed");
                                 analysis.append(KernelException
-                                    .stackTraceToString(ex));
+                                        .stackTraceToString(ex));
                             }
                         }
                     } else {
@@ -155,7 +155,7 @@ public class CheckSize {
                     }
                 } else {
                     analysis.append(" is a " + top.getClassName()
-                        + " not a CompositeActor.");
+                            + " not a CompositeActor.");
                 }
 
                 if (analysis.equals("")) {

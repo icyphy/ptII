@@ -52,13 +52,13 @@ import ptolemy.kernel.util.StringAttribute;
 //// JAIConstant
 
 /**
-Produce an image with a uniform color.
+   Produce an image with a uniform color.
 
-@author James Yeh, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
+   @author James Yeh, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class JAIConstant extends Source {
     /** Construct an actor with the given container and name.
@@ -70,7 +70,7 @@ public class JAIConstant extends Source {
      *   actor with this name.
      */
     public JAIConstant(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
@@ -109,7 +109,7 @@ public class JAIConstant extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == bandValues) {
             values = ((ArrayToken) bandValues.getToken()).arrayValue();
 
@@ -137,7 +137,7 @@ public class JAIConstant extends Source {
                 _dataFormat = _SHORT;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized data type: " + dataFormatName);
+                        "Unrecognized data type: " + dataFormatName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -157,7 +157,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 byteValues[i] = new Byte((byte) (((ScalarToken) values[i])
-                        .intValue()));
+                                                 .intValue()));
             }
 
             parameters.add(byteValues);
@@ -175,7 +175,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 floatValues[i] = new Float((float) (((ScalarToken) values[i])
-                        .doubleValue()));
+                                                   .doubleValue()));
             }
 
             parameters.add(floatValues);
@@ -192,7 +192,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 shortValues[i] = new Short((short) (((ScalarToken) values[i])
-                        .intValue()));
+                                                   .intValue()));
             }
 
             parameters.add(shortValues);

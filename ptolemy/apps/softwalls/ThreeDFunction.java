@@ -1,28 +1,28 @@
 /* Read from a file and create a function of three variables.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (acataldo)
 @AcceptedRating Red (reviewmoderator)
 */
@@ -44,15 +44,15 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction
 /**
-This creates a function of three variables, defined over some subset
-of R^3.  The function is read from a file which stores the value of the
-function along a lattice of gridpoints.  The begining of the file also
-specifes the index value at each gridpoint, which in turn specifies the
-subset of R^3 for which the dataset is defined.
+   This creates a function of three variables, defined over some subset
+   of R^3.  The function is read from a file which stores the value of the
+   function along a lattice of gridpoints.  The begining of the file also
+   specifes the index value at each gridpoint, which in turn specifies the
+   subset of R^3 for which the dataset is defined.
 
-@author Adam Cataldo, Christopher X. Brooks
-@version $Id$
-@since Ptolemy II 2.0.1
+   @author Adam Cataldo, Christopher X. Brooks
+   @version $Id$
+   @since Ptolemy II 2.0.1
 */
 public class ThreeDFunction implements Serializable {
     /** Construct the functional representation of the 3D dataset by
@@ -62,21 +62,21 @@ public class ThreeDFunction implements Serializable {
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
      */
-//     public ThreeDFunction(String fileName) throws IllegalActionException {
-//         BufferedReader bufferedReader = null;
-//         try {
-//             new BufferedReader(new FileReader(fileName));
-//         } catch (IOException ex) {
-//             throw new IllegalActionException(null, ex,
-//                     "Failed to open '" + fileName + "'");
-//         }
+    //     public ThreeDFunction(String fileName) throws IllegalActionException {
+    //         BufferedReader bufferedReader = null;
+    //         try {
+    //             new BufferedReader(new FileReader(fileName));
+    //         } catch (IOException ex) {
+    //             throw new IllegalActionException(null, ex,
+    //                     "Failed to open '" + fileName + "'");
+    //         }
 
-//         // Read uncompressed data and do not write out compressed data.
-//         this(bufferedReader, false, null);
+    //         // Read uncompressed data and do not write out compressed data.
+    //         this(bufferedReader, false, null);
 
-//         // Read compressed data and do not write out uncompressed data.
-//         //this(bufferedReader, true, null);
-//     }
+    //         // Read compressed data and do not write out uncompressed data.
+    //         //this(bufferedReader, true, null);
+    //     }
 
 
     /** Construct the functional representation of the 3D dataset by
@@ -182,7 +182,7 @@ public class ThreeDFunction implements Serializable {
         }
 
         try {
-             // Read the dimension of the state space and ignore it,
+            // Read the dimension of the state space and ignore it,
             // since we know it's value is 3.
             dimension = _readDouble(reader);
 
@@ -201,10 +201,10 @@ public class ThreeDFunction implements Serializable {
             _thetaStepSize = _readDouble(reader);
             _thetaUpperBound = _readDouble(reader);
 
-//             //Complain if the theta values don't make sense
-//             if ((_thetaLowerBound != 0.0) || (_thetaUpperBound >= Math.PI)) {
-//                 throw new IllegalActionException("Bad bounds on theta");
-//             }
+            //             //Complain if the theta values don't make sense
+            //             if ((_thetaLowerBound != 0.0) || (_thetaUpperBound >= Math.PI)) {
+            //                 throw new IllegalActionException("Bad bounds on theta");
+            //             }
 
             // Initialize the values array;
             xSpan = _xUpperBound - _xLowerBound;
@@ -337,11 +337,11 @@ public class ThreeDFunction implements Serializable {
 
             // theta1Index will be 0 if the nearest gridpoint greater
             // than theta is 2*pi
-//             double thetaSpan = _thetaUpperBound - _thetaLowerBound;
-//             int maxThetaIndex = (int)Math.round(thetaSpan / _thetaStepSize);
-//             if (theta0Index == maxThetaIndex) {
-//                 theta1Index = 0;
-//             }
+            //             double thetaSpan = _thetaUpperBound - _thetaLowerBound;
+            //             int maxThetaIndex = (int)Math.round(thetaSpan / _thetaStepSize);
+            //             if (theta0Index == maxThetaIndex) {
+            //                 theta1Index = 0;
+            //             }
 
             //  When the proper dataset is loaded, use the previous
             //  method.  This will be more error prone.

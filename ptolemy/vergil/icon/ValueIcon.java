@@ -66,7 +66,7 @@ public class ValueIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public ValueIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

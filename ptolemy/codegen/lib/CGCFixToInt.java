@@ -1,11 +1,11 @@
 /* FixToInt, CGC domain: CGCFixToInt.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCFixToInt.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCFixToInt
 /**
-Convert a fixed-point input to an integer output.
+   Convert a fixed-point input to an integer output.
 
- @Author Yu Kee Lim
- @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCFixToInt.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Yu Kee Lim
+   @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCFixToInt.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCFixToInt extends CGCFix {
     /** Construct an actor in the specified container with the specified
@@ -44,20 +44,20 @@ public class CGCFixToInt extends CGCFix {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /**
-Input fix type
-     */
+       Input fix type
+    */
     public ClassicPort input;
 
     /**
-Output int type
-     */
+       Output int type
+    */
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -67,11 +67,11 @@ Output int type
      */
     public void  generateFireCode() {
 
-addCode(fixtoint);
-     }
+        addCode(fixtoint);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String fixtoint =
-        "                $ref(output) = FIX_Fix2Int($ref(input));\n";
+    "                $ref(output) = FIX_Fix2Int($ref(input));\n";
 }

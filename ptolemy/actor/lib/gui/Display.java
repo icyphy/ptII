@@ -102,7 +102,7 @@ public class Display extends Sink implements Placeable {
      *   actor with this name.
      */
     public Display(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -120,18 +120,18 @@ public class Display extends Sink implements Placeable {
                 "_windowProperties");
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
-            + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
-            + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
-            + "style=\"fill:white\"/>\n"
-            + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
-            + "style=\"stroke:grey\"/>\n"
-            + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
-            + "style=\"stroke:grey\"/>\n"
-            + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
-            + "style=\"stroke:grey\"/>\n"
-            + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
-            + "style=\"stroke:grey\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
+                + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
+                + "style=\"fill:white\"/>\n"
+                + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
+                + "style=\"stroke:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ public class Display extends Sink implements Placeable {
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == rowsDisplayed) {
@@ -171,7 +171,7 @@ public class Display extends Sink implements Placeable {
 
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
-                    "rowsDisplayed: requires a positive value.");
+                        "rowsDisplayed: requires a positive value.");
             }
 
             if (numRows != _previousNumRows) {
@@ -191,7 +191,7 @@ public class Display extends Sink implements Placeable {
 
             if (numColumns <= 0) {
                 throw new IllegalActionException(this,
-                    "columnsDisplayed: requires a positive value.");
+                        "columnsDisplayed: requires a positive value.");
             }
 
             if (numColumns != _previousNumColumns) {
@@ -248,8 +248,8 @@ public class Display extends Sink implements Placeable {
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                    "Cannot find effigy for top level: "
-                    + toplevel().getFullName());
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
             }
 
             try {
@@ -266,7 +266,7 @@ public class Display extends Sink implements Placeable {
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                    "Error creating effigy and tableau");
+                        "Error creating effigy and tableau");
             }
 
             textArea = _frame.text;
@@ -438,7 +438,7 @@ public class Display extends Sink implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
@@ -458,7 +458,7 @@ public class Display extends Sink implements Placeable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
@@ -554,7 +554,7 @@ public class Display extends Sink implements Placeable {
          *   attribute already in the container.
          */
         public DisplayWindowTableau(TextEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             String title = Display.this.title.getExpression();

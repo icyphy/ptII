@@ -56,10 +56,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  * </ul>
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (ptolemy)
- */
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (ptolemy)
+*/
 public class LampController extends Sender {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -70,7 +70,7 @@ public class LampController extends Sender {
      *   actor with this name.
      */
     public LampController(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         bright = new TypedIOPort(this, "bright", true, false);
@@ -148,7 +148,7 @@ public class LampController extends Sender {
 
         if ((brightLevel >= 0) && (brightLevel <= 100)) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
-                    brightLevel));
+                              brightLevel));
         }
 
         if ((dimLevel >= 0) && (dimLevel <= 100)) {

@@ -74,7 +74,7 @@ public class Slicer extends Transformer {
      *   actor with this name.
      */
     public Slicer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
@@ -159,9 +159,9 @@ public class Slicer extends Transformer {
 
         if (tableToken.length() < _size) {
             /*
-            throw new IllegalActionException(this, "Table parameter must " +
-                    "have at least " + _size + " entries, but only has " +
-                    tableToken.length());
+              throw new IllegalActionException(this, "Table parameter must " +
+              "have at least " + _size + " entries, but only has " +
+              tableToken.length());
             */
             _size = tableToken.length();
         }

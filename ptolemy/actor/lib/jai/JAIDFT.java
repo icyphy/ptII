@@ -82,7 +82,7 @@ public class JAIDFT extends Transformer {
      *   actor with this name.
      */
     public JAIDFT(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         scalingType = new StringAttribute(this, "scalingType");
@@ -124,7 +124,7 @@ public class JAIDFT extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == dataNature) {
             String natureName = dataNature.getExpression();
 
@@ -136,7 +136,7 @@ public class JAIDFT extends Transformer {
                 _dataNature = _REAL_TO_COMPLEX;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized dataNature type: " + natureName);
+                        "Unrecognized dataNature type: " + natureName);
             }
         } else if (attribute == scalingType) {
             String typeName = scalingType.getExpression();
@@ -149,7 +149,7 @@ public class JAIDFT extends Transformer {
                 _scalingType = _NONE;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized scaling type: " + typeName);
+                        "Unrecognized scaling type: " + typeName);
             }
         } else {
             super.attributeChanged(attribute);

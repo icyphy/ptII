@@ -75,7 +75,7 @@ public class JAIPhase extends Transformer {
      *   actor with this name.
      */
     public JAIPhase(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);

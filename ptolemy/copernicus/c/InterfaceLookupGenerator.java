@@ -96,12 +96,12 @@ public class InterfaceLookupGenerator {
                     // We don't need to map abstract methods.
                     && !actualMethod.isAbstract()) {
                 code.append(_indent(indentLevel)
-                    + _comment(interfaceMethod.toString()));
+                        + _comment(interfaceMethod.toString()));
 
                 code.append(_indent(indentLevel) + "case "
-                    + CNames.hashNumberOf(interfaceMethod) + ": "
-                    + "return (void*) &" + CNames.functionNameOf(actualMethod)
-                    + ";\n\n");
+                        + CNames.hashNumberOf(interfaceMethod) + ": "
+                        + "return (void*) &" + CNames.functionNameOf(actualMethod)
+                        + ";\n\n");
             }
         }
 
@@ -122,7 +122,7 @@ public class InterfaceLookupGenerator {
     public static HashMap getLookupMethods(SootClass source) {
         HashMap interfaceMethodMap = new HashMap();
         Iterator interfaces = AnalysisUtilities.getAllInterfacesOf(source)
-                                               .iterator();
+            .iterator();
 
         while (interfaces.hasNext()) {
             SootClass thisInterface = (SootClass) interfaces.next();
@@ -136,10 +136,10 @@ public class InterfaceLookupGenerator {
                 // if the source either declares or inherits this method.
                 if (source.declaresMethod(method.getSubSignature())) {
                     interfaceMethodMap.put(method,
-                        source.getMethod(method.getSubSignature()));
+                            source.getMethod(method.getSubSignature()));
                 } else {
                     Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(source)
-                                                                   .iterator();
+                        .iterator();
 
                     while (inheritedMethods.hasNext()) {
                         SootMethod inheritedMethod = (SootMethod) inheritedMethods
@@ -185,8 +185,8 @@ public class InterfaceLookupGenerator {
     private String _generateMethodDeclaration(SootClass source) {
         StringBuffer code = new StringBuffer();
         code.append(_comment("Method that provides interface lookups for "
-                + source.getName())
-            + _comment("Returns a pointer to the correct function"));
+                            + source.getName())
+                + _comment("Returns a pointer to the correct function"));
 
         String methodName = CNames.interfaceLookupNameOf(source);
         code.append("static void* " + methodName + "(long int methodIndex)\n");

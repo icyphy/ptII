@@ -80,7 +80,7 @@ public class ReaderProcessWriter {
 
             if (_debug) {
                 System.out.println("Sample rate of the input file is "
-                    + sampleRate + " Hz.");
+                        + sampleRate + " Hz.");
             }
 
             // Number of bits per sample.
@@ -88,7 +88,7 @@ public class ReaderProcessWriter {
 
             if (_debug) {
                 System.out.println("Bits per sample for the input file is "
-                    + bitsPerSample);
+                        + bitsPerSample);
             }
 
             // 1 for mono, 2 for stereo, etc.
@@ -96,7 +96,7 @@ public class ReaderProcessWriter {
 
             if (_debug) {
                 System.out.println("Number of channels for the input file is "
-                    + channels);
+                        + channels);
             }
 
             int putSamplesSize = getSamplesSize;

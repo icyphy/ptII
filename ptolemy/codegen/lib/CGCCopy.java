@@ -1,11 +1,11 @@
 /* Copy, CGC domain: CGCCopy.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCCopy.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCCopy
 /**
-This star is required by the default target for the CGC domain which is
-implemented by the CGCTarget class.  The CGCTarget class files say that
-"'Copy' stars are added if an input/output PortHole is a host/embedded
-PortHole and the buffer size is greater than the number of Particles
-transferred."
+   This star is required by the default target for the CGC domain which is
+   implemented by the CGCTarget class.  The CGCTarget class files say that
+   "'Copy' stars are added if an input/output PortHole is a host/embedded
+   PortHole and the buffer size is greater than the number of Particles
+   transferred."
 
- @Author Soonhoi Ha
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCCopy.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Soonhoi Ha
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/stars/CGCCopy.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCopy extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -50,9 +50,9 @@ public class CGCCopy extends ClassicCGCActor {
         numSample = new Parameter(this, "numSample");
         numSample.setExpression("1");
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -70,7 +70,7 @@ noInternalState();
     /**
      *  number of samples to be copied parameter with initial value "1".
      */
-     public Parameter numSample;
+    public Parameter numSample;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,51 +79,51 @@ noInternalState();
      */
     public int  myExecTime() {
 
-if (input.resolvedType() == COMPLEX)
-                        return 2 * ((IntToken)((numSample).getToken())).intValue();
-                else
-                        return ((IntToken)((numSample).getToken())).intValue();
-     }
+        if (input.resolvedType() == COMPLEX)
+            return 2 * ((IntToken)((numSample).getToken())).intValue();
+        else
+            return ((IntToken)((numSample).getToken())).intValue();
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
 
-numSample = output.numXfer();
-     }
+        numSample = output.numXfer();
+    }
 
     /**
      */
     public void  generateInitializeCode() throws IllegalActionException {
 
-if (((IntToken)((numSample).getToken())).intValue() > 1) {
-                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-                }
-     }
+        if (((IntToken)((numSample).getToken())).intValue() > 1) {
+            input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+            output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+        }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-if (input.resolvedType() == COMPLEX)
-                        addCode(complexBody);
-                else
-                        addCode(floatBody);
-     }
+        if (input.resolvedType() == COMPLEX)
+            addCode(complexBody);
+        else
+            addCode(floatBody);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String floatBody =
-        "        int i;\n"
-        + "        for (i = 0; i < $val(numSample); i++) {\n"
-        + "                $ref(output, i) = $ref(input, i);\n"
-        + "        }\n";
+    "        int i;\n"
+    + "        for (i = 0; i < $val(numSample); i++) {\n"
+    + "                $ref(output, i) = $ref(input, i);\n"
+    + "        }\n";
 
     public String complexBody =
-        "        int i;\n"
-        + "        for (i = 0; i < $val(numSample); i++) {\n"
-        + "                $ref(output, i).real = $ref(input, i).real;\n"
-        + "                $ref(output, i).imag = $ref(input, i).imag;\n"
-        + "        }\n";
+    "        int i;\n"
+    + "        for (i = 0; i < $val(numSample); i++) {\n"
+    + "                $ref(output, i).real = $ref(input, i).real;\n"
+    + "                $ref(output, i).imag = $ref(input, i).imag;\n"
+    + "        }\n";
 }

@@ -60,7 +60,7 @@ public class ImportAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ImportAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -83,7 +83,7 @@ public class ImportAttribute extends Attribute {
      *  @param depth The depth in the hierarchy, to determine indenting.
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }

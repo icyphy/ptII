@@ -72,7 +72,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *   actor with this name.
      */
     public LiveSoundActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
@@ -134,7 +134,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             if (attribute == transferSize) {
                 // The size of the array (in samples per channel) to pass
@@ -150,9 +150,9 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 if (channelsInt < 1) {
                     throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal "
-                        + "value of: " + channelsInt
-                        + " . The value must be a " + "positive integer.");
+                            "Attempt to set channels parameter to an illegal "
+                            + "value of: " + channelsInt
+                            + " . The value must be a " + "positive integer.");
                 }
 
                 // Only set the channels if it is different than
@@ -185,8 +185,8 @@ public class LiveSoundActor extends TypedAtomicActor
             return;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot perform audio playback "
-                + "with the specified parameter values.");
+                    "Cannot perform audio playback "
+                    + "with the specified parameter values.");
         }
     }
 
@@ -253,7 +253,7 @@ public class LiveSoundActor extends TypedAtomicActor
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
-                "Error responding to audio parameter change. " + ex);
+                    "Error responding to audio parameter change. " + ex);
         }
     }
 
@@ -278,7 +278,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *  bits per sample, channels or buffer size.
      */
     protected synchronized void _initializeAudio()
-        throws IllegalActionException, IOException {
+            throws IllegalActionException, IOException {
         // Initialize audio.
         _transferSize = ((IntToken) transferSize.getToken()).intValue();
         _channels = ((IntToken) channels.getToken()).intValue();

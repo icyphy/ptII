@@ -97,7 +97,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *   to use if the model does not have a library.
      */
     public FSMGraphFrame(CompositeEntity entity, Tableau tableau,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         // Override the default help file.
@@ -124,11 +124,11 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-                new JMenuItem("Listen to Director", KeyEvent.VK_D),
-                new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-                new JMenuItem("Animate States", KeyEvent.VK_A),
-                new JMenuItem("Stop Animating", KeyEvent.VK_S),
-            };
+            new JMenuItem("Listen to Director", KeyEvent.VK_D),
+            new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
+            new JMenuItem("Animate States", KeyEvent.VK_A),
+            new JMenuItem("Stop Animating", KeyEvent.VK_S),
+        };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -224,7 +224,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                     // Dialog to ask for a delay time.
                     Query query = new Query();
                     query.addLine("delay", "Time (in ms) to hold highlight",
-                        Long.toString(_lastDelayTime));
+                            Long.toString(_lastDelayTime));
 
                     ComponentDialog dialog = new ComponentDialog(FSMGraphFrame.this,
                             "Delay for Animation", query);
@@ -247,8 +247,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                             }
                         } catch (NumberFormatException ex) {
                             MessageHandler.error(
-                                "Invalid time, which is required "
-                                + "to be an integer: ", ex);
+                                    "Invalid time, which is required "
+                                    + "to be an integer: ", ex);
                         }
                     }
                 } else if (actionCommand.equals("Stop Animating")
@@ -260,7 +260,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
             } catch (KernelException ex) {
                 try {
                     MessageHandler.warning("Failed to create debug listener: "
-                        + ex);
+                            + ex);
                 } catch (CancelException exception) {
                 }
             }

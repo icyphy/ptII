@@ -289,7 +289,7 @@ public class TableauFrame extends Top {
                     try {
                         // Create a tableau if there is a tableau factory.
                         TableauFactory factory = (TableauFactory) getConfiguration()
-                                                                      .getAttribute("tableauFactory");
+                            .getAttribute("tableauFactory");
 
                         if (factory != null) {
                             Tableau tableau = factory.createTableau(effigy);
@@ -363,7 +363,7 @@ public class TableauFrame extends Top {
                                     effigy = factory.createEffigy(directory);
                                 } catch (Exception ex) {
                                     MessageHandler.error("Could not create new effigy",
-                                        ex);
+                                            ex);
                                 }
 
                                 configuration.createPrimaryTableau(effigy);
@@ -400,7 +400,7 @@ public class TableauFrame extends Top {
 
                     ViewMenuListener viewMenuListener = new ViewMenuListener();
                     Iterator factories = _factoryContainer.attributeList(TableauFactory.class)
-                                                          .iterator();
+                        .iterator();
 
                     while (factories.hasNext()) {
                         TableauFactory factory = (TableauFactory) factories
@@ -522,7 +522,7 @@ public class TableauFrame extends Top {
      *  @return True if it is OK to write the model to the file.
      */
     protected boolean _confirmFile(Entity model, File file)
-        throws MalformedURLException {
+            throws MalformedURLException {
         URL newURL = file.toURL();
         String newKey = newURL.toExternalForm();
         Effigy previousOpen = getDirectory().getEffigy(newKey);
@@ -561,7 +561,7 @@ public class TableauFrame extends Top {
 
             if (containmentError) {
                 MessageHandler.error("Cannot replace a model with a submodel."
-                    + " Please choose a different file name.");
+                        + " Please choose a different file name.");
                 return false;
             }
 
@@ -639,7 +639,7 @@ public class TableauFrame extends Top {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                    "Unable to set effigy container to null! " + ex);
+                        "Unable to set effigy container to null! " + ex);
             }
         }
 
@@ -660,7 +660,7 @@ public class TableauFrame extends Top {
                 effigy.setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(
-                    "Unable to set effigy container to null! " + ex);
+                        "Unable to set effigy container to null! " + ex);
             }
         }
     }
@@ -745,7 +745,7 @@ public class TableauFrame extends Top {
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
             throw new Exception("No associated Tableau!"
-                + " Can't open a file.");
+                    + " Can't open a file.");
         }
 
         // NOTE: Used to use for the first argument the following, but
@@ -755,11 +755,11 @@ public class TableauFrame extends Top {
 
         if (configuration instanceof Configuration) {
             ((Configuration) configuration).openModel(url, url,
-                url.toExternalForm());
+                    url.toExternalForm());
         } else {
             throw new InternalErrorException(
-                "Expected top-level to be a Configuration: "
-                + _tableau.toplevel().getFullName());
+                    "Expected top-level to be a Configuration: "
+                    + _tableau.toplevel().getFullName());
         }
     }
 
@@ -773,7 +773,7 @@ public class TableauFrame extends Top {
     protected boolean _save() {
         if (_tableau == null) {
             throw new InternalErrorException(
-                "No associated Tableau! Can't save.");
+                    "No associated Tableau! Can't save.");
         }
 
         Effigy effigy = getEffigy();
@@ -802,7 +802,7 @@ public class TableauFrame extends Top {
     protected boolean _saveAs() {
         if (_tableau == null) {
             throw new InternalErrorException(
-                "No associated Tableau! Can't save.");
+                    "No associated Tableau! Can't save.");
         }
 
         // Use the strategy pattern here to create the actual
@@ -811,7 +811,7 @@ public class TableauFrame extends Top {
 
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(new File(
-                    fileDialog.getCurrentDirectory(), _initialSaveAsFileName));
+                                               fileDialog.getCurrentDirectory(), _initialSaveAsFileName));
         }
 
         // Show the dialog.

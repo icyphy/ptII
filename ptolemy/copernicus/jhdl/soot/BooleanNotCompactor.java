@@ -93,7 +93,7 @@ public class BooleanNotCompactor {
         PatchingChain chain = mbody.getUnits();
 
         for (Unit current = (Unit) chain.snapshotIterator().next();
-                current != null;) {
+             current != null;) {
             Unit u = mergeBooleanAssign(chain, current);
 
             if (u == null) {

@@ -1,11 +1,11 @@
 /* BusFork, CGC domain: CGCBusFork.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCBusFork.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCBusFork
 /**
-Copy particles from an input bus to each output bus.
-<p>
-To keep the implementation simple, this star does not attempt the
-fancy tricks performed by the regular fork star to avoid runtime overhead.
-The data values are simply copied at runtime.
+   Copy particles from an input bus to each output bus.
+   <p>
+   To keep the implementation simple, this star does not attempt the
+   fancy tricks performed by the regular fork star to avoid runtime overhead.
+   The data values are simply copied at runtime.
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBusFork.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCBusFork.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBusFork extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -50,9 +50,9 @@ public class CGCBusFork extends ClassicCGCActor {
         outputB = new ClassicPort(this, "outputB", false, true);
         outputB.setMultiport(true);
 
-/*
-noInternalState();
-*/
+        /*
+          noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -79,36 +79,36 @@ noInternalState();
      */
     public int  myExecTime() {
 
-// Alert: rough estimate
-          return input.numberPorts();
-     }
+        // Alert: rough estimate
+        return input.numberPorts();
+    }
 
     /**
      */
     public void  begin() {
 
-if (input.numberPorts() != outputA.numberPorts() ||
-              input.numberPorts() != outputB.numberPorts()) {
+        if (input.numberPorts() != outputA.numberPorts() ||
+                input.numberPorts() != outputB.numberPorts()) {
             throw new IllegalActionException(this, "Bus widths don't match");
             return;
-          }
-     }
+        }
+    }
 
     /**
      */
     public void  generateFireCode() {
 
-MPHIter nextin(input), nextoutA(outputA), nextoutB(outputB);
-          PortHole *in, *outA, *outB;
-          int port = 0;
-          while (((in = nextin++) != 0) &&
-                 ((outA = nextoutA++) != 0) &&
-                 ((outB = nextoutB++) != 0)) {
+        MPHIter nextin(input), nextoutA(outputA), nextoutB(outputB);
+        PortHole *in, *outA, *outB;
+        int port = 0;
+        while (((in = nextin++) != 0) &&
+                ((outA = nextoutA++) != 0) &&
+                ((outB = nextoutB++) != 0)) {
             port++;
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"        $ref(outputA#" + port + ") = $ref(outputB#" + port + ") = $ref(input#" + port + ");\n"
+            { StringBuffer _str_ = new StringBuffer(); _str_.append(
+                    "        $ref(outputA#" + port + ") = $ref(outputB#" + port + ") = $ref(input#" + port + ");\n"
 
-);          addCode(_str_);  }
-          }
-     }
+                    );          addCode(_str_);  }
+        }
+    }
 }

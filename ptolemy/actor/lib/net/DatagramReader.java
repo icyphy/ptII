@@ -202,7 +202,7 @@ public class DatagramReader extends TypedAtomicActor {
      *   actor with this name.
      */
     public DatagramReader(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // ports - Ordering here sets the order they show up in Vergil
@@ -439,11 +439,11 @@ public class DatagramReader extends TypedAtomicActor {
      *  at the same time maintaining consistency.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == defaultReturnAddress) {
             synchronized (_syncDefaultOutputs) {
                 _defaultReturnAddress = ((StringToken) defaultReturnAddress
-                    .getToken()).stringValue();
+                        .getToken()).stringValue();
 
                 //check whether is ip multicase datagram.
                 //multicast IP ranges from 224.0.0.1 to 239.255.255.255(inclusive).
@@ -457,8 +457,8 @@ public class DatagramReader extends TypedAtomicActor {
                         _address = InetAddress.getByName(_defaultReturnAddress);
                     } catch (UnknownHostException ex) {
                         throw new IllegalActionException(this, ex,
-                            "The default remote "
-                            + "address specifies an unknown host");
+                                "The default remote "
+                                + "address specifies an unknown host");
                     }
 
                     if (_multicastSocket != null) {
@@ -466,7 +466,7 @@ public class DatagramReader extends TypedAtomicActor {
                             _multicastSocket.joinGroup(_address);
                         } catch (IOException exp) {
                             throw new IllegalActionException(
-                                "can't join the multicast group" + exp);
+                                    "can't join the multicast group" + exp);
                         }
                     }
                 } else {
@@ -478,8 +478,8 @@ public class DatagramReader extends TypedAtomicActor {
                             _multicastSocket.leaveGroup(_address);
                         } catch (IOException exp) {
                             throw new IllegalActionException(this, exp,
-                                "Disconnecting from the multicast group "
-                                + "failed.");
+                                    "Disconnecting from the multicast group "
+                                    + "failed.");
                         }
                     }
                 }
@@ -487,7 +487,7 @@ public class DatagramReader extends TypedAtomicActor {
         } else if (attribute == defaultReturnSocketNumber) {
             synchronized (_syncDefaultOutputs) {
                 _defaultReturnSocketNumber = ((IntToken) defaultReturnSocketNumber
-                    .getToken()).intValue();
+                        .getToken()).intValue();
             }
         } else if (attribute == defaultOutput) {
             synchronized (_syncDefaultOutputs) {
@@ -510,7 +510,7 @@ public class DatagramReader extends TypedAtomicActor {
             }
         } else if (attribute == blockAwaitingDatagram) {
             _blockAwaitingDatagram = ((BooleanToken) (blockAwaitingDatagram
-                .getToken())).booleanValue();
+                                              .getToken())).booleanValue();
 
             if (!_blockAwaitingDatagram) {
                 synchronized (_syncFireAndThread) {
@@ -552,15 +552,15 @@ public class DatagramReader extends TypedAtomicActor {
                         throw new IllegalActionException(this, "thread == null");
                     } else if (!_socketReadingThread.isAlive()) {
                         throw new IllegalActionException(this,
-                            "thread is not Alive");
+                                "thread is not Alive");
                     }
 
                     int newSocketNumber = ((IntToken) (localSocketNumber
-                        .getToken())).intValue();
+                                                   .getToken())).intValue();
 
                     if ((_multicastSocket != null)
                             && (newSocketNumber != _multicastSocket
-                            .getLocalPort())) {
+                                    .getLocalPort())) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -569,7 +569,7 @@ public class DatagramReader extends TypedAtomicActor {
                                     _syncSocket.wait((long) 444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
-                                        "Interrupted while waiting");
+                                            "Interrupted while waiting");
                                 }
 
                                 // Either I've been notified that receive()
@@ -584,8 +584,8 @@ public class DatagramReader extends TypedAtomicActor {
                                 _multicastSocket = new MulticastSocket(newSocketNumber);
                             } catch (Exception ex) {
                                 throw new InternalErrorException(this, ex,
-                                    "Couldn't open new socket number "
-                                    + newSocketNumber);
+                                        "Couldn't open new socket number "
+                                        + newSocketNumber);
                             }
 
                             if (_address != null) {
@@ -593,7 +593,7 @@ public class DatagramReader extends TypedAtomicActor {
                                     _multicastSocket.joinGroup(_address);
                                 } catch (IOException exp) {
                                     throw new IllegalActionException(
-                                        "can't join the multicast group" + exp);
+                                            "can't join the multicast group" + exp);
                                 }
                             }
                         }
@@ -607,7 +607,7 @@ public class DatagramReader extends TypedAtomicActor {
                                     _syncSocket.wait((long) 444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
-                                        "Interrupted while waiting");
+                                            "Interrupted while waiting");
                                 }
 
                                 // Either I've been notified that receive()
@@ -622,8 +622,8 @@ public class DatagramReader extends TypedAtomicActor {
                                 _socket = new DatagramSocket(newSocketNumber);
                             } catch (SocketException ex) {
                                 throw new InternalErrorException(this, ex,
-                                    "Couldn't open new socket number "
-                                    + newSocketNumber);
+                                        "Couldn't open new socket number "
+                                        + newSocketNumber);
                             }
                         }
                     }
@@ -706,7 +706,7 @@ public class DatagramReader extends TypedAtomicActor {
                     _fireIsWaiting = false;
                 } catch (InterruptedException ex) {
                     throw new InternalErrorException(this, ex,
-                        "!!fire()'s wait interrupted!!");
+                            "!!fire()'s wait interrupted!!");
 
                     // This finally block breaks Jode.
                 } finally {
@@ -779,9 +779,9 @@ public class DatagramReader extends TypedAtomicActor {
                     // Ensure that any change to the default output parameters
                     // occurs atomically with respect to its use here.
                     returnAddress.broadcast(new StringToken(
-                            _defaultReturnAddress));
+                                                    _defaultReturnAddress));
                     returnSocketNumber.broadcast(new IntToken(
-                            _defaultReturnSocketNumber));
+                                                         _defaultReturnSocketNumber));
                     output.broadcast(_defaultOutputToken);
                 }
             }
@@ -817,7 +817,7 @@ public class DatagramReader extends TypedAtomicActor {
 
         if ((portNumber < 0) || (portNumber > 65535)) {
             throw new IllegalActionException(this,
-                localSocketNumber + " is outside the required 0..65535 range");
+                    localSocketNumber + " is outside the required 0..65535 range");
         }
 
         if (_debugging) {
@@ -829,7 +829,7 @@ public class DatagramReader extends TypedAtomicActor {
             try {
                 if (_debugging) {
                     _debug("Trying to create a new multicast socket on port "
-                        + portNumber);
+                            + portNumber);
                 }
 
                 _multicastSocket = new MulticastSocket(portNumber);
@@ -839,8 +839,8 @@ public class DatagramReader extends TypedAtomicActor {
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to create a new multicast socket on port "
-                    + portNumber);
+                        "Failed to create a new multicast socket on port "
+                        + portNumber);
             }
 
             String address = ((StringToken) defaultReturnAddress.getToken())
@@ -850,21 +850,21 @@ public class DatagramReader extends TypedAtomicActor {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                    "The default remote " + "address specifies an unknown host");
+                        "The default remote " + "address specifies an unknown host");
             }
 
             try {
                 _multicastSocket.joinGroup(_address);
             } catch (IOException exp) {
                 throw new IllegalActionException(
-                    "can't join the multicast group" + exp);
+                        "can't join the multicast group" + exp);
             }
         } else {
             // Allocate a new socket.
             try {
                 if (_debugging) {
                     _debug("Trying to create a new socket on port "
-                        + portNumber);
+                            + portNumber);
                 }
 
                 _socket = new DatagramSocket(portNumber);
@@ -874,7 +874,7 @@ public class DatagramReader extends TypedAtomicActor {
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to create a new socket on port " + portNumber);
+                        "Failed to create a new socket on port " + portNumber);
             }
         }
 
@@ -893,7 +893,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  SocketReadingThread.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // FIXME: Is this necessary?
         if (container != getContainer()) {
             wrapup();
@@ -1145,13 +1145,13 @@ public class DatagramReader extends TypedAtomicActor {
                             // platformBufferLength parameter value
                             // (in bytes).
                             if (((BooleanToken) setPlatformBufferLength
-                                    .getToken()).booleanValue()) {
+                                        .getToken()).booleanValue()) {
                                 if (_multiCast) {
                                     _multicastSocket.setReceiveBufferSize(((IntToken) platformBufferLength
-                                        .getToken()).intValue());
+                                                                                  .getToken()).intValue());
                                 } else {
                                     _socket.setReceiveBufferSize(((IntToken) platformBufferLength
-                                        .getToken()).intValue());
+                                                                         .getToken()).intValue());
                                 }
                             }
 
@@ -1174,7 +1174,7 @@ public class DatagramReader extends TypedAtomicActor {
                             // ex.toString());
                         } catch (IllegalActionException ex) {
                             System.out.println("getToken or setToken failed"
-                                + "on platformBufferSize" + ex.toString());
+                                    + "on platformBufferSize" + ex.toString());
                         }
                     }
                 }
@@ -1360,7 +1360,7 @@ public class DatagramReader extends TypedAtomicActor {
                         getDirector().fireAtCurrentTime(DatagramReader.this);
                     } catch (IllegalActionException ex) {
                         throw new RuntimeException("fireAtCurrentTime() "
-                            + "threw an exception", ex);
+                                + "threw an exception", ex);
                     }
                 }
             }

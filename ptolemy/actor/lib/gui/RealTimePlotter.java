@@ -66,7 +66,7 @@ public class RealTimePlotter extends Plotter {
      *   actor with this name.
      */
     public RealTimePlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -112,7 +112,7 @@ public class RealTimePlotter extends Plotter {
 
                 // NOTE: We assume the superclass ensures this cast is safe.
                 ((Plot) plot).addPoint(i + offset, currentTime, currentValue,
-                    true);
+                        true);
             }
         }
 

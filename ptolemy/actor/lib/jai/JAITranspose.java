@@ -72,7 +72,7 @@ public class JAITranspose extends Transformer {
      *   actor with this name.
      */
     public JAITranspose(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         transposeType = new StringAttribute(this, "transposeType");
@@ -99,7 +99,7 @@ public class JAITranspose extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == transposeType) {
             String typeName = transposeType.getExpression();
 
@@ -119,7 +119,7 @@ public class JAITranspose extends Transformer {
                 _transposeType = TransposeDescriptor.ROTATE_270;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + typeName);
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else {
             super.attributeChanged(attribute);

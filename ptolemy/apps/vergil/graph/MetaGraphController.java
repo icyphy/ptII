@@ -1,28 +1,28 @@
 /*
-@Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2001-2005 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
 
 */
@@ -118,7 +118,7 @@ public class MetaGraphController extends CompositeEntity
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-                        int end, double x, double y) {
+            int end, double x, double y) {
         getEdgeController(edge).addEdge(edge, node, end, x, y);
     }
 
@@ -321,8 +321,8 @@ public class MetaGraphController extends CompositeEntity
 
             if (_model.isNode(object)) {
                 if (!GraphUtilities.isContainedNode(object,
-                                                   _model.getRoot(),
-                                                   _model)) {
+                            _model.getRoot(),
+                            _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -330,8 +330,8 @@ public class MetaGraphController extends CompositeEntity
                 }
             } else if (_model.isEdge(object)) {
                 if (!GraphUtilities.isPartiallyContainedEdge(object,
-                                                            _model.getRoot(),
-                                                            _model)) {
+                            _model.getRoot(),
+                            _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -395,15 +395,15 @@ public class MetaGraphController extends CompositeEntity
         // FIXME this is way overkill.
         rerender();
         /*
-        Figure oldFigure = getFigure(edge);
-        boolean selected = _selectionModel.containsSelection(oldFigure);
-        if (selected) {
-            _selectionModel.removeSelection(oldFigure);
-        }
-        clearEdge(edge);
-        Figure newFigure = drawEdge(edge);
-            if (selected)
-            _selectionModel.addSelection(newFigure);
+          Figure oldFigure = getFigure(edge);
+          boolean selected = _selectionModel.containsSelection(oldFigure);
+          if (selected) {
+          _selectionModel.removeSelection(oldFigure);
+          }
+          clearEdge(edge);
+          Figure newFigure = drawEdge(edge);
+          if (selected)
+          _selectionModel.addSelection(newFigure);
         */
     }
 
@@ -416,28 +416,28 @@ public class MetaGraphController extends CompositeEntity
         // FIXME this is way overkill.
         rerender();
         /*
-        Figure oldFigure = getFigure(node);
-        boolean selected = _selectionModel.containsSelection(oldFigure);
-        if (selected) {
-            _selectionModel.removeSelection(oldFigure);
-        }
-        Point2D center;
-        if (oldFigure != null) {
-            center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
-            clearNode(node);
-        } else {
-            // no previous figure.  which means that we are probably
-            // rendering for the first time.
-            center = null; //FIXME: layout?
-        }
-        Figure newFigure = drawNode(node);
-        if (center != null) {
-            // place the new figure where the old one was.
-            CanvasUtilities.translateTo(newFigure,
-                                        center.getX(), center.getY());
-        }
-        if (selected)
-            _selectionModel.addSelection(newFigure);
+          Figure oldFigure = getFigure(node);
+          boolean selected = _selectionModel.containsSelection(oldFigure);
+          if (selected) {
+          _selectionModel.removeSelection(oldFigure);
+          }
+          Point2D center;
+          if (oldFigure != null) {
+          center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
+          clearNode(node);
+          } else {
+          // no previous figure.  which means that we are probably
+          // rendering for the first time.
+          center = null; //FIXME: layout?
+          }
+          Figure newFigure = drawNode(node);
+          if (center != null) {
+          // place the new figure where the old one was.
+          CanvasUtilities.translateTo(newFigure,
+          center.getX(), center.getY());
+          }
+          if (selected)
+          _selectionModel.addSelection(newFigure);
         */
     }
 
@@ -455,7 +455,7 @@ public class MetaGraphController extends CompositeEntity
         }
 
         if (_model != null) {
-        // Clear existing figures
+            // Clear existing figures
             Object root = _model.getRoot();
             if (_model.getNodeCount(root) != 0) {
                 for (i = _model.nodes(root); i.hasNext(); ) {
@@ -614,7 +614,7 @@ public class MetaGraphController extends CompositeEntity
          */
         public void structureChanged(GraphEvent e) {
             if (e.getSource() != MetaGraphController.this) {
-                    rerender();
+                rerender();
                 /* Object root = e.getTarget();
 
                 //FIXME - this could be optimized--
@@ -622,11 +622,11 @@ public class MetaGraphController extends CompositeEntity
                 //        node.
 
                 for (Iterator i = _model.nodes(root); i.hasNext(); ) {
-                    rerenderNode(i.next());
+                rerenderNode(i.next());
                 }
                 for (Iterator i = GraphUtilities.localEdges(root, _model);
-                    i.hasNext(); ) {
-                    rerenderEdge(i.next());
+                i.hasNext(); ) {
+                rerenderEdge(i.next());
                 }
                 */
             }

@@ -41,12 +41,12 @@ import ptolemy.vergil.icon.XMLIcon;
 //// ConfigureAction
 
 /** Action to remove a custom icon.
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
- */
+    @author Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (johnr)
+*/
 public class RemoveIconAction extends FigureAction {
     public RemoveIconAction() {
         super("Remove Custom Icon");

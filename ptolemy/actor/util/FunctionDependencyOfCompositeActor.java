@@ -92,7 +92,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfCompositeActor(CompositeActor compositeActor,
-        String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException, NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -167,7 +167,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     IOPort outputPort = (IOPort) outputs.next();
 
                     if (reachableOutputs.contains(_detailedDependencyGraph.node(
-                                    outputPort))) {
+                                                          outputPort))) {
                         _dependencyGraph.addEdge(inputPort, outputPort);
                     }
                 }
@@ -358,11 +358,11 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
             if (functionDependency != null) {
                 _detailedDependencyGraph.addGraph(functionDependency
-                    .getDependencyGraph());
+                        .getDependencyGraph());
             } else {
                 throw new InternalErrorException("FunctionDependency can "
-                    + "not be null. Check all four types of function "
-                    + "dependencies. There must be something wrong.");
+                        + "not be null. Check all four types of function "
+                        + "dependencies. There must be something wrong.");
             }
         }
     }

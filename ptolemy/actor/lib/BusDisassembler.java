@@ -71,13 +71,13 @@ public class BusDisassembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public BusDisassembler(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
-            + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public class BusDisassembler extends TypedAtomicActor {
         int inputWidth = input.getWidth();
         Iterator outputPorts = outputPortList().iterator();
         TypedIOPort outputPort = (TypedIOPort) (outputPorts.hasNext()
-            ? outputPorts.next() : null);
+                ? outputPorts.next() : null);
         int outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;
         int j = 0;
 
@@ -110,7 +110,7 @@ public class BusDisassembler extends TypedAtomicActor {
                     j++;
                 } else {
                     outputPort = (TypedIOPort) (outputPorts.hasNext()
-                        ? outputPorts.next() : null);
+                            ? outputPorts.next() : null);
                     outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;
                     j = 0;
                 }
@@ -123,7 +123,7 @@ public class BusDisassembler extends TypedAtomicActor {
 
         if (inputPortList().size() > 1) {
             throw new IllegalActionException(this,
-                "can have only one input port.");
+                    "can have only one input port.");
         }
     }
 }

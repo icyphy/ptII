@@ -79,7 +79,7 @@ public class Scale extends Transformer {
      *   actor with this name.
      */
     public Scale(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         factor = new Parameter(this, "factor");
         factor.setExpression("1");
@@ -91,8 +91,8 @@ public class Scale extends Transformer {
 
         // icon
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,7 +156,7 @@ public class Scale extends Transformer {
     ////                         private methods                   ////
     // Scale the given input token on the left by the given factor.
     private Token _scaleOnLeft(Token input, Token factor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];
@@ -173,7 +173,7 @@ public class Scale extends Transformer {
 
     // Scale the given input token on the right by the given factor.
     private Token _scaleOnRight(Token input, Token factor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken) input).arrayValue();
             Token[] result = new Token[argArray.length];

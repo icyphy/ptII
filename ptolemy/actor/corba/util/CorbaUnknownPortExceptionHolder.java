@@ -15,7 +15,7 @@ public final class CorbaUnknownPortExceptionHolder
     }
 
     public CorbaUnknownPortExceptionHolder(
-        ptolemy.actor.corba.util.CorbaUnknownPortException initialValue) {
+            ptolemy.actor.corba.util.CorbaUnknownPortException initialValue) {
         value = initialValue;
     }
 

@@ -69,7 +69,7 @@ public class StreamValueListener implements ValueListener {
      */
     public void valueChanged(Settable settable) {
         _output.println(settable + " changed, new expression: "
-            + settable.getExpression());
+                + settable.getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////

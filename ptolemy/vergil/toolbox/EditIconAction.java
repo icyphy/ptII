@@ -43,12 +43,12 @@ import ptolemy.vergil.icon.XMLIcon;
 //// ConfigureAction
 
 /** Action to edit a custom icon.
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
- */
+    @author Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (johnr)
+*/
 public class EditIconAction extends FigureAction {
     public EditIconAction() {
         super("Edit Custom Icon");
@@ -102,7 +102,7 @@ public class EditIconAction extends FigureAction {
                         // an instance of XMLIcon.  We have to remove that
                         // first.
                         Iterator derivedObjects = object.getDerivedList()
-                                                        .iterator();
+                            .iterator();
 
                         while (derivedObjects.hasNext()) {
                             NamedObj derived = (NamedObj) derivedObjects.next();

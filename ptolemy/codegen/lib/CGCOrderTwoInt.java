@@ -1,11 +1,11 @@
 /* OrderTwoInt, CGC domain: CGCOrderTwoInt.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCOrderTwoInt.pl by ptlang
-*/
-/*
-Copyright (c) 1990-2005 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-2005 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCOrderTwoInt
 /**
-Takes two inputs and outputs the greater and lesser of the two integers.
+   Takes two inputs and outputs the greater and lesser of the two integers.
 
- @Author Brian L. Evans
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCOrderTwoInt.pl, from Ptolemy Classic
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Brian L. Evans
+   @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCOrderTwoInt.pl, from Ptolemy Classic
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCOrderTwoInt extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCOrderTwoInt extends ClassicCGCActor {
         lesser = new ClassicPort(this, "lesser", false, true);
         lesser.setTypeEquals(BaseType.INT);
 
-/*
-*/
+        /*
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -81,21 +81,21 @@ public class CGCOrderTwoInt extends ClassicCGCActor {
      */
     public void  generateFireCode() {
 
-addCode(ordertwoint);
-     }
+        addCode(ordertwoint);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String ordertwoint =
-        "                int greaterValue = (int)$ref(upper);\n"
-        + "                int lesserValue = (int) $ref(lower);\n"
-        + "\n"
-        + "                if ( greaterValue < lesserValue ) {\n"
-        + "                    int swap = greaterValue;\n"
-        + "                    greaterValue = lesserValue;\n"
-        + "                    lesserValue = swap;\n"
-        + "                }\n"
-        + "\n"
-        + "                $ref(greater) = greaterValue;\n"
-        + "                $ref(lesser) = lesserValue;\n";
+    "                int greaterValue = (int)$ref(upper);\n"
+    + "                int lesserValue = (int) $ref(lower);\n"
+    + "\n"
+    + "                if ( greaterValue < lesserValue ) {\n"
+    + "                    int swap = greaterValue;\n"
+    + "                    greaterValue = lesserValue;\n"
+    + "                    lesserValue = swap;\n"
+    + "                }\n"
+    + "\n"
+    + "                $ref(greater) = greaterValue;\n"
+    + "                $ref(lesser) = lesserValue;\n";
 }

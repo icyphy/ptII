@@ -58,7 +58,7 @@ public class BasicModelErrorHandler implements ModelErrorHandler {
      *   as an argument is always thrown.
      */
     public boolean handleModelError(NamedObj context,
-        IllegalActionException exception) throws IllegalActionException {
+            IllegalActionException exception) throws IllegalActionException {
         throw exception;
     }
 }

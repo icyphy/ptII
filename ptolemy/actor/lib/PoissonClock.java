@@ -101,7 +101,7 @@ public class PoissonClock extends TimedSource {
      *   actor with this name.
      */
     public PoissonClock(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         meanTime = new Parameter(this, "meanTime");
@@ -154,14 +154,14 @@ public class PoissonClock extends TimedSource {
      *   not positive.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == meanTime) {
             double mean = ((DoubleToken) meanTime.getToken()).doubleValue();
 
             if (mean <= 0.0) {
                 throw new IllegalActionException(this,
-                    "meanTime is required to be positive.  meanTime given: "
-                    + mean);
+                        "meanTime is required to be positive.  meanTime given: "
+                        + mean);
             }
         } else if (attribute == values) {
             ArrayToken val = (ArrayToken) (values.getToken());
@@ -270,7 +270,7 @@ public class PoissonClock extends TimedSource {
 
         if ((val == null) || (index >= _length)) {
             throw new IllegalActionException(this,
-                "Index out of range of the values parameter.");
+                    "Index out of range of the values parameter.");
         }
 
         return val.getElement(index);

@@ -73,7 +73,7 @@ public class JVMTableau extends Tableau {
      *   an entity with the specified name.
      */
     public JVMTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -100,7 +100,7 @@ public class JVMTableau extends Tableau {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public JVMFrame(final CompositeEntity model, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
 
             JPanel component = new JPanel();
@@ -139,11 +139,11 @@ public class JVMTableau extends Tableau {
                 while (propertyNames.hasNext()) {
                     String propertyName = (String) propertyNames.next();
                     propertyBuffer.append(propertyName + " = "
-                        + properties.getProperty(propertyName) + lineSeparator);
+                            + properties.getProperty(propertyName) + lineSeparator);
                 }
             } catch (java.security.AccessControlException accessControl) {
                 propertyBuffer.append("AccessControlException, probably from "
-                    + "System.getProperties():\n" + accessControl);
+                        + "System.getProperties():\n" + accessControl);
             }
 
             final JTextArea messageArea = new JTextArea(propertyBuffer.toString(),
@@ -169,7 +169,7 @@ public class JVMTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -216,11 +216,11 @@ public class JVMTableau extends Tableau {
         long maxMemory = runtime.maxMemory() / 1024;
 
         textArea.setText("Memory: " + totalMemory + "K Free: " + freeMemory
-            + "K ("
-            + Math.round(
-                (((double) freeMemory) / ((double) totalMemory)) * 100.0)
-            + "%) Max: " + maxMemory + "K ("
-            + Math.round(
-                (((double) totalMemory) / ((double) maxMemory)) * 100.0) + "%)");
+                + "K ("
+                + Math.round(
+                        (((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + "%) Max: " + maxMemory + "K ("
+                + Math.round(
+                        (((double) totalMemory) / ((double) maxMemory)) * 100.0) + "%)");
     }
 }

@@ -49,30 +49,30 @@ class DisplayModeModel extends DefaultTableModel {
     public Object getValueAt(int rowIndex, int colIndex) {
         DisplayMode dm = modes[rowIndex];
         switch (colIndex) {
-            case DisplayModeTest.INDEX_WIDTH :
-                return Integer.toString(dm.getWidth());
-            case DisplayModeTest.INDEX_HEIGHT :
-                return Integer.toString(dm.getHeight());
-            case DisplayModeTest.INDEX_BITDEPTH : {
-                int bitDepth = dm.getBitDepth();
-                String ret;
-                if (bitDepth == DisplayMode.BIT_DEPTH_MULTI) {
-                    ret = "Multi";
-                } else {
-                    ret = Integer.toString(bitDepth);
-                }
-                return ret;
+        case DisplayModeTest.INDEX_WIDTH :
+            return Integer.toString(dm.getWidth());
+        case DisplayModeTest.INDEX_HEIGHT :
+            return Integer.toString(dm.getHeight());
+        case DisplayModeTest.INDEX_BITDEPTH : {
+            int bitDepth = dm.getBitDepth();
+            String ret;
+            if (bitDepth == DisplayMode.BIT_DEPTH_MULTI) {
+                ret = "Multi";
+            } else {
+                ret = Integer.toString(bitDepth);
             }
-            case DisplayModeTest.INDEX_REFRESHRATE : {
-                int refreshRate = dm.getRefreshRate();
-                String ret;
-                if (refreshRate == DisplayMode.REFRESH_RATE_UNKNOWN) {
-                    ret = "Unknown";
-                } else {
-                    ret = Integer.toString(refreshRate);
-                }
-                return ret;
+            return ret;
+        }
+        case DisplayModeTest.INDEX_REFRESHRATE : {
+            int refreshRate = dm.getRefreshRate();
+            String ret;
+            if (refreshRate == DisplayMode.REFRESH_RATE_UNKNOWN) {
+                ret = "Unknown";
+            } else {
+                ret = Integer.toString(refreshRate);
             }
+            return ret;
+        }
         }
         throw new ArrayIndexOutOfBoundsException("Invalid column value");
     }
@@ -82,7 +82,7 @@ class DisplayModeModel extends DefaultTableModel {
  * Main frame class
  */
 public class DisplayModeTest extends JFrame implements ActionListener,
-    ListSelectionListener {
+                                                       ListSelectionListener {
 
     private boolean waiting = false;
     private Object exitLock = new Object();
@@ -114,10 +114,10 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         originalDM = device.getDisplayMode();
         setDMLabel(originalDM);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent ev) {
-                restoreDisplayMode();
-            }
-        });
+                public void windowClosing(WindowEvent ev) {
+                    restoreDisplayMode();
+                }
+            });
         // Make sure a DM is always selected in the list
         exit.addActionListener(this);
         changeDM.addActionListener(this);
@@ -132,7 +132,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             waiting = false;
         } else {
             if (device.isDisplayChangeSupported() &&
-                !originalDM.equals(device.getDisplayMode())) {
+                    !originalDM.equals(device.getDisplayMode())) {
                 device.setDisplayMode(originalDM);
             }
         }
@@ -179,7 +179,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             dmList.addColumn(col);
         }
         dmList.getSelectionModel().setSelectionMode(
-            ListSelectionModel.SINGLE_SELECTION);
+                ListSelectionModel.SINGLE_SELECTION);
         dmList.getSelectionModel().addListSelectionListener(this);
         modesPanel.add(dmPane);
         // Controls
@@ -228,11 +228,11 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             rr = Integer.toString(refreshRate);
         }
         currentDM.setText(
-            COLUMN_NAMES[INDEX_WIDTH] + ": " + newMode.getWidth() + " "
-            + COLUMN_NAMES[INDEX_HEIGHT] + ": " + newMode.getHeight() + " "
-            + COLUMN_NAMES[INDEX_BITDEPTH] + ": " + bd + " "
-            + COLUMN_NAMES[INDEX_REFRESHRATE] + ": " + rr
-            );
+                COLUMN_NAMES[INDEX_WIDTH] + ": " + newMode.getWidth() + " "
+                + COLUMN_NAMES[INDEX_HEIGHT] + ": " + newMode.getHeight() + " "
+                + COLUMN_NAMES[INDEX_BITDEPTH] + ": " + bd + " "
+                + COLUMN_NAMES[INDEX_REFRESHRATE] + ": " + rr
+                );
     }
 
     public void begin() {

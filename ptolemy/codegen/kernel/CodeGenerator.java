@@ -65,15 +65,15 @@ import ptolemy.util.MessageHandler;
  */
 public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
-        /** Create a new instance of the C code generator.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception IllegalActionException
-         *  @exception NameDuplicationException
-         */
-        public CodeGenerator(NamedObj container, String name)
-                        throws IllegalActionException, NameDuplicationException {
-                super(container, name);
+    /** Create a new instance of the C code generator.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    public CodeGenerator(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
         codeDirectory.setExpression("$HOME/codegen");
@@ -94,7 +94,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // This attibute could be put in the MoML in the library instead
         // of here in the Java code.
         new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
@@ -156,7 +156,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // Check if needs to overwrite.
             if (codeDirectory.asFile().exists()) {
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                        + " exists. OK to overwrite?")) {
+                            + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -179,10 +179,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateInitializeCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-         code.append(comment(
-                "Initialize " + getContainer().getFullName()));
+        code.append(comment(
+                            "Initialize " + getContainer().getFullName()));
         Iterator actors = ((CompositeActor)getContainer())
-                .deepEntityList().iterator();
+            .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
@@ -198,7 +198,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
         code.append(comment("Variable Declarations "
-                + getContainer().getFullName()));
+                            + getContainer().getFullName()));
         Iterator actors = ((CompositeActor)getContainer())
             .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -264,9 +264,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         code.append(comment(
-                "Wrapup " + getContainer().getFullName()));
+                            "Wrapup " + getContainer().getFullName()));
         Iterator actors = ((CompositeActor)getContainer())
-                .deepEntityList().iterator();
+            .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
@@ -278,7 +278,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The component for which this is a helper to generate code.
      */
     public NamedObj getComponent() {
-            return getContainer();
+        return getContainer();
     }
 
     /** Return the buffer capacity of the given port. This method always
@@ -324,7 +324,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String componentClassName = component.getClass().getName();
         String helperClassName = componentClassName
-                .replaceFirst("ptolemy", packageName);
+            .replaceFirst("ptolemy", packageName);
 
         Class helperClass = null;
         try {
@@ -338,7 +338,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Constructor constructor = null;
         try {
             constructor = helperClass
-                    .getConstructor(new Class[]{component.getClass()});
+                .getConstructor(new Class[]{component.getClass()});
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in "
@@ -364,7 +364,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + " implement componentCodeGenerator.");
         }
         ComponentCodeGenerator castHelperObject
-                = (ComponentCodeGenerator)helperObject;
+            = (ComponentCodeGenerator)helperObject;
 
         _helperStore.put(component, helperObject);
 

@@ -15,7 +15,7 @@ public final class CorbaIndexOutofBoundExceptionHolder
     }
 
     public CorbaIndexOutofBoundExceptionHolder(
-        ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue) {
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue) {
         value = initialValue;
     }
 
@@ -26,11 +26,11 @@ public final class CorbaIndexOutofBoundExceptionHolder
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.write(o,
-            value);
+                value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-        .type();
+            .type();
     }
 }

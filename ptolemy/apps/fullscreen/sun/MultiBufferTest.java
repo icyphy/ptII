@@ -62,9 +62,9 @@ public class MultiBufferTest {
             DisplayMode[] modes = device.getDisplayModes();
             for (int i = 0; i < modes.length; i++) {
                 if (modes[i].getWidth() == BEST_DISPLAY_MODES[x].getWidth()
-                   && modes[i].getHeight() == BEST_DISPLAY_MODES[x].getHeight()
-                   && modes[i].getBitDepth() == BEST_DISPLAY_MODES[x].getBitDepth()
-                   ) {
+                        && modes[i].getHeight() == BEST_DISPLAY_MODES[x].getHeight()
+                        && modes[i].getBitDepth() == BEST_DISPLAY_MODES[x].getBitDepth()
+                    ) {
                     return BEST_DISPLAY_MODES[x];
                 }
             }
@@ -86,7 +86,7 @@ public class MultiBufferTest {
                 numBuffers = Integer.parseInt(args[0]);
                 if (numBuffers < 2 || numBuffers > COLORS.length) {
                     System.err.println("Must specify between 2 and "
-                        + COLORS.length + " buffers");
+                            + COLORS.length + " buffers");
                     System.exit(1);
                 }
             }

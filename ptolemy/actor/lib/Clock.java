@@ -103,7 +103,7 @@ public class Clock extends TimedSource {
      *   actor with this name.
      */
     public Clock(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         period = new Parameter(this, "period");
@@ -183,7 +183,7 @@ public class Clock extends TimedSource {
      *   nondecreasing and nonnegative.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == offsets) {
             ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             _offsets = new double[offsetsValue.length()];
@@ -197,8 +197,8 @@ public class Clock extends TimedSource {
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                        "Value of offsets is not nondecreasing "
-                        + "and nonnegative.");
+                            "Value of offsets is not nondecreasing "
+                            + "and nonnegative.");
                 }
 
                 previous = _offsets[i];
@@ -208,8 +208,8 @@ public class Clock extends TimedSource {
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                    "Period is required to be positive.  " + "Period given: "
-                    + periodValue);
+                        "Period is required to be positive.  " + "Period given: "
+                        + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -293,10 +293,10 @@ public class Clock extends TimedSource {
 
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this,
-                        "Offset number " + _tentativePhase + " with value "
-                        + _offsets[_tentativePhase]
-                        + " must be strictly less than the "
-                        + "period, which is " + periodValue);
+                            "Offset number " + _tentativePhase + " with value "
+                            + _offsets[_tentativePhase]
+                            + " must be strictly less than the "
+                            + "period, which is " + periodValue);
                 }
 
                 // Schedule the next firing in this period.
@@ -398,7 +398,7 @@ public class Clock extends TimedSource {
 
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
-                "Values and offsets vectors do not have the same length.");
+                    "Values and offsets vectors do not have the same length.");
         }
 
         return super.prefire();
@@ -419,7 +419,7 @@ public class Clock extends TimedSource {
 
         if ((val == null) || (val.length() <= index)) {
             throw new IllegalActionException(this,
-                "Index out of range of the values parameter.");
+                    "Index out of range of the values parameter.");
         }
 
         return val.getElement(index);
@@ -481,7 +481,7 @@ public class Clock extends TimedSource {
 
             if (_debugging) {
                 _debug("Requesting firing at: " + _tentativeNextFiringTime
-                    + ".");
+                        + ".");
             }
         }
 

@@ -83,7 +83,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable object, Throwable cause,
-        String detail) {
+            String detail) {
         this(object, null, cause, detail);
     }
 
@@ -107,7 +107,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable object1, Nameable object2,
-        String detail) {
+            String detail) {
         this(object1, object2, null, detail);
     }
 
@@ -127,7 +127,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable object1, Nameable object2,
-        Throwable cause, String detail) {
+            Throwable cause, String detail) {
         super(object1, object2, cause, detail);
     }
 }

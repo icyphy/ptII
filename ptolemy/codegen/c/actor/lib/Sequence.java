@@ -63,13 +63,13 @@ public class Sequence extends CCodeGeneratorHelper {
 
         if (actor.enable.getWidth() == 0) {
             tmpStream.append(
-                      "if (currentIndex < $size(values)) {\n"
+                    "if (currentIndex < $size(values)) {\n"
                     + "    $ref(output) = $ref(values, currentIndex);\n"
                     + "    outputProduced = 1;\n"
                     + "}\n");
         } else {
             tmpStream.append(
-                      "if ($ref(enable) \n"
+                    "if ($ref(enable) \n"
                     + "        && currentIndex < $size(values)) {\n"
                     + "    $ref(output) = $ref(values, currentIndex);\n"
                     + "    outputProduced = 1;\n"
@@ -77,7 +77,7 @@ public class Sequence extends CCodeGeneratorHelper {
         }
 
         tmpStream.append(
-                  "if (outputProduced) {\n"
+                "if (outputProduced) {\n"
                 + "    outputProduced = 0;\n"
                 + "    currentIndex += 1;\n"
                 + "    if (currentIndex >= $size(values)) {\n"
@@ -98,7 +98,7 @@ public class Sequence extends CCodeGeneratorHelper {
     public String generateInitializeCode()
             throws IllegalActionException {
         return processCode(_initBlock);
-}
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -110,6 +110,6 @@ public class Sequence extends CCodeGeneratorHelper {
     // and outputProduced are not defined in java as variables.
     // E.g., $ref(ouput, currentIndex) does not make sense to java.
     protected String _initBlock =
-              "int currentIndex = 0;\n"
-            + "int outputProduced = 0;\n";
+    "int currentIndex = 0;\n"
+    + "int outputProduced = 0;\n";
 }

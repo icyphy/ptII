@@ -87,7 +87,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -152,8 +152,8 @@ public class ImageDisplay extends Sink implements Placeable {
                 imageToken = (ImageToken) token;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to cast " + token.getClass()
-                    + " to an ImageToken.\nToken was: " + token);
+                        "Failed to cast " + token.getClass()
+                        + " to an ImageToken.\nToken was: " + token);
             }
 
             // If there is no place to display, we can return after
@@ -167,7 +167,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
             if (image == null) {
                 throw new IllegalActionException(this,
-                    "ImageDisplay: input image was null!");
+                        "ImageDisplay: input image was null!");
             } else {
                 int xsize = image.getWidth(null);
                 int ysize = image.getHeight(null);

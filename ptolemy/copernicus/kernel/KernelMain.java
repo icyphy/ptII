@@ -77,7 +77,7 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-   */
+*/
 public abstract class KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -86,7 +86,7 @@ public abstract class KernelMain {
      *  options specified in the transformer.
      */
     public static void addTransform(Pack pack, String name,
-        Transformer transformer, String defaultOptions) {
+            Transformer transformer, String defaultOptions) {
         Transform t = new Transform(name, transformer);
 
         if (transformer instanceof HasPhaseOptions) {
@@ -94,9 +94,9 @@ public abstract class KernelMain {
 
             // Note: First appearance of an option has precendence
             t.setDefaultOptions(defaultOptions + " "
-                + options.getDefaultOptions() + " " + t.getDefaultOptions());
+                    + options.getDefaultOptions() + " " + t.getDefaultOptions());
             t.setDeclaredOptions(options.getDeclaredOptions() + " "
-                + t.getDeclaredOptions());
+                    + t.getDeclaredOptions());
         } else {
             t.setDefaultOptions(defaultOptions + " " + t.getDefaultOptions());
         }
@@ -108,7 +108,7 @@ public abstract class KernelMain {
      *  options specified in the transformer.
      */
     public static void addTransform(Pack pack, String name,
-        Transformer transformer) {
+            Transformer transformer) {
         addTransform(pack, name, transformer, "");
     }
 
@@ -122,7 +122,7 @@ public abstract class KernelMain {
      *  compilation.
      */
     public void compile(String modelName, CompositeActor toplevel,
-        GeneratorAttribute attribute) throws Exception {
+            GeneratorAttribute attribute) throws Exception {
         //  try {
         long startTime = System.currentTimeMillis();
 
@@ -150,7 +150,7 @@ public abstract class KernelMain {
 
         // Print out memory usage info
         System.out.println(modelName + " "
-            + ptolemy.actor.Manager.timeAndMemory(startTime));
+                + ptolemy.actor.Manager.timeAndMemory(startTime));
 
         //         } catch (Exception ex) {
         //             System.err.println("Code generation of '" + modelName
@@ -199,7 +199,7 @@ public abstract class KernelMain {
      *  @param toplevel The model we are generating code for.
      */
     public void initialize(CompositeActor toplevel)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
 
         // Applet codegen works with all directors, not just SDF.
@@ -224,8 +224,8 @@ public abstract class KernelMain {
 
                 if (copernicusIterations.length() > 0) {
                     System.out.println("KernelMain: "
-                        + "Setting number of iterations to "
-                        + copernicusIterations);
+                            + "Setting number of iterations to "
+                            + copernicusIterations);
                     iterations.setToken(new IntToken(copernicusIterations));
                 }
             }
@@ -239,7 +239,7 @@ public abstract class KernelMain {
             manager.preinitializeAndResolveTypes();
         } catch (Exception exception) {
             throw new KernelRuntimeException(exception,
-                "Could not initialize composite actor");
+                    "Could not initialize composite actor");
         }
     }
 
@@ -265,7 +265,7 @@ public abstract class KernelMain {
         standardList.add(UnconditionalBranchFolder.v());
         standardList.add(UnusedLocalEliminator.v());
         addTransform(pack, "wjtp.StandardOptimizations" + time,
-            new TransformerAdapter(standardList));
+                new TransformerAdapter(standardList));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -276,7 +276,7 @@ public abstract class KernelMain {
      * generator-specific variables from the GeneratorAttribute.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-        throws Exception {
+            throws Exception {
         return new String[0];
     }
 
@@ -306,8 +306,8 @@ public abstract class KernelMain {
             PtolemyUtilities.objectClass.setSuperclass(null);
 
             for (Iterator classes = Scene.v().getApplicationClasses()
-                                         .snapshotIterator();
-                    classes.hasNext();) {
+                     .snapshotIterator();
+                 classes.hasNext();) {
                 SootClass theClass = (SootClass) classes.next();
                 theClass.setLibraryClass();
             }

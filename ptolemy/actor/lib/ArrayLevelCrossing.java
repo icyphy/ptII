@@ -50,27 +50,27 @@ import ptolemy.kernel.util.SingletonAttribute;
 
 /**
 
-   Search an array from the specified starting index and report the
-   index of the first item in the array that is below or above the
-   specified threshold.  If there is no such item, then -1 is
-   returned.  The threshold can be absolute or relative to the value
-   at the starting index.  If it is relative, it can be given on a
-   linear scale or in decibels.  If the threshold is relative and we
-   are looking for values above the threshold, then values that are
-   above the value at the starting index by more than the threshold
-   are reported.  If the threshold is relative and we are looking for
-   values below the threshold, then values that are below the value at
-   the starting index by more than the threshold are reported.
+Search an array from the specified starting index and report the
+index of the first item in the array that is below or above the
+specified threshold.  If there is no such item, then -1 is
+returned.  The threshold can be absolute or relative to the value
+at the starting index.  If it is relative, it can be given on a
+linear scale or in decibels.  If the threshold is relative and we
+are looking for values above the threshold, then values that are
+above the value at the starting index by more than the threshold
+are reported.  If the threshold is relative and we are looking for
+values below the threshold, then values that are below the value at
+the starting index by more than the threshold are reported.
 
-   <p> This actor is a generalization of Matlab code developed by John
-   Signorotti of Southwest Research Institute. The original function
-   was called UFDipSearch.
+<p> This actor is a generalization of Matlab code developed by John
+Signorotti of Southwest Research Institute. The original function
+was called UFDipSearch.
 
-   @author Edward A. Lee, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
+@author Edward A. Lee, Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 4.0
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (cxh)
 */
 public class ArrayLevelCrossing extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -82,7 +82,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayLevelCrossing(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         start = new PortParameter(this, "start");
@@ -186,7 +186,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             if ((startValue >= inputSize) || (startValue < 0)) {
                 throw new IllegalActionException(this,
-                    "start is out of range: " + startValue);
+                        "start is out of range: " + startValue);
             }
 
             int increment = -1;
@@ -233,7 +233,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             int bin = -1;
 
             for (int i = startValue; (i < inputSize) && (i >= 0);
-                    i += increment) {
+                 i += increment) {
                 double currentValue = ((DoubleToken) inputArray.getElement(i))
                     .doubleValue();
 

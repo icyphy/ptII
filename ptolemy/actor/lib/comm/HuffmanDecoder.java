@@ -67,7 +67,7 @@ public class HuffmanDecoder extends HuffmanBasic {
      *   actor with this name.
      */
     public HuffmanDecoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
@@ -112,7 +112,7 @@ public class HuffmanDecoder extends HuffmanBasic {
         // Get the input token. Ready for output.
         if (!input.hasToken(0) && !_code.equals("")) {
             throw new IllegalActionException(this,
-                "This is not a decodable code.");
+                    "This is not a decodable code.");
         }
 
         BooleanToken inputToken = (BooleanToken) input.get(0);

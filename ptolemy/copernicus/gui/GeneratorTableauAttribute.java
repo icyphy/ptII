@@ -72,7 +72,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
      *   an attribute already in the container.
      */
     public GeneratorTableauAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
@@ -86,7 +86,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
     ////                         inner classes                     ////
     private class GeneratorTableauEditorFactory extends EditorFactory {
         public GeneratorTableauEditorFactory(NamedObj _container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(_container, name);
         }
 
@@ -107,7 +107,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
                 configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                    "Cannot generate code. Perhaps outside Vergil?");
+                        "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

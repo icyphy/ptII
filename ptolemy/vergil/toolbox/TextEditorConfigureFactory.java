@@ -76,7 +76,7 @@ public class TextEditorConfigureFactory extends EditorFactory
      *   an attribute already in the container.
      */
     public TextEditorConfigureFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -128,7 +128,7 @@ public class TextEditorConfigureFactory extends EditorFactory
             try {
                 StringAttribute attributeToEdit = (StringAttribute) ((NamedObj) getContainer())
                     .getAttribute(attributeName.getExpression(),
-                        StringAttribute.class);
+                            StringAttribute.class);
                 int numberOfRows = ((IntToken) rowsDisplayed.getToken())
                     .intValue();
                 int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
@@ -139,7 +139,7 @@ public class TextEditorConfigureFactory extends EditorFactory
                         + getContainer().getFullName());
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Cannot get specified string attribute to edit.",
-                    ex);
+                        ex);
             }
         }
 
