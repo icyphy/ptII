@@ -238,3 +238,32 @@ test ArrayMath-12.2 {subtract} {
     set ca2 [java::call ptolemy.math.ArrayMath subtract $ca1 $c5]
     javaPrintArray $ca2
 } {{1.25 + 1.6i} {3.25 - 4.4i} {-4.65 - 6.4i} {-6.75 + 7.6i}}
+
+####################################################################
+test ArrayMath-13.1 {mag: empty array} {
+    set ca0 [java::new {ptolemy.math.Complex[]} 0]
+    set da2 [java::call ptolemy.math.ArrayMath mag $ca0]
+    $da2 getrange 0 
+} {}
+
+####################################################################
+test ArrayMath-13.2 {mag} {
+    set da2 [java::call ptolemy.math.ArrayMath mag $ca1]
+    epsilonDiff [$da2 getrange 0] \
+	    {2.2360679775 5.0 7.74661216275 10.6301458127}
+} {}
+
+####################################################################
+test ArrayMath-14.1 {phase: empty array} {
+    set ca0 [java::new {ptolemy.math.Complex[]} 0]
+    set da2 [java::call ptolemy.math.ArrayMath phase $ca0]
+    $da2 getrange 0 
+} {}
+
+####################################################################
+test ArrayMath-14.2 {phase} {
+    set da2 [java::call ptolemy.math.ArrayMath phase $ca1]
+    epsilonDiff [$da2 getrange 0] \
+	    {1.10714871779 -0.927295218002 -2.25561757274 2.28962632642}
+} {}
+
