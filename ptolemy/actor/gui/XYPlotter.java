@@ -42,7 +42,7 @@ import java.awt.Panel;
 /** A XY plotter.  This plotter contains an instance of the Plot class
  *  from the Ptolemy plot package as a public member.  Data at the inputX and
  *  inputY, are plotted on this instance. Both inputX and inputY are 
- *  multiport with type DoubelToken. When plotted, the first channel of 
+ *  multiport with type DoubleToken. When plotted, the first channel of 
  *  inputX and the first channel of inputY is considered the first signal,
  *  then the second channel of inputX and the second channel of inputY
  *  is considered the second signal, and so on. The current implemtation
