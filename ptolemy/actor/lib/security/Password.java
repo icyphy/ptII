@@ -84,7 +84,7 @@ public class Password extends Source {
 
     /** Construct a password source with the given container and name.
      *  Create the <i>password</i> parameter, initialize its value to
-     *  the default value of StringToken with the value 
+     *  the default value of StringToken with the value
      *  "this.is.not.secure,it.is.for.testing.only".
      *  @param container The container.
      *  @param name The name of this actor.

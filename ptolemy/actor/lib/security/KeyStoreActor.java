@@ -117,10 +117,10 @@ are using a self signed certificate, this step is option.
 keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only -file claudius.cer -rfc
 </pre>
 <li> Send the output file (claudius.cer) to the recipient
-<li>Create a Ptolemy model that uses the 
+<li>Create a Ptolemy model that uses the
 {@link ptolemy.actor.lib.security.PrivateKeyReader} actor
 to read $PTII/ptKeystore with the appropriate passwords
-and sign your data.  
+and sign your data.
 See the left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
 for an example model.
 
@@ -141,7 +141,7 @@ Certificate fingerprints:
 	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
 Trust this certificate? [no]:  yes
 Certificate was added to keystore
-cxh@cooley 92% 
+cxh@cooley 92%
 </pre>
 
 <li>Verify the signature by calling up the sender and comparing the
@@ -155,7 +155,7 @@ Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
 Certificate fingerprints:
 	 MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
 	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
-cxh@cooley 94% 
+cxh@cooley 94%
 </pre>
 If the Certificate fingerprints match, then the file has not been
 modified in transit.
