@@ -26,7 +26,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 Created : May 1998
 
@@ -112,7 +113,8 @@ public class ASTPtRootNode implements Node {
             try {
                 _ptToken = _resolveNode();
             } catch (Exception ex) {
-                throw new IllegalArgumentException(ex.getMessage());
+                throw new IllegalArgumentException("Could not resolve node: " +
+                      getClass().getName() + ", " + ex.getMessage());
             }
             return _ptToken;
         }
