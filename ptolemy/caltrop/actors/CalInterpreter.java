@@ -252,7 +252,7 @@ public class CalInterpreter extends TypedAtomicActor {
                 String var = decls[i].getName();
                 Expression valExpr = decls[i].getInitialValue();
 
-                // Note: this assumes that declarations are 
+                // Note: this assumes that declarations are
                 // ordered by eager dependency
 
                 Object value = (valExpr == null)
@@ -304,7 +304,7 @@ public class CalInterpreter extends TypedAtomicActor {
 
         for (int i = 0; i < ports.length; i++) {
             TypedIOPort port = (TypedIOPort) this.getPort(ports[i].getName());
-            if (port != null && 
+            if (port != null &&
                     ((port.isInput() != isInput)
                             || (port.isOutput() != isOutput) ||
                     (port.isMultiport() != ports[i].isMultiport()))) {

@@ -276,7 +276,7 @@ public class CSP extends AbstractDDI implements DDI {
         if (inputPatterns.length == 0)
             // if the first action has no input patterns,
             // then the "intersection" will be empty.
-            return inputProfile; 
+            return inputProfile;
 
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];

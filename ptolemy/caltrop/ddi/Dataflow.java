@@ -182,7 +182,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         try {
             _selectInitializer();
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, 
+            throw new IllegalActionException(null, ex,
                     "Error during initializer selection in actor '"
                     + _actor.getName() + "'");
         }
