@@ -36,17 +36,10 @@ import java.util.Enumeration;
 A default implementation of the ExecutionListener interface.
 @author Steve Neuendorffer, Lukito Muliadi
 @version $Id$
-@see classname
-@see full-classname
 */
 public class DefaultExecutionListener implements ExecutionListener {
 
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */
     public DefaultExecutionListener() {
     }
