@@ -9,30 +9,30 @@ package ptolemy.actor.corba.util;
 
 public final class CorbaIndexOutofBoundExceptionHolder implements org.omg.CORBA.portable.Streamable
 {
-  public ptolemy.actor.corba.util.CorbaIndexOutofBoundException value = null;
+    public ptolemy.actor.corba.util.CorbaIndexOutofBoundException value = null;
 
-  public CorbaIndexOutofBoundExceptionHolder ()
-  {
-  }
+    public CorbaIndexOutofBoundExceptionHolder ()
+    {
+    }
 
-  public CorbaIndexOutofBoundExceptionHolder (ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue)
-  {
-    value = initialValue;
-  }
+    public CorbaIndexOutofBoundExceptionHolder (ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue)
+    {
+        value = initialValue;
+    }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
-  {
-    value = ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.read (i);
-  }
+    public void _read (org.omg.CORBA.portable.InputStream i)
+    {
+        value = ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.read (i);
+    }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
-  {
-    ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.write (o, value);
-  }
+    public void _write (org.omg.CORBA.portable.OutputStream o)
+    {
+        ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.write (o, value);
+    }
 
-  public org.omg.CORBA.TypeCode _type ()
-  {
-    return ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.type ();
-  }
+    public org.omg.CORBA.TypeCode _type ()
+    {
+        return ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.type ();
+    }
 
 }
