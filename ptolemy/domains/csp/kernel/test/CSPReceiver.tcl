@@ -69,8 +69,7 @@ test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorA" 0] 
     set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 1] 
@@ -96,8 +95,7 @@ test CSPReceiver-3.2 {get(), put(), One token} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorA" 1] 
     set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 1] 
@@ -124,8 +122,7 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorA" 2] 
     set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 3] 
@@ -156,8 +153,7 @@ test CSPReceiver-3.4 {hasToken()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorA" 2] 
     set actorB [java::new ptolemy.domains.csp.kernel.test.CSPHasToken $topLevel "actorB"] 
@@ -185,8 +181,7 @@ test CSPReceiver-3.5 {hasRoom()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPHasRoom $topLevel "actorA"] 
     set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 2] 
