@@ -171,14 +171,14 @@ test DoubleMatrixMath-1.7.1 {diag double[]} {
 } {}
 
 ####################################################################
-test DoubleMatrixMath-2.1 {determinate double[][] not square} {
-    catch {set r [java::call ptolemy.math.DoubleMatrixMath determinate $m23]} errMsg
+test DoubleMatrixMath-2.1 {determinant double[][] not square} {
+    catch {set r [java::call ptolemy.math.DoubleMatrixMath determinant $m23]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.determinate() : matrix argument [2 x 3] is not a square matrix.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.determinant() : matrix argument [2 x 3] is not a square matrix.}}
 
 ####################################################################
-test DoubleMatrixMath-2.2 {determinate double[][]} {
-   set r [java::call ptolemy.math.DoubleMatrixMath determinate $m3]
+test DoubleMatrixMath-2.2 {determinant double[][]} {
+   set r [java::call ptolemy.math.DoubleMatrixMath determinant $m3]
    set ok [java::call ptolemy.math.SignalProcessing close $r 144468.485554]
 } {1}
 

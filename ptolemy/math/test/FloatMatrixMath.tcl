@@ -116,14 +116,14 @@ test FloatMatrixMath-1.7.1 {diag float[]} {
 } {}
 
 ####################################################################
-test FloatMatrixMath-2.1 {determinate float[][] not square} {
-    catch {set r [java::call ptolemy.math.FloatMatrixMath determinate $m23]} errMsg
+test FloatMatrixMath-2.1 {determinant float[][] not square} {
+    catch {set r [java::call ptolemy.math.FloatMatrixMath determinant $m23]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.FloatMatrixMath.determinate() : matrix argument [2 x 3] is not a square matrix.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.FloatMatrixMath.determinant() : matrix argument [2 x 3] is not a square matrix.}}
 
 ####################################################################
-test FloatMatrixMath-2.2 {determinate float[][]} {
-   set r [java::call ptolemy.math.FloatMatrixMath determinate $m3]
+test FloatMatrixMath-2.2 {determinant float[][]} {
+   set r [java::call ptolemy.math.FloatMatrixMath determinant $m3]
    set ok [java::call ptolemy.math.SignalProcessing close $r 144468.484375]
 } {1}
 

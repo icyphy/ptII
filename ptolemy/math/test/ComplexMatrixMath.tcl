@@ -314,9 +314,9 @@ test ComplexMatrixMath-5.1.5 {diag} {
 } {}
 
 ####################################################################
-test ComplexMatrixMath-5.1.6 {determinate} {
+test ComplexMatrixMath-5.1.6 {determinant} {
     set mr [java::call ptolemy.math.ComplexMatrixMath \
-	    determinate $m22]
+	    determinant $m22]
     set s [java::call ptolemy.math.Complex toString $mr]
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {83.35 + 2.9i}
