@@ -36,9 +36,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+
 import java.util.Hashtable;
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEThread
@@ -93,11 +93,11 @@ public class DDEThread extends ProcessThread {
      */
     public synchronized void noticeOfTermination() {
         Actor actor = (Actor)getActor();
-	Enumeration outputPorts = actor.outputPorts();
+	Iterator outputPorts = actor.outputPortList().iterator();
 	double endTime = TimedQueueReceiver.INACTIVE;
 	if( outputPorts != null ) {
-	    while( outputPorts.hasMoreElements() ) {
-	        IOPort port = (IOPort)outputPorts.nextElement();
+	    while( outputPorts.hasNext() ) {
+	        IOPort port = (IOPort)outputPorts.next();
                 Receiver rcvrs[][] =
                     (Receiver[][])port.getRemoteReceivers();
                 if( rcvrs == null ) {
