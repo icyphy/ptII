@@ -278,3 +278,15 @@ test Fraction-3.11 {toFloat} {
 	set d5 [java::new ptolemy.math.Fraction 5 -8]
 	list [$d1 toFloat] [$d2 toFloat] [$d3 toFloat] [$d4 toFloat] [$d5 toFloat] 
 } {0.0 0.75 0.75 -0.625 -0.625}
+
+####################################################################
+test Fraction-3.12 {greaterThan} {
+	set d1 [java::new ptolemy.math.Fraction 3 4]
+	set d2 [java::new ptolemy.math.Fraction -5 8]
+	set d3 [java::new ptolemy.math.Fraction 1 2]
+	set b1 [$d1 greaterThan $d2]
+	set b2 [$d2 greaterThan $d1]
+	set b3 [$d1 greaterThan $d3]
+	set b4 [$d3 greaterThan $d1]
+	concat $b1 $b2 $b3 $b4
+} {1 0 1 0}
