@@ -72,14 +72,9 @@ the discrete signal has only one value at each
 discrete time, then the samples will reflect
 exactly that value. 
 
-Note that the samplers for continuous and 
-discrete signals are different. In particular,
-to sample a continuous signal, the CTPeriodicSampler
-needs to be used; while the Sampler samples a 
-discrete signal. The key difference between
-these two samplers is that the CTPeriodicSampler
-constrains the signal type of its input port
-to be "CONTINUOUS".</text></svg></configure>
+In this example, a triggered sampler is used
+to sample the discrete signal, and every
+second discrete clock output is sampled.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -102,9 +97,9 @@ to be "CONTINUOUS".</text></svg></configure>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng and Edward A. Lee">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 340.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -116,7 +111,7 @@ to be "CONTINUOUS".</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 290.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -216,7 +211,7 @@ to be "CONTINUOUS".</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 225.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -257,8 +252,26 @@ to be "CONTINUOUS".</text></svg></configure>
         </configure>
     </entity>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 290.0]">
         </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.2}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 350.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_hide" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -272,6 +285,8 @@ to be "CONTINUOUS".</text></svg></configure>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TimedPlotter.input" relation="relation4"/>
     <link port="ContinuousClock.output" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation6"/>
@@ -282,5 +297,6 @@ to be "CONTINUOUS".</text></svg></configure>
     <link port="TimedPlotter4.input" relation="relation"/>
     <link port="Sampler.input" relation="relation6"/>
     <link port="Sampler.output" relation="relation4"/>
-    <link port="Sampler.trigger" relation="relation6"/>
+    <link port="Sampler.trigger" relation="relation2"/>
+    <link port="DiscreteClock2.output" relation="relation2"/>
 </entity>
