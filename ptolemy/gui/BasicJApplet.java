@@ -173,7 +173,11 @@ public class BasicJApplet extends JApplet {
      *  @param ex The exception for which we want the stack trace.
      *  @return The stack trace.
      */
-    protected String _getStackTrace(Exception ex) {
+    protected String _stackTraceToString(Exception ex) {
+        // For a similar method, see
+        // ptolemy.kernel.util.KernelException.stackTraceToString()
+        // We do not use that method here because we do not want to
+        // make this class depend on the kernel.
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(stream);
         ex.printStackTrace(printWriter);
