@@ -87,7 +87,7 @@ public abstract class ODESolver extends NamedObj {
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public abstract void predictStates() throws IllegalActionException;
+    public abstract void resolveStates() throws IllegalActionException;
 
     /** Increase the round counter by one. Round counter is a counter
      *  for the number of fire() rounds in one iteration. Some 
@@ -121,9 +121,19 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
+    /** Abstract hook method for isSuccess() method of integrators.
+     */
+    public abstract boolean integratorIsSuccess(CTBaseIntegrator integrator);
+
+    /** Abstract hook method for suggestedNextStepSize() method of 
+     *  integrators.
+     */
+    public abstract double integratorSuggestedNextStepSize(
+        CTBaseIntegrator integrator);
+
     /** Integrator's aux variable number needed when solving the ODE.
      */
-    public abstract int auxVariableNumber();
+    public abstract int integratorAuxVariableNumber();
 
     /** Run the CT subsystem for one successful step.
      *  Different solver may interprete "success" and implement
@@ -133,40 +143,30 @@ public abstract class ODESolver extends NamedObj {
      *  class. May be needed by the derived class.
      */
     public void iterate() throws IllegalActionException {
-        setSuccessful(false);
-        while(!isSuccessful()) {
-            predictStates();
-            errorControl();
-            adjustStepSize();
+        while(true) {
+            resolveStates();
+            if(errorTolerable()){
+                break;
+            }
+            startOverLastStep();
         }        
     }
 
-    public boolean isSuccessful(){
-        return true;
-    }
-
-    public void setSuccessful(boolean succ) {
-    }
-
-    /** Adjust the step sizes.
-     */
-    public void adjustStepSize() {
+    public void startOverLastStep() {
+        CTDirector dir = (CTDirector)getContainer();
+        dir.setCurrentStepSize(dir.getCurrentStepSize()/2.0);
     }
 
     /** Error Control, may label this step to be unsuccessful.
      */
-    public void errorControl() {
-        //ErrorControlActor.
+    public boolean errorTolerable() {
+        return true;
     }
     
-    /** Produce Outputs.
-     */
-    public void produceOutput() {
-    }
     /** Return the director contains this solver.
      *  @return the director contains this solver.
      */
-    public Nameable getContainer() {
+    public final Nameable getContainer() {
         return _container;
     }
 

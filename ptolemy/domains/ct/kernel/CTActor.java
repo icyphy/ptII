@@ -37,12 +37,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTActor
 /** 
-CTActor is the base class for continuous time actors. A CT actor can be 
-either dynamic or not, which is set to be blank final.
-A dynamic actor, e.g. an integrator, will have an
-initial state and will emit this state at the initialize() phase of the
-execution. As a result, dynamic actors are scheduled at the end of each
-iteration. 
+CTActor is the base class for continuous time actors. 
 <P>
 CTActors can have parameters attached. The parameters can be set by the 
 setParam() method at any time, but the parameter will not be used 
@@ -63,15 +58,10 @@ public class CTActor extends AtomicActor implements ParameterListener{
      *  as its name.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  A CTActor can be either dynamic, or not. It must be set at the 
-     *  construction time and can't be changed there after.
-     *  A dynamic actor will emit a token at its initialization phase.
      *
-     *  @param isDynamic true if the actor is a dynamic actor.
      */
-    public CTActor(boolean isDynamic) {
+    public CTActor() {
 	super();
-        _dynamic = isDynamic;
     }
 
     /** Construct a CTActor in the specified workspace with an empty
@@ -79,52 +69,32 @@ public class CTActor extends AtomicActor implements ParameterListener{
      *  If the workspace argument is null, then use the default workspace.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  A CTActor can be either dynamic, or not. It must be set at the 
-     *  construction time and can't be changed thereafter.
-     *  A dynamic actor will produce a token at its initialization phase.
      *
      *  @param workspace The workspace that will list the entity.
-     *  @param isDynamic true if the actor is a dynamic actor.
      */
-    public CTActor(Workspace workspace, boolean isDynamic) {
+    public CTActor(Workspace workspace) {
 	super(workspace);
-        _dynamic = isDynamic;
     }
 
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the 
-     *  construction time and can't be changed thereafter.
-     *  A dynamic actor will produce a token at its initialization phase.
      * 
      *  @param CTSubSystem The subsystem that this actor is lived in
      *  @param name The actor's name
-     *  @param isDynamic True if the actor is a dynamic actor
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */	
-    public CTActor(CompositeActor container, String name, boolean isDynamic) 
+    public CTActor(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _dynamic = isDynamic;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return true if the actor is a dynamic actor.
-     *  Dynamic is a blank final variable, so can not be set after 
-     *  construction.
-     *
-     *  @return True if the actor is a dynamic actor.
-     */	
-    public boolean isDynamic() {
-        return _dynamic;
-    }
 
     /** Return true if the paramter has changed from the last time it
      *  was updated.
@@ -225,10 +195,6 @@ public class CTActor extends AtomicActor implements ParameterListener{
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-  
-    // Illustrate if the CTActor is dynamic. 
-    // 'final' means this property can not be changed at run time.
-    private final boolean _dynamic;
 
     // Illustrate if the parameter has been changed.
     // default value is TRUE.

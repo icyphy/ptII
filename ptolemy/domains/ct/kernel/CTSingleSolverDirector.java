@@ -23,6 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -38,11 +39,9 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTSingleSolverDirector
 /** 
-Description of the class
+A CT director that does not change its ODE solver.
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTSingleSolverDirector extends StaticSchedulingDirector
         implements CTDirector, ParameterListener{
@@ -52,6 +51,13 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */	
     public CTSingleSolverDirector () {
         super();
+        try {
+            setScheduler(new CTScheduler());
+        }catch(IllegalActionException e) {
+            // Should never occur.
+            throw new InternalErrorException(this.getFullName() + 
+                "setting scheduler error");
+        }
         _initParameters();
     }
 
@@ -66,6 +72,13 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */
     public CTSingleSolverDirector (String name) {
         super(name);
+        try {
+            setScheduler(new CTScheduler());
+        }catch(IllegalActionException e) {
+            // Should never occur.
+            throw new InternalErrorException(this.getFullName() + 
+                "setting scheduler error");
+        }
         _initParameters();
     }
 
@@ -82,6 +95,13 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */
     public CTSingleSolverDirector (Workspace workspace, String name) {
         super(workspace, name);
+        try {
+            setScheduler(new CTScheduler());
+        }catch(IllegalActionException e) {
+            // Should never occur.
+            throw new InternalErrorException(this.getFullName() +
+                "setting scheduler error");
+        }
         _initParameters();
     }
 
@@ -221,7 +241,7 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
             scheduler.schedule();
         }
         updateParameters();
-        // prefire all the actors. They may register breakpoints.
+        // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
         Enumeration actors = ca.deepGetEntities();
@@ -234,10 +254,8 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
 
    /**  Fire the system for one iteration.
      *
-     *  @exception IllegalActionException If it does not has a ODE solver
-     *        or thrown by the ODE solver.
+     *  @exception IllegalActionException If thrown by the ODE solver.
      */
-     //FIXME: More than this
     public void fire() throws IllegalActionException {
         if (_first) {
             _first = false;
@@ -249,7 +267,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         solver.iterate();
         produceOutput();
         updateStates(); // call postfire on all actors 
-        return;
     }
 
     /** test if the current time is the stop time. 
@@ -267,15 +284,34 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
 
     /** produce outputs
      */
-    public void produceOutput() {
-        // inegrators.exciteOutput
+    public void produceOutput() throws IllegalActionException {
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+        // Integrators emit output.
+        // FIXME: Do we need this? If the last fire of the integrators
+        //        has already emitted token, then the output actors
+        //        can use them. That is at least true for implicit methods.
+        Enumeration integrators = scheduler.dynamicActorSchedule();
+        while(integrators.hasMoreElements()) {
+            CTDynamicActor integrator=(CTDynamicActor)integrators.nextElement();
+            integrator.emitPotentialStates();
+        }
         // outputSchdule.fire()
+        Enumeration outputactors = scheduler.outputSchedule();
+        while(outputactors.hasMoreElements()) {
+            Actor nextoutputactor = (Actor)outputactors.nextElement();
+            nextoutputactor.fire();
+        }
     }  
 
     /** update States
      */
-     public void updateStates() {
-         // all acotrs.postfire();
+     public void updateStates() throws IllegalActionException {
+         CompositeActor container = (CompositeActor) getContainer();
+         Enumeration allactors = container.deepGetEntities();
+         while(allactors.hasMoreElements()) {
+             Actor nextactor = (Actor)allactors.nextElement();
+             nextactor.postfire();
+         }
      }
     
     /** If parameter changed, queue the event
@@ -339,42 +375,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
             throws IllegalActionException {
         _currentSolver = solver;
     }   
-
-    /** Return the next break point of the waveform. A break point of 
-     *  the waveform is the time point at which the derivative of the
-     *  waveform is not continuous. The returned value is the the smallest
-     *  time of the next break point registed by the actors. If no actor
-     *  set this time after resetNextJumpTime() is called, then return the
-     *  simulation stop time.
-     *
-     *  @return The next jump time.
-     */
-    public double nearestBreakPoint() {
-        return 0;
-    }
-
-    /** Regist the next time point when a discontinuity (jump) occurs.
-     *  This discontinuity may result in changing ODE solver in
-     *  some derived directors. If the time is smaller than the
-     *  currentTime then throw an IllegalActionException. Otherwise,
-     *  the next jump time is set to the minimum of the remembered
-     *  next jump time and the specified time.
-     *
-     *  @param The next time a jump occurs.
-     *  @exception IllegalActionException If the time is smaller than
-     *        the current time.
-     */
-    public void registBreakPoint(double nextjumptime){
-    }
-
-    /** Reset the next jump time to the simulation stop time. This
-     *  method is suggested to be called at each prefire() stage
-     *  of the director. After that each actor may regist a smaller
-     *  next jump time at their prefire() stage. The actual next
-     *  jump time is the minimum of them.
-     */
-    public void resetBreakPoints(){
-    }
 
     /** Set the current step size. This variable is very import during
      *  the simulation and can not be changed in the middle of an

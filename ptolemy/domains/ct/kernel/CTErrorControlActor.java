@@ -32,12 +32,13 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTErrorControlActor
 /** 
-Interface for Error Contol actors. Integrators and Event Detectors should
-implement this interface.
+Interface for Error Contol actors. Any actors that would like to control
+the local error of an iteration should implement this interface. Usually
+these actors, when the error is tolerable, will suggest a new step
+size. For those actors that don't want to suggest new step size should
+return twice the current step size. 
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public interface CTErrorControlActor {
     
@@ -48,7 +49,9 @@ public interface CTErrorControlActor {
      */	
     public boolean isSuccessful();
 
-    /** Return the suggested next step size.
+    /** Return the suggested next step size.For those actors that don't
+     *  want to suggest new step size should return <B>twice</B>
+     *  the current step size.
      */
     public double suggestedNextStepSize();
 

@@ -1,4 +1,4 @@
-/* One line description of file.
+/* The receiver for CT actors
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -23,8 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating red (liuj@eecs.berkeley.edu)
 
 */
 
@@ -41,7 +40,7 @@ The receiver for continuous time simulation. This is basically a mailbox
 receiver which has just one capacity. If a token is sent to the receiver
 when the receiver is full, then the old token will be overwirtten.
 @author  Jie Liu
-@version  $Id$
+@version $Id$
 
 */
 public class CTReceiver extends Mailbox{

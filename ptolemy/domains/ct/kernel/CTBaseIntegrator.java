@@ -70,7 +70,8 @@ from the ODE solver.
 @see ODESolver
 @see CTDiretor
 */
-public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
+public class CTBaseIntegrator extends CTActor 
+        implements CTErrorControlActor, CTDynamicActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
      *  The object is added to the workspace directory.
@@ -84,7 +85,7 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
      */
     public CTBaseIntegrator()
             throws NameDuplicationException, IllegalActionException {
-	super(true);
+	super();
         input = new IOPort(this, "input");
         input.makeInput(true);
         output = new IOPort(this, "output");
@@ -108,7 +109,7 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
      */
     public CTBaseIntegrator(Workspace workspace) 
             throws NameDuplicationException, IllegalActionException {
-        super(workspace, true);
+        super(workspace);
         input = new IOPort(this, "input");
         input.makeInput(true);
         output = new IOPort(this, "output");
@@ -132,7 +133,7 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
      */	
     public CTBaseIntegrator(CompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException {
-        super(container, name, true);
+        super(container, name);
         input = new IOPort(this, "input");
         input.makeInput(true);
         output = new IOPort(this, "output");
@@ -213,7 +214,7 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
 
     /** Excite output.
      */
-    public void exciteOutputs() throws IllegalActionException {
+    public void emitPotentialStates() throws IllegalActionException {
         output.broadcast(new DoubleToken(_potentialState));
     }
 
@@ -248,7 +249,7 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
                     " has no ODE solver avalable");
         }
         
-        int n = solver.auxVariableNumber();
+        int n = solver.integratorAuxVariableNumber();
         if((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
         }
@@ -328,13 +329,15 @@ public class CTBaseIntegrator extends CTActor implements CTErrorControlActor {
     /** Return true if current step is successful.
      */	
     public boolean isSuccessful() {
-        return true;
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        return solver.integratorIsSuccess(this);
     }
 
     /** Return the suggested next step size.
      */
     public double suggestedNextStepSize() {
-        return 0;
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        return solver.integratorSuggestedNextStepSize(this);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -23,9 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
-
+@ProposedRating red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;

@@ -38,23 +38,38 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTClusterScheduler
 /** 
-A culster graph sort scheduler for continuous time simulation.
-The scheduler clusters the CT system into two lists. One for state
-map, and one for output map.
-The state map is sorted backward from the inputs of integrators,
-until a source or an output of a integrator is found. If there
-are integrator connected serially, then the order of the integrators
-in the list is the reverse of their topological order.
-The output map is sorted backward from the sinks, back trace until
-it reaches an integrator or a source. Both integrators and sources are
-included in the list.
+A CT (sub)system can be represented mathematiclly as:
+    dx/xt = f(x, u, t)
+    y = g(x, u, t)
+    e: h(x, u, t) = 0
+
+A culster graph sort scheduler for continuous time simulation sorts
+the graph and manage of list of schedules, for states, state transitions,
+outputs, and event detections.
+The state schedule is a list of dynamic actors (integrators or actors
+that can produce initial token) which are sorted backward to avoid
+casaulity mismatch.
+The state transition schedule is the actors in f() function sorted
+in the topological order. It is acheived by sorting backward from the
+inputs of dynamic actors until a source or an output of a dynamic actor
+is found. Dynamic actors are not in this schedule.
+
+The output schedule is the actors in g() function sorted in the topological
+order. It is acheived by sorting backward from the sinks, traces back until
+a dynamic actor or a source is reached. The dynamic actors is not in the
+schedule.
+
+The event detection schedule is the actors in the h() function sorted 
+in the topological order. It is acheived by sorting bakward from the 
+event detector's inputs, traces back to a dynamic actor or a source.
+dynamic actors are not in this list.
+
 If thers are loops of non-dynamic actors or loops of integrators,
-then the CTSubSystem is not schedulable, and a NotSchedulableException
+then the subsystem is not schedulable, and a NotSchedulableException
 will be throw by the schedule(), stateSchdule() and outputSchedule() methods.
 
 @author Jie Liu
 @version $Id$
-@see CTScheduler
 @see ptolemy.actor.Scheduler
 */
 
@@ -68,7 +83,7 @@ public class CTScheduler extends Scheduler{
             setName(_staticname);
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(
-                "Internal error when setName to a CTTopSortScheduler");
+                "Internal error when setName to a CTScheduler");
         }
     }
     
@@ -83,12 +98,31 @@ public class CTScheduler extends Scheduler{
             setName(_staticname);
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(
-                "Internal error when setName to a CTTopSortScheduler");
+                "Internal error when setName to a CTScheduler");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** Returns an enumeration of arithmetic actors. This enumeration is
+     *  locally cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  the new version.
+     *  This method read-synchronize on the workspace.
+     */
+    public Enumeration arithmaticActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _arith.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
     /** Returns an enumeration of dynamic actors. This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -110,30 +144,16 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Returns an enumeration of nondynamic actors. This enumeration is
-     *  locally cached. If workspace version equals to the cached version,
+    /** Return an enumeration of error control actors. 
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it calls _classifyActors to reconstruct, and save
      *  the new version.
      *  This method read-synchronize on the workspace.
      */
-    public Enumeration arithmaticActors() {
+    public Enumeration errorControlActors() {
         try {
-	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
-            }
-            return _arith.elements();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return a enumeration of error control actors, unordered.
-     */
-    public Enumeration errorControlSchedule() {
-       try {
 	    workspace().getReadAccess();
             if(_dynamicversion != workspace().getVersion()) {
                 _classifyActors();
@@ -144,7 +164,48 @@ public class CTScheduler extends Scheduler{
             workspace().doneReading();
         }
     }
-        
+
+    /** Return an enumeration of event detectors. 
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  the new version.
+     *  This method read-synchronize on the workspace.
+     */
+    public Enumeration eventDetectors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _evdct.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+
+    /** Return an enumeration of sinks. This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  the new version.
+     *  This method read-synchronize on the workspace.
+     */
+    public Enumeration sinkActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _sink.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
     /** Returns an enumeration of the schedule of dynamic actors.
      *  This enumeration is locally cached. 
@@ -160,7 +221,7 @@ public class CTScheduler extends Scheduler{
      *  one step earlier than the output.
      *  This method read-synchronize on the workspace.
      */
-    public Enumeration stateSchedule() throws NotSchedulableException {
+    public Enumeration dynamicActorSchedule() throws NotSchedulableException {
         try {
 	    workspace().getReadAccess();
             if(_scheduleversion != workspace().getVersion()) {
@@ -221,7 +282,7 @@ public class CTScheduler extends Scheduler{
      *  actor's output ports) in the topology order.
      *  This method read-synchronize on the workspace.
      */ 
-    public Enumeration transitionSchedule() throws NotSchedulableException {
+    public Enumeration stateTransitionSchedule() throws NotSchedulableException {
         try {
 	    workspace().getReadAccess();
             if(_scheduleversion != workspace().getVersion()) {
@@ -258,21 +319,19 @@ public class CTScheduler extends Scheduler{
         Enumeration actors = ca.deepGetEntities();
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
-            
-            if (a instanceof CTActor)  {
-                if (((CTActor)a).isDynamic()) {
-                    _dynam.insertLast(a);
-                    _ectrl.insertLast(a);
-                    break;
-                } else if (a instanceof CTErrorControlActor) {
-                    _ectrl.insertLast(a);
-                    _evdct.insertLast(a);
-                    break;
-                }
-            } 
-            _arith.insertLast(a);
-            if(a.outputPorts() == null) {
+            if (a instanceof CTErrorControlActor) {
+                _ectrl.insertLast(a);
+            }
+            if (a instanceof CTEventDetector) {
+                _evdct.insertLast(a);
+            }
+            if (a.outputPorts() == null) {
                 _sink.insertLast(a);
+            }
+            if (a instanceof CTDynamicActor) {
+                _dynam.insertLast(a);
+            } else {
+                _arith.insertLast(a);
             }
         }
     }
@@ -297,6 +356,7 @@ public class CTScheduler extends Scheduler{
         LinkedList _stateschedule = new LinkedList();
         LinkedList _transitionschedule = new LinkedList();
         LinkedList _outputschedule = new LinkedList();
+        LinkedList _eventschedule = new LinkedList();
         LinkedList _scheList = new LinkedList();
         
         DirectedAcyclicGraph g =  _toGraph(ca.deepGetEntities());
@@ -306,8 +366,10 @@ public class CTScheduler extends Scheduler{
         // construct an array of dynamic actors.
         int numofdyn = _dynam.size();
         Object[] dynactors = new Object[numofdyn];
-        for(int i = 0; i < numofdyn; i++) {
-            dynactors[i] = _dynam.at(i);
+        Enumeration enumdynactors = _dynam.elements();
+        int count = 0;
+        while (enumdynactors.hasMoreElements()) {
+            dynactors[count++] = enumdynactors.nextElement();
         }
         // Dynamic actors are reverse ordered.
         Object[] xsort = g.topologicalSort(dynactors);
@@ -315,6 +377,7 @@ public class CTScheduler extends Scheduler{
             _stateschedule.insertFirst(xsort[i]);
         }
         _scheList.insertLast(_stateschedule);
+
         // State transition map
         Object[] fx = g.backwardReachableNodes(dynactors);
         Object[] fxsort = g.topologicalSort(fx);
@@ -322,17 +385,36 @@ public class CTScheduler extends Scheduler{
             _transitionschedule.insertLast(fxsort[i]);
         }  
         _scheList.insertLast(_transitionschedule);
+
         // construct an array of sink actors.
         int numofsink = _sink.size();
         Object[] sinkactors = new Object[numofsink];
-        for(int i = 0; i < numofsink; i++) {
-            sinkactors[i] = _sink.at(i);
+        Enumeration enumsinks = _sink.elements();
+        count = 0;
+        while(enumsinks.hasMoreElements()) {
+            sinkactors[count++] = enumsinks.nextElement();
         }
         //Output map.
         Object[] gx = g.backwardReachableNodes(sinkactors);
         Object[] gxsort = g.topologicalSort(gx);
         for(int i=0; i < gxsort.length; i++) {
             _outputschedule.insertLast(gxsort[i]);
+        }  
+        _scheList.insertLast(_outputschedule);
+
+        // construct an array of event detectors.
+        int numofevdct = _evdct.size();
+        Object[] eventdetectors = new Object[numofevdct];
+        Enumeration enumevdct = _evdct.elements();
+        count = 0;
+        while(enumevdct.hasMoreElements()) {
+            eventdetectors[count++] = enumevdct.nextElement();
+        }
+        // Event detection map.
+        Object[] hx = g.backwardReachableNodes(eventdetectors);
+        Object[] hxsort = g.topologicalSort(hx);
+        for(int i=0; i < hxsort.length; i++) {
+            _eventschedule.insertLast(hxsort[i]);
         }  
         _scheList.insertLast(_outputschedule);
         return _scheList.elements();
@@ -419,11 +501,8 @@ public class CTScheduler extends Scheduler{
         Enumeration allactors = actorlist.elements();
         while (allactors.hasMoreElements()) {
             Actor a = (Actor) allactors.nextElement();
-            if(a instanceof CTActor) {
-                if(((CTActor)a).isDynamic()) {
-                    // break the loops at dynamic actors.
-                    break;
-                }
+            if(a instanceof CTDynamicActor) {
+                break;
             }
             // Find the successors of a
             Enumeration successors = _successors(a);

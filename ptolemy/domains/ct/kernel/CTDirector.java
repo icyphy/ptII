@@ -76,39 +76,6 @@ public interface CTDirector extends Nameable{
      */
     public double getTimeAccuracy();
 
-
-    /** Return the next break point of the waveform. A break point of 
-     *  the waveform is the time point at which the derivative of the
-     *  waveform is not continuous. The returned value is the the smallest
-     *  time of the next break point registed by the actors. If no actor
-     *  set this time after resetNextJumpTime() is called, then return the
-     *  simulation stop time.
-     *
-     *  @return The next jump time.
-     */
-    public double nearestBreakPoint() ;
-
-    /** Regist the next time point when a discontinuity (jump) occurs.
-     *  This discontinuity may result in changing ODE solver in
-     *  some derived directors. If the time is smaller than the
-     *  currentTime then throw an IllegalActionException. Otherwise,
-     *  the next jump time is set to the minimum of the remembered
-     *  next jump time and the specified time.
-     *
-     *  @param The next time a jump occurs.
-     *  @exception IllegalActionException If the time is smaller than
-     *        the current time.
-     */
-    public void registBreakPoint(double nextjumptime);
-
-    /** Reset the next jump time to the simulation stop time. This
-     *  method is suggested to be called at each prefire() stage
-     *  of the director. After that each actor may regist a smaller
-     *  next jump time at their prefire() stage. The actual next
-     *  jump time is the minimum of them.
-     */
-    public void resetBreakPoints();
-
     /** Set the current ODE solver. The solver's container will be
      *  set to this director.
      *  The ODE solver will handle the algorithms in integrators.
