@@ -218,7 +218,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination == "
-                            "expression. Got: " + command);
+                            + "expression. Got: " + command);
                 }
                 _destinationNames.add(
                         completeDestinationSpec.substring(
