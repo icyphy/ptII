@@ -108,6 +108,20 @@ public class Tableau extends ComponentEntity {
         }
     }
 
+    /** Clone the object into the specified workspace. This calls the
+     *  base class and then sets the associated frame to null.
+     *  Thus, the resulting tableau has no frame associated with it.
+     *  @param ws The workspace for the new object.
+     *  @return A new object.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Tableau newobj = (Tableau)super.clone(ws);
+        newobj._frame = null;
+        return newobj;
+    }
+
     /** Close this tableau visible by calling dispose() on the associated
      *  frame, or if the associated frame is an instance of TableauFrame,
      *  by calling _close() on it.

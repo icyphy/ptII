@@ -92,6 +92,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         }
     }
 
+    /** Clone the object into the specified workspace. This calls the
+     *  base class and then clones the associated model into a new
+     *  workspace, if there is one.
+     *  @param ws The workspace for the new effigy.
+     *  @return A new effigy.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        PtolemyEffigy newobj = (PtolemyEffigy)super.clone(ws);
+        if (_model != null) {
+            newobj._model = (NamedObj)_model.clone(new Workspace());
+        }
+        return newobj;
+    }
+
     /** Return the ptolemy model that this is an effigy of.
      *  @return The model, or null if none has been set.
      */
@@ -224,6 +240,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
                 }
+                _parser.reset();
                 NamedObj toplevel = _parser.parse(base, in.openStream());
 
                 if (toplevel != null) {
