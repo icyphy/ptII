@@ -77,13 +77,6 @@ public class StatePair {
         return _first;
     }
 
-    /** Return the second state in this pair.
-     *  @return The second state in this pair.
-     */
-    public State second() {
-        return _second;
-    }
-
     /** Override the base class method to ensure that the pairs that
      *  are equal (according to the equals() method) have the same
      *  hash code.
@@ -91,6 +84,13 @@ public class StatePair {
      */
     public int hashCode() {
         return _first.hashCode() + _second.hashCode();
+    }
+
+    /** Return the second state in this pair.
+     *  @return The second state in this pair.
+     */
+    public State second() {
+        return _second;
     }
 
     /** Return a string representation of this pair. The string contains

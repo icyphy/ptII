@@ -203,6 +203,29 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return;
     }
 
+    /** Return the current time obtained from the executive director, if
+     *  there is one, and otherwise return the local view of current time.
+     *  @return The current time.
+     */
+    public double getCurrentTime() {
+        CompositeActor cont = (CompositeActor)getContainer();
+        Director execDir = (Director)cont.getExecutiveDirector();
+        if (execDir != null) {
+            return execDir.getCurrentTime();
+        } else {
+            return super.getCurrentTime();
+        }
+    }
+
+    /** Return the next iteration time obtained from the executive director.
+     *  @return The next iteration time.
+     */
+    public double getNextIterationTime() {
+        CompositeActor cont = (CompositeActor)getContainer();
+        Director execDir = (Director)cont.getExecutiveDirector();
+        return execDir.getNextIterationTime();
+    }
+
     /** Return true if the current integration step is accurate with
      *  the respect of all the enabled refinements, which are refinements
      *  that returned true in their prefire() methods in this iteration.
@@ -227,29 +250,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
-    /** Return the current time obtained from the executive director, if
-     *  there is one, and otherwise return the local view of current time.
-     *  @return The current time.
-     */
-    public double getCurrentTime() {
-        CompositeActor cont = (CompositeActor)getContainer();
-        Director execDir = (Director)cont.getExecutiveDirector();
-        if (execDir != null) {
-            return execDir.getCurrentTime();
-        } else {
-            return super.getCurrentTime();
-        }
-    }
-
-    /** Return the next iteration time obtained from the executive director.
-     *  @return The next iteration time.
-     */
-    public double getNextIterationTime() {
-        CompositeActor cont = (CompositeActor)getContainer();
-        Director execDir = (Director)cont.getExecutiveDirector();
-        return execDir.getNextIterationTime();
-    }
-
     /** Return a CTReceiver.
      *  @return a new CTReceiver.
      */
@@ -257,36 +257,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         CTReceiver receiver = new CTReceiver();
         receiver.setSignalType(CTReceiver.DISCRETE);
         return receiver;
-    }
-
-    /** Return the smallest next step size predicted by the all the
-     *  enabled refinements, which are refinements that returned true
-     *  in their prefire() methods in this iteration.
-     *  If there are no refinements, then return Double.MAX_VALUE.
-     *  If a refinement is not a CTStepSizeControlActor, then
-     *  its prediction is Double.MAX_VALUE.
-     *  @return The predicted next step size.
-     */
-    public double predictedStepSize() {
-        double result = Double.MAX_VALUE;
-        if (_enabledRefinements != null) {
-            Iterator refinements = _enabledRefinements.iterator();
-            while (refinements.hasNext()) {
-                Actor refinement = (Actor)refinements.next();
-                if (refinement instanceof CTStepSizeControlActor) {
-                    result = Math.min(result, ((CTStepSizeControlActor)
-                            refinement).predictedStepSize());
-                }
-            }
-        }
-        return result;
-    }
-
-    /** Set the modelErrorHandler. Call super.preinitialize().
-     */
-    public void preinitialize() throws IllegalActionException {
-        //setModelErrorHandler(new AssertionModelErrorHandler());
-        super.preinitialize();
     }
 
     /** Return true if the mode controller wishes to be scheduled for
@@ -328,6 +298,36 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
 
         return super.postfire();
+    }
+
+    /** Return the smallest next step size predicted by the all the
+     *  enabled refinements, which are refinements that returned true
+     *  in their prefire() methods in this iteration.
+     *  If there are no refinements, then return Double.MAX_VALUE.
+     *  If a refinement is not a CTStepSizeControlActor, then
+     *  its prediction is Double.MAX_VALUE.
+     *  @return The predicted next step size.
+     */
+    public double predictedStepSize() {
+        double result = Double.MAX_VALUE;
+        if (_enabledRefinements != null) {
+            Iterator refinements = _enabledRefinements.iterator();
+            while (refinements.hasNext()) {
+                Actor refinement = (Actor)refinements.next();
+                if (refinement instanceof CTStepSizeControlActor) {
+                    result = Math.min(result, ((CTStepSizeControlActor)
+                            refinement).predictedStepSize());
+                }
+            }
+        }
+        return result;
+    }
+
+    /** Set the modelErrorHandler. Call super.preinitialize().
+     */
+    public void preinitialize() throws IllegalActionException {
+        //setModelErrorHandler(new AssertionModelErrorHandler());
+        super.preinitialize();
     }
 
     /** Return the step size refined by all the enabled refinements,

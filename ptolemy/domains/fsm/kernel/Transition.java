@@ -333,62 +333,6 @@ public class Transition extends ComponentRelation {
         return newObject;
     }
 
-    /** Return the refinements of this transition. The names of the refinements
-     *  are specified by the <i>refinementName</i> attribute. The refinements
-     *  must be instances of TypedActor and have the same container as
-     *  the FSMActor containing this state, otherwise an exception is thrown.
-     *  This method can also return null if there is no refinement.
-     *  This method is read-synchronized on the workspace.
-     *  @return The refinements of this state, or null if there are none.
-     *  @exception IllegalActionException If the specified refinement
-     *   cannot be found, or if a comma-separated list is malformed.
-     */
-    public TypedActor[] getRefinement() throws IllegalActionException {
-        if (_refinementVersion == workspace().getVersion()) {
-            return _refinement;
-        }
-        try {
-            workspace().getReadAccess();
-            String names = refinementName.getExpression();
-            if (names == null || names.trim().equals("")) {
-                _refinementVersion = workspace().getVersion();
-                _refinement = null;
-                return null;
-            }
-            StringTokenizer tokenizer = new StringTokenizer(names, ",");
-            int size = tokenizer.countTokens();
-            if (size <= 0) {
-                _refinementVersion = workspace().getVersion();
-                _refinement = null;
-                return null;
-            }
-            _refinement = new TypedActor[size];
-            Nameable container = getContainer();
-            TypedCompositeActor containerContainer =
-                (TypedCompositeActor)container.getContainer();
-            int index = 0;
-            while (tokenizer.hasMoreTokens()) {
-                String name = tokenizer.nextToken().trim();
-                if (name.equals("")) {
-                    throw new IllegalActionException(this,
-                            "Malformed list of refinements: " + names);
-                }
-                TypedActor element =
-                    (TypedActor)containerContainer.getEntity(name);
-                if (element == null) {
-                    throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
-                }
-                _refinement[index++] = element;
-            }
-            _refinementVersion = workspace().getVersion();
-            return _refinement;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** Return the list of commit actions contained by this transition.
      *  @return The list of commit actions contained by this transition.
      */
@@ -453,6 +397,62 @@ public class Transition extends ComponentRelation {
             return buffer.toString();
         } else {
             return "";
+        }
+    }
+
+    /** Return the refinements of this transition. The names of the refinements
+     *  are specified by the <i>refinementName</i> attribute. The refinements
+     *  must be instances of TypedActor and have the same container as
+     *  the FSMActor containing this state, otherwise an exception is thrown.
+     *  This method can also return null if there is no refinement.
+     *  This method is read-synchronized on the workspace.
+     *  @return The refinements of this state, or null if there are none.
+     *  @exception IllegalActionException If the specified refinement
+     *   cannot be found, or if a comma-separated list is malformed.
+     */
+    public TypedActor[] getRefinement() throws IllegalActionException {
+        if (_refinementVersion == workspace().getVersion()) {
+            return _refinement;
+        }
+        try {
+            workspace().getReadAccess();
+            String names = refinementName.getExpression();
+            if (names == null || names.trim().equals("")) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            StringTokenizer tokenizer = new StringTokenizer(names, ",");
+            int size = tokenizer.countTokens();
+            if (size <= 0) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            _refinement = new TypedActor[size];
+            Nameable container = getContainer();
+            TypedCompositeActor containerContainer =
+                (TypedCompositeActor)container.getContainer();
+            int index = 0;
+            while (tokenizer.hasMoreTokens()) {
+                String name = tokenizer.nextToken().trim();
+                if (name.equals("")) {
+                    throw new IllegalActionException(this,
+                            "Malformed list of refinements: " + names);
+                }
+                TypedActor element =
+                    (TypedActor)containerContainer.getEntity(name);
+                if (element == null) {
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "refinement with name \"" + name
+                            + "\" in " + containerContainer.getFullName());
+                }
+                _refinement[index++] = element;
+            }
+            _refinementVersion = workspace().getVersion();
+            return _refinement;
+        } finally {
+            workspace().doneReading();
         }
     }
 
