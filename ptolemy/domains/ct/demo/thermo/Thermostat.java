@@ -133,9 +133,9 @@ public class Thermostat extends CTApplet {
             TypedIOPort hsst = (TypedIOPort)hs.newPort("state");
             hsst.setOutput(true);
             hsst.setDeclaredType(DoubleToken.class);
-            TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
-            hstr.setOutput(true);
-            hstr.setDeclaredType(DoubleToken.class);
+            //TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
+            //hstr.setOutput(true);
+            //hstr.setDeclaredType(DoubleToken.class);
  
 
             // the FSM controller
@@ -270,7 +270,7 @@ public class Thermostat extends CTApplet {
             ctIncSt.link(hsr3);
             ctDecSt.link(hsr3);
             Relation hsr4 = hs.newRelation("HSr4");
-            hstr.link(hsr4);
+            //hstr.link(hsr4);
             ctIncTr.link(hsr4);
             ctDecTr.link(hsr4);
 
@@ -279,7 +279,7 @@ public class Thermostat extends CTApplet {
             _toplevel.connect(ramp.output, hsin);
             //sys.connect(hsout, myplot.input);
             _toplevel.connect(hsst, myplot.input);
-            _toplevel.connect(hstr, myplot.input);
+            //_toplevel.connect(hstr, myplot.input);
 
 
             // try to run the system
