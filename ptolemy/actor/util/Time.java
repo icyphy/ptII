@@ -158,6 +158,7 @@ public class Time implements Comparable {
      */
     private Time(Director director, BigInteger timeValue) {
         _director = director;
+        
         _timeValue = timeValue;
     }
 
@@ -349,11 +350,21 @@ public class Time implements Comparable {
 		}
     }
     
-    /** Return the integer result of dividing this time by the
+    /** Return the result of dividing this time by the
      *  specified time interval. That is, the returned value represents
      *  how many times the specified time interval fits within this
      *  time.  If the two time resolutions are not the same, or
      *  if the interval is zero, then throw an exception.
+     *  If the specified interval is infinite, then return 0.
+     *  If this time is infinite, and the specified time is finite,
+     *  then return either Long.MAX_VALUE or Long.MIN_VALUE, depending
+     *  on the sign.
+     *  If the result is larger than what fits in the returned
+     *  long value, then return the low-order 64 bits of the result.
+     *  Note if the result is interpreted numerically, then it could
+     *  be wrong by a considerable amount, including having the wrong
+     *  sign. A reasonable use of the returned result is to perform
+     *  a modulo operation on it by masking some low order bits.
      *  @param interval The time interval to divide by.
      *  @return The number of times the interval fits entirely
      *   within this time.
@@ -361,22 +372,38 @@ public class Time implements Comparable {
      *   or if the time resolution of the specified interval is
      *   not the same as that of this object.
      */
-    public BigInteger divide(Time interval) {
+    public long divide(Time interval) {
         if (_isPositiveInfinite || _isNegativeInfinite) {
             if (!interval.isInfinite()) {
-                // FIXME: This isn't right
-            	return  new BigInteger(Long.toString(Long.MAX_VALUE));
+                if ((_isPositiveInfinite && interval._isPositiveInfinite)
+                        || (_isNegativeInfinite && interval._isNegativeInfinite)) {
+                	return  Long.MAX_VALUE;
+                } else {
+                    return  Long.MIN_VALUE;                    
+                }
             } else {
             	throw new ArithmeticException("Time: Cannot divide infinity by infinity");
             }
         }
         double resolution = _director.getTimeResolution();
         if (resolution == interval._director.getTimeResolution()) {
-            return _timeValue.divide(interval._timeValue);
+            return _timeValue.divide(interval._timeValue).longValue();
         } else {
             throw new ArithmeticException(
                     "Cannot divide instances of Time that do not have the same time resolution.");
         }        
+    }
+
+    /** Return the result of dividing this time by the
+     *  specified integer. If this time is infinite,
+     *  then the result will be infinite.
+     *  @param divisor The number to divide by.
+     *  @return A new Time object representing the result of division.
+     *  @exception ArithmeticException If the divisor is zero.
+     */
+    public Time divide(long divisor) {
+        BigInteger divisorAsBigInteger = BigInteger.valueOf(divisor);
+        return new Time(_director, _timeValue.divide(divisorAsBigInteger));
     }
 
     /** Return true if this time object has the same time value as
@@ -418,8 +445,9 @@ public class Time implements Comparable {
 			// NOTE: the formula to calculate a decimal value from a binary
 			// representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
             
-            // FIXME: Should use doubleValue() here, but it hugely increases the
-            // execution time...
+            // NOTE: Using doubleValue() here hugely increases the
+            // execution time... Could instead use longValue(), but the
+            // result would not necessarily be accurate.
 			return _timeValue.doubleValue() * _director.getTimeResolution();
         }
     }
@@ -459,6 +487,17 @@ public class Time implements Comparable {
      */
     public boolean isPositiveInfinite() {
         return _isPositiveInfinite;
+    }
+
+    /** Return the result of multiplying this time by the
+     *  specified integer. If this time is infinite,
+     *  then the result will be infinite.
+     *  @param multiplicand The number to multiply by.
+     *  @return A new Time object representing the product.
+     */
+    public Time multiply(long multiplicand) {
+        BigInteger multiplicandAsBigInteger = BigInteger.valueOf(multiplicand);
+        return new Time(_director, _timeValue.multiply(multiplicandAsBigInteger));
     }
 
     /** Return a new time object whose time value is decreased by the

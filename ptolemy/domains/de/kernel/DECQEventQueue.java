@@ -191,6 +191,7 @@ public class DECQEventQueue implements DEEventQueue {
             // This constructor exists only to declare the thrown exception.
         	super();
         }
+        
         /** Compare two arguments for order. Return a negative integer,
          *  zero, or a positive integer if the first argument is less than,
          *  equal to, or greater than the second.
@@ -212,20 +213,26 @@ public class DECQEventQueue implements DEEventQueue {
         /** Given a DE event, return the virtual index of the bin that
          *  should contain this event. If the argument is not an instance
          *  of DEEvent, then a ClassCastException will be thrown.
+         *  If the bin number is larger than what can be represented
+         *  in a long, then the low-order 64 bits will be returned.
+         *  Note that this could change the sign of the result, but
+         *  the way this is used in the CalendarQueue class, this is OK.
+         *  It is converted to a bin number by masking some number of
+         *  low-order bits, so the result will be unaffected by the
+         *  sign error.
          *  @param event The event.
          *  @return The index of the virtual bin containing the event.
          *  @exception ClassCastException If the argument is not
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            // FIXME: The longValue() method will only
+            // NOTE: The longValue() method will only
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
-            // in 64 bits, then the returned result will be wrong.
+            // in 64 bits, then the returned result will be wrapped.
             long value = (((DEEvent) event).timeStamp()
                     .subtract(_zeroReference.timeStamp()))
-                    .divide(_binWidth.timeStamp())
-                    .longValue();
+                    .divide(_binWidth.timeStamp());
             
             // What used to be here:
             /*
@@ -233,6 +240,8 @@ public class DECQEventQueue implements DEEventQueue {
                                          .subtract(_zeroReference.timeStamp()))
                     .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
              */
+            // Long.MAX_VALUE is returned to indicate infinity.
+            // FIXME: Why is this here?
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -264,38 +273,37 @@ public class DECQEventQueue implements DEEventQueue {
 				    return;
 				}
 
-				double[] diff = new double[entryArray.length - 1];
-				double average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
+				Time[] diff = new Time[entryArray.length - 1];
+				Time average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
 				        .subtract(((DEEvent) entryArray[0]).timeStamp()))
-				    .getDoubleValue() / (entryArray.length - 1);
-				double effectiveAverage = 0.0;
+                        .divide((long) (entryArray.length - 1));
+				Time zero = new Time(_director, 0.0);
+                Time effectiveAverage = zero;
 				int effectiveSamples = 0;
 
-				if (average == Double.POSITIVE_INFINITY) {
+				if (average.isInfinite()) {
 				    return;
 				}
 
 				for (int i = 0; i < (entryArray.length - 1); ++i) {
 				    diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-				        .subtract(((DEEvent) entryArray[i]).timeStamp())
-				        .getDoubleValue();
+				        .subtract(((DEEvent) entryArray[i]).timeStamp());
 
-				    if (diff[i] < (2.0 * average)) {
+				    if (diff[i].compareTo(average.add(average)) < 0) {
 				        effectiveSamples++;
-				        effectiveAverage += diff[i];
+				        effectiveAverage = effectiveAverage.add(diff[i]);
 				    }
 				}
 
-				if ((effectiveAverage == 0.0) || (effectiveSamples == 0)) {
+				if (effectiveAverage.equals(zero) || (effectiveSamples == 0)) {
 				    // To avoid setting NaN or 0.0
 				    // for the width, apparently due to simultaneous events,
 				    // we leave it unchanged instead.
 				    return;
 				}
 
-				effectiveAverage /= (double) effectiveSamples;
-				_binWidth = new DEEvent((Actor) null,
-				        new Time(_director, 3.0 * effectiveAverage), 0, 0);
+				effectiveAverage = effectiveAverage.divide((long) effectiveSamples);
+				_binWidth = new DEEvent((Actor) null, effectiveAverage.multiply(3L), 0, 0);
 			} catch (IllegalActionException e) {
                 // If the time resolution of the director is invalid,
                 // it should have been caught before this.

@@ -50,6 +50,7 @@ import java.util.Comparator;
    @see java.util.Comparator
 */
 public interface CQComparator extends Comparator {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -61,8 +62,16 @@ public interface CQComparator extends Comparator {
      *  <i>(entry - zeroReference) / binWidth</i>,
      *  </p>
      *  with the result cast to long.
-     *
-     *  <p> Classes that implement this interface will in general need
+     *  <p>
+     *  Because of the way this is used by CalendarQueue, it is OK
+     *  to return the low order 64 bits of the result if the result
+     *  does not fit in 64 bits. The result will be masked anyway
+     *  to get fewer low order bits that represent the bin number.
+     *  As a net result, time stamps that differ by exactly 2^64 times
+     *  the time resolution will appear in the event queue to be occurring
+     *  at the same time.
+     *  <p>
+     *  Classes that implement this interface will in general need
      *  to perform a downcast on the arguments (of type Object) to the
      *  appropriate user defined classes. If the arguments are not of
      *  appropriate type, the implementation should throw a

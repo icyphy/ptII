@@ -94,6 +94,15 @@ number of bins, it uses recently dequeued entries to calculate a
 reasonable bin width (actually, it defers to the associated
 CQComparator for this calculation).
 
+<p>
+For efficiency, this implementation constrains <i>minNumBuckets</i>
+and <i>binCountFactor</i> to be powers of two. If something other
+than a power is two is given, the next power of two larger than
+the specified number is used.  This has the effect of ensuring
+that the number of bins is always a power of two, and hence
+the modulo operation used to map virtual bin numbers onto actual
+bin numbers is a simple masking operation.
+
 <p>Changing the number of bins is a relatively expensive operation, so it
 may be worthwhile to increase <i>binCountFactor</i> to reduce the
 frequency of change operations. Working counter to this, however, is
@@ -110,7 +119,7 @@ This implementation is based on:
 <li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
 the Simulation Event Set Problem</i>, Communications of the ACM, October 1988,
 Volume 31, Number 10.
-<li>A. Banerjea and E. W. Knightly, <i>Ptolemy 0 implementation of
+<li>A. Banerjea and E. W. Knightly, <i>Ptolemy Classic implementation of
 CalendarQueue class.</i>
 </ul>
 
@@ -145,8 +154,11 @@ public class CalendarQueue implements Debuggable {
     public CalendarQueue(CQComparator comparator, int minNumBuckets,
             int binCountFactor) {
         this(comparator);
-        _minNumBuckets = minNumBuckets;
-        _queueBinCountFactor = binCountFactor;
+        _logMinNumBuckets = log(minNumBuckets);
+        _logQueueBinCountFactor = log(binCountFactor);
+        
+        // For debugging.
+        // addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,6 +229,31 @@ public class CalendarQueue implements Debuggable {
     public final boolean isEmpty() {
         return (_queueSize == 0);
     }
+    
+    /** Return the power of two belonging to the least integer
+     *  power of two larger than or equal to the specified integer.
+     *  The return value is always between 0 and 31, inclusive.
+     *  @param value The value for which to find the next power of 2.
+     *  @return A number <i>n</i> such that 2<sup><i>n</i></sup>
+     *   is greater than or equal to <i>value</i>.
+     *  @exception ArithmeticException If the specified value is
+     *   not positive.
+     */
+    public static int log(int value) {
+        if (value <= 0) {
+        	throw new ArithmeticException(
+                    "CalendarQueue: Cannot take the log of a non-positive number: "
+                    + value);
+        }
+        if (value == 1) {
+        	return 0;
+        }
+    	int result = 1;
+        while (((1 << result) < value) && (result < 32)) {
+        	result = result << 1;
+        }
+        return result;
+    }
 
     /** Add an entry to the queue.
      *  The first time this is called after queue creation or after
@@ -251,7 +288,7 @@ public class CalendarQueue implements Debuggable {
             _cqComparator.setZeroReference(entry);
             _cqComparator.setBinWidth(null);
             _queueSize = 0;
-            _localInit(_minNumBuckets, entry);
+            _localInit(_logMinNumBuckets, entry);
 
             // Indicate that we do not have enough samples redo width.
             _sampleValid = false;
@@ -548,6 +585,7 @@ public class CalendarQueue implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // Collect an entry for later use to recalculate bin widths.
     // The entry is collected only if it is strictly greater than the
     // previously collected entry.
@@ -586,25 +624,24 @@ public class CalendarQueue implements Debuggable {
     // a physical bin index.
     private int _getBinIndex(Object entry) {
         long i = _cqComparator.getVirtualBinNumber(entry);
-        i = i % _numberOfBuckets;
-
-        if (i < 0) {
-            i += _numberOfBuckets;
-        }
-
+        i = i & _numberOfBucketsMask;
         return (int) i;
     }
 
     // Initialize the bucket array to the specified number of buckets
     // with the specified width.
     //
-    // @param numberOfBuckets The number of buckets.
+    // @param logNumberOfBuckets The number of buckets, given as a power of 2.
     // @param firstEntry: First entry of the new queue.
-    private void _localInit(int numberOfBuckets, Object firstEntry) {
-        _numberOfBuckets = numberOfBuckets;
-        _bucket = new CQLinkedList[_numberOfBuckets];
+    private void _localInit(int logNumberOfBuckets, Object firstEntry) {
+        _logNumberOfBuckets = logNumberOfBuckets;
+        _numberOfBuckets = 1 << logNumberOfBuckets;
+        _numberOfBucketsMask = _numberOfBuckets - 1;
+        
+        int numberOfBuckets = 1 << _logNumberOfBuckets;
+        _bucket = new CQLinkedList[numberOfBuckets];
 
-        for (int i = 0; i < _numberOfBuckets; ++i) {
+        for (int i = 0; i < numberOfBuckets; ++i) {
             // Initialize each bucket with an empty CQLinkedList
             // that uses _cqComparator for sorting.
             _bucket[i] = new CQLinkedList();
@@ -616,8 +653,8 @@ public class CalendarQueue implements Debuggable {
         _minBucket = _getBinIndex(firstEntry);
 
         // Set the queue size change thresholds.
-        _bottomThreshold = _numberOfBuckets / _queueBinCountFactor;
-        _topThreshold = _numberOfBuckets * _queueBinCountFactor;
+        _bottomThreshold = _numberOfBuckets >> _logQueueBinCountFactor;
+        _topThreshold = _numberOfBuckets << _logQueueBinCountFactor;
         _queueSizeOverThreshold = _queueSizeUnderThreshold = 0;
         _initialized = true;
     }
@@ -637,7 +674,7 @@ public class CalendarQueue implements Debuggable {
             return;
         }
 
-        int newSize = _numberOfBuckets;
+        int logNewSize = _logNumberOfBuckets;
         boolean resize = false;
 
         if (increasing) {
@@ -648,10 +685,10 @@ public class CalendarQueue implements Debuggable {
             if (_queueSizeOverThreshold > _RESIZE_LAG) {
                 resize = true;
                 _queueSizeOverThreshold = 0;
-                newSize = (_numberOfBuckets * _queueBinCountFactor);
+                logNewSize = _logNumberOfBuckets + _logQueueBinCountFactor;
 
                 if (_debugging) {
-                    _debug(">>>>>> increasing number of buckets to: " + newSize);
+                    _debug(">>>>>> increasing number of buckets to: " + (1 << logNewSize));
                 }
             }
         } else {
@@ -665,12 +702,13 @@ public class CalendarQueue implements Debuggable {
                 _queueSizeUnderThreshold = 0;
 
                 // If it is already minimum or close, do nothing.
-                if ((_numberOfBuckets / _queueBinCountFactor) > _minNumBuckets) {
-                    newSize = (_numberOfBuckets / _queueBinCountFactor);
+                int tempLogNewSize = _logNumberOfBuckets - _logQueueBinCountFactor;
+                if (tempLogNewSize > _logMinNumBuckets) {
+                    logNewSize = tempLogNewSize;
 
                     if (_debugging) {
                         _debug(">>>>>> decreasing number of buckets to: "
-                                + newSize);
+                                + (1 << logNewSize));
                     }
                 }
             }
@@ -706,7 +744,7 @@ public class CalendarQueue implements Debuggable {
         int old_numberOfBuckets = _numberOfBuckets;
 
         // Initialize new calendar.
-        _localInit(newSize, _minimumEntry);
+        _localInit(logNewSize, _minimumEntry);
         _queueSize = 0;
 
         // Go through each of the old buckets and add its elements
@@ -940,48 +978,37 @@ public class CalendarQueue implements Debuggable {
     /** @serial A flag indicating whether there are debug listeners. */
     private boolean _debugging;
 
-    // The number of buckets in the queue.
-    private int _numberOfBuckets;
-
-    // The current queue size.
-    private int _queueSize = 0;
-
     // The number of times that the queue has exceeded the current
     // threshold.
     private int _queueSizeOverThreshold = 0;
 
-    // The number of times that the queue has dropped the current
+    // The number of times that the queue has dropped below the current
     // threshold.
     private int _queueSizeUnderThreshold = 0;
-
-    // The number of times a threshold must be exceeded to trigger resizing.
-    private final static int _RESIZE_LAG = 32;
-
-    // The largest queue size before number of buckets gets increased.
-    private int _topThreshold;
 
     // The smallest queue size before number of buckets gets decreased.
     private int _bottomThreshold;
 
-    // An indicator of whether the queue has been initialized.
-    private boolean _initialized = false;
-
     // The array of bins or buckets.
     private CQLinkedList[] _bucket;
 
-    // The number of buckets to start with and the lower bound
-    // on the number of buckets.
-    private int _minNumBuckets = 2;
-
-    // The factor by which to multiply (or divide)
-    // the number of bins to when resizing.
-    private int _queueBinCountFactor = 2;
-
-    // Flag for enable/disable changing the number of bins.
-    private boolean _resizeEnabled = true;
-
     // Comparator to determine how to order entries.
     private CQComparator _cqComparator;
+
+    // An indicator of whether the queue has been initialized.
+    private boolean _initialized = false;
+
+    // The log base 2 of the number of buckets to start with and the lower bound
+    // on the number of buckets. That is, the number of buckets is 2
+    // raised to this power.
+    private int _logMinNumBuckets = 1;
+
+    // The number of buckets in the queue as a power of two.
+    private int _logNumberOfBuckets;
+
+    // The factor by which to multiply (or divide)
+    // the number of bins to when resizing, given as a power of two.
+    private int _logQueueBinCountFactor = 1;
 
     // The minimum entry in the queue.
     // All entries in the queue have greater keys (or equal).
@@ -992,6 +1019,25 @@ public class CalendarQueue implements Debuggable {
 
     // The positive modulo of _minimumEntry (the physical bin number).
     private int _minBucket;
+    
+    // The number of buckets currently in the queue (see _logNumberOfBuckets).
+    private int _numberOfBuckets;
+
+    // The mask to use for modulo division by the number
+    // of buckets currently in the queue (see _logNumberOfBuckets).
+    private int _numberOfBucketsMask;
+
+    // The most recently collected entry.
+    private Object _previousTakenEntry = null;
+
+    // The current number of elements in the queue.
+    private int _queueSize = 0;
+
+    // Flag for enable/disable changing the number of bins.
+    private boolean _resizeEnabled = true;
+
+    // The number of times a threshold must be exceeded to trigger resizing.
+    private final static int _RESIZE_LAG = 32;
 
     // Number of entries to calculate bin width.
     private final static int _SAMPLE_SIZE = 8;
@@ -1005,6 +1051,6 @@ public class CalendarQueue implements Debuggable {
     // Indicator of whether there are enough sample entries to calculate width.
     private boolean _sampleValid = false;
 
-    // The most recently collected entry.
-    private Object _previousTakenEntry = null;
+    // The largest queue size before number of buckets gets increased.
+    private int _topThreshold;
 }
