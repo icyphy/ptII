@@ -298,7 +298,7 @@ public class Query extends JPanel {
         if (result instanceof JTextField) {
             return (new Integer(((JTextField)result).getText())).intValue();
         } else if (result instanceof JSlider) {
-            return (new Integer(((JSlider)result).getValue())).intValue();
+            return ((JSlider)result).getValue();
         } else if (result instanceof JComboBox) {
             return ((JComboBox)result).getSelectedIndex();
         } else if (result instanceof JRadioButton[]) {
@@ -378,7 +378,7 @@ public class Query extends JPanel {
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
      *  @exception IllegalArgumentException If the entry is not a
-     *   line or a slider.  This is a runtime exception, so it
+     *   display.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
     public void setDisplay(String name, String value) {
@@ -460,7 +460,7 @@ public class Query extends JPanel {
                 return "false";
             }
         } else if (result instanceof JSlider) {
-            return (new Integer(((JSlider)result).getValue())).toString();
+            return "" + ((JSlider)result).getValue();
         } else if (result instanceof JComboBox) {
             return (String)(((JComboBox)result).getSelectedItem());
         } else if (result instanceof JRadioButton[]) {
