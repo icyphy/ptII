@@ -163,7 +163,7 @@ public class QueueApp {
     ////////////////////////////////////////////////////////////////////////
     ////                         private inner class                    ////
 
-    private class MyPthread extends Thread {
+    private class MyPthread extends PtolemyThread {
         
         public MyPthread(QueueApp qa) {
             super();

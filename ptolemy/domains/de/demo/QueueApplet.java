@@ -128,8 +128,8 @@ public class QueueApplet extends Applet implements Runnable {
             // Set up the top level composite actor, director and manager
             _localDirector = new DECQDirector("DE Director");
             sys.setDirector(_localDirector);
-            _executiveDirector = new Manager("Manager");
-            sys.setManager(_executiveDirector);            
+            _manager = new Manager("Manager");
+            sys.setManager(_manager);            
 
             // ---------------------------------
             // Create the actors.
@@ -206,42 +206,19 @@ public class QueueApplet extends Applet implements Runnable {
         }
 
         try {
+            
+            System.out.println("Setting stop time = " + _stopTime);
+            _localDirector.setStopTime(_stopTime);
+            
+            // Start the CurrentTimeThread.
+            Thread ctt = new CurrentTimeThread();
+            //ctt.start();
+            
+            System.out.println("About to call _manager.blockingGo()");
                 
-                _localDirector.setStopTime(_stopTime);
-
-                // Start the CurrentTimeThread.
-                Thread ctt = new CurrentTimeThread();
-                ctt.start();
-
-
-                // Start the simulation.
-                /*
-                // This won't start a thread.
-                // FIXME: A BIG & UGLY HACK
-                int beforeCount = Thread.activeCount(); // HACK
-                Thread[] before = new Thread[beforeCount]; // HACK
-                Thread.enumerate(before);  // HACK
-                _executiveDirector.go(); //NON-HACK
-                int afterCount = Thread.activeCount();  // HACK
-                Thread[] after = new Thread[afterCount]; // HACK
-                Thread.enumerate(after); // HACK
-                for (int i = 0; i < afterCount; i++) { // HACK
-                    Thread suspect = after[i]; //HACK
-                    // find suspect in the before list.
-                    boolean found = false; //HACK
-                    for (int j = 0; j < beforeCount; j++) { //HACK
-                        if (suspect == before[i]) { //HACK
-                            found = true; //HACK
-                            break; //HACK
-                        } //HACK
-                    } //HACK
-                    if (!found) { //HACK
-                        suspect.join(); //HACK
-                        break; //HACK
-                    } //HACK
-                } //HACK
-                */
-                _executiveDirector.blockingGo();
+            _manager.blockingGo();
+                
+            System.out.println("Done calling _manager.blockingGo()");
                 
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());
@@ -254,11 +231,11 @@ public class QueueApplet extends Applet implements Runnable {
     ////                         private variables                      ////
     
     // The thread that runs the simulation.
-    private Thread simulationThread;
+    private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private DECQDirector _localDirector;
-    private Manager _executiveDirector;
+    private Manager _manager;
 
     private TextField _stopTimeBox;
     private double _stopTime = 100.0;
@@ -276,29 +253,47 @@ public class QueueApplet extends Applet implements Runnable {
     // Show simulation progress.
     private class CurrentTimeThread extends Thread {
         public void run() {
-            while (simulationThread.isAlive()) {
+            while (_isSimulationRunning) {
                 // get the current time from director.
                 double currenttime = _localDirector.getCurrentTime();
                 _currentTimeLabel.setText("Current time = "+currenttime);
                 try {
                     sleep(500);
                 } catch (InterruptedException e) {}
-            } 
+            }
         }
     }
 
+    private class MyExecutionListener extends DefaultExecutionListener {
+        public void executionFinished(ExecutionEvent e) {
+            _isSimulationRunning = false;
+        }
+        
+    }
     
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
-                if (simulationThread == null) {
-                    simulationThread = new Thread(QueueApplet.this);
+                
+                // Set the stop time.
+                String timespec = _stopTimeBox.getText();
+                try {
+                    Double spec = Double.valueOf(timespec);
+                    _stopTime = spec.doubleValue();
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid stop time: " + ex.getMessage());
+                    return;
                 }
-                if (!(simulationThread.isAlive())) {
-                    simulationThread = new Thread(QueueApplet.this);
-                    // start() will eventually call the run() method.
-                    simulationThread.start();
-                }
+                
+                _localDirector.setStopTime(_stopTime);
+                
+                // Start the CurrentTimeThread.
+                Thread ctt = new CurrentTimeThread();
+                _isSimulationRunning = true;
+                ctt.start();
+                
+                _manager.go();
+                                
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();

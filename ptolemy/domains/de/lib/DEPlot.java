@@ -75,6 +75,7 @@ public class DEPlot extends DEActor {
         input.makeMultiport(true);
 
         _plot = plot;
+        _plot.setButtons(true);
         _plot.setMarksStyle("dots");
         _plot.setImpulses(true);
         _plot.setConnected(false);

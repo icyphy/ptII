@@ -152,9 +152,9 @@ public abstract class DEDirector extends Director {
      *  Before the simulation begins, this is java.lang.Double.MAX_VALUE.
      *  @return The start time of the simulation.
      */
-  public double getStartTime() {
-      return _startTime;
-  }
+    public double getStartTime() {
+        return _startTime;
+    }
     
     /** Return the stop time of the simulation, as set by setStopTime().
      *  @return The stop time of the simulation.
@@ -170,22 +170,7 @@ public abstract class DEDirector extends Director {
 	return new DEReceiver();
     }
     
-    /** Execute the simulation. This will be the default run method if
-     *  the director is run as a separate thread. Note that
-     *  InvalidStateException is a runtime exception.
-     */
-    /*
-    public void run() throws InvalidStateException {
-        try {
-            super.go();
-        } catch (KernelException ex) {
-            throw new InvalidStateException(this,
-                    "Execution failed: " + ex.getMessage());
-        }
-    }
-    */
-
-    /**
+    /** FIXME: Describe me!
      */
     public boolean postfire() throws IllegalActionException {
         if (_shouldPostfireReturnFalse) {
@@ -213,7 +198,7 @@ public abstract class DEDirector extends Director {
     protected boolean _writeAccessPreference() { 
         // Return false to let the workspace be write-protected.
         // Return true to debug the PtolemyThread.
-        return true;
+        return false;
     }
 
 
