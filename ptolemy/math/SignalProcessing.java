@@ -582,7 +582,7 @@ public final class SignalProcessing {
      *  <p>
      *  <pre>
      *         4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
-     *  h(n) = ---------------------------------------------------
+     *  h(t) = ---------------------------------------------------
      *                       PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
      *  </pre>
      *  <p>
