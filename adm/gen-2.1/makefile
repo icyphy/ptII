@@ -263,6 +263,7 @@ nightly: ptclean ptbuild \
 	clean all \
 	glimpse \
 	findchanges \
+	ChangeLog \
 	jnlp \
 	remote2 \
 	remote4 \
@@ -310,6 +311,13 @@ FINDCHANGEFILE = changedfiles.html
 findchanges:
 	rm -f $(FINDCHANGEFILE)
 	$(PTIIADM)/bin/findchanges > $(FINDCHANGEFILE)
+
+ChangeLog:
+	@echo "#"
+	@echo "# Now generating ChangeLog file in ~ptII "
+	@echo "#"
+	date
+	cd $(PTIIHOME); $(MAKE) ChangeLog
 
 # Build jnlp installers
 jnlp:
