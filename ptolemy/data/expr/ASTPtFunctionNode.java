@@ -92,187 +92,192 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException
-        {
-            int args = jjtGetNumChildren();
-            if (_isArrayRef) {
-                int row = 0;
-                int col = 0;
-                if (args == 3) {
-                    // referencing a matrix
-                    if (!(_childTokens[1] instanceof IntToken)) {
-                        throw new IllegalActionException("The row index to "
-                                + _funcName + " is not an integer.");
-                    } else {
-                        row = ((IntToken)_childTokens[1]).intValue();
-                    }
-                }
-                ptolemy.data.Token colTok =
-                    (args == 2) ? _childTokens[1] : _childTokens[2];
-                if (!(colTok instanceof IntToken)) {
-                    throw new IllegalActionException("The column index to "
-                            + _funcName + " is not an integer.");
-                } else {
-                    col = ((IntToken)colTok).intValue();
-                }
-                ptolemy.data.Token tok = _childTokens[0];
-                if (tok instanceof BooleanMatrixToken) {
-                    boolean val = ((BooleanMatrixToken)tok).getElementAt(row, col);
-                    return new BooleanToken(val);
-                } else if (tok instanceof IntMatrixToken) {
-                    int val = ((IntMatrixToken)tok).getElementAt(row, col);
-                    return new IntToken(val);
-                } else if (tok instanceof LongToken) {
-                    long val = ((LongMatrixToken)tok).getElementAt(row, col);
-                    return new LongToken(val);
-                } else if (tok instanceof DoubleMatrixToken) {
-                    double val = ((DoubleMatrixToken)tok).getElementAt(row, col);
-                    return new DoubleToken(val);
-                } else if (tok instanceof ComplexMatrixToken) {
-                    Complex val = ((ComplexMatrixToken)tok).getElementAt(row, col);
-                    return new ComplexToken(val);
-                } else if (tok instanceof FixMatrixToken) {
-                    FixPoint val = ((FixMatrixToken)tok).getElementAt(row, col);
-                    return new FixToken(val);
-                } else {
-                    throw new IllegalActionException("The value of " + _funcName
-                            + " is not a supported matrix token.");
-                }
-            }
-            if (_funcName.compareTo("eval") == 0) {
-                // Have a recursive call to the parser.
-                String exp = "";
-                if (_parser == null) {
-                    throw new InvalidStateException("ASTPtFunctionNode: " +
-                            " recursive call to null parser.");
-                }
-                if(args == 1 && _childTokens[0] instanceof StringToken) {
-                    exp = ((StringToken)_childTokens[0]).stringValue();
-                    NamedList scope = _parser.getScope();
-                    ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
-                    return tree.evaluateParseTree();
-                } else {
-                    throw new IllegalActionException("The function \"eval\" is" +
-                            " reserved for reinvoking the parser, and takes" +
-                            " exactly one String argument.");
-                }
-            }
+            throws IllegalActionException {
+	int args = jjtGetNumChildren();
+	if (_isArrayRef) {
+	    if (args == 2) {
+		// referencing an element in an array
+		if (!(_childTokens[0] instanceof ArrayToken)) {
+		    throw new IllegalActionException("Cannot use array "
+			    + "indexing on " + _referredVar().getFullName()
+			    + ": its value is not an ArrayToken.");
+		}
+		if (!(_childTokens[1] instanceof IntToken)) {
+		    throw new IllegalActionException("The array index to "
+                            + _referredVar().getFullName()
+			    + " is not an integer.");
+		}
+		int index = ((IntToken)_childTokens[1]).intValue();
+		return ((ArrayToken)_childTokens[0]).getElement(index);
+	    } else if (args == 3) {
+		// referencing an element in a matrix
+		int row = 0;
+		int col = 0;
+		if (!(_childTokens[0] instanceof MatrixToken)) {
+		    throw new IllegalActionException("Cannot use matrix "
+		            + "indexing on " + _referredVar().getFullName()
+			    + ": its value is not an MatrixToken.");
+		}
+		if (!(_childTokens[1] instanceof IntToken)) {
+		    throw new IllegalActionException("The row index to "
+                            + _referredVar().getFullName()
+			    + " is not an integer.");
+		} else {
+		    row = ((IntToken)_childTokens[1]).intValue();
+		}
+		if (!(_childTokens[2] instanceof IntToken)) {
+		    throw new IllegalActionException("The column index to "
+                            + _referredVar().getFullName()
+			    + " is not an integer.");
+		} else {
+		    col = ((IntToken)_childTokens[2]).intValue();
+		}
+		MatrixToken tok = (MatrixToken)_childTokens[0];
+		return ((MatrixToken)tok).getElementAsToken(row, col);
+	    } else {
+		throw new IllegalActionException("Wrong number of indices "
+			+ "when referencing " + _referredVar().getFullName());
+	    }
+	}
+	if (_funcName.compareTo("eval") == 0) {
+	    // Have a recursive call to the parser.
+	    String exp = "";
+	    if (_parser == null) {
+		throw new InvalidStateException("ASTPtFunctionNode: " +
+                        " recursive call to null parser.");
+	    }
+	    if(args == 1 && _childTokens[0] instanceof StringToken) {
+		exp = ((StringToken)_childTokens[0]).stringValue();
+		NamedList scope = _parser.getScope();
+		ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
+		return tree.evaluateParseTree();
+	    } else {
+		throw new IllegalActionException("The function \"eval\" is" +
+                        " reserved for reinvoking the parser, and takes" +
+                        " exactly one String argument.");
+	    }
+	}
 
-            // Do not have a recursive invocation of the parser.
-            Class[] argTypes = new Class[args];
-            Object[] argValues = new Object[args];
-            // Note: Java makes a distinction between the class objects
-            // for double & Double...
-            for (int i = 0; i < args; i++) {
-                ptolemy.data.Token child = _childTokens[i];
-                if (child instanceof DoubleToken) {
-                    argValues[i] = new Double(((DoubleToken)child).doubleValue());
-                    argTypes[i] = Double.TYPE;
-                } else if (child instanceof IntToken) {
-                    argValues[i] = new Integer(((IntToken)child).intValue());
-                    argTypes[i] = Integer.TYPE;
-                } else if (child instanceof LongToken) {
-                    argValues[i] = new Long(((LongToken)child).longValue());
-                    argTypes[i] = Long.TYPE;
-                } else if (child instanceof StringToken) {
-                    argValues[i] = new String(((StringToken)child).stringValue());
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof BooleanToken) {
-                    argValues[i] =
-                        new Boolean(((BooleanToken)child).booleanValue());
-                    argTypes[i] = Boolean.TYPE;
-                } else if (child instanceof ComplexToken) {
-                    argValues[i] = ((ComplexToken)child).complexValue();
-                    argTypes[i] = argValues[i].getClass();;
-                } else if (child instanceof FixToken) {
-                    argValues[i] = ((FixToken)child).fixValue();
-                    argTypes[i] = argValues[i].getClass();;
-                } else if (child instanceof IntMatrixToken) {
-                    argValues[i] = child;
-                    argTypes[i] = argValues[i].getClass();;
-                } else if (child instanceof DoubleMatrixToken) {
-                    argValues[i] = child;
-                    argTypes[i] = argValues[i].getClass();;
-                } else if (child instanceof ComplexMatrixToken) {
-                    argValues[i] = child;
-                    argTypes[i] = argValues[i].getClass();;
-                } else if (child instanceof FixMatrixToken) {
-                    argValues[i] = child;
-                    argTypes[i] = argValues[i].getClass();;
-                } else {
-                    throw new IllegalActionException("FunctionNode: "+
-                            "Invalid argument  type, valid types are: " +
-                            "boolean, complex, fixpoint, double, int, long, " +
-                            "String, IntMatrixToken, DoubleMatrixToken, " +
-                            "ComplexMatrixToken, FixMatrixToken. " );
-                }
-                // FIXME: what is the TYPE that needs to be filled
-                // in in the argValues[]. Current it is from the
-                // child.
-            }
-            // Now have the arguments converted, look through all the
-            // classes registered with the parser for the appropriate function.
-            Iterator allClasses = PtParser.getRegisteredClasses().iterator();
-            boolean foundMethod = false;
-            Object result = null;
-            while (allClasses.hasNext()) {
-                Class nextClass = (Class)allClasses.next();
-                //System.out.println("ASTPtFunctionNode: " + nextClass);
-                // First we look for the method, and if we get an exception,
-                // we ignore it and keep looking.
-                try {
-                    Method method = nextClass.getMethod(_funcName, argTypes);
-                    result = method.invoke(nextClass, argValues);
-                    foundMethod = true;
-                } catch (NoSuchMethodException ex) {
-                    // Do nothing, we haven't found the correct function
-                } catch (InvocationTargetException ex) {
-                    // get the exception produced by the invoked function
-                    throw new IllegalActionException(
-                            ex.getTargetException().getMessage());
-                } catch (Exception ex)  {
-                    new IllegalActionException(ex.getMessage());
-                }
+	// Do not have a recursive invocation of the parser.
+	Class[] argTypes = new Class[args];
+	Object[] argValues = new Object[args];
+	// Note: Java makes a distinction between the class objects
+	// for double & Double...
+	for (int i = 0; i < args; i++) {
+	    ptolemy.data.Token child = _childTokens[i];
+	    if (child instanceof DoubleToken) {
+		argValues[i] = new Double(((DoubleToken)child).doubleValue());
+		argTypes[i] = Double.TYPE;
+	    } else if (child instanceof IntToken) {
+		argValues[i] = new Integer(((IntToken)child).intValue());
+		argTypes[i] = Integer.TYPE;
+	    } else if (child instanceof LongToken) {
+		argValues[i] = new Long(((LongToken)child).longValue());
+		argTypes[i] = Long.TYPE;
+	    } else if (child instanceof StringToken) {
+		argValues[i] = new String(((StringToken)child).stringValue());
+		argTypes[i] = argValues[i].getClass();
+	    } else if (child instanceof BooleanToken) {
+		argValues[i] =
+		        new Boolean(((BooleanToken)child).booleanValue());
+		argTypes[i] = Boolean.TYPE;
+	    } else if (child instanceof ComplexToken) {
+		argValues[i] = ((ComplexToken)child).complexValue();
+		argTypes[i] = argValues[i].getClass();;
+	    } else if (child instanceof FixToken) {
+		argValues[i] = ((FixToken)child).fixValue();
+		argTypes[i] = argValues[i].getClass();;
+	    } else if (child instanceof IntMatrixToken) {
+		argValues[i] = child;
+		argTypes[i] = argValues[i].getClass();;
+	    } else if (child instanceof DoubleMatrixToken) {
+		argValues[i] = child;
+		argTypes[i] = argValues[i].getClass();;
+	    } else if (child instanceof ComplexMatrixToken) {
+		argValues[i] = child;
+		argTypes[i] = argValues[i].getClass();;
+	    } else if (child instanceof FixMatrixToken) {
+		argValues[i] = child;
+		argTypes[i] = argValues[i].getClass();;
+	    } else {
+		throw new IllegalActionException("FunctionNode: "+
+                        "Invalid argument  type, valid types are: " +
+			"boolean, complex, fixpoint, double, int, long, " +
+                        "String, IntMatrixToken, DoubleMatrixToken, " +
+                        "ComplexMatrixToken, FixMatrixToken. " );
+	    }
+	    // FIXME: what is the TYPE that needs to be filled
+	    // in in the argValues[]. Current it is from the
+	    // child.
+	}
+	// Now have the arguments converted, look through all the
+	// classes registered with the parser for the appropriate function.
+	Iterator allClasses = PtParser.getRegisteredClasses().iterator();
+	boolean foundMethod = false;
+	Object result = null;
+	while (allClasses.hasNext()) {
+	    Class nextClass = (Class)allClasses.next();
+	    //System.out.println("ASTPtFunctionNode: " + nextClass);
+	    // First we look for the method, and if we get an exception,
+	    // we ignore it and keep looking.
+	    try {
+		Method method = nextClass.getMethod(_funcName, argTypes);
+		result = method.invoke(nextClass, argValues);
+		foundMethod = true;
+	    } catch (NoSuchMethodException ex) {
+		// Do nothing, we haven't found the correct function
+	    } catch (InvocationTargetException ex) {
+		// get the exception produced by the invoked function
+		throw new IllegalActionException(
+                        ex.getTargetException().getMessage());
+	    } catch (Exception ex)  {
+		new IllegalActionException(ex.getMessage());
+	    }
 
-                if (foundMethod) {
-                    if (result instanceof ptolemy.data.Token) {
-                        return (ptolemy.data.Token)result;
-                    } else if (result instanceof Double) {
-                        return new DoubleToken(((Double)result).doubleValue());
-                    } else if (result instanceof Integer) {
-                        return new IntToken(((Integer)result).intValue());
-                    } else if (result instanceof Long) {
-                        return new LongToken(((Long)result).longValue());
-                    } else if (result instanceof String) {
-                        return new StringToken((String)result);
-                    } else if (result instanceof Boolean) {
-                        return new BooleanToken(((Boolean)result).booleanValue());
-                    } else if (result instanceof Complex) {
-                        return new ComplexToken((Complex)result);
-                    } else if (result instanceof FixPoint) {
-                        return new FixToken((FixPoint)result);
-                    } else  {
-                        throw new IllegalActionException("FunctionNode: "+
-                                "result of function " + _funcName +
-                                " not a valid type: boolean, complex, fixpoint" +
-                                " double, int, long  and String, or a Token.");
-                    }
-                }
-            }
-            // If reach here it means the function was not found on the
-            // search path.
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < args; i++) {
-                if (i == 0) {
-                    sb.append(argValues[i].toString());
-                } else {
-                    sb.append(", " + argValues[i].toString());
-                }
-            }
-            throw new IllegalActionException("No matching function " + _funcName
-                    + "( " + sb + " ).");
-        }
+	    if (foundMethod) {
+		if (result instanceof ptolemy.data.Token) {
+		    return (ptolemy.data.Token)result;
+		} else if (result instanceof Double) {
+		    return new DoubleToken(((Double)result).doubleValue());
+		} else if (result instanceof Integer) {
+		    return new IntToken(((Integer)result).intValue());
+		} else if (result instanceof Long) {
+		    return new LongToken(((Long)result).longValue());
+		} else if (result instanceof String) {
+		    return new StringToken((String)result);
+		} else if (result instanceof Boolean) {
+		    return new BooleanToken(((Boolean)result).booleanValue());
+		} else if (result instanceof Complex) {
+		    return new ComplexToken((Complex)result);
+		} else if (result instanceof FixPoint) {
+		    return new FixToken((FixPoint)result);
+		} else  {
+		    throw new IllegalActionException("FunctionNode: "+
+			    "result of function " + _funcName +
+			    " not a valid type: boolean, complex, fixpoint" +
+                            " double, int, long  and String, or a Token.");
+		}
+	    }
+	}
+	// If reach here it means the function was not found on the
+	// search path.
+	StringBuffer sb = new StringBuffer();
+	for (int i = 0; i < args; i++) {
+	    if (i == 0) {
+		sb.append(argValues[i].toString());
+	    } else {
+		sb.append(", " + argValues[i].toString());
+	    }
+	}
+	throw new IllegalActionException("No matching function " + _funcName
+                + "( " + sb + " ).");
+    }
 
+    // Return the variable being referenced when this node represents array
+    // or matrix reference.
+    private Variable _referredVar() {
+	return ((ASTPtLeafNode)jjtGetChild(0))._var;
+    }
 
     public ASTPtFunctionNode(int id) {
         super(id);
@@ -291,3 +296,4 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
 }
+
