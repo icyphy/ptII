@@ -72,6 +72,7 @@ JSRCS = \
 	SequenceScope.java \
 	SketchedSource.java \
 	TimedPlotter.java \
+	TimedScope.java \
 	XYPlotter.java
 
 EXTRA_SRCS =	$(JSRCS)

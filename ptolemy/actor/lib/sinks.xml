@@ -17,19 +17,25 @@
 </rendition>
 </entity>
 
-<entity name="SequenceScope" class="ptolemy.actor.gui.SequenceScope">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
-</entity>
-
 <entity name="SequencePlotter" class="ptolemy.actor.gui.SequencePlotter">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
+<entity name="SequenceScope" class="ptolemy.actor.gui.SequenceScope">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
 <entity name="TimedPlotter" class="ptolemy.actor.gui.TimedPlotter">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
+<entity name="TimedScope" class="ptolemy.actor.gui.TimedScope">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
