@@ -186,7 +186,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 return i + TYPE_KIND_TOKEN;
             }
         }
-        ApplicationUtility.error("kindOfTokenType(): type unknown, type = " + type);
+        throw new RuntimeError("kindOfTokenType(): type unknown, type = " + type);
         return TYPE_KIND_UNKNOWN;
     }
 

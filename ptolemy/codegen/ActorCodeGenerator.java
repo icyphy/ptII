@@ -107,7 +107,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(actorClass.getName());
 
         if (sourceFile == null) {
-            ApplicationUtility.error("source code not found for " +
+            throw new RuntimeError("source code not found for " +
                     "actor " + actor);
         }
 
@@ -174,7 +174,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
 
         if (sourceFile == null) {
-            ApplicationUtility.error("regenerated source code not found for " +
+            throw new RuntimeError("regenerated source code not found for " +
                     "entity " + actorInfo.actor + " in source file " + sourceName);
         }
 
@@ -229,7 +229,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         File sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
 
         if (sourceFile == null) {
-            ApplicationUtility.error("regenerated source code not found for " +
+            throw new RuntimeError("regenerated source code not found for " +
                     "source file " + sourceName);
         }
 
@@ -379,7 +379,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                     actorInfo.parameterNameToTokenMap.put(param.getName(),
                             param.getToken());
                 } catch (IllegalActionException iae) {
-                    ApplicationUtility.error(
+                    throw new RuntimeError(
                             "couldn't get token value for parameter " + param.getName());
                 }
             }
