@@ -87,7 +87,7 @@ and Transitions are visible to the director of the container
 of the PetriNetActor. The users can choose which form of models
 to use, and/or mix them together.
 
-<p> The basic Petri net is a directed, weighted, bipartite graph consists
+<p> The basic Petri net is a directed, weighted, bipartite graph consisting
 of two kinds of nodes, called <i>Places</i> and <i>Transitions</i>, where
 arcs are either from a Place to a Transition or from a Transition
 to a Place. In graphical representation, Places are drawn as circles,
@@ -140,18 +140,13 @@ PetriNetActor <i>G</i>. Therefore the vertex set <i>V</i> of
 <i>G</i> is also called the <i>component set</i> of the
 PetriNetActor <i>G</i>. The concept of <i>component</i> is a key
 difference between the basic Petri net model and the hierarchical
-Petri net model defined here. A PetriNetActor consists of components.
-A component can be a Place, a Transition, and a PetriNetActor component.
-A component can be enabled and fire if it is a Transition or it is
-a PetriNetActor component that contains other Transitions.
-When the firing method  _fireHierarchicalPetriNetOnce() fires, it chooses
-one component to fire.
-
-<p> In Ptolemy term, a component is an element in the entiteList of the
-PetriNetActor. A component has ports through which connections to other
-components are made. A Place or a Transition each has one input port and
-one output port, where multiple connections can be made. In our model,
-a PetriNetActor compoenent can have multiple ports.
+Petri net model defined here. In Ptolemy term, a component is an
+element in the entiteList of the PetriNetActor. A PetriNetActor
+consists of components. A component can be a Place, a Transition,
+and a PetriNetActor component. A component can be enabled and fires
+if it is a Transition or it is a PetriNetActor component that contains
+other Transitions. When the firing method  _fireHierarchicalPetriNetOnce()
+fires, it chooses one component to fire.
 
 <p> The definition of PetriNetActor defines one form of
 hierarchical and compositional Petri nets. It defines a
@@ -161,7 +156,29 @@ It defines a compositional Petri net since two PetriNetActors
 <i>PA_1 and PA_2 </i> of <i>V</i> can be connected through
 their ports to form a bigger Petri net <i>G</i>.
 
-<p> A PetriNetActor component <i>PA_j</i> can be connected to Places <i>p_i</i>,
+<p> The second form of Hierarchical and compositional Petri net
+comes from the fact that a Transition can be any TypedCompositeActor
+in Ptolemy domains, which can have its own firing director. The content
+of the Transition is invisible to the director of the container of
+the Transition. Therefore it is possible to have a Transition contains
+other Places and Transitions and has a PetriNetDirector as the
+local director for the Transition.
+
+<p> The <i>set of Transitions</i> of the PetriNetActor <i>G</i>, or the
+Transition set of <i>G</i>, is defined to be the union of the Transitions
+<i>t_i</i> with the sets of Transitions of each PetriNetActor component
+<i>PA_i</i>. A member of the Transition set of <i>G</i> is
+therefore contained in <i>G</i> itself in which case the Transition is also
+a component of <i>G</i>, or it is contained in some PetriNetActor
+component <i>PA_i</i>. Therefore a Transition is a different concept
+from a Component in PetriNetActor graph. The method findTransitions()
+returns the Transition set of <i>G</i>.
+
+<p> A component has ports through which connections to other
+components are made. A Place or a Transition each has one input port and
+one output port, where multiple connections can be made. In our model,
+a PetriNetActor compoenent can have multiple ports.
+A PetriNetActor component <i>PA_j</i> can be connected to Places <i>p_i</i>,
 Transitions <i>t_i</i>, or other PetriNetActor components <i>PA_i</i>
 through ports. A Place <i>p_i</i> can be connected to Transitions
 <i>t_i</i>, or to ports of PetriNetActor components <i>PA_i</i>.
@@ -174,24 +191,6 @@ Another restriciton is that a Place (Transition) is not allowed to be
 connected to another Place (Transition) through ports. Though no
 verification of these two conditions is checked, any violation of these
 two conditions will be reported by appropriate methods during the execution.
-
-<p> The second form of Hierarchical and compositional Petri net
-comes from the fact that a Transition can be any TypedCompositeActor
-in Ptolemy domains, which can have its own firing director. The content
-of the Transition is invisible to the director of the container of
-the Transition. Therefore it is possible to have a Transition contains 
-other Places and Transitions and has a PetriNetDirector as the
-local director for the Transition.
-
-<p> The <i>set of Transitions</i> of the PetriNetActor <i>G</i>, or the
-Transition set of <i>G</i>, is defined to be the union of the Transitions
-<i>t_i</i> with the sets of Transitions of each PetriNetActor component
-<i>PA_i</i>. A member of the Transition set of <i>G</i> is
-therefore contained in <i>G</i> itself in which case the Transition is also
-a component of <i>G</i>, or it is contained in some PetriNetActor
-component <i>PA_i</i>. Therefore a Transition is a different concept
-from a Component in PetriNetActor graph. The method findTransitions() 
-returns the Transition set of <i>G</i>,
 
 <p> Mutlple arcs can exist between any two components. The arcs can be
 marked by an nonnegative integer as their weights. Weight 1 can be
@@ -241,7 +240,7 @@ director then recursively repeats the same procedure for <i>PA_i</i> as
 for the top level PetriNetActor <i>G</i>.
 
 <p> Finally, the firing of the hierarchical Petri net is continued until
-there is no more Transitions and components to fire, or it goes to infinite 
+there is no more Transitions and components to fire, or it goes to infinite
 loop. Currently no action is taken for infinite loops.
 
 <p> Other form of firing sequence can be defined as well.
@@ -304,7 +303,8 @@ public class PetriNetDirector extends Director {
     }
 
   /** This method finds all Transitions of the given
-   *  container, i.e., the Transition set of the container.
+   *  container, i.e., the Transition set of the container,
+   *  which is supposed to be a PetriNetActor.
    *  A Transition can be contained in the top level
    *  PetriNetActor, or its PetriNetActor components.
    *  This method searches for Transitions recursively
@@ -340,6 +340,9 @@ public class PetriNetDirector extends Director {
      *  or not. A Transition is enabled if for each of the input
      *  Places, the marking of the Place is bigger than the
      *  sum of weights of edges connecting the Place to the Transition.
+     *  The Transition itself is any TypedCompositeActor. The Transition
+     *  can be a component of a PetriNetActor, or it is contained in some
+     *  PetriNetActor component.
      *
      *  This is one of the key methods for hierarchical Petri Nets.
      *  It is equivalent to the prefire() method for a Transition.
@@ -599,7 +602,8 @@ public class PetriNetDirector extends Director {
     }
 
 
-    /** This method is to fire a PetriNetActor once.
+    /** This method is to test a PetriNetActor can be fired or not, and
+     *  fires the PetriNetActor once if it can be fired.
      *  The method first finds all the enabled components returned by
      *  _readyComponentList(); then it randomly chooses one component
      *  to fire. If the chosen component is a PetriNetActor, this
