@@ -126,7 +126,7 @@ test TypedIOPort-3.2 {set resolved types} {
 #
 test TypedIOPort-4.2 {test clone} {
     # use set up above
-    set p2 [$p1 clone]
+    set p2 [_testClone $p1]
     set rt2 [[$p2 getResolvedType] getName]
 
     list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1 \
