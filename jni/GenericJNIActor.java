@@ -62,7 +62,7 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 ///// JNIActor
 /**
-Use the Java Native Interface to execute a native mathod.
+Use the Java Native Interface to execute a native method.
 To use this actor, first configure the arguments of the native method
 by right clicking on the actor and selecting 'Configure Arguments', then
 configure the library name and location, then create the JNI
