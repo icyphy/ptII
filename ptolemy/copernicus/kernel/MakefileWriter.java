@@ -38,7 +38,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
 import soot.HasPhaseOptions;
- import soot.PhaseOptions;
+import soot.PhaseOptions;
 import soot.SceneTransformer;
 
 import java.io.BufferedReader;
