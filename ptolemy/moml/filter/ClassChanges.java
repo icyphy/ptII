@@ -144,7 +144,7 @@ public class ClassChanges implements MoMLFilter {
         _classChanges = new HashMap();
 
         // Location
-        _classChanges.put("ptolemy.kernel.util.Location",
+        _classChanges.put("ptolemy.moml.Location",
                 "ptolemy.kernel.util.Location");
     }
 }
