@@ -45,6 +45,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import java.awt.Frame;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog
@@ -77,7 +78,7 @@ by the user.
 @version $Id$
 */
 public class EditParametersDialog extends ComponentDialog
-    implements ChangeListener {
+        implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
@@ -92,6 +93,7 @@ public class EditParametersDialog extends ComponentDialog
                 new Configurer(target),
                 _moreButtons);
         // Once we get to here, the dialog has already been dismissed.
+
         _owner = owner;
         _target = target;
         if (buttonPressed().equals("Add")) {
@@ -178,10 +180,16 @@ public class EditParametersDialog extends ComponentDialog
         // Ignore if this is not the originator.
         if (change == null || change.getSource() != this) return;
 
-        // FIXME: this is ugly..  Why is this necessary?
         // Open a new dialog.
-        new EditParametersDialog(_owner, _target);
-
+        // NOTE: this is ugly. It is necessary because the dialog
+        // has been dismissed.
+        // NOTE: Do this in the event thread, since this might be invoked
+        // in whatever thread is processing mutations.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new EditParametersDialog(_owner, _target);
+            }
+        });
         _target.removeChangeListener(this);
     }
 
@@ -189,26 +197,38 @@ public class EditParametersDialog extends ComponentDialog
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
-    public void changeFailed(ChangeRequest change, Exception exception) {
+    public void changeFailed(ChangeRequest change, final Exception exception) {
         // Ignore if this is not the originator.
         if (change == null || change.getSource() != this) return;
 
         _target.removeChangeListener(this);
 
-        String newName = _query.stringValue("name");
-        ComponentDialog dialog = _openAddDialog(exception.getMessage()
-                + "\n\nPlease enter a new default value:",
-                newName,
-                _query.stringValue("default"),
-                _query.stringValue("class"));
-        _target.removeChangeListener(this);
-        if (!dialog.buttonPressed().equals("OK")) {
-            // Remove the parameter, since it seems to be erroneous
-            // and the user hit cancel or close.
-            String moml = "<deleteProperty name=\"" + newName + "\"/>";
-            _target.requestChange(
-                    new MoMLChangeRequest(this, _target, moml));
+        if (change.isErrorReported()) {
+            // Error has already been reported.
+            return;
         }
+        change.setErrorReported(true);
+
+        // NOTE: Do this in the event thread, since this might be invoked
+        // in whatever thread is processing mutations.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                String newName = _query.stringValue("name");
+                ComponentDialog dialog = _openAddDialog(exception.getMessage()
+                       + "\n\nPlease enter a new default value:",
+                       newName,
+                       _query.stringValue("default"),
+                       _query.stringValue("class"));
+                _target.removeChangeListener(EditParametersDialog.this);
+                if (!dialog.buttonPressed().equals("OK")) {
+                    // Remove the parameter, since it seems to be erroneous
+                    // and the user hit cancel or close.
+                    String moml = "<deleteProperty name=\"" + newName + "\"/>";
+                    _target.requestChange(
+                            new MoMLChangeRequest(this, _target, moml));
+                }
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

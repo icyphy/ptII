@@ -100,6 +100,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      *  @return A figure for this icon.
      */
     public Figure createBackgroundFigure() {
+
         // Get the description.
         NamedObj container = (NamedObj)getContainer();
         SingletonConfigurableAttribute description =

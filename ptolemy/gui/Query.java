@@ -199,7 +199,7 @@ public class Query extends JPanel {
         // Add a listener for loss of focus.  When the entry gains
         // and then loses focus, listeners are notified of an update,
         // but only if the value has changed since the last notification.
-        // NOTE: Unfortunately, Java calls this listener some random
+        // FIXME: Unfortunately, Java calls this listener some random
         // time after the window has been closed.  It is not even a
         // a queued event when the window is closed.  Thus, we have
         // a subtle bug where if you enter a value in a line, do not

@@ -81,16 +81,10 @@ public class Scale extends Transformer {
 	output.setTypeAtLeast(new PortParamFunction(input, factor));
 
          // icon
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"40\" "
+	_attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"0,0 60,16 60,24 0,40\" "
                 + "style=\"fill:white\"/>\n"
-                + "<text x=\"15\" y=\"27\" "
-                + "style=\"font-size:24\">\n"
-                + " X \n"
-                + "</text>\n"
                 + "</svg>\n");
-
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -66,7 +66,7 @@ not implement version-strings.
 @author Christopher Hylands
 @version $Id$ */
 public class VersionAttribute
-        extends StringAttribute implements Settable, Comparable {
+        extends StringAttribute implements Comparable {
     
     /** Construct an object in the default workspace with the empty string
      *  as its name. The object is added to the list of objects in the
@@ -181,6 +181,11 @@ public class VersionAttribute
      *  @return True if the specified version is the same as this one.
      */
     public boolean equals(Object obj) {
+        // If the _tupleList is null, then we are not fully constructed.
+        // I see no choice but to return false.
+        if (_tupleList == null) {
+            return false;
+        }
         if (obj instanceof VersionAttribute) {
             return (compareTo(obj) == 0);
         }
@@ -212,7 +217,7 @@ public class VersionAttribute
      *   version ID tuples separated by '.', '-' or '_'. For example:
      *   "1.2", "1.2_beta-4".
      *  @exception IllegalActionException If the argument contains a
-     *   space, which violates the JNLP Version format specification
+     *   space, which violates the JNLP Version format specification.
      */
     public void setExpression(String expression)
 	throws IllegalActionException {
@@ -262,10 +267,9 @@ public class VersionAttribute
 	try {
 	    CURRENT_VERSION = new VersionAttribute("2.0-devel");
 	} catch (Exception ex) {
-	    throw new ExceptionInInitializerError("Failed to create "
-						  + "CURRENT_VERSION: "
-						  + KernelException
-						  .stackTraceToString(ex));
+	    throw new ExceptionInInitializerError(
+                    "Failed to create CURRENT_VERSION: "
+                    + KernelException.stackTraceToString(ex));
 	}
     }
 

@@ -37,9 +37,13 @@ import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.XMLIcon;
 import ptolemy.moml.Location;
 
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// IconController
@@ -50,7 +54,8 @@ and entities.   It provides a double click binding to edit the parameters
 of the node, and a context menu containing a command to edit parameters
 ("Configure"). This adds to the base class the ability to render an
 icon for the object being controlled, where the icon is specified
-by a contained attribute of class EditorIcon named "_icon".
+by a contained attribute of class EditorIcon (typically, but not
+necessily named "_icon").
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -75,22 +80,32 @@ public class IconController extends ParameterizedNodeController {
 	    Location location = (Location)n;
 	    NamedObj object = (NamedObj) location.getContainer();
 
-	    // FIXME: this code is the same as in PtolemyTreeCellRenderer
-	    EditorIcon icon;
+	    // NOTE: this code is similar to that in PtolemyTreeCellRenderer
+            Figure result = null;
             try {
-                icon = (EditorIcon)object.getAttribute("_icon");
-		if(icon == null) {
-		    icon = new XMLIcon(object, "_icon");
-		}
+                List iconList = object.attributeList(EditorIcon.class);
+                if (iconList.size() == 0) {
+		    EditorIcon icon = new XMLIcon(object, "_icon");
+                    result = icon.createFigure();
+                } else if (iconList.size() == 1) {
+                    EditorIcon icon = (EditorIcon)iconList.iterator().next();
+                    result = icon.createFigure();
+                } else {
+                    // There are multiple figures.
+                    Iterator icons = iconList.iterator();
+                    result = new CompositeFigure();
+                    while (icons.hasNext()) {
+                        EditorIcon icon = (EditorIcon)icons.next();
+                        ((CompositeFigure)result).add(icon.createFigure());
+                    }
+                }
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
                         "in " + object + " even " +
-                        "though one did not exist");
+                        "though one did not previously exist");
 	    }
-
-	    Figure figure = icon.createFigure();
-            figure.setToolTipText(object.getClass().getName());
-	    return figure;
+            result.setToolTipText(object.getClass().getName());
+	    return result;
 	}
     }
 }

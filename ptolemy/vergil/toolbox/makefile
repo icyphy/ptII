@@ -49,6 +49,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AttributeValueIcon.java \
+	BoxedValueIcon.java \
 	AnnotationEditorFactory.java \
 	EditorIcon.java \
 	EditParametersFactory.java \
@@ -61,6 +63,7 @@ JSRCS = \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
 	SnapConstraint.java \
+	ValueIcon.java \
 	XMLIcon.java
 
 

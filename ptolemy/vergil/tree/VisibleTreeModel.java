@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.toolbox.EditorIcon;
 
 import java.net.URL;
 import java.util.Iterator;
@@ -54,10 +55,11 @@ import javax.swing.tree.TreePath;
 
 A tree model for the Vergil library panel.  This is a tree model that
 shows entities, ports, relations, and visible attributes.  An attribute
-is visible if it contains an attribute called "_iconDescription". Attributes
-that are not visible are not shown. A composite entity that contains
-an attribute with name "_libraryMarker" is treated as a sublibrary.
-A composite entity without such an attribute is treated as an atomic entity.
+is visible if it contains an attribute of class EditorIcon, or an
+attribute named "_iconDescription" or "_iconSmallDescription".
+Attributes that are not visible are not shown.
+A composite entity that contains an attribute with name "_libraryMarker"
+is treated as a sublibrary. A composite entity without such an attributeis treated as an atomic entity.
 This is designed for use with JTree, which renders the hierarchy.
 
 @author Steve Neuendorffer and Edward A. Lee
@@ -177,7 +179,10 @@ public class VisibleTreeModel extends EntityTreeModel {
         Iterator attributes = object.attributeList().iterator();
         while(attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
-            if (attribute.getAttribute("_iconDescription") != null) {
+            List iconList = attribute.attributeList(EditorIcon.class);
+            if(iconList.size() > 0
+                    || attribute.getAttribute("_iconDescription") != null
+                    || attribute.getAttribute("_iconSmallDescription")!= null) {
                 result.add(attribute);
             }
         }

@@ -88,7 +88,6 @@ public class MessageHandler {
         // To find out who is calling this method, uncomment the following.
         // System.out.println("------ reporting error:");
         // (new Exception()).printStackTrace();
-
         _handler._error(info, exception);
     }
 

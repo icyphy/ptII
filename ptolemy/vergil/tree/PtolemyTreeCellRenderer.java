@@ -42,6 +42,7 @@ import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.XMLIcon;
 
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -96,22 +97,27 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             // because this will trigger evaluation, defeating deferred
             // evaluation.
             if (!(object instanceof EntityLibrary)) {
-		// Only if an object has an icon description is it
-		// rendered in the tree.
-		if(object.getAttribute("_iconDescription") != null) {
-		    // FIXME: may want to use another type of icon
-		    // NOTE: this code is the same as in
-		    // EntityController.
-		    EditorIcon icon;
-		    try {
-			icon = (EditorIcon)object.getAttribute("_icon");
-			if(icon == null) {
-			    icon = new XMLIcon(object, "_icon");
-			}
+		// Only if an object has an icon, an icon description, or
+                // a small icon description is it rendered in the tree.
+                List iconList = object.attributeList(EditorIcon.class);
+		if(iconList.size() > 0
+                        || object.getAttribute("_iconDescription") != null
+                        || object.getAttribute("_iconSmallDescription")
+                        != null) {
+		    // NOTE: this code is similar to that in IconController,
+                    // except that only the first EditorIcon encountered is
+                    // used.
+                    EditorIcon icon = null;
+                    try {
+                        if (iconList.size() == 0) {
+                            icon = new XMLIcon(object, "_icon");
+                        } else {
+                            icon = (EditorIcon)iconList.iterator().next();
+                        }
 		    } catch (KernelException ex) {
 			throw new InternalErrorException(
                                 "could not create icon in " + object +
-                                " even though one did not exist.");
+                                " even though one did not previously exist.");
 		    }
 		    // Wow.. this is a confusing line of code.. :)
 		    component.setIcon(icon.createIcon());

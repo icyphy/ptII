@@ -154,38 +154,12 @@ public class ComponentDialog extends JDialog {
             _buttons = _defaultButtons;
         }
 
-        // FIXME: There is a bug in Java somewhere such that the panel
-        // is sometimes created too large, apparently ignoring the size
-        // of its contents.  Try changing one of the array parameters
-        // of the Clock actor, deleting the final "]".  The resulting
-        // dialog is too large.  The following line displays the size
-        // of the "panel" object by putting a border around it.
-        // How to fix this (other than by not using Java)?
-        //
-        // panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-        //     javax.swing.BorderFactory.createLineBorder(java.awt.Color.red),
-        //     panel.getBorder()));
         _optionPane = new JOptionPane(panel,
                 JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.YES_NO_OPTION,
                 null,
                 _buttons,
                 _buttons[0]);
-
-        getContentPane().add(_optionPane);
-        pack();
-        setResizable(false);
-
-        if (owner != null) {
-            setLocationRelativeTo(owner);
-        } else {
-            // Center on screen.  According to the Java docs,
-            // passing null to setLocationRelationTo() _may_ result
-            // in centering on the screen, but it is not required to.
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            setLocation((tk.getScreenSize().width - getSize().width)/2,
-                    (tk.getScreenSize().height - getSize().height)/2);
-        }
 
         // The following code is based on Sun's CustomDialog example...
         _optionPane.addPropertyChangeListener(new PropertyChangeListener() {
@@ -196,8 +170,8 @@ public class ComponentDialog extends JDialog {
                 // so we have to filter...
                 if (isVisible()
                         && (e.getSource() == _optionPane)
-                        && (prop.equals(JOptionPane.VALUE_PROPERTY) ||
-                                prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+                        && (prop.equals(JOptionPane.VALUE_PROPERTY)
+                        ||  prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
 
                     Object value = _optionPane.getValue();
 
@@ -233,11 +207,26 @@ public class ComponentDialog extends JDialog {
             }
         });
 
-        // Java's lame AWT yeilds random results if we do the following.
+        getContentPane().add(_optionPane);
+        pack();
+        setResizable(false);
+
+        if (owner != null) {
+            setLocationRelativeTo(owner);
+        } else {
+            // Center on screen.  According to the Java docs,
+            // passing null to setLocationRelationTo() _may_ result
+            // in centering on the screen, but it is not required to.
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            setLocation((tk.getScreenSize().width - getSize().width)/2,
+                    (tk.getScreenSize().height - getSize().height)/2);
+        }
+
+        // NOTE: Java's AWT may yeild random results if we do the following.
         // And anyway, it doesn't work.  Components still don't
         // have their ComponentListener methods called to indicate
         // that they have become invisible.
-        // setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         // Catch closing events so that components are notified if
         // the window manager is used to close the window.

@@ -81,6 +81,14 @@ public class XYPlotter extends Plotter {
         inputY = new TypedIOPort(this, "inputY", true, false);
         inputY.setMultiport(true);
         inputY.setTypeEquals(BaseType.DOUBLE);
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"42\" height=\"42\" "
+                + "style=\"fill:white\"/>\n"
+                + "<image x=\"1\" y=\"1\" width=\"40\" height=\"40\""
+                + "xlink:href=\"ptolemy/actor/lib/gui/XYPlotter.gif\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

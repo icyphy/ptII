@@ -69,8 +69,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
@@ -79,8 +78,7 @@
 <xRange min="0.0" max="17.899999999999984"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="407.5, 209.5">
         </property>
@@ -583,20 +581,6 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="_location" class="ptolemy.moml.Location" value="243.0, 64.0">
                 </property>
             </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="55.0, 109.5">
-                </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-            </entity>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
                 </property>
@@ -650,8 +634,26 @@ falling in a gravitational field.</text></svg></configure>
                     </property>
                 </port>
             </entity>
-            <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="-10">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="50.0, 109.5">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="200.0, 115.0">
                 </vertex>
@@ -662,17 +664,19 @@ falling in a gravitational field.</text></svg></configure>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="position" relation="relation3"/>
             <link port="bump" relation="relation4"/>
             <link port="velocity" relation="relation"/>
-            <link port="Const.output" relation="1:relation"/>
             <link port="ZeroCrossingDetector.input" relation="relation"/>
             <link port="ZeroCrossingDetector.output" relation="relation4"/>
             <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
             <link port="Position.input" relation="relation"/>
             <link port="Position.output" relation="relation3"/>
-            <link port="Velocity.input" relation="1:relation"/>
+            <link port="Velocity.input" relation="relation5"/>
             <link port="Velocity.output" relation="relation"/>
+            <link port="Const.output" relation="relation5"/>
         </entity>
         <relation name="heightRelation" class="ptolemy.actor.TypedIORelation">
         </relation>

@@ -23,6 +23,10 @@
   </entity>
 
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
+    <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+        <property name="attributeName" value="expression"/>
+        <property name="displayWidth" value="60"/>
+    </property>
   </entity>
 
   <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
@@ -48,6 +52,9 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
+    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
   </entity>
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
@@ -66,6 +73,9 @@
   </entity>
 
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
+    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="attributeName" value="factor"/>
+    </property>
   </entity>
 
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -84,7 +94,10 @@
             <property name="tan" value="tan"
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
-     </property>
+    </property>
+    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
   </entity>
 
       </group>

@@ -81,7 +81,14 @@ both createBackgroundFigure() and createIcon().
 @contributor Edward A. Lee
 @version $Id$
 */
-public class EditorIcon extends Attribute implements NotPersistent {
+public class EditorIcon extends Attribute {
+
+    // NOTE: This class used to have a major design error.  It
+    // implemented NotPersistent, which told the MoMLWriter class
+    // to not write MoML for it.  But derived classes then are
+    // forced to be non-persistent,
+    // which means that we cannot have custom icons for objects.
+    // An icon is required to be an instance of EditorIcon...
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.

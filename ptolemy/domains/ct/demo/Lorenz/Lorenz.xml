@@ -2,12 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Lorenz" class="ptolemy.actor.TypedCompositeActor">
-    <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
-    </property>
-    <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
-    </property>
-    <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
-    </property>
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -75,12 +69,72 @@ model is known as a Lorenz attractor.</text>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[45, 156]">
+    </property>
+    <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="sigma" class="ptolemy.vergil.toolbox.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="450.0, 170.0">
+        </property>
+    </property>
+    <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="lambda" class="ptolemy.vergil.toolbox.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="445.0, 190.0">
+        </property>
+    </property>
+    <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="b" class="ptolemy.vergil.toolbox.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 210.0">
+        </property>
+    </property>
+    <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="requireVersion" class="ptolemy.vergil.toolbox.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-V-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 395.0">
+        </property>
     </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="213.0, 213.5">
+        <property name="_location" class="ptolemy.moml.Location" value="228.0, 213.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -93,25 +147,10 @@ model is known as a Lorenz attractor.</text>
             </property>
         </port>
     </entity>
-    <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="127.0, 214.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="x1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Integrator 2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="224.0, 293.5">
+        <property name="_location" class="ptolemy.moml.Location" value="254.0, 278.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -127,7 +166,7 @@ model is known as a Lorenz attractor.</text>
     <entity name="Integrator 3" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="224.0, 368.5">
+        <property name="_location" class="ptolemy.moml.Location" value="229.0, 343.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -140,42 +179,6 @@ model is known as a Lorenz attractor.</text>
             </property>
         </port>
     </entity>
-    <entity name="Expression 2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="133.0, 293.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="x1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x3" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="Expression 3" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="133.0, 368.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="x1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x3" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -183,7 +186,7 @@ model is known as a Lorenz attractor.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="136.0, 108.0">
+        <property name="_location" class="ptolemy.moml.Location" value="92.0, 105.5">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -193,18 +196,85 @@ model is known as a Lorenz attractor.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Strange Attractor</title>
 <xLabel>x1</xLabel>
 <yLabel>x2</yLabel>
-<xRange min="-15.0" max="20.0"/>
-<yRange min="-20.0" max="25.0"/>
+<xRange min="0.026805706031059806" max="3.496533044420371"/>
+<yRange min="0.5899307479224367" max="4.329408933518004"/>
 <noGrid/>
 </plot>?>
-        </configure>
+                </configure>    </entity>
+    <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="113.0, 213.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="x1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Expression 2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="140.5, 278.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="x1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="2:1:Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 343.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="x1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="x3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="31.0, 150.0">
@@ -214,33 +284,33 @@ model is known as a Lorenz attractor.</text>
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="44.0, 165.0">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="79.0, 408.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="59.0, 383.0">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Integrator 1.input" relation="relation1"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator 1.input" relation="relation"/>
     <link port="Integrator 1.output" relation="relation5"/>
-    <link port="Expression 1.output" relation="relation1"/>
-    <link port="Expression 1.x1" relation="relation5"/>
-    <link port="Expression 1.x2" relation="relation6"/>
     <link port="Integrator 2.input" relation="relation2"/>
     <link port="Integrator 2.output" relation="relation6"/>
-    <link port="Integrator 3.input" relation="relation7"/>
+    <link port="Integrator 3.input" relation="relation3"/>
     <link port="Integrator 3.output" relation="relation4"/>
+    <link port="XY Plotter.inputX" relation="relation5"/>
+    <link port="XY Plotter.inputY" relation="relation6"/>
+    <link port="Expression 1.output" relation="relation"/>
+    <link port="Expression 1.x1" relation="relation5"/>
+    <link port="Expression 1.x2" relation="relation6"/>
     <link port="Expression 2.output" relation="relation2"/>
     <link port="Expression 2.x1" relation="relation5"/>
     <link port="Expression 2.x2" relation="relation6"/>
     <link port="Expression 2.x3" relation="relation4"/>
-    <link port="Expression 3.output" relation="relation7"/>
-    <link port="Expression 3.x1" relation="relation5"/>
-    <link port="Expression 3.x2" relation="relation6"/>
-    <link port="Expression 3.x3" relation="relation4"/>
-    <link port="XY Plotter.inputX" relation="relation5"/>
-    <link port="XY Plotter.inputY" relation="relation6"/>
+    <link port="2:1:Expression.output" relation="relation3"/>
+    <link port="2:1:Expression.x1" relation="relation5"/>
+    <link port="2:1:Expression.x2" relation="relation6"/>
+    <link port="2:1:Expression.x3" relation="relation4"/>
 </entity>

@@ -73,6 +73,7 @@ JSRCS = \
 	NotPersistent.java \
 	PtolemyThread.java \
 	RecorderListener.java \
+	RequireVersion.java \
 	Settable.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
