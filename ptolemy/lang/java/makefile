@@ -192,7 +192,7 @@ ramp: generate_ramp compile_ramp run_ramp
 generate_ramp:
 	CLASSPATH="$(CLASSPATH)" \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.apps.kvm.demo.ramp.RampSystem \
+	-class  ptolemy.domains.sdf.codegen.test.RampSystem \
 	-iterations 50 \
 	-outdir $(ROOT) -outpkg cg.RampSystem
 
