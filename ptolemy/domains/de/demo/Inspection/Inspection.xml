@@ -221,23 +221,48 @@ order.</text>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This submodel collects a running average of the incoming data,
+and when a trigger is received, samples that data, converts
+it to a string, and appends it to a caption to report the final
+result.  This technique for constructing a string leverages
+the polymorphic data type system in Ptolemy II.  The AddSubtract
+actor, for example, adds strings by appending them.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="30.0, 45.0">
+            </property>
+        </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 142.9994239807129">
+            <property name="_location" class="ptolemy.moml.Location" value="65.0, 205.0">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 256.9994239807129">
+            <property name="_location" class="ptolemy.moml.Location" value="67.21065998077393, 341.9994239807129">
             </property>
         </port>
         <port name="report" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="479.99876944720745, 198.9994239807129">
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 265.0">
             </property>
         </port>
-        <entity name="Average0" class="ptolemy.actor.lib.Average">
-            <property name="_location" class="ptolemy.moml.Location" value="180.0, 158.5">
+        <entity name="Average" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -249,8 +274,10 @@ order.</text>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="Sampler2" class="ptolemy.domains.de.lib.Sampler">
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 168.5">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <property name="initialValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="255.0, 255.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -264,8 +291,8 @@ order.</text>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="415.5, 179.5">
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.moml.Location" value="380.0, 265.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -279,11 +306,11 @@ order.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 254.5">
+            <property name="_location" class="ptolemy.moml.Location" value="255.0, 339.5">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -304,7 +331,7 @@ order.</text>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 225.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="171.0, 310.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -316,131 +343,16 @@ order.</text>
         <link port="data" relation="relation1"/>
         <link port="trigger" relation="relation9"/>
         <link port="report" relation="relation15"/>
-        <link port="Average0.input" relation="relation1"/>
-        <link port="Average0.output" relation="relation3"/>
-        <link port="Sampler2.input" relation="relation3"/>
-        <link port="Sampler2.output" relation="relation13"/>
-        <link port="Sampler2.trigger" relation="relation9"/>
-        <link port="AddSubtract5.plus" relation="relation12"/>
-        <link port="AddSubtract5.plus" relation="relation13"/>
-        <link port="AddSubtract5.output" relation="relation15"/>
-        <link port="Const7.output" relation="relation12"/>
-        <link port="Const7.trigger" relation="relation9"/>
-    </entity>
-    <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="400.0, 410.0">
-        </property>
-        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-        </property>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 142.9994239807129">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 256.9994239807129">
-            </property>
-        </port>
-        <port name="report" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="494.99876944720745, 203.9994239807129">
-            </property>
-        </port>
-        <entity name="Average0" class="ptolemy.actor.lib.Average">
-            <property name="_location" class="ptolemy.moml.Location" value="173.0, 144.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="reset" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="Sampler2" class="ptolemy.domains.de.lib.Sampler">
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 178.5">
-            </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-                <property name="multiport"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="420.5, 189.5">
-            </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Const7" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="290.0, 249.5">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 225.0">
-            </vertex>
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="data" relation="relation1"/>
-        <link port="trigger" relation="relation9"/>
-        <link port="report" relation="relation15"/>
-        <link port="Average0.input" relation="relation1"/>
-        <link port="Average0.output" relation="relation3"/>
-        <link port="Sampler2.input" relation="relation3"/>
-        <link port="Sampler2.output" relation="relation13"/>
-        <link port="Sampler2.trigger" relation="relation9"/>
-        <link port="AddSubtract5.plus" relation="relation12"/>
-        <link port="AddSubtract5.plus" relation="relation13"/>
-        <link port="AddSubtract5.output" relation="relation15"/>
-        <link port="Const7.output" relation="relation12"/>
-        <link port="Const7.trigger" relation="relation9"/>
+        <link port="Average.input" relation="relation1"/>
+        <link port="Average.output" relation="relation3"/>
+        <link port="Sampler.input" relation="relation3"/>
+        <link port="Sampler.output" relation="relation13"/>
+        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation12"/>
+        <link port="AddSubtract.plus" relation="relation13"/>
+        <link port="AddSubtract.output" relation="relation15"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const.trigger" relation="relation9"/>
     </entity>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
@@ -467,11 +379,151 @@ order.</text>
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="400.0, 410.0">
+        </property>
+        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This submodel collects a running average of the incoming data,
+and when a trigger is received, samples that data, converts
+it to a string, and appends it to a caption to report the final
+result.  This technique for constructing a string leverages
+the polymorphic data type system in Ptolemy II.  The AddSubtract
+actor, for example, adds strings by appending them.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="30.0, 45.0">
+            </property>
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="65.0, 205.0">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="67.21065998077393, 341.9994239807129">
+            </property>
+        </port>
+        <port name="report" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 265.0">
+            </property>
+        </port>
+        <entity name="Average" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="reset" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <property name="initialValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="255.0, 255.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.moml.Location" value="380.0, 265.0">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="255.0, 339.5">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="171.0, 310.0">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation1"/>
+        <link port="trigger" relation="relation9"/>
+        <link port="report" relation="relation15"/>
+        <link port="Average.input" relation="relation1"/>
+        <link port="Average.output" relation="relation3"/>
+        <link port="Sampler.input" relation="relation3"/>
+        <link port="Sampler.output" relation="relation13"/>
+        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation12"/>
+        <link port="AddSubtract.plus" relation="relation13"/>
+        <link port="AddSubtract.output" relation="relation15"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const.trigger" relation="relation9"/>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 190.0">
         </vertex>
-    </relation>
-    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -495,6 +547,8 @@ order.</text>
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 255.0">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Poisson Bus Arrivals.output" relation="relation5"/>
     <link port="Passenger Arrivals.output" relation="relation6"/>
     <link port="Poisson Waiting Time.output" relation="relation7"/>
@@ -513,10 +567,10 @@ order.</text>
     <link port="Report Poisson Average.data" relation="relation7"/>
     <link port="Report Poisson Average.trigger" relation="relation"/>
     <link port="Report Poisson Average.report" relation="relation27"/>
+    <link port="Display Average Waiting Times.input" relation="relation27"/>
+    <link port="Display Average Waiting Times.input" relation="relation3"/>
+    <link port="SingleEvent0.output" relation="relation"/>
     <link port="Report Regular Average.data" relation="relation4"/>
     <link port="Report Regular Average.trigger" relation="relation"/>
-    <link port="Report Regular Average.report" relation="relation26"/>
-    <link port="Display Average Waiting Times.input" relation="relation26"/>
-    <link port="Display Average Waiting Times.input" relation="relation27"/>
-    <link port="SingleEvent0.output" relation="relation"/>
+    <link port="Report Regular Average.report" relation="relation3"/>
 </entity>
