@@ -199,7 +199,8 @@ public class Timer extends DETransformer {
        // If the current input is processed, schedule a future firing
        // to process it.
        if (_currentInput != null) {
-           _delayedOutputTokens.put(new TimedEvent(delayToTime, _currentInput));
+           _delayedOutputTokens.put(
+               new TimedEvent(delayToTime, value.getToken()));
            getDirector().fireAt(this, delayToTime);
        }
        return super.postfire();

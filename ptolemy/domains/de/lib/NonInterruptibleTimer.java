@@ -165,7 +165,8 @@ public class NonInterruptibleTimer extends Timer {
                 = (DoubleToken)_delayedInputTokensList.removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
-            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree, delayToken));
+            _delayedOutputTokens.put(
+                new TimedEvent(_nextTimeFree, value.getToken()));
             getDirector().fireAt(this, _nextTimeFree);
         }
         return !_stopRequested;
