@@ -319,11 +319,25 @@ public abstract class PtolemyFrame extends TableauFrame {
 
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-                if (_query == null
-                        || _model == null
+                
+                // If there is no model, delegate to the top effigy.
+                // Otherwise, delegate to the effigy corresponding
+                // to the top-level of the model (which may not be
+                // the same as the top effigy, e.g. when using
+                // ModelReference). An exception is that if we
+                // in a saveAs command (_query != null) and the
+                // user has requested saving the submodel, then
+                // we do no delegating.
+                if (_model == null) {
+                    effigy = effigy.topEffigy();
+                } else if (_query == null
                         || (_model.getContainer() != null
                         && !_query.getBooleanValue("submodel"))) {
-                    effigy = effigy.topEffigy();
+                    NamedObj toplevel = _model.toplevel();
+                    Effigy effigyForToplevel = Configuration.findEffigy(toplevel);
+                    if (effigyForToplevel != null) {
+                        effigy = effigyForToplevel;
+                    }
                 }
                 effigy.writeFile(file);
                 return;
