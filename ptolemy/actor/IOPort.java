@@ -138,8 +138,8 @@ public class IOPort extends ComponentPort {
      *
      *  @param container The container actor.
      *  @param name The name of the port.
-     *  @param isinput True if this is to be an input port.
-     *  @param isoutput True if this is to be an output port.
+     *  @param isInput True if this is to be an input port.
+     *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   Actor interface.
@@ -147,11 +147,11 @@ public class IOPort extends ComponentPort {
      *   a port already in the container.
      */
     public IOPort(ComponentEntity container, String name,
-            boolean isinput, boolean isoutput)
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-        setInput(isinput);
-        setOutput(isoutput);
+        setInput(isInput);
+        setOutput(isOutput);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -430,14 +430,14 @@ public class IOPort extends ComponentPort {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling get.
      *
-     *  @param channelindex The channel index.
+     *  @param channelIndex The channel index.
      *  @return A token from the specified channel.
      *  @exception NoTokenException If there is no token.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
      */
-    public Token get(int channelindex)
+    public Token get(int channelIndex)
             throws NoTokenException, IllegalActionException {
         Receiver[][] localRec;
         try {
@@ -446,16 +446,16 @@ public class IOPort extends ComponentPort {
                 // Note that the getReceivers() method might throw an
                 // IllegalActionException if there's no director.
                 localRec = getReceivers();
-                if (localRec[channelindex] == null) {
+                if (localRec[channelIndex] == null) {
                     throw new NoTokenException(this,
-                            "get: no receiver at index: " + channelindex + ".");
+                            "get: no receiver at index: " + channelIndex + ".");
                 }
             } finally {
                 _workspace.doneReading();
             }
             Token tt = null;
-            for (int j = 0; j < localRec[channelindex].length; j++) {
-                Token ttt = localRec[channelindex][j].get();
+            for (int j = 0; j < localRec[channelIndex].length; j++) {
+                Token ttt = localRec[channelIndex][j].get();
                 if (tt == null) tt = ttt;
             }
             if (tt == null) {
@@ -849,20 +849,20 @@ public class IOPort extends ComponentPort {
      *  are multiple receivers in the group associated with the channel,
      *  then return true only if all the receivers can accept a token.
      *
-     *  @param channelindex The channel index.
+     *  @param channelIndex The channel index.
      *  @return True if there is room for a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
      *   this query, if this is not an output port, or if the channel index
      *   is out of range.
      */
-    public boolean hasRoom(int channelindex) throws IllegalActionException {
+    public boolean hasRoom(int channelIndex) throws IllegalActionException {
         try {
             Receiver[][] farRecs = getRemoteReceivers();
-            if (farRecs == null || farRecs[channelindex] == null) {
+            if (farRecs == null || farRecs[channelIndex] == null) {
                 return false;
             }
-            for (int j = 0; j < farRecs[channelindex].length; j++) {
-                if (!farRecs[channelindex][j].hasRoom()) return false;
+            for (int j = 0; j < farRecs[channelIndex].length; j++) {
+                if (!farRecs[channelIndex][j].hasRoom()) return false;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
@@ -879,23 +879,23 @@ public class IOPort extends ComponentPort {
      *  of an output port. Those are accessible only through
      *  getInsideReceivers().
      *
-     *  @param channelindex The channel index.
+     *  @param channelIndex The channel index.
      *  @return True if there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
      *   this query, if there is no director, and hence no receivers,
      *   if the port is not an input port, or if the channel index is out
      *   of range.
      */
-    public boolean hasToken(int channelindex) throws IllegalActionException {
+    public boolean hasToken(int channelIndex) throws IllegalActionException {
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
             Receiver[][] recs = getReceivers();
-            if (recs == null || recs[channelindex] == null) {
+            if (recs == null || recs[channelIndex] == null) {
                 return false;
             }
-            for (int j = 0; j < recs[channelindex].length; j++) {
-                if (recs[channelindex][j].hasToken()) return true;
+            for (int j = 0; j < recs[channelIndex].length; j++) {
+                if (recs[channelIndex][j].hasToken()) return true;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
@@ -926,14 +926,14 @@ public class IOPort extends ComponentPort {
                 while(ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
-                    if (p != this && p.isInput()) _isinput = true;
+                    if (p != this && p.isInput()) _isInput = true;
                 }
                 _insideinputversion = version;
             } finally {
                 _workspace.doneReading();
             }
         }
-        return _isinput;
+        return _isInput;
     }
 
     /** Return true if the port is a multiport.  The port is a multiport
@@ -945,7 +945,7 @@ public class IOPort extends ComponentPort {
         // No need to synchronize this because the action is atomic
         // and synchronization would just ensure that no write action
         // is in progress.
-        return _ismultiport;
+        return _isMulitport;
     }
 
     /** Return true if the port is an output. The port is an output
@@ -967,14 +967,14 @@ public class IOPort extends ComponentPort {
                 while(ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
                     // Rule out case where this port itself is listed...
-                    if (p != this && p.isOutput()) _isoutput = true;
+                    if (p != this && p.isOutput()) _isOutput = true;
                 }
                 _insideoutputversion = version;
             } finally {
                 _workspace.doneReading();
             }
         }
-        return _isoutput;
+        return _isOutput;
     }
 
     /** Send the specified token to all receivers connected to the
@@ -996,12 +996,12 @@ public class IOPort extends ComponentPort {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling put.
      *
-     *  @param channelindex The index of the channel, from 0 to width-1
+     *  @param channelIndex The index of the channel, from 0 to width-1
      *  @param token The token to send
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void send(int channelindex, Token token)
+    public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
         try {
@@ -1010,12 +1010,12 @@ public class IOPort extends ComponentPort {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farRec = getRemoteReceivers();
-                if (farRec == null || farRec[channelindex] == null) return;
+                if (farRec == null || farRec[channelIndex] == null) return;
             } finally {
                 _workspace.doneReading();
             }
-            for (int j = 0; j < farRec[channelindex].length; j++) {
-                farRec[channelindex][j].put(token);
+            for (int j = 0; j < farRec[channelIndex].length; j++) {
+                farRec[channelIndex][j].put(token);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the port is not an output port.
@@ -1053,16 +1053,16 @@ public class IOPort extends ComponentPort {
      *  is an input port regardless of whether and how this method is called.
      *  This method is write-synchronized on the workspace.
      *
-     *  @param isinput True to make the port an input.
+     *  @param isInput True to make the port an input.
      */
-    public void setInput(boolean isinput) {
+    public void setInput(boolean isInput) {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
         _workspace.getWriteAccess();
-        _isinput = isinput;
+        _isInput = isInput;
         _workspace.doneWriting();
     }
 
@@ -1076,16 +1076,16 @@ public class IOPort extends ComponentPort {
      *  is a multiport regardless of whether and how this method is called.
      *  This method is write-synchronized on the workspace.
      *
-     *  @param ismultiport True to make the port a multiport.
+     *  @param isMulitport True to make the port a multiport.
      */
-    public void setMultiport(boolean ismultiport) {
+    public void setMultiport(boolean isMulitport) {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
         _workspace.getWriteAccess();
-        _ismultiport = ismultiport;
+        _isMulitport = isMulitport;
         _workspace.doneWriting();
     }
 
@@ -1096,16 +1096,16 @@ public class IOPort extends ComponentPort {
      *  is an output port regardless of whether and how this method is called.
      *  This method is write-synchronized on the workspace.
      *
-     *  @param isoutput True to make the port an output.
+     *  @param isOutput True to make the port an output.
      */
-    public void setOutput(boolean isoutput) {
+    public void setOutput(boolean isOutput) {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
         _workspace.getWriteAccess();
-        _isoutput = isoutput;
+        _isOutput = isOutput;
         _workspace.doneWriting();
     }
 
@@ -1313,15 +1313,15 @@ public class IOPort extends ComponentPort {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        if (_isinput) {
+        if (_isInput) {
             output.write(_getIndentPrefix(depth)
                     + "<property name=\"input\"/>\n");
         }
-        if (_isoutput) {
+        if (_isOutput) {
             output.write(_getIndentPrefix(depth)
                     + "<property name=\"output\"/>\n");
         }
-        if (_ismultiport) {
+        if (_isMulitport) {
             output.write(_getIndentPrefix(depth)
                     + "<property name=\"multiport\"/>\n");
         }
@@ -1540,12 +1540,12 @@ public class IOPort extends ComponentPort {
     // This determination is cached, so we need variables to track the
     // validity of the cache.
     // 'transient' means that the variable will not be serialized.
-    private boolean _isinput, _isoutput;
+    private boolean _isInput, _isOutput;
     private transient long _insideinputversion = -1;
     private transient long _insideoutputversion = -1;
 
     // Indicate whether the port is a multiport. Default false.
-    private boolean _ismultiport = false;
+    private boolean _isMulitport = false;
 
     // The cached width of the port, which is the sum of the widths of the
     // linked relations.  The default 0 because initially there are no

@@ -110,8 +110,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *
      *  @param container The container actor.
      *  @param name The name of the port.
-     *  @param isinput True if this is to be an input port.
-     *  @param isoutput True if this is to be an output port.
+     *  @param isInput True if this is to be an input port.
+     *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   TypedActor interface.
@@ -119,9 +119,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   a port already in the container.
      */
     public TypedIOPort(ComponentEntity container, String name,
-            boolean isinput, boolean isoutput)
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name, isinput, isoutput);
+	super(container, name, isInput, isOutput);
     }
 
     ///////////////////////////////////////////////////////////////////
