@@ -768,6 +768,8 @@ proc createAndExecute {file} {
 	    || [file tail $file] == "SamplerWithDefault.xml" \
 	    || [file tail $file] == "SamplerWithDefault1.xml" \
 	    || [file tail $file] == "SamplerWithDefault2.xml" \
+	    || [file tail $file] == "StateSpace.xml" \
+	    || [file tail $file] == "RateLimiter.xml" \
 	    || [file tail $file] == "multirate.xml" \
 	    || [file tail $file] == "testAudioReaderAudioPlayer.xml" \
 	    || [file tail $file] == "VariableFIR2.xml" \
@@ -822,6 +824,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat3/Clock5.xml" \
 	    || "$file" == "compat3/ControllersTestNonPreemptive.xml" \
 	    || "$file" == "compat3/ControllersTestPreemptive.xml" \
+	    || "$file" == "compat3/ContinuousClock.xml" \
 	    || "$file" == "compat3/HierarchyTest.xml" \
 	    || "$file" == "compat3/LLSTest.xml" \
 	    || "$file" == "compat3/MultiplexorDE.xml" \
@@ -832,6 +835,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/Clock5.xml" \
 	    || "$file" == "compat4/ControllersTestNonPreemptive.xml" \
 	    || "$file" == "compat4/ControllersTestPreemptive.xml" \
+	    || "$file" == "compat4/ContinuousClock.xml" \
 	    || "$file" == "compat4/HierarchyTest.xml" \
 	    || "$file" == "compat4/LevelCrossingDetectorDetectsGlitches.xml" \
 	    || "$file" == "compat4/MultiplexorDE.xml" \
