@@ -852,8 +852,7 @@ testMatrixMatrix bitwiseXor $types
 
 ######################################################################
 ####
-#  FIXME: Integer, Long   Test out    crop . . .
-
+#  FIXED (FIXME): crop(final Complex[][] matrix, final int rowStart, final int colStart,final int rowSpan, final int colSpan) - See ComplexMatrixMath.tcl, DoubleMatrixMath.tcl, FloatMatrixMath.tcl, IntegerMatrixMath.tcl, and LongMatrixMath.tcl for tests.
 
 ######################################################################
 ####
@@ -1272,6 +1271,8 @@ testMatrix orthonormalizeRows $types
 # takes a double, not a Complex - both versions are now present
 
 set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{0.0 - 8.0i 4.0 + 0.0i}}] \
 	[list Double double double {{4.0 -2.0}}] \
 	[list Float float float {{4.0 -2.0}}] \
 	[list Integer int int {{4 -2}}] \

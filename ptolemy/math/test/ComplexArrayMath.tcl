@@ -62,7 +62,6 @@ set ca3 [java::new {ptolemy.math.Complex[]} 4 [list $c3 $c2 $c4 $c1]]
 set ca5 [java::new {ptolemy.math.Complex[]} 5 [list $c1 $c2 $c3 $c4 $c5]]
 # ca2 is a Complex array used to store the results of tests
 
-
 # Double array
 set da0 [java::new {double[]} 0]
 set da1 [java::new {double[]} 4 [list 1.0 3.0 -4.9 -7.0]]
@@ -354,13 +353,13 @@ test ComplexArrayMath-14.2 {realParts} {
 
 ####################################################################
 test ComplexArrayMath-15.1 {scale empty array} {
-    set result [java::call ptolemy.math.ComplexArrayMath scale $ca0 -3.2]
+    set result [java::call ptolemy.math.ComplexArrayMath {scale ptolemy.math.Complex[] double} $ca0 -3.2]
     jdkPrintArray $result
 } {}
 
 ####################################################################
-test ComplexArrayMath-15.1 {scale normal array} {
-    set result [java::call ptolemy.math.ComplexArrayMath scale $ca1 3.2]
+test ComplexArrayMath-15.2 {scale normal array} {
+    set result [java::call ptolemy.math.ComplexArrayMath {scale ptolemy.math.Complex[] double} $ca1 3.2]
     epsilonDiff [jdkPrintArray $result] {{3.2 + 6.4i} {9.6 - 12.80i} {-15.68 - 19.2i} {-22.4 + 25.6i}}
 } {}
 
