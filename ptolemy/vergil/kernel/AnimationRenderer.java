@@ -33,13 +33,11 @@ package ptolemy.vergil.kernel;
 import diva.canvas.Figure;
 import diva.canvas.FigureContainer;
 import diva.canvas.FigureDecorator;
-import diva.canvas.ZList;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.canvas.toolbox.BasicHighlighter;
 
 import java.awt.Color;
 import java.util.Hashtable;
-import java.util.Iterator;
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////

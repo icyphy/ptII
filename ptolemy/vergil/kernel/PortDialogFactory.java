@@ -30,20 +30,19 @@
 
 package ptolemy.vergil.kernel;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
-import diva.gui.toolbox.JContextMenu;
-
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortDialogFactory

@@ -30,19 +30,23 @@
 
 package ptolemy.vergil.kernel;
 
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.ParameterizedNodeController;
-import ptolemy.kernel.Relation;
-import ptolemy.moml.Vertex;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
-
-import java.awt.Color;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
+import diva.util.java2d.Polygon2D.Double;
+import ptolemy.kernel.Relation;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.ParameterizedNodeController;
+import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+
+import javax.swing.Action;
+import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationController

@@ -30,10 +30,13 @@
 
 package ptolemy.vergil.kernel;
 
-import ptolemy.vergil.basic.IconController;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-
 import diva.graph.GraphController;
+import ptolemy.vergil.basic.IconController;
+import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+
+import javax.swing.Action;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeController

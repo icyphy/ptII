@@ -29,15 +29,13 @@
 
 package ptolemy.vergil.kernel;
 
-import ptolemy.vergil.basic.NamedObjNodeModel;
 import diva.util.NullIterator;
-
-import java.util.Iterator;
-
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.basic.NamedObjNodeModel;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeNodeModel

@@ -30,36 +30,7 @@
 
 package ptolemy.vergil.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.*;
-import java.net.URL;
-import java.io.Writer;
-import java.io.IOException;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.event.*;
+import ptolemy.kernel.ComponentRelation;
 
 //////////////////////////////////////////////////////////////////////////
 //// Link
