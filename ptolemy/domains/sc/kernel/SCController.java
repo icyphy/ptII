@@ -36,7 +36,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
-import ptolemy.automata.util.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.VariableList;
 import java.util.Enumeration;
 import collections.LinkedList;
 

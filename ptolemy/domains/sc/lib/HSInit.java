@@ -36,7 +36,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
-import ptolemy.automata.util.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.VariableList;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
@@ -62,7 +63,9 @@ public class HSInit extends NamedObj implements TransitionAction {
         _expression = expression;
         try {
             _valueVar = new Variable(this, "ValueVar", new DoubleToken());
-        } catch (KernelException ex) {
+        } catch (IllegalActionException ex) {
+	    throw new InvalidStateException(this, ex.getMessage());
+	} catch (NameDuplicationException ex) {
             throw new InvalidStateException(this, ex.getMessage());
         }
     }
@@ -74,7 +77,7 @@ public class HSInit extends NamedObj implements TransitionAction {
      *  the SCController initializes.
      */
     public void initialize() {
-        try {
+        /*try*/ {
             VariableList vl = null;
             // Add the SCController's input value variable list to ValueVar's
             // scope. 
@@ -91,9 +94,9 @@ public class HSInit extends NamedObj implements TransitionAction {
             vl = (VariableList)st.getAttribute(SCState.LOCAL_INPUT_VALUE_VAR_LIST);
             _valueVar.addToScope(vl);
             _valueVar.setExpression(_expression);
-        } catch (KernelException ex) {
+        } /*catch (KernelException ex) {
             throw new InvalidStateException(this, ex.getMessage());
-        }
+        }*/
     }
 
     /** Execute the action.
