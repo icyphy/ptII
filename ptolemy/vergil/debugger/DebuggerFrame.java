@@ -271,7 +271,7 @@ public class DebuggerFrame extends PtolemyFrame
 
     /** This function displays messages on the scroll panel of
      *  the DebuggerFrame
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#displayResult(String actionDescription)
+     * @see ptolemy.vergil.debugger.DebuggerFrame#displayResult(String actionDescription)
      * @param a message string
      */
     public  void displayResult(String actionDescription) {
@@ -344,7 +344,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Disable all buttons
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#disableAllButtons()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#disableAllButtons()
      */
     public void disableAllButtons() {
 	//	go.setEnabled(false);
@@ -359,7 +359,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Enable allbuutons
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#enableAllButtons()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#enableAllButtons()
      */
     public void enableAllButtons() {
 	//	go.setEnabled(true);
@@ -374,7 +374,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Enable the menu
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#enableMenu()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#enableMenu()
      */
     public void enableMenu() {
 	breakpointMenu.setEnabled(true);
@@ -382,7 +382,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Disable the menu
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#disableMenu()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#disableMenu()
      */
     public void disableMenu() {
 	breakpointMenu.setEnabled(false);
@@ -390,7 +390,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Enable UI component
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#enableAll()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#enableAll()
      */
     public void enableAll() {
 	enableMenu();
@@ -398,7 +398,7 @@ public class DebuggerFrame extends PtolemyFrame
     }
 
     /** Disable all UI components
-     * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#disableAll()
+     * @see ptolemy.vergil.debugger.DebuggerFrame#disableAll()
      */
     public void disableAll() {
 	disableMenu();
