@@ -150,6 +150,17 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.ib2",
                InvocationBinder.v());
        
+        // Remove casts and instanceof Checks.
+        addTransform(pack, "wjtp.cie2",
+                new TransformerAdapter(
+                        CastAndInstanceofEliminator.v()));
+       
+        addStandardOptimizations(pack, 4);
+
+        addTransform(pack, "wjtp.rcp",
+                ReplaceComplexParameters.v(toplevel),
+                "targetPackage:" + _targetPackage);       
+        
        // Set about removing reference to attributes and parameters.
        // Anywhere where a method is called on an attribute or
        // parameter, replace the method call with the return value
@@ -161,7 +172,7 @@ public class Main extends KernelMain {
        // assignments to attributes and handle them differently.)
        addTransform(pack, "wjtp.iat",
                InlineParameterTransformer.v(toplevel),
-               "targetPackage:" + _targetPackage);
+               "debug:true targetPackage:" + _targetPackage);
        
        // Remove equality checks, which arise from inlining attributeChanged.
        //  pack.add(

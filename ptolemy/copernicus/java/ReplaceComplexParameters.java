@@ -118,6 +118,8 @@ public class ReplaceComplexParameters extends SceneTransformer
             SootClass modelClass, CompositeActor model) {
         Director director = model.getDirector();
 
+        copyAttributesOtherThanVariable(model, modelClass);
+
         // Loop over all the model instance classes.
         for (Iterator entities = model.deepEntityList().iterator();
              entities.hasNext();) {
@@ -126,13 +128,12 @@ public class ReplaceComplexParameters extends SceneTransformer
                 ModelTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
-
-            copyAttributesOtherThanVariable(entity, entityClass);
-
             // recurse.
             if (entity instanceof CompositeActor) {
                 _replaceComplexParametersIn(entityClass,
                         (CompositeActor)entity);
+            } else {
+                copyAttributesOtherThanVariable(entity, entityClass);
             }
         }
 
@@ -215,7 +216,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                     Port port = ((PortParameter)attribute).getPort();
                     field.addTag(new ValueTag(port));
                 }
-                
+
                 // Add a container field to the generated class.
                 FieldsForEntitiesTransformer._createContainerField(
                         newClass);
@@ -227,9 +228,11 @@ public class ReplaceComplexParameters extends SceneTransformer
                          Scene.v().getApplicationClasses().iterator();
                      classes.hasNext();) {
                     SootClass theClass = (SootClass)classes.next();
-                    _replaceObjectTypesInClass(theClass, attribute,
-                            attributeClass, newClass);     
-                }
+                    if(theClass != newClass) {
+                        _replaceObjectTypesInClass(theClass, attribute,
+                                attributeClass, newClass);     
+                    }
+                }              
             }
         }
     }

@@ -577,8 +577,9 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     }
                                     System.out.println(string);
                                 }
+                                inlinee.retrieveActiveBody();
                                 SiteInliner.inlineSite(inlinee, stmt, method);
-                                //   body.getUnits().remove(stmt);
+                               //   body.getUnits().remove(stmt);
                             } else if (r.getMethod().getName().equals("setUnknown")) {
                                 // FIXME: for PortParameters.
                                 body.getUnits().remove(stmt);

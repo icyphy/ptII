@@ -223,7 +223,7 @@ public class Main extends KernelMain {
        
         addTransform(pack, "wjtp.cp1",
                 new TransformerAdapter(CopyPropagator.v()));
-       
+        
         if(_snapshots) {
             addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple2");

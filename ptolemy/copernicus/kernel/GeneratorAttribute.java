@@ -165,6 +165,15 @@ public class GeneratorAttribute extends SingletonAttribute
         }
     }
 
+
+    /** Return true if a parametere with the given name is defined in this
+     *  GeneratorAttribute.
+     */
+    public boolean hasParameter(String name) throws IllegalActionException {
+        Attribute attribute = getAttribute(name);
+        return (attribute != null);
+    }
+  
     /** If this GeneratorAttribute has not yet been initialized, the
      *  initialized it by reading the moml file named by the
      *  initialParametersURL and creating Parameters and Variables
