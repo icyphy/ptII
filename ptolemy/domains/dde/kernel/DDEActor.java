@@ -155,11 +155,12 @@ public class DDEActor extends TypedAtomicActor {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-            DDEReceiver lowestRcvr = (DDEReceiver)timeKeeper.getFirstRcvr();
+            DDEReceiver lowestReceiver =
+                (DDEReceiver)timeKeeper.getFirstReceiver();
 
-            if( lowestRcvr.hasToken() ) {
-                _lastPort = (TypedIOPort)lowestRcvr.getContainer();
-                return lowestRcvr.get();
+            if( lowestReceiver.hasToken() ) {
+                _lastPort = (TypedIOPort)lowestReceiver.getContainer();
+                return lowestReceiver.get();
             } else {
                 return _getNextInput();
             }

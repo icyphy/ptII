@@ -98,17 +98,17 @@ public class DDEThread extends ProcessThread {
 	if( outputPorts != null ) {
 	    while( outputPorts.hasNext() ) {
 	        IOPort port = (IOPort)outputPorts.next();
-                Receiver rcvrs[][] =
+                Receiver receivers[][] =
                     (Receiver[][])port.getRemoteReceivers();
-                if( rcvrs == null ) {
+                if( receivers == null ) {
 	            break;
 	        }
-                for (int i = 0; i < rcvrs.length; i++) {
-                    for (int j = 0; j < rcvrs[i].length; j++) {
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
 			try {
-			    if( ((DDEReceiver)rcvrs[i][j]).getRcvrTime()
+			    if( ((DDEReceiver)receivers[i][j]).getReceiverTime()
 				    != endTime ) {
-				((DDEReceiver) rcvrs[i][j]).put(null,
+				((DDEReceiver) receivers[i][j]).put(null,
                                 	endTime);
 			    }
 			} catch( TerminateProcessException e ) {

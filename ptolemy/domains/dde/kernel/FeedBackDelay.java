@@ -200,19 +200,19 @@ public class FeedBackDelay extends DDEActor {
     public void initialize() throws IllegalActionException {
 	super.initialize();
 
-        Receiver[][] rcvrs = output.getRemoteReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-            	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+        Receiver[][] receivers = output.getRemoteReceivers();
+	for( int i = 0; i < receivers.length; i++ ) {
+	    for( int j = 0; j < receivers[i].length; j++ ) {
+            	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( new Token(), PrioritizedTimedQueue.IGNORE );
             }
         }
 
 
-	rcvrs = input.getReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+	receivers = input.getReceivers();
+	for( int i = 0; i < receivers.length; i++ ) {
+	    for( int j = 0; j < receivers[i].length; j++ ) {
+		DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
 		rcvr._hideNullTokens(false);
 	    }
 	}
@@ -239,11 +239,11 @@ public class FeedBackDelay extends DDEActor {
      *  depending on IOPort.send().
      */
     private void _sendOutToken(Token token, double time) {
-        Receiver[][] rcvrs =
+        Receiver[][] receivers =
             (Receiver[][])output.getRemoteReceivers();
-	for( int i = 0; i < rcvrs.length; i++ ) {
-	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-            	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+	for( int i = 0; i < receivers.length; i++ ) {
+	    for( int j = 0; j < receivers[i].length; j++ ) {
+            	DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( token, time );
             }
         }

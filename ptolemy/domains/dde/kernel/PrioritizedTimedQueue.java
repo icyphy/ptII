@@ -166,7 +166,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         token = event.getToken();
         if( _queue.size() > 0 ) {
             Event nextEvent = (Event)_queue.get(0);
-            _rcvrTime = nextEvent.getTime();
+            _receiverTime = nextEvent.getTime();
         }
 
         // Set relevant TimeKeeper time parameters
@@ -183,7 +183,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
                     + " the output time of TimeKeeper");
         }
 
-        // Call updateRcvrList() even if _queue.size() == 0,
+        // Call updateReceiverList() even if _queue.size() == 0,
         // so that the triple is no longer in front.
         if( thread instanceof DDEThread ) {
             TimeKeeper timeKeeper =
@@ -217,8 +217,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  receiver time value is equal to the "last time."
      * @return The receiver time of this PrioritizedTimedQueue.
      */
-    public synchronized double getRcvrTime() {
-        return _rcvrTime;
+    public synchronized double getReceiverTime() {
+        return _receiverTime;
     }
 
     /** Return true if the number of tokens stored in the queue is
@@ -325,11 +325,11 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	*/
 
 	double _lastTimeCache = _lastTime;
-	double _rcvrTimeCache = _rcvrTime;
+	double _receiverTimeCache = _receiverTime;
 	_lastTime = time;
 	Event event = new Event(token, time);
         if( _queue.size() == 0 ) {
-            _rcvrTime = _lastTime;
+            _receiverTime = _lastTime;
         }
 
 	try {
@@ -339,7 +339,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	    }
 	} catch( NoRoomException e ) {
 	    _lastTime = _lastTimeCache;
-	    _rcvrTime = _rcvrTimeCache;
+	    _receiverTime = _receiverTimeCache;
 	    throw e;
 	}
     }
@@ -351,7 +351,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public synchronized void removeIgnoredToken() {
 
-        if( getRcvrTime() != PrioritizedTimedQueue.IGNORE ) {
+        if( getReceiverTime() != PrioritizedTimedQueue.IGNORE ) {
             return;
         }
         // Get the token and set all relevant
@@ -365,7 +365,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         event.getToken();
         if( _queue.size() > 0 ) {
             Event nextEvent = (Event)_queue.get(0);
-            _rcvrTime = nextEvent.getTime();
+            _receiverTime = nextEvent.getTime();
         }
 
         // Set relevant time keeper time parameters
@@ -382,11 +382,11 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
 	// Set the receiver time if value is still IGNORE
-	if( getRcvrTime() == PrioritizedTimedQueue.IGNORE ) {
+	if( getReceiverTime() == PrioritizedTimedQueue.IGNORE ) {
 	    if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		_setRcvrTime( timeKeeper.getCurrentTime() );
+		_setReceiverTime( timeKeeper.getCurrentTime() );
 	    }
 	}
     }
@@ -400,7 +400,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
 	double time = director.getCurrentTime();
-	_rcvrTime = time;
+	_receiverTime = time;
 	_lastTime = time;
 	_queue.clear();
     }
@@ -480,11 +480,11 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  value. If this queue is not empty, then the receiver
      *  time will not be set to the specified value. This method
      *  is not synchronized so the caller should be.
-     * @param time The new rcvr time.
+     * @param time The new receiver time.
      */
-    synchronized void _setRcvrTime(double time) {
+    synchronized void _setReceiverTime(double time) {
 	if( !(_queue.size() > 0) ) {
-            _rcvrTime = time;
+            _receiverTime = time;
 	}
     }
 
@@ -500,7 +500,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     private FIFOQueue _queue = new FIFOQueue();
 
     // The time stamp of the earliest token that is still in the queue.
-    private double _rcvrTime = 0.0;
+    private double _receiverTime = 0.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

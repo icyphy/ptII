@@ -55,7 +55,7 @@ JSRCS = \
 	DDEThread.java \
 	FeedBackDelay.java \
 	NullToken.java \
-	RcvrComparator.java \
+	ReceiverComparator.java \
         TimeKeeper.java \
 	PrioritizedTimedQueue.java
 

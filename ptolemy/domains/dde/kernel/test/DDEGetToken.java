@@ -44,9 +44,7 @@ import ptolemy.data.StringToken;
 
 @author John S. Davis II
 @version $Id$
-
 */
-
 public class DDEGetToken extends DDEGet {
 
     /**
@@ -58,7 +56,7 @@ public class DDEGetToken extends DDEGet {
         _numTokens = numTokens;
         _tokens = new Token[_numTokens];
         _threadTimes = new double[_numTokens];
-        _rcvrTimes = new double[_numTokens];
+        _receiverTimes = new double[_numTokens];
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -66,8 +64,8 @@ public class DDEGetToken extends DDEGet {
 
     /**
      */
-    public double getRcvrTime(int cntr) {
-	return _rcvrTimes[cntr];
+    public double getReceiverTime(int cntr) {
+	return _receiverTimes[cntr];
     }
 
     /**
@@ -86,21 +84,21 @@ public class DDEGetToken extends DDEGet {
      */
     public void fire() throws IllegalActionException {
 	int aCntr = 0;
-	Receiver[][] theRcvrs = input.getReceivers();
-	for( int i = 0; i < theRcvrs.length; i++ ) {
-	    for( int j = 0; j < theRcvrs[i].length; j++ ) {
+	Receiver[][] theReceivers = input.getReceivers();
+	for( int i = 0; i < theReceivers.length; i++ ) {
+	    for( int j = 0; j < theReceivers[i].length; j++ ) {
 		aCntr++;
 	    }
 	}
 	int cnt = 0;
 	while(cnt < _numTokens) {
-	    Receiver[][] rcvrs = input.getReceivers();
-	    for( int i = 0; i < rcvrs.length; i++ ) {
-		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-		    if( rcvr.hasToken() ) {
-			_rcvrTimes[cnt] = rcvr.getRcvrTime();
-	                _tokens[cnt] = rcvr.get();
+	    Receiver[][] receivers = input.getReceivers();
+	    for( int i = 0; i < receivers.length; i++ ) {
+		for( int j = 0; j < receivers[i].length; j++ ) {
+		    DDEReceiver receiver = (DDEReceiver)receivers[i][j];
+		    if( receiver.hasToken() ) {
+			_receiverTimes[cnt] = receiver.getReceiverTime();
+	                _tokens[cnt] = receiver.get();
 			Thread thread = Thread.currentThread();
 			if( thread instanceof DDEThread ) {
 			    TimeKeeper timeKeeper =
@@ -121,6 +119,5 @@ public class DDEGetToken extends DDEGet {
     private int _numTokens;
     private Token[] _tokens = null;
     private double[] _threadTimes = null;
-    private double[] _rcvrTimes = null;
-
+    private double[] _receiverTimes = null;
 }

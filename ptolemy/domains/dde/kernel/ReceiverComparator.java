@@ -1,4 +1,4 @@
-/* A RcvrComparator is used to sort receivers controlled by a time keeper.
+/* A ReceiverComparator is used to sort receivers controlled by a time keeper.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -40,68 +40,68 @@ import ptolemy.actor.process.*;
 import java.util.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
-//// RcvrComparator
+//// ReceiverComparator
 /**
-A RcvrComparator is used to sort receivers controlled by a time keeper.
-Receivers are sorted according to rcvrTime and priority using the
-compare() method. First receivers are sorted according to rcvrTime.
-RcvrTimes are partitioned into three categories: nonnegative times,
+A ReceiverComparator is used to sort receivers controlled by a time keeper.
+Receivers are sorted according to ReceiverTime and priority using the
+compare() method. First receivers are sorted according to ReceiverTime.
+ReceiverTimes are partitioned into three categories: nonnegative times,
 PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE
 times. Nonnegative times precede IGNORE times precede INACTIVE times.
 Within the nonnegative time category, smaller times precede larger
 times. The IGNORE and INACTIVE categories each consist of a single
 value so within these categories comparison results in equality.
 
-If it is determined that two receivers are equivalent according to
-rcvrTime, then comparison is made according to the receiver priority.
+<p>If it is determined that two receivers are equivalent according to
+ReceiverTime, then comparison is made according to the receiver priority.
 A larger receiver priority will precede a smaller receiver priority.
 If it is determined that two receivers are equivalent according to
-rcvrTime and priority, then the compare() method returns 0.
+ReceiverTime and priority, then the compare() method returns 0.
 
 @author John S. Davis II
 @version $Id$
 @see ptolemy.domains.dde.kernel.DDEThread
 */
-public class RcvrComparator implements Comparator {
+public class ReceiverComparator implements Comparator {
 
     /**
      */
-    public RcvrComparator(TimeKeeper cntlr) {
+    public ReceiverComparator(TimeKeeper cntlr) {
 	_timeKeeper = cntlr;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Compare two receivers according to rcvrTime and priority.
+    /** Compare two receivers according to ReceiverTime and priority.
      *  Return +1, -1 or 0 if the first receiver argument will be
      *  ordered before, after or equivalent to the second receiver
      *  argument, respectively. Base the ordering first on the
-     *  rcvrTimes. If the rcvrTimes are equal, then base the
+     *  ReceiverTimes. If the ReceiverTimes are equal, then base the
      *  ordering on the receiver priority.
-     *  @exception ClassCastException If obj1 and obj2 are
+     *  @exception ClassCastException If object1 and obj2 are
      *   not instances of PrioritizedTimedQueue.
      */
-    public int compare(Object obj1, Object obj2) {
-	PrioritizedTimedQueue rcvr1 = null;
-	PrioritizedTimedQueue rcvr2 = null;
-        if( obj1 instanceof PrioritizedTimedQueue ) {
-	    rcvr1 = (PrioritizedTimedQueue)obj1;
+    public int compare(Object object1, Object object2) {
+	PrioritizedTimedQueue receiver1 = null;
+	PrioritizedTimedQueue receiver2 = null;
+        if( object1 instanceof PrioritizedTimedQueue ) {
+	    receiver1 = (PrioritizedTimedQueue)object1;
         }
-        if( obj2 instanceof PrioritizedTimedQueue ) {
-	    rcvr2 = (PrioritizedTimedQueue)obj2;
+        if( object2 instanceof PrioritizedTimedQueue ) {
+	    receiver2 = (PrioritizedTimedQueue)object2;
         }
 
 	//
 	// Compare Receiver Time
 	//
-	double time1 = rcvr1.getRcvrTime();
-	double time2 = rcvr2.getRcvrTime();
+	double time1 = receiver1.getReceiverTime();
+	double time2 = receiver2.getReceiverTime();
 	if( time1 == PrioritizedTimedQueue.IGNORE ||
 		time2 == PrioritizedTimedQueue.IGNORE ) {
-	    _timeKeeper._ignoredRcvrs = true;
+	    _timeKeeper._ignoredReceivers = true;
 	} else {
-	    _timeKeeper._ignoredRcvrs = false;
+	    _timeKeeper._ignoredReceivers = false;
 	}
 
 	// Compare Nonnegative Time with Negative Time
@@ -132,8 +132,8 @@ public class RcvrComparator implements Comparator {
 	//
 	// Compare Receiver Priority
 	//
-	int priority1 = rcvr1._priority;
-	int priority2 = rcvr2._priority;
+	int priority1 = receiver1._priority;
+	int priority2 = receiver2._priority;
 
 	if( priority1 > priority2 ) {
 	    return -1;
@@ -145,14 +145,7 @@ public class RcvrComparator implements Comparator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods		   ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    TimeKeeper _timeKeeper;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
+    private TimeKeeper _timeKeeper;
 }

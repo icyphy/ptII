@@ -119,7 +119,7 @@ public class DDEDirector extends CompositeProcessDirector {
             double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
                 Parameter(this, "stopTime", new DoubleToken(value));
-	} catch( IllegalActionException illegalAction ) {
+	} catch (IllegalActionException illegalAction) {
 	    throw new InternalErrorException(this, illegalAction, null);
         } catch (NameDuplicationException nameDuplication) {
             throw new InvalidStateException(this, nameDuplication, null);
@@ -138,8 +138,8 @@ public class DDEDirector extends CompositeProcessDirector {
 	try {
             double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(value) );
-	} catch( IllegalActionException illegalAction ) {
+                Parameter(this, "stopTime", new DoubleToken(value));
+	} catch (IllegalActionException illegalAction) {
 	    throw new InternalErrorException(this, illegalAction, null);
         } catch (NameDuplicationException nameDuplication) {
             throw new InvalidStateException(this, nameDuplication, null);
@@ -166,8 +166,8 @@ public class DDEDirector extends CompositeProcessDirector {
 	try {
             double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(value) );
-	} catch( IllegalActionException illegalAction ) {
+                Parameter(this, "stopTime", new DoubleToken(value));
+	} catch (IllegalActionException illegalAction) {
 	    throw new InternalErrorException(this, illegalAction, null);
         } catch (NameDuplicationException nameDuplication) {
             throw new InvalidStateException(this, nameDuplication, null);
@@ -198,9 +198,9 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     public double getCurrentTime() {
 	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
-	    TimeKeeper tk = ((DDEThread)thread).getTimeKeeper();
-	    return tk.getCurrentTime();
+	if (thread instanceof DDEThread) {
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+	    return timeKeeper.getCurrentTime();
 	} else {
 	    return super.getCurrentTime();
 	}
@@ -230,23 +230,23 @@ public class DDEDirector extends CompositeProcessDirector {
 	double ETERNITY = PrioritizedTimedQueue.ETERNITY;
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
-        if( thread instanceof DDEThread ) {
+        if (thread instanceof DDEThread) {
             ddeThread = (DDEThread)thread;
         } else {
 	    // Add the start time of actor to initialize table
-	    if( _initialTimeTable == null ) {
+	    if (_initialTimeTable == null) {
 		_initialTimeTable = new Hashtable();
 	    }
-	    _initialTimeTable.put( actor, new Double(time) );
+	    _initialTimeTable.put(actor, new Double(time));
             return;
         }
 
-	if( _completionTime != ETERNITY && time > _completionTime ) {
+	if (_completionTime != ETERNITY && time > _completionTime) {
 	    return;
 	}
 
         Actor threadActor = ddeThread.getActor();
-        if( threadActor != actor ) {
+        if (threadActor != actor) {
             throw new IllegalActionException("Actor argument of "
                     + "DDEDirector.fireAt() must be contained "
                     + "by the DDEThread that calls fireAt()");
@@ -255,7 +255,7 @@ public class DDEDirector extends CompositeProcessDirector {
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
             timeKeeper.setCurrentTime(time);
-        } catch( IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
 	    throw new IllegalActionException(
 		    ((NamedObj)actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
@@ -283,7 +283,7 @@ public class DDEDirector extends CompositeProcessDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	_completionTime = PrioritizedTimedQueue.ETERNITY;
-        _writeBlockedQs = new LinkedList();
+        _writeBlockedQueues = new LinkedList();
         _pendingMutations = false;
     }
 
@@ -297,15 +297,15 @@ public class DDEDirector extends CompositeProcessDirector {
      *  @return A new DDEReceiver.
      */
     public Receiver newReceiver() {
-        DDEReceiver rcvr = new DDEReceiver();
+        DDEReceiver receiver = new DDEReceiver();
 	double time = _completionTime;
 	try {
 	    time = ((DoubleToken)stopTime.getToken()).doubleValue();
-	} catch( IllegalActionException e ) {
-	    throw new InternalErrorException( e.toString() );
+	} catch (IllegalActionException e) {
+	    throw new InternalErrorException(e.toString());
 	}
-	rcvr._setCompletionTime( time );
-        return rcvr;
+	receiver._setCompletionTime(time);
+        return receiver;
     }
 
     /** Return true if the actors governed by this director can
@@ -319,7 +319,7 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
+	if (thread instanceof DDEThread) {
 	    TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 	    timeKeeper.removeAllIgnoreTokens();
@@ -341,7 +341,7 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
-	if( _writeBlockedQs.size() > 0 ) {
+	if (_writeBlockedQueues.size() > 0) {
 	    _incrementLowestCapacityPort();
 	    return true;
 	}
@@ -351,11 +351,11 @@ public class DDEDirector extends CompositeProcessDirector {
     /** Implementations of this method must be synchronized.
      *  @param internal True if internal read block.
      */
-    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
-        Iterator rcvrIterator = rcvrs.iterator();
-        while( rcvrIterator.hasNext() ) {
-            DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
-            _actorUnBlocked(rcvr);
+    protected synchronized void _actorUnBlocked(LinkedList receivers) {
+        Iterator receiverIterator = receivers.iterator();
+        while(receiverIterator.hasNext()) {
+            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
+            _actorUnBlocked(receiver);
         }
         notifyAll();
     }
@@ -364,16 +364,16 @@ public class DDEDirector extends CompositeProcessDirector {
      *  and increment the count of blocked actors by one.
      *  Note whether the receiver is read blocked or write blocked.
      *
-     *  @param rcvr The receiver whose data transfer is blocked.
+     *  @param receiver The receiver whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(DDEReceiver rcvr) {
-        if( rcvr.isWriteBlocked() ) {
-	    if( _writeBlockedQs == null ) {
-	        _writeBlockedQs = new LinkedList();
+    protected synchronized void _actorBlocked(DDEReceiver receiver) {
+        if (receiver.isWriteBlocked()) {
+	    if (_writeBlockedQueues == null) {
+	        _writeBlockedQueues = new LinkedList();
 	    }
-	    _writeBlockedQs.addFirst(rcvr);
+	    _writeBlockedQueues.addFirst(receiver);
         }
-	super._actorBlocked(rcvr);
+	super._actorBlocked(receiver);
 	notifyAll();
     }
 
@@ -381,13 +381,13 @@ public class DDEDirector extends CompositeProcessDirector {
      *  and increment the count of blocked actors by one.
      *  Note whether the receivers are read blocked or write blocked.
      *
-     *  @param rcvr The receivers whose data transfer is blocked.
+     *  @param receiver The receivers whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(LinkedList rcvrs) {
-	Iterator rcvrIterator = rcvrs.iterator();
-	while( rcvrIterator.hasNext() ) {
-            DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
-            _actorBlocked(rcvr);
+    protected synchronized void _actorBlocked(LinkedList receivers) {
+	Iterator receiverIterator = receivers.iterator();
+	while(receiverIterator.hasNext()) {
+            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
+            _actorBlocked(receiver);
 	}
 	notifyAll();
     }
@@ -395,17 +395,17 @@ public class DDEDirector extends CompositeProcessDirector {
     /** Unregister the specified receiver that was previously blocked
      *  and decrement the count of blocked actors by one.
      *
-     *  @param rcvr The receiver whose data transfer was
+     *  @param receiver The receiver whose data transfer was
      *   previously blocked.
      */
-    protected synchronized void _actorUnBlocked(DDEReceiver rcvr) {
-        if( rcvr.isWriteBlocked() ) {
-	    if( _writeBlockedQs == null ) {
+    protected synchronized void _actorUnBlocked(DDEReceiver receiver) {
+        if (receiver.isWriteBlocked()) {
+	    if (_writeBlockedQueues == null) {
                 // FIXME: throw exception???
 	    }
-            _writeBlockedQs.remove(rcvr);
+            _writeBlockedQueues.remove(receiver);
         }
-	super._actorUnBlocked(rcvr);
+	super._actorUnBlocked(receiver);
 	notifyAll();
     }
 
@@ -417,7 +417,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *  @return The initial time table of this director.
      */
     Hashtable _getInitialTimeTable() {
-	if( _initialTimeTable == null ) {
+	if (_initialTimeTable == null) {
 	    _initialTimeTable = new Hashtable();
 	}
 	return _initialTimeTable;
@@ -448,22 +448,22 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     protected void _incrementLowestCapacityPort()
             throws IllegalActionException {
-	if( _writeBlockedQs == null ) {
+	if (_writeBlockedQueues == null) {
             return;
 	}
-        Collections.sort( _writeBlockedQs,
-                new ReceiverCapacityComparator() );
+        Collections.sort(_writeBlockedQueues,
+                new ReceiverCapacityComparator());
         DDEReceiver smallestQueue;
-        smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
+        smallestQueue = (DDEReceiver)_writeBlockedQueues.getFirst();
 
-        if( smallestQueue.getCapacity() <= 0 ) {
+        if (smallestQueue.getCapacity() <= 0) {
             smallestQueue.setCapacity(1);
         } else {
             int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
-        _actorUnBlocked( smallestQueue );
-        synchronized( smallestQueue ) {
+        _actorUnBlocked(smallestQueue);
+        synchronized(smallestQueue) {
             smallestQueue.notifyAll();
         }
     }
@@ -473,7 +473,7 @@ public class DDEDirector extends CompositeProcessDirector {
 
     private double _completionTime = PrioritizedTimedQueue.ETERNITY;
     private boolean _pendingMutations = false;
-    private LinkedList _writeBlockedQs;
+    private LinkedList _writeBlockedQueues;
     private Hashtable _initialTimeTable;
 
     ///////////////////////////////////////////////////////////////////
@@ -486,29 +486,31 @@ public class DDEDirector extends CompositeProcessDirector {
 	 *  object (argument) is larger than the first object; return
 	 *  0 if the capacities are equal and return -1 if the first
 	 *  object's capacity is larger than the second.
-         *  @exception ClassCastException If fst and scd are
+         *  @param object1 The first object 
+         *  @param object2 The second object 
+         *  @exception ClassCastException If object1 and object2 are
          *   not instances of DDEReceiver.
          */
-        public int compare(Object fst, Object scd) {
+        public int compare(Object object1, Object object2) {
             DDEReceiver first = null;
             DDEReceiver second = null;
 
-            if( fst instanceof DDEReceiver ) {
-                first = (DDEReceiver)fst;
+            if (object1 instanceof DDEReceiver) {
+                first = (DDEReceiver)object1;
             } else {
-		throw new ClassCastException("fst must be an " +
+		throw new ClassCastException("object1 must be an " +
 			"instance of DDEReceiver");
 	    }
-            if( scd instanceof DDEReceiver ) {
-                second = (DDEReceiver)scd;
+            if (object2 instanceof DDEReceiver) {
+                second = (DDEReceiver)object2;
             } else {
-		throw new ClassCastException("scd must be an " +
+		throw new ClassCastException("object2 must be an " +
 			"instance of DDEReceiver");
 	    }
 
-            if( first.getCapacity() < second.getCapacity() ) {
+            if (first.getCapacity() < second.getCapacity()) {
                 return 1;
-            } else if( first.getCapacity() > second.getCapacity() ) {
+            } else if (first.getCapacity() > second.getCapacity()) {
                 return -1;
             } else {
                 return 0;

@@ -65,7 +65,7 @@ keeps track of its receivers' priorities as well. The receiver with the
 highest priority is enabled to have its token consumed if the receiver
 shares a common minimum receive time with one or more additional receivers.
 <P>
-The receiver priorities are set using the method _setRcvrPriorities() in
+The receiver priorities are set using the method _setReceiverPriorities() in
 the following manner. All of the input receivers associated with a given
 TimeKeeper are prioritized according to the inverse order in which they
 were connected in the model topology. I.e., if two input receivers (rA
@@ -80,7 +80,7 @@ A TimeKeeper manages the ordering of receivers by keeping track of
 its receivers and their corresponding receiver times and priorities.
 As tokens are placed in and taken out of the receivers of an actor,
 the TimeKeeper's receiver list is updated. The receiver list is sorted
-by RcvrComparator. This same information allows the TimeKeeper to
+by ReceiverComparator. This same information allows the TimeKeeper to
 determine what the current time is local to the actor.
 
 @author John S. Davis II
@@ -98,10 +98,10 @@ public class TimeKeeper {
      */
     public TimeKeeper(Actor anActor) throws IllegalActionException {
 	_actor = anActor;
-        _rcvrList = new LinkedList();
-	_rcvrComparator = new RcvrComparator(this);
+        _receiverList = new LinkedList();
+	_receiverComparator = new ReceiverComparator(this);
 
-        _setRcvrPriorities();
+        _setReceiverPriorities();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,11 +124,11 @@ public class TimeKeeper {
      * @return PrioritizedTimedQueue The oldest active PrioritizedTimedQueue
      *  managed by this TimeKeeper.
      */
-    public synchronized PrioritizedTimedQueue getFirstRcvr() {
-	if( _rcvrList.size() == 0 ) {
+    public synchronized PrioritizedTimedQueue getFirstReceiver() {
+	if( _receiverList.size() == 0 ) {
 	    return null;
 	}
-        return (PrioritizedTimedQueue)_rcvrList.getFirst();
+        return (PrioritizedTimedQueue)_receiverList.getFirst();
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -140,10 +140,10 @@ public class TimeKeeper {
      *  this actor.
      */
     public double getNextTime() {
-        if( _rcvrList.size() == 0 ) {
+        if( _receiverList.size() == 0 ) {
             return _currentTime;
         }
-        return ((PrioritizedTimedQueue)_rcvrList.getFirst()).getRcvrTime();
+        return ((PrioritizedTimedQueue)_receiverList.getFirst()).getReceiverTime();
     }
 
     /** Return the current value of the output time associated with
@@ -170,19 +170,19 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
-	if( _rcvrList == null ) {
+	if( _receiverList == null ) {
 	    return;
 	}
-	if( _ignoredRcvrs ) {
-	    PrioritizedTimedQueue rcvr;
-	    for( int i = 0; i < _rcvrList.size(); i++ ) {
-	        rcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
-		if( rcvr.getRcvrTime() ==
+	if( _ignoredReceivers ) {
+	    PrioritizedTimedQueue receiver;
+	    for( int i = 0; i < _receiverList.size(); i++ ) {
+	        receiver = (PrioritizedTimedQueue)_receiverList.get(i);
+		if( receiver.getReceiverTime() ==
 			PrioritizedTimedQueue.IGNORE ) {
-		    rcvr.removeIgnoredToken();
+		    receiver.removeIgnoredToken();
 		}
 	    }
-	    _ignoredRcvrs = false;
+	    _ignoredReceivers = false;
 	}
     }
 
@@ -193,19 +193,19 @@ public class TimeKeeper {
      *  that the actor controlled by this time keeper is atomic.
      *  <P>
      *  This method is not synchronized so the calling method should be.
-     * @params rcvr The receiver that is causing this method to be invoked.
+     * @params receiver The receiver that is causing this method to be invoked.
      */
-    public void sendOutNullTokens(DDEReceiver rcvr) {
+    public void sendOutNullTokens(DDEReceiver receiver) {
 	Iterator ports = _actor.outputPortList().iterator();
 	double time = getCurrentTime();
 	while( ports.hasNext() ) {
 	    IOPort port = (IOPort)ports.next();
-	    Receiver rcvrs[][] =
+	    Receiver receivers[][] =
 		(Receiver[][])port.getRemoteReceivers();
-	    for (int i = 0; i < rcvrs.length; i++) {
-		for (int j = 0; j < rcvrs[i].length; j++) {
-		    if( time > ((DDEReceiver)rcvrs[i][j])._lastTime ) {
-			((DDEReceiver)rcvrs[i][j]).put(
+	    for (int i = 0; i < receivers.length; i++) {
+		for (int j = 0; j < receivers[i].length; j++) {
+		    if( time > ((DDEReceiver)receivers[i][j])._lastTime ) {
+			((DDEReceiver)receivers[i][j]).put(
 				new NullToken(), time );
 		    }
 		}
@@ -240,32 +240,33 @@ public class TimeKeeper {
 
     /** Update the list of receivers by adding a receiver to the
      *  receiver list if not already present and then sorting the
-     *  list. The receiver list is sorted according to a RcvrComparator.
-     * @param tqr The PrioritizedTimedQueue whose position is being
-     *  updated.
-     * @see ptolemy.domains.dde.kernel.RcvrComparator
+     *  list. The receiver list is sorted according to a ReceiverComparator.
+     * @param prioritizedTimedQueue The PrioritizedTimedQueue whose
+     *  position is being updated.
+     * @see ptolemy.domains.dde.kernel.ReceiverComparator
      */
-    public synchronized void updateRcvrList(PrioritizedTimedQueue tqr) {
-	if( _rcvrList == null ) {
-	    _rcvrList = new LinkedList();
+    public synchronized void updateReceiverList(
+            PrioritizedTimedQueue prioritizedTimedQueue) {
+	if(_receiverList == null) {
+	    _receiverList = new LinkedList();
 	}
 
-	double time = tqr.getRcvrTime();
-	if( time == PrioritizedTimedQueue.IGNORE ) {
-	    _ignoredRcvrs = true;
+	double time = prioritizedTimedQueue.getReceiverTime();
+	if(time == PrioritizedTimedQueue.IGNORE) {
+	    _ignoredReceivers = true;
 	}
 
-	if( !_rcvrList.contains( tqr ) ) {
+	if( !_receiverList.contains(prioritizedTimedQueue) ) {
 	    // Add receiver to list with a touch of
             // optimization before actually sorting.
 	    if( time > 0 ) {
-		_rcvrList.addFirst( tqr );
+		_receiverList.addFirst(prioritizedTimedQueue);
 	    } else {
-		_rcvrList.addLast( tqr );
+		_receiverList.addLast(prioritizedTimedQueue);
 	    }
 	}
 
-	Collections.sort( _rcvrList, _rcvrComparator );
+	Collections.sort( _receiverList, _receiverComparator );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -277,22 +278,22 @@ public class TimeKeeper {
     /** Print the contents of the receiver list contained by
      *  this actor.
      * @deprecated Use for testing purposes only.
-     synchronized void printRcvrList() {
+     synchronized void printReceiverList() {
      String name = ((NamedObj)_actor).getName();
-     System.out.println("\n###Print "+name+"'s RcvrList.");
-     System.out.println("   Number of Receivers in RcvrList = "
-     + _rcvrList.size() );
-     if( _rcvrList.size() == 0 ) {
+     System.out.println("\n###Print "+name+"'s ReceiverList.");
+     System.out.println("   Number of Receivers in ReceiverList = "
+     + _receiverList.size() );
+     if( _receiverList.size() == 0 ) {
      System.out.println("\tList is empty");
-     System.out.println("###End of printRcvrList()\n");
+     System.out.println("###End of printReceiverList()\n");
      return;
      }
-     for( int i = 0; i < _rcvrList.size(); i++ ) {
-     PrioritizedTimedQueue testRcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
-     double time = testRcvr.getRcvrTime();
+     for( int i = 0; i < _receiverList.size(); i++ ) {
+     PrioritizedTimedQueue testReceiver = (PrioritizedTimedQueue)_receiverList.get(i);
+     double time = testReceiver.getReceiverTime();
      Token token = null;
-     if( testRcvr._queue.size() > 0 ) {
-     token = ((PrioritizedTimedQueue.Event)testRcvr._queue.get(0)).getToken();
+     if( testReceiver._queue.size() > 0 ) {
+     token = ((PrioritizedTimedQueue.Event)testReceiver._queue.get(0)).getToken();
      }
      String msg = "\t"+name+"'s Receiver "+i+
      " has a time of " +time+" and ";
@@ -305,7 +306,7 @@ public class TimeKeeper {
      }
      System.out.println(msg);
      }
-     System.out.println("###End of printRcvrList()\n");
+     System.out.println("###End of printReceiverList()\n");
      }
     */
 
@@ -338,7 +339,7 @@ public class TimeKeeper {
      * @exception IllegalActionException If an error occurs during
      *  receiver access.
      */
-    synchronized void _setRcvrPriorities()
+    synchronized void _setReceiverPriorities()
             throws IllegalActionException {
 
         LinkedList listOfPorts = new LinkedList();
@@ -356,21 +357,21 @@ public class TimeKeeper {
 
         //
         // Now set the priorities of each port's receiver, set
-	// the receiving time keeper and initialize the rcvrList.
+	// the receiving time keeper and initialize the receiverList.
         //
         int cnt = 0;
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
             IOPort port = (IOPort)listOfPorts.get(cnt);
-            Receiver[][] rcvrs = port.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((DDEReceiver)rcvrs[i][j])._priority =
+            Receiver[][] receivers = port.getReceivers();
+            for( int i = 0; i < receivers.length; i++ ) {
+                for( int j = 0; j < receivers[i].length; j++ ) {
+                    ((DDEReceiver)receivers[i][j])._priority =
                         currentPriority;
 		    //
 		    // Is the following necessary??
 		    //
-		    updateRcvrList( (DDEReceiver)rcvrs[i][j] );
+		    updateReceiverList( (DDEReceiver)receivers[i][j] );
 
                     currentPriority++;
                 }
@@ -386,7 +387,7 @@ public class TimeKeeper {
     private Actor _actor;
 
     // The currentTime of the actor that is controlled by this
-    // time keeper is equivalent to the minimum positive rcvrTime
+    // time keeper is equivalent to the minimum positive receiverTime
     // of each input receiver.
     private double _currentTime = 0.0;
 
@@ -395,15 +396,15 @@ public class TimeKeeper {
 
     // This flag is set to true if any of the receivers have
     // a time stamp of PrioritizedTimedQueue.IGNORE
-    boolean _ignoredRcvrs = false;
+    boolean _ignoredReceivers = false;
 
     // The comparator that sorts the receivers
     // controlled by this time keeper.
-    private RcvrComparator _rcvrComparator;
+    private ReceiverComparator _receiverComparator;
 
-    // The _rcvrList stores the receivers controlled by
+    // The _receiverList stores the receivers controlled by
     // this time keeper. The receivers are ordered
-    // according to the rcvr comparator.
-    private LinkedList _rcvrList;
+    // according to the receiver comparator.
+    private LinkedList _receiverList;
 
 }

@@ -198,14 +198,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return true;
     }
 
-    /** Return truexecution e if the get() method of this receiver will return a
+    /** Return true if the get() method of this receiver will return a
      *  token without throwing a NoTokenException. This method will
      *  perform a blocking read if this receiver is empty and has a
      *  nonnegative receiver time. Once the receiver is no longer empty,
      *  this method will return true only if this receiver is sorted
-     *  first with respect to the other receivers contained by this
-     *  receiver's actor. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads
+     *  first with respect to the other receivers contained by the actor
+     *  of this receiver. The sorting rules are found in
+     *  ptolemy.domains.dde.kernel.ReceiverComparator. Blocking reads
      *  occurring during this methods execution will be registered
      *  with the local director.
      *  <P>
@@ -226,7 +226,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  this method will return true only if this receiver is sorted
      *  first with respect to the other receivers contained by this
      *  receiver's actor. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads
+     *  ptolemy.domains.dde.kernel.ReceiverComparator. Blocking reads
      *  occurring during this method's execution will be registered
      *  with the branch object (parameter) if it is non-null; otherwise
      *  blocking reads will be registered with the local director.
@@ -253,14 +253,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	synchronized(this) {
 
 	    //////////////////////
-	    // Update the RcvrList
+	    // Update the ReceiverList
 	    //////////////////////
-	    timeKeeper.updateRcvrList( this );
+	    timeKeeper.updateReceiverList( this );
 
 	    /////////////////////////////////////////
 	    // Determine if this Receiver is in Front
 	    /////////////////////////////////////////
-	    if( this != timeKeeper.getFirstRcvr() ) {
+	    if( this != timeKeeper.getFirstReceiver() ) {
 	        return false;
 	    }
 
@@ -272,9 +272,9 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
 
 	    ///////////////////
-	    // Check Rcvr Times
+	    // Check Receiver Times
 	    ///////////////////
-            if( getRcvrTime() == IGNORE && !_terminate ) {
+            if( getReceiverTime() == IGNORE && !_terminate ) {
 	        timeKeeper.removeAllIgnoreTokens();
 
                 sendNullTokens = true;
@@ -336,7 +336,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public boolean hasToken(int tokens) {
         return true;
-	// FIXME hack - consults neuendor's new mechanism.
+	// FIXME hack - consults neuendors new mechanism.
     }
 
     /** Return true if this receiver is a consumer receiver. A
@@ -471,7 +471,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
-            branch.registerRcvrBlocked(this);
+            branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
             DDEDirector director = ((DDEDirector)((Actor)
@@ -639,7 +639,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
+            _otherBranch.registerReceiverUnBlocked(this);
         } else {
             DDEDirector director = ((DDEDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
@@ -679,5 +679,4 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
     private BoundaryDetector _boundaryDetector;
     private Branch _otherBranch = null;
-
-    }
+}
