@@ -30,10 +30,11 @@
 
 package ptolemy.gui.demo;
 
-import javax.swing.JApplet;
 import javax.swing.UIManager;
-import java.awt.Color;
-import ptolemy.gui.*;
+
+import ptolemy.gui.BasicJApplet;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet
@@ -99,6 +100,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         } catch ( SecurityException security) {
             System.out.println("addFileChooser failed: " + security);
         }
+        _query.addColorChooser(
+                "colorChooser", "ColorChoser", "{0.0, 0.0, 0.0, 1.0}");
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
         getContentPane().add(_query);

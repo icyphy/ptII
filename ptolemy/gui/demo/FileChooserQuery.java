@@ -29,15 +29,14 @@
 
 package ptolemy.gui.demo;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import java.awt.*;              //for layout managers
-import java.awt.event.*;        //for action and window events
-import java.net.URL;
-import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileChooserQuery
@@ -77,7 +76,9 @@ public class FileChooserQuery extends JFrame
 
         _query.addFileChooser(
                 "fileChooser", "FileChooser", "default", null, null);
-
+        _query.addColorChooser(
+                "colorChooser", "ColorChoser", "{0.0, 0.0, 0.0, 1.0}");
+        
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
         setContentPane(contentPane);

@@ -31,35 +31,7 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.gui.CloseListener;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
-import ptolemy.actor.gui.style.ParameterEditorStyle;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.Documentation;
-import ptolemy.moml.ErrorHandler;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.StringUtilities;
-
-import java.awt.Container;
-import java.awt.Font;
 import java.awt.Window;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
@@ -67,7 +39,35 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.gui.style.ParameterEditorStyle;
+import ptolemy.actor.parameters.IntRangeParameter;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.gui.CloseListener;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
+import ptolemy.moml.Documentation;
+import ptolemy.moml.ErrorHandler;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
@@ -221,6 +221,12 @@ public class PtolemyQuery extends Query
                             attribute.getExpression(),
                             base,
                             directory);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
+                } else if (attribute instanceof ColorAttribute) {
+                    addColorChooser(name,
+                            name,
+                            attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 }
