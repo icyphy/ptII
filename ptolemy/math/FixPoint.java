@@ -471,9 +471,50 @@ public class FixPoint implements Cloneable, Serializable {
      * @return A decimal string representation of the value.
      */
     public String toString() {
+
+        // Java 1.5: The DecimalFormat class has been enhanced to format and
+        // parse BigDecimal and BigInteger values without loss of
+        // precision. Formatting of such values is enhanced
+        // automatically; parsing into BigDecimal needs to be enabled
+        // using the setParseBigDecimal method.
+
         String bigString = bigDecimalValue().toString();
-        if (bigString.indexOf('.') < 0)
-            return bigString;
+        if (bigString.indexOf('.') < 0) {
+            if (bigString.indexOf('E') < 0) {
+                return bigString;
+            } else {
+
+                // Java 1.5 release notes: 
+                // "The DecimalFormat class has been enhanced
+                // to format and parse BigDecimal and BigInteger
+                // values without loss of precision. Formatting of
+                // such values is enhanced automatically; parsing into
+                // BigDecimal needs to be enabled using the
+                // setParseBigDecimal method."
+                //
+                // Formatter "An interpreter for printf-style format
+                // strings, the Formatter class provides support for
+                // layout justification and alignment, common formats
+                // for numeric, string, and date/time data, and
+                // locale-specific output. Common Java types such as
+                // byte, java.math.BigDecimal , and java.util.Calendar
+                // are supported. Limited formatting customization for
+                // arbitrary user types is provided through the
+                // java.util.Formattable interface."
+                
+                // As a result, sometimes we get 0E-12 or 0E-8 instead
+                // of 0.0.
+                if (bigString.startsWith("0E-")) {
+                    // FIXME: This is a bit of a hack, we could be more
+                    // robust and use regular expressions.
+                    return "0.0";
+                } else {
+                    // This is probably an error, but give the user
+                    // a chance.
+                    return bigString;
+                }
+            }
+        }
         // In order to preserve backward compatibility
         // we need to strip redundant trailing 0's.
         int i = bigString.length() - 1;
