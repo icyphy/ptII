@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><entity name="HDFtest2" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?>
+<entity name="NewHDFtest2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 61, 812, 568}}">
