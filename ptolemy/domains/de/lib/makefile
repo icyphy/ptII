@@ -54,6 +54,7 @@ JSRCS = \
 	EventFilter.java \
 	Inhibit.java \
 	Merge.java \
+	NonInterruptibleTimer.java \
 	PreemptableTask.java \
 	Previous.java \
 	Queue.java \
@@ -70,9 +71,13 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
+	NonInterruptibleTimerIcon.xml \
 	QueueIcon.xml \
 	ServerIcon.xml \
+	SingleEventIcon.xml \
+	TimeGapIcon.xml \
 	TimedDelayIcon.xml \
+	TimerIcon.xml \
 	VariableDelayIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
