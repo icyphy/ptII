@@ -722,23 +722,14 @@ test SignalProcessing-12.1 {poleZeroToFreq} {
 
     javaPrintArray $result
 
-#    epsilonDiff [javaPrintArray $result] { \
-#            {-0.22500000000000 + 0.0i} \
-#            {-0.05000000000000 - 0.20207259421637i} \
-#            {0.13064516129032 - 0.13688788640464i} \
-#            {0.18333333333333 + 0.0i} \
-#            {0.13064516129032 + 0.13688788640464i} \
-#            {-0.05000000000000 + 0.20207259421637i}}
-
-# 4
-# {-0.22500000000000 + 0.0i}
-# {+0.05769230769231 - 0.18846153846154i}
-# {+0.18333333333333 + 0.0i}
-# {+0.05769230769231 + 0.18846153846154i}
-
-# FIX!! epsilonDiff doesn't like complex numbers??
-
-} {} {KNOWN_ERROR}
+    epsilonDiff [javaPrintArray $result] { \
+            {-0.22500000000000 + 0.0i} \
+            {-0.05000000000000 - 0.20207259421637i} \
+            {0.13064516129032 - 0.13688788640464i} \
+            {0.18333333333333 + 0.0i} \
+            {0.13064516129032 + 0.13688788640464i} \
+            {-0.05000000000000 + 0.20207259421637i}}
+} {}
 
 ####################################################################
 test SignalProcessing-13.1  {nextPowerOfTwo: check range} {
@@ -844,7 +835,7 @@ test SignalProcessing-18.1 {sampleWave Sawtooth holes} {
 #sampleWave: time = 0.8
 #sampleWave: time = 1.0  
     # this will cause problems for the hole at +1.0
-} {} {KNOWN_ERROR}
+} {}
 
 ####################################################################
 test SignalProcessing-18.2 {sampleWave Sawtooth no holes} {
@@ -880,6 +871,7 @@ test SignalProcessing-19.2 {sampleWave Sinc zero crossing at 0} {
             0.5 $sincGen]
     # FIX!!  SincSampleGenerator does not properly accept zero crossing at 0
     # (divide by zero generates NaN!!!)
+    $sincOut getrange 0
 } {} {KNOWN_ERROR}
 
 ####################################################################
@@ -1032,7 +1024,7 @@ test SignalProcessing-24.2 {downsample double[] startIndex: empty array} {
     catch {set da2 [java::call ptolemy.math.SignalProcessing \
 	    {downsample double[] int int} $a0 2 0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : array length must be greater than 0.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample(): array length must be greater than 0.}}
 
 ####################################################################
 test SignalProcessing-24.3 {downsample double[] startIndex: bad downsample} {
@@ -1040,7 +1032,7 @@ test SignalProcessing-24.3 {downsample double[] startIndex: bad downsample} {
     catch {set da2 [java::call ptolemy.math.SignalProcessing \
 	    {downsample double[] int int} $da1 0 0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : downsampling factor must be greater than 0.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample(): downsampling factor must be greater than 0.}}
 
 ####################################################################
 test SignalProcessing-24.4 {downsample double[] startIndex: startIndex negative} {
@@ -1048,7 +1040,7 @@ test SignalProcessing-24.4 {downsample double[] startIndex: startIndex negative}
     catch {set da2 [java::call ptolemy.math.SignalProcessing \
 	    {downsample double[] int int} $da1 2 -1]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample(): startIndex must be between 0 and L - 1, where L is the size of the input array.}}
 
 ####################################################################
 test SignalProcessing-24.5 {downsample double[] startIndex: startIndex too big} {
@@ -1056,7 +1048,7 @@ test SignalProcessing-24.5 {downsample double[] startIndex: startIndex too big} 
     catch {set da2 [java::call ptolemy.math.SignalProcessing \
 	    {downsample double[] int int} $da1 2 10]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.downsample(): startIndex must be between 0 and L - 1, where L is the size of the input array.}}
 
 ####################################################################
 test SignalProcessing-25.1 {upsample double[]} {
@@ -1079,4 +1071,4 @@ test SignalProcessing-25.3 {upsample double[] startIndex: bad upsample} {
     catch {set da2 [java::call ptolemy.math.SignalProcessing \
 	    {upsample double[] int} $da1 -1]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.upsample() : upsampling factor must be greater than or equal to 0.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing.upsample(): upsampling factor must be greater than or equal to 0.}}
