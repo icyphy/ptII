@@ -136,7 +136,7 @@ test InequalitySolver-2.2 {construct inequality constraints} {
 	[$tb getAssociatedObject] \
 	[$tw isValueAcceptable] [$ta isValueAcceptable] \
 	[list [$iaw toString] [$ibx toString] [$iba toString] [$iab toString]]
-} {0 1 x java0x0 1 1 {{ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestConstantW(constant)_w} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestConstantX(constant)_x} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestVariableA(variable)_null} {ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestVariableB(variable)_null}}
+} {0 1 x java0x0 1 1 {{ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestConstantW(constant)_w} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestConstantX(constant)_x} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestVariableA(variable)_null} {ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestVariableB(variable)_null}}}
 
 ######################################################################
 ####
