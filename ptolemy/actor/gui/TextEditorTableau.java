@@ -76,14 +76,15 @@ public class TextEditorTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Make the tableau editable or uneditable.
+    /** Make the tableau editable or uneditable.  Notice that this does
+     *  not change whether the effigy is modifiable, so other tableaux
+     *  on the same effigy may still modify the associated file.
      *  @param flag False to make the tableau uneditable.
      */
     public void setEditable(boolean flag) {
         TextEditor editor = (TextEditor)getFrame();
         if (editor.text != null) {
             editor.text.setEditable(false);
-            super.setEditable(flag);
         }
     }
 
@@ -94,7 +95,7 @@ public class TextEditorTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
+	/** Create a factory with the given name and container.
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
@@ -122,8 +123,8 @@ public class TextEditorTableau extends Tableau {
          *  "textTableau".  If the specified effigy is not an instance of
          *  TextEffigy, then do not create a tableau and return null.
 	 *  @param effigy The effigy.
-	 *  @return A new text editor tableau if the effigy is a TextEffigy,
-	 *    or null otherwise.
+	 *  @return A text editor tableau, or null if one cannot be
+	 *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
 	 */
@@ -153,7 +154,8 @@ public class TextEditorTableau extends Tableau {
                     URL url = effigy.url.getURL();
                     TextEffigy textEffigy = TextEffigy.newTextEffigy(
                             effigy, url, url);
-                    Tableau textTableau = createTableau(textEffigy);
+                    TextEditorTableau textTableau =
+                           (TextEditorTableau)createTableau(textEffigy);
                     textTableau.setEditable(false);
                     return textTableau;
                 }

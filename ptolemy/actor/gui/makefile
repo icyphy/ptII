@@ -63,6 +63,7 @@ JSRCS = \
 	EditParametersDialog.java \
 	Effigy.java \
 	EffigyFactory.java \
+	HTMLEffigy.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
 	ModelDirectory.java \

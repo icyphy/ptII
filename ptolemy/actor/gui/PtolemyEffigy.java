@@ -175,6 +175,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
+        /** Return true, indicating that this effigy factory is
+         *  capable of creating an effigy without a URL being specified.
+         *  @return True.
+         */
+        public boolean canCreateBlankEffigy() {
+            return true;
+        }
+
         /** Create a new effigy in the given container by reading the specified
          *  URL. If the specified URL is null, then create a blank effigy.
          *  The blank effigy will have a new model associated with it.

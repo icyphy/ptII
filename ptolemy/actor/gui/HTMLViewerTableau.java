@@ -29,26 +29,11 @@
 
 package ptolemy.actor.gui;
 
-// FIXME: Trim this.
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Top;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewerTableau
@@ -132,5 +117,57 @@ public class HTMLViewerTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    // FIXME: Define a factory, as in RunTableau.
+    /** A factory that creates HTML viewer tableaux for Ptolemy models.
+     */
+    public static class Factory extends TableauFactory {
+
+	/** Create a factory with the given name and container.
+	 *  The container argument must not be null, or a
+	 *  NullPointerException will be thrown.
+	 *  If the name argument is null, 
+	 *  then the name is set to the empty string.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public Factory(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+	/** If the specified effigy already contains a tableau named
+         *  "htmlTableau", then show it; otherwise, create a new instance
+         *  of HTMLViewerTableau in the specified effigy, and name it
+         *  "htmlTableau".  If the specified effigy is not an instance of
+         *  HTMLEffigy, then do not create a tableau and return null.
+	 *  @param effigy The effigy.
+	 *  @return A HTML viewer tableau, or null if one cannot be
+	 *    found or created.
+         *  @exception Exception If the factory should be able to create a
+         *   tableau for the effigy, but something goes wrong.
+	 */
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(effigy instanceof HTMLEffigy) {
+                // First see whether the effigy already contains an
+                // HTMLViewerTableau.
+                HTMLViewerTableau tableau =
+                        (HTMLViewerTableau)effigy.getEntity("htmlTableau");
+                if (tableau == null) {
+                    tableau = new HTMLViewerTableau(
+                            (HTMLEffigy)effigy, "htmlTableau");
+                }
+                ((HTMLViewer)tableau.getFrame()).setPage(effigy.url.getURL());
+                tableau.show();
+                return tableau;
+	    } else {
+		return null;
+	    }
+	}
+    }
 }

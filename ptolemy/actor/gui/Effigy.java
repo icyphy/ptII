@@ -40,6 +40,7 @@ import java.awt.event.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -119,7 +120,9 @@ public class Effigy extends CompositeEntity {
     ////                         public methods                    ////
 
     /** If the argument is the <i>identifier</i> parameter, then set
-     *  the title of all contained Tableaux to the value of the parameter.
+     *  the title of all contained Tableaux to the value of the parameter;
+     *  if the argument is the <i>url</i> parameter, then check to see
+     *  whether it is writable, and call setModifiable() appropriately.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
@@ -129,6 +132,20 @@ public class Effigy extends CompositeEntity {
             while (tableaux.hasNext()) {
                 Tableau tableau = (Tableau)tableaux.next();
                 tableau.setTitle(identifier.getExpression());
+            }
+        } else if (attribute == url) {
+            URL u = url.getURL();
+            if (u == null) {
+                _modifiableURL = false;
+            } else {
+                String protocol = u.getProtocol();
+                if (!(protocol.equals("file"))) {
+                    _modifiableURL = false;
+                } else {
+                    String filename = u.getFile();
+                    File file = new File(filename);
+                    _modifiableURL = file.canWrite();
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -157,6 +174,18 @@ public class Effigy extends CompositeEntity {
      */
     public TableauFactory getTableauFactory() {
         return _factory;
+    }
+
+    /** Return whether the URL associated with this effigy can be written
+     *  to.  This will be false if either there is no URL associated
+     *  with this effigy, or the URL is not a file, or the file is not
+     *  writable or does not exist, or setModifiable() has been called
+     *  with a false argument.
+     *  @return False to indicated that the URL is not writable.
+     */
+    public boolean isModifiable() {
+        if (!_modifiable) return false;
+        else return _modifiableURL;
     }
 
     /** Return the value set by setModified(), or false if setModified()
@@ -200,6 +229,17 @@ public class Effigy extends CompositeEntity {
 	    }
         }
         super.setContainer(container);
+    }
+
+    /** Specify that the URL associated with this effigy must not be written
+     *  to, irrespective of whether it is writable.
+     *  Notice that this does not automatically result in any tableaux
+     *  that are contained switching to being uneditable.  But it will
+     *  prevent them from writing to the URL.
+     *  @param flag False to prevent writing to the URL.
+     */
+    public void setModifiable(boolean flag) {
+        _modifiable = flag;
     }
 
     /** Record whether the data associated with this effigy has been
@@ -313,6 +353,12 @@ public class Effigy extends CompositeEntity {
 
     // A tableau factory affering multiple views.
     private TableauFactory _factory = null;
+
+    // Indicator that the URL must not be written to (if false).
+    private boolean _modifiable = true;
+
+    // Indicator that the URL can be written to.
+    private boolean _modifiableURL = true;
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;

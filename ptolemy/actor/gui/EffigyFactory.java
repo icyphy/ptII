@@ -74,6 +74,22 @@ public class EffigyFactory extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this effigy factory is capable of creating
+     *  an effigy without a URL being specified.  That is, it is capable
+     *  of creating a blank effigy with no model data.
+     *  In this base class, this method returns true if at least one
+     *  contained effigy factory returns true.
+     *  @return True if this factory can create a blank effigy.
+     */
+    public boolean canCreateBlankEffigy() {
+	Iterator factories = entityList(EffigyFactory.class).iterator();
+	while(factories.hasNext()) {
+	    EffigyFactory factory = (EffigyFactory)factories.next();
+            if (factory.canCreateBlankEffigy()) return true;
+	}
+	return false;
+    }
+
     /** Create a new blank effigy in the given container. This base class
      *  defers to each contained effigy factory until one returns
      *  an effigy.  If there are no contained effigies, or if none

@@ -191,13 +191,17 @@ public abstract class TableauFrame extends Top {
     protected void _addMenus() {
         super._addMenus();
         if (_tableau != null) {
-	    // Check to see if we have an effigy factory.
+	    // Check to see if we have an effigy factory, and whether it
+            // is capable of creating blank effigies.
 	    Configuration configuration = (Configuration)_tableau.toplevel();
 	    EffigyFactory effigyFactory = 
-		(EffigyFactory)configuration.getEntity("effigyFactory");
-	    if(effigyFactory != null) {
+                    (EffigyFactory)configuration.getEntity("effigyFactory");
+	    if(effigyFactory != null
+                    && effigyFactory.canCreateBlankEffigy()) {
 		// Enable the "New" item in the File menu.
 		_fileMenuItems[1].setEnabled(true);
+                // FIXME: Instead of just enabling it, it should populate
+                // a cascaded menu here.
 	    }
 
 	    Effigy tableauContainer = (Effigy)_tableau.getContainer();
@@ -281,13 +285,17 @@ public abstract class TableauFrame extends Top {
 
     /** Save the model to the current file, determined by the
      *  and <i>url</i> parameter of the associated effigy, or if
-     *  that has not been set or is not a writable file, then invoke
+     *  that has not been set or is not a writable file, or if the
+     *  effigy has been set non-modifiable, then invoke
      *  _saveAs(). This calls _writeFile() to perform the save.
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
         File file = _writableFile();
-        if (file != null) {
+        Effigy effigy = getEffigy();
+        if ((effigy != null && !effigy.isModifiable()) || file == null) {
+            return _saveAs();
+        } else {
             try {
                 _writeFile(file);
                 setModified(false);
@@ -296,8 +304,6 @@ public abstract class TableauFrame extends Top {
                 report("Error writing file", ex);
                 return false;
             }
-        } else {
-            return _saveAs();
         }
     }
 
@@ -342,14 +348,17 @@ public abstract class TableauFrame extends Top {
                 getConfiguration().openModel(newURL, newURL, newKey);
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
-                if (_writableFile() == null) {
-                    // This will have the effect of closing all the
-                    // tableaux associated with the unnamed model.
-                    getEffigy().setContainer(null);
+                Effigy effigy = getEffigy();
+                if (effigy != null) {
+                    String id = effigy.identifier.getExpression();
+                    if (id.equals("Unnamed")) {
+                        // This will have the effect of closing all the
+                        // tableaux associated with the unnamed model.
+                        effigy.setContainer(null);
+                    }
                 }
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Error in save as.",ex);
+                MessageHandler.error("Error in save as.",ex);
             }
         }
         return true;
@@ -419,7 +428,9 @@ public abstract class TableauFrame extends Top {
 
     // Return a writable file for the URL given by the <i>url</i>
     // parameter of the associated effigy, if there is one, or return
-    // null if there is not.
+    // null if there is not.  This will return null if the file does
+    // not exist, or it exists and is not writable, or the <i>url</i>
+    // parameter has not been set.
     private File _writableFile() {
         File result = null;
         Effigy effigy = getEffigy();
@@ -429,7 +440,10 @@ public abstract class TableauFrame extends Top {
                 String protocol = url.getProtocol();
                 if (protocol.equals("file")) {
                     String filename = url.getFile();
-                    result = new File(filename);
+                    File tentativeResult = new File(filename);
+                    if (tentativeResult.canWrite()) {
+                        result = tentativeResult;
+                    }
                 }
             }
         }

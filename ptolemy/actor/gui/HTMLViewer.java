@@ -1,4 +1,4 @@
-/* A viewer for documentation of Ptolemy classes.
+/* A viewer for HTML files.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -77,6 +77,13 @@ public class HTMLViewer extends TableauFrame implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the page displayed by this viewer.
+     *  @return The page displayed by this viewer.
+     */
+    public URL getPage() {
+        return pane.getPage();
+    }
+
 // FIXME: This should be handled in Top...
 
     /** Print the documentation to a printer.  The documentation will be 
@@ -146,7 +153,8 @@ public class HTMLViewer extends TableauFrame implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Write the model to the specified file.
+    /** Write the model to the specified file.  Note that this does not
+     *  defer to the effigy.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */

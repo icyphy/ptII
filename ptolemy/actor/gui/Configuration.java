@@ -126,6 +126,7 @@ public class Configuration extends CompositeEntity {
 	Iterator factories = factoryList.iterator();
 	while(factories.hasNext()) {
 	    final EffigyFactory factory = (EffigyFactory)factories.next();
+            if (!factory.canCreateBlankEffigy()) continue;
 	    String buttonName = factory.getName();
 	    JButton button = new JButton(buttonName);
 	    panel.add(button);
@@ -189,7 +190,9 @@ public class Configuration extends CompositeEntity {
             }
             effigy = factory.createEffigy(directory, base, in);
             if (effigy == null) {
-                MessageHandler.error("Could not create new effigy.");
+                MessageHandler.error("Unsupported file type: "
+                        + in.toExternalForm());
+                return;
             }
             effigy.identifier.setExpression(identifier);
             // If this fails, we do not want the effigy in the directory.

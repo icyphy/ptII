@@ -107,6 +107,7 @@ public class TextEffigy extends Effigy {
                 doc.insertString(doc.getLength(), line + "\n", null);
                 line = reader.readLine();
             }
+            reader.close();
         }
         effigy.url.setURL(in);
         return effigy;
@@ -164,6 +165,14 @@ public class TextEffigy extends Effigy {
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
+
+        /** Return true, indicating that this effigy factory is
+         *  capable of creating an effigy without a URL being specified.
+         *  @return True.
+         */
+        public boolean canCreateBlankEffigy() {
+            return true;
+        }
 
         /** Create a new effigy in the given container by reading the specified
          *  URL. If the specified URL is null, then create a blank effigy.

@@ -121,7 +121,7 @@ public class Tableau extends ComponentEntity {
      *  returns the value set by a call to setTitle(), if it has been
      *  called, or an identifier of the effigy containing this tableau,
      *  if it has not been called,
-     *  or the string "Unnamed Tableau" if there is no such identifier.
+     *  or the string "Unnamed" if there is no such identifier.
      *  The title is used as the title of the top-level window in
      *  the setFrame() method.
      *  @return The title to put on the window.
@@ -184,15 +184,6 @@ public class Tableau extends ComponentEntity {
 		"The container can only be set to an " + 
 		"instance of Effigy");
 	}
-    }
-
-    /** Make the tableau editable or uneditable.
-     *  This base class does nothing.
-     *  @param flag False to make the tableau uneditable.
-     */
-    public void setEditable(boolean flag) {
-        // FIXME: Should this give some visual indication that the
-        // tableau is uneditable?
     }
 
     /** Set the top-level window associated with this tableau.
