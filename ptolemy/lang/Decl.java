@@ -78,28 +78,34 @@ public class Decl extends TrackedPropertyMap {
     /** Override Object.equals() so that equality is defined as having
      *  the same name and category. If the object being compared against
      *  is not a Decl, throw a RuntimeException.
+     *  @param object The object to compare against.
      */
-    public boolean equals(Object o) {
-        if (o == this) {
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(o instanceof Decl)) {
+        if (!(object instanceof Decl)) {
             throw new RuntimeException("cannot compare a Decl " + 
                     "with a non-Decl");
         }
 
-        Decl d = (Decl) o;
-        return matches(d.getName(), d.category);
+        Decl decl = (Decl) object;
+        return matches(decl.getName(), decl.category);
     }
 
-    /** Return the name of this Decl. */
+    /** Return the name of this Decl.
+     *  @return The name of this Decl.
+     */
     public final String getName() { return _name; }
 
     /** Return true if at least some of the bits in the mask are set
      *  in the category argument and the name argument matches the name of
      *  this Decl, or the name argument is ANY_NAME or the name of
      *  the Decl is ANY_NAME.
+     *  @param name The String to compare against.
+     *  @param mask The mask to compare against.
+     *  @return true If the name and mask match.
      */   
     public final boolean matches(String name, int mask) {
         if ((category & mask) != 0) {
@@ -118,7 +124,9 @@ public class Decl extends TrackedPropertyMap {
     /** Set the name of this Decl. */
     public final void setName(String name) { _name = name; }
 
-    /** Return a String representation of this Decl. */
+    /** Return a String representation of this Decl.
+     *  @return The string representation of this Decl.
+     */
     public String toString() {
         return "{" + _name + ", " + category + "}";
     }
