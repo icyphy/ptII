@@ -90,6 +90,16 @@ public class InequalitySolver {
 	_addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
     }
 
+    /** Add a group of inequalities to the set of constraints.
+     *  @param inequalities an <code>Iterator</code> for instances of
+     *   <code>Inequality</code>.
+     */
+    public void addInequalities(Iterator inequalities) {
+        while (inequalities.hasNext()) {
+	    addInequality((Inequality)inequalities.next());
+	}
+    }
+
     /** Return an <code>Iterator</code> of the variables whose current
      *  values are the bottom of the underlying CPO. If none of the
      *  variables have its current value set to the bottom, an empty

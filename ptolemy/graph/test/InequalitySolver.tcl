@@ -147,10 +147,21 @@ test InequalitySolver-2.2 {construct inequality constraints} {
 # 
 test InequalitySolver-2.3 {solver for the least solution} {
     set s [java::new ptolemy.graph.InequalitySolver $cpo]
-    $s addInequality $iaw
-    $s addInequality $ibx
-    $s addInequality $iba
-    $s addInequality $iab
+
+    # test addInequalities
+    #
+    # $s addInequality $iaw
+    # $s addInequality $ibx
+    # $s addInequality $iba
+    # $s addInequality $iab
+    #
+    set ll [java::new java.util.LinkedList]
+    $ll add $iaw
+    $ll add $ibx
+    $ll add $iba
+    $ll add $iab
+    set iter [$ll iterator]
+    $s addInequalities $iter
 
     set sat [$s solveLeast]
 
