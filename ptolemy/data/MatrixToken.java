@@ -34,8 +34,6 @@ import ptolemy.math.Complex;
 //// MatrixToken
 /**
 Abstract base class for tokens that contain a 2-D array.
-The derived classes should override the clone() method to do a deep copy
-of the token.
 
 @author Yuhong Xiong
 $Id$
@@ -47,73 +45,84 @@ public abstract class MatrixToken extends Token {
 
     /** Return the number of rows of the containted matrix.
      *  In this base class, we just throw an exception.
-     *  @return An integer
-     *  @exception IllegalActionException alway thrown
+     *  @return An integer.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public int numRows()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.numRow: This base "
-		+ "class does not contain an array.");
+	String str = "numRows method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 
     /** Return the number of columns of the containt matrix.
      *  In this base class, we just throw an exception.
-     *  @return An integer
-     *  @exception IllegalActionException alway thrown
+     *  @return An integer.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public int numColumns()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.numColumn: This base "
-		+ "class does not contain an array.");
+	String str = "numColumns method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 
     /** Return the content of this token as a 2-D double array.
      *  In this base class, we just throw an exception.
      *  @return A 2-D double array
-     *  @exception IllegalActionException alway thrown
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public double[][] doubleMatrix()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.doubleMatrix: This base "
-		+ "class does not contain an array.");
+	String str = "doubleMatrix method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 
     /** Return the content of this token as a 2-D Complex array.
      *  In this base class, we just throw an exception.
      *  @return A 2-D Complex array
-     *  @exception IllegalActionException alway thrown
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public Complex[][] complexMatrix()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.complexMatrix: "
-		+ "This base class does not contain an array.");
+	String str = "complexMatrix method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 
-    /** Return the content in the token as a 2-D Fix array.
-     */
+    // Return the content in the token as a 2-D Fix array.
     // FIXME: uncomment this method after the Complex class is implemented.
     // public Fix[][] fixMatrix();
 
     /** Return the content of this token as a 2-D integer array.
      *  In this base class, we just throw an exception.
      *  @return A 2-D integer array
-     *  @exception IllegalActionException alway thrown
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public int[][] intMatrix()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.intMatrix: This base "
-		+ "class does not contain an array.");
+	String str = "intMatrix method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 
     /** Return the content of this token as a 2-D long array.
      *  In this base class, we just throw an exception.
      *  @return A 2-D long array
-     *  @exception IllegalActionException alway thrown
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      */
     public long[][] longMatrix()
 	    throws IllegalActionException {
-	throw new IllegalActionException("MatrixToken.longMatrix: This base "
-		+ "class does not contain an array.");
+	String str = "longMatrix method not supported on "
+		+ this.getClass().getName() + " objects.";
+	throw new IllegalActionException(str);
     }
 }
 
