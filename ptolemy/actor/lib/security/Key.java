@@ -58,7 +58,7 @@ import javax.crypto.SecretKey;
 
 This actor creates a key and sends it on the output.
 
-<p>This key should be protected in some manner as the security of
+<p>This key should be not be visible to users as the security of
 the encrypted message relies on the secrecy of this key.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java

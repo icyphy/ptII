@@ -110,10 +110,12 @@ public class KeyReader extends Source {
 
 
         keyPassword = new StringParameter(this, "keyPassword");
-        keyPassword.setExpression("this.is.not.secure,it.is.for.testing.only");
+        keyPassword.setExpression(
+                "this.is.not.secure,it.is.for.testing.only");
 
         storePassword = new StringParameter(this, "storePassword");
-        storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
+        storePassword.setExpression(
+                "this.is.not.secure,it.is.for.testing.only");
         try {
             // We could have parameters that allow the user to set
             // the KeyStore type and provider, but since most users
@@ -212,8 +214,11 @@ public class KeyReader extends Source {
 
         InputStream keyStoreStream;
         try {
+
             // FIXME: this will not work if the input is stdin.
-            // FileParameter needs to have a way of getting the unbuffered stream
+            // FileParameter needs to have a way of getting the
+            // unbuffered stream.
+
             keyStoreStream = _url.openStream();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,

@@ -246,6 +246,20 @@ public class CryptographyActor extends TypedAtomicActor {
 
     }
 
+    /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
+     *  and, <i>keySize</i>.
+     *
+     * @exception IllegalActionException If the algorithm is not found,
+     * the padding scheme is illegal for a given algorithm or the
+     * specified provider does not exist.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+        _provider = ((StringToken)provider.getToken()).stringValue();
+        _keySize = ((IntToken)keySize.getToken()).intValue();
+    }
+
     /** Convert a key Object to a byte array using an ObjectStream.
      *
      * @param key the object whose byte array value is determined.
@@ -266,27 +280,13 @@ public class CryptographyActor extends TypedAtomicActor {
         }
     }
 
-    /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
-     *  and, <i>keySize</i>.
-     *
-     * @exception IllegalActionException If the algorithm is not found,
-     * the padding scheme is illegal for a given algorithm or the
-     * specified provider does not exist.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _algorithm = ((StringToken)algorithm.getToken()).stringValue();
-        _provider = ((StringToken)provider.getToken()).stringValue();
-        _keySize = ((IntToken)keySize.getToken()).intValue();
-    }
-
     /** Take an array of unsigned bytes and convert it to an ArrayToken.
      *
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
      * @exception IllegalActionException If ArrayToken can not be created.
      */
-    public static ArrayToken unsignedByteArrayToArrayToken( byte[] dataBytes)
+    public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
             throws IllegalActionException{
         int bytesAvailable = dataBytes.length;
         Token[] dataArrayToken = new Token[bytesAvailable];

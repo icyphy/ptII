@@ -143,7 +143,8 @@ public class SignatureSigner extends SignatureActor {
                 _signature.update(dataBytes);
 
                 output.send(0,
-                        CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
+                        CryptographyActor.unsignedByteArrayToArrayToken(
+                                dataBytes));
                 signature.send(0,
                         CryptographyActor.unsignedByteArrayToArrayToken(
                                 _signature.sign()));

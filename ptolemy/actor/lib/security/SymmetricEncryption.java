@@ -56,7 +56,7 @@ be specified in the mode and padding parameters.  In case a provider
 specific instance of an algorithm is needed the provider may also be
 specified in the provider parameter. This actor reads its secret key
 on the <i>key</i> port.
-This key should be protected in some manner as the security of
+This key should not be visible to users as the security of
 the encrypted message relies on the secrecy of this key.
 
 <p>Note that for simplicity, this actor does not support the
@@ -121,7 +121,8 @@ public class SymmetricEncryption extends CipherActor {
             try {
                 ObjectToken objectToken = (ObjectToken)key.get(0);
                 //SecretKey key = (SecretKey)objectToken.getValue();
-                java.security.Key key = (java.security.Key)objectToken.getValue();
+                java.security.Key key =
+                    (java.security.Key)objectToken.getValue();
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,
