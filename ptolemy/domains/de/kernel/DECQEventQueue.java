@@ -53,7 +53,7 @@ import ptolemy.kernel.util.InvalidStateException;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class DECQEventQueue implements DEEventQueue {
 

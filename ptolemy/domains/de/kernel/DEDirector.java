@@ -563,13 +563,6 @@ public class DEDirector extends Director implements TimedDirector {
                         // Continue the current iteration.
                     }
                 }
-//                else {
-//                    // The event queue is empty, proceed to postfire().
-//                    // Jump out of the BIG while loop.
-//                    // FIXME: It is too early to give up. Let
-//                    // _getNextActorToFire handle this.
-//                    break;
-//                }
             }
         } // Close the BIG while loop.
 
