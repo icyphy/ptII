@@ -151,6 +151,27 @@ public class TotallyOrderedSet {
         return _set.isEmpty();
     }
 
+    /** Remove all the elements that are (strictly) less than the argument.
+     *  If the set is empty or all the elements are greater than
+     *  the argument, then do nothing.
+     *  
+     *  @param obj The argument.
+     */
+    public void removeAllLessThan(Object obj) {
+        if (_set == null || isEmpty()) {
+            return;
+        }
+        while (true) {
+            Object first = first();
+            int com = _comparator.compare(obj, first);
+            if(com <= 0) {
+                return;
+            } else {
+                take();
+            }
+        }
+    }
+
     /** Remove the index-th element.
      *  @param index The index of the element.
      *  @exception NoSuchElementException If the specified index is
