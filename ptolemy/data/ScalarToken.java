@@ -343,7 +343,7 @@ public abstract class ScalarToken extends Token {
 
     /** The unit category exponents.
      *  The unit system contains a set of base unit categories and derived
-     *  catetories. The base categories are customizable by the user.
+     *  categories. The base categories are customizable by the user.
      *  For example, the user may choose to use the SI unit system which
      *  has 7 base categories: length, mass, time, electric current,
      *  thermodynamic temperature, amount of substance, and luminous
