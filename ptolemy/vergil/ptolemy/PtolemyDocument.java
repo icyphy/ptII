@@ -314,8 +314,7 @@ public class PtolemyDocument extends AbstractDocument
 			clone.setName(name);
 			clone.setContainer(_model);
 			Icon icon = (Icon)clone.getAttribute("_icon");
-			model.addNode(icon, model.getRoot());
-			controller.drawNode(icon);
+			model.addNode(this, icon, model.getRoot());
 		    } catch (CloneNotSupportedException ex) {
 			throw new RuntimeException(ex.getMessage());
 		    } catch (IllegalActionException ex) {

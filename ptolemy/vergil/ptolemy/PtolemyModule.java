@@ -609,7 +609,7 @@ public class PtolemyModule implements Module {
 		    inf.width = r.getWidth();
 		    inf.height = r.getHeight();
 		    Object copyNode = local.createNode(inf);
-		    local.addNode(copyNode, copyComposite);
+		    local.addNode(this, copyNode, copyComposite);
 		    map.put(origNode, copyNode);
 		}
 	    }
@@ -664,8 +664,8 @@ public class PtolemyModule implements Module {
 
 		    if(copyHead != null && copyTail != null) {
                         Object copyEdge = local.createEdge(origEdge);
-                        local.setEdgeTail(copyEdge, copyTail);
-                        local.setEdgeHead(copyEdge, copyHead);
+                        local.setEdgeTail(this, copyEdge, copyTail);
+                        local.setEdgeHead(this, copyEdge, copyHead);
  		    }
 		}
 	    }
