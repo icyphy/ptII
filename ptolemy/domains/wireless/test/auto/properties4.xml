@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="properties2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="properties4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, -2, 815, 466}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, -2, 815, 524}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -32,8 +32,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Note that the defaultProperties
+parameter of the channel determines
+what fields get through to the receiver.
+In particular, the string field at the
+transmitter is not seen by the receiver.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 285.0">
+        </property>
+    </property>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity}">
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -43,41 +67,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
         </property>
-    </entity>
-    <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
-        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 210.0">
-        </property>
-        <port name="properties" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{range=double}">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
-            <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$inputChannelName">
-            </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -144,7 +133,7 @@
         </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 260.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -152,6 +141,13 @@
             </property>
         </port>
         <port name="range" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="dummy" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
@@ -178,7 +174,7 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$outputChannelName">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=600}">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{dummy=&quot;string&quot;, range=600}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -193,7 +189,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -206,10 +202,57 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;string&quot;">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 315.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
+        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 215.0">
+        </property>
+        <port name="properties" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$inputChannelName">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.Attribute">
+            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -222,12 +265,12 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="WirelessToWired.properties" relation="relation2"/>
-    <link port="WirelessToWired.data" relation="relation"/>
     <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation3"/>
@@ -235,8 +278,13 @@
     <link port="Ramp2.trigger" relation="relation3"/>
     <link port="RecordAssembler.output" relation="relation6"/>
     <link port="RecordAssembler.range" relation="relation4"/>
+    <link port="RecordAssembler.dummy" relation="relation7"/>
     <link port="WiredToWireless.data" relation="relation5"/>
     <link port="WiredToWireless.properties" relation="relation6"/>
-    <link port="NonStrictTest.input" relation="relation"/>
-    <link port="NonStrictTest2.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation"/>
+    <link port="Const.output" relation="relation7"/>
+    <link port="Const.trigger" relation="relation3"/>
+    <link port="WirelessToWired.properties" relation="relation"/>
+    <link port="WirelessToWired.data" relation="relation2"/>
 </entity>

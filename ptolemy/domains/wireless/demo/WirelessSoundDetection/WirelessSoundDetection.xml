@@ -595,8 +595,6 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
-        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
         </property>
     </entity>
@@ -606,8 +604,6 @@ GraphicalLocator)</text></svg></configure>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
-        </property>
-        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 45.0">
         </property>

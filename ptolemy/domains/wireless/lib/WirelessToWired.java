@@ -33,9 +33,13 @@ package ptolemy.domains.wireless.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,6 +52,18 @@ On each firing, this actor reads at most one token from the input
 port and output the data on the <i>data</i> port and the properties
 on the <i>properties</i> port.  If there are no properties, then
 output a token only on the <i>data</i> port.
+<p>
+NOTE: The type of the properties port is inferred from the
+<i>defaultProperties</i> field of the channel at preinitialize()
+time. If the channel is changed during execution, or this
+field is changed, then the type of the port will not be updated,
+and a run-time type error could occur.
+Thus, this actor assumes that these types do not change.
+If the channel has no default properties (as in the base class
+WirelessChannel), then the type of the properties port will
+be undefined. If it is left disconnected, then this is fine,
+but if it is connected, then its type will need to be declared
+explicitly.
 
 @author Edward A. Lee
 @version $Id$
@@ -66,6 +82,9 @@ public class WirelessToWired extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
+        properties = new TypedIOPort(this, "properties", false, true);
+        new Attribute(properties, "_showName");
+
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
         inputChannelName.setExpression("WirelessChannel");
@@ -77,11 +96,6 @@ public class WirelessToWired extends TypedAtomicActor {
         data = new TypedIOPort(this, "data", false, true);
         data.setTypeSameAs(input);
         new Attribute(data, "_showName");
-
-        properties = new TypedIOPort(this, "properties", false, true);
-        new Attribute(properties, "_showName");
-        // FIXME: How to set the type of the properties?
-        // Fix it in the director?
         
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -129,10 +143,39 @@ public class WirelessToWired extends TypedAtomicActor {
                 _debug("Input signal received: " + inputValue.toString());
             }
             data.send(0, inputValue);
-                     
+            
+            // Do not send properties if the port has no destinations.
+            // This prevents run-time type errors from occurring.
+            if (properties.numberOfSinks() == 0) {
+                return;
+            }
             Token propertiesValue = input.getProperties(0);
             if (propertiesValue != null) {
                 properties.send(0, propertiesValue);
+            }
+        }
+    }
+
+    /** Create receivers and set up the type constraints on the
+     *  <i>properties</i> port.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+
+        // Find the channel.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            Entity channel = container.getEntity(
+                    inputChannelName.stringValue());
+            if (channel instanceof WirelessChannel) {
+                Parameter channelProperties = ((WirelessChannel)channel)
+                        .defaultProperties;
+                // Only set up the type constraint if the type of the
+                // of the properties field is known.
+                if (channelProperties.getType() != BaseType.UNKNOWN) {
+                    properties.setTypeSameAs(channelProperties);
+                }
             }
         }
     }

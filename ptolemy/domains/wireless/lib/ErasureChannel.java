@@ -34,6 +34,7 @@ import java.util.Random;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -152,7 +153,7 @@ public class ErasureChannel extends WirelessChannel {
             Token token,
             WirelessIOPort sender,
             WirelessReceiver receiver, 
-            Token properties)
+            RecordToken properties)
             throws IllegalActionException {
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken)lossProbability.getToken())

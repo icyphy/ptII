@@ -182,7 +182,7 @@ are merely used for routing the ralated statistics for analysis.</text></svg></c
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
-        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="Range">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Range}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 40.0">
         </property>

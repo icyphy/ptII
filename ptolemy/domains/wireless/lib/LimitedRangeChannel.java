@@ -36,6 +36,8 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -84,20 +86,16 @@ public class LimitedRangeChannel extends DelayChannel {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        defaultRange = new Parameter(this, "defaultRange");
-        defaultRange.setTypeEquals(BaseType.DOUBLE);
-        defaultRange.setExpression("Infinity");
+        // Force the type of the defaultProperties to at least include
+        // the range field.
+        String[] labels = {"range"};
+        Type[] types = {BaseType.DOUBLE};
+        RecordType type = new RecordType(labels, types);
+        // Setting an upper bound allows the addition of fields.
+        defaultProperties.setTypeAtMost(type);
+        defaultProperties.setExpression("{range=Infinity}");
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The default transmission range of this channel, for use when
-     *  the transmitter gives no properties argument to transmit().
-     *  This is a double that defaults to 100.0. 
-     */
-    public Parameter defaultRange;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,22 +116,29 @@ public class LimitedRangeChannel extends DelayChannel {
      *   class).
      */
     protected boolean _isInRange(
-            WirelessIOPort source, WirelessIOPort destination, Token properties)
+            WirelessIOPort source,
+            WirelessIOPort destination,
+            RecordToken properties)
             throws IllegalActionException {
-        double range;
-        if (properties instanceof RecordToken) {
-            // NOTE: This may throw a NotConvertibleException, if,
-            // example, a Complex or a Long is given.
-            Token field = ((RecordToken)properties).get("range");
+        double range = Double.POSITIVE_INFINITY;
+        boolean rangeIsSet = false;
+        if (properties != null) {
+            Token field = properties.get("range");
             if (field instanceof ScalarToken) {
+                // NOTE: This may throw a NotConvertibleException, if,
+                // example, a Complex or a Long is given.
                 range = ((ScalarToken)field).doubleValue();
-            } else {
-                throw new IllegalActionException(this,
-                "Properties token has a field called \"range\""
-                + " but that field does not have a double value.");
+                rangeIsSet = true;
             }
-        } else {
-            range = ((DoubleToken)defaultRange.getToken()).doubleValue();
+        }
+        if (!rangeIsSet) {
+            // Type constraints in the constructor make the casts safe.
+            RecordToken defaultPropertiesValue
+                    = (RecordToken)defaultProperties.getToken();
+            // Type of the field must be convertible to double, but
+            // need not actually be a double.
+            ScalarToken field = (ScalarToken)defaultPropertiesValue.get("range");
+            range = field.doubleValue();
         }
         boolean result = (_distanceBetween(source, destination) <= range);
         return result;

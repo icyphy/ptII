@@ -36,10 +36,13 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,6 +96,11 @@ public class WirelessChannel extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        defaultProperties = new Parameter(this, "defaultProperties");
+        // NOTE: It would be nice to force this to be a RecordToken type,
+        // but I'm not sure that's possible.
+        // It's checked in attributeChanged().
+        
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
                 "style=\"fill:red\"/>\n" +
@@ -100,8 +108,40 @@ public class WirelessChannel extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** The default properties for transmission. In this base class,
+     *  the type and contents are left undefined.  Derived classes
+     *  will define this to be a record.  The fields of the record
+     *  determine what properties are seen by the receiver.  Any
+     *  fields that are not in this parameter value will be discarded
+     *  before properties are delivered to the receiver.
+     */
+    public Parameter defaultProperties;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** If the attribute is defaultProperties, make sure
+     *  its value is a record token.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == defaultProperties) {
+            Token value = defaultProperties.getToken();
+            if (value != null && !(value instanceof RecordToken)) {
+                throw new IllegalActionException(this,
+                "Expected a record for defaultProperties but got: "
+                + value);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -296,7 +336,7 @@ public class WirelessChannel extends TypedAtomicActor {
      *   for a port, or if a type conflict occurs, or the director is not
      *   a WirelessDirector.
      */
-    public void transmit(Token token, WirelessIOPort port, Token properties)
+    public void transmit(Token token, WirelessIOPort port, RecordToken properties)
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -365,7 +405,9 @@ public class WirelessChannel extends TypedAtomicActor {
      *   class).
      */
     protected boolean _isInRange(
-            WirelessIOPort source, WirelessIOPort destination, Token properties)
+            WirelessIOPort source,
+            WirelessIOPort destination,
+            RecordToken properties)
             throws IllegalActionException {
         return true;
     }
@@ -415,12 +457,23 @@ public class WirelessChannel extends TypedAtomicActor {
      *   evaluated.
      */
     protected List _receiversInRange(
-            WirelessIOPort sourcePort, Token properties)
+            WirelessIOPort sourcePort,
+            RecordToken properties)
             throws IllegalActionException {
-        // NOTE: Cannot cache this. Properties parameter of the transmitting
-        // port may have changed, and the workspace version would not be
-        // incremented.  But anyway, how could this be independent of
-        // the sourcePort?
+        // FIXME: This information should be carefully cached in
+        // a hashtable indexed by the source port.  The cache should
+        // be invalidated if:
+        //  1) The workspace version changes (which will happen if
+        //     any node changes the channel it uses, or if nodes
+        //     appear or disappear).
+        //  2) The sourcePort has changed its properties parameters
+        //     (because this could affect whether other ports are in range).
+        //  3) Any listening port has changed its location.  Any
+        //     subclass that is using location information needs to
+        //     listen for changes in that location information and
+        //     invalidate the cache if it changes.
+        //  Use the performance.xml test to determine whether/how much
+        //  this helps. 
         List receiversInRangeList = new LinkedList();
         Iterator ports = listeningInputPorts().iterator();
         while (ports.hasNext()) {
@@ -457,19 +510,28 @@ public class WirelessChannel extends TypedAtomicActor {
     /** Transform the properties to take into account channel losses,
      *  noise, etc., for transmission between the specified sender
      *  and the specified receiver.  In this base class, the
-     *  specified properties are returned unchanged.
+     *  specified properties are merged with the defaultProperties
+     *  so that the resulting properties contain at least all the
+     *  fields of the defaultProperties.
      *  @param properties The transmit properties.
      *  @param sender The sending port.
      *  @param receiver The receiving port.
      *  @return The transformed properties.
-     *  @throws IllegalActionException FIXME
+     *  @exception IllegalActionException If the properties cannot
+     *   be transformed. Not thrown in this base class.
      */
-    protected Token _transformProperties(
-            Token properties,
+    protected RecordToken _transformProperties(
+            RecordToken properties,
             WirelessIOPort sender, 
             WirelessReceiver receiver)
             throws IllegalActionException {
-        Token result = properties;
+        RecordToken result = properties;
+        Token defaultPropertiesValue = defaultProperties.getToken();
+        if (properties != null &&
+                defaultPropertiesValue instanceof RecordToken) {
+            result = RecordToken.merge(
+                    properties, (RecordToken)defaultPropertiesValue);
+        }
         if (_debugging) {
             _debug(" * transforming properties: \""
                     + properties.toString()
@@ -496,7 +558,7 @@ public class WirelessChannel extends TypedAtomicActor {
             Token token,
             WirelessIOPort sender, 
             WirelessReceiver receiver, 
-            Token properties)
+            RecordToken properties)
             throws IllegalActionException {
         if (_debugging) {
             _debug(" * transmitting to: "

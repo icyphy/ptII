@@ -34,6 +34,7 @@ import java.util.HashMap;
 
 import ptolemy.actor.Director;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -184,7 +185,7 @@ public class DelayChannel extends ErasureChannel {
             Token token, 
             WirelessIOPort sender,
             WirelessReceiver receiver,
-            Token properties)
+            RecordToken properties)
             throws IllegalActionException {
         double speed = ((DoubleToken)propagationSpeed.getToken())
                 .doubleValue();
@@ -236,6 +237,6 @@ public class DelayChannel extends ErasureChannel {
         public Token token;
         public WirelessIOPort sender;
         public WirelessReceiver receiver;
-        public Token properties;
+        public RecordToken properties;
     }
 }

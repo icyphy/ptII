@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="properties" class="ptolemy.actor.TypedCompositeActor">
+<entity name="properties3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, -15, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 115, 815, 516}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -51,11 +51,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 160.0">
         </property>
         <port name="port" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="WirelessChannel">
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=250.0}">
             </property>
@@ -118,18 +118,6 @@
         <link port="Ramp.trigger" relation="relation2"/>
         <link port="Clock.output" relation="relation2"/>
     </entity>
-    <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity}">
-        </property>
-        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
-        </property>
-        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}">
         </property>
@@ -137,29 +125,22 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
-    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}, {range=250.0}}">
+    <entity name="WirelessChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 45.0">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 135.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="WirelessToWired2" class="ptolemy.domains.wireless.lib.WirelessToWired">
-        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
+        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="WirelessChannel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 155.0">
         </property>
         <port name="properties" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -183,12 +164,8 @@
             </property>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="NonStrictTest.input" relation="relation2"/>
-    <link port="NonStrictTest2.input" relation="relation3"/>
-    <link port="WirelessToWired2.properties" relation="relation3"/>
     <link port="WirelessToWired2.data" relation="relation2"/>
 </entity>

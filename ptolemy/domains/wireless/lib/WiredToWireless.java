@@ -32,6 +32,7 @@ package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
@@ -71,7 +72,8 @@ public class WiredToWireless extends TypedAtomicActor {
 
         properties = new TypedIOPort(this, "properties", true, false);
         new Attribute(properties, "_showName");
-        // FIXME: Constrain the type of this with the director?
+        // FIXME: This should be constrained to be a record token.
+        // How to do that?
         
         // Create and configure the parameters.
         outputChannelName = new StringParameter(this, "outputChannelName");
@@ -129,9 +131,11 @@ public class WiredToWireless extends TypedAtomicActor {
             }
             if (properties.hasToken(0)) {
                 Token propertiesValue = properties.get(0);
+                // The following will throw an exception if the value is
+                // not a RecordToken.
                 output.outsideTransmitProperties.setToken(propertiesValue);
             } else {
-                output.outsideTransmitProperties.setToken((Token)null);
+                output.outsideTransmitProperties.setToken((RecordToken)null);
             }
             output.send(0, inputValue);
         }

@@ -35,11 +35,13 @@ import java.util.List;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -150,7 +152,8 @@ public class WirelessIOPort
      *  This field may be used by the channel to determine transmission
      *  range or other properties of the transmission. By default, this
      *  has no value, which indicates to channels to use their default
-     *  properties, whatever those might be. Its type is undeclared.
+     *  properties, whatever those might be. When its value is set,
+     *  it is required to be a record type.
      */
     public Parameter insideTransmitProperties;
     
@@ -163,12 +166,40 @@ public class WirelessIOPort
      *  This field may be used by the channel to determine transmission
      *  range or other properties of the transmission. By default, this
      *  has no value, which indicates to channels to use their default
-     *  properties, whatever those might be. Its type is undeclared.
+     *  properties, whatever those might be. When its value is set,
+     *  it is required to be a record type.
      */
     public Parameter outsideTransmitProperties;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the attribute is one of the properties attributes, make sure
+     *  its value is a record token.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == insideTransmitProperties) {
+            Token value = insideTransmitProperties.getToken();
+            if (value != null && !(value instanceof RecordToken)) {
+                throw new IllegalActionException(this,
+                "Expected a record for insideTransmitProperties but got: "
+                + value);
+            }
+        } else if (attribute == outsideTransmitProperties) {
+            Token value = outsideTransmitProperties.getToken();
+            if (value != null && !(value instanceof RecordToken)) {
+                throw new IllegalActionException(this,
+                "Expected a record for outsideTransmitProperties but got: "
+                + value);
+            }            
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then send as in the base
@@ -183,7 +214,8 @@ public class WirelessIOPort
             if (_debugging) {
                 _debug("broadcast to wireless channel " + channel.getName() + ": " + token);
             }
-            channel.transmit(token, this, outsideTransmitProperties.getToken());
+            channel.transmit(token, this,
+                    (RecordToken)outsideTransmitProperties.getToken());
         } else {
             super.broadcast(token);
         }
@@ -211,7 +243,8 @@ public class WirelessIOPort
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
                 _checkType(token);
-                channel.transmit(token, this, outsideTransmitProperties.getToken());
+                channel.transmit(token, this,
+                        (RecordToken)outsideTransmitProperties.getToken());
             }
         } else {
             super.broadcast(tokenArray, vectorLength);
@@ -230,7 +263,8 @@ public class WirelessIOPort
             if (_debugging) {
                 _debug("broadcast clear.");
             }
-            channel.transmit(null, this, outsideTransmitProperties.getToken());
+            channel.transmit(null, this,
+                    (RecordToken)outsideTransmitProperties.getToken());
         } else {
             super.broadcastClear();
         }
@@ -610,7 +644,8 @@ public class WirelessIOPort
                 _debug("send to wireless channel " + channel.getName() + ": " + token);
             }
             _checkType(token);
-            channel.transmit(token, this, outsideTransmitProperties.getToken());
+            channel.transmit(token, this,
+                    (RecordToken)outsideTransmitProperties.getToken());
         } else {
             super.send(channelIndex, token);
         }
@@ -640,7 +675,8 @@ public class WirelessIOPort
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
                 _checkType(token);
-                channel.transmit(token, this, outsideTransmitProperties.getToken());
+                channel.transmit(token, this,
+                        (RecordToken)outsideTransmitProperties.getToken());
             }
         } else {
             super.send(channelIndex, tokenArray, vectorLength);
@@ -660,7 +696,8 @@ public class WirelessIOPort
             if (_debugging) {
                 _debug("send clear.");
             }
-            channel.transmit(null, this, outsideTransmitProperties.getToken());
+            channel.transmit(null, this,
+                    (RecordToken)outsideTransmitProperties.getToken());
         } else {
             super.sendClear(channelIndex);
         }
@@ -680,7 +717,8 @@ public class WirelessIOPort
             if (_debugging) {
                 _debug("send clear inside.");
             }
-            channel.transmit(null, this, outsideTransmitProperties.getToken());
+            channel.transmit(null, this,
+                    (RecordToken)outsideTransmitProperties.getToken());
         } else {
             super.sendClearInside(channelIndex);
         }
@@ -704,7 +742,8 @@ public class WirelessIOPort
                 _debug("send inside to wireless channel " + channel.getName() + ": " + token);
             }
             _checkType(token);
-            channel.transmit(token, this, insideTransmitProperties.getToken());
+            channel.transmit(token, this,
+                    (RecordToken)insideTransmitProperties.getToken());
         } else {
             super.sendInside(channelIndex, token);
         }
