@@ -56,6 +56,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
     /** Return an array type with given element type and dimensions.
      *  If dims is 0, return the element type.
+     *  FIXME: This should be called makeMatrixType???
      */
     public static TypeNode makeArrayType(TypeNode elementType, int dims) {
         for(int i = 0; i < dims; i++) {
