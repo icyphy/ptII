@@ -247,46 +247,22 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="163.0, 69.0"/>
-        </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="320.0, 70.0"/>
-        </vertex>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="317.0, 132.0"/>
-        </vertex>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="322.0, 198.0"/>
-        </vertex>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="327.0, 262.0"/>
-        </vertex>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="360.0, 323.0"/>
-        </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="324.0, 441.0"/>
-        </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="108.0, 270.0"/>
-        </vertex>
     </relation>
     <link port="MathFunction1.firstOperand" relation="relation5"/>
     <link port="MathFunction1.output" relation="relation26"/>
