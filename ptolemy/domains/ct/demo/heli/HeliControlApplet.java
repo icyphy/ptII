@@ -586,7 +586,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             //System.out.println(sys.description());
             //System.out.println(_dir.getScheduler().description());
             //System.out.println(subdir.getScheduler().description());
-            System.out.println(_dir.getScheduler().description());
+            //System.out.println(_dir.getScheduler().description());
             //System.out.println(((CTDirector)sub.getDirector()).getScheduler().description());
 
         } catch (Exception ex) {
