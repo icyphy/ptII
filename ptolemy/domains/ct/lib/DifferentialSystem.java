@@ -194,6 +194,16 @@ public class DifferentialSystem extends TypedCompositeActor {
         }
     }
 
+    /** Return the executive director, regardless what isOpaque returns.
+     */
+    public Director getDirector() {
+        if (_opaque) {
+            return null;
+        } else {
+            return getExecutiveDirector();
+        }
+    }
+
     /** Return the opaqueness of this composite actor. This actor is
      *  opaque if it has not been preinitialized after creation or
      *  changes of parameters. Otherwise, it is not opaque.
@@ -336,16 +346,6 @@ public class DifferentialSystem extends TypedCompositeActor {
         for (Iterator i = deepEntityList().iterator(); i.hasNext();) {
             Actor actor = (Actor)i.next();
             actor.preinitialize();
-        }
-    }
-
-    /** Return the executive director, regardless what isOpaque returns.
-     */
-    public Director getDirector() {
-        if (_opaque) {
-            return null;
-        } else {
-            return getExecutiveDirector();
         }
     }
 
