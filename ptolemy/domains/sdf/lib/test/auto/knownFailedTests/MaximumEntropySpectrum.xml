@@ -24,6 +24,12 @@
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.moml.Location" value="128.0, 142.0">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -33,6 +39,8 @@
         </port>
     </entity>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
@@ -91,16 +99,18 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
            </svg>
            </configure>
             </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
+            </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="307.0, 141.0">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-6.0205999, -5.250846, -2.7254912, 2.7998707, 23.806634, 2.7998707, -2.7254912, -5.250846}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-15.1939041743452, -14.4241502988337, -11.8987954354131, -6.3734335195114, 14.6333297023403, -6.3734335195114, -11.8987954354131, -14.4241502988337}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 161.0">
+        <property name="_location" class="ptolemy.moml.Location" value="445.0, 160.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
