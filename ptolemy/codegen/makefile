@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		saveasjava test
+DIRS =		data saveasjava test
 
 # Root of the Java directory
 ROOT =		../..
