@@ -40,7 +40,7 @@ import java.awt.event.*;
    <p>
    This class is meant be used with
 @author wbwu@eecs.berkeley.edu
-@version $Id$
+@version $Id$
 @see InteractPlot
 */
 public class DragObjectListener implements MouseMotionListener {
