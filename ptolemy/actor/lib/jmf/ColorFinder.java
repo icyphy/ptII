@@ -148,7 +148,7 @@ public class ColorFinder extends TypedAtomicActor {
 
                         int compInClass =
                             yClass[yComp] & uClass[uComp] & vClass[vComp];
-                        if (compInClass==1) {
+                        if (compInClass == 1) {
                             sumX += x;
                             sumY += y;
                             inCount += 1;
