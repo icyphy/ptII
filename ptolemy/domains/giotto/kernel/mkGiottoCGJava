@@ -20,6 +20,65 @@ if [ ! -d $basename ]; then
     mkdir $basename
 fi
 
+# Create the Token_port.java
+token_portFileName=$basename/Token_port.java
+echo $token_portFileName
+  cat > $token_portFileName <<EOF
+/* Token_port
+*/
+
+package $basename;
+
+import giotto.functionality.code.int_port;
+import giotto.functionality.interfaces.PortVariable;
+
+import java.io.Serializable;
+
+/**
+Token_port.
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class Token_port extends int_port implements PortVariable, Serializable {
+}
+EOF
+
+# Create copy_Token_port.java
+copy_Token_portFileName=$basename/copy_Token_port.java
+echo $copy_Token_portFileName
+  cat > $copy_Token_portFileName <<EOF
+/* copy_Token_port
+*/
+
+package $basename;
+
+import giotto.functionality.code.copy_int_port;
+import giotto.functionality.interfaces.DriverInterface;
+import giotto.functionality.table.Parameter;
+
+import java.io.Serializable;
+
+/**
+copy_Token_port
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class copy_Token_port extends copy_int_port implements DriverInterface, Serializable {
+
+    /**
+     * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
+     */
+    public void run(Parameter parameter) {
+        System.out.println("copy_Token_port " + parameter);  
+        super.run(parameter);
+    }
+}
+EOF
+
 # Create the task files
 tasks=`grep schedule $giottoFile | awk '{split($2,f,"("); print f[1]}'`
 for task in $tasks
@@ -27,8 +86,8 @@ do
   taskFileName=$basename/$task.java
 
   echo "$taskFileName"
-  cat > $taskFileName <<EOF
-/** Task for $task in $basename giotto model.
+  cat > $taskFileName <<EOF1
+/* Task for $task in $basename giotto model.
 */
 
 package $basename;
@@ -51,13 +110,13 @@ public class $task implements TaskInterface, Serializable {
      * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
      */
     public void run(Parameter parameter) {
-        System.out.println("$task");
+        System.out.println("$task " + parameter);
         //((PortMove)p.getPortVariable(1)).setIntValue(idle);
         //((PortDoor)p.getPortVariable(2)).setIntValue(idle);
         //                JElevator.elIdle((Buttons)p.getPortVariable(0), (Move)p.getPortVariable(1), (Door)p.getPortVariable(2));
     }
 }
-EOF
+EOF1
 done
 
 # Create the driver
@@ -70,7 +129,7 @@ do
 
   echo "$driverFileName"
   cat > $driverFileName <<EOF2
-/** Driver for $driver in $basename giotto model.
+/* Driver for $driver in $basename giotto model.
 */
 
 package $basename;
@@ -93,7 +152,7 @@ public class $driver implements DriverInterface, Serializable {
      * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
      */
     public void run(Parameter parameter) {
-        System.out.println("$driver");  
+        System.out.println("$driver " + parameter);  
         //giotto.functionality.code.elevator.PortMove m0 = (giotto.functionality.code.elevator.PortMove)parameter.getPortVariable(0);
         //giotto.functionality.code.elevator.PortMove m1 = (giotto.functionality.code.elevator.PortMove)parameter.getPortVariable(1);
         //m1.copyValueFrom(m0);
