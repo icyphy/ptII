@@ -963,6 +963,8 @@ test CompositeEntity-18.0 {test exportMoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <property name="a1" class="ptolemy.kernel.util.Attribute">
     </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
@@ -998,6 +1000,8 @@ test CompositeEntity-20.0 {test exportMoML with link indexing, inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="e2" class="ptolemy.kernel.ComponentEntity">
@@ -1029,6 +1033,8 @@ test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="e2" class="ptolemy.kernel.ComponentEntity">
@@ -1059,6 +1065,8 @@ test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
@@ -1081,6 +1089,8 @@ test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
@@ -1102,6 +1112,8 @@ test CompositeEntity-20.4 {test unlinkInside by relation, inside links} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="3.0-devel">
+    </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
