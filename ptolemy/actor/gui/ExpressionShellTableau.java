@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.*;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.*;
@@ -68,10 +69,7 @@ public class ExpressionShellTableau extends Tableau
         super(container, name);
         ExpressionShellFrame frame = new ExpressionShellFrame(this);
         setFrame(frame);
-
-        // Ensure that there is a context in which to evaluate expressions.
-        NamedObj model = ((ExpressionShellEffigy)getContainer()).getModel();
-        _evaluator = new Parameter(model, "evaluator");
+        _evaluator = new ParseTreeEvaluator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,8 +81,54 @@ public class ExpressionShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
-        _evaluator.setExpression(command);
-        Token result = _evaluator.getToken();
+        PtParser parser = new PtParser();
+        ASTPtRootNode node = parser.generateSimpleAssignmentParseTree(command);
+        String targetName = null;
+        
+        // Figure out if we got an assignment... if so, then get the
+        // identifier name and only evaluated the expression part.
+        if(node instanceof ASTPtAssignmentNode) {
+            ASTPtAssignmentNode assignmentNode = (ASTPtAssignmentNode) node;
+            targetName = assignmentNode.getIdentifier();
+            node = assignmentNode.getExpressionTree();
+        }
+
+        final NamedObj model = 
+                ((ExpressionShellEffigy)getContainer()).getModel();
+        ParserScope scope = new ModelScope() {
+                public ptolemy.data.Token get(String name)
+                        throws IllegalActionException {
+                    Variable result = getScopedVariable(
+                            null, model, name);
+                    if (result != null) {
+                        return result.getToken();
+                    } else {
+                        return null;
+                    }
+                }
+                public ptolemy.data.type.Type getType(String name)
+                        throws IllegalActionException {
+                    Variable result = getScopedVariable(
+                            null, model, name);
+                    if (result != null) {
+                        return result.getType();
+                    } else {
+                        return null;
+                    }
+                }
+                public NamedList variableList() {
+                    return null;
+                }
+            };
+ 
+        Token result = _evaluator.evaluateParseTree(node, scope);
+        
+        // If a target was specified, instantiate a new token.
+        if(targetName != null) {
+            Parameter parameter = new Parameter(model, targetName);
+            parameter.setToken(result);
+        }
+
         if (result == null) {
             return "";
         } else {
@@ -105,7 +149,7 @@ public class ExpressionShellTableau extends Tableau
     ////                         private variables                 ////
 
     // The parameter used for evaluation.
-    private Parameter _evaluator;
+    private ParseTreeEvaluator _evaluator;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
