@@ -293,25 +293,6 @@ public class Configuration extends CompositeEntity {
                 throw new InternalErrorException(
                         "No effigy factories in the configuration!");
             }
-            // NOTE: Regrettably, Java's URL class is too dumb
-            // to handle a fragment part of a URL.  Thus, if
-            // there is one, we have to remove it.  Note that
-            // Java calls this a "fragment", a "ref", and
-            // and "reference", all in different parts of the
-            // docs.
-            // FIXME: Unfinished handling of the fragment.
-            /* NOTE: Apparently, Java now handles fragments.
-            String fragment = in.getRef();
-            if (fragment != null && !fragment.trim().equals("")) {
-                // Construct a new URL.  It is really silly
-                // that we have to do this...
-                String spec = in.toExternalForm();
-                int sharp = spec.indexOf("#");
-                if (sharp > 0) {
-                    in = new URL(spec.substring(0, sharp));
-                }
-            }
-            */
 
             effigy = factory.createEffigy(directory, base, in);
 
