@@ -318,16 +318,13 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** If the actor currently firing is an opaque composite actor
-     *  that is not directed by DT, return that director's current time.
-     *  Otherwise, return the DT global time. Actors who wish to take
+    /** Return the DT global time. Actors who wish to take
      *  advantage of DT's multi-rate time-keeping capabilities should
      *  call getCurrentTime(channel_number) on a specific IOPort instead.
      *
      *  @return the current time
      */
     public double getCurrentTime() {
-
         return _currentTime;
     }
 
