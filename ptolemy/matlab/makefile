@@ -101,8 +101,11 @@ ptmatlab.h:	Engine.class
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
 # $(PTDLLTOOL) is set to dlltool by configure in $PTII/mk/ptII.mk
 $(PTLIB): ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
-	$(PTCC) -I$(MATLAB_DIR)/extern/include -I$(PTJAVA_DIR)/include \
-		-I$(PTJAVA_DIR)/include/win32 -c -o ptmatlab.obj ptmatlab.cc
+	$(PTCC) \
+		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(PTJAVA_DIR)/include" \
+		"-I$(PTJAVA_DIR)/include/win32" \
+		 -c -o ptmatlab.obj ptmatlab.cc
 	$(PTDLLTOOL) --add-stdcall-alias --dllname ptmatlab.dll \
 		--output-exp ptmatlab_exp.obj ptmatlab.obj
 	$(PTCC) -shared -o $@ ptmatlab.obj ptmatlab_exp.obj -L. -leng -lmx
