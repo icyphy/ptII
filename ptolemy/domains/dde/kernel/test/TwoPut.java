@@ -60,6 +60,7 @@ public class TwoPut extends TypedAtomicActor {
     public TwoPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
+        _name = name;
 
         output1 = new TypedIOPort(this, "output1", false, true);
         output1.setMultiport(true);
@@ -94,6 +95,12 @@ public class TwoPut extends TypedAtomicActor {
 		*/
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
+                    Thread thread = Thread.currentThread();
+                    if( thread instanceof DDEThread ) {
+                        TimeKeeper tKeeper = ((DDEThread)thread).getTimeKeeper();
+                        double time = tKeeper.getCurrentTime();
+                        System.out.println(_name+": calling broadcast at time = "+time);
+                    }
 		    output1.broadcast(token);
 		}
 	    }
@@ -120,5 +127,7 @@ public class TwoPut extends TypedAtomicActor {
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
+    
+    private String _name;
 
 }
