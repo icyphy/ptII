@@ -31,7 +31,7 @@
 # $Id$ %S%
 # Root of the Java directory
 
-ROOT =          /users/ptdesign/tycho
+ROOT =          ../../..
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
