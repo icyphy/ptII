@@ -45,9 +45,9 @@ import ptolemy.kernel.util.StringAttribute;
 /**
    This actor models a server with a fixed or variable service time.
    A server is either busy (serving a customer) or not busy at any given time.
-   If an input arrives when it is not busy, then the input token is produced
-   on the output with a delay given by the <i>newServiceTime</i> parameter.
-   If the delay is 0.0, the current input is sent out immediately.
+   If an input arrives when the server is not busy, then the input token is 
+   produced on the output with a delay given by the <i>newServiceTime</i> 
+   parameter. If the delay is 0.0, the current input is sent out immediately.
    If an input arrives while the server is busy, then that input is
    queued until the server becomes free, at which point it is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.

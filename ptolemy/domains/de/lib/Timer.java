@@ -45,8 +45,8 @@ import ptolemy.kernel.util.Workspace;
 //// Timer
 /**
    A timer actor delays an event with a time delay specified by its input.
-
-   <p> When a timer actor receives an input, if the input value is
+   <p> 
+   When a timer actor receives an input, if the input value is
    bigger than 0.0, the timer schedules itself to fire again some time
    later to generate an output. The amount of delay is specified by the 
    input value. The value of output is specified by the <i>value</i>
@@ -57,8 +57,8 @@ import ptolemy.kernel.util.Workspace;
    <p> This actor is different from the {@link
    ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the
    NonInterruptibleTimer actor delays the processing of a new input if
-   it has not finished processing the previous input. While the
-   Timer actor begins processing inputs immediately after their arrival.
+   it has not finished processing a previous input, while the
+   Timer actor begins processing inputs immediately upon their arrival.
 
    @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -195,7 +195,7 @@ public class Timer extends DETransformer {
                 getDirector().fireAt(this, currentTime);
             }
         }
-        // If the current input is processed, schedule a future firing
+        // If the current input is not processed, schedule a future firing
         // to process it.
         if (_currentInput != null) {
             _delayedOutputTokens.put(

@@ -48,15 +48,13 @@ import ptolemy.kernel.util.NameDuplicationException;
    the previous input, a new input has to be delayed for processing.
    In other words, it can not be interrupted to respond new inputs. Instead,
    the new inputs will be queued and processed in a first come first serve
-   (FCFS) fashion.
-   <p>
-   This actor extends the {@link Timer} actor.
+   (FCFS) fashion. This actor extends the Timer actor.
 
    @see Timer
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class NonInterruptibleTimer extends Timer {
@@ -87,8 +85,9 @@ public class NonInterruptibleTimer extends Timer {
      *  current input to null, indicating no further processing of the current
      *  input is necessary.
      *
-     *  @exception IllegalActionException If there is no director, or can not
-     *  send or get tokens from ports.
+     *  @exception IllegalActionException If the delay value is negative, or 
+     *  this actor can not send tokens to ports, or this actor can not get 
+     *  tokens from ports.
      */
     public void fire() throws IllegalActionException {
         _delay = -1.0;
@@ -97,8 +96,7 @@ public class NonInterruptibleTimer extends Timer {
             _delayedInputTokensList.addLast(_currentInput);
             double delayValue = ((DoubleToken)_currentInput).doubleValue();
             if (delayValue < 0) {
-                throw new IllegalActionException(
-                        "Delay can not be negative.");
+                throw new IllegalActionException("Delay can not be negative.");
             } else {
                 _delay = delayValue;
             }
@@ -140,7 +138,7 @@ public class NonInterruptibleTimer extends Timer {
     }
 
     /** If there are delayed inputs that are not processed and the timer
-     *  is not busy. Begin processing the earliest input and schedule
+     *  is not busy, begin processing the earliest input and schedule
      *  a future firing to produce it.
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
@@ -152,10 +150,11 @@ public class NonInterruptibleTimer extends Timer {
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }
-        // If the delayedInputTokensList is not empty, and the delayedTokens
-        // is empty (ready to process a new input), get the first input in the
-        // delayedInputTokensList, put it into the delayedTokens, and begin
-        // processing it. Schedule a refiring to produce the corresponding
+        // If the delayedInputTokensList is not empty and the 
+        // delayedOutputTokens is empty (meaning the timer is ready to process 
+        // a new input), get the first input in the delayedInputTokensList, 
+        // put it into the delayedOutputTokens, and begin processing it. 
+        // Schedule a refiring to produce the corresponding
         // output at the time: current time + delay specified by the input
         // being processed.
         if (_delayedInputTokensList.size() != 0

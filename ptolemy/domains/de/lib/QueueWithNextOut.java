@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
    the queue.  This output, also, is constrained to be at least that of
    <i>input</i> <p>
 
-   @author Winthrop Williams, Haiyang Zheng
+   @author Winthrop Williams
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Yellow (winthrop)

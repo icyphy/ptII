@@ -1,4 +1,4 @@
-/* A merge actor for DE.
+/* A merge actor for the DE domain.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -39,27 +39,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Merge
 /**
-   A timed merge actor, that merges a set of input signals
+   A timed merge actor for the DE domain. It merges a set of input signals
    into a single output signal based on the order of the tags
-   associated with the events of signals. A tag is a tuple of a time
-   (as double) and an index (as non-negative integer). The tags have a
+   associated with the events of signals. A tag is a tuple of a timestamp
+   (as double) and a microstep or index (as non-negative integer). Tags have a
    lexicographic order.
-
-   <p> This actor has an input port (a multiport) and an output port
+   <p> 
+   This actor has an input port (a multiport) and an output port
    (a single port). The types of the ports are undeclared and will be
    resolved by the type resolution mechanism, with the constraint that
    the output type must be greater than or equal to the input type.
-
-   <p> There is a boolean parameter <i>discardEvents</i> associated
+   <p> 
+   There is a boolean parameter <i>discardEvents</i> associated
    with this actor, which decides how to handle simultaneously
    available inputs.  Each time this actor fires, it reads the first
-   available token from the input channels and sends it to the output
+   available tokens from an input channels and sends them to the output
    port. If the <i>discardEvents</i> parameter is configured to true,
    then this actor discards all the remaining inputs in the rest of
    channels. Otherwise, this actor requests refirings at the current
-   time until no more events are left in the channels. By this way, we
-   construct an output signal that no two events share the same
-   tag. By default, the discardEvents parameter is false.
+   time until no more events are left in the channels. By default, 
+   the discardEvents parameter is false.
 
    @author Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -104,9 +103,9 @@ public class Merge extends DETransformer  {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the first available token from input channels and
-     *  send it to the output port. If the discardEvents parameter
-     *  is true, consume all the available events of the other channels
+    /** Read the first available tokens from an input channel and
+     *  send them to the output port. If the discardEvents parameter
+     *  is true, consume all the available tokens of the other channels
      *  and discard them. Otherwise, if the other channels have tokens,
      *  request a refiring at the current time to process them.
      *  @exception IllegalActionException If there is no director, or 
@@ -117,25 +116,31 @@ public class Merge extends DETransformer  {
             ((BooleanToken)discardEvents.getToken()).booleanValue();
         Token firstAvailableToken = null;
         // If tokens can be discarded, this actor sends
-        // out the first available event only. It discards all 
-        // remaining events from other input channels. 
-        // Otherwise, this actor handles one event at each firing
+        // out the first available tokens only. It discards all 
+        // remaining tokens from other input channels. 
+        // Otherwise, this actor handles one channel at each firing
         // and requests refiring at the current time to handle the
-        // the remaining events.
+        // the remaining channels that have tokens.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 if (firstAvailableToken == null) {
-                    // we see the first available event
-                    // record it and send it out.
+                    // we see the first available tokens
                     firstAvailableToken = input.get(i);
                     output.send(0, firstAvailableToken);
+                    while (input.hasToken(i)) {
+                        Token token = input.get(i);
+                        output.send(0, firstAvailableToken);
+                    }
                 } else {
                     if (discard) {
-                        // this event is not the first available
-                        // event, consume the token from the input channel
-                        input.get(i);
+                        // this token is not the first available token
+                        // in this firing, consume and discard all tokens 
+                        // from the input channel
+                        while (input.hasToken(i)) {
+                            Token token = input.get(i);
+                        }
                     } else {
-                        // Refiring the actor to handle the other events
+                        // Refiring the actor to handle the other tokens
                         // that are still in channels
                         getDirector().fireAtCurrentTime(this);
                         break;
