@@ -51,16 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	1crash.xml \
-	1plus.xml \
-	Datagram.xml \
 	DemoDatagramDE.xml \
-	DemoDatagramMirror.xml \
 	DemoDatagramParsed.xml \
-	DemoDatagramReceiver.xml \
-	DemoDatagramReceiverDEx.xml \
-	DemoDatagramReceiverNotOverwrite.xml \
-	DemoDatagramReceiverOverwrite.xml \
 	DemoDatagramSDF.xml \
 	DemoDatagramSender.xml \
 	DemoDatagramUnparsed.xml
