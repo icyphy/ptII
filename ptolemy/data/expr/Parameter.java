@@ -146,9 +146,9 @@ public class Parameter extends Attribute implements ParameterListener {
 
     /** Clone the parameter.
      *  The state of the cloned parameter will be identical to the original
-     *  parameter, but without the Observer/Observable dependencies set up.
-     *  To achieve this update() should be called after cloning the
-     *  parameter.  Update() should only be called after all
+     *  parameter, but without the ParameterListner dependencies set up.
+     *  To achieve this evaluate() should be called after cloning the
+     *  parameter.  Evaluate() should only be called after all
      *  the parameters on which this parameter depends have been created.
      *  @param The workspace in which to place the cloned Parameter.
      *  @exception CloneNotSupportedException If the parameter
@@ -158,12 +158,6 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Parameter newobj = (Parameter)super.clone(ws);
-        if (_token != null) {
-            newobj._token = (ptolemy.data.Token)_token.clone();
-        }
-        if (_origToken != null) {
-            newobj._origToken = (ptolemy.data.Token)_origToken.clone();
-        }
         if (_paramType != null) {
             try {
                 newobj._paramType = (Class)_paramType.newInstance().getClass();
@@ -177,10 +171,12 @@ public class Parameter extends Attribute implements ParameterListener {
         newobj._listeners = null;
         newobj._needsEvaluation = true;
         newobj._noTokenYet = _noTokenYet;
+        newobj._origToken = _origToken;
         newobj._parser = null;
         newobj._parseTree = null;
         newobj._scope = null;
         newobj._scopeVersion = -1;
+        newobj._token = _token;
         return newobj;
     }
 
@@ -191,6 +187,40 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public String description(int verbosity) {
         return toString();
+    }
+
+    /** Evaluate the current expression to a Token. If this parameter
+     *  was last set directly with a Token do nothing. This method is also
+     *  called after a Parameter is cloned.
+     *  @excpetion IllegalArgumentException If the token resulting
+     *   from evaluating the xpression  cannot be stored in this parameter.
+     */
+    public void evaluate() throws IllegalArgumentException {
+        if (_needsEvaluation) {
+            _needsEvaluation = false;
+            if (_parser == null) {
+                _parser = new PtParser(this);
+            }
+            try {
+                workspace().getReadAccess(); {
+                    _parseTree = _parser.generateParseTree(
+                            _currentExpression, getScope());
+                    _token = _parseTree.evaluateParseTree();
+                }
+                if (_noTokenYet) {
+                    // This is the first token stored in this parameter.
+                    _initialExpression = _currentExpression;
+                    _noTokenYet = false;
+                    setType(_token.getClass());
+                    // don't need to check type as first token in
+                } else {
+                    _checkType(_token);
+                }
+                _notifyListeners();
+            } finally {
+                workspace().doneReading();
+            }
+        }
     }
 
     /** Obtain a NamedList of the parameters that the value of this
@@ -255,40 +285,6 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
-    /** Evaluate the current expression to a Token. If this parameter
-     *  was last set directly with a Token do nothing. This method is also
-     *  called after a Parameter is cloned.
-     *  @excpetion IllegalArgumentException If the token resulting
-     *   from evaluating the xpression  cannot be stored in this parameter.
-     */
-    public void evaluate() throws IllegalArgumentException {
-        if (_needsEvaluation) {
-            _needsEvaluation = false;
-            if (_parser == null) {
-                _parser = new PtParser(this);
-            }
-            try {
-                workspace().getReadAccess(); {
-                    _parseTree = _parser.generateParseTree(
-                            _currentExpression, getScope());
-                    _token = _parseTree.evaluateParseTree();
-                }
-                if (_noTokenYet) {
-                    // This is the first token stored in this parameter.
-                    _initialExpression = _currentExpression;
-                    _noTokenYet = false;
-                    setType(_token.getClass());
-                    // don't need to check type as first token in
-                } else {
-                    _checkType(_token);
-                }
-                _notifyListeners();
-            } finally {
-                workspace().doneReading();
-            }
-        }
-    }
-
     /** Get the Token this Parameter contains. It may be null.
      *  @return The token contained by this parameter.
      */
@@ -303,6 +299,12 @@ public class Parameter extends Attribute implements ParameterListener {
         return _token;
     }
 
+    /** Get the type of this Parameter. It may be null.
+     *  @return The type of this parameter.
+     */
+    public Class getType() {
+        return _ParamType;
+    }
 
     /** This method is called by a Parameter this Parameter is
      *  observing.
