@@ -70,125 +70,125 @@ public class LorenzApplet extends CTApplet {
      */
     public void init() {
 
-    super.init();
-    Panel controlpanel = new Panel();
-    controlpanel.setLayout(new BorderLayout());
-    add(controlpanel);
+        super.init();
+        Panel controlpanel = new Panel();
+        controlpanel.setLayout(new BorderLayout());
+        add(controlpanel);
 
-    _query = new Query();
-    _query.addQueryListener(new ParameterListener());
-    controlpanel.add("West", _query);
-    _query.addLine("stopT", "Stop Time", "50.0");
-    _query.addLine("sigma", "Sigma", "10.0");
-    _query.addLine("lamda", "Lamda", "25.0");
-    _query.addLine("b", "b", "2.0");
+        _query = new Query();
+        _query.addQueryListener(new ParameterListener());
+        controlpanel.add("West", _query);
+        _query.addLine("stopT", "Stop Time", "50.0");
+        _query.addLine("sigma", "Sigma", "10.0");
+        _query.addLine("lamda", "Lamda", "25.0");
+        _query.addLine("b", "b", "2.0");
 
-    Panel runcontrols = new Panel();
-    controlpanel.add("East",runcontrols);
-    runcontrols.add(_createRunControls(2));
+        Panel runcontrols = new Panel();
+        controlpanel.add("East",runcontrols);
+        runcontrols.add(_createRunControls(2));
 
-    //System.out.println("Construct the model");
-    // Creating the model.
-    try {
+        //System.out.println("Construct the model");
+        // Creating the model.
+        try {
             
-        // Set up the top level composite actor, director and manager
-        _toplevel.setName("LorenzSystem");
-        _dir = new CTSingleSolverDirector(
-                _toplevel, "CTSingleSolverDirector");
-        //_dir.addDebugListener(new StreamListener());
-        //_manager.addDebugListener(new StreamListener());
-        // ---------------------------------
-        // Create the system.
-        // ---------------------------------
+            // Set up the top level composite actor, director and manager
+            _toplevel.setName("LorenzSystem");
+            _dir = new CTSingleSolverDirector(
+                    _toplevel, "CTSingleSolverDirector");
+            //_dir.addDebugListener(new StreamListener());
+            //_manager.addDebugListener(new StreamListener());
+            // ---------------------------------
+            // Create the system.
+            // ---------------------------------
 
-        // CTActors
+            // CTActors
 
-        _LAMDA = new Const(_toplevel, "LAMDA");
-        _SIGMA = new Scale(_toplevel, "SIGMA");
-        _B = new Scale(_toplevel, "B");
+            _LAMDA = new Const(_toplevel, "LAMDA");
+            _SIGMA = new Scale(_toplevel, "SIGMA");
+            _B = new Scale(_toplevel, "B");
 
-        AddSubtract ADD1 = new AddSubtract(_toplevel, "Add1");
-        AddSubtract ADD2 = new AddSubtract(_toplevel, "Add2");
-        AddSubtract ADD3 = new AddSubtract(_toplevel, "Add3");
-        AddSubtract ADD4 = new AddSubtract(_toplevel, "Add4");
+            AddSubtract ADD1 = new AddSubtract(_toplevel, "Add1");
+            AddSubtract ADD2 = new AddSubtract(_toplevel, "Add2");
+            AddSubtract ADD3 = new AddSubtract(_toplevel, "Add3");
+            AddSubtract ADD4 = new AddSubtract(_toplevel, "Add4");
 
-        MultiplyDivide MULT1 = new MultiplyDivide(_toplevel, "MULT1");
-        MultiplyDivide MULT2 = new MultiplyDivide(_toplevel, "MULT2");
+            MultiplyDivide MULT1 = new MultiplyDivide(_toplevel, "MULT1");
+            MultiplyDivide MULT2 = new MultiplyDivide(_toplevel, "MULT2");
 
-        CTIntegrator X1 = new CTIntegrator(_toplevel, "IntegratorX1");
-        CTIntegrator X2 = new CTIntegrator(_toplevel, "IntegratorX2");
-        CTIntegrator X3 = new CTIntegrator(_toplevel, "IntegratorX3");
+            CTIntegrator X1 = new CTIntegrator(_toplevel, "IntegratorX1");
+            CTIntegrator X2 = new CTIntegrator(_toplevel, "IntegratorX2");
+            CTIntegrator X3 = new CTIntegrator(_toplevel, "IntegratorX3");
 
-        Scale MINUS1 = new Scale(_toplevel, "MINUS1");
-        Scale MINUS2 = new Scale(_toplevel, "MINUS2");
-        Scale MINUS3 = new Scale(_toplevel, "MINUS3");
+            Scale MINUS1 = new Scale(_toplevel, "MINUS1");
+            Scale MINUS2 = new Scale(_toplevel, "MINUS2");
+            Scale MINUS3 = new Scale(_toplevel, "MINUS3");
 
-        XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
-        myplot.setPanel(this);
-        myplot.plot.setGrid(true);
-        myplot.plot.setXRange(-25.0, 25.0);
-        myplot.plot.setYRange(-25.0, 25.0);
-        myplot.plot.setSize(400, 400);
-        myplot.plot.addLegend(0,"(x1,x2)");
+            XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
+            myplot.setPanel(this);
+            myplot.plot.setGrid(true);
+            myplot.plot.setXRange(-25.0, 25.0);
+            myplot.plot.setYRange(-25.0, 25.0);
+            myplot.plot.setSize(400, 400);
+            myplot.plot.addLegend(0,"(x1,x2)");
 
-        // CTConnections
-        TypedIORelation x1 = new TypedIORelation(_toplevel, "X1");
-        TypedIORelation x2 = new TypedIORelation(_toplevel, "X2");
-        TypedIORelation x3 = new TypedIORelation(_toplevel, "X3");
-        X1.output.link(x1);
-        X2.output.link(x2);
-        X3.output.link(x3);
-        MINUS1.input.link(x1);
-        MINUS2.input.link(x2);
-        MINUS3.input.link(x3);
+            // CTConnections
+            TypedIORelation x1 = new TypedIORelation(_toplevel, "X1");
+            TypedIORelation x2 = new TypedIORelation(_toplevel, "X2");
+            TypedIORelation x3 = new TypedIORelation(_toplevel, "X3");
+            X1.output.link(x1);
+            X2.output.link(x2);
+            X3.output.link(x3);
+            MINUS1.input.link(x1);
+            MINUS2.input.link(x2);
+            MINUS3.input.link(x3);
 
-        // dx1/dt = sigma*(x2-x1)
-        _toplevel.connect(MINUS1.output, ADD1.plus);
-        ADD1.plus.link(x2);
-        _toplevel.connect(ADD1.output, _SIGMA.input);
-        _toplevel.connect(_SIGMA.output, X1.input);
+            // dx1/dt = sigma*(x2-x1)
+            _toplevel.connect(MINUS1.output, ADD1.plus);
+            ADD1.plus.link(x2);
+            _toplevel.connect(ADD1.output, _SIGMA.input);
+            _toplevel.connect(_SIGMA.output, X1.input);
 
-        // dx2/dt = (lamda-x3)*x1-x2
-        _toplevel.connect(_LAMDA.output, ADD2.plus);
-        _toplevel.connect(MINUS3.output, ADD2.plus);
-        _toplevel.connect(ADD2.output, MULT1.multiply);
-        MULT1.multiply.link(x1);
-        _toplevel.connect(MULT1.output, ADD3.plus);
-        _toplevel.connect(MINUS2.output, ADD3.plus);
-        _toplevel.connect(ADD3.output, X2.input);
+            // dx2/dt = (lamda-x3)*x1-x2
+            _toplevel.connect(_LAMDA.output, ADD2.plus);
+            _toplevel.connect(MINUS3.output, ADD2.plus);
+            _toplevel.connect(ADD2.output, MULT1.multiply);
+            MULT1.multiply.link(x1);
+            _toplevel.connect(MULT1.output, ADD3.plus);
+            _toplevel.connect(MINUS2.output, ADD3.plus);
+            _toplevel.connect(ADD3.output, X2.input);
 
-        // dx3/dt = x1*x2-b*x3
-        MULT2.multiply.link(x1);
-        MULT2.multiply.link(x2);
-        _B.input.link(x3);
-        _toplevel.connect(MULT2.output, ADD4.plus);
-        _toplevel.connect(_B.output, ADD4.minus);
-        _toplevel.connect(ADD4.output, X3.input);
+            // dx3/dt = x1*x2-b*x3
+            MULT2.multiply.link(x1);
+            MULT2.multiply.link(x2);
+            _B.input.link(x3);
+            _toplevel.connect(MULT2.output, ADD4.plus);
+            _toplevel.connect(_B.output, ADD4.minus);
+            _toplevel.connect(ADD4.output, X3.input);
 
-        myplot.inputX.link(x1);
-        myplot.inputY.link(x2);
+            myplot.inputX.link(x1);
+            myplot.inputY.link(x2);
 
-        //System.out.println("Parameters");
-        // CT Director parameters
-        _dir.InitStepSize.setToken(new DoubleToken(0.01));
-        _dir.MinStepSize.setToken(new DoubleToken(1e-6));
-        StringToken token2 = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-        _dir.ODESolver.setToken(token2);
+            //System.out.println("Parameters");
+            // CT Director parameters
+            _dir.InitStepSize.setToken(new DoubleToken(0.01));
+            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            StringToken token2 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            _dir.ODESolver.setToken(token2);
 
-        // CTActorParameters
-        X1.InitialState.setToken(new DoubleToken(1.0));
-        X2.InitialState.setToken(new DoubleToken(1.0));
-        X3.InitialState.setToken(new DoubleToken(1.0));
+            // CTActorParameters
+            X1.InitialState.setToken(new DoubleToken(1.0));
+            X2.InitialState.setToken(new DoubleToken(1.0));
+            X3.InitialState.setToken(new DoubleToken(1.0));
 
-        MINUS1.gain.setToken(new DoubleToken(-1.0));
-        MINUS2.gain.setToken(new DoubleToken(-1.0));
-        MINUS3.gain.setToken(new DoubleToken(-1.0));
+            MINUS1.gain.setToken(new DoubleToken(-1.0));
+            MINUS2.gain.setToken(new DoubleToken(-1.0));
+            MINUS3.gain.setToken(new DoubleToken(-1.0));
 
-    } catch (Exception ex) {
-        report("Setup failed: ",  ex);
+        } catch (Exception ex) {
+            report("Setup failed: ",  ex);
+        }
     }
-}
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
