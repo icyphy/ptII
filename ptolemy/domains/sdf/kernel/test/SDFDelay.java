@@ -89,7 +89,7 @@ public class SDFDelay extends SDFAtomicActor {
 	     * actor package are of type TypedIOPort, 
 	     * which extends Port.   So, we
 	     * have to upcast the return value to the appropriate type.
-	     * The setDelcaredType calls use the type system to define what
+	     * The setDeclaredType calls use the type system to define what
 	     * types of tokens are valid for this actor.
 	     */
 	    input.setTypeEquals(IntToken.class);
@@ -156,7 +156,7 @@ public class SDFDelay extends SDFAtomicActor {
          * name.  It returns a Port object, but all the ports in the
          * actor package are of type TypedIOPort, which extends Port.   So, we
          * have to upcast the return value to the appropriate type.
-         * The setDelcaredType calls use the type system to define what
+         * The setDeclaredType calls use the type system to define what
          * types of tokens are valid for this actor.
          */
 	input.setTypeEquals(IntToken.class);
