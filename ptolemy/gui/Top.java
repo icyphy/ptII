@@ -148,7 +148,7 @@ public abstract class Top extends JFrame {
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see split
+     *  @see #split
      *  @return The name.
      */
     public static String abbreviate(String longName) {
@@ -258,7 +258,7 @@ public abstract class Top extends JFrame {
      *  displaying adding newlines every 80 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see abbreviate
+     *  @see #abbreviate
      *  @param longName The string to optionally split up
      *  @return Either the original string, or the string with newlines
      *  inserted
