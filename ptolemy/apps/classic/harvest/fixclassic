@@ -30,7 +30,7 @@ do
     dirname=`dirname $actor`
     dirdirname=`dirname $dirname`
     basedirname=`basename $dirdirname`
-    if [ "$basedirname" != "sdf" ]; then
+    if [ "$basedirname" != "cgc" ]; then
 	cat $actor.tmp |
 	    sed -e "s/package ptolemy.domains.sdf.cgc.lib;/package ptolemy.domains.sdf.cgc.${basedirname}.lib;/" > $actor.tmp2
 	mv $actor.tmp2 $actor.tmp
