@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
@@ -208,7 +208,9 @@ public class RTOSEvent implements Comparable {
         _priority = newPriority;
     }
 
-    /** Set the remaining processing time of the event. Notice that
+    /** Set the remaining processing time of the event. This method is
+     *  typically used by RTOSDirector to keep tack of the remaining
+     *  processing time when time is advance. Notice that
      *  this method does not insist that the time to be set is
      *  smaller than the original processing time. The caller
      *  should perform the comparison if that is the desired 

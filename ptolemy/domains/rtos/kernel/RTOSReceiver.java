@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
@@ -90,6 +90,11 @@ public class RTOSReceiver extends AbstractReceiver {
 
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver that is ready for process.
+     *  A token is ready to be processed if it has the highest priority
+     *  among all the appending events (system wide), and the resource
+     *  is ready to be allocated to its destination actor. Whether the
+     *  resource is ready depends on whether there is any active tasks,
+     *  and whether the execution is preemptive. 
      *  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
