@@ -38,6 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
@@ -301,6 +302,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 	int inputCount = 0;
 	while (inputPorts.hasNext()) {
 	    IOPort inputPort = (IOPort) inputPorts.next();
+
+            // NOTE: If the port is a ParameterPort, then we should not
+            // insist on there being an input.
+            if (inputPort instanceof ParameterPort) continue;
+
 	    int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
 	    if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
@@ -322,8 +328,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		}
 	    }
 	}
-	if (_debugging) _debug("Prefire returns true on " +
-                container.getFullName());
+	if (_debugging) _debug("Director prefire returns true." );
 	return true;
     }
 
@@ -340,7 +345,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
         Scheduler scheduler = getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
