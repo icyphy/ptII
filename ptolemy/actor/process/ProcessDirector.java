@@ -23,6 +23,10 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@AcceptedRating none
+
 */
 
 package ptolemy.actor;
@@ -192,12 +196,11 @@ public class ProcessDirector extends Director {
      *  queued a request and require that the request be processed
      *  immediately. The method does not return until requests
      *  have been processed.
-     *
-     *  <p> FIXME: why does this method need readAccess?
-     *  <p> FIXME: why doesn't this throw TopologyChangeFailedException?
-     *
+     *  <p>
+     *  @exception TopologyChangeFailedException If the mutations could not 
+     *   be completed.
      */
-    public void processTopologyRequests() {
+    public void processTopologyRequests() throws TopologyChangeFailedException{
 	try {
 	    setPauseRequested();
 	    synchronized(this) {
@@ -214,8 +217,11 @@ public class ProcessDirector extends Director {
      *  the receivers. It also sets the pause flag in all the output 
      *  ports of the CompositeActor under control of this director.
      *  <p>
+     *  FIXME: should a simulationPausedEvent be sent when the 
+     *  simulation is fully paused?
+     *  <p>
      *  FIXME: why is this read locked?
-     *  @exception IllegalActionException FIXME: is this called?
+     *  @exception IllegalActionException If cannot access all the receivers.
      */
     public void setPauseRequested() throws IllegalActionException {        
         synchronized(this) {
@@ -276,7 +282,7 @@ public class ProcessDirector extends Director {
             try {
                 NotifyThread obj = new NotifyThread(_pausedReceivers);
                 synchronized(obj) {
-                    (new Thread(obj)).start();
+                    obj.start();
                     obj.wait();
                 }
             } catch (InterruptedException ex) {
@@ -312,7 +318,7 @@ public class ProcessDirector extends Director {
         try {
             NotifyThread obj = new NotifyThread(_pausedReceivers);
             synchronized(obj) {
-                (new Thread(obj)).start();
+                obj.start();
                 obj.wait();
             }
         } catch (InterruptedException ex) {
@@ -406,7 +412,7 @@ public class ProcessDirector extends Director {
                 // Now wake up all the receivers.
                 NotifyThread obj = new NotifyThread(recs);
                 synchronized(obj) {
-                    (new Thread(obj)).start();
+                    obj.start();
                     obj.wait();
                 }
             } catch (InterruptedException ex) {
@@ -464,6 +470,7 @@ public class ProcessDirector extends Director {
     protected long _actorsPaused = 0;
 
     protected boolean _pauseRequested = false;
+    protected boolean _paused = false;
 
     // FIXME: this should not be here?
     protected boolean _urgentMutations = false;
