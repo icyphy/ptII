@@ -121,7 +121,7 @@ test Port-3.1.2 {Test connectToRelation with one port to a null relation} {
     set p1 [java::new pt.kernel.Port "My Port"]
     catch {$p1 connectToRelation [java::null]} errmsg
     list $errmsg [_testGetRelationList $p1]
-} {{pt.kernel.NullReferenceException: Null Relation passed to Port.connectToRelation()} {}}
+} {{java.lang.NullPointerException: Null Relation passed to Port.connectToRelation()} {}}
 
 ######################################################################
 ####
