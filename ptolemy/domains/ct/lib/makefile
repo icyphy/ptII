@@ -56,8 +56,7 @@ JSRCS = \
 	CTThresholdMonitor.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
-	IPCInterface.java \
-	GeneralFunctionActor.java
+	IPCInterface.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
