@@ -48,8 +48,8 @@ import javax.swing.SwingUtilities; // for isEventDispatchThread()
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
 /** PrintThreads prints all the Threads in the current JVM.
- @author: Christopher Hylands, based on code from Fusion Systems Group
- @version: $Id$
+ @author Christopher Hylands, based on code from Fusion Systems Group
+ @version $Id$
  */
 public class PrintThreads {
 
