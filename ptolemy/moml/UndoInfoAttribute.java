@@ -58,7 +58,6 @@ import java.util.EmptyStackException;
  *  the model and so must be cleared.
  *
  * @author     Neil Smyth
- * @created    10 January 2002
  * @version    $Id$
  */
 public class UndoInfoAttribute extends SingletonAttribute
