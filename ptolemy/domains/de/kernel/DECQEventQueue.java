@@ -220,6 +220,8 @@ public class DECQEventQueue implements DEEventQueue {
          *  It is converted to a bin number by masking some number of
          *  low-order bits, so the result will be unaffected by the
          *  sign error.
+         *  Note that this method cannot return a long.MAX_VALUE, which
+         *  is used internally by CalendarQueue class.
          *  @param event The event.
          *  @return The index of the virtual bin containing the event.
          *  @exception ClassCastException If the argument is not
@@ -240,8 +242,11 @@ public class DECQEventQueue implements DEEventQueue {
                                          .subtract(_zeroReference.timeStamp()))
                     .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
              */
+
             // Long.MAX_VALUE is returned to indicate infinity.
-            // FIXME: Why is this here?
+
+            // Note that this method cannot return a long.MAX_VALUE, which
+            // is used internally by CalendarQueue class.
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
