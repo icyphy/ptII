@@ -44,7 +44,7 @@ ME =		ptolemy
 # if $PTII/lib/ptCal.jar was found
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
-	vergil hsif $(PTCHIC_DIR) codegen component \
+	vergil hsif $(PTBACKTRACK_DIR) $(PTCHIC_DIR) codegen component \
 	apps $(PTCALTROP_DIR) configs
 
 # Root of Ptolemy II directory
