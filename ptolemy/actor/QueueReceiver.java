@@ -95,7 +95,7 @@ public class QueueReceiver implements Receiver {
         } catch (NoSuchElementException ex) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty QueueReveiver.");
+                    "Attempt to get token from an empty QueueReceiver.");
         }
         return t;
     }
