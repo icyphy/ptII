@@ -92,6 +92,8 @@ public class BusContentionApplication implements ActionListener {
             }
 	}
 	if( action.equals("Stop") ) {
+	    endSimulation();
+	} else if( action.equals("Quit") ) {
 	    shutDown();
 	}
     }
@@ -221,7 +223,11 @@ public class BusContentionApplication implements ActionListener {
 	startButton.addActionListener( this ); 
 	controlPanel.add(startButton, BorderLayout.WEST); 
 
-	Button quitButton = new Button("Stop"); 
+	Button stopButton = new Button("Stop"); 
+	stopButton.addActionListener( this ); 
+	controlPanel.add(stopButton, BorderLayout.CENTER); 
+
+	Button quitButton = new Button("Quit"); 
 	quitButton.addActionListener( this ); 
 	controlPanel.add(quitButton, BorderLayout.EAST); 
 
@@ -290,16 +296,16 @@ public class BusContentionApplication implements ActionListener {
             ex.printStackTrace();
             System.exit(0);
         }
-    }
- 
-    /**
-     */
-    public void runDemo() {
         StateListener listener = 
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
 	_processActor3.addListeners(listener);
+    }
+ 
+    /**
+     */
+    public void runDemo() {
 	// System.out.println("Listeners set");
 
         // Run the model
@@ -310,10 +316,23 @@ public class BusContentionApplication implements ActionListener {
 
     /**
      */
-    public void shutDown() {
-	if( _topLevel == null ) {
-	    return;
+    public void endSimulation() {
+        Director director = _topLevel.getDirector(); 
+	try {
+	    // Eventually we will not need to call Director.wrapup()
+	    // as Manager.finish() will subsume this responsibility.
+	    director.wrapup();
+	    _manager.finish();
+	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown while " + 
+		    "attempting to shutDown()");
+	    e.printStackTrace();
 	}
+    }
+
+    /**
+     */
+    public void shutDown() {
         Director director = _topLevel.getDirector(); 
 	try {
 	    // Eventually we will not need to call Director.wrapup()
@@ -332,6 +351,10 @@ public class BusContentionApplication implements ActionListener {
 	    _window = null;
 
 	    System.exit(0);
+	} else {
+	    _window.setVisible(false); 
+	    _window.dispose(); 
+	    _window = null;
 	}
     }
 
