@@ -114,6 +114,9 @@ JAR =		$(PTJAVA_DIR)/bin/jar
 # The 'java' interpreter.
 JAVA =		$(PTJAVA_DIR)/bin/java
 
+# The 'rmic' command - The Java Remote Method Invocation (RMI) command
+RMIC =		$(PTJAVA_DIR)/bin/rmic
+
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
 # The default location is $(PTII)/vendors/sun/JavaCC
 JAVACC_DIR =	@JAVACC_DIR@
