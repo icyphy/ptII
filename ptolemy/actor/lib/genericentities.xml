@@ -12,5 +12,9 @@
   <entity name="sinks" class=".sinks"/>
   <entity name="transformers" class=".transformers"/>
 
+  <entity name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor"/>
+  <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
+  <property name="notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation"/>
+  </entity> 
   <entity name="IOPort" class="ptolemy.actor.TypedIOPort"/>
 </class>
