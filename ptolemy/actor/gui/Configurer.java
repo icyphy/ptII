@@ -35,6 +35,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLChangeRequest;
 
 // Java imports.
 import java.awt.Component;
@@ -87,15 +88,29 @@ public class Configurer extends JPanel implements CloseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
-        Iterator parameters
-            = object.attributeList(Settable.class).iterator();
+       
+        NamedObj parent = MoMLChangeRequest.getDeferredToParent(object);
+        if (parent == null) {
+            parent = (NamedObj)object.getContainer();
+        }
+        _parent = parent;
+        // Create moml with the original values, so restore can happen later.
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<group>\n");
+        Iterator parameters = object.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             Settable parameter = (Settable)parameters.next();
             if (parameter.getVisibility() == Settable.FULL) {
-                _originalValues.put(parameter.getName(),
-                        parameter.getExpression());
+                String oldExpression = parameter.getExpression();
+                buffer.append("<property name=\"");
+                buffer.append(((NamedObj)parameter).getName(parent));
+                buffer.append("\" value=\"");
+                buffer.append(StringUtilities.escapeForXML(oldExpression));
+                buffer.append("\"/>\n");
             }
         }
+        buffer.append("</group>\n");
+        _restoreMoML = buffer.toString();
 
         boolean foundOne = false;
         Iterator editors
@@ -154,20 +169,12 @@ public class Configurer extends JPanel implements CloseListener {
         // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    Iterator entries = _originalValues.entrySet().iterator();
-                    while (entries.hasNext()) {
-                        Map.Entry entry = (Map.Entry)entries.next();
-                        Settable parameter = (Settable)
-                            _object.getAttribute((String)entry.getKey());
-                        try {
-                            parameter.setExpression((String)entry.getValue());
-                            // Force notification of listeners, unless value is
-                            // erroneous.
-                            if (parameter instanceof Variable) {
-                                ((Variable)parameter).getToken();
-                            }
-                        } catch (IllegalActionException ex) {}
-                    }
+                    MoMLChangeRequest request = new MoMLChangeRequest(
+                            this,         // originator
+                            _parent,       // context
+                            _restoreMoML, // MoML code
+                            null);        // base
+                    _object.requestChange(request);        
                 }
             });
     }
@@ -197,6 +204,9 @@ public class Configurer extends JPanel implements CloseListener {
     // The object that this configurer configures.
     private NamedObj _object;
 
-    // The original values of the attributes.
-    private Map _originalValues = new HashMap();
+    // The parent of the object that we will queue any change requests with.
+    private NamedObj _parent;
+
+    // A MoML string to restore the original values.
+    private String _restoreMoML = "";
 }
