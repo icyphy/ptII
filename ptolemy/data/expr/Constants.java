@@ -110,6 +110,15 @@ public class Constants {
         _table.put("j", i);
         _table.put("true", BooleanToken.TRUE);
         _table.put("false", BooleanToken.FALSE);
+        
+        try {
+            // When Vergil is started up, java is called with
+            // -Dptolemy.ptII.dir=${PTII}.
+            _table.put("PTII",
+                new StringToken(System.getProperty("ptolemy.ptII.dir")));
+            _table.put("HOME",
+                new StringToken(System.getProperty("user.dir")));
+        } catch (Exception e) {}
 
         // Type constants.
 	_table.put("boolean", BooleanToken.FALSE);
