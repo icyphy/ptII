@@ -48,21 +48,22 @@ set header {<?xml version="1.0" standalone="no"?>
 
 
 set constMoml  "$header 
-<entity name=\"FilterAddIconsConst\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"FilterBackwardCompatibilityConst\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">
   </entity>
 </entity>"
 
-test FilterAddIcons-1.1 {Const} { 
+test FilterBackwardCompatibility-1.1 {Const} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set toplevel [$parser parse $constMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterAddIconsConst" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FilterBackwardCompatibilityConst" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -85,12 +86,12 @@ test FilterAddIcons-1.1 {Const} {
 }}
 
 set mathFunctionMoml  "$header 
-<entity name=\"FilterAddIconsMathFunction\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"FilterBackwardCompatibilityMathFunction\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"MathFunction\" class=\"ptolemy.actor.lib.MathFunction\">
   </entity>
 </entity>"
 
-test FilterAddIcons-3.1 {MathFunction} { 
+test FilterBackwardCompatibility-3.1 {MathFunction} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $mathFunctionMoml]
@@ -99,7 +100,7 @@ test FilterAddIcons-3.1 {MathFunction} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterAddIconsMathFunction" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FilterBackwardCompatibilityMathFunction" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="exp">
@@ -122,12 +123,12 @@ test FilterAddIcons-3.1 {MathFunction} {
 
 
 set scaleMoml  "$header 
-<entity name=\"FilterAddIconsScale\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"FilterBackwardCompatibilityScale\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"Scale\" class=\"ptolemy.actor.lib.Scale\">
   </entity>
 </entity>"
 
-test FilterAddIcons-4.1 {Scale} { 
+test FilterBackwardCompatibility-4.1 {Scale} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $scaleMoml]
@@ -136,7 +137,7 @@ test FilterAddIcons-4.1 {Scale} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterAddIconsScale" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FilterBackwardCompatibilityScale" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
@@ -160,12 +161,12 @@ test FilterAddIcons-4.1 {Scale} {
 }}
 
 set trigFunctionMoml  "$header 
-<entity name=\"FilterAddIconsTrigFunction\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"FilterBackwardCompatibilityTrigFunction\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"TrigFunction\" class=\"ptolemy.actor.lib.TrigFunction\">
   </entity>
 </entity>"
 
-test FilterAddIcons-5.1 {TrigFunction} { 
+test FilterBackwardCompatibility-5.1 {TrigFunction} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $trigFunctionMoml]
@@ -174,7 +175,7 @@ test FilterAddIcons-5.1 {TrigFunction} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterAddIconsTrigFunction" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FilterBackwardCompatibilityTrigFunction" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
