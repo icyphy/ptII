@@ -55,6 +55,7 @@ JSIMPLE_TESTS = \
         DoubleArrayMath.tcl \
         DoubleArrayStat.tcl \
 	ExtendedMath.tcl \
+	FixPoint.tcl \
 	Fraction.tcl \
 	MatrixMath.tcl \
 	SignalProcessing.tcl
