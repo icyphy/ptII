@@ -57,7 +57,7 @@ JSRCS = \
 	ExampleSerializable.java \
 	ExampleSystem.java \
 	ExampleSystemApplet.java \
-	ExampleFrame.java \
+	ExampleFrame.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	ExampleSystem.html
