@@ -380,6 +380,37 @@ Berkeley, CA 94706</property>
                     <property name="folderGroup"/>
                 </action>
             </component>
+            <component id="bean614">
+                <key>
+                    <uid>99d5144aa359ee4518238fcda3dc8648</uid>
+                    <version/>
+                </key>
+                <built>19691131 160000.000-0800</built>
+                <name>component46</name>
+                <displayName>Ptiny Only Files</displayName>
+                <shareable>false</shareable>
+                <active>true</active>
+                <installStatus>0</installStatus>
+                <replaceOption>1</replaceOption>
+                <removeOption>1</removeOption>
+                <installFailureOption>3</installFailureOption>
+                <onFailSummaryMessage/>
+                <action class="com.installshield.product.actions.Files" id="bean615">
+                    <displayName>Files</displayName>
+                    <active>true</active>
+                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
+                        <arrayItem type="com.installshield.product.actions.SourceFile">
+                            <property name="usingGNUPattern">False</property>
+                            <property name="type">4</property>
+                            <property name="pattern"/>
+                            <property name="fileName">C:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny_only</property>
+                        </arrayItem>
+                    </property>
+                    <property name="totalBytes">-1</property>
+                    <property name="owner"/>
+                    <property name="group"/>
+                </action>
+            </component>
         </feature>
         <feature id="bean30">
             <key>
@@ -462,6 +493,37 @@ Berkeley, CA 94706</property>
                     <property name="folderGroup"/>
                 </action>
             </component>
+            <component id="bean669">
+                <key>
+                    <uid>2de686bf9c3eebf6ea60bb39f41b9fb8</uid>
+                    <version/>
+                </key>
+                <built>19691131 160000.000-0800</built>
+                <name>component477</name>
+                <displayName>Application Only Files</displayName>
+                <shareable>false</shareable>
+                <active>true</active>
+                <installStatus>0</installStatus>
+                <replaceOption>1</replaceOption>
+                <removeOption>1</removeOption>
+                <installFailureOption>3</installFailureOption>
+                <onFailSummaryMessage/>
+                <action class="com.installshield.product.actions.Files" id="bean670">
+                    <displayName>Files</displayName>
+                    <active>true</active>
+                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
+                        <arrayItem type="com.installshield.product.actions.SourceFile">
+                            <property name="usingGNUPattern">False</property>
+                            <property name="type">4</property>
+                            <property name="pattern"/>
+                            <property name="fileName">C:\users\cxh\ptII\adm\gen-1.0\installshield\app_only</property>
+                        </arrayItem>
+                    </property>
+                    <property name="totalBytes">-1</property>
+                    <property name="owner"/>
+                    <property name="group"/>
+                </action>
+            </component>
         </feature>
         <feature id="bean44">
             <key>
@@ -488,8 +550,8 @@ Berkeley, CA 94706</property>
                 <shareable>false</shareable>
                 <active>true</active>
                 <installStatus>0</installStatus>
-                <replaceOption>0</replaceOption>
-                <removeOption>0</removeOption>
+                <replaceOption>1</replaceOption>
+                <removeOption>1</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
                 <action class="com.installshield.product.actions.Files" id="bean61">
