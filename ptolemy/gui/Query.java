@@ -46,7 +46,7 @@ Create a query with various types of entry boxes and controls.
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
 */
-public class Query extends Panel {
+public class Query extends JPanel {
 
     /** Construct a panel with no queries in it.
      */
@@ -61,16 +61,37 @@ public class Query extends Panel {
     /** Create an on-off check box.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param defvalue Default value (true for on).
+     *  @param defaultValue Default value (true for on).
      */
-    public void addCheckBox(String name, String label, boolean defvalue) {
-        // FIXME: Background color needs to be set.
+    public void addCheckBox(String name, String label, boolean defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
         JRadioButton checkbox = new JRadioButton();
-        checkbox.addItemListener(new CheckBoxListener(name));
-        checkbox.setSelected(defvalue);
+        checkbox.setBackground(_background);
+        checkbox.setSelected(defaultValue);
         _addPair(lbl, checkbox);
         _entries.put(name, checkbox);
+        // Add the listener last so that there is no notification
+        // of the first value.
+        checkbox.addItemListener(new CheckBoxListener(name));
+    }
+
+    /** Create a simple one-line text display, a non-editable value that
+     *  is set externally using the setDisplay() method.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultValue Default string to display.
+     */
+    public void addDisplay(String name, String label, String defaultValue) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        // NOTE: JLabel would be a reasonable choice here, but at
+        // least in the current version of swing, JLabel.setText() does
+        // not work.
+        JTextArea displayField = new JTextArea(defaultValue, 1, 10);
+        displayField.setBackground(_background);
+        _addPair(lbl, displayField);
+        _entries.put(name, displayField);
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -80,14 +101,18 @@ public class Query extends Panel {
      *  @param name The name used to identify the entry (when accessing
      *   the entry).
      *  @param label The label to attach to the entry.
-     *  @param defvalue Default value to appear in the entry box.
+     *  @param defaultValue Default value to appear in the entry box.
      */
-    public void addLine(String name, String label, String defvalue) {
+    public void addLine(String name, String label, String defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
-        JTextField entryBox = new JTextField(defvalue, _width);
-        entryBox.addActionListener(new LineListener(name));
+        lbl.setBackground(_background);
+        JTextField entryBox = new JTextField(defaultValue, _width);
+        entryBox.setBackground(_background);
         _addPair(lbl, entryBox);
         _entries.put(name, entryBox);
+        // Add the listener last so that there is no notification
+        // of the first value.
+        entryBox.addActionListener(new LineListener(name));
     }
 
     /** Add a listener.  The changed() method of the listener will be
@@ -190,6 +215,41 @@ public class Query extends Panel {
         }
     }
 
+    /** Set the background color for all the widgets.
+     *  @param color The background color.
+     */
+    public void setBackground(Color color) {
+        super.setBackground(color);
+        _background = color;
+    }
+
+    /** Set the displayed text of an item that has been added using
+     *  addDisplay.
+     *  @param name The name of the entry.
+     *  @param value The string to display.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   line or a slider.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public void setDisplay(String name, String value) {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + " \" in the query box.");
+        }
+        if (result instanceof JTextArea) {
+            JTextArea label = (JTextArea)result;
+            label.setText(value);
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a display, and hence cannot be set using "
+            + "setDisplay().");
+        }
+    }
+
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
      *  only the largest value specified actually affects the layout.
@@ -215,10 +275,14 @@ public class Query extends Panel {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the query box.");
         }
-        // Surely there is a better way to do this...
-        // This has to be updated each time a new entry type is added.
+        // FIXME: Surely there is a better way to do this...
+        // We should define a set of inner classes, one for each entry type.
+        // Currently, this has to be updated each time a new entry type
+        // is added.
         if (result instanceof JTextField) {
             return ((JTextField)result).getText();
+        } else if (result instanceof JTextArea) {
+            return ((JTextArea)result).getText();
         } else if (result instanceof JRadioButton) {
             JRadioButton radioButton = (JRadioButton)result;
             if (radioButton.isSelected()) {
@@ -246,7 +310,9 @@ public class Query extends Panel {
      *  @param widget The interactive entry to the right of the label.
      */
     protected void _addPair(JLabel label, Component widget) {
-        // FIXME: Surely there is a better layout manager in swing...
+        // Surely there is a better layout manager in swing...
+        // Note that Box and BoxLayout do not work because they do not
+        // support gridded layout.
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
@@ -260,6 +326,11 @@ public class Query extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The background color as set by setBackground().
+     *  This defaults to white.
+     */
+    protected Color _background = Color.white;
 
     /** Layout control. */
     protected GridBagLayout _grid;
