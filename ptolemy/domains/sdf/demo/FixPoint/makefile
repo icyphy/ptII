@@ -1,10 +1,10 @@
 # Makefile for Ptolemy II Communicating Sequential Processes demos
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Bart Kienhuis, Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2000 The Regents of the University of California.
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -41,10 +41,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	FixPointSystem.java
+	FixPoint.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	FixPointSystem.htm 
+	FixPoint.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -65,7 +65,7 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" appletviewer FixPointSystem.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer FixPoint.htm
 
 depend:
 	@echo "no dependencies in this directory"
