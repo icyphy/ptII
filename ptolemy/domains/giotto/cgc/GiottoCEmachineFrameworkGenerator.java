@@ -666,7 +666,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             for (Iterator inPorts = actor.inputPortList().iterator();
                  inPorts.hasNext();) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();
-                String sanitizedPortName =
+                String sanitizedInPortName =
                     StringUtilities.sanitizeName(
                             inPort.getName(model));
                 String inPortType = _getTypeString(inPort);
@@ -676,11 +676,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     throw new IllegalActionException(inPort, "Input port " +
                             "cannot receive data from multiple sources in Giotto.");
                 }
-                TypedIOPort port = (TypedIOPort)inPort.sourcePortList().get(0);
-                String sanitizedPortName2 = StringUtilities.sanitizeName(
-                        port.getName(model));
-                String arrayLength = _getArrayLength(port);
-                String sourceActorName = StringUtilities.sanitizeName((port.getContainer()).getName());
+                TypedIOPort outPort = (TypedIOPort)inPort.sourcePortList().get(0);
+                String sanitizedOutPortName = StringUtilities.sanitizeName(
+                        outPort.getName(model));
+                String arrayLength = _getArrayLength(outPort);
+                String sourceActorName = StringUtilities.sanitizeName((outPort.getContainer()).getName());
                        
                 if (firstParameter) {
                     firstParameter = false;
@@ -689,19 +689,26 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     FCinDriversImplString += ", ";
                     FHfuncVarDeclString += ", ";
                 }
-                FCinDriversImplString += inPortType + " *" + sanitizedPortName2
-                           + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
-                FHfuncVarDeclString += inPortType + " *" + sanitizedPortName2
-                           + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
+                FCinDriversImplString += inPortType + " *" + sanitizedOutPortName
+                           + ", " + _getTypeString(inPort) + " *" + sanitizedInPortName;
+                FHfuncVarDeclString += inPortType + " *" + sanitizedOutPortName
+                           + ", " + _getTypeString(inPort) + " *" + sanitizedInPortName;
 
                 assgtStmtString += _tabChar + "if ( ("
                                     + actorName + "_FREQ <= " + sourceActorName + "_FREQ)"
                                     + " || !(counter % ("
                                     + actorName + "_FREQ/"
                                     + sourceActorName + "_FREQ)) ) {" + _endLine;
-                assgtStmtString += _tabChar + _tabChar + "memcpy( *" + sanitizedPortName
-                                    + ", *" + sanitizedPortName2
-                                    + ", " + arrayLength + ");" + _endLine;
+                if (inPortType.endsWith("array")) {
+                    assgtStmtString += _tabChar + _tabChar + "memcpy( *" + sanitizedInPortName
+                                        + ", *" + sanitizedOutPortName
+                                        + ", " + arrayLength + ");" + _endLine;
+                }
+                else {
+                    assgtStmtString += _tabChar + _tabChar + "*" + sanitizedInPortName
+                                        + " = *" + sanitizedOutPortName
+                                        + ";" + _endLine;
+                }
                 assgtStmtString += _tabChar + "}" + _endLine + _endLine;
             }
 
