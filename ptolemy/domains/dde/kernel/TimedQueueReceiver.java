@@ -530,8 +530,7 @@ public class TimedQueueReceiver {
     private int _priority = 0;
 
     // The queue in which this receiver stores tokens.
-    // FIXME
-    FIFOQueue _queue = new FIFOQueue();
+    private FIFOQueue _queue = new FIFOQueue();
 
     // The IOPort which contains this receiver.
     private IOPort _container;
@@ -545,9 +544,7 @@ public class TimedQueueReceiver {
     // values. This is particularly useful in situations
     // where the specification of the destination receiver
     // may be considered redundant.
-
-    // FIXME
-    public class Event {
+    private class Event {
 
 	// Construct an Event with a token and time stamp.
 	public Event(Token token, double time) {

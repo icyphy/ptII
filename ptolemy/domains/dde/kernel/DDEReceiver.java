@@ -682,21 +682,17 @@ public class DDEReceiver extends TimedQueueReceiver
                     	    timeKeeper.getHighestPriorityNull() ) {
 			return false;
 		    } else if( !_hideNullTokens ) {
-			// JFIXIT: set tokenConsumed = true
 			timeKeeper._tokenConsumed = true;
 			return true;
 		    } else {
 			super.get();
-			// JFIXIT: set tokenConsumed = true
 			timeKeeper._tokenConsumed = true;
 			timeKeeper.sendOutNullTokens(this);
-			// JFIXIT return _hasToken(workspace, director,
 			return _hasOutsideToken(workspace, director,
 				timeKeeper, _hideNullTokens);
 		    }
 		} else {
 		    if( this == timeKeeper.getHighestPriorityReal() ) {
-			// JFIXIT: set tokenConsumed = true
 			timeKeeper._tokenConsumed = true;
 			return true;
 		    }
@@ -705,19 +701,15 @@ public class DDEReceiver extends TimedQueueReceiver
 	    } else {
 		if( hasNullToken() ) {
 		    if( !_hideNullTokens ) {
-			// JFIXIT: set tokenConsumed = true
 			timeKeeper._tokenConsumed = true;
 			return true;
 		    }
 		    super.get();
-		    // JFIXIT: set tokenConsumed = true
 		    timeKeeper._tokenConsumed = true;
 		    timeKeeper.sendOutNullTokens(this);
-		    // return _hasToken(workspace, director,
 		    return _hasOutsideToken(workspace, director,
                             timeKeeper, _hideNullTokens);
 		}
-		// JFIXIT: set tokenConsumed = true
 		timeKeeper._tokenConsumed = true;
 		return true;
 	    }
