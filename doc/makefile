@@ -132,8 +132,7 @@ OPTIONAL_FILES =	\
 COPERNICUSPACKAGES = \
 			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
-			ptolemy.copernicus.java \
-			ptolemy.copernicus.jhdl
+			ptolemy.copernicus.java
 
 PTINYPACKAGES = \
 			ptolemy.actor.lib \
