@@ -83,7 +83,7 @@ test Port-2.1 {Construct Ports} {
 # 
 test Port-3.1 {Test connectToRelation with one port, one relation} {
     set p1 [java::new pt.kernel.Port "My Port"]
-    set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
+    set r1 [java::new pt.kernel.Relation "My Relation"]
     $p1 connectToRelation $r1
     list [_testPortEnumRelations $p1]
 } {{{{My Relation}}}}
@@ -93,7 +93,7 @@ test Port-3.1 {Test connectToRelation with one port, one relation} {
 # 
 test Port-3.1.1 {Test connectToRelation with one port, one relation twice} {
     set p1 [java::new pt.kernel.Port "My Port"]
-    set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
+    set r1 [java::new pt.kernel.Relation "My Relation"]
     $p1 connectToRelation $r1
     $p1 connectToRelation $r1
     list [_testPortEnumRelations $p1]
@@ -113,8 +113,8 @@ test Port-3.1.2 {Test connectToRelation with one port to a null relation} {
 # 
 test Port-3.2 {Test connectToRelation with one port, two relations} {
     set p1 [java::new pt.kernel.Port "My Port"]
-    set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
-    set r2 [java::new pt.kernel.test.RelationTest "My Other Relation"]
+    set r1 [java::new pt.kernel.Relation "My Relation"]
+    set r2 [java::new pt.kernel.Relation "My Other Relation"]
     $p1 connectToRelation $r1
     $p1 connectToRelation $r2
     list [_testPortEnumRelations $p1]
@@ -126,7 +126,7 @@ test Port-3.2 {Test connectToRelation with one port, two relations} {
 test Port-3.3 {Test connectToRelation with two ports, one relation} {
     set p1 [java::new pt.kernel.Port "My Port"]
     set p2 [java::new pt.kernel.Port "My Other Port"]
-    set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
+    set r1 [java::new pt.kernel.Relation "My Relation"]
     $p1 connectToRelation $r1
     $p2 connectToRelation $r1
     list [_testPortEnumRelations $p1 $p2]
@@ -138,8 +138,8 @@ test Port-3.3 {Test connectToRelation with two ports, one relation} {
 test Port-3.4 {Test connectToRelation with two ports, two relations} {
     set p1 [java::new pt.kernel.Port "My Port"]
     set p2 [java::new pt.kernel.Port "My Other Port"]
-    set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
-    set r2 [java::new pt.kernel.test.RelationTest "My Other Relation"]
+    set r1 [java::new pt.kernel.Relation "My Relation"]
+    set r2 [java::new pt.kernel.Relation "My Other Relation"]
     $p1 connectToRelation $r1
     $p2 connectToRelation $r1
     $p1 connectToRelation $r2
@@ -155,8 +155,8 @@ test Port-3.4 {Test connectToRelation with two ports, two relations} {
 test Port-4.1 {Test disconnectAllRelations} {
     set p1 [java::new pt.kernel.Port "port1"]
     set p2 [java::new pt.kernel.Port "port2"]
-    set r1 [java::new pt.kernel.test.RelationTest "relation1"]
-    set r2 [java::new pt.kernel.test.RelationTest "relation2"]
+    set r1 [java::new pt.kernel.Relation "relation1"]
+    set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 connectToRelation $r1
     $p2 connectToRelation $r1
     $p1 connectToRelation $r2
@@ -180,8 +180,8 @@ test Port-4.1 {Test disconnectAllRelations} {
 test Port-5.1 {Test disconnectRelation} {
     set p1 [java::new pt.kernel.Port "port1"]
     set p2 [java::new pt.kernel.Port "port2"]
-    set r1 [java::new pt.kernel.test.RelationTest "relation1"]
-    set r2 [java::new pt.kernel.test.RelationTest "relation2"]
+    set r1 [java::new pt.kernel.Relation "relation1"]
+    set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 connectToRelation $r1
     $p2 connectToRelation $r1
     $p1 connectToRelation $r2
@@ -212,8 +212,8 @@ relation2 {}
 # 
 test Port-5.1 {Test disconnectRelation on a relation we are not connected to} {
     set p1 [java::new pt.kernel.Port "port1"]
-    set r1 [java::new pt.kernel.test.RelationTest "relation1"]
-    set r2 [java::new pt.kernel.test.RelationTest "relation2"]
+    set r1 [java::new pt.kernel.Relation "relation1"]
+    set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 connectToRelation $r1
     $p1 disconnectRelation $r2
     list [_testPortEnumRelations $p1]
@@ -257,7 +257,7 @@ test Port-8.1 {Build a simple tree consiting of a Ramp and a Print Entity} {
     set print [java::new pt.kernel.Entity "Print"]
     set out [java::new pt.kernel.Port "Ramp out"]
     set in [java::new pt.kernel.Port "Print in"]
-    set arc [java::new pt.kernel.test.RelationTest "Arc"]
+    set arc [java::new pt.kernel.Relation "Arc"]
 
     # Connect
     $out setEntity $ramp
