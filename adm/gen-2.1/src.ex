@@ -93,6 +93,8 @@ ptolemy/domains/sdf/test/pitchshift
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
+ptolemy/moml/test/compat
+ptolemy/moml/test/compatDemo
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
