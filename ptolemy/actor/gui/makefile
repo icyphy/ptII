@@ -135,8 +135,10 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+
+TableauFrame.class: HTMLEffigy.class
+
 install: jclass $(PTCLASSJAR)
 
 demo: all
