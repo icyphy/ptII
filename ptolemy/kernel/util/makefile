@@ -70,6 +70,7 @@ JSRCS = \
 	NamedObj.java \
 	NameDuplicationException.java \
 	NoSuchItemException.java \
+	NotPersistent.java \
 	PtolemyThread.java \
 	RecorderListener.java \
 	Settable.java \
