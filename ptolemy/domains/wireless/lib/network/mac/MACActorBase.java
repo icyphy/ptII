@@ -30,10 +30,10 @@
 
 package ptolemy.domains.wireless.lib.network.mac;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.wireless.lib.network.NetworkActorBase;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,7 +58,7 @@ to a actor here (I hope...).
 @version $ $
 */
 
-public class MACActorBase extends TypedAtomicActor {
+public class MACActorBase extends NetworkActorBase {
 
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -251,6 +251,14 @@ public class MACActorBase extends TypedAtomicActor {
     protected int _sAckCtsLng;
     protected int _mBrate;
     protected int _slotTime;
+    
+    protected static final String[] RxStartMsgFields ={"kind", "rxRate"};
+    protected static final String[] RtsTimeoutMsgFields ={"kind"};
+    protected static final String[] RxMpduMsgFields ={"kind", "pdu","endRx","rxRate"};
+    protected static final String[] UseEifsMsgFields ={"kind", "endRx"};
+    protected static final String[] RxEndMsgFields ={"kind", "status"};
+    
+    protected static final String[] CSMsgFields={"kind"};
     
     protected static final int NeedAck         = 1;
     protected static final int  RxIndicate     = 2;
