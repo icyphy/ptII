@@ -1603,7 +1603,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            if(iterationLimit > 1) {
+            if(iterationLimit > 0) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newInstanceFieldRef(
@@ -1991,7 +1991,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     insertPoint);
 
             // If we need to keep track of the number of iterations, then...
-            if (iterationLimit > 1) {
+            if (iterationLimit > 0) {
                 Local iterationLocal = null;
                 iterationLocal = Jimple.v().newLocal("iteration",
                         IntType.v());
