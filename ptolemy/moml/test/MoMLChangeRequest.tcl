@@ -1905,3 +1905,68 @@ test MoMLChangeRequest-12.4.4 {test children relationships} {
 	[listToFullNames [[$toplevel getEntity {iA.cAB}] getChildren]] \
 	[listToFullNames [[$toplevel getEntity {iD.cAB}] getChildren]] \
 } {{.top.cA.iABcopy .top.cA.iAB} {.top.cD.iABcopy .top.cD.iAB} {.top.iA.iABcopy .top.iA.iAB} {.top.iD.iABcopy .top.iD.iAB}}
+
+######################################################################
+####
+# more Deep deferrals
+
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="BaseClass" extends="ptolemy.actor.CompositeActor">
+        <class name="InnerClass" extends="ptolemy.actor.CompositeActor">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1"/>
+        </class>
+        <class name="SubclassOfInnerClass" extends="InnerClass">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="2"/>
+        </class>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLChangeRequest-13.0 {test construction of inner class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="BaseClass" extends="ptolemy.actor.CompositeActor">
+        <class name="InnerClass" extends="ptolemy.actor.CompositeActor">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </class>
+        <class name="SubclassOfInnerClass" extends="InnerClass">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </class>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+    </class>
+</entity>
+}
+
+test MoMLChangeRequest-13.1 {test propagation of change from master class} {
+    set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "BaseClass.InnerClass"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="3"/>
+    }]
+    $context requestChange $change
+
+	set p1 [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute "BaseClass.InnerClass.p"]]
+	set p2 [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute "BaseClass.SubclassOfInnerClass.p"]]
+	set p3 [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute "DerivedClass.InnerClass.p"]]
+	set p4 [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute "DerivedClass.SubclassOfInnerClass.p"]]
+
+	list \
+	[$p1 getExpression] \
+	[$p2 getExpression] \
+	[$p3 getExpression] \
+	[$p4 getExpression] \
+} {3 2 3 2}
+
+
