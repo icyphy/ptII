@@ -1616,7 +1616,7 @@ public class MoMLParser extends HandlerBase {
                 } catch (Exception ex3) {
                 // Cannot find class definition.
                     throw new XmlException(
-                            "Cannot find class " + className + ".",
+                            "Failed to parse " + className + ": " + ex3 + ".",
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
