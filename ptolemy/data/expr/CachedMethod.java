@@ -584,9 +584,11 @@ public class CachedMethod {
             }
         };
 
+    /** Conversion up to a higher type has preference 2... */
+
     /** Conversion from tokens to Java native types. */
     public static final ArgumentConversion
-    NATIVE_CONVERSION = new ArgumentConversion(2) {
+    NATIVE_CONVERSION = new ArgumentConversion(3) {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // Convert tokens to native types.
@@ -596,7 +598,7 @@ public class CachedMethod {
     
     /** Identity conversion.  Does nothing. */
     public static final ArgumentConversion
-    IDENTITY_CONVERSION = new ArgumentConversion(3) {
+    IDENTITY_CONVERSION = new ArgumentConversion(4) {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // The do nothing conversion.
@@ -631,6 +633,9 @@ public class CachedMethod {
                     "Conversion arrays have to have the same length.");
         }
         for (int j = 0; j < conversions1.length; j++) {
+            //  System.out.println("comparing " + conversions1[j]);
+            //  System.out.println("to        " + conversions2[j]);
+   
             if (conversions2[j].isPreferableTo(conversions1[j])) {
                 // Found one conversion where the second argument is
                 // preferable.  That is enough to return false.
@@ -683,12 +688,13 @@ public class CachedMethod {
         if (actual instanceof ArrayType &&
                 formal.isArray() &&
                 formal.getComponentType().isAssignableFrom(
-                        ptolemy.data.Token.class))
+                        ptolemy.data.Token.class)) {
             return ARRAYTOKEN_CONVERSION;
+        }
         try {
             // Tokens can be converted to native types.
             if (formal.isAssignableFrom(
-                     ConversionUtilities.convertTokenTypeToJavaType(actual))) {
+                        ConversionUtilities.convertTokenTypeToJavaType(actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -699,12 +705,12 @@ public class CachedMethod {
             // We have to do this because Java is stupid and doesn't
             // give us a way to tell if primitive arguments are
             // acceptable
-            if (formal.isPrimitive()) {
+            if (formal.isPrimitive() || formal.isArray()) {
                 Type type =
                     ConversionUtilities.convertJavaTypeToTokenType(formal);
                 if (ptolemy.graph.CPO.LOWER ==
                         TypeLattice.compare(actual, type)) {
-                    return NATIVE_CONVERSION;
+                    return new TypeArgumentConversion(type, NATIVE_CONVERSION);
                 }
             }
         } catch (IllegalActionException ex) {
@@ -769,7 +775,7 @@ public class CachedMethod {
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
 
-                // System.out.println("checking method " + methods[i]);
+                //  System.out.println("checking method " + methods[i]);
 
                 // Check the compatibility of arguments.
                 boolean match = true;
@@ -777,9 +783,9 @@ public class CachedMethod {
                     ArgumentConversion conversion =
                         _getConversion(arguments[j], argumentTypes[j]);
                     // System.out.println("formalType is "
-                    //       + arguments[j] + " " + arguments[j].getName());
+                    //        + arguments[j] + " " + arguments[j].getName());
                     // System.out.println("actualType is " + argumentTypes[j]
-                    //       + " " + argumentTypes[j].getClass().getName());
+                    //        + " " + argumentTypes[j].getClass().getName());
                     match = match && (conversion != IMPOSSIBLE_CONVERSION);
                     conversions[j] = conversion;
                 }
@@ -1021,7 +1027,63 @@ public class CachedMethod {
             return "Conversion " + _preference;
         }
 
-        private int _preference;
+        protected int _preference;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// TypeArgumentConversion
+
+    /** Class representing an argument conversion to another ptolemy type, 
+     *  Followed by the given conversion.
+     *  This conversion always has preference two.
+     */
+    public static class TypeArgumentConversion extends ArgumentConversion {
+        private TypeArgumentConversion(Type type, 
+                ArgumentConversion conversion) {
+            super(2);
+            _conversionType = type;
+            _conversion = conversion;
+        }
+
+        /** Convert the given token into an object that can be used to
+         *  invoke a method through the reflection mechanism.  Derived
+         *  classes will override this method to provide different
+         *  types of argument conversions.
+         */
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            ptolemy.data.Token token = _conversionType.convert(input);
+            return _conversion.convert(token);
+        }
+
+        /** Return true if this conversion is preferable to the given
+         * conversion.
+         */
+        public boolean isPreferableTo(ArgumentConversion conversion) {
+            if(_preference > conversion.getPreference()) {
+                return true;
+            } else if(_preference == conversion.getPreference()) {
+                // Assume it is a TypeArgumentConversion.
+                TypeArgumentConversion argumentConversion = 
+                    (TypeArgumentConversion)conversion;
+                // FIXME: compare types.
+                if(TypeLattice.compare(_conversionType, argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
+                    return true;
+                }
+                return _conversion.isPreferableTo(
+                        argumentConversion._conversion);
+            } else {
+                return false;
+            }
+        }
+
+        /** Return a string representation of this conversion.
+         */
+        public String toString() {
+            return "TypeConversion(" + _conversionType + ", " + _conversion + ") " + _preference;
+        }
+        private ptolemy.data.type.Type _conversionType;
+        private ArgumentConversion _conversion;
     }
 
     //////////////////////////////////////////////////////////////////

@@ -3,8 +3,8 @@
 /* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                   
-STATIC = false;                          
+LOOKAHEAD=1;                                                                      
+STATIC = false;                           
 }
 
 PARSER_BEGIN(PtParser)
