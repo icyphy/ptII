@@ -70,7 +70,7 @@ which will create a keystore store password and key password is
 
 <p>For more information, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
-
+<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html">Keytool</a.
 @see PrivateKeyReader
 @see PublicKeyReader
 @author  Christopher Brooks
