@@ -205,6 +205,25 @@ public class FixPoint implements Cloneable, Serializable {
         return new FixPoint( newPrecision, argZ);
     }
 
+    /** Return the value of this FixPoint as a BigDecimal number.
+     *  This is lossless.
+     *  @return The BigDecimal value of this FixPoint.
+     */
+    public BigDecimal bigDecimalValue() {
+	int ln = _precision.getNumberOfBits();
+	int ib = _precision.getIntegerBitLength();
+
+	BigDecimal h = new BigDecimal(_value.fixvalue);
+
+        // This division divides two number in a precision of 40
+        // decimal behind the point. This is equvalent with a
+        // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
+	BigDecimal y = h.divide(_getTwoRaisedTo(ln - ib), 40,
+                BigDecimal.ROUND_HALF_EVEN);
+
+	return y;
+    }
+
     /** Return a new FixPoint with a value equal to the division of
      *  this FixPoint by the argument. The operation is lossless.
      *  The precision of the result is equal to the maximum of the
@@ -257,25 +276,6 @@ public class FixPoint implements Cloneable, Serializable {
 
 	long h = (_value.fixvalue).longValue();
 	double y = h/(_getTwoRaisedTo(ln - ib)).doubleValue();
-
-	return y;
-    }
-
-    /** Return the value of this FixPoint as a BigDecimal number.
-     *  This is lossless.
-     *  @return The BigDecimal value of this FixPoint.
-     */
-    public BigDecimal bigDecimalValue() {
-	int ln = _precision.getNumberOfBits();
-	int ib = _precision.getIntegerBitLength();
-
-	BigDecimal h = new BigDecimal(_value.fixvalue);
-
-        // This division divides two number in a precision of 40
-        // decimal behind the point. This is equvalent with a
-        // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-	BigDecimal y = h.divide(_getTwoRaisedTo(ln - ib), 40,
-                BigDecimal.ROUND_HALF_EVEN);
 
 	return y;
     }
@@ -363,42 +363,28 @@ public class FixPoint implements Cloneable, Serializable {
         return new FixPoint(np, argZ);
     }
 
-    /** Return a bit string representation of this fixed point in the form
-     *  "<i>integerbits . fractionbits</i>", where <i>integerbits</i> and
-     *  <i>fractionbits</i> are each a sequence of "0" and "1".
-     *  @return A bit string of the form "<i>integerbits . fractionbits</i>".
+    /** Print useful debug information about the FixPoint to standard
+     *  out. This is used for debugging.
      */
-    public String toBitString() {
-        // The the toString(2) method of BigInteger removes the most
-        // significant bits that are zeros, this method recreates
-        // these zero to get the correct representation of the
-        // fractional part of a fix point.
-        FixValue fractionPart = _value.getFractionBits(_precision);
-        int num = fractionPart.fixvalue.bitLength();
-        int delta = _precision.getFractionBitLength() - num;
-        String ln = _value.getIntegerBits(_precision).toString();
-        if (_precision.getFractionBitLength() > 0) {
-            ln +=  ".";
-            // Append the zeros
-            for(int i = 0; i < delta; i++) {
-                ln += "0";
-            }
-            if (num > 0) {
-                ln += _value.getFractionBits(_precision).toString();
-            }
-        }
-        return ln;
-    }
-
-    /** Return a string representation of the value of this number.
-     *  This is calculated by first converting the number to a double,
-     *  and then returning a string representation of the double.
-     * @return A string representation of the value of this FixPoint.
-     */
-    public String toString() {
-        // FIXME: This is really not the right thing to do.
-        // We should give a precise string representation.
-  	return "" + doubleValue();
+    public void printFix() {
+	System.out.println (" unscale Value  (2) " +
+                _value.fixvalue.toString(2));
+	System.out.println (" unscaled Value (10) " +
+                _value.fixvalue.toString(10));
+	System.out.println (" scale Value (10) " + doubleValue()
+                + " Precision: " + _precision.toString());
+	System.out.println (" Errors:     " +
+                _value.getError().getDescription());
+	System.out.println (" BitCount:   " + _value.fixvalue.bitCount());
+	System.out.println (" BitLength   " + _value.fixvalue.bitLength());
+        BigInteger j = _value.fixvalue.abs();
+	System.out.println (" ABS value   " + j.toString(2));
+	System.out.println (" ABS bit count:  " + j.bitCount());
+	System.out.println (" ABD bitLength:  " + j.bitLength());
+        System.out.println (" Max value:  " +
+                _precision.findMaximum().doubleValue());
+	System.out.println (" Min value:  " +
+                _precision.findMinimum().doubleValue());
     }
 
     /** Return a new FixPoint number with a value equal to this
@@ -442,28 +428,43 @@ public class FixPoint implements Cloneable, Serializable {
         return new FixPoint(newPrecision, argZ);
     }
 
-    /** Print useful debug information about the FixPoint to standard
-     *  out. This is used for debugging.
+
+    /** Return a bit string representation of this fixed point in the form
+     *  "<i>integerbits . fractionbits</i>", where <i>integerbits</i> and
+     *  <i>fractionbits</i> are each a sequence of "0" and "1".
+     *  @return A bit string of the form "<i>integerbits . fractionbits</i>".
      */
-    public void printFix() {
-	System.out.println (" unscale Value  (2) " +
-                _value.fixvalue.toString(2));
-	System.out.println (" unscaled Value (10) " +
-                _value.fixvalue.toString(10));
-	System.out.println (" scale Value (10) " + doubleValue()
-                + " Precision: " + _precision.toString());
-	System.out.println (" Errors:     " +
-                _value.getError().getDescription());
-	System.out.println (" BitCount:   " + _value.fixvalue.bitCount());
-	System.out.println (" BitLength   " + _value.fixvalue.bitLength());
-        BigInteger j = _value.fixvalue.abs();
-	System.out.println (" ABS value   " + j.toString(2));
-	System.out.println (" ABS bit count:  " + j.bitCount());
-	System.out.println (" ABD bitLength:  " + j.bitLength());
-        System.out.println (" Max value:  " +
-                _precision.findMaximum().doubleValue());
-	System.out.println (" Min value:  " +
-                _precision.findMinimum().doubleValue());
+    public String toBitString() {
+        // The the toString(2) method of BigInteger removes the most
+        // significant bits that are zeros, this method recreates
+        // these zero to get the correct representation of the
+        // fractional part of a fix point.
+        FixValue fractionPart = _value.getFractionBits(_precision);
+        int num = fractionPart.fixvalue.bitLength();
+        int delta = _precision.getFractionBitLength() - num;
+        String ln = _value.getIntegerBits(_precision).toString();
+        if (_precision.getFractionBitLength() > 0) {
+            ln +=  ".";
+            // Append the zeros
+            for(int i = 0; i < delta; i++) {
+                ln += "0";
+            }
+            if (num > 0) {
+                ln += _value.getFractionBits(_precision).toString();
+            }
+        }
+        return ln;
+    }
+
+    /** Return a string representation of the value of this number.
+     *  This is calculated by first converting the number to a double,
+     *  and then returning a string representation of the double.
+     * @return A string representation of the value of this FixPoint.
+     */
+    public String toString() {
+        // FIXME: This is really not the right thing to do.
+        // We should give a precise string representation.
+  	return "" + doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -481,16 +482,15 @@ public class FixPoint implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         friendly methods                  ////
 
-    /** Return a FixValue which is a copy of the supplied FixValue,
+    /** Return a value which is a copy of the supplied value,
      *  but with it's precision scaled from the old precision to the
-     *  new precision. If the new FixValue cannot be contained by the
+     *  new precision. If the new value cannot be contained by the
      *  new precision, a rounding error occurs and depending on the
-     *  quantization mode selected, the appropriate FixValue is
+     *  quantization mode selected, the appropriate value is
      *  determined.
-     *  @param x FixValue that needs to be scaled
-     *  @param oldprecision The old precision of the FixValue
-     *  @param newprecision The new precision of the FixValue
-     *  @return FixValue with the desired new precision
+     *  @param value The value that needs to be scaled.
+     *  @param newprecision The new precision.
+     *  @return Value with the desired new precision.
      */
     static FixPoint _scaleBits(
             FixPoint value, Precision newprecision, int mode) {

@@ -188,6 +188,38 @@ public class Precision {
         return false;
     }
 
+    /** Return the maximum obtainable value in this precision. When
+     *  <i>m</i> represents the total number of bits and <i>n</i> the
+     *  number of integer bits, this is equal to 2^(n-1) -
+     *  1/(2^(m-n)).
+     *  @return The maximum value obtainable for this precision.
+     */
+    public BigDecimal findMaximum() {
+        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
+        int ln = getNumberOfBits();
+        int ib = getIntegerBitLength();
+        BigDecimal tmp = new BigDecimal(_getTwoRaisedTo(ln - ib));
+        BigDecimal one = new BigDecimal( _one );
+        BigDecimal tmp2 = one.divide( tmp, 40, BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal tmp1 = new BigDecimal(_getTwoRaisedTo(ib-1)).subtract( tmp2 );
+        //System.out.println("Find Max: " + tmp1.doubleValue());
+        return tmp1;
+    }
+
+    /** Return the minimum obtainable value for this precision. When
+     *  <i>m</i> represents the total number of bits and <i>n</i> the
+     *  number of integer bits, this is equal to -2^(n-1).
+     *  @return The minimum value obtainable for the given precision..
+     */
+    public BigDecimal findMinimum() {
+        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
+        // FIXME: This suggests the internal representation is twos complement.
+        int ib = getIntegerBitLength();
+        BigInteger tmp = _twoRaisedTo[ib-1].negate();
+        // System.out.println("Find Min: " + tmp.doubleValue());
+        return new BigDecimal(tmp);
+    }
+
     /** Return the number of bits representing the fractional part.
      *  @return The length of the fractional part.
      */
@@ -237,38 +269,6 @@ public class Precision {
     public String toString() {
 	String x = "(" + _integerBits + "." + (_length - _integerBits) + ")";
 	return x;
-    }
-
-    /** Return the maximum obtainable value in this precision. When
-     *  <i>m</i> represents the total number of bits and <i>n</i> the
-     *  number of integer bits, this is equal to 2^(n-1) -
-     *  1/(2^(m-n)).
-     *  @return The maximum value obtainable for this precision.
-     */
-    public BigDecimal findMaximum() {
-        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
-        int ln = getNumberOfBits();
-        int ib = getIntegerBitLength();
-        BigDecimal tmp = new BigDecimal(_getTwoRaisedTo(ln - ib));
-        BigDecimal one = new BigDecimal( _one );
-        BigDecimal tmp2 = one.divide( tmp, 40, BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal tmp1 = new BigDecimal(_getTwoRaisedTo(ib-1)).subtract( tmp2 );
-        //System.out.println("Find Max: " + tmp1.doubleValue());
-        return tmp1;
-    }
-
-    /** Return the minimum obtainable value for this precision. When
-     *  <i>m</i> represents the total number of bits and <i>n</i> the
-     *  number of integer bits, this is equal to -2^(n-1).
-     *  @return The minimum value obtainable for the given precision..
-     */
-    public BigDecimal findMinimum() {
-        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
-        // FIXME: This suggests the internal representation is twos complement.
-        int ib = getIntegerBitLength();
-        BigInteger tmp = _twoRaisedTo[ib-1].negate();
-        // System.out.println("Find Min: " + tmp.doubleValue());
-        return new BigDecimal(tmp);
     }
 
     ///////////////////////////////////////////////////////////////////
