@@ -121,7 +121,9 @@ OTHER_FILES_TO_BE_JARED = \
 	expressionsa.gif \
 	ptIIplanet.gif \
 	ptIIplanetIcon.gif \
+	PtolemyII.jpg \
 	PtolemyIISmall.gif
+
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -129,7 +131,6 @@ EXTRA_SRCS = \
 	HyVisualSplash.gif \
 	PDF.gif \
 	Postscript.gif \
-	PtolemyII.jpg \
 	PtolemyIIIcon.gif \
 	PtolemyIISmallIcon.gif \
         PtolemyIISplash.gif \
