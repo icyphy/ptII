@@ -380,25 +380,55 @@ public class TimeKeeper {
      *  equal to the current time of this time keeper. Associate a time i
      *  stamp with each NullToken that is equal to the current time of
      *  this thread. This method is not synchronized so the calling
-     *  method should be.
+     *  method should be. Note that the actor controlled by this 
+     *  TimeKeeper is necessarily opaque.
      */
-    public void sendOutNullTokens() {
-	String calleeName =
-            ((Nameable)_actor).getName();
-	Enumeration ports = _actor.outputPorts();
-        double time = getCurrentTime();
-        while( ports.hasMoreElements() ) {
-            IOPort port = (IOPort)ports.nextElement();
-	    Receiver rcvrs[][] =
-                (Receiver[][])port.getRemoteReceivers();
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
-                    if( time >
-			    ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
-                        ((DDEReceiver)rcvrs[i][j]).put(
-                                new NullToken(), time );
+    public void sendOutNullTokens(DDEReceiver rcvr) {
+        if( ((ComponentEntity) _actor).isAtomic() ) {
+	    Enumeration ports = _actor.outputPorts(); 
+            double time = getCurrentTime(); 
+            while( ports.hasMoreElements() ) {
+            	IOPort port = (IOPort)ports.nextElement(); 
+                Receiver rcvrs[][] = 
+                        (Receiver[][])port.getRemoteReceivers();
+            	for (int i = 0; i < rcvrs.length; i++) {
+                    for (int j = 0; j < rcvrs[i].length; j++) {
+                        if( time >
+			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
+                            ((DDEReceiver)rcvrs[i][j]).put(
+                                    new NullToken(), time );
+                        }
 		    }
 		}
+            }
+        } else if( _actor.getDirector() instanceof DDEDirector ){
+            if( rcvr == null ) {
+                return;
+            }
+            
+            IOPort port = (IOPort)rcvr.getContainer();
+            if( !port.isInput() || !port.isOpaque() ) {
+                // FIXME: Should we throw an exception here?
+                return;
+            }
+            
+            double time = getCurrentTime(); 
+            Receiver[][] rcvrs = null;
+            try {
+                rcvrs = port.deepGetReceivers();
+            } catch( IllegalActionException ex ) {
+                return;
+            }
+            for (int i = 0; i < port.getWidth(); i++) {
+                if (rcvrs != null && rcvrs[i] != null) {
+            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
+                        if( time >
+			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
+                            ((DDEReceiver)rcvrs[i][j]).put(
+                                    new NullToken(), time );
+                        }
+                    }
+                }
             }
         }
     }

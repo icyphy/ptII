@@ -199,6 +199,48 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
+    /** Wait until a deadlock is detected. Then handle the deadlock
+     *  (by calling the protected method _handleDeadlock()) and return. 
+     *  This method is synchronized on the director.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void fire() throws IllegalActionException {
+	Workspace workspace = workspace();
+        synchronized (this) {
+            while( !_areAllThreadsStopped() && !_isDeadlocked() ) {
+		workspace.wait(this);
+            }
+            if( _isDeadlocked() ) {
+                if( _isInternallyReadDeadlocked() ) {
+                
+                    _notDone = _resolveInternalReadDeadlock();
+                    
+                } else if( _isInternallyWriteDeadlocked() ) {
+                
+                    _notDone = _resolveInternalWriteDeadlock();
+                    
+                } else if( _isExternallyReadDeadlocked() ) {
+                
+                    _notDone = _resolveExternalReadDeadlock();
+                    
+                } else if( _isExternallyWriteDeadlocked() ) {
+                
+                    _notDone = _resolveExternalWriteDeadlock();
+                    
+                } else {
+                    throw new IllegalActionException("Actor is "
+                            + "deadlocked but not of one of the "
+                            + "four internal/external deadlock "
+                            + "types.");
+                }
+            } else {
+                // Processes Are Stopped; Continued Execution Is Allowed
+                System.out.println("Processes have stopped!");
+		_notDone = true;
+	    }
+        }
+    }
+
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is an instance
      *  of DDEThread, then the specified actor must be
@@ -275,10 +317,11 @@ public class DDEDirector extends ProcessDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	_completionTime = -5.0;
-        _readBlocks = 0;
+        _internalReadBlocks = 0;
+        _externalReadBlocks = 0;
         _writeBlocks = 0;
-        _pendingMutations = false;
         _writeBlockedQs = new LinkedList();
+        _pendingMutations = false;
    }
 
     /** Return a new receiver of a type compatible with this
@@ -315,13 +358,98 @@ public class DDEDirector extends ProcessDirector {
 	return _notDone;
     }
 
+    /** Transfer data from an input port of the container to the
+     *  ports it is connected to on the inside.  The port argument must
+     *  be an opaque input port.  If any channel of the input port
+     *  has no data, then that channel is ignored.
+     *  JFIXME
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     */
+    public void transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferInputs: port argument is not an opaque" +
+                    "input port.");
+        }
+        Token token = null;
+        Receiver[][] insiderecs = port.deepGetReceivers();
+        for (int i = 0; i < port.getWidth(); i++) {
+            if (insiderecs != null && insiderecs[i] != null) {
+            	for (int j = 0; j < insiderecs[i].length; j++ ) {
+                    if( insiderecs[i][j].hasRoom() ) {
+                        if( token == null ) {
+                            if( port.hasToken(i) ) {
+                                token = port.get(i);
+                                insiderecs[i][j].put(token);
+                            } 
+                        } else {
+                            insiderecs[i][j].put(token);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** Transfer data from an output port of the container to the
+     *  ports it is connected to on the outside.  The port argument must
+     *  be an opaque output port.  If any channel of the output port
+     *  has no data, then that channel is ignored.
+     *  JFIXME
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     */
+    public void transferOutputs(IOPort port) throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "transferOutputs: port argument is not " +
+                    "an opaque output port.");
+        }
+        Receiver[][] insiderecs = port.getInsideReceivers();
+        if (insiderecs != null) {
+            for (int i = 0; i < insiderecs.length; i++) {
+                if (insiderecs[i] != null) {
+                    for (int j = 0; j < insiderecs[i].length; j++) {
+                        if (insiderecs[i][j].hasToken()) {
+                            try {
+                                if( port.hasRoom(i) ) {
+                                    Token t = insiderecs[i][j].get();
+                                    port.send(i, t);
+                                } 
+                            } catch (NoTokenException ex) {
+                                throw new InternalErrorException(
+                                        "Director.transferOutputs: " +
+                                        "Internal error: " +
+                                        ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                  package friendly methods                 ////
 
-    /** Increment the count of actors blocked on a read.
+    /** Increment the count of actors blocked on an external read.
      */
-    synchronized void addReadBlock() {
-        _readBlocks++;
+    synchronized void addExternalReadBlock() {
+        _externalReadBlocks++;
+	if( _isDeadlocked() ) {
+	    notifyAll();
+	}
+    }
+
+    /** Increment the count of actors blocked on an internal read.
+     */
+    synchronized void addInternalReadBlock() {
+        _internalReadBlocks++;
 	if( _isDeadlocked() ) {
 	    notifyAll();
 	}
@@ -351,16 +479,25 @@ public class DDEDirector extends ProcessDirector {
 	return _initialTimeTable;
     }
 
-    /** Decrement the count of actors blocked on a read.
+    /** Decrement the count of actors externally blocked on a read.
      */
-    synchronized void removeReadBlock() {
-        if( _readBlocks > 0 ) {
-            _readBlocks--;
+    synchronized void removeExternalReadBlock() {
+        if( _externalReadBlocks > 0 ) {
+            _externalReadBlocks--;
+        }
+    }
+
+    /** Decrement the count of actors internally blocked on a read.
+     */
+    synchronized void removeInternalReadBlock() {
+        if( _internalReadBlocks > 0 ) {
+            _internalReadBlocks--;
         }
     }
 
     /** Decrement the count of actors blocked on a write.
-     * @param rcvr The DDEReceiver that is no longer write blocked.
+     *  @param rcvr The DDEReceiver that is no longer 
+     *   write blocked.
      */
     synchronized void removeWriteBlock(DDEReceiver rcvr) {
         if( _writeBlocks > 0 ) {
@@ -392,7 +529,8 @@ public class DDEDirector extends ProcessDirector {
 
 	// Some threads are stopped due to stopFire() while others
 	// are blocked waiting to read or write data.
-	if( threadsStopped + _readBlocks + _writeBlocks >= actorsActive ) {
+	if( threadsStopped + _writeBlocks + _externalReadBlocks 
+                + _internalReadBlocks >= actorsActive ) {
 	    if( threadsStopped > 0 ) {
 	        return true; 
 	    }
@@ -414,39 +552,6 @@ public class DDEDirector extends ProcessDirector {
 	    ProcessDirector director) throws IllegalActionException {
 	return new DDEThread(actor, director);
     }
-
-    /** Resolve any deadlocks of the actors governed by this
-     *  director. Return true if the deadlock has successfully
-     *  been resolved; return false otherwise.
-     * @return True if deadlocks no longer exist; return
-     *  false otherwise.
-    protected boolean _handleDeadlock() throws
-    	    IllegalActionException {
-        if( _writeBlocks != 0 ) {
-            // Artificial Non-timed Deadlock
-            System.out.println("Artificial deadlock!! Write blocks = "
-                    + _writeBlocks);
-            _incrementLowestCapacityPort();
-        } else {
-            // Real Non-timed Deadlock
-            System.out.println("Real deadlock!! Read blocks = "
-            	    + _readBlocks);
-            return true;
-        }
-
-        if( _pendingMutations ) {
-	    // FIXME
-            // try {
-            // _processTopologyRequests();
-            // } catch( TopologyChangeFailedException e ) {
-            // throw new IllegalActionException("TopologyChangeFailed: "
-            // + e.getMessage());
-            // }
-	    //
-        }
-        return false;
-    }
-     */
 
     /** Increment the port capacity's according to Tom Parks'
      *  algorithm. Select the port with the smallest capacity
@@ -484,12 +589,76 @@ public class DDEDirector extends ProcessDirector {
      *  deadlocked; return false otherwise.
      */
     protected synchronized boolean _isDeadlocked() {
-        if( _getActiveActorsCount() == _readBlocks + _writeBlocks ) {
+        if( _getActiveActorsCount() == _writeBlocks + 
+        	_internalReadBlocks + _externalReadBlocks ) {
             return true;
         }
         return false;
     }
 
+    /** Check to see if the actors governed by this director are
+     *  externally read deadlocked. Return true in the affirmative 
+     *  and false otherwise.
+     *  @return True if the actors governed by this director are
+     *   externally read deadlocked; return false otherwise.
+     */
+    protected synchronized boolean _isExternallyReadDeadlocked() {
+    	if( _isDeadlocked() ) {
+            if( _externalReadBlocks > 0 && _writeBlocks == 0 ) {
+            	return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Check to see if the actors governed by this director are
+     *  externally write deadlocked. Return true in the affirmative 
+     *  and false otherwise.
+     *  @return True if the actors governed by this director are
+     *   externally write deadlocked; return false otherwise.
+     */
+    protected synchronized boolean _isExternallyWriteDeadlocked() {
+    	if( _isDeadlocked() ) {
+            if( _writeBlocks > 0 ) {
+            	return true;
+            }
+        }
+        return false;
+    }
+    
+    /** Check to see if the actors governed by this director are
+     *  internally deadlocked on a read. Return true in the 
+     *  affirmative and false otherwise.
+     *  @return True if the actors governed by this director are
+     *   internally deadlocked on a read; return false otherwise.
+     */
+    protected synchronized boolean _isInternallyReadDeadlocked() {
+    	if( _isDeadlocked() ) {
+            if( _writeBlocks == 0 ) {
+                if( _externalReadBlocks == 0 ) {
+            	    return true;
+                }
+                
+            }
+        }
+        return false;
+    }
+    
+    /** Check to see if the actors governed by this director are
+     *  internally deadlocked on a write. Return true in the 
+     *  affirmative and false otherwise.
+     *  @return True if the actors governed by this director are
+     *   internally deadlocked on a write; return false otherwise.
+     */
+    protected synchronized boolean _isInternallyWriteDeadlocked() {
+    	if( _isDeadlocked() ) {
+            if( _writeBlocks > 0 ) {
+            	return true;
+            }
+        }
+        return false;
+    }
+    
     /** Mutate the model that this director controls.
      *  FIXME
      protected void _processTopologyRequests() throws
@@ -514,15 +683,114 @@ public class DDEDirector extends ProcessDirector {
     	    IllegalActionException {
         if( _writeBlocks != 0 ) {
             // Artificial Non-timed Deadlock
+            /* FIXME
             System.out.println("Artificial deadlock!! Write blocks = "
                     + _writeBlocks);
+            */
             _incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
+            /* FIXME
             System.out.println("Real deadlock!! Read blocks = "
             	    + _readBlocks);
+            */
             return false;
         }
+
+        if( _pendingMutations ) {
+	    /* FIXME
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: "
+               + e.getMessage());
+               }
+	    */
+        }
+        return true;
+    }
+
+    /** Return true indicating that this actor is allowed to continue
+     *  execution. Note that transferInputs() modifies its behavior 
+     *  based on the existence of an external read deadlock. 
+     *  FIXME: finish comments
+     *  @return True.
+     */
+    protected boolean _resolveExternalReadDeadlock() throws
+    	    IllegalActionException {
+        String name = ((Nameable)getContainer()).getName();
+        System.out.println("Inside of "+name+" there is an External Read Deadlock!");
+        if( _pendingMutations ) {
+	    /* FIXME
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: "
+               + e.getMessage());
+               }
+	    */
+        }
+        return true;
+    }
+
+    /** Apply an algorithm for resolving an external write deadlock
+     *  and then return true indicating that this actor is allowed
+     *  to continue execution.
+     * @return True to indicate that execution can proceed.
+     */
+    protected boolean _resolveExternalWriteDeadlock() throws
+    	    IllegalActionException {
+            
+        String name = ((Nameable)getContainer()).getName();
+        System.out.println("Inside of "+name+" there is an External Write Deadlock!");
+        _incrementLowestCapacityPort();
+        
+        if( _pendingMutations ) {
+	    /* FIXME
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: "
+               + e.getMessage());
+               }
+	    */
+        }
+        return true;
+    }
+
+    /** Return false indicating that this director can not resolve
+     *  internal read deadlocks. 
+     *  FIXME: Mutations
+     * @return False.
+     */
+    protected boolean _resolveInternalReadDeadlock() throws
+    	    IllegalActionException {
+        String name = ((Nameable)getContainer()).getName();
+        System.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
+        if( _pendingMutations ) {
+	    /* FIXME
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: "
+               + e.getMessage());
+               }
+	    */
+        }
+        return false;
+    }
+
+    /** Apply an algorithm for resolving an internal write deadlock
+     *  and then return true indicating that this actor is allowed
+     *  to continue execution.
+     * @return True to indicate that execution can proceed.
+     */
+    protected boolean _resolveInternalWriteDeadlock() throws
+    	    IllegalActionException {
+            
+        String name = ((Nameable)getContainer()).getName();
+        System.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
+        _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {
 	    /* FIXME
@@ -545,7 +813,8 @@ public class DDEDirector extends ProcessDirector {
     ////                         private variables                 ////
 
     private double _completionTime = TimedQueueReceiver.ETERNITY;
-    private int _readBlocks = 0;
+    private int _internalReadBlocks = 0;
+    private int _externalReadBlocks = 0;
     private int _writeBlocks = 0;
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;

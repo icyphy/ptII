@@ -164,7 +164,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    }
 	    Token token = super.get();
 	    if( _writePending ) {
-		director.removeWriteBlock( this );
+                director.removeWriteBlock( this );
 		_writePending = false;
 		notifyAll();
 	    }
@@ -172,7 +172,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
                     ((DDEThread)thread).getTimeKeeper();
-		timeKeeper.sendOutNullTokens();
+		timeKeeper.sendOutNullTokens(this);
 	    }
 	    return token;
 	}
@@ -209,6 +209,183 @@ public class DDEReceiver extends TimedQueueReceiver
 	return false;
     }
 
+    /** Return true if this receiver is contained on the inside of a 
+     *  boundary port. A boundary port is an opaque port that is 
+     *  contained by a composite actor. If this receiver is contained 
+     *  on the inside of a boundary port then return true. Otherwise 
+     *  return false. This method is not synchronized so the caller 
+     *  should be.
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     */
+     public boolean isInsideBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+             // This receiver is contained by the port 
+             // of a composite actor.
+             if( innerPort.isOutput() && !innerPort.isInput() ) {
+                 return true;
+             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                 return false;
+             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else {
+                 // FIXME: The following only works if the port is not 
+                 // both an input and output.
+                 throw new IllegalArgumentException("A port that is "
+                         + "both an input and output can not be " 
+                         + "properly dealt with by "
+                         + "DDEReceiver.isInsideBoundary");
+             }
+         } 
+         return false;
+     }
+
+    /** Return true if this receiver is contained on the inside of a 
+     *  boundary port. A boundary port is an opaque port that is 
+     *  contained by a composite actor. If this receiver is contained 
+     *  on the inside of a boundary port then return true. Otherwise 
+     *  return false. This method is not synchronized so the caller 
+     *  should be.
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     */
+     public boolean isOutsideBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+             // This receiver is contained by the port 
+             // of a composite actor.
+             if( innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                 return true;
+             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else {
+                 // FIXME: The following only works if the port is not 
+                 // both an input and output.
+                 throw new IllegalArgumentException("A port that is "
+                         + "both an input and output can not be " 
+                         + "properly dealt with by "
+                         + "DDEReceiver.isInsideBoundary");
+             }
+         } 
+         return false;
+     }
+
+    /** Return true if this receiver is contained in a boundary port or
+     *  is connected to the inside of a boundary port. A boundary port 
+     *  is an opaque port that is contained by a composite actor. If this 
+     *  receiver is contained by a boundary port or is connected to the
+     *  inside of a boundary port, then return true. Otherwise return false. 
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver contained by or is connected to 
+     *   the inside of a boundary port; return false otherwise.
+     */
+     public boolean isBoundaryReceiver() {
+         IOPort innerPort = (IOPort)getContainer();
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+             // This receiver is contained by the port 
+             // of a composite actor.
+             if( innerPort.isOutput() && !innerPort.isInput() ) {
+                 return true;
+             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                 return false;
+             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                 return false;
+             } else {
+                 // FIXME: The following only works if the port is not 
+                 // both an input and output.
+                 throw new IllegalArgumentException("A port that is "
+                         + "both an input and output can not be " 
+                         + "properly dealt with by "
+                         + "DDEReceiver.isBoundaryReceiver");
+             }
+         } 
+         
+         Port outerPort = null; 
+         Enumeration enum = innerPort.connectedPorts(); 
+         ComponentEntity outerEntity = null; 
+         while( enum.hasMoreElements() ) {
+             outerPort = (Port)enum.nextElement();
+             outerEntity = (ComponentEntity)outerPort.getContainer();
+             /*
+             if( !outerEntity.isAtomic() && outerPort.isOpaque() ) {
+             */
+             if( outerEntity == innerEntity.getContainer() ) {
+		 // We are connected to a boundary port. Now
+		 // determine if the boundary port is connected
+		 // to this relation.
+                 try {
+		 Receiver[][] rcvrs = 
+                         ((IOPort)outerPort).deepGetReceivers();
+		 for( int i = 0; i < rcvrs.length; i++ ) {
+		     for( int j = 0; j < rcvrs[i].length; j++ ) {
+		         if( this == rcvrs[i][j] ) {
+			     return true;
+			 }
+		     }
+		 }
+                 } catch( IllegalActionException e) {
+                     // FIXME: Do Something!
+                 }
+             }
+         }
+         return false;
+     }
+
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is contained 
+     *  by a composite actor. If this receiver is connected to the inside 
+     *  of a boundary port, then return true. Otherwise return false. 
+     *  Note that this method will return false if this receiver is 
+     *  contained in a boundary port.
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver is connected to the inside of a 
+     *   boundary port; return false otherwise.
+     */
+     public boolean isConnectedToBoundary() {
+         IOPort innerPort = (IOPort)getContainer();
+         ComponentEntity innerEntity = 
+                 (ComponentEntity)innerPort.getContainer(); 
+
+         Port outerPort = null; 
+         Enumeration enum = innerPort.connectedPorts(); 
+         ComponentEntity outerEntity = null; 
+         while( enum.hasMoreElements() ) {
+             outerPort = (Port)enum.nextElement();
+             outerEntity = (ComponentEntity)outerPort.getContainer();
+             /*
+             if( !outerEntity.isAtomic() && outerPort.isOpaque() ) {
+             */
+             if( outerEntity == innerEntity.getContainer() ) {
+		 // We are connected to a boundary port. Now
+		 // determine if the boundary port is connected
+		 // to this relation.
+                 try {
+		 Receiver[][] rcvrs = 
+                         ((IOPort)outerPort).deepGetReceivers();
+		 for( int i = 0; i < rcvrs.length; i++ ) {
+		     for( int j = 0; j < rcvrs[i].length; j++ ) {
+		         if( this == rcvrs[i][j] ) {
+			     return true;
+			 }
+		     }
+		 }
+                 } catch( IllegalActionException e) {
+                     // FIXME: Do Something!
+                 }
+             }
+         }
+         return false;
+     }
+     
     /** Do a blocking write on the queue. Set the time stamp to be
      *  the current time of the sending actor. If the time stamp of
      *  the token is greater than the completionTime of this receiver,
@@ -287,10 +464,6 @@ public class DDEReceiver extends TimedQueueReceiver
     	_readPending = false;
     	_writePending = false;
     	_ignoreNotSeen = true;
-        Director director =
-            ((Actor)getContainer().getContainer()).getDirector();
-        String name =
-            ((Nameable)getContainer().getContainer()).getName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -355,7 +528,7 @@ public class DDEReceiver extends TimedQueueReceiver
 			return true;
 		    } else {
 			super.get();
-			timeKeeper.sendOutNullTokens();
+			timeKeeper.sendOutNullTokens(this);
 			return _hasToken(workspace, director,
 				timeKeeper, _hideNullTokens);
 		    }
@@ -368,7 +541,7 @@ public class DDEReceiver extends TimedQueueReceiver
 			return true;
 		    }
 		    super.get();
-		    timeKeeper.sendOutNullTokens();
+		    timeKeeper.sendOutNullTokens(this);
 		    return _hasToken(workspace, director,
                             timeKeeper, _hideNullTokens);
 		}
@@ -377,7 +550,23 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
 	if( !super.hasToken() && !_terminate ) {
 	    _readPending = true;
-	    director.addReadBlock();
+            // BEGIN JFIXME
+            if( isConnectedToBoundary() ) {
+            // if( isBoundaryReceiver() ) {
+                // JFIXME
+         	String name = ((Nameable)getContainer().getContainer()).getName();
+                System.out.println(name+": blocked on external read.");
+         	// END JFIXME
+                director.addExternalReadBlock();
+            } else {
+                // JFIXME
+         	String name = ((Nameable)getContainer().getContainer()).getName();
+                System.out.println(name+": blocked on internal read.");
+         	// END JFIXME
+         
+                director.addInternalReadBlock();
+            }
+	    // END JFIXME: director.addInternalReadBlock();
 	    while( _readPending && !_terminate ) {
 		workspace.wait( this );
 	    }
@@ -385,7 +574,21 @@ public class DDEReceiver extends TimedQueueReceiver
 	if( _terminate ) {
 	    if( _readPending ) {
 		_readPending = false;
-		director.removeReadBlock();
+                // BEGIN JFIXME
+            	if( isBoundaryReceiver() ) {
+                    // JFIXME
+         	    String name = ((Nameable)getContainer().getContainer()).getName();
+                    System.out.println(name+": removed an external read block.");
+         	    // END JFIXME
+		    director.removeExternalReadBlock();
+                } else {
+                    // JFIXME
+         	    String name = ((Nameable)getContainer().getContainer()).getName();
+                    System.out.println(name+": removed an internal read block.");
+         	    // END JFIXME
+		    director.removeInternalReadBlock();
+                }
+		// END JFIXME: director.removeReadBlock();
 	    }
             throw new TerminateProcessException("");
 	} else {
@@ -408,7 +611,21 @@ public class DDEReceiver extends TimedQueueReceiver
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readPending ) {
-		    director.removeReadBlock();
+                    // BEGIN JFIXME 
+                    if( isBoundaryReceiver() ) {
+                    	// JFIXME
+         	    	String name = ((Nameable)getContainer().getContainer()).getName();
+                    	System.out.println(name+": removed an external read block.");
+         	    	// END JFIXME
+		        director.removeExternalReadBlock();
+                    } else {
+                    	// JFIXME
+         	    	String name = ((Nameable)getContainer().getContainer()).getName();
+                    	System.out.println(name+": removed an internal read block.");
+         	    	// END JFIXME
+		        director.removeInternalReadBlock();
+                    }
+		    // END JFIXME: director.removeReadBlock();
 		    _readPending = false;
 		    notifyAll();
 		}
@@ -417,7 +634,7 @@ public class DDEReceiver extends TimedQueueReceiver
 
             if ( !super.hasRoom() && !_terminate ) {
 		_writePending = true;
-		director.addWriteBlock(this);
+                director.addWriteBlock(this);
 		while( _writePending && !_terminate ) {
 		    workspace.wait( this );
 		}
@@ -425,7 +642,7 @@ public class DDEReceiver extends TimedQueueReceiver
             if( _terminate ) {
 		if( _writePending ) {
 		    _writePending = false;
-		    director.removeWriteBlock(this);
+                    director.removeWriteBlock( this );
 		}
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
