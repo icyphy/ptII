@@ -52,13 +52,15 @@ import java.util.List;
 /**
 Parameter extends Variable with support for string-valued variables that
 makes these friendlier at the user interface level. In particular,
-after calling setStringMode(true), then when setting the value of
+if the parameter is in string mode, then when setting the value of
 this parameter, the string that you pass to setExpression(String)
 is taken to be literally the value of the instance of StringToken
 that represents the value of this parameter. It is not necessary
 to enclose it in quotation marks (and indeed, if you do, the quotation
 marks will become part of the value of the string).  In addition,
-the type of this parameter will be set to string.
+the type of this parameter will be set to string. A parameter is
+in string mode if either setStringMode(true) has been called or
+it contains an attribute named "_stringMode".
 <p>
 In string mode, the value passed to setExpression(String) may contain
 references to other variables in scope using the syntax $id,
@@ -284,7 +286,11 @@ public class Parameter extends Variable {
      *  @see #setStringMode(boolean)
      */
     public boolean isStringMode() {
-        return _stringMode;
+        if (_stringMode) {
+            return true;
+        } else {
+            return (getAttribute("_stringMode") != null);
+        }
     }
     
     /** Remove a choice.
