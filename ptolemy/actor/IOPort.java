@@ -303,11 +303,9 @@ public class IOPort extends ComponentPort {
                     IORelation r = (IORelation) insideRels.nextElement();
                     Receiver[][] rr = r.deepReceivers(this);
                     if (rr != null) {
-                        for (int i=0; i < rr.length; i++) {
-                            System.out.println("rr.length="+rr.length);
+                        int size = java.lang.Math.min(rr.length, width-index);
+                        for (int i=0; i < size; i++) {
                             if (rr[i] != null) {
-                                System.out.println("rr[i].length="+rr[i].length);
-                                System.out.println("index="+index);
                                 result[index++] = rr[i];
                             }
                         }
