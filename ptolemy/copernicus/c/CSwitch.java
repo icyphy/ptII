@@ -186,32 +186,29 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         defaultCase(v);
     }
 
-    /** Generate code for a CmpExpr expression
-     *  @param the expression.
+    /** Generate code for a CmpExpr expression.
+     *  @param v the expression.
      */
     public void caseCmpExpr(CmpExpr v) {
-        // The following semantics of CmpExpr is assumed: 
-        // (op1 > op2)  ==> return a positive result
-        // (op1 < op2)  ==> return a negative result
-        // (op1 == op2) ==> return 0
-        // The result must be small enough to fit in a char, so we
-        // use 1, -1, and 0, respectively.
-
-        v.getOp2().apply(this);
-        v.getOp1().apply(this);
-        String op1 = _pop().toString();
-        String op2 = _pop().toString();
-        _push("((" + op1 + " > " + op2 + ") ?  1 : (" + 
-                "(" + op1 + " < " + op2 + ") ?  -1 : 0))");
-                
+        _generateCompare(v);
     }
 
+    /** Generate code for a Cmpg expression. Presently this is equivalent
+     *  to generating code for a Cmp expression since NaN is not supported 
+     *  at present.
+     *  @param v the expression.
+     */
     public void caseCmpgExpr(CmpgExpr v) {
-        defaultCase(v);
+        _generateCompare(v);
     }
 
+    /** Generate code for a Cmpl expression. Presently this is equivalent
+     *  to generating code for a Cmp expression since NaN is not supported 
+     *  at present.
+     *  @param v the expression.
+     */
     public void caseCmplExpr(CmplExpr v) {
-        defaultCase(v);
+        _generateCompare(v);
     }
 
     public void caseDivExpr(DivExpr v) {
@@ -541,6 +538,23 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         expression.getOp2().apply(this);    
         expression.getOp1().apply(this);    
         _push(_pop().append(" " + operator + " ").append(_pop()));
+    }
+
+    /** Generate code for a compare expression. 
+     * The following semantics of a compare expression is assumed: <BR>
+     * (op1 > op2)  ==> return 1 <BR>
+     * (op1 < op2)  ==> return -1 <BR>
+     * (op1 == op2) ==> return 0 <BR>
+     *  @param v the expression.
+     */
+    protected void _generateCompare(BinopExpr v) {
+        v.getOp2().apply(this);
+        v.getOp1().apply(this);
+        String op1 = _pop().toString();
+        String op2 = _pop().toString();
+        _push("((" + op1 + " > " + op2 + ") ?  1 : (" + 
+                "(" + op1 + " < " + op2 + ") ?  -1 : 0))");
+                
     }
 
     /** Generate code for an instance invoke expression.
