@@ -37,9 +37,10 @@
 <entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR"/>
 
         <!-- NOTE: javasound actors only work under jdk1.3. -->
-        <input source="javasound/javasound.xml"/>
+        <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+        <input source="ptolemy/actor/lib/javasound/javasound.xml"/>
 	<!-- NOTE: This next one is labeled as image processing."-->
-        <input source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
+        <input source="ptolemy/domains/sdf/lib/vq/sdfvqentities.xml"/>
 
       </group>
     ?>
