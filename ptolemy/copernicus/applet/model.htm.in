@@ -26,7 +26,6 @@ applet is displayed on a XGA screen-->
 <PARAM NAME = CODEBASE VALUE = @codeBase@>
 <PARAM NAME=ARCHIVE VALUE="
 	ptolemy/ptsupport.jar,
-	lib/diva.jar,
 	@domainJar@">
 <PARAM NAME = NAME VALUE = "MoML" >
 <PARAM NAME = "type" VALUE="application/x-java-applet;version=1.3">
@@ -46,7 +45,6 @@ applet is displayed on a XGA screen-->
  codebase=@codeBase@
  archive="
 	ptolemy/ptsupport.jar,
-	lib/diva.jar,
 	@domainJar@"
  NAME = "@sanitizedModelName@"
  WIDTH = 450
