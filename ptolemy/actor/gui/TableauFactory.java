@@ -54,7 +54,7 @@ Subclasses of this class will usually be inner classes of a Tableau,
 and will create the Tableau, or might themselves be aggregates of
 instances of TextEditorTableauFactory.
 <p>
-When there are multiple distinct TextEditorTableauFactory classes that are capable
+When there are multiple distinct TableauFactory classes that are capable
 of providing views on the same effigy, then instances of these
 factories should be aggregated into a single factory contained herein.
 Those instances can be presented as alternative views of the data when
