@@ -211,7 +211,7 @@ public class Director extends Attribute implements Executable {
                 // If the time resolution is reduced, give a warning.
                 if (newResolution < _timeResolution) {
                     int minimumNumberOfBits = 
-                        (int)Math.floor(-1*ExtendedMath.log2(newResolution));
+                        (int)Math.floor(-1*ExtendedMath.log2(newResolution)) + 1;
                     int maximumGain = 52 - minimumNumberOfBits;
                     double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
                         * Math.pow(2.0, maximumGain);
@@ -224,9 +224,16 @@ public class Director extends Attribute implements Executable {
                     try {
                         MessageHandler.warning(warningMessage);
                     } catch (CancelException exception) {
+                        // If cancle button is pressed, restore the old value
+                        // of the time resolution.
+                        // FIXME: the value does not get restored immediately 
+                        // unless the another button is hit.
+                        timeResolution.setToken(
+                                new DoubleToken(_timeResolution));
+                        return;
                     }
                 }
-                _timeResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();                
+                _timeResolution = newResolution;               
             }
         }
         super.attributeChanged(attribute);
