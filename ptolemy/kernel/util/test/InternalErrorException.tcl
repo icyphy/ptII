@@ -71,3 +71,44 @@ test InternalErrorException-3.3 {Create a InternalErrorException with \
 	    [java::new {ptolemy.kernel.util.InternalErrorException String} \
 	    $n1]}
 } {1}
+
+######################################################################
+####
+#
+test InternalErrorException-3.4 {InternalErrorException with a cause} {
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new {ptolemy.kernel.util.InternalErrorException Throwable} \
+	    $cause]
+    list [$pe getMessage]
+} {{Because:
+Cause Exception}}
+
+
+######################################################################
+####
+#
+test InternalErrorException-3.5 {InternalErrorException with a nameable \
+	cause and no message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "myN1"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.InternalErrorException \
+	    $n1 $cause [java::null]]
+    list [$pe getMessage]
+} {{  in .myN1
+Because:
+Cause Exception}}
+
+######################################################################
+####
+#
+test InternalErrorException-3.6 {InternalErrorException with a nameable \
+	cause and a detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "myN1"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.InternalErrorException \
+	    $n1 $cause "Detail Message"]
+    list [$pe getMessage]
+} {{Detail Message
+  in .myN1
+Because:
+Cause Exception}}
