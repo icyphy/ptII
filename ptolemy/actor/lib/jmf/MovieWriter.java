@@ -64,6 +64,7 @@ import javax.media.protocol.PullBufferStream;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -242,9 +243,7 @@ public class MovieWriter extends Sink
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("I am in initialize");
-        }
+        super.initialize();
         _bufferArrayList = new ArrayList();
     }
 
@@ -256,15 +255,27 @@ public class MovieWriter extends Sink
      *  @return true
      */
     public boolean postfire() throws IllegalActionException {
-        _jmfImageToken = (JMFImageToken) input.get(0);
-        Buffer buffer;
-        buffer = _jmfImageToken.getValue();
-        if (!_bufferArrayList.add(buffer)) {
-            throw new IllegalActionException("Could not add buffer "
-                    + "to the array list");
+        if (input.hasToken(0)) {
+            Token token = input.get(0);
+            try {
+                _jmfImageToken = (JMFImageToken) token;
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this, ex, 
+                        "Failed to cast " + token.getClass()
+                        + " to a JMFImageToken.\nToken was: " + token);
+            }
+            if (_debugging) {
+                _debug("MoveWriter.postfire(): read in " + _jmfImageToken);
+            }
+            Buffer buffer;
+            buffer = _jmfImageToken.getValue();
+            if (!_bufferArrayList.add(buffer)) {
+                throw new IllegalActionException("Could not add buffer "
+                        + "to the array list");
+            }
+            _dimensionSet = true;
         }
-        _dimensionSet = true;
-        return true;
+        return super.postfire();
     }
 
     /** Save the file.
@@ -290,104 +301,112 @@ public class MovieWriter extends Sink
             throw new IllegalActionException("Could not create "
                     + "MediaLocator from the given URL: " + _fileRoot);
         }
-        //get dimensions
-        Image image = _jmfImageToken.asAWTImage();
-        int width = image.getWidth(null);
-        int height = image.getHeight(null);
-        ImageDataSource imageDataSource = new ImageDataSource(width, height);
-        Processor processor;
 
-        try {
-            processor = Manager.createProcessor(imageDataSource);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Can't create processor");
-        }
-
-        processor.addControllerListener(this);
-
-        processor.configure();
-
-        if (!_waitForState(processor, Processor.Configured)) {
-            throw new IllegalActionException("Failed to configure processor.");
-        }
-
-        if (_fileType == _QUICKTIME) {
-            processor.setContentDescriptor(new ContentDescriptor
-                    (FileTypeDescriptor.QUICKTIME));
-        } else if (_fileType == _AVI) {
-            processor.setContentDescriptor(new ContentDescriptor
-                    (FileTypeDescriptor.MSVIDEO));
-        } else if (_fileType == _MPEG) {
-            processor.setContentDescriptor(new ContentDescriptor
-                    (FileTypeDescriptor.MPEG));
+        // Get dimensions
+        if (_jmfImageToken == null) {
+            throw new IllegalActionException(this,
+                    "In MovieWriter.wrapup(), _jmfImageToken is "
+                    + "null, perhaps this actor never read any input?");
         } else {
-            throw new InternalErrorException(
-                    "type = " + _fileType + ", which is not one of "
-                    + _QUICKTIME + "(QUICKTIME), "
-                    + _AVI + "(AVI) or "
-                    + _MPEG + "(MPEG).");
-        }
+            Image image = _jmfImageToken.asAWTImage();
+            int width = image.getWidth(null);
+            int height = image.getHeight(null);
+            ImageDataSource imageDataSource =
+                new ImageDataSource(width, height);
+            Processor processor;
 
-        TrackControl trackControl[] = processor.getTrackControls();
-        Format format[] = trackControl[0].getSupportedFormats();
+            try {
+                processor = Manager.createProcessor(imageDataSource);
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Can't create processor");
+            }
 
-        if (format == null || format.length <= 0) {
-            throw new IllegalActionException("Cannot support input format");
-        }
+            processor.addControllerListener(this);
+            
+            processor.configure();
 
-        trackControl[0].setFormat(format[0]);
+            if (!_waitForState(processor, Processor.Configured)) {
+                throw new IllegalActionException("Failed to configure processor.");
+            }
 
-        processor.realize();
+            if (_fileType == _QUICKTIME) {
+                processor.setContentDescriptor(new ContentDescriptor
+                        (FileTypeDescriptor.QUICKTIME));
+            } else if (_fileType == _AVI) {
+                processor.setContentDescriptor(new ContentDescriptor
+                        (FileTypeDescriptor.MSVIDEO));
+            } else if (_fileType == _MPEG) {
+                processor.setContentDescriptor(new ContentDescriptor
+                        (FileTypeDescriptor.MPEG));
+            } else {
+                throw new InternalErrorException(
+                        "type = " + _fileType + ", which is not one of "
+                        + _QUICKTIME + "(QUICKTIME), "
+                        + _AVI + "(AVI) or "
+                        + _MPEG + "(MPEG).");
+            }
 
-        if (!_waitForState(processor, Processor.Realized)) {
-            throw new IllegalActionException("Failed to realize processor");
-        }
+            TrackControl trackControl[] = processor.getTrackControls();
+            Format format[] = trackControl[0].getSupportedFormats();
 
-        DataSource dataSource = processor.getDataOutput();
-        if (dataSource == null) {
-            throw new IllegalActionException("Processor does not have "
-                    + "output DataSource");
-        }
+            if (format == null || format.length <= 0) {
+                throw new IllegalActionException("Cannot support input format");
+            }
 
-        if (_debugging) {
-            _debug(_fileRoot);
-        }
-        DataSink dataSink;
+            trackControl[0].setFormat(format[0]);
 
-        try {
-            dataSink = Manager.createDataSink(dataSource, mediaLocator);
-            dataSink.open();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Couldn't create the data sink");
-        }
+            processor.realize();
 
-        dataSink.addDataSinkListener(this);
+            if (!_waitForState(processor, Processor.Realized)) {
+                throw new IllegalActionException("Failed to realize processor");
+            }
 
-        try {
-            processor.start();
-            dataSink.start();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Could not start processor and datasink");
-        }
+            DataSource dataSource = processor.getDataOutput();
+            if (dataSource == null) {
+                throw new IllegalActionException("Processor does not have "
+                        + "output DataSource");
+            }
 
-        if (!_waitForFileDone()) {
-            throw new IllegalActionException("Could not write the file");
-        }
+            if (_debugging) {
+                _debug(_fileRoot);
+            }
+            DataSink dataSink;
 
-        try {
+            try {
+                dataSink = Manager.createDataSink(dataSource, mediaLocator);
+                dataSink.open();
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Couldn't create the data sink");
+            }
+
+            dataSink.addDataSinkListener(this);
+            
+            try {
+                processor.start();
+                dataSink.start();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Could not start processor and datasink");
+            }
+            
+            if (!_waitForFileDone()) {
+                throw new IllegalActionException("Could not write the file");
+            }
+
+            try {
+                dataSink.close();
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "can't close data sink");
+            }
+            processor.stop();
+            processor.removeControllerListener(this);
+            dataSink.removeDataSinkListener(this);
+            processor.close();
             dataSink.close();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "can't close data sink");
         }
-        processor.stop();
-        processor.removeControllerListener(this);
-        dataSink.removeDataSinkListener(this);
-        processor.close();
-        dataSink.close();
     }
 
     ///////////////////////////////////////////////////////////////////
