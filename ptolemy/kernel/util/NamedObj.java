@@ -432,6 +432,7 @@ public class NamedObj implements Nameable, Debuggable,
                    }
                 */
             }
+
             // If the new object has any public fields whose name
             // matches that of an attribute, then set the public field
             // equal to the attribute.
@@ -444,8 +445,14 @@ public class NamedObj implements Nameable, Debuggable,
                                 newObject.getAttribute(fields[i].getName()));
                     }
                 } catch (IllegalAccessException e) {
-                    throw new CloneNotSupportedException(e.getMessage() +
-                            ": " + fields[i].getName());
+                    // FIXME: This would be a nice 
+                    // place for exception chaining.
+                    throw new CloneNotSupportedException(
+                            "The field associated with " 
+                            + fields[i].getName() 
+                            + " could not be automatically cloned because "
+                            + e.getMessage() + ".  This can be caused if "
+                            + "the field is not defined in a public class.");
                 }
             }
             return newObject;
@@ -529,10 +536,14 @@ public class NamedObj implements Nameable, Debuggable,
      *  the MoML description.
      *  @return A MoML description, or null if there is none.
      *  @see #exportMoML(Writer, int, String)
+     *  @deprecated use a ptolemy.moml.MoMLWriter instead.
      */
     public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
+            // ptolemy.moml.MoMLWriter writer = 
+            //    new ptolemy.moml.MoMLWriter(buffer);
+            //writer.write(this);
             exportMoML(buffer, 0);
             return buffer.toString();
         } catch (IOException ex) {
@@ -965,7 +976,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-	NamedObj container = (NamedObj) getContainer();
+  	NamedObj container = (NamedObj) getContainer();
 	if (container == null) {
             // Make sure the list of listeners is not being concurrently
             // modified by making this synchronized.
@@ -1204,6 +1215,7 @@ public class NamedObj implements Nameable, Debuggable,
             // an external URL source for the text, which is again null.
             icon.configure(null, null, text);
 	} catch (Exception ex) {
+            ex.printStackTrace();
 	    throw new InternalErrorException(
                     "Error creating singleton attribute named "
                     + name
@@ -1472,7 +1484,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  by calling getMoMLInfo().
      *  @see NamedObj#getMoMLInfo()
      */
-    public class MoMLInfo implements Serializable {
+    public static class MoMLInfo implements Serializable {
 
         /** Construct an object with default values for the fields.
          *  @param owner The object that this describes.
