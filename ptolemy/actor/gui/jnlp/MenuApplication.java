@@ -88,6 +88,11 @@ MenuApplication.class
 @since Ptolemy II 2.0
 */
 public class MenuApplication {
+
+    /* Main method that sets user.dir as necessary and calls
+     * VergilApplication.main()
+     * @param args Arguments to be passed on to VergilApplication.main()
+     */
     public static void main(final String [] args) {
         // If we were started from a menu choice instead of a command
         // line, then the current working directory is likely
