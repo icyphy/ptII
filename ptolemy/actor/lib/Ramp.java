@@ -153,8 +153,8 @@ public class Ramp extends SequenceSource {
             super.fire();
             output.send(0, _stateToken);
         } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
+            throw new InternalErrorException(this, ex,
+                    "Should not be thrown because this is an output port");
         }
     }
 
@@ -198,9 +198,9 @@ public class Ramp extends SequenceSource {
                 step.update();
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
-                // Should not be thrown because
-                // we have already verified that the tokens can be added.
-                throw new InternalErrorException(ex.getMessage());
+                throw new InternalErrorException(this, ex,
+                        "Should not be thrown because we have already"
+                        + "verified that the tokens can be added");
             }
         }
         output.send(0, _resultArray, count);
