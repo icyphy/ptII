@@ -149,47 +149,57 @@ public class GenerateCopyrights {
                 + "<p>Ptolemy II uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n "
                 + "<a href=\"" + aelfredCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n"
-                + "<p>Below we list actors and the corresponding copyright of "
-                + "the package that is used.  If an actor is not listed \n"
-                + "below, then the Ptolemy II copyright is the only copyright."
-                + "<table>\n"
-                + "  <tr><th>Actor</th>\n"
-                + "      <th>Copyright of package used by the Actor</th>\n"
-                + "  </tr>\n");
+                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
 
         Iterator copyrights = copyrightsMap.entrySet().iterator();
-        while (copyrights.hasNext()) {
-            Map.Entry entry = (Map.Entry)copyrights.next();
-            String copyrightURL = (String)entry.getKey();
-            Set entitiesSet = (Set)entry.getValue();
+        if (copyrights.hasNext()) {
+            // DSP configuration might not include other actors.
+            htmlBuffer.append(
+                    "<p>Below we list actors and the corresponding copyright "
+                    + " of the package that is used.  If an actor is not "
+                    + "listed below, then the Ptolemy II copyright is the "
+                    + "only copyright."
+                    + "<table>\n"
+                    + "  <tr><th>Actor</th>\n"
+                    + "      <th>Copyright of package used by the Actor</th>\n"
+                    + "  </tr>\n");
 
-            StringBuffer entityBuffer = new StringBuffer();
-            Iterator entities = entitiesSet.iterator();
-            while (entities.hasNext()) {
-                if (entityBuffer.length() > 0) {
-                    entityBuffer.append(", ");
+            while (copyrights.hasNext()) {
+                Map.Entry entry = (Map.Entry)copyrights.next();
+                String copyrightURL = (String)entry.getKey();
+                Set entitiesSet = (Set)entry.getValue();
+
+                StringBuffer entityBuffer = new StringBuffer();
+                Iterator entities = entitiesSet.iterator();
+                while (entities.hasNext()) {
+                    if (entityBuffer.length() > 0) {
+                        entityBuffer.append(", ");
+                    }
+                    String entityClassName = (String)entities.next();
+                    
+                    // If we have javadoc, link to it.
+                    // Assuming that entityClassName contains a dot separated
+                    // classpath here.
+                    String docName = "doc.codeDoc." + entityClassName;
+                    String codeDoc = _findURL(docName.replace('.', '/') + ".html");
+                    entityBuffer.append("<a href=\"" + codeDoc
+                            + "\">" + entityClassName + "</a>");
                 }
-                String entityClassName = (String)entities.next();
 
-                // If we have javadoc, link to it.
-                // Assuming that entityClassName contains a dot separated
-                // classpath here.
-                String docName = "doc.codeDoc." + entityClassName;
-                String codeDoc = _findURL(docName.replace('.', '/') + ".html");
-                entityBuffer.append("<a href=\"" + codeDoc
-                        + "\">" + entityClassName + "</a>");
+                String foundCopyright = _findURL(copyrightURL);
+
+                htmlBuffer.append("<tr><td>" + entityBuffer
+                        + "</td>\n    <td> <a href=\""
+                        + foundCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(foundCopyright)
+                        + "</code></a></td>\n</tr>\n");
             }
-
-            String foundCopyright = _findURL(copyrightURL);
-
-            htmlBuffer.append("<tr><td>" + entityBuffer
-                    + "</td>\n    <td> <a href=\""
-                    + foundCopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(foundCopyright)
-                    + "</code></a></td>\n</tr>\n");
+            htmlBuffer.append("</table>\n</p>");
         }
-        htmlBuffer.append("</dl>\n</body>\n</html>");
+
+        htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
+                + "this configuration.\n"
+                + "</body>\n</html>");
         return htmlBuffer.toString();
     }
 
