@@ -1,6 +1,6 @@
 /* A Manager governs the execution of an entire simulation.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,7 +32,6 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-//import ptolemy.kernel.mutation.*;
 import ptolemy.data.*;
 
 import collections.LinkedList;
