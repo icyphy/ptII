@@ -79,14 +79,25 @@ test ChoiceStyle-2.0 {settable} {
 test ChoiceStyle-2.0 {addEntry} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set n [java::new ptolemy.kernel.util.NamedObj N]
-    set d [java::new ptolemy.actor.gui.style.ChoiceStyle $n D]
+    set stringAttribute [java::new ptolemy.kernel.util.StringAttribute \
+	    $n "MyStringAttribute"]
+    $stringAttribute setExpression "stringAttributeExpr"
+    set choiceStyle \
+	    [java::new ptolemy.actor.gui.style.ChoiceStyle $stringAttribute D]
+
     set stringAttribute1 [java::new ptolemy.kernel.util.StringAttribute \
-	    $d "MyStringAttribute1"]
+	    $choiceStyle "MyStringAttribute1"]
+    $stringAttribute1 setExpression "stringAttribute1Expr"
+
     set stringAttribute2 [java::new ptolemy.kernel.util.StringAttribute \
-	    $d "MyStringAttribute2"]
+	    $choiceStyle "MyStringAttribute2"]
+    $stringAttribute2 setExpression "stringAttribute2Expr"
+
     set frame [java::new javax.swing.JFrame]
     set pane [$frame getContentPane]
     set ptolemyQuery [java::new ptolemy.actor.gui.PtolemyQuery $n]
+    #$ptolemyQuery addStyledEntry $stringAttribute
+    $choiceStyle addEntry $ptolemyQuery
     $pane add $ptolemyQuery
     $frame pack
     $frame setVisible true
