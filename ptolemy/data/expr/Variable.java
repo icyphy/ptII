@@ -25,8 +25,8 @@ in expressions.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -41,6 +41,8 @@ import ptolemy.graph.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,8 +54,6 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 /**
-Optimized _buildParsedTree()
-<p>
 A variable is an attribute that contains a token, and can be set by an
 expression that can refer to other variables.
 <p>
@@ -233,59 +233,6 @@ public class Variable extends Attribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the variables enumerated by the argument to the scope of this
-     *  variable. If any of the variables bears the same name as one
-     *  already in the scope, then it will shadow the one in the scope.
-     *  Items in the list that are not instances of the class Variable (or a
-     *  derived class) are ignored.  By default, variable of the container
-     *  and of the container's container are in scope.
-     *  @param variables An enumeration of variables to be added to the scope.
-     *  @deprecated Use scoped evaluation instead.
-     */
-    public void addToScope(Enumeration variables) {
-        while (variables.hasMoreElements()) {
-            Object var = variables.nextElement();
-            if (var instanceof Variable) {
-                addToScope((Variable)var);
-            }
-        }
-    }
-
-    /** Add the variable specified by the argument to the scope of this
-     *  variable. If the variable bears the same name as one already in
-     *  the scope, then it will shadow the one in the scope.
-     *  @param var The variable to be added to the scope.
-     *  @deprecated Use scoped evaluation instead.
-     */
-    public void addToScope(Variable var) {
-        if ((var == null) || !_isLegalInScope(var)) {
-            return;
-        }
-        Variable shadowed = null;
-        if (_scopeVariables != null) {
-            shadowed = (Variable)_scopeVariables.remove(var.getName());
-        } else {
-            _scopeVariables = new NamedList(this);
-        }
-        if (shadowed != null) {
-            shadowed._removeScopeDependent(this);
-        }
-        try {
-            _scopeVariables.prepend(var);
-            var._addScopeDependent(this);
-        } catch (IllegalActionException ex) {
-            // This will not happen since we are prepending a Nameable
-            // to _scopeVariables.
-            throw new InternalErrorException(ex.getMessage());
-        } catch (NameDuplicationException ex) {
-            // This will not happen since we make sure there will not
-            // be name duplication.
-            throw new InternalErrorException(ex.getMessage());
-        }
-        _scopeVersion = -1;
-        _destroyParseTree();
-    }
-
     /** Add a listener to be notified when the value of this variable changes.
      *  @param listener The listener to add.
      */
@@ -316,19 +263,15 @@ public class Variable extends Attribute
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Variable newvar = (Variable)super.clone(workspace);
-        newvar._scopeVariables = null;
+    
         // _currentExpression and _initialExpression are preserved in clone
         if (_currentExpression != null) {
             newvar._needsEvaluation = true;
         }
         newvar._dependencyLoop = false;
         // _noTokenYet and _initialToken are preserved in clone
-        newvar._scopeDependents = null;
-        newvar._valueDependents = null;
-        newvar._scope = null;
         newvar._parserScope = null;
-        newvar._scopeVersion = -1;
-
+      
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
@@ -339,8 +282,7 @@ public class Variable extends Attribute
         // _typeAtMost is preserved
         newvar._parser = null;
         newvar._parseTree = null;
-        newvar._parseTreeVersion = -1;
-
+   
         newvar._constraints = new LinkedList();
         newvar._typeTerm = null;
         return newvar;
@@ -381,7 +323,7 @@ public class Variable extends Attribute
     }
 
     /** Return a NamedList of the variables that the value of this
-     *  variable can depend on. These include the variables added to
+     *  variable can depend on.  These include the variables added to
      *  the scope of this variable by the addToScope()
      *  methods, and the variables in the container (if any) and in the
      *  container's container (if any).
@@ -395,22 +337,15 @@ public class Variable extends Attribute
      *  @return The variables on which this variable can depend.
      */
     public NamedList getScope() {
-        if (_scopeVersion == workspace().getVersion()) {
-            return _scope;
-        }
         try {
             workspace().getReadAccess();
-            if (_scopeVariables != null) {
-                _scope = new NamedList(_scopeVariables);
-            } else {
-                _scope = new NamedList();
-            }
+            NamedList scope = new NamedList();
             NamedObj container = (NamedObj)getContainer();
             while (container != null) {
                 Iterator level1 = container.attributeList().iterator();
                 Attribute var = null;
                 while (level1.hasNext()) {
-                    // add the variables in the same NamedObj to _scope,
+                    // add the variables in the same NamedObj to scope,
                     // excluding this
                     var = (Attribute)level1.next();
                     if ((var instanceof Variable) && (var != this)) {
@@ -418,8 +353,7 @@ public class Variable extends Attribute
                             continue;
                         }
                         try {
-                            _scope.append(var);
-                            //((Variable)var)._addScopeDependent(this);
+                            scope.append(var);
                         } catch (NameDuplicationException ex) {
                             // This occurs when a variable is shadowed by one
                             // that has been previously entered in the scope.
@@ -435,7 +369,7 @@ public class Variable extends Attribute
                     ScopeExtender extender = (ScopeExtender)level1.next();
                     Iterator level2 = extender.attributeList().iterator();
                     while (level2.hasNext()) {
-                        // add the variables in the scope extender to _scope,
+                        // add the variables in the scope extender to scope,
                         // excluding this
                         var = (Attribute)level2.next();
                         if ((var instanceof Variable) && (var != this)) {
@@ -443,8 +377,7 @@ public class Variable extends Attribute
                                 continue;
                             }
                             try {
-                                _scope.append(var);
-                                //((Variable)var)._addScopeDependent(this);
+                                scope.append(var);
                             } catch (NameDuplicationException ex) {
                                 // This occurs when a variable is shadowed by
                                 // one that has been previously entered in the
@@ -459,8 +392,7 @@ public class Variable extends Attribute
 
                 container = (NamedObj)container.getContainer();
             }
-            _scopeVersion = workspace().getVersion();
-            return _scope;
+            return scope;
         } finally {
             workspace().doneReading();
         }
@@ -485,8 +417,8 @@ public class Variable extends Attribute
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
         if (_isTokenUnknown) throw new UnknownResultException(this);
-        // If the value has been set with an expression, and
-        // The workspace version does not agree, then reevaluate the token.
+        // If the value has been set with an expression, then
+        // reevaluate the token.
         if (_needsEvaluation) _evaluate();
         return _token;
     }
@@ -527,6 +459,29 @@ public class Variable extends Attribute
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
+    }
+
+    /** Mark this variable, and all variables that depend on it, as
+     *  needing to be evaluated.  Remove this variable from being
+     *  notified by the variables it used to depend on.  This might be
+     *  called when something in the scope of this variable changes.
+     */
+    public void invalidate() {
+        if (_currentExpression != null) {
+            _needsEvaluation = true;
+        }
+        
+        if(_variablesDependentOn != null) {
+            Iterator entries = _variablesDependentOn.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry)entries.next();
+                Variable variable = (Variable)entry.getValue();
+                variable.removeValueListener(this);
+            }
+            _variablesDependentOn.clear();
+        }
+
+        _notifyValueListeners();
     }
 
     /** Return whether the value of this variable is known.
@@ -582,42 +537,6 @@ public class Variable extends Attribute
                 }
             }
         }
-    }
-
-    /** Remove the items in the enumeration from the scope of this variable.
-     *  Any item in the enumeration that is not an instance of variable
-     *  is ignored.  Also, variables that are in the scope because they
-     *  are contained by the container of this variables (or its container)
-     *  cannot be removed.  An attempt to do so will be ignored.
-     *  Note also that if any of the removed variables are shadowing
-     *  another variable with the same name, the shadowed variable <i>does
-     *  not</i> reappear in the scope.  It has to be specifically added again.
-     *  @param variables An enumeration of variables to be removed from scope.
-     */
-    public void removeFromScope(Enumeration variables) {
-        while (variables.hasMoreElements()) {
-            Object var = variables.nextElement();
-            if (var instanceof Variable) {
-                removeFromScope((Variable)var);
-            }
-        }
-    }
-
-    /** Remove the argument from the scope of this variable.
-     *  Also, variables that are in the scope because they
-     *  are contained by the container of this variables (or its container)
-     *  cannot be removed.  An attempt to do so will be ignored.
-     *  Note also that if the removed variable is shadowing
-     *  another variable with the same name, the shadowed variable <i>does
-     *  not</i> reappear in the scope.  It has to be specifically added again.
-     *  @param The variable to be removed from scope.
-     */
-    public void removeFromScope(Variable var) {
-        if (_scopeVariables != null) {
-            _scopeVariables.remove(var);
-        }
-        _scopeVersion = -1;
-        _destroyParseTree();
     }
 
     /** Remove a listener from the list of listeners that is
@@ -687,29 +606,12 @@ public class Variable extends Attribute
         Nameable cont = getContainer();
         super.setContainer(container);
         if (container != cont) {
-            // This variable changed container, clear all dependencies
-            // involving this variable.
-            if (_scopeDependents != null) {
-                Iterator variables = _scopeDependents.iterator();
-                while (variables.hasNext()) {
-                    Variable var = (Variable)variables.next();
-                    var.removeFromScope(this);
-                }
-                _scopeDependents.clear();
-            }
-            _notifyScopeChange();
-
-            _destroyParseTree();
-            if (_scope != null) {
-                Iterator vars = _scope.elementList().iterator();
-                while (vars.hasNext()) {
-                    Variable var = (Variable)vars.next();
-                    var._removeScopeDependent(this);
-                }
-            }
-            if (_scopeVariables != null) {
-                _scopeVariables.removeAll();
-            }
+            // Every variable that this may shadow in its new location
+            // must invalidate all their dependants.
+            _invalidateShadowedSettables(container);
+            
+            // This variable must still be valid.
+            validate();
         }
     }
 
@@ -735,17 +637,17 @@ public class Variable extends Attribute
             _token = null;
             _needsEvaluation = false;
             // set _varType
-            if (_declaredType instanceof BaseType) {
-                    _varType = _declaredType;
-            } else {
-                // _varType = _declaredType
+            if (_declaredType instanceof StructuredType) {
                 ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+            } else {
+                _varType = _declaredType;
             }
         } else {
             _needsEvaluation = true;
         }
         _currentExpression = expr;
-        _destroyParseTree();
+        _parseTree = null;
+        _notifyValueListeners();
     }
 
     /** Put a new token in this variable. If an expression had been
@@ -771,7 +673,7 @@ public class Variable extends Attribute
         // Override any expression that may have been previously given.
         if (_currentExpression != null) {
             _currentExpression = null;
-            _destroyParseTree();
+            _parseTree = null;
         }
 
         setUnknown(false);
@@ -991,7 +893,8 @@ public class Variable extends Attribute
         return result;
     }
 
-    /** Notify the container, if there is one, by calling its
+    /** Evaluate the expression contained in this variable, if any.
+     *  Notify the container, if there is one, by calling its
      *  attributeChanged() method, and then call propagate().  Also
      *  validate any instances of Settable that this variable may contain.
      *  @see #propagate()
@@ -999,6 +902,7 @@ public class Variable extends Attribute
      *   to the container, or if the expression cannot be evaluated.
      */
     public void validate() throws IllegalActionException {
+        invalidate();
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
             container.attributeChanged(this);
@@ -1031,36 +935,6 @@ public class Variable extends Attribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Add the argument as a scope dependent of this variable. This
-     *  is called when this variable is added to the scope of the
-     *  argument.
-     *  @param var The variable having this variable in its scope.
-     */
-    protected void _addScopeDependent(Variable var) {
-        if (_scopeDependents == null) {
-            _scopeDependents = new LinkedList();
-        }
-        if (_scopeDependents.contains(var)) {
-            return;
-        }
-        _scopeDependents.add(var);
-    }
-
-    /** Add the argument as a value dependent of this variable. This
-     *  is called when PtParser finds that this variable is referenced
-     *  by the expression of the argument.
-     *  @param var The variable whose expression references this variable.
-     */
-    protected void _addValueDependent(Variable var) {
-        if (_valueDependents == null) {
-            _valueDependents = new LinkedList();
-        }
-        if (_valueDependents.contains(var)) {
-            return;
-        }
-        _valueDependents.add(var);
-    }
 
     /** Return a description of this variable.  This returns the same
      *  information returned by toString(), but with optional indenting
@@ -1097,24 +971,6 @@ public class Variable extends Attribute
         return (var.workspace() == this.workspace());
     }
 
-    /** Notify the value dependents of this variable that this variable
-     *  changed.  This marks them to trigger evaluation next time their
-     *  value is accessed.
-     */
-    protected void _notifyValueDependents() {
-        if (_valueDependents != null) {
-            Iterator variables = _valueDependents.iterator();
-            while (variables.hasNext()) {
-                Variable var = (Variable)variables.next();
-                // Already marked?
-                if (!var._needsEvaluation) {
-                    var._needsEvaluation = true;
-                    var._notifyValueDependents();
-                }
-            }
-        }
-    }
-
     /** Notify the value listeners of this variable that this variable
      *  changed.
      */
@@ -1128,115 +984,43 @@ public class Variable extends Attribute
         }
     }
 
-    /** Notify the value listeners of this variable that their scope
-     *  changed.
-     */
-    protected void _notifyScopeChange() {
-        if (_valueListeners != null) {
-            Iterator listeners =
-                    (new LinkedList(_valueListeners)).iterator();
-            while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
-                if (listener instanceof Variable) {
-                    ((Variable)listener).removeFromScope(this);
-                }
-            }
-        }
-    }
-
-    /** Remove the argument from the list of scope dependents of this
-     *  variable.
-     *  @param var The variable whose scope no longer includes this
-     *   variable.
-     */
-    protected void _removeScopeDependent(Variable var) {
-        _scopeDependents.remove(var);
-    }
-
-    /** Remove the argument from the list of value dependents of this
-     *  variable.
-     *  @param var The variable whose value no longer depends on this
-     *   variable.
-     */
-    protected void _removeValueDependent(Variable var) {
-        _valueDependents.remove(var);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Stores the variables whose expression references this variable. */
-    /*protected LinkedList _valueDependents = null; */
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  Build a parse tree for the current expression using PtParser.
-     *  Do nothing if a parse tree already exists.
-     */
-    private void _buildParseTree() throws IllegalActionException {
-        if (_parseTreeVersion == workspace().getVersion() &&
-                _parseTree != null) {
+    private void _invalidateShadowedSettables(NamedObj object)
+            throws IllegalActionException {
+        if(object == null) {
+            // Nothing to do.
             return;
         }
-        if (_parser == null) {
-            _parser = new PtParser(this);
+        for(Iterator variables = object.attributeList(
+                    Variable.class).iterator();
+            variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            if (variable.getName().equals(getName())) {
+                variable.invalidate();
+            }
         }
-        //        if (_parser.getUndefinedList(_currentExpression).size() == 0) {
-            // System.out.println("Compiled with no scope.");
-        //     _parseTree = _parser.generateParseTree(_currentExpression);
-        //} else {
-            // System.out.println("Compiled but needed scope.");
-        if (_parserScope == null) {
-            _parserScope = new VariableScope();
+        // Also invalidate the variables inside any
+        // scopeExtendingAttributes.
+        Iterator scopeAttributes = object.attributeList(
+                ScopeExtendingAttribute.class).iterator();
+        while (scopeAttributes.hasNext()) {
+            ScopeExtendingAttribute attribute = 
+                (ScopeExtendingAttribute)scopeAttributes.next();
+            Iterator variables = attribute.attributeList(
+                    Variable.class).iterator();
+            while (variables.hasNext()) {
+                Variable variable = (Variable)variables.next();
+                if (variable.getName().equals(getName())) {
+                    variable.invalidate();
+                }
+            }
         }
-        _parseTree = _parser.generateParseTree(_currentExpression);
-
-        _parseTreeVersion = workspace().getVersion();
-        return;
-    }
-
-    /*  Clear the value dependencies this variable has registered
-     *  with other variables. If this is not done a phantom web of
-     *  dependencies may exist which could lead to false dependency
-     *  loops being detected. Normally this method is called on the
-     *  root node of the parse tree and recursively calls itself to
-     *  visit the whole tree.
-     *  @param node The node in the parse tree below which all
-     *   dependencies are cleared.
-     */
- //    private void _clearDependencies(Node node) {
-//         int children = node.jjtGetNumChildren();
-//         if (children > 0) {
-//             for (int i = 0; i < children; i++) {
-//                 _clearDependencies(node.jjtGetChild(i));
-//             }
-//             return;
-//         }
-//         // NOTE: Even though there are no children, this could
-//         // conceivably not be a leaf node because it could be a
-//         // nullary function call, like "foo()".
-//         // FIXME???
-//        //  if (node instanceof ASTPtLeafNode) {
-// //             ASTPtLeafNode leaf = (ASTPtLeafNode)node;
-// //             if (leaf._var != null) {
-// //                 leaf._var.removeValueListener(this);
-// //             }
-// //         }
-//     }
-
-    /*  Destroy the current parse tree and mark all value dependents
-     *  as needing to be evaluated.
-     */
-    private void _destroyParseTree() {
-        if (_parseTree != null) {
-            //  _clearDependencies(_parseTree);
-            _parseTree = null;
+        NamedObj container = (NamedObj)object.getContainer();
+        if (container != null) {
+            _invalidateShadowedSettables(container);
         }
-        if (_currentExpression != null) {
-            _needsEvaluation = true;
-        }
-        _notifyValueListeners();
     }
 
     /** Evaluate the current expression to a token. If this variable
@@ -1266,7 +1050,8 @@ public class Variable extends Attribute
      *   be parsed or cannot be evaluated.
      */
     private void _evaluate() throws IllegalActionException {
-        _evaluationVersion = _workspace.getVersion();
+  //       System.out.println("Calling evaluate on " + 
+//                 this.getFullName() + ":" + _currentExpression);
         // NOTE: This should probably be a bit smarter and detect any
         // whitespace-only expression.
         if (_currentExpression == null || _currentExpression.equals("")) {
@@ -1285,16 +1070,22 @@ public class Variable extends Attribute
         }
         _dependencyLoop = true;
 
-        //   System.out.println("Evaluating " + getFullName());
         try {
             workspace().getReadAccess();
-            _buildParseTree();
+            if (_parser == null) {
+                _parser = new PtParser(this);
+            }
+            if (_parseTree == null) {
+                _parseTree = _parser.generateParseTree(_currentExpression);
+            }
             if(_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
+            if (_parserScope == null) {
+                _parserScope = new VariableScope();
+            }
             Token result = _parseTreeEvaluator.evaluateParseTree(
                     _parseTree, _parserScope);
-            _dependencyLoop = false;
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
@@ -1323,20 +1114,14 @@ public class Variable extends Attribute
      */
     private void _setToken(Token newToken) throws IllegalActionException {
         if (newToken == null) {
-            if (_valueDependents != null && !_valueDependents.isEmpty()) {
-                throw new IllegalActionException(this,
-                        "Cannot set contents to null because there " +
-                        "are variables that depend on its value.");
-            }
             _token = null;
             _needsEvaluation = false;
 
             // set _varType
-            if (_declaredType instanceof BaseType) {
-                    _varType = _declaredType;
-            } else {
-                // _varType = _declaredType
+            if (_declaredType instanceof StructuredType) {
                 ((StructuredType)_varType).initialize(BaseType.UNKNOWN);
+            } else {
+                _varType = _declaredType;
             }
         } else {
             // newToken is not null, check if it is compatible with
@@ -1441,7 +1226,6 @@ public class Variable extends Attribute
 
         try {
             _setToken(newToken);
-            //_notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 if ( !oldVarType.equals(_varType) &&
@@ -1477,9 +1261,6 @@ public class Variable extends Attribute
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
 
-    // The version of the workspace when the expression was evaluated.
-    private long _evaluationVersion = -1;
-
     // Stores the expression used to initialize this variable. It is null if
     // the first token placed in the variable is not the result of evaluating
     // an expression.
@@ -1500,19 +1281,8 @@ public class Variable extends Attribute
     // an expression.
     private ptolemy.data.Token _initialToken;
 
-    // Stores the variables whose scope contains this variable.
-    private LinkedList _scopeDependents = null;
-
-    /** Stores the variables whose expression references this variable. */
-    private LinkedList _valueDependents = null;
-
-    // The variables this variable may reference in its expression.
-    // The list is cached.
-    private NamedList _scope = null;
-    private long _scopeVersion = -1;
-
-    // Stores the variables added to the scope of this variable.
-    private NamedList _scopeVariables = null;
+    /** Stores the variables that are referenced by this variable. */
+    private HashMap _variablesDependentOn = null;
 
     // Stores the Class object which represents the type of this variable.
     private Type _varType = BaseType.UNKNOWN;
@@ -1521,7 +1291,7 @@ public class Variable extends Attribute
     private PtParser _parser;
 
     // The instance of VariableScope.
-    private ParserScope _parserScope = new VariableScope();
+    private ParserScope _parserScope = null;
 
     // If the variable was last set from an expression, this stores
     // the parse tree for that expression.
@@ -1529,9 +1299,6 @@ public class Variable extends Attribute
 
     // the parse tree evaluator used by this variable.
     private ParseTreeEvaluator _parseTreeEvaluator;
-
-    // The version of the parse tree.
-    private long _parseTreeVersion = -1;
 
     // The token contained by this variable.
     private ptolemy.data.Token _token;
@@ -1687,37 +1454,21 @@ public class Variable extends Attribute
                 throws IllegalActionException {
             Variable result = null;
 
-            // Check to see if the name is one for which we have a cached
-            // reference.
-            if (_cacheVersion == workspace().getVersion()) {
-                // cache is valid
-                result = (Variable)_cachedAttributes.get(name);
-                if (result != null) return result.getToken();
-            } else {
-                _cachedAttributes.clear();
-                _cacheVersion = workspace().getVersion();
-            }
-
-            // Check to see if the variable has been manually added to
-            // the scope of this variable.
-            if (_scopeVariables != null) {
-                result = (Variable)_scopeVariables.get(name);
-                if (result != null) {
-                    // add to/remove from scope does not change workspace
-                    // version number, so cannot cache this result
-                    //_cachedAttributes.put(name, result);
-                    return result.getToken();
-                }
-            }
-
+            // FIXME: use _variablesDependentOn as a cache.
+            
             // Search through the hierarchy to find the referenced
             // object.
             NamedObj container = (NamedObj)getContainer();
             while (container != null) {
                 result = _searchIn(container, name);
                 if (result != null) {
-                    result.addValueListener(Variable.this);
-                    _cachedAttributes.put(name, result);
+                    if(_variablesDependentOn == null) {
+                        _variablesDependentOn = new HashMap();
+                    }
+                    if(!_variablesDependentOn.containsValue(result)) {
+                        result.addValueListener(Variable.this);
+                        _variablesDependentOn.put(name, result);
+                    }
                     return result.getToken();
                 } else {
                     container = (NamedObj)container.getContainer();
@@ -1754,13 +1505,6 @@ public class Variable extends Attribute
             }
             return null;
         }
-
-        // Version number of the scope cache.
-        private long _cacheVersion = -1;
-
-        // Cache of attributes that are looked up.
-        private Hashtable _cachedAttributes = new Hashtable();
-
     }
 }
 
