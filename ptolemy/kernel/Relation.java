@@ -1,4 +1,4 @@
-@/* A Relation is an arc in a flat graph.
+/* A Relation is an arc in a flat graph.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
