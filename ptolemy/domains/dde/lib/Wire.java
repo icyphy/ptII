@@ -40,8 +40,8 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// Wire
 /**
-Wire is a simple DDE actor with an input and output multiport. When 
-executed, a Wire will simple consume a token from its input port 
+Wire is a simple DDE actor with an input and output multiport. When
+executed, a Wire will simple consume a token from its input port
 and then produce the token on its output port.
 
 @author John S. Davis II
@@ -77,7 +77,7 @@ public class Wire extends TypedAtomicActor {
     ////                         public methods                         ////
 
     /** Execute this actor by consuming a token on the input and producing
-     *  an equivalent token the output. 
+     *  an equivalent token the output.
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
      */

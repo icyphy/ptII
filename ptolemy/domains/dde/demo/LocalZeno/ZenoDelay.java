@@ -56,21 +56,21 @@ public class ZenoDelay extends ListenFBDelay {
     /** Construct a ZenoDelay with no container and a name that
      *  is an empty string.
      */
-    public ZenoDelay() 
+    public ZenoDelay()
             throws IllegalActionException, NameDuplicationException {
         super();
     }
 
-    /** Construct a ZenoDelay with the specified workspace and 
+    /** Construct a ZenoDelay with the specified workspace and
      *  no name.
      * @param workspace The workspace for this ZenoDelay.
      */
-    public ZenoDelay(Workspace workspace) 
+    public ZenoDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
     }
 
-    /** Construct a ZenoDelay with the specified container and 
+    /** Construct a ZenoDelay with the specified container and
      *  name.
      * @param container The container of this ZenoDelay.
      * @param name The name of this ZenoDelay.

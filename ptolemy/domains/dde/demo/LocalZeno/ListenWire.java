@@ -43,7 +43,7 @@ import collections.LinkedList;
 //// ListenWire
 /**
 ListenWire is an extension of Wire with listeners. The addition
-of listener facilities allows this actor to interact with Diva via 
+of listener facilities allows this actor to interact with Diva via
 simple animations.
 
 @author John S. Davis II
@@ -71,8 +71,8 @@ public class ListenWire extends Wire {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Add an ExecEventListener to this actor's list of listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Add an ExecEventListener to this actor's list of listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void addListeners(ExecEventListener listener) {
@@ -97,7 +97,7 @@ public class ListenWire extends Wire {
         }
     }
 
-    /** Generate an ExecEvent with a state value of 2. Return the 
+    /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
      * @returns True if this actor is enabled to call fire(). Return
      *  false otherwise.
@@ -133,9 +133,9 @@ public class ListenWire extends Wire {
 	return super.prefire();
     }
 
-    /** Remove an ExecEventListener from this actor's list of 
-     *  listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Remove an ExecEventListener from this actor's list of
+     *  listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void removeListeners(ExecEventListener listener) {

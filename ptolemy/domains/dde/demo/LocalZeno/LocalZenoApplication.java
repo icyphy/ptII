@@ -61,7 +61,7 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplication
 
-/** 
+/**
  *  A DDE application illustrating localized Zeno conditions.
  *
  *  @author John S. Davis II (davisj@eecs.berkeley.edu)
@@ -74,7 +74,7 @@ public class LocalZenoApplication implements ActionListener {
      *  composite actor. The model is actually created by the
      *  initializeDemo() method.
      */
-    public LocalZenoApplication(Manager manager, 
+    public LocalZenoApplication(Manager manager,
 	    TypedCompositeActor topLevel) {
 	_manager = manager;
 	_topLevel = topLevel;
@@ -88,14 +88,14 @@ public class LocalZenoApplication implements ActionListener {
 	TypedCompositeActor topLevel = new TypedCompositeActor();
 
 	try {
-            topLevel.setName("topLevel"); 
+            topLevel.setName("topLevel");
             topLevel.setManager(manager);
 	} catch( KernelException e ) {
             // This should not occur.
 	    throw new InternalErrorException(e.toString());
 	}
 
-        LocalZenoApplication app = 
+        LocalZenoApplication app =
 	        new LocalZenoApplication( manager, topLevel );
 
 	Panel nullAppletPanel = null;
@@ -113,9 +113,9 @@ public class LocalZenoApplication implements ActionListener {
 	    try {
                 this.runDemo();
             } catch( Exception e ) {
-	        e.printStackTrace(); 
-	        throw new InternalErrorException("Error in GoButton: " 
-                        + e.getMessage()); 
+	        e.printStackTrace();
+	        throw new InternalErrorException("Error in GoButton: "
+                        + e.getMessage());
             }
 	}
 	if( action.equals("Stop") ) {
@@ -191,8 +191,8 @@ public class LocalZenoApplication implements ActionListener {
 	    DDEDirector director = new DDEDirector(_topLevel, "Director");
 	    Parameter dirStopTime = (Parameter)director.getAttribute("stopTime");
 	    dirStopTime.setToken( new DoubleToken(30.0) );
-	    
-            // Instantiate Actors 
+
+            // Instantiate Actors
 	    _clock = new ListenClock( _topLevel, "clock" );
 	    _clock.values.setExpression( "[1, 1]" );
 	    _clock.period.setToken( new DoubleToken(20.0) );
@@ -205,18 +205,18 @@ public class LocalZenoApplication implements ActionListener {
 	    _join2 = new ListenWire( _topLevel, "join2" );
 	    _fork2 = new ListenFork( _topLevel, "fork2" );
 	    _fBack2 = new ListenFBDelay( _topLevel, "fBack2" );
-            
+
 	    _rcvr1 = new ListenSink( _topLevel, "rcvr1" );
 	    _rcvr2 = new ListenSink( _topLevel, "rcvr2" );
-            
+
 	    _fBack1.setDelay(4.5);
 	    _fBack2.setDelay(0.5);
 
-	    // Set up ports, relation 
-	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output"); 
+	    // Set up ports, relation
+	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output");
 	    clockOut.setMultiport(true);
 
-	    // Set up connections 
+	    // Set up connections
 	    _topLevel.connect( _clock.output, _join1.input );
 	    _topLevel.connect( _clock.output, _join2.input );
 
@@ -231,7 +231,7 @@ public class LocalZenoApplication implements ActionListener {
 	    _topLevel.connect( _fBack2.output, _join2.input );
 
             System.out.println("Connections are complete.");
-	    
+
         } catch (Exception e) {
 	    e.printStackTrace();
             throw new RuntimeException(e.toString());
@@ -239,32 +239,32 @@ public class LocalZenoApplication implements ActionListener {
     }
 
     /**
-     * Construct the graph widget with the default constructor (giving 
-     * it an empty graph), and then set the model once the _window is 
+     * Construct the graph widget with the default constructor (giving
+     * it an empty graph), and then set the model once the _window is
      * showing. Add control buttons to the _window.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-	Panel controlPanel = new Panel(); 
+	Panel controlPanel = new Panel();
 
-	Button startButton = new Button("Go"); 
-	startButton.addActionListener( this ); 
-	controlPanel.add(startButton, BorderLayout.WEST); 
+	Button startButton = new Button("Go");
+	startButton.addActionListener( this );
+	controlPanel.add(startButton, BorderLayout.WEST);
 
-	Button stopButton = new Button("Stop"); 
-	stopButton.addActionListener( this ); 
-	controlPanel.add(stopButton, BorderLayout.CENTER); 
+	Button stopButton = new Button("Stop");
+	stopButton.addActionListener( this );
+	controlPanel.add(stopButton, BorderLayout.CENTER);
 
-	Button quitButton = new Button("Quit"); 
-	quitButton.addActionListener( this ); 
-	controlPanel.add(quitButton, BorderLayout.EAST); 
+	Button quitButton = new Button("Quit");
+	quitButton.addActionListener( this );
+	controlPanel.add(quitButton, BorderLayout.EAST);
 
-	controlPanel.setVisible(true); 
+	controlPanel.setVisible(true);
 
-        _window = new BasicWindow("Basic Window"); 
-	_window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
-	_window.getContentPane().add(g, BorderLayout.CENTER); 
-	_window.setSize(500, 600); 
-	_window.setLocation(100, 100); 
+        _window = new BasicWindow("Basic Window");
+	_window.getContentPane().add(controlPanel, BorderLayout.NORTH);
+	_window.getContentPane().add(g, BorderLayout.CENTER);
+	_window.setSize(500, 600);
+	_window.setLocation(100, 100);
 	_window.setVisible(true);
 
         // Make sure we have the right renderers and then display the graph
@@ -309,7 +309,7 @@ public class LocalZenoApplication implements ActionListener {
             ex.printStackTrace();
             System.exit(0);
         }
-        StateListener listener = 
+        StateListener listener =
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_join1.addListeners(listener);
 	_join2.addListeners(listener);
@@ -321,7 +321,7 @@ public class LocalZenoApplication implements ActionListener {
 	_rcvr2.addListeners(listener);
 	_clock.addListeners(listener);
     }
- 
+
     /**
      */
     public void runDemo() throws IllegalActionException {
@@ -334,14 +334,14 @@ public class LocalZenoApplication implements ActionListener {
     /**
      */
     public void endSimulation() {
-        Director director = _topLevel.getDirector(); 
+        Director director = _topLevel.getDirector();
 	_manager.finish();
     }
 
     /**
      */
     public void shutDown() {
-        Director director = _topLevel.getDirector(); 
+        Director director = _topLevel.getDirector();
 	try {
 	    // Eventually we will not need to call Director.wrapup()
 	    // as Manager.finish() will subsume this responsibility.
@@ -349,19 +349,19 @@ public class LocalZenoApplication implements ActionListener {
 	    _manager.finish();
 	    _manager = null;
 	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown while " + 
+	    System.err.println("IllegalActionException thrown while " +
 		    "attempting to shutDown()");
 	    e.printStackTrace();
 	}
 	if( _appletPanel == null ) {
-	    _window.setVisible(false); 
-	    _window.dispose(); 
+	    _window.setVisible(false);
+	    _window.dispose();
 	    _window = null;
 
 	    System.exit(0);
 	} else {
-	    _window.setVisible(false); 
-	    _window.dispose(); 
+	    _window.setVisible(false);
+	    _window.dispose();
 	    _window = null;
 	}
     }
@@ -428,7 +428,7 @@ public class LocalZenoApplication implements ActionListener {
         public void stateChanged(ExecEvent event) {
             final int state = event.getCurrentState();
             Actor actor = event.getActor();
-            
+
             String name = ((Nameable)actor).getName();
 
             // Get the corresponding graph node and its figure
@@ -446,11 +446,11 @@ public class LocalZenoApplication implements ActionListener {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
                             break;
-                        
+
                         case 2:
                             figure.setFillPaint(Color.green);
                             break;
-                        
+
                         case 3:
                             figure.setFillPaint(Color.red);
                             break;
@@ -460,7 +460,7 @@ public class LocalZenoApplication implements ActionListener {
                         }
                     }
                 });
-            } 
+            }
             catch (Exception e) {}
         }
     }
@@ -484,20 +484,20 @@ public class LocalZenoApplication implements ActionListener {
         public Figure render (Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
-            boolean isEllipse = 
+            boolean isEllipse =
                    actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink
                 || actor instanceof ListenFBDelay;
 
-            
+
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
 		f.setFillPaint(Color.blue);
             } else {
-                f = new BasicRectangle(0, 0, _size, _size); 
+                f = new BasicRectangle(0, 0, _size, _size);
 		f.setFillPaint(Color.pink);
             }
             String label = actor.getName();

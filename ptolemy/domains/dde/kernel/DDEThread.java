@@ -43,14 +43,14 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DDEThread
 /**
-A DDEThread controls an actor according to DDE semantics. The 
-primary purpose of a DDEThread is to control the iteration 
-methods of an executing actor and to maintain the actor's local 
-notion of time according to DDE semantics. A DDEThread has two 
-unique functionalities for accomplishing this goal. First a 
-DDEThread instantiates a TimeKeeper object. A TimeKeeper manages 
-a given actor's local notion of time according to DDE semantics. 
-The second task of a DDEThread is to notify directly connected 
+A DDEThread controls an actor according to DDE semantics. The
+primary purpose of a DDEThread is to control the iteration
+methods of an executing actor and to maintain the actor's local
+notion of time according to DDE semantics. A DDEThread has two
+unique functionalities for accomplishing this goal. First a
+DDEThread instantiates a TimeKeeper object. A TimeKeeper manages
+a given actor's local notion of time according to DDE semantics.
+The second task of a DDEThread is to notify directly connected
 actors when the actor controlled by the thread is ending execution.
 
 @author John S. Davis II
@@ -74,20 +74,20 @@ public class DDEThread extends ProcessThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time keeper that keeps time for the actor that 
+    /** Return the time keeper that keeps time for the actor that
      *  this thread controls.
-     * @return The TimeKeeper of the actor that this thread 
+     * @return The TimeKeeper of the actor that this thread
      *  controls.
      */
     public TimeKeeper getTimeKeeper() {
 	return _timeKeeper;
     }
 
-    /** Notify output-connected actors that the actor controlled 
-     *  by this thread is ending execution. <I>Output-connected 
-     *  actors</I> are those that are connected to the actor 
-     *  controlled by this thread via output ports of this thread's 
-     *  actor. Send events with time stamps of 
+    /** Notify output-connected actors that the actor controlled
+     *  by this thread is ending execution. <I>Output-connected
+     *  actors</I> are those that are connected to the actor
+     *  controlled by this thread via output ports of this thread's
+     *  actor. Send events with time stamps of
      *  TimedQueueReceiver.INACTIVE to these "downstream" actors.
      * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
      */
@@ -98,7 +98,7 @@ public class DDEThread extends ProcessThread {
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {
 	        IOPort port = (IOPort)outputPorts.nextElement();
-                Receiver rcvrs[][] = 
+                Receiver rcvrs[][] =
                 	(Receiver[][])port.getRemoteReceivers();
                 if( rcvrs == null ) {
 	            break;
@@ -108,7 +108,7 @@ public class DDEThread extends ProcessThread {
 			try {
 			    if( ((DDEReceiver)rcvrs[i][j]).getRcvrTime()
 				    != endTime ) {
-				((DDEReceiver) rcvrs[i][j]).put(null, 
+				((DDEReceiver) rcvrs[i][j]).put(null,
                                 	endTime);
 			    }
 			} catch( TerminateProcessException e ) {
@@ -120,16 +120,16 @@ public class DDEThread extends ProcessThread {
 	}
     }
 
-    /** Start this thread and initialize the time keeper to a future 
-     *  time if specified in the director's initial time table. Use 
-     *  this method to facilitate any calls to DDEDirector.fireAt() 
-     *  that occur prior to the creation of this thread. If fireAt() 
-     *  was called for time 'T' with respect to the actor that this 
-     *  thread controls, then set the current time of this threads 
-     *  TimeKeeper to time 'T.' 
+    /** Start this thread and initialize the time keeper to a future
+     *  time if specified in the director's initial time table. Use
+     *  this method to facilitate any calls to DDEDirector.fireAt()
+     *  that occur prior to the creation of this thread. If fireAt()
+     *  was called for time 'T' with respect to the actor that this
+     *  thread controls, then set the current time of this threads
+     *  TimeKeeper to time 'T.'
      *  <P>
      *  NOTE: This method assumes an implementation of fireAt() that
-     *  would be more appropriately named <I>continueAt()</I>. 
+     *  would be more appropriately named <I>continueAt()</I>.
      */
     public void start() {
 	Actor actor = getActor();

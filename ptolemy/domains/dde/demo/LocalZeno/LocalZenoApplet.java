@@ -62,7 +62,7 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet
 
-/** 
+/**
  *  A DDE application illustrating localized Zeno conditions.
  *
  *  @author John S. Davis II (davisj@eecs.berkeley.edu)
@@ -116,7 +116,7 @@ public class LocalZenoApplet extends DDEApplet {
             System.exit(0);
         }
 
-        StateListener listener = 
+        StateListener listener =
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_join1.addListeners(listener);
 	_join2.addListeners(listener);
@@ -183,7 +183,7 @@ public class LocalZenoApplet extends DDEApplet {
         model.createEdge(n7,n8);
         model.createEdge(n7,n9);
         model.createEdge(n8,n6);
- 
+
         return model;
     }
 
@@ -192,7 +192,7 @@ public class LocalZenoApplet extends DDEApplet {
      */
     public void constructPtolemyModel () {
         try {
-            // Instantiate the Actors 
+            // Instantiate the Actors
 	    _clock = new ListenClock( _toplevel, "Clock" );
 	    _clock.values.setExpression( "[1, 1, 1]" );
 	    _clock.period.setToken( new DoubleToken(20.0) );
@@ -205,7 +205,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    _join2 = new ListenWire( _toplevel, "LowerJoin" );
 	    _fork2 = new ListenFork( _toplevel, "LowerFork" );
 	    _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
-            
+
 	    _rcvr1 = new ListenSink( _toplevel, "UpperRcvr" );
 	    _rcvr2 = new ListenSink( _toplevel, "LowerRcvr" );
 
@@ -217,7 +217,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    _upperPlotter.plot.setYRange(-1.0, 1.0);
 	    _upperPlotter.plot.setSize(200, 150);
 	    _upperPlotter.plot.addLegend(0, "Time");
-            
+
 	    _lowerTime = new TimeAdvance( _toplevel, "lowerTime" );
 	    _lowerPlotter = new TimedPlotter( _toplevel, "lowerPlotter" );
 	    _lowerPlotter.setPanel( _plotPanel );
@@ -226,15 +226,15 @@ public class LocalZenoApplet extends DDEApplet {
 	    _lowerPlotter.plot.setYRange(-1.0, 1.0);
 	    _lowerPlotter.plot.setSize(200, 150);
 	    _lowerPlotter.plot.addLegend(0, "Time");
-            
+
 	    _fBack1.setDelay(4.5);
 	    _fBack2.setDelay(4.5);
 
-	    // Set up ports, relation 
-	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output"); 
+	    // Set up ports, relation
+	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output");
 	    clockOut.setMultiport(true);
 
-	    // Set up connections 
+	    // Set up connections
 	    _toplevel.connect( _clock.output, _join1.input );
 	    _toplevel.connect( _clock.output, _join2.input );
 
@@ -255,21 +255,21 @@ public class LocalZenoApplet extends DDEApplet {
 	    _toplevel.connect( _lowerTime.output, _lowerPlotter.input );
 
             System.out.println("Connections are complete.");
-	    
+
         } catch (Exception e) {
 	    report("Setup failed:", e);
         }
     }
 
-    /** Construct the graph widget with the default constructor 
-     *  (giving it an empty graph), and then set the model once 
+    /** Construct the graph widget with the default constructor
+     *  (giving it an empty graph), and then set the model once
      *  the _window is showing. Add control buttons to the _window.
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
 	g.setPreferredSize( new Dimension(600,300) );
 
-        // Make sure we have the right renderers and then 
+        // Make sure we have the right renderers and then
 	// display the graph
         final GraphPane gp = (GraphPane) g.getCanvasPane();
         final GraphView gv = gp.getGraphView();
@@ -366,7 +366,7 @@ public class LocalZenoApplet extends DDEApplet {
         public void stateChanged(ExecEvent event) {
             final int state = event.getCurrentState();
             Actor actor = event.getActor();
-            
+
             String name = ((Nameable)actor).getName();
 
             // Get the corresponding graph node and its figure
@@ -384,11 +384,11 @@ public class LocalZenoApplet extends DDEApplet {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
                             break;
-                        
+
                         case 2:
                             figure.setFillPaint(Color.green);
                             break;
-                        
+
                         case 3:
                             figure.setFillPaint(Color.red);
                             break;
@@ -398,7 +398,7 @@ public class LocalZenoApplet extends DDEApplet {
                         }
                     }
                 });
-            } 
+            }
             catch (Exception e) {}
         }
     }
@@ -422,20 +422,20 @@ public class LocalZenoApplet extends DDEApplet {
         public Figure render (Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
-            boolean isEllipse = 
+            boolean isEllipse =
                    actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink
                 || actor instanceof ListenFBDelay;
 
-            
+
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
 		f.setFillPaint(Color.blue);
             } else {
-                f = new BasicRectangle(0, 0, _size, _size); 
+                f = new BasicRectangle(0, 0, _size, _size);
 		f.setFillPaint(Color.pink);
             }
             String label = actor.getName();

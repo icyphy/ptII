@@ -46,10 +46,10 @@ import java.awt.event.*;
 A base class for applets that use the DDE domain. This is provided
 for convenience, in order to promote certain common elements among
 DDE applets. It is by no means required in order to create an applet
-that uses the DDE domain. In particular, it creates and configures a 
-director. If the applet's "stopTime" parameter has been set, then it 
-uses that parameter to define the duration of the execution of the 
-model. Otherwise, it creates an entry box in the applet for specifying 
+that uses the DDE domain. In particular, it creates and configures a
+director. If the applet's "stopTime" parameter has been set, then it
+uses that parameter to define the duration of the execution of the
+model. Otherwise, it creates an entry box in the applet for specifying
 the stop time. If the applet parameter "defaultStopTime" has been set,
 then the entry box is initialized with the value given by that parameter.
 
@@ -73,10 +73,10 @@ public class DDEApplet extends PtolemyApplet {
     }
 
     /** Initialize the applet. After calling the base class init() method,
-     *  this method creates a director which is accessible to derived 
-     *  classes via a protected member. If the applet "stopTime" parameter 
-     *  is given, then set the director stop time to its value. If this 
-     *  parameter is not given, then create an entry box on screen to query 
+     *  this method creates a director which is accessible to derived
+     *  classes via a protected member. If the applet "stopTime" parameter
+     *  is given, then set the director stop time to its value. If this
+     *  parameter is not given, then create an entry box on screen to query
      *  the user for the stop time.
      */
     public void init() {
@@ -106,12 +106,12 @@ public class DDEApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** In addition to creating the buttons provided by the base 
-     *  class, if the stop time has not been specified by the 
-     *  applet parameter "stopTime," then create an entry box for 
-     *  that number to be entered. If the "showStopTime" parameter 
-     *  is set to true, then display a text entry box for specifying 
-     *  the stop time of the model. The panel containing the buttons 
+    /** In addition to creating the buttons provided by the base
+     *  class, if the stop time has not been specified by the
+     *  applet parameter "stopTime," then create an entry box for
+     *  that number to be entered. If the "showStopTime" parameter
+     *  is set to true, then display a text entry box for specifying
+     *  the stop time of the model. The panel containing the buttons
      *  and the entry box is returned.
      * @param numbuttons The number of buttons to create.
      * @param showStopTime A flag indicating whether stop time
@@ -122,13 +122,13 @@ public class DDEApplet extends PtolemyApplet {
         Panel panel = super._createRunControls(numbuttons);
 
         if( !_stopTimeGiven ) {
-            // To keep the label and entry box together, 
+            // To keep the label and entry box together,
             // put them in a new panel.
             Panel stopTimePanel = new Panel();
             stopTimePanel.add(new Label("Stop time:"));
 
             // Process the default iterations parameter.
-            String defaultStopSpec = 
+            String defaultStopSpec =
 		    getParameter("defaultStopTime");
             	    // getSingleParameter("defaultStopTime");
             if (defaultStopSpec == null) {
@@ -152,7 +152,7 @@ public class DDEApplet extends PtolemyApplet {
 
 	if( _director != null ) {
             try {
-            	result = 
+            	result =
                         ((DoubleToken)_director.stopTime.getToken()).doubleValue();
             } catch (IllegalActionException ex) {
                 report("Error in stop time:\n", ex);

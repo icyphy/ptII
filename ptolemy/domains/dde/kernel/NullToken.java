@@ -45,8 +45,8 @@ associated with the NullToken.
 NullTokens are not part of the Ptolemy II type lattice. As such,
 a NullToken will violate type resolution if passed through a
 typed IO port. For this reason, Null Tokens are placed directly
-into receivers without using the send() method of TypedIOPort. 
-This tactic circumvents type resolution constraints and affirms 
+into receivers without using the send() method of TypedIOPort.
+This tactic circumvents type resolution constraints and affirms
 the notion that NullTokens do not represent computation and hence
 should never be incorporated into actor code. Note further, that
 the get() method of DDEReceiver does not return NullTokens but

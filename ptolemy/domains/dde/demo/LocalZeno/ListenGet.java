@@ -69,7 +69,7 @@ public class ListenGet extends DDEGetNToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void addListeners(ExecEventListener listener) {
         if( _listeners == null ) {

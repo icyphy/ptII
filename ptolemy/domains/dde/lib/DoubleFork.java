@@ -40,10 +40,10 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleFork
 /**
-DoubleFork is a simple DDE actor with one input and two outputs. It 
-has two multiport outputs - "output1" and "output2." The fire method of 
-DoubleFork passes real tokens throught the first output (output1). 
-Real tokens are never produced on output2. 
+DoubleFork is a simple DDE actor with one input and two outputs. It
+has two multiport outputs - "output1" and "output2." The fire method of
+DoubleFork passes real tokens throught the first output (output1).
+Real tokens are never produced on output2.
 
 @author John S. Davis II
 @version $Id$
@@ -81,7 +81,7 @@ public class DoubleFork extends TypedAtomicActor {
     ////                         public methods                         ////
 
     /** Execute this actor by consuming a real input token and producing
-     *  an equivalent real token on output1. 
+     *  an equivalent real token on output1.
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
      */

@@ -54,21 +54,21 @@ public class ListenFBDelay extends FBDelay {
     /** Construct a ListenFBDelay with no container and a name that
      *  is an empty string.
      */
-    public ListenFBDelay() 
+    public ListenFBDelay()
             throws IllegalActionException, NameDuplicationException {
         super();
     }
 
-    /** Construct a ListenFBDelay with the specified workspace and 
+    /** Construct a ListenFBDelay with the specified workspace and
      *  no name.
      * @param workspace The workspace for this ListenFBDelay.
      */
-    public ListenFBDelay(Workspace workspace) 
+    public ListenFBDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
     }
 
-    /** Construct a ListenFBDelay with the specified container and 
+    /** Construct a ListenFBDelay with the specified container and
      *  name.
      * @param container The container of this ListenFBDelay.
      * @param name The name of this ListenFBDelay.
@@ -85,8 +85,8 @@ public class ListenFBDelay extends FBDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Add an ExecEventListener to this actor's list of listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void addListeners(ExecEventListener listener) {
@@ -111,7 +111,7 @@ public class ListenFBDelay extends FBDelay {
         }
     }
 
-    /** Generate an ExecEvent with a state value of 2. Return the 
+    /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
      * @returns True if this actor is enabled to call fire(). Return
      *  false otherwise.
@@ -147,9 +147,9 @@ public class ListenFBDelay extends FBDelay {
 	return super.prefire();
     }
 
-    /** Remove an ExecEventListener from this actor's list of 
-     *  listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Remove an ExecEventListener from this actor's list of
+     *  listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void removeListeners(ExecEventListener listener) {

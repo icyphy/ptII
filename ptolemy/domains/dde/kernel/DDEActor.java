@@ -42,18 +42,18 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DDEActor
 /**
-An optional base class for DDE actors. DDEActors are intended to 
-execute as autonomous processes that maintain a distributed notion 
-of time. In an DDE model, each actor is controlled by a unique 
-DDEThread. Each DDEThread maintains its actor's local notion of 
-time. Local time information is dependent on the time stamps 
-associated with tokens that are consumed by an actor. More 
-precisely, an actor's local notion of time is equivalent to the 
-maximum time stamp of all tokens that the actor has consumed. 
-Constraints on the consumption of tokens are described in the 
-documentation for DDEThread. Note that consumed tokens may include 
-NullTokens. A NullToken is a subclass of Token that is communicated 
-solely for the purpose of advancing the local notion of time of the 
+An optional base class for DDE actors. DDEActors are intended to
+execute as autonomous processes that maintain a distributed notion
+of time. In an DDE model, each actor is controlled by a unique
+DDEThread. Each DDEThread maintains its actor's local notion of
+time. Local time information is dependent on the time stamps
+associated with tokens that are consumed by an actor. More
+precisely, an actor's local notion of time is equivalent to the
+maximum time stamp of all tokens that the actor has consumed.
+Constraints on the consumption of tokens are described in the
+documentation for DDEThread. Note that consumed tokens may include
+NullTokens. A NullToken is a subclass of Token that is communicated
+solely for the purpose of advancing the local notion of time of the
 actor that consumes the NullToken.
 <P>
 The DDE model of computation supports typed, polymorphic actors and
@@ -101,11 +101,11 @@ public class DDEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the current time of this actor. The current time 
-     *  is equal to the time stamp associated with the token most 
-     *  recently consumed by any of the receivers contained by 
-     *  this DDEActor. If the current thread accessing this method 
-     *  is not an instance of DDEThread, then return the cached 
+    /** Return the current time of this actor. The current time
+     *  is equal to the time stamp associated with the token most
+     *  recently consumed by any of the receivers contained by
+     *  this DDEActor. If the current thread accessing this method
+     *  is not an instance of DDEThread, then return the cached
      *  current time value.
      * @return The current time of this DDEActor.
      */
@@ -150,17 +150,17 @@ public class DDEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
 
-    /** Return a token from the receiver that has the minimum 
-     *  receiver time of all receivers contained by this actor. 
-     *  The returned token will have the lowest time stamp of 
-     *  all pending tokens for this actor. If there exists a 
-     *  set of multiple receivers that share a common minimum 
-     *  receiver time, then return the token contained by the 
+    /** Return a token from the receiver that has the minimum
+     *  receiver time of all receivers contained by this actor.
+     *  The returned token will have the lowest time stamp of
+     *  all pending tokens for this actor. If there exists a
+     *  set of multiple receivers that share a common minimum
+     *  receiver time, then return the token contained by the
      *  highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      *  <P>
-     *  The primary difference between this method and getNextToken() 
-     *  is that this method returns all types of tokens including 
+     *  The primary difference between this method and getNextToken()
+     *  is that this method returns all types of tokens including
      *  NullTokens while getNextToken only returns real tokens.
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest

@@ -115,7 +115,7 @@ public class ListenClock extends Clock {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void addListeners(ExecEventListener listener) {
         if( _listeners == null ) {
