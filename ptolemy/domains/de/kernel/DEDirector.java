@@ -1365,13 +1365,6 @@ public class DEDirector extends Director {
             Iterator ports = actor.inputPortList().iterator();
             while (ports.hasNext()) {
                 IOPort inputPort = (IOPort)ports.next();
-//              // For each input port, if it is a delay port, record the ports 
-//              // triggered by its delayed event.
-//              Set delayPorts = null;
-//              if (inputPort instanceof DEIOPort) {
-//                  DEIOPort dePort = (DEIOPort) inputPort;
-//                  delayPorts = dePort.getDelayToPorts();
-//              }
 
                 List delayPorts = null;
                 // Use IODependence instead of special DEIOPorts
@@ -1424,7 +1417,7 @@ public class DEDirector extends Director {
                                     destination.outputPortList();
                             }
                             
-                            if (directFeedthroughOutputs.contains(port)) {
+                            if (directFeedthroughOutputs.contains(outPort)) {
                                 throw new IllegalActionException(this,
                                     "Zero delay self-loop on actor: "
                                     + ((Nameable)actor).getFullName());
