@@ -408,11 +408,11 @@ public final class CrossRefList implements Serializable  {
                     // previous cannot possibly be null here.
                     if (previous._next == null) {
                         // We are off the end of the list.
-                        CrossRef newref = new CrossRef();
-                        previous._next = newref;
-                        newref._previous = previous;
-                        _lastNode = newref;
-                        previous = newref;
+                        CrossRef newCrossRef = new CrossRef();
+                        previous._next = newCrossRef;
+                        newCrossRef._previous = previous;
+                        _lastNode = newCrossRef;
+                        previous = newCrossRef;
                     } else {
                         // There is an entry in the list.
                         previous = previous._next;
