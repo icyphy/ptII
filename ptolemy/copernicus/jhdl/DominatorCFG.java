@@ -125,6 +125,7 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	DominatorCFG _cfg=null;
 	try {
 	    ConditionalControlCompactor.compact(testMethod);
+	    BooleanNotCompactor.compact(testMethod);
 	    soot.Body body = testMethod.retrieveActiveBody();
 	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	    if (writeGraphs) {

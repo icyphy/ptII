@@ -56,7 +56,9 @@ JSRCS =		BlockGraphToDotty.java \
 		SynthesisToDotty.java \
 		PtDirectedGraphToDotty.java \
 		MergedControlFlowGraph.java \
-		GraphToDotty.java
+		GraphToDotty.java \
+		JHDLNotExpr.java \
+		HashListMap.java
 
 
 EXTRA_SRCS =	$(JSRCS)

@@ -106,15 +106,12 @@ import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.graph.Edge;
 
-import ptolemy.copernicus.jhdl.util.SuperBlock;
-import ptolemy.copernicus.jhdl.util.GraphNode;
+import ptolemy.copernicus.jhdl.util.HashListMap;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
-import ptolemy.copernicus.jhdl.util.SynthesisToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
-import ptolemy.copernicus.jhdl.util.CompoundAndExpression;
-import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
+import ptolemy.copernicus.jhdl.util.JHDLNotExpr;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph
@@ -295,6 +292,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	} else if(v instanceof Constant){
 	    valueNode = _processConstant((Constant) v);
 	} else {
+	    // soot.jimple.NewExpr
 	    throw new JHDLUnsupportedException("Unsupported Value="+
 					       v.getClass().getName());
 	}
@@ -310,7 +308,9 @@ public class BlockDataFlowGraph extends DirectedGraph {
      **/
     protected Node _processUnopExpr(UnopExpr expr) 
 	throws JHDLUnsupportedException {
-	if (expr instanceof NegExpr){
+	if (expr instanceof NegExpr || 
+	    expr instanceof JHDLNotExpr){
+
 	    Node n = addNodeWeight(expr);
 	    Value rightValue=expr.getOp();
 	    Node rv = _processValue(rightValue);
@@ -473,8 +473,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     protected Node _processStaticFieldRef(StaticFieldRef sfr) 
 	throws JHDLUnsupportedException {
-	throw new JHDLUnsupportedException("No static field refs");
-	//	return _getOrCreateSimpleNode(sfr);
+	//	throw new JHDLUnsupportedException("Static field references currently not supported"+sfr);
+	return _getOrCreateNode(sfr);
     }
     
     protected Node _processInvokeExpr(InvokeExpr ie) 
@@ -646,6 +646,15 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     //////////////////////////////////////////////////
 
+
+    /**
+     * This method returns a Soot method using an array of String 
+     * arguments. The first string (args[0]) is the fully qualified
+     * class name and the second string (args[1]) is the method name
+     * in that class.
+     *
+     * TODO: I should indicate arguments as well.
+     **/
     public static soot.SootMethod getSootMethod(String args[]) {
 	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
 	String methodname = "method1";
@@ -669,12 +678,17 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	return testClass.getMethodByName(methodname);
     }
 
+    /**
+     * This method returns an array of BlockDataFlowGraph objects for
+     * a given Method from a class. The method/class name are speciefied
+     * as command line arguments.
+     **/
     public static BlockDataFlowGraph[] getBlockDataFlowGraphs(String args[]) {
 	soot.SootMethod testMethod = getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
+	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
 	List blockList=bbgraph.getBlocks();
 	BlockDataFlowGraph graphs[] = new BlockDataFlowGraph[blockList.size()];
 	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
@@ -725,85 +739,5 @@ public class BlockDataFlowGraph extends DirectedGraph {
     protected HashListMap _instanceFieldRefs;
 
     public static boolean DEBUG = false; 
-
-}
-
-class HashListMap extends HashMap implements MapList {
-    public HashListMap() { super(); }
-    public HashListMap(int i) { super(i); }
-
-    public void add(Object key, Object value) {	
-	List l = getCreateList(key);
-	l.add(value);
-    }
-
-    public List getCreateList(Object key) {
-	List l = (List) get(key);
-	if (l == null) {
-	    l = new Vector();
-	    put(key,l);
-	}
-	return l;
-    }
-
-    public Object get(Object key, int index) {
-	List l=getList(key);
-	if (l == null)
-	    return null;
-	int size = l.size();
-	if (0 <= index && index < size) {
-	    return l.get(index);
-	} else
-	    return null;
-    }
-
-    public Object getFirst(Object key) {
-	List l=getList(key);
-	if (l==null)
-	    return null;
-	int size = l.size();
-	if (size > 0) {
-	    return l.get(0);
-	} else
-	    return null;
-    }
-
-    public Object getLast(Object key) {
-	List l=getList(key);
-	if (l == null)
-	    return null;
-	int size = l.size();
-	if (size > 0) {
-	    return l.get(size-1);
-	} else
-	    return null;
-    }
-
-    public List getList(Object o) {
-	return (List) get(o);
-    }
-
-    public Object clone() {
-	HashListMap hlm = new HashListMap(size());
-	for (Iterator i=keySet().iterator();i.hasNext();) {
-	    Object o = i.next();
-	    Vector vl = (Vector) ((Vector) get(o)).clone();
-	    hlm.put(o,vl);
-	}
-	return hlm;
-    }
-
-    public String toString() {
-	StringBuffer sb = new StringBuffer();
-	for (Iterator i=keySet().iterator();i.hasNext();) {
-	    Object o = i.next();
-	    sb.append(o+":");
-	    for (Iterator j=getList(o).iterator();j.hasNext();) {
-		sb.append(j.next());
-	    }
-	    sb.append("\n");
-	}
-	return sb.toString();
-    }
 
 }

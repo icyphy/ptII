@@ -224,7 +224,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("jtp").add(
                 new Transform("jtp.clu",
                         ConstantLoopUnroller.v()));
-
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.circuit",
                         ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));

@@ -511,5 +511,6 @@ public class FIR extends TypedAtomicActor {
     protected Token _data1;
     protected Token _data2;
     
-    private static final int NUM_TAPS=3;
+    //    private static final int NUM_TAPS=3;
+    private int NUM_TAPS=3;
 }

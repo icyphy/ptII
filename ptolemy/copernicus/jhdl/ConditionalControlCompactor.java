@@ -29,6 +29,7 @@
 
 package ptolemy.copernicus.jhdl;
 
+import ptolemy.copernicus.jhdl.util.*;
 
 import java.util.Iterator;
 import java.util.Collection;
@@ -49,7 +50,14 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 import soot.jimple.IfStmt;
+import soot.jimple.GotoStmt;
+import soot.jimple.NeExpr;
+import soot.jimple.ConditionExpr;
+import soot.jimple.IntConstant;
+import soot.jimple.AssignStmt;
 import soot.jimple.BinopExpr;
+import soot.jimple.AssignStmt;
+import soot.jimple.internal.JAssignStmt;
 
 import soot.SootMethod;
 import soot.Unit;
@@ -128,11 +136,10 @@ public class ConditionalControlCompactor {
 		if (mergedUnit != null) {
 		    removedUnits.add(mergedUnit);		    
 		    unitsModified = true;
-		    //BriefBlockGraph bbgraph = new BriefBlockGraph(mbody); 
-		    //BlockGraphToDotty.writeDotFile("mod_"+version++,bbgraph);
 		} else {
-		    if (i.hasNext())
+		    if (i.hasNext()) {
 			current = (Unit) i.next();
+		    }
 		    else
 			current = null;
 		}
@@ -171,6 +178,58 @@ public class ConditionalControlCompactor {
      *
      **/
     protected static Unit mergeUnit(PatchingChain chain, Unit root) 
+	throws IllegalActionException {
+	
+	// 1. Is root an IfStmt?
+	if (!(root instanceof IfStmt))
+	    return null;
+	IfStmt rootIfStmt = (IfStmt) root;
+	Unit rootTarget = rootIfStmt.getTarget();
+	
+	// 2. Is successor an IfStmt? If so, continue with the merge.
+	//    If not, call mergeBooleanAssign to attempt a different 
+	//    merge.
+	Unit successor = (Unit) chain.getSuccOf(root);
+	if (!(successor instanceof IfStmt))
+	    return null;
+	IfStmt successorIfStmt = (IfStmt) successor;
+	Unit successorSuccessor = (Unit) chain.getSuccOf(successor);
+	Unit successorTarget = successorIfStmt.getTarget();
+
+	// 3. See if target of rootIfStmt goes to same unit
+	//    as target OR succesesor of successorIfStmt
+	if (!((rootTarget == successorSuccessor) ^
+	      (rootTarget == successorTarget)))
+	    return null;
+	    
+	// root and successor units can be merged.
+	Value rootCondition = rootIfStmt.getCondition();
+	Value successorCondition = successorIfStmt.getCondition();
+
+	CompoundBooleanExpression newExpression;
+	if (rootTarget == successorSuccessor) {
+	    // Expression = 'rootCondition & successorCondition
+	    newExpression = new CompoundAndExpression(
+		CompoundBooleanExpression.invertValue(rootCondition),
+		successorCondition);
+						      
+	} else {
+	    // Expression = rootCondition | successorCondition
+	    newExpression = 
+		new CompoundOrExpression(rootCondition,
+					 successorCondition);
+	}
+	rootIfStmt.setCondition(newExpression);
+	
+	// 5. Remove successor & patch target
+	chain.remove(successor);
+	if (rootTarget == successorSuccessor)
+	    rootIfStmt.setTarget(successorTarget);
+
+	return successor;
+    }
+
+    protected static Unit mergeUnit2(PatchingChain chain, Unit root) 
 	throws IllegalActionException {
 	
 	// 1. Is root an IfStmt?
@@ -222,25 +281,9 @@ public class ConditionalControlCompactor {
  
 
     public static void main(String args[]) {
-	if (args.length < 2) {
-	    System.err.println("<classname> <methodname>");
-	    System.exit(1);
-	}
-	String classname = args[0];
-	String methodname = args[1];
-	
-	soot.SootClass testClass = 
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
-	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
+
+	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
+
 	soot.Body body = testMethod.retrieveActiveBody();
 	soot.toolkits.graph.CompleteUnitGraph unitGraph = 
 	    new soot.toolkits.graph.CompleteUnitGraph(body);	

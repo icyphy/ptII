@@ -56,14 +56,16 @@ JSRCS = \
 	Predefined.java \
 	RegisterDelay.java \
 	BlockDataFlowGraph.java \
-	CircuitGenerator.java \
 	DominatorHashMap.java \
 	ConditionalControlCompactor.java \
+	BooleanNotCompactor.java \
 	DirectedAcyclicCFG.java \
 	DominatorCFG.java \
 	IntervalChain.java \
 	IntervalDFG.java \
-	MapList.java
+	MapList.java \
+	BDFGToJHDLCircuit.java \
+	BinaryMuxNode.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

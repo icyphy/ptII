@@ -438,15 +438,58 @@ public class test1 extends TypedAtomicActor {
 	return c;
     }
 
+    // Use a constant
+    public int hwgen1_1(int a, int b) {
+	int c = a + 1;
+	return c;
+    }
+
     /* Simple method with one basic block and several operations */
     public int hwgen2(int a, int b, int d) {
 	int c = a * b + d - a;
 	return c;
     }
 
+    // Uses AndExpr, OrExpr, XorExpr (with Boolean type)
     public boolean hwgen3(boolean a, boolean b, boolean c) {
-	return a & b | c;
+	return (a & b | c) ^ a;
     }
+    // Uses AndExpr, OrExpr, XorExpr (with int type)
+    public int hwgen3_1(int a, int b, int c) {
+	return (a & b | c) ^ a;
+    }
+
+    public boolean hwgen3_1_1(boolean a, boolean b, boolean c) {
+	return !((a & b | c) ^ a);
+    }
+
+    // Causes erro
+    public boolean hwgen3_1_2(boolean a, boolean b, boolean c) {
+	return !((a & b | !c) ^ a);
+    }
+
+    // TODO: 
+    public boolean hwgen3_2(boolean a, boolean b, boolean c) {
+	return a && b || c;
+    }
+
+    // TODO: Causes an error in merging
+    public int hwgen4(int a, int b) {
+	if (a > 5)
+	    return a+b;
+	else
+	    return a;
+    }
+
+    public int hwgen4_1(int a, int b) {
+	int c;
+	if (a > 5)
+	    c = a+b;
+	else
+	    c = a+5;
+	return c;
+    }
+
 
     public void fire() throws IllegalActionException {
 	int a,b,c,d;

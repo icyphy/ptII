@@ -241,13 +241,13 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    Object o=i.next();
 //  	    System.out.print(o+" ("+System.identityHashCode(o)+") ");
 	}
-	System.out.println();
+	//System.out.println();
 
 	// Connect previously created chain to this node
 	if (_next != null) { 
-	    DEBUG=true; System.out.println("*** Serial Merge ***");
+	    //DEBUG=true; System.out.println("*** Serial Merge ***");
   	    mergeSerial(_next);
-	    DEBUG=false;
+	    //DEBUG=false;
 	}
     }
 
@@ -404,8 +404,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
     /** move to higher level **/
     public Node getOrCreateNode(Value v) throws JHDLUnsupportedException {
 	Node newNode = _valueMap.getLast(v);
-  	System.out.println("newNode = "+newNode+" value="+v+
-  			   " id="+System.identityHashCode(v));
+	if (DEBUG)
+	    System.out.println("newNode = "+newNode+" value="+v+
+			       " id="+System.identityHashCode(v));
 	if (newNode == null) {
   	    if (v instanceof InstanceFieldRef) {
   		InstanceFieldRef ifr = (InstanceFieldRef) v;
@@ -487,7 +488,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return nodes;
     }
 
-    public static IntervalDFG createInternalDFG(String args[]) 
+    public static IntervalDFG createIntervalDFG(String args[]) 
 	throws JHDLUnsupportedException {
 	IntervalChain ic = IntervalChain.createIntervalChain(args,true);
 	return new IntervalDFG(ic);
@@ -497,7 +498,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	//BlockDataFlowGraph.DEBUG=true;
 	IntervalDFG im = null;
 	try {
-	    im = createInternalDFG(args);	
+	    im = createIntervalDFG(args);	
 	} catch (JHDLUnsupportedException e) {
 	    e.printStackTrace();
 	    System.exit(1);
@@ -522,24 +523,6 @@ public class IntervalDFG extends BlockDataFlowGraph {
     protected Collection _requiredDefinitions;
 
     protected ValueMap _valueMap;
-}
-
-class MuxNode {
-}
-
-class BinaryMuxNode extends MuxNode {
-    public BinaryMuxNode(Node t, Node f, Node c, String name) {
-	_trueNode = t;
-	_falseNode = f;
-	_conditionNode = c;
-	_name = name;
-    }
-    public String toString() { return "mux_"+_name; }
-
-    String _name;
-    Node _trueNode;
-    Node _falseNode;
-    Node _conditionNode;
 }
 
 class UniqueVector extends Vector {

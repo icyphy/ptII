@@ -157,10 +157,8 @@ public class CircuitAnalysis {
 
 
 
-	
 	SynthesisToDotty.writeDotFile(GraphToDotty.validFileName(entity.getName()),
 				      fire_graph);
-
 
 
 
@@ -288,7 +286,7 @@ public class CircuitAnalysis {
         Body body = method.retrieveActiveBody();
   	DirectedGraph mcfg = new MergedControlFlowGraph(body);
 	mcfg = _extractDataFlow(mcfg);
-	
+
 	return mcfg;
     }
 
@@ -381,4 +379,20 @@ public class CircuitAnalysis {
     private Map _requiredNodeMap;
     private int count = 0;
     private static Predefined _predefined=new Predefined();
+}
+
+class PermissiveBlockDataFlowGraph extends BlockDataFlowGraph {
+    public PermissiveBlockDataFlowGraph(Block block) 
+	throws ptolemy.copernicus.jhdl.util.JHDLUnsupportedException {
+	super(block);
+    }
+    protected Node _processValue(Value v) {
+	Node newnode=null;
+	try {
+	    newnode = super._processValue(v);
+	} catch (ptolemy.copernicus.jhdl.util.JHDLUnsupportedException e) {
+	    newnode = _getOrCreateNode(v);
+	}
+	return newnode;
+    }
 }

@@ -106,8 +106,12 @@ public class CircuitTransformer extends SceneTransformer {
      * 2. 
      **/
     protected void internalTransform(String phaseName, Map options) {
+	
+	System.out.println("**************************************************");
+	System.out.println("*** START JHDL");
+	System.out.println("**************************************************");
         System.out.println("\nCircuitTransformer.internalTransform("
-			   + phaseName + ", " + options + ")\n");
+			   + phaseName + ", " + options + ")");
 	
 	//////////////////////////////////////////////
 	// Step 1. Create a DirectedGraph that matches
@@ -236,6 +240,9 @@ public class CircuitTransformer extends SceneTransformer {
 	//          } catch (Exception ex) {
 	//              ex.printStackTrace();
 	//          }
+	System.out.println("**************************************************");
+	System.out.println("*** END JHDL");
+	System.out.println("**************************************************");
     }
 
     protected DirectedGraph _createEntityGraph(Entity entity, Map options) {
@@ -249,7 +256,7 @@ public class CircuitTransformer extends SceneTransformer {
 	    return null;
 								 
 	System.out.println("Creating graph for class "+className+
-			   " ("+entityClassName+")");
+			   " (entity="+entityClassName+")");
 	SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
 	CircuitAnalysis analysis=null;
