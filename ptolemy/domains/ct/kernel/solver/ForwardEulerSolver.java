@@ -94,6 +94,61 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+     */
+    public void fireDynamicActors() throws IllegalActionException {
+        _debug(getFullName() + ": fire dynamic actors.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+    
+        Iterator actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug(getFullName(), " firing ", ((Nameable)next).getName());
+            next.fire();
+        }
+        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        _debug(getFullName() + ": fire state transition actors.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+    
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug(getFullName(), " firing ", ((Nameable)next).getName());
+            next.fire();
+        }
+        
+        setConvergence(true);
+    }
+
     /** Return 0 to indicate that this solver needs no history information.
      *  @return 0.
      */
@@ -146,35 +201,6 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *       throw it.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        resetRound();
-        Iterator actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _prefireIfNecessary(next);
-            _debug(getFullName() + " is firing..."+((Nameable)next).getName());
-            next.fire();
-        }
-        actors = schedule.get(
-                CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + " is firing..."+((Nameable)next).getName());
-            next.fire();
-        }
-        dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
         return true;
     }
 

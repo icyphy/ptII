@@ -135,7 +135,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double f1 = integrator.getDerivative();
         double h = dir.getCurrentStepSize();
         double tentativeState;
-        if (getRound() == 0) {
+        if (getRoundCount() == 0) {
             // prediction
             tentativeState = integrator.getState() + f1*h;
             // for error control
@@ -217,8 +217,94 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": in resolveState().");
+//        _debug(getFullName() + ": in resolveState().");
+//
+//        CTDirector dir = (CTDirector)getContainer();
+//        if (dir == null) {
+//            throw new IllegalActionException( this,
+//                    " must have a CT director.");
+//        }
+//        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+//        if (scheduler == null) {
+//            throw new IllegalActionException( dir,
+//                    " must have a director to fire.");
+//        }
+//        resetRound();
+//        // prediction
+//        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+//        Iterator actors = schedule.get(
+//                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+//        while (actors.hasNext()) {
+//            Actor next = (Actor)actors.next();
+//            _debug("Guessing..."+((Nameable)next).getName());
+//            next.fire();
+//        }
+//        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
+//        _setConvergence(false);
+//        int iterations = 0;
+//        while (!_isConverged()) {
+//            incrementRoundCount();
+//            _setConvergence(true);
+//            actors = schedule.get(
+//                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+//            while (actors.hasNext()) {
+//                Actor next = (Actor)actors.next();
+//                _prefireIfNecessary(next);
+//                _debug(getFullName() + "Firing..."+((Nameable)next).getName());
+//                next.fire();
+//            }
+//            actors = schedule.get(
+//                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
+//            while (actors.hasNext()) {
+//                Actor next = (Actor)actors.next();
+//                _debug(getFullName() + " refiring..."+
+//                        ((Nameable)next).getName());
+//                next.fire();
+//            }
+//            if (iterations++ > dir.getMaxIterations()) {
+//                //reduce step size and start over.
+//                //startOverLastStep();
+//                resetRound();
+//                // prediction
+//                actors = schedule.get(
+//                        CTSchedule.DYNAMIC_ACTORS).actorIterator();
+//                while (actors.hasNext()) {
+//                    Actor next = (Actor)actors.next();
+//                    _debug(getFullName()+" asking..."+
+//                            ((Nameable)next).getName());
+//                    next.fire();
+//                }
+//                dir.setCurrentTime(dir.getCurrentTime()
+//                    .add(dir.getCurrentStepSize()));
+//                _setConvergence(false);
+//                iterations = 0;
+//            }
+//        }
+        CTDirector dir = (CTDirector)getContainer();
+        if (getRoundCount() > dir.getMaxIterations()) {
+            return false;
+        }
+        return true;
+    }
 
+    /** Vote for whether a fixed point has reached. The final result
+     *  is the <i>and</i> of all votes.
+     *  @param converge True if vote for converge.
+     */
+    protected void _voteForConvergence(boolean converge) {
+        setConvergence(isConverged() && converge);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Name of this Solver. */
+    private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+     */
+    public void fireDynamicActors() throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -229,7 +315,6 @@ public class TrapezoidalRuleSolver extends ODESolver {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
-        resetRound();
         // prediction
         CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         Iterator actors = schedule.get(
@@ -239,83 +324,32 @@ public class TrapezoidalRuleSolver extends ODESolver {
             _debug("Guessing..."+((Nameable)next).getName());
             next.fire();
         }
-        dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
-        _setConvergence(false);
-        int iterations = 0;
-        while (!_isConverged()) {
-            incrementRound();
-            _setConvergence(true);
-            actors = schedule.get(
-                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _prefireIfNecessary(next);
-                _debug(getFullName() + "Firing..."+((Nameable)next).getName());
-                next.fire();
-            }
-            actors = schedule.get(
-                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _debug(getFullName() + " refiring..."+
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            if (iterations++ > dir.getMaxIterations()) {
-                //reduce step size and start over.
-                //startOverLastStep();
-                resetRound();
-                // prediction
-                actors = schedule.get(
-                        CTSchedule.DYNAMIC_ACTORS).actorIterator();
-                while (actors.hasNext()) {
-                    Actor next = (Actor)actors.next();
-                    _debug(getFullName()+" asking..."+
-                            ((Nameable)next).getName());
-                    next.fire();
-                }
-                dir.setCurrentTime(dir.getCurrentTime()+
-                        dir.getCurrentStepSize());
-                _setConvergence(false);
-                iterations = 0;
-            }
+        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
         }
-        return true;
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        // prediction
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug("Guessing..."+((Nameable)next).getName());
+            next.fire();
+        }
+        incrementRoundCount();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    /** Return true if the fixed point iteration is converged. This is
-     *  the result of all _voteForConvergence() in the current integration
-     *  step.
-     *  @return True if all the votes are true.
-     */
-    protected boolean _isConverged() {
-        return _converge;
-    }
-
-    /** Set the convergence flag. Usually called to reset the flag to false
-     *  at the beginning of an integration step.
-     *  @param converge The flag setting.
-     */
-    protected void _setConvergence(boolean converge) {
-        _converge = converge;
-    }
-
-    /** Vote for whether a fixed point has reached. The final result
-     *  is the <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
-     */
-    protected void _voteForConvergence(boolean converge) {
-        _converge = _converge && converge;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Name of this Solver. */
-    private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
-
-    /** @serial True if all the votes are true. */
-    private boolean _converge;
 }

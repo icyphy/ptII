@@ -31,6 +31,7 @@ package ptolemy.domains.ct.kernel.solver;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
@@ -140,7 +141,7 @@ public class ExplicitRK23Solver extends ODESolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        int r = getRound();
+        int r = getRoundCount();
         double xn =  integrator.getState();
         double outvalue;
         double h = dir.getCurrentStepSize();
@@ -243,61 +244,6 @@ public class ExplicitRK23Solver extends ODESolver {
      *  method or emitTentativeOutput() method.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a scheduler to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        resetRound();
-        Iterator actors;
-        // for the first iteration after a breakpoint, create the history.
-        if (dir.isBreakpointIteration()) {
-            actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                CTDynamicActor next = (CTDynamicActor)actors.next();
-                _debug(getFullName() + ": Build integrator history"
-                        +((Nameable)next).getName());
-                next.emitTentativeOutputs();
-            }
-            actors = schedule.get(
-                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _prefireIfNecessary(next);
-                _debug(getFullName() + ": Build integrator history..."
-                        +((Nameable)next).getName());
-                next.fire();
-            }
-        }
-        double currentTime = dir.getCurrentTime();
-        double currentStepSize = dir.getCurrentStepSize();
-        for (int i = 0; i < _timeInc.length; i++) {
-            actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _debug(getFullName() + " firing..."+
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            dir.setCurrentTime(currentTime + currentStepSize*_timeInc[i]);
-            actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
-                actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _prefireIfNecessary(next);
-                _debug(getFullName(), " firing... ",
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            incrementRound();
-        }
         return true;
     }
 
@@ -321,4 +267,126 @@ public class ExplicitRK23Solver extends ODESolver {
 
     // The order of the algorithm.
     private static final double _order = 3;
+    
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireOneRound()
+     */
+    public void fireOneRound() throws IllegalActionException {
+        _debug(getFullName() + ": firing one round to resolve states.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a scheduler to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors;
+        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Time iterationBeginTime = dir.getIterationBeginTime();
+        double currentStepSize = dir.getCurrentStepSize();
+
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug(getFullName() + " firing..."+
+                    ((Nameable)next).getName());
+            next.fire();
+        }
+        // FIXME: why is the current time changed here?
+        // Some state transition actors may be some functions 
+        // defined on the current time, such as the CurrentTime actor.            
+        dir.setCurrentTime(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+        actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
+            actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _prefireIfNecessary(next);
+            _debug(getFullName(), " firing... ",
+                    ((Nameable)next).getName());
+            next.fire();
+        }
+        incrementRoundCount();
+        if (getRoundCount() == _timeInc.length) {
+            setConvergence(true);
+            // enforce the current iteration stops at the expected time
+            // specially for the breakpoints.
+            dir.setCurrentTime(dir.getIterationEndTime());
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+     */
+    public void fireDynamicActors() throws IllegalActionException {
+        _debug(getFullName() + ": firing dynamic actors to emit tentative states.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a scheduler to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors;
+        actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        Time iterationBeginTime = dir.getIterationBeginTime();
+        double currentStepSize = dir.getCurrentStepSize();
+
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug(getFullName() + " firing..."+
+                    ((Nameable)next).getName());
+            next.fire();
+        }
+        // FIXME: why is the current time changed here?
+        // Some state transition actors may be some functions 
+        // defined on the current time, such as the CurrentTime actor.            
+        dir.setCurrentTime(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        _debug(getFullName() + ": firing state transition actors to resolve states.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a scheduler to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors;
+        actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
+            actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _prefireIfNecessary(next);
+            _debug(getFullName(), " firing... ",
+                    ((Nameable)next).getName());
+            next.fire();
+        }
+        incrementRoundCount();
+        if (getRoundCount() == _timeInc.length) {
+            resetRoundCount();
+            setConvergence(true);
+            // enforce the current iteration stops at the expected time
+            // specially for the breakpoints.
+            // NOTE: we use the combination of iteration begin time and
+            // [0.5, 0.75, 1.0] as the time increment array. We may not
+            // need the following statement. However, it is still here 
+            // just to make sure that time goes where we expected.
+            dir.setCurrentTime(dir.getIterationEndTime());
+        }
+    }
 }

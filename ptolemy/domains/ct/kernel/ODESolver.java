@@ -146,16 +146,16 @@ public abstract class ODESolver extends NamedObj {
      *
      *  @return The round of firing the state transition schedule.
      */
-    public int getRound() {
-        return _round;
+    public int getRoundCount() {
+        return _roundCount;
     }
 
     /** Increase the round counter by one. In general, the round counter
      *  will be increased
      *  for each round the state transition schedule is fired.
      */
-    public void incrementRound() {
-        _round ++ ;
+    public void incrementRoundCount() {
+        _roundCount ++ ;
     }
 
     /** The fire() method of integrators is delegated to this method.
@@ -186,14 +186,15 @@ public abstract class ODESolver extends NamedObj {
 
     /** Reset the round counter to 0.
      */
-    public void resetRound() {
-        _round = 0;
+    public void resetRoundCount() {
+        _roundCount = 0;
     }
 
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently. Implementations
      *  of this method will fire STATE_TRANSITION_ACTORS and
-     *  DYNAMIC actors.
+     *  DYNAMIC actors. When states are resolved, the current time was
+     *  increased by the amout of the used step size.
      *
      * @exception IllegalActionException Thrown in derived classes if
      * the exception is thrown by * one of the execution methods of some
@@ -245,5 +246,25 @@ public abstract class ODESolver extends NamedObj {
     // The CT director that contains this solver.
     private Director _container = null;
     // The round counter.
-    private int _round = 0;
+    private int _roundCount = 0;
+    private boolean _isConverged = false;
+    
+    public abstract void fireDynamicActors() throws IllegalActionException;
+    public abstract void fireStateTransitionActors() throws IllegalActionException;
+
+    /** Return true if all integrators agree that the fixed-point
+     *  iteration has converged. 
+     *  @return True if all the votes are true.
+     */
+    public boolean isConverged() {
+        return _isConverged;
+    }
+
+    /** Set the convergence flag. Integrators may call this method
+     *  to change the convergence.
+     *  @param converge The flag setting.
+     */
+    public void setConvergence(boolean convergence) {
+        _isConverged = convergence;
+    }
 }

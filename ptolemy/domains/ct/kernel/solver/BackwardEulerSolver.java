@@ -108,6 +108,60 @@ public class BackwardEulerSolver extends FixedStepSolver {
         return 0;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+     */
+    public void fireDynamicActors() throws IllegalActionException {
+        _debug(getFullName() + ": fire dynamic actors.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+
+        Iterator actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            CTDynamicActor next = (CTDynamicActor)actors.next();
+            _debug(getFullName(), " firing ", ((Nameable)next).getName());
+            next.fire();
+        }
+        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        _debug(getFullName() + ": fire state transition actors.");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug(getFullName(), " firing ", ((Nameable)next).getName());
+            next.fire();
+        }
+        incrementRoundCount();
+    }
+
     /** Return 1 to indicate that an integrator under this solver needs
      *  one auxiliary variable.
      *  @return 1.
@@ -157,53 +211,9 @@ public class BackwardEulerSolver extends FixedStepSolver {
      *  no scheduler.
      */
     public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
         CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-
-        resetRound();
-        dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
-        Iterator actors = schedule.get(
-                CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            CTDynamicActor next = (CTDynamicActor)actors.next();
-            _debug(getFullName(), " ask ", ((Nameable)next).getName(),
-                    " to emit tentative output");
-            next.emitTentativeOutputs();
-        }
-        _setConvergence(false);
-        int iterations = 0;
-        while (!_isConverged()) {
-            _setConvergence(true);
-            incrementRound();
-            actors = schedule.get(
-                    CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _prefireIfNecessary(next);
-                _debug(getFullName() + " Firing..."+
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                Actor next = (Actor)actors.next();
-                _debug(getFullName() + " Refiring..."+
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            if (iterations++ > dir.getMaxIterations()) {
-                return false;
-            }
+        if (getRoundCount() > dir.getMaxIterations()) {
+            return false;
         }
         return true;
     }
@@ -211,28 +221,11 @@ public class BackwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return true if all integrators agree that the fixed-point
-     *  iteration has converged. Integrators vote for convergence
-     *  by calling the _voteForConvergence() with a true arguments.
-     *  And the value returned here is the <i>AND</i> of all votes.
-     *  @return True if all the votes are true.
-     */
-    protected boolean _isConverged() {
-        return _converge;
-    }
-
-    /** Set the convergence flag.
-     *  @param converge The flag setting.
-     */
-    protected void _setConvergence(boolean converge) {
-        _converge = converge;
-    }
-
     /** Vote on whether a fixed point has reached.
      *  @param converge True if vote for convergence.
      */
     protected void _voteForConvergence(boolean converge) {
-        _converge = _converge && converge;
+        setConvergence(isConverged() && converge);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -240,7 +233,4 @@ public class BackwardEulerSolver extends FixedStepSolver {
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Backward_Euler_Solver" ;
-
-    /** @serial True if all the votes are true. */
-    private boolean _converge;
 }
