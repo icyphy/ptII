@@ -370,6 +370,13 @@ public class MoMLParser extends HandlerBase {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
+    /** Get the top-level entity associated with this parser, or null if none.
+     *  @return The top-level associated with this parser.
+     */
+    public NamedObj getToplevel() {
+        return _toplevel;
+    }
+
     /** Parse the MoML file at the given URL, which may be a file
      *  on the local file system, using the specified base
      *  to expand any relative references within the MoML file.
@@ -899,7 +906,6 @@ public class MoMLParser extends HandlerBase {
                                 _parser.getColumnNumber());
                     }
                 }
-
                 if (_current != null) {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
@@ -1598,6 +1604,7 @@ public class MoMLParser extends HandlerBase {
     // if there is one.
     private ComponentEntity _searchForEntity(String name,
             boolean enforceContainment) throws XmlException {
+
         // If the name is absolute, we first have to find a
         // name from the imports that matches.
         if (name.startsWith(".")) {
@@ -1613,7 +1620,9 @@ public class MoMLParser extends HandlerBase {
             if (_toplevel != null && _toplevel instanceof ComponentEntity
                     && topLevelName.equals(_toplevel.getName())) {
                 if (nextPeriod < 1) {
-                    if (_current != null && enforceContainment == true) {
+                    if (_current != null
+                            && _current != _toplevel
+                            && enforceContainment == true) {
                         throw new XmlException(
                             "Reference to an existing entity: "
                             + _toplevel.getFullName()
