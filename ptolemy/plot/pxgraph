@@ -81,8 +81,7 @@ if [ -z "$JAVAHOME" ]; then
 	for i in `echo $PATH | sed -e 's/:/ /g'`
 	do
 	    if [ -x "$i/$searchfile" -a ! -d "$i/$searchfile" ]; then
-		javacdir=`basename $i`
-		JAVAHOME=`basename $javacdir`
+		JAVAHOME=`dirname $javacdir`
 		export JAVAHOME
 		break
 	    fi
@@ -104,4 +103,10 @@ if [ -z "$JAVAHOME" ]; then
 
 fi
 
-java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph $@
+if [  "`uname`" =  "CYGWIN32/NT"  ]; then 
+    java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+else
+    java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+fi
+
+
