@@ -34,6 +34,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.BasicJApplet;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.*;
 
 import java.awt.event.ActionEvent;

@@ -57,7 +57,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.VersionAttribute;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;

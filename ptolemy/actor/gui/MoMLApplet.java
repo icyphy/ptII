@@ -50,7 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.VersionAttribute;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;

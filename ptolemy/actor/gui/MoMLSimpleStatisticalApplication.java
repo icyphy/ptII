@@ -35,6 +35,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;

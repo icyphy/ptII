@@ -38,11 +38,11 @@ import ptolemy.actor.Manager;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
