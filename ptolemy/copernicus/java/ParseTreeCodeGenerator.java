@@ -173,7 +173,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _nodeToLocal.put(node, tokenCastLocal);
     }
-    public void visitFunctionNode(ASTPtFunctionNode node)
+    public void visitFunctionNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
