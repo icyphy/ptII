@@ -169,7 +169,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  this method looks inside opaque entities, whereas deepEntityList()
      *  does not.
      *
-     *  @returns a List of all atomic entities in the model.
+     *  @return a List of all atomic entities in the model.
      */
     public List allAtomicEntityList() {
         // We don't use an Iterator here so that we can modify the list
