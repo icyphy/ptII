@@ -213,7 +213,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateCompare(v);
     }
 
-    /** Generate code for a Cmpl(comare less than) expression. Presently
+    /** Generate code for a Cmpl(compare less than) expression. Presently
      * this is equivalent to generating code for a Cmp expression since NaN
      * is not supported at present.
      * @param v The expression.
@@ -460,7 +460,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     /* Generate the code for a lookup switch statement. There is also a
      * table switch statement that is slightly different.
-     * @param stmt The statent.
+     * @param stmt The statment.
      */
     public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
@@ -1379,7 +1379,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     /** Returns the appropriate indentation based on the value of the
      *  "indentLevel" variable.
      *
-     *  @return A String containg 4 spaces for every level of indentation.
+     *  @return A String containing 4 spaces for every level of indentation.
      */
     protected String _indent() {
         return Utilities.indent(indentLevel);
