@@ -51,10 +51,15 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.util.*;
 
+import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.datatransfer.*;
 import java.awt.Dimension;
 import java.awt.event.*;
+import java.awt.print.Printable;
+import java.awt.print.PrinterJob;
+import java.awt.print.PrinterException;
+import java.awt.print.PageFormat;
 import java.util.*;
 
 import java.io.File;
@@ -80,7 +85,7 @@ import javax.swing.KeyStroke;
  * @version $Id$
  */
 public class PtolemyDocument extends AbstractDocument
-    implements VergilDocument, ClipboardOwner {
+    implements VergilDocument, ClipboardOwner, Printable {
 
     /** Construct a Ptolemy document that is owned by the given
      *  application.
@@ -289,6 +294,26 @@ public class PtolemyDocument extends AbstractDocument
 	    System.out.println("io error");
 	}
     }
+
+    /** Print the document to a printer, represented by the specified graphics
+     *  object.  This method assumes that a view exists of the this document
+     *  in the application.
+     *  @param graphics The context into which the page is drawn.
+     *  @param format The size and orientation of the page being drawn.
+     *  @param index The zero based index of the page to be drawn.
+     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     *  @exception PrinterException If the print job is terminated.
+     */
+    public int print(Graphics graphics, PageFormat format,
+            int index) throws PrinterException {
+        JGraph graph = (JGraph) ((VergilApplication)getApplication()).getView(this);
+        if(graph != null) {
+            return graph.print(graphics, format, index);
+        }
+        else return NO_SUCH_PAGE;
+    }
+        
 
     /** Save the document to the current file.
      *
