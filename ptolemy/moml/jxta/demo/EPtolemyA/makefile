@@ -104,7 +104,7 @@ demo: Average.class EPtolemy.properties
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
 	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/configs/jxta/configuration.xml" \
-		"$$safePTII/ptolemy/configs/vergilConfiguration.xml";
+		"$$safePTII/ptolemy/configs/full/configuration.xml";
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
