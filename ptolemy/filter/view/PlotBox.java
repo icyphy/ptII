@@ -968,8 +968,8 @@ public class PlotBox extends Panel {
                 graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
                 graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-//                    graphics.setColor(Color.lightGray);
-                    graphics.setColor(_foreground);
+                    graphics.setColor(Color.lightGray);
+//                    graphics.setColor(_foreground);
                     graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
                 }
@@ -1000,8 +1000,8 @@ public class PlotBox extends Panel {
                         int yCoord1 = _lry -
                             (int)((ypos-_ytickMin)*_ytickscale);
                         if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-                           // graphics.setColor(Color.lightGray);
-                            graphics.setColor(_foreground);
+                            graphics.setColor(Color.lightGray);
+                           // graphics.setColor(_foreground);
                             graphics.drawLine(_ulx+1, yCoord1,
                                     _lrx-1, yCoord1);
                             graphics.setColor(_foreground);
@@ -1040,8 +1040,8 @@ public class PlotBox extends Panel {
                 graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
                 graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-//                    graphics.setColor(Color.lightGray);
-                    graphics.setColor(_foreground);
+                    graphics.setColor(Color.lightGray);
+//                    graphics.setColor(_foreground);
                     graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
                     graphics.setColor(_foreground);
                 }
@@ -1129,8 +1129,8 @@ public class PlotBox extends Panel {
                 graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                 graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-//                    graphics.setColor(Color.lightGray);
-                    graphics.setColor(_foreground);
+                    graphics.setColor(Color.lightGray);
+//                     graphics.setColor(_foreground);
                     graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                     graphics.setColor(_foreground);
                 }
@@ -1162,8 +1162,8 @@ public class PlotBox extends Panel {
                                  tmpStep, _xlog)) {
                         xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                         if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-//                            graphics.setColor(Color.lightGray);
-                            graphics.setColor(_foreground);
+                            graphics.setColor(Color.lightGray);
+//                            graphics.setColor(_foreground);
                             graphics.drawLine(xCoord1, _uly+1,
                                     xCoord1, _lry-1);
                             graphics.setColor(_foreground);
@@ -1197,8 +1197,8 @@ public class PlotBox extends Panel {
                 graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                 graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-//                    graphics.setColor(Color.lightGray);
-                    graphics.setColor(_foreground);
+                    graphics.setColor(Color.lightGray);
+//                     graphics.setColor(_foreground);
                     graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
                     graphics.setColor(_foreground);
                 }

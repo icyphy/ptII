@@ -133,6 +133,15 @@ public class InteractComponent {
     }
 
     /**
+     * Get the data index number. <p>
+     * @return the data index number of  this object.
+     */
+    public int getDataIndex(){
+           return _dataindex;
+    }     
+
+
+    /**
      * Get the dataset number. <p>
      * @return the dataset number of  this object.
      */
@@ -441,10 +450,11 @@ public class InteractComponent {
      * and data index in Plot.
      * <p>
      * @param datas data set number.
-     * @param ind data index number.
+     * @param index data index number.
      */ 
-    public void setDataSetNum(int datas){
+    public void setDataSetNumAndIndex(int datas, int index){
        _dataset = datas;
+       _dataindex = index;
     } 
 
 

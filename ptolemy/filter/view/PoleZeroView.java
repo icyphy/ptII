@@ -72,8 +72,8 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
           // create new PoleZeroPlot
           InteractPlot plot = new InteractPlot();
-          plot.setBackground(Color.black);
-          plot.setForeground(Color.gray);
+          plot.setBackground(_plotBack);
+          plot.setForeground(_plotFore);
           plot.setXRange(-1.2, 1.2);
           plot.setYRange(-1.2, 1.2);
           plot.setNumSets(5);
@@ -91,12 +91,13 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
           // create panel for plot
           _viewPanel = new Panel();
-          _viewPanel.setBackground(Color.black); 
-          _viewPanel.setForeground(Color.white); 
+          _viewPanel.setBackground(_plotBack); 
+          _viewPanel.setForeground(_plotFore); 
 
           // create the button for add new pole/zero
           _addpolezerobutton = new Button("Add Pole/Zero");
-          _addpolezerobutton.setForeground(Color.white);
+          _addpolezerobutton.setBackground(_plotBack);
+          _addpolezerobutton.setForeground(_plotText);
           _addpolezerobutton.setActionCommand("Add Pole Zero");
           _addpolezerobutton.addActionListener(this);
           Panel buttonpanel = new Panel();
@@ -291,7 +292,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                           familypole[i].imag);
                       ic.setDrawingParam(Color.green, 6, false,
                                           InteractComponent.SYMMETRICORI);
-                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 3, 
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 3, i, 
                                                         ic.getXValue(),
                                                         ic.getYValue(),
                                                         false);
@@ -318,7 +319,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                           familyzero[i].imag);
                       ic.setDrawingParam(Color.cyan, 6, false,
                                           InteractComponent.SYMMETRICORI);
-                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 4, 
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 4, i, 
                                                          ic.getXValue(),
                                                          ic.getYValue(),
                                                          false);
@@ -419,7 +420,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                    InteractComponent.ALLDEGFREE); 
                     
                // add to interact plot 
-               ((InteractPlot)_plots[0]).addInteractPoint(ic, 1, ic.getXValue(),
+               ((InteractPlot)_plots[0]).addInteractPoint(ic, 1, ind, ic.getXValue(), 
                                                           ic.getYValue(), false);
                         
                // add pole and its interact component to hashtable 
@@ -445,7 +446,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                    new String("Zero imag"), 
                                    InteractComponent.ALLDEGFREE); 
 
-               ((InteractPlot)_plots[0]).addInteractPoint(ic, 2, ic.getXValue(),
+               ((InteractPlot)_plots[0]).addInteractPoint(ic, 2, ind, ic.getXValue(),
                                                           ic.getYValue(), false);
 
                // add zero and its interact component to hashtable 

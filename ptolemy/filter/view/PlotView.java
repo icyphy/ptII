@@ -116,4 +116,7 @@ public abstract class PlotView extends FilterView {
     /** These hashtables stores the cross ref link between interact 
         component and underlying data. */
     protected Hashtable [] _crossref; 
+    protected Color _plotBack = Color.black;
+    protected Color _plotFore = Color.gray;
+    protected Color _plotText = Color.white;
 }

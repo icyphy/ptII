@@ -143,11 +143,11 @@ public class InteractPlot extends Plot {
      * @param y y-coordinate value
      * @param connect if the data point will be connected.
      */ 
-    public void addInteractPoint(InteractComponent interacomp, int dataset, 
+    public void addInteractPoint(InteractComponent interacomp, int dataset, int index,
                                  double x, double y, boolean connect){
 
          if (_interactComponents == null) _interactComponents = new Vector();
-         interacomp.setDataSetNum(dataset);
+         interacomp.setDataSetNumAndIndex(dataset, index);
          _interactComponents.addElement(interacomp);
          addPoint(dataset, x, y, connect);
     }

@@ -65,8 +65,8 @@ public class ImpulseView extends PlotView {
 
           // still interact plot
           InteractPlot plot = new InteractPlot();
-          plot.setBackground(Color.black);
-          plot.setForeground(Color.gray);
+          plot.setBackground(_plotBack);
+          plot.setForeground(_plotFore);
           plot.setTitle("Impulse Response");
           plot.setXRange(0, 200);
           plot.setYRange(-0.5, 0.5);
@@ -82,8 +82,8 @@ public class ImpulseView extends PlotView {
           _viewPanel = new Panel();
           _viewPanel.setSize(300,350);
           _viewPanel.add("Center", plot);
-          _viewPanel.setBackground(Color.black); 
-          _viewPanel.setForeground(Color.white); 
+          _viewPanel.setBackground(_plotBack); 
+          _viewPanel.setForeground(_plotFore); 
 
           if (_opMode == Manager.FRAMEMODE){ // frame mode
               _frame  = _createViewFrame(((FilterObj) filter).getName());

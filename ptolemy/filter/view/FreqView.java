@@ -46,10 +46,10 @@ import java.awt.event.*;
   Although there is no reason why the user can't change spec on other plots,
   so this could be improvement in the future.
   <p>    
-  The frequency domain spec is made up by four possible categories: edge 
-  frequencies, gains at the edge frequencies, pass band and stop band ripple 
-  heights.  Not all of them will be used at certain time (ripple heights will 
-  not be used when designing Butterworth filter), "null" value will be passed. 
+  The frequency domain spec is made up by two possible categories: edge 
+  frequencies, and gains at the edge frequencies.  Pass band and stop band ripple 
+  heights are represented by gain values.   
+  <p>
   While other new spec might need to be added later on.  These spec will be 
   represented as interactive components stored as keys in hashtables, 
   _crossref.
@@ -88,23 +88,23 @@ public class FreqView extends PlotView {
           _plots[2]= phplot;   // phase plot
 
           // initialize these plots
-          mgplot.setBackground(Color.black);
-          mgplot.setForeground(Color.gray);
+          mgplot.setBackground(_plotBack);
+          mgplot.setForeground(_plotFore);
           mgplot.setView(this);
           mgplot.setXRange(-3.15, 3.15);
           mgplot.setYRange(-0.3, 1.3);
           mgplot.setTitle("Frequency Response: Magnitude");
           mgplot.setNumSets(5);
           mgplot.setSize(300, 300);
-          dbplot.setBackground(Color.black);
-          dbplot.setForeground(Color.gray);
+          dbplot.setBackground(_plotBack);
+          dbplot.setForeground(_plotFore);
           dbplot.setXRange(-3.15, 3.15);
           dbplot.setYRange(-1000, 20);
           dbplot.setTitle("Frequency Response: Magnitude in DB");
           dbplot.setNumSets(1);
           dbplot.setSize(300, 300);
-          phplot.setBackground(Color.black);
-          phplot.setForeground(Color.gray);
+          phplot.setBackground(_plotBack);
+          phplot.setForeground(_plotFore);
           phplot.setXRange(-3.15, 3.15);
           phplot.setYRange(-3.15, 3.15);
           phplot.setTitle("Frequency Response: Phase");
@@ -210,35 +210,20 @@ System.out.println("updating the frequency response value");
               Double newvalue = new Double(ic.getYValue());
               _crossref[1].put(ic, newvalue);
  
-          } else if (_crossref[2].containsKey(ic)){
-
-              // pass band ripple height changed
-              // create new value and replace the old one.
-              Double newvalue = new Double(1-ic.getYValue());
-              _crossref[2].put(ic, newvalue);
-
-          } else if (_crossref[3].containsKey(ic)){
-
-              // pass band ripple height changed
-              // create new value and replace the old one.
-              Double newvalue = new Double(ic.getYValue());
-              _crossref[3].put(ic, newvalue);
-
           }
 
           // reorganize all the spec, and passes them to filter object.
          
           double [] edgefreq = new double[_crossref[0].size()]; 
           double [] edgegain = new double[_crossref[1].size()]; 
-          double passripple = -1; 
-          double stopripple = -1; 
        
-          // get edge frequencies 
+          // get edge frequencies
+          int ind = 0; 
           Enumeration edgeenum = _crossref[0].keys();
           while (edgeenum.hasMoreElements()){
                InteractComponent edgeic = (InteractComponent) edgeenum.nextElement();
                Double edge = (Double) _crossref[0].get(edgeic);
-               edgefreq[edgeic.getDataSetNum()] = edge.doubleValue();
+               edgefreq[edgeic.getDataIndex()] = edge.doubleValue();
           }
 
           // get gain at edge frequencies 
@@ -246,24 +231,12 @@ System.out.println("updating the frequency response value");
           while (gainenum.hasMoreElements()){
                InteractComponent gainic = (InteractComponent) gainenum.nextElement();
                Double gain = (Double) _crossref[1].get(gainic);
-               edgegain[gainic.getDataSetNum()] = gain.doubleValue();
-          }
-
-          // get pass band ripple height 
-          Enumeration passrippleenum = _crossref[2].elements();
-          if (passrippleenum.hasMoreElements()){
-              passripple = ((Double) passrippleenum.nextElement()).doubleValue();
-          }
-
-          // get stop band ripple height 
-          Enumeration stoprippleenum = _crossref[3].elements();
-          if (stoprippleenum.hasMoreElements()){
-              stopripple = ((Double) stoprippleenum.nextElement()).doubleValue();
+               edgegain[gainic.getDataIndex()] = gain.doubleValue();
           }
 
           // notify the filter object about the new changes. 
           FilterObj jf = (FilterObj) _observed;
-          jf.updateFreqSpec(edgefreq, edgegain, passripple, stopripple);
+          jf.updateFreqSpec(edgefreq, edgegain);
      }
 
     //////////////////////////////////////////////////////////////////////////
@@ -325,21 +298,17 @@ System.out.println("updating the frequency response value");
     }
 
     // Get specification from filter object.  Interact components will
-    // be created for these spec: edge frequencies, gain at edge frequencies,
-    // and ripple heights.  These interact component's references will be
+    // be created for these spec: edge frequencies, gain at edge frequencies.
+    // These interact component's references will be
     // store in hastables, _crossref.
     // _crossref[0] : for edge frequencies
     // _crossref[1] : for gains at edge frequencies
-    // _crossref[2] : for pass band ripple heights 
-    // _crossref[3] : for stop band ripple heights 
     //
     private void _setViewFreqSpec(){
 
         FilterObj jf = (FilterObj) _observed;
         double [] edgefreq = jf.getFreqBand();
         double [] edgegain = jf.getFreqGain();
-        double passrheight = jf.getFreqPassRippleHeight();
-        double stoprheight = jf.getFreqStopRippleHeight();
 
         // erase interact components in plot
         ((InteractPlot)_plots[0]).eraseInteractComponents();
@@ -389,7 +358,7 @@ System.out.println("updating the frequency response value");
 
                 // add interact component to interact magnitude plot
                 InteractPlot iplot = (InteractPlot) _plots[0];
-                iplot.addInteractPoint(ic, 1, ic.getXValue(), ic.getYValue(), false); 
+                iplot.addInteractPoint(ic, 1, i, ic.getXValue(), ic.getYValue(), false); 
 
                 // set the hashtable entry
                 _crossref[0].put(ic, new Double(ic.getXValue()));
@@ -410,61 +379,13 @@ System.out.println("updating the frequency response value");
 
                 // add the interact component to interact plot
                 InteractPlot iplot = (InteractPlot) _plots[0];
-                iplot.addInteractPoint(ic, 2, ic.getXValue(), ic.getYValue(), false); 
+                iplot.addInteractPoint(ic, 2, i, ic.getXValue(), ic.getYValue(), false); 
 
                 // set the hashtable entry
                 _crossref[1].put(ic, new Double(ic.getYValue()));
             }
         }
 
-        // -1 is the "null" value, if ripple height is -1, then it
-        // doesn't make sense to create it..
-        if (passrheight != -1) {  // pass band ripple, high ripple
-
-            _crossref[2].clear(); 
-            // create interact component for pass band ripple height 
-            InteractComponent ic;
-
-            // since passrheight is actual height, the position of the line
-            // is 1-height
-            ic = new InteractComponent("Pass Band Ripple Height",  
-                                       InteractComponent.LINE, 0.0, 1-passrheight);
-
-            ic.setDrawingParam(Color.green, 50, false,
-                               InteractComponent.HORIZONTALORI);
-
-            ic.setInteractParam(new String(""), new String("height"), 
-                                InteractComponent.YAXISDEGFREE);
-
-                
-            // add the interact component to interact plot
-            InteractPlot iplot = (InteractPlot) _plots[0];
-            iplot.addInteractPoint(ic, 3, ic.getXValue(), ic.getYValue(), false); 
-
-            // set the hashtable entry
-            _crossref[2].put(ic, new Double(1.0-ic.getYValue()));
-        }
- 
-        if (stoprheight != -1) { // stop band ripple, low ripple 
-            _crossref[3].clear(); 
-            InteractComponent ic;
-            ic = new InteractComponent("Stop Ripple Height", 
-                                       InteractComponent.LINE, 0.0, stoprheight);
-
-            ic.setDrawingParam(Color.green, 50, false,
-                               InteractComponent.HORIZONTALORI);
-
-            ic.setInteractParam(new String(""), new String("height"), 
-                                InteractComponent.YAXISDEGFREE);
-
-            // add the interact component to interact plot
-            InteractPlot iplot = (InteractPlot) _plots[0];
-            iplot.addInteractPoint(ic, 4, ic.getXValue(), ic.getYValue(), false); 
-
-            // set the hashtable entry
-            _crossref[3].put(ic, new Double(ic.getYValue()));
-        }
-            
         _plots[0].repaint();
     }
 
@@ -479,14 +400,16 @@ System.out.println("updating the frequency response value");
         public FreqPlotPanel(Plot p1, Plot p2, Plot p3){
 
             // card panel 
-            this.setBackground(Color.black); 
-            this.setForeground(Color.white); 
+            this.setBackground(_plotBack); 
+            this.setForeground(_plotFore); 
             _cp = new Panel(); 
-            _cp.setBackground(Color.black); 
-            _cp.setForeground(Color.white); 
+            _cp.setBackground(_plotBack); 
+            _cp.setForeground(_plotFore); 
 
             // a choice widget is used to change the card
             _c = new Choice();
+            _c.setBackground(_plotBack);
+            _c.setForeground(_plotText);
             _c.addItem("Magnitude");
             _c.addItem("Magnitude in dB");
             _c.addItem("Phase");
@@ -497,29 +420,29 @@ System.out.println("updating the frequency response value");
             _mainpanel = new Panel();
             _mainpanel.setLayout(new CardLayout());
             _mainpanel.setSize(300,380);
-            _mainpanel.setBackground(Color.black); 
-            _mainpanel.setForeground(Color.white); 
+            _mainpanel.setBackground(_plotBack); 
+            _mainpanel.setForeground(_plotFore); 
  
             _subpanel1 = new Panel();
             _subpanel1.setLayout(new BorderLayout(15, 15));
             _subpanel1.add("Center", p1);
             _subpanel1.setSize(300,380);
-            _subpanel1.setBackground(Color.black); 
-            _subpanel1.setForeground(Color.white); 
+            _subpanel1.setBackground(_plotBack); 
+            _subpanel1.setForeground(_plotFore); 
  
             _subpanel2 = new Panel();
             _subpanel2.setLayout(new BorderLayout(15, 15));
             _subpanel2.add("Center", p2);
             _subpanel2.setSize(300,380);
-            _subpanel2.setBackground(Color.black); 
-            _subpanel2.setForeground(Color.white); 
+            _subpanel2.setBackground(_plotBack); 
+            _subpanel2.setForeground(_plotFore); 
  
             _subpanel3 = new Panel();
             _subpanel3.setLayout(new BorderLayout(15, 15));
             _subpanel3.add("Center", p3);
             _subpanel3.setSize(300,380);
-            _subpanel3.setBackground(Color.black); 
-            _subpanel3.setForeground(Color.white); 
+            _subpanel3.setBackground(_plotBack); 
+            _subpanel3.setForeground(_plotFore); 
  
             _mainpanel.add("Magnitude", _subpanel1);
             _mainpanel.add("Magnitude in dB", _subpanel2);
