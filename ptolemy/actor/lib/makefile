@@ -153,7 +153,9 @@ OPTIONAL_FILES = \
 	javasound \
 	jspaces \
 	'AbsoluteValue$$1.class' \
-	'AbsoluteValue$$FunctionTerm.class'
+	'AbsoluteValue$$FunctionTerm.class' \
+	'RecordUpdater$$1.class' \
+	'RecordUpdater$$FunctionTerm.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
