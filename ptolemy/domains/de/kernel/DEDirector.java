@@ -956,12 +956,17 @@ public class DEDirector extends Director {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
         // Allocate a new hash table with the equal to the
-        // number of actors sorted.
-        _actorToDepth = new Hashtable(sort.length);
+        // number of actors sorted + 1. The extra entry is
+        // for the composite actor that contains this director.
+        // This composite actor is set to the highest depth.
+        _actorToDepth = new Hashtable(sort.length+1);
+        if (_debugging) _debug(((Nameable)getContainer()).getFullName(),
+                "depth: " + sort.length);
+        _actorToDepth.put(getContainer(), new Integer(sort.length));
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
             if (_debugging) _debug(((Nameable)actor).getFullName(),
-                    "depth : " + i);
+                    "depth: " + i);
             // Insert the hashtable entry.
             _actorToDepth.put(actor, new Integer(i));
 	}
