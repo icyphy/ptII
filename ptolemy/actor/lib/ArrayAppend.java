@@ -95,7 +95,7 @@ public class ArrayAppend extends Transformer {
         ArrayAppend newObject = (ArrayAppend)(super.clone(workspace));
 
         // set the type constraints
-        newObject.output.setTypeAtLeast(input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 
