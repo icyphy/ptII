@@ -63,7 +63,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     
     set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
-    set gcDir $PTII/vendors/gc/gc/
+    #set gcDir $PTII/vendors/gc/gc/
     
     # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
@@ -86,7 +86,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
 
     # Generate the code using singleClass compilation mode.
     exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
-            -compileMode singleClass FIRSingle
+            -compileMode singleClass -gc false FIRSingle
 
     # NOTE: JavaToC expects the class file to be converted (in this case
     # FIRSingle.class) to be in the directory from which it is invoked. It
@@ -107,13 +107,13 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     cd $outputDir
 
     # Generate the required .o files.
-    exec gcc -c -I $runtimeDir -I $gcDir FIRSingle.c
+    exec gcc -c -I $runtimeDir FIRSingle.c
     exec gcc -c -I $runtimeDir -I . ../../FIRSingleMain.c
     exec gcc -c    $runtimeDir/pccg_runtime_single.c
 
     # Link the .o files into the executable.
     set exeFile firSingle.exe
-    eval exec gcc -o $exeFile [glob *.o] $PTII/lib/libgc.a
+    eval exec gcc -o $exeFile [glob *.o]
 
     # Run the executible.
     # The nightly build does not have . in the path, so we use ./ here.

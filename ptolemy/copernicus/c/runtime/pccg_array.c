@@ -33,9 +33,11 @@ Run-time C code generation functionality for translation of arrays.
 #include <stdarg.h>
 #include <stdlib.h>
 #include "pccg_array.h"
-#include "include/gc.h"
 
+#ifdef GC
+#include "include/gc.h"
 #define malloc(x) GC_MALLOC(x)
+#endif
 
 PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 

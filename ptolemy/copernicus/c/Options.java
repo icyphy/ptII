@@ -73,7 +73,7 @@ public class Options {
         _optionTable.put("compileMode", "full");
         _optionTable.put("pruneLevel", "1");
         _optionTable.put("lib", "j2c_lib");
-        _optionTable.put("gc", "true");
+        _optionTable.put("gc", "false");
     }
 
 

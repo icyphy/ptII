@@ -102,8 +102,11 @@ public class MakeFileGenerator {
         //code.append("CFLAGS = -g -Wall -pedantic\n");
         code.append("CFLAGS = -g -Wall -pedantic -Wno-trigraphs\n");
         code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) " 
-                + "-I $(GC_DIR) \n\n");
+                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)");
+        if (gc) {
+                 code.append(" -I $(GC_DIR)");
+        }
+        code.append("\n\n");
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
@@ -144,9 +147,13 @@ public class MakeFileGenerator {
         // Conversion from .c to .o
         code.append(".c.o:\n");
         code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(GC_DIR) $< -o $@ "
-                + "\n\n");
+                + "-I $(NATIVE_BODIES)");
+        if (gc) {
+                 code.append(" -I $(GC_DIR)");
+        }
+        code.append(" $< -o $@ \n\n");
 
+            
         // Library generation.
         code.append("$(LIB_FILE): $(LIB_OBJECTS)\n");
         code.append("\tar cr $(LIB_FILE) $(LIB_OBJECTS)\n");

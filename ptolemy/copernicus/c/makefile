@@ -120,7 +120,11 @@ MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 #  make MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
 
 OUTPUT_DIR =	cg/$(MODEL)
-demo: compileDemo runDemo
+
+#demo: compileDemo runDemo
+demo:
+	cd test; make demo; cd ..
+
 compileDemo: $(JCLASS)
 	@echo "generate c code for $(MODELPATH)"
 	rm -rf $(OUTPUT_DIR)

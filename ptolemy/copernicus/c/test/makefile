@@ -135,11 +135,15 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 ptjacl:
 	$(JTCLSH)
 
-demo: ramp
+demo: Linpack
 
-# Generate C code for java.lang.Object
-# FIXME: get this to work again once non-singleclass mode translation is
-# working properly.
+# Various tests.
+Linpack:
+	$(JTCLSH) Linpack.tcl
+        
+FIRSingle:
+	$(JTCLSH) FIRSingle.tcl
+	
 Object:
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.copernicus.c.JavaToC \
