@@ -50,8 +50,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Ptolemnizer/Ptolemnizer.jar \
 	PythonScale/PythonScale.jar
+
+#	Ptolemnizer/Ptolemnizer.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
