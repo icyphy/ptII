@@ -70,7 +70,7 @@ called Vergil, as shown below:
             type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
-            archive = "@modelJarFiles" \
+            archive = "@modelJarFiles@" \
             width = "600" \
             height = "800" \
             NAME = "@sanitizedModelName@Viewer" background = "#faf0e6" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
