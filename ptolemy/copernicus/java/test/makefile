@@ -53,8 +53,9 @@ JSIMPLE_TESTS = \
 
 # Long tests, that take so damn long they are not even done in the
 # nightly build.
+# Don't add $(JSIMPLE_TESTS) to JLONG_TESTS, the JSIMPLE_TESTS are
+# automatically run when make test_long is run.
 JLONG_TESTS = \
-	$(JSIMPLE_TESTS) \
 	Deep.tcl
 
 # Graphical Java tests that use Tcl.
