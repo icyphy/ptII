@@ -23,7 +23,10 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+
+@ProposedRating Red (eal@eecs.berkeley.edu) 
+	Added getComponent(), previousStringValue(),  _updatePrevious() 
+	for use by actor/gui/PortLocationConfigurer.java 11/02
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
@@ -503,6 +506,24 @@ public class Query extends JPanel {
         }
     }
 
+    /**  Get the gui component by name.
+     *   @param name The name of the item to look up.
+     *   @return The corresponding Component
+     *   @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *   @since Ptolemy 2.1
+     */
+    public Component getComponent(String name)
+            throws NoSuchElementException {
+        Component result = (Component)_entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \""
+                    + name + " \" in the query box.");
+        }
+        return result;
+    }
+
     /** Get the current value in the entry with the given name
      *  and return as a double value.  If the entry is not a line,
      *  then throw an exception.  If the value of the entry is not
@@ -717,6 +738,28 @@ public class Query extends JPanel {
             String name = (String)names.next();
             _notifyListeners(name);
         }
+    }
+
+    /** Get the previous value in the entry with the given name,
+     *  and return as a String.  If it is called from another thread, there is no
+     *  assurance that the value returned will be the current value.
+     *  @return The value currently in the entry as a String.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry type does not
+     *   have a string representation (this should not be thrown).
+     *  @see #_updatePrevious(String, String)
+     *  @since Ptolemy 2.1   
+     */
+    public 
+    String previousStringValue(String name) throws NoSuchElementException {
+        String result = (String)_previous.get(name);
+        if (result == null) {
+            throw new NoSuchElementException("No item named \""
+                    + name + " \" in the query box.");
+        }
+        return result;
     }
 
     /** Remove a listener.  If the listener has not been added, then
@@ -1114,6 +1157,17 @@ public class Query extends JPanel {
         _entryPanel.revalidate();
     }
 
+    /** Update the hashtable of previous names and values.
+     *  @param name The name of the entry.
+     *  @param value The value of the entry
+     *  @see #previousStringValue(String)
+     *  @since Ptolemy 2.1   
+     */
+    protected void _updatePrevious(String name, String value ) {
+       if ( name != null && value != null ) {
+          _previous.put(name, value);
+       }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
