@@ -54,8 +54,8 @@ ptolemy/configs/runBlankConfiguration.xml is read instead.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
-@see ModelFrame
-@see RunTableau
+@see ptolemy.actor.gui.ModelFrame
+@see ptolemy.actor.gui.RunTableau
 */
 public class VergilApplication extends MoMLApplication {
 
