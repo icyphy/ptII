@@ -35,7 +35,8 @@ import diva.canvas.JCanvas;
  * object containing (among other things) a layer upon which
  * graph elements are drawn and manipulated.
  *
- * @see GraphModel, GraphPane
+ * @see GraphModel
+ * @see GraphPane
  * @author         Michael Shilman (michaels@eecs.berkeley.edu)
  * @version        $Id$
  */

@@ -144,7 +144,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all notations.
-     * @see #makeExternalIdentifiers
+     * @see #makeExternalIdentifiers(String, String)
      */
     public void writeDTDNotations (Writer out) throws IOException {
         Enumeration notationNames = _parser.declaredNotations();
@@ -166,8 +166,8 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all general entities.
-     * @see #makeLiteral
-     * @see #makeExternalIdentifiers
+     * @see #makeLiteral(String)
+     * @see #makeExternalIdentifiers(String, String)
      */
     public void writeDTDEntities (Writer out) throws IOException {
         Enumeration entityNames = _parser.declaredEntities();
@@ -213,7 +213,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all elements.
-     * @see #writeDTDAttributes
+     * @see #writeDTDAttributes(String, Writer)
      */
     public void writeDTDElements (Writer out) throws IOException {
         Enumeration elementNames = _parser.declaredElements();
@@ -255,8 +255,8 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Dump attributes for an element.
-     * @see #makeAttributeType
-     * @see #makeAttributeValue
+     * @see #makeAttributeType(String, String)
+     * @see #makeAttributeValue(String, String)
      */
     void writeDTDAttributes (String elname, Writer out) throws IOException {
         Enumeration attributeNames = _parser.declaredAttributes(elname);
@@ -320,7 +320,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Generate a full attribute default value.
-     * @see #makeLiteral
+     * @see #makeLiteral(String)
      */
     String makeAttributeValue (String elname, String aname) {
         // Generate a default value based on the type.
@@ -340,7 +340,7 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Construct a string equivalent of external identifiers.
-     * @see #makeLiteral
+     * @see #makeLiteral(String)
      */
     String makeExternalIdentifiers (String pubid, String sysid) {
         String extId = "";

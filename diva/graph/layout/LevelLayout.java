@@ -88,14 +88,14 @@ public class LevelLayout extends AbstractGlobalLayout {
     /**
      * Layout the graph in levels from top to bottom.
      *
-     * @see setOrientation(int)
+     * @see #setOrientation(int)
      */
     public static final int VERTICAL = 0;
 
     /**
      * Layout the graph in levels from left to right.
      *
-     * @see setOrientation(int)
+     * @see #setOrientation(int)
      */
     public static final int HORIZONTAL = 1;
 

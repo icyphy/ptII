@@ -239,7 +239,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  @return False If the origin of the figure, as
      *   returned by getOrigin(), is the upper left corner.
      *  @see #getOrigin()
-     *  @see #setCentered()
+     *  @see #setCentered(boolean)
      */
     public boolean isCentered() {
         return _centered;

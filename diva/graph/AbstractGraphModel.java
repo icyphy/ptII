@@ -96,7 +96,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * know about, he should create an appropriate STRUCTURE_CHANGED
      * and dispatch it using the dispatchGraphEvent() method.
      *
-     * @see dispatchGraphEvent(GraphEvent)
+     * @see #dispatchGraphEvent(GraphEvent)
      */
     public void setDispatchEnabled(boolean val) {
         _dispatch = val;
