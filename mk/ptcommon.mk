@@ -333,7 +333,7 @@ jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); rm -f $(ME)/$@; \
 		"$(JAR)" cf $(ME)/$@ \
-			$(OTHER_FILES_TO_BE_JARED) \
+			$(ME)/$(OTHER_FILES_TO_BE_JARED) \
 			$(ME)/*.class)
 subjars:
 	@if [ "x$(DIRS)" != "x" ]; then \
