@@ -762,7 +762,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
      *  defined and try to symbolically evaluate the value of the
      *  variable. If the value can be determined, then return it,
      *  otherwise throw an exception
-     
+     */
     public static Attribute getAttributeValue(SootMethod method, Local local,
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
@@ -843,7 +843,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
             throw new RuntimeException(string);
         }
     }
-     */
+     
     // Create a static field in the given class for each attribute in
     // the given container that is a variable, with type Token.
     // and if only a settable, then the field will have type String.

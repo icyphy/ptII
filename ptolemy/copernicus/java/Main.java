@@ -359,57 +359,58 @@ public class Main extends KernelMain {
                     "outFile:" + _outputDirectory + 
                     "/jimple4/jarClassList.txt");
         }
-       
-        addTransform(pack, "wjtp.ttn",
-                TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-       
-        addStandardOptimizations(pack, 8);
-          
-        addTransform(pack, "wjtp.ufr",
-                UnusedFieldRemover.v());
-       
-        addTransform(pack, "wjtp.smr",
-                SideEffectFreeInvocationRemover.v());
-       
-        // Remove references to named objects.
-        addTransform(pack, "wjtp.ee2",
-                ExceptionEliminator.v(toplevel));
 
-        addTransform(pack, "wjtp.doe4",
-                new TransformerAdapter(
-                        DeadObjectEliminator.v()));
-        addStandardOptimizations(pack, 9);
-       
-        addTransform(pack, "wjtp.smr2",
-                SideEffectFreeInvocationRemover.v());
-
-        addTransform(pack, "wjtp.ffu",
-                FinalFieldUnfinalizer.v());
-        addTransform(pack, "wjtp.umr3", 
-                UnreachableMethodRemover.v());
-        addTransform(pack, "wjtp.cp2",
-                new TransformerAdapter(CopyPropagator.v()));
-        addTransform(pack, "wjtp.ufr2",
-                UnusedFieldRemover.v());
-        addStandardOptimizations(pack, 10);   
-         
-        // The library usage reporter also pulls in all depended
-        // classes for analysis.       
-        addTransform(pack, "wjtp.lur",
-                LibraryUsageReporter.v(),
-                "outFile:" + _outputDirectory + "/jarClassList.txt " + 
-                "analyzeAllReachables:false");
-        // Note: We want to analyze all reachables here!
-       
-        //        addTransform(pack, "wjtp.umr4", 
-        //                UnreachableMethodRemover.v());
-        //        addTransform(pack, "wjtp.ufr3",
-        //                UnusedFieldRemover.v());
-        //        addStandardOptimizations(pack, 11);
-        //        addTransform(pack, "wjtp.umr5", 
-        //                UnreachableMethodRemover.v());
+        if(_unboxing) {
+            addTransform(pack, "wjtp.ttn",
+                    TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
+            
+            addStandardOptimizations(pack, 8);
+            
+            addTransform(pack, "wjtp.ufr",
+                    UnusedFieldRemover.v());
+            
+            addTransform(pack, "wjtp.smr",
+                    SideEffectFreeInvocationRemover.v());
+            
+            // Remove references to named objects.
+            addTransform(pack, "wjtp.ee2",
+                    ExceptionEliminator.v(toplevel));
+            
+            addTransform(pack, "wjtp.doe4",
+                    new TransformerAdapter(
+                            DeadObjectEliminator.v()));
+            addStandardOptimizations(pack, 9);
+            
+            addTransform(pack, "wjtp.smr2",
+                    SideEffectFreeInvocationRemover.v());
+            
+            addTransform(pack, "wjtp.ffu",
+                    FinalFieldUnfinalizer.v());
+            addTransform(pack, "wjtp.umr3", 
+                    UnreachableMethodRemover.v());
+            addTransform(pack, "wjtp.cp2",
+                    new TransformerAdapter(CopyPropagator.v()));
+            addTransform(pack, "wjtp.ufr2",
+                    UnusedFieldRemover.v());
+            addStandardOptimizations(pack, 10);   
+            
+            // The library usage reporter also pulls in all depended
+            // classes for analysis.       
+            addTransform(pack, "wjtp.lur",
+                    LibraryUsageReporter.v(),
+                    "outFile:" + _outputDirectory + "/jarClassList.txt " + 
+                    "analyzeAllReachables:false");
+            // Note: We want to analyze all reachables here!
+            
+            //        addTransform(pack, "wjtp.umr4", 
+            //                UnreachableMethodRemover.v());
+            //        addTransform(pack, "wjtp.ufr3",
+            //                UnusedFieldRemover.v());
+            //        addStandardOptimizations(pack, 11);
+            //        addTransform(pack, "wjtp.umr5", 
+            //                UnreachableMethodRemover.v());
+        }           
         /* */   
-       
     }
 
 
@@ -453,12 +454,23 @@ public class Main extends KernelMain {
      */ 
     protected String[] _parseArgs(GeneratorAttribute attribute) 
             throws Exception {
-        //  String snapshots = attribute.getParameter("snapshots");
-        //         if(snapshots.equals("true")) {
-        //             _snapshots = true;
-        //         } else {
-        //             _snapshots = false;
-        //         }
+        if(attribute.hasParameter("snapshots")) {
+            String snapshots = attribute.getParameter("snapshots");
+            if(snapshots.equals("true")) {
+                _snapshots = true;
+            } else {
+                _snapshots = false;
+            }
+        }
+        
+        if(attribute.hasParameter("unboxing")) {
+            String unboxing = attribute.getParameter("unboxing");
+            if(unboxing.equals("false")) {
+                _unboxing = false;
+            } else {
+                _unboxing = true;
+            }
+        }
         
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
@@ -470,7 +482,8 @@ public class Main extends KernelMain {
         return new String[1];
     }
 
-    private static boolean _snapshots = false;
+    private static boolean _snapshots = false;  
+    private static boolean _unboxing = true;
     private static String _generatorAttributeFileName = "unsetParameter";
     private static String _watchDogTimeout = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
