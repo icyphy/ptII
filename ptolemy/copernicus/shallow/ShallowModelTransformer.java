@@ -375,11 +375,18 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             Local local;
             if (createdSet.contains(entity.getFullName())) {
                 // Get a reference to the previously created entity.
-                local = entityLocal;
+                local = Jimple.v().newLocal("entity",
+                        PtolemyUtilities.componentEntityType);
+                body.getLocals().add(local);
                 body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
                         Jimple.v().newVirtualInvokeExpr(containerLocal,
                                 PtolemyUtilities.getEntityMethod,
                                 StringConstant.v(entity.getName(container)))));
+                // and then cast
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(local,
+                                Jimple.v().newCastExpr(entityLocal,
+                                        PtolemyUtilities.componentEntityType)));    
             } else {
                 // If we are doing shallow, then use the base actor
                 // classes.  Note that the entity might actually be

@@ -45,6 +45,8 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.toolkits.scalar.LocalSplitter;
 import soot.toolkits.scalar.UnusedLocalEliminator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -100,6 +102,13 @@ public class Main extends KernelMain {
                 ShallowModelTransformer.v(_toplevel),
                 "targetPackage:" + _targetPackage);
 
+       addTransform(pack, "wjtp.ls7",
+                        new TransformerAdapter(LocalSplitter.v()));
+       addTransform(pack, "wjtp.ta5",
+               new TransformerAdapter(TypeAssigner.v()));
+       addTransform(pack, "wjtp.ib3",
+               InvocationBinder.v());
+ 
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
