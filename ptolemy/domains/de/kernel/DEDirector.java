@@ -79,7 +79,7 @@ import java.util.Iterator;
  *  <p>
  *  Sorting in the CalendarQueue class is done according to the order
  *  defined by the DEEvent class, which implements the java.lang.Comparable
- *  interface. A DE event has a time stamp, a microstep, and a depth. 
+ *  interface. A DE event has a time stamp, a microstep, and a depth.
  *  The time stamp indicates the time when the event occurs.
  *  The microstep represents the phase of execution
  *  when processing simultaneous events in directed loops, or when an
@@ -90,7 +90,7 @@ import java.util.Iterator;
  *  processing events.  The depth is determined by topologically
  *  sorting the actors according to data dependencies over which there
  *  is no time delay. Note that the zero-delay data dependencies are
- *  determined on a per port basis. 
+ *  determined on a per port basis.
  *  <p>
  *  Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
  *  should be used whenever an actor introduces time delays between the
@@ -108,12 +108,12 @@ import java.util.Iterator;
  *  <p>
  *  Input ports in a DE model contain instances of DEReceiver.
  *  When a token is put into a DEReceiver, that receiver enqueues the
- *  event to the director  by calling the _enqueueEvent() method of 
+ *  event to the director  by calling the _enqueueEvent() method of
  *  this director.
  *  This director sorts all such events in a global event queue
  *  (a priority queue).
  *  <p>
- *  An iteration, in the DE domain, is defined as processing all 
+ *  An iteration, in the DE domain, is defined as processing all
  *  the events whose time stamp equals to the current time of the director.
  *  At the beginning of the fire() method, this director dequeues
  *  a subset of the oldest events (the ones with smallest time
@@ -124,14 +124,14 @@ import java.util.Iterator;
  *  an event is the depth of the actor to which it is destined.
  *  The depth of an actor is its position in a topological sort of the graph.
  *  The microstep is usually zero, but is incremented when a pure event
- *  is queued with time stamp equal to the current time. 
+ *  is queued with time stamp equal to the current time.
  *  <p>
  *  The actor that is fired must consume tokens from
  *  its input port(s), and will usually produce new events on its output
  *  port(s). These new events will be enqueued in the global event queue
  *  until their time stamps equal the current time.  It is important that
  *  the actor actually consume tokens from its inputs, even if the tokens are
- *  solely used to trigger reactions. This is how polymorphic actors are 
+ *  solely used to trigger reactions. This is how polymorphic actors are
  *  used in the DE domain. The actor will
  *  be fired repeatedly until there are no more tokens in its input
  *  ports with the current time stamp.  Alternatively, if the actor
@@ -141,8 +141,8 @@ import java.util.Iterator;
  *  A model starts from the time specified by <i>startTime</i>, which
  *  has default value 0.0
  *  <P>
- *  The stop time of the execution can be set using the 
- *  <i>stopTime</i> parameter. The parameter has default value 
+ *  The stop time of the execution can be set using the
+ *  <i>stopTime</i> parameter. The parameter has default value
  *  Double.MAX_VALUE, which means the execution stops
  *  only when the model time reaches that (rather large) number.
  *  <P>
@@ -153,13 +153,13 @@ import java.util.Iterator;
  *  behaviour is for the director to wait on an empty queue until another
  *  thread makes new events available.  For example, a DE actor may produce
  *  events when a user hits a button on the screen. To prevent ending the
- *  execution when there are no more events, set the 
+ *  execution when there are no more events, set the
  *  <i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
  *  <p>
- *  Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and 
+ *  Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and
  *  <i>binCountFactor</i>, are
  *  used to configure the calendar queue. Changes to these parameters
- *  are ignored when the model is running. 
+ *  are ignored when the model is running.
  *  <p>
  *  If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
  *  then the director not process events until the real time elapsed
@@ -240,7 +240,7 @@ public class DEDirector extends Director {
      */
     public Parameter stopTime;
 
-    /** Specify whether the execution stops when the queue is empty.  
+    /** Specify whether the execution stops when the queue is empty.
      *  This parameter must contain a
      *  BooleanToken. If this parameter is true, the
      *  execution of the model will be stopped when the queue is empty.
@@ -248,7 +248,7 @@ public class DEDirector extends Director {
      */
     public Parameter stopWhenQueueIsEmpty;
 
-    /** Specify whether the execution should synchronize to the 
+    /** Specify whether the execution should synchronize to the
      *  real time. This parameter must contain a BooleanToken.
      *  If this parameter is true, then do not process events until the
      *  elapsed real time matches the time stamp of the events.
@@ -256,7 +256,7 @@ public class DEDirector extends Director {
      */
     public Parameter synchronizeToRealTime;
 
-    /** Specify whether the calendar queue adjusts its bin number 
+    /** Specify whether the calendar queue adjusts its bin number
      *  at run time. This parameter must contain a BooleanToken.
      *  If this parameter is true, the calendar queue will adapt
      *  its bin number with respect to the distribution of events.
@@ -272,7 +272,7 @@ public class DEDirector extends Director {
      */
     public Parameter minBinCount;
 
-    /** The factor when adjusting the bin number.  
+    /** The factor when adjusting the bin number.
      *  This parameter must contain an IntToken.
      *  Changes to this parameter are ignored when the model is running.
      *  The value defaults to 2.
@@ -282,10 +282,10 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append the specified listener to the current set of debug listeners. 
+    /** Append the specified listener to the current set of debug listeners.
      *  If a calendar queue has been created,
-     *  register the listener to the calendar queue, too. 
-     *  If the listener is already in the set, 
+     *  register the listener to the calendar queue, too.
+     *  If the listener is already in the set,
      *  @param listener The listener to add to the list of listeners
      *   to which debug messages are sent.
      */
@@ -297,8 +297,8 @@ public class DEDirector extends Director {
     }
 
     /** Update the director parameters when the attributes are changed.
-     *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and 
-     *  <i>binCountFactor</i> parameters will only be effective on 
+     *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and
+     *  <i>binCountFactor</i> parameters will only be effective on
      *  the next time the model is executed.
      *  @param attr The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
@@ -329,17 +329,17 @@ public class DEDirector extends Director {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         DEDirector newobj = (DEDirector)(super.clone(ws));
-        newobj.stopTime = 
+        newobj.stopTime =
             (Parameter)newobj.getAttribute("stopTime");
-        newobj.stopWhenQueueIsEmpty = 
+        newobj.stopWhenQueueIsEmpty =
             (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
-        newobj.synchronizeToRealTime = 
+        newobj.synchronizeToRealTime =
             (Parameter)newobj.getAttribute("synchronizeToRealTime");
         newobj.isCQAdaptive =
             (Parameter)newobj.getAttribute("isCQAdaptive");
-        newobj.minBinCount = 
+        newobj.minBinCount =
             (Parameter)newobj.getAttribute("minBinCount");
-        newobj.binCountFactor = 
+        newobj.binCountFactor =
             (Parameter)newobj.getAttribute("binCountFactor");
         return newobj;
     }
@@ -351,8 +351,8 @@ public class DEDirector extends Director {
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens at the current time, or
      *  its prefire() method returns false. If there are no events in the
-     *  event queue, then the behavior depends on the 
-     *  <i>stopWhenQueueIsEmpty</i> parameter.  If it is false, 
+     *  event queue, then the behavior depends on the
+     *  <i>stopWhenQueueIsEmpty</i> parameter.  If it is false,
      *  then this thread will stall until events
      *  become available on the event queue.  Otherwise, time will advance
      *  to the stop time and the execution will halt.
@@ -388,7 +388,7 @@ public class DEDirector extends Director {
             do {
                 refire = false;
                 if (_debugging) {
-                    _debug("Iterating actor", 
+                    _debug("Iterating actor",
                             ((Nameable)actorToFire).getName(),
                             "at time ", Double.toString(getCurrentTime()));
                 }
@@ -412,7 +412,7 @@ public class DEDirector extends Director {
                 }
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
-                
+
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)inputPorts.next();
@@ -473,7 +473,7 @@ public class DEDirector extends Director {
      *  strictly greater than the current time.  If there is nothing on
      *  the event queue, then return the stop time. The next iteration time,
      *  for example, is used to estimate the run-ahead time, when a continuous
-     *  time composite actor is embedded in the DE domain. 
+     *  time composite actor is embedded in the DE domain.
      *  @return The next larger time on the event queue.
      */
     public double getNextIterationTime() {
@@ -482,19 +482,19 @@ public class DEDirector extends Director {
         // method very efficiently. To get the next iteration time, the
         // director has to dequeue all events at the current time, find
         // the first event in the next iteration,
-        // and put all event just been dequeued back to queue. 
+        // and put all event just been dequeued back to queue.
         // <P>
         // An alternative design is to have a hierarchical queue. The
-        // top level of the queue sorts entries (a groups of DEEvents) 
+        // top level of the queue sorts entries (a groups of DEEvents)
         // only by their time stamp.
         // Each entry at this level is another priority queue, which
-        // sort (simultaneous) events further according to their microsteps 
+        // sort (simultaneous) events further according to their microsteps
         // and depth. Then the next iteration time is simply the time stamp
         // of the next entry in the top queue.
         // However, since this method is called only when CT is side DE.
         // It is unclear how the change may effect normal DE execution.
         // So we will keep the current design unless there's prove that
-        // the new design can improve (or at least does not ruin) the 
+        // the new design can improve (or at least does not ruin) the
         // performance under regular uses.
         if (_eventQueue.isEmpty()) {
             return getStopTime();
@@ -534,7 +534,7 @@ public class DEDirector extends Director {
     /** Return the system time at which the model begins executing.
      *  That is, the system time (in milliseconds) when the initialize()
      *  method of the director is called.
-     *  The time is in the form of milliseconds counting 
+     *  The time is in the form of milliseconds counting
      *  from 1/1/1970 (UTC).
      *  @return The real start time of the model.
      */
@@ -542,7 +542,7 @@ public class DEDirector extends Director {
         return _realStartTime;
     }
 
-    /** Return the time of the start time in the model as set by the 
+    /** Return the time of the start time in the model as set by the
      *  <i>startTime</i> parameter.
      *  @return The start time of the execution.
      */
@@ -577,10 +577,10 @@ public class DEDirector extends Director {
      *  This method should be invoked once per execution, after the
      *  initialization phase, but before any iteration.  Since type
      *  resolution has been completed, the initialize() method of a contained
-     *  actor may produce output or schedule events. 
+     *  actor may produce output or schedule events.
      *  The real start time of the model is recorded when this method
      *  is called.
-     *  
+     *
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -613,7 +613,7 @@ public class DEDirector extends Director {
 	return new DEReceiver();
     }
 
-    /** Return false if there is no more actor to fire. Otherwise, if 
+    /** Return false if there is no more actor to fire. Otherwise, if
      *  the director is an embedded director and the queue is not empty,
      *  then requests the executive director to refire the container of
      *  this director at the time of the next event in the event queue
@@ -746,7 +746,7 @@ public class DEDirector extends Director {
      */
     protected void _disableActor(Actor actor) {
         if (actor != null) {
-            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(), 
+            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
                     " is disabled.");
             if (_disabledActors == null) {
                 _disabledActors = new HashSet();
@@ -775,7 +775,7 @@ public class DEDirector extends Director {
             throws IllegalActionException {
 
         int microstep = 0;
-        
+
         if (time == getCurrentTime()) {
             microstep = _microstep + 1;
         } else if ( time < getCurrentTime()) {
@@ -809,7 +809,7 @@ public class DEDirector extends Director {
             double time) throws IllegalActionException {
 
         int microstep = 0;
-        
+
         if (time == getCurrentTime()) {
             microstep = _microstep;
         } else if ( time < getCurrentTime()) {
@@ -817,7 +817,7 @@ public class DEDirector extends Director {
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past.");
         }
-        
+
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
@@ -925,14 +925,14 @@ public class DEDirector extends Director {
                     break;
                 } else {
                     nextEvent = (DEEvent)_eventQueue.get();
-                } 
+                }
             }
 
             if (actorToFire == null) {
                 // No previously seen event at this tag, so
                 // always accept the event.  Consume it from the queue.
                 _eventQueue.take();
-                
+
                 currentEvent = nextEvent;
                 actorToFire = currentEvent.actor();
 
@@ -1018,9 +1018,9 @@ public class DEDirector extends Director {
                 if (nextEvent.isSimultaneousWith(currentEvent) &&
                         nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
-                    
+
                     _eventQueue.take();
-                    
+
                     // Transfer the event into the receiver.
                     DEReceiver rec = nextEvent.receiver();
                     // If rec is null, then it's a 'pure event' and
@@ -1180,11 +1180,11 @@ public class DEDirector extends Director {
             startTime = new Parameter(this, "startTime",
                     new DoubleToken(0.0));
 	    startTime.setTypeEquals(BaseType.DOUBLE);
-            
+
             stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
 	    stopTime.setTypeEquals(BaseType.DOUBLE);
-           
+
 	    stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
@@ -1192,15 +1192,15 @@ public class DEDirector extends Director {
 	    synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
                     new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-           
+
 	    isCQAdaptive = new Parameter(this, "isCQAdaptive",
                     new BooleanToken(true));
             isCQAdaptive.setTypeEquals(BaseType.BOOLEAN);
-	   
+
 	    minBinCount = new Parameter(this, "minBinCount",
                     new IntToken(2));
 	    minBinCount.setTypeEquals(BaseType.INT);
-	    
+
 	    binCountFactor = new Parameter(this, "binCountFactor",
                     new IntToken(2));
 	    binCountFactor.setTypeEquals(BaseType.INT);

@@ -94,7 +94,7 @@ public class DEReceiver extends AbstractReceiver {
      *  the current time.  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
-     *  exception. This method is synhronized since the actor may not 
+     *  exception. This method is synhronized since the actor may not
      *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
@@ -116,7 +116,7 @@ public class DEReceiver extends AbstractReceiver {
         return true;
     }
 
-    /** Return true if the receiver has room for putting the given number of 
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
@@ -131,7 +131,7 @@ public class DEReceiver extends AbstractReceiver {
     public final boolean hasToken() {
         return (!_tokens.isEmpty());
     }
-    
+
     /** Return true if there are n tokens tokens available to the get() method.
      *  @return True if there are more tokens.
      */
@@ -148,7 +148,7 @@ public class DEReceiver extends AbstractReceiver {
      *  the director with the current time
      *  of the director.  However, by calling setDelay() before calling put(),
      *  you can enqueue the event with a time stamp at a future time.
-     *  This method is synhronized since the actor may not 
+     *  This method is synhronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
      */
@@ -177,7 +177,7 @@ public class DEReceiver extends AbstractReceiver {
      *  Note that the time should be greater than or equal
      *  to the current time of the director, otherwise an exception will
      *  be thrown.
-     *  This method is synhronized since the actor may not 
+     *  This method is synhronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
      *  @param time The time stamp of the token
@@ -206,12 +206,12 @@ public class DEReceiver extends AbstractReceiver {
      *  only used in the next call to put().
      *  If the specified delay is zero, then the next event is queued to be
      *  processed in the next microstep.
-     *  This method is synhronized since the actor may not 
+     *  This method is synhronized since the actor may not
      *  execute in the same thread as the director.
      *  @param delay The delay.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public synchronized void setDelay(double delay) 
+    public synchronized void setDelay(double delay)
             throws IllegalActionException {
         if (delay < 0.0) {
             throw new IllegalActionException(getContainer(),
@@ -237,9 +237,9 @@ public class DEReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the director that created this receiver. 
+    /** Return the director that created this receiver.
      *  If this receiver is an inside receiver of
-     *  an output port of an opaque composite actor, 
+     *  an output port of an opaque composite actor,
      *  then the director will be the local director
      *  of the container of its port. Otherwise, it's the executive
      *  director of the container of its port.Note that
@@ -301,7 +301,7 @@ public class DEReceiver extends AbstractReceiver {
     //private int _depth = 0;
 
     // The director where this DEReceiver should register the
-    // events being put in it. 
+    // events being put in it.
     // NOTE: This should be accessed only via getDirector().
     private DEDirector _director;
     private long _directorVersion = -1;

@@ -55,15 +55,15 @@ import java.net.Socket;
  *  The extension of this director w.r.t. the base DEDirector is a parameter
  *  'timeBaseHost', which takes an IP address.
  *  FIXME: consider network time protocol.
- *  This director maintains a 'timeOrigin', which is the network time 
+ *  This director maintains a 'timeOrigin', which is the network time
  *  corresponding to modeling time 0. To map the modeling time 't' to the
  *  network in other systems, use the fomular:
  *  <Pre>
  *      t+timeOrigin
  *  </pre>
- *  
+ *
  *  The method getTimeOrigin() will return the time origin.
- * 
+ *
  *
  *  @author Jie Liu
  *  @version $Id$
@@ -166,21 +166,21 @@ public class TimeSyncDEDirector extends DEDirector {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         TimeSyncDEDirector newobj = (TimeSyncDEDirector)(super.clone(ws));
-        newobj.timeBaseHost = 
+        newobj.timeBaseHost =
             (Parameter)newobj.getAttribute("timeBaseHost");
-        //newobj.delaTolerance = 
+        //newobj.delaTolerance =
         //    (Parameter)newobj.getAttribute("delayTolerance");
         try {
             newobj.timeBaseHost.setTypeEquals(BaseType.STRING);
             //newobj.delayTolerance.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Set type error." 
+            throw new InternalErrorException("Set type error."
                     + ex.getMessage());
         }
         return newobj;
     }
 
-    /** In addition to do the initialization work specified in the 
+    /** In addition to do the initialization work specified in the
      *  DEDirector, calculate the time origin.
      *
      *  @exception IllegalActionException If the initialize() method of
@@ -189,12 +189,12 @@ public class TimeSyncDEDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         // Uncomment to have a debug listener.
         //addDebugListener(new StreamListener());
-        
+
         String host = timeBaseHost.getToken().stringValue();
         try {
             Socket socket = new Socket(host, 80);
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = 
+            DataOutputStream out =
                 new DataOutputStream(socket.getOutputStream());
             out.writeBytes("get /bin/1451dot2/read"
                     + "\n");
@@ -229,5 +229,5 @@ System.out.println(getName() + ": time origin" + _timeOrigin);
     // time origin wrt the global time.
     private double _timeOrigin;
 
-    
+
 }

@@ -75,7 +75,7 @@ public abstract class DEActor extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
-    
+
     /** Return a new DEIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.

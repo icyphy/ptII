@@ -187,7 +187,7 @@ public class DECQEventQueue implements DEEventQueue {
 	 *  If the argument is not an instance of DEEvent, then a
 	 *  ClassCastException will be thrown.  Only the time stamp
          *  of the arguments is used.  The quantity returned is the
-         *  quantized time stamp, i.e. the 
+         *  quantized time stamp, i.e. the
          *  difference between the time stamp of the event and that of
          *  the zero reference, divided by the time stamp of the bin width.
 	 *  @param event The event.
@@ -226,7 +226,7 @@ public class DECQEventQueue implements DEEventQueue {
 	    double[] diff = new double[entryArray.length - 1];
 
 	    double average =
-                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() - 
+                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() -
                 ((DEEvent)entryArray[0]).timeStamp()) / (entryArray.length-1);
             double effectiveAverage = 0.0;
 	    int effectiveSamples = 0;
@@ -238,7 +238,7 @@ public class DECQEventQueue implements DEEventQueue {
 		    effectiveAverage += diff[i];
 		}
 	    }
-            
+
             if (effectiveAverage == 0.0 || effectiveSamples == 0) {
                 // To avoid setting NaN or 0.0
                 // for the width, apparently due to simultaneous events,
@@ -252,7 +252,7 @@ public class DECQEventQueue implements DEEventQueue {
         /** Set the zero reference, to be used in calculating the virtual
          *  bin number. The argument should be a DEEvent, otherwise a
          *  ClassCastException will be thrown.
-         *  
+         *
          *  @exception ClassCastException If the argument is not an instance
          *   of DEEvent.
          */

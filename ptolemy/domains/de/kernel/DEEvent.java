@@ -54,7 +54,7 @@ import java.lang.Comparable;
  *  (using fireAt()).
  *  The depth is the index of the destination actor in a topological
  *  sort.  A larger value of depth represents a lower priority when
- *  processing events.  
+ *  processing events.
  *  <p>
  *  This class implements the Comparable interface.  The time stamp,
  *  microstep, and depth are compared in that order by the compareTo()
