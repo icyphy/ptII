@@ -5,6 +5,29 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
+<H2>The changes between ptplot1.2p1 and ptplot1.3</H2>
+<MENU>
+<LI> The Pxgraph class and the <CODE>pxgraph</CODE>scrip now take
+two new command line arguments:
+<DL>
+<dt><code>-o</code> <code><i>output filename<i></code> 
+<dd>The name of the file to place the print output in.  Currently
+defaults to <code>/tmp/t.ps<code>.
+<dt><code>-print</code>
+<dd>Bring up the print dialog immeadiately upon startup.  Unfortunately,
+there is no way to automatically print in JDK1.1, the user must hit
+the <code>Ok</code> button.
+</DL>
+The new command line arguments are used to make it easier to create
+PostScript output.
+
+<LI> <A HREF="../../ptplot2mif.tcl"><CODE>ptplot2mif.tcl</CODE></A> script
+can be used to convert the PostScript output of Ptplot to Framemaker
+MIF format.  This script requires Tcl, and probably won't work under
+Windows.  This script does not do a perfect job converting, but it is
+a start.
+</MENU>
+
 <H2>The changes between ptplot1.2 and ptplot1.2p1</H2>
 Ptplot1.2p1 is a bug fix release. 
 <MENU>
