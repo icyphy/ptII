@@ -272,6 +272,36 @@ public class ShellTextArea extends JPanel {
 
     // The key listener
     private class ShellKeyListener extends KeyAdapter {
+        public void keyTyped (KeyEvent keyEvent) {
+            switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_UNDEFINED:
+                if (keyEvent.getKeyChar() == '\b') {
+                    if (_jTextArea.getCaretPosition() == _promptCursor) {
+                        keyEvent.consume(); // don't backspace over prompt!
+                    }
+                }
+                break;
+
+            case KeyEvent.VK_BACK_SPACE:
+                if (_jTextArea.getCaretPosition() == _promptCursor) {
+                    keyEvent.consume(); // don't backspace over prompt!
+                }
+                break;
+            default:
+            }
+        }
+
+        public void keyReleased (KeyEvent keyEvent) {
+            switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_BACK_SPACE:
+                if (_jTextArea.getCaretPosition() == _promptCursor) {
+                    keyEvent.consume(); // don't backspace over prompt!
+                }
+                break;
+            default:
+            }
+        }
+
         public void keyPressed (KeyEvent keyEvent) {
             // Process keys
             switch (keyEvent.getKeyCode()) {
