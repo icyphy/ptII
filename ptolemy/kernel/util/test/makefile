@@ -52,6 +52,7 @@ JSRCS = \
 	TestDE.java \
 	TestDebugEvent.java \
 	TestNullNamedObj.java \
+	TestPtolemyThread.java \
 	TestWorkspace.java \
 	TestWorkspace2.java
 
