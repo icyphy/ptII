@@ -69,13 +69,24 @@ EXTRA_SRCS = \
 	troubleshooting.htm \
 	types.htm
 
+VERGIL_DOCS = \
+	mainVergil.htm \
+	ptII1.0.releaseVergil.htm \
+	troubleshootingVergil.htm
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) img tutorial
+MISC_FILES =	\
+	$(DIRS) \
+	$(VERGILDOCS) \
+	img \
+	tutorial
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc uml
+OPTIONAL_FILES =	\
+	codeDoc \
+	uml
 
 ALLJSRCS =		ptolemy.plot \
 			ptolemy.plot.plotml \
@@ -133,6 +144,24 @@ ALLJSRCS =		ptolemy.plot \
 
 all: suball codeDoc/tree.html
 install: all
+
+# Vergil gets special versions of the html files because the JDK1.3 Java
+# HTML viewer is not very functional.
+vergil_docs: $(VERGIL_DOCS)
+$(VERGIL_DOCS): javahtml.awk
+
+# Version of main.htm without links
+# Convert <a href="foobar" target="body">bif</a> -> bif
+mainVergil.htm: main.htm
+	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $^ > $@
+
+# Generate a file that consists of only the text within
+# <!--vergilDoc--> ... <!--/vergilDoc--> blocks
+ptII1.0.releaseVergil.htm: ptII1.0.release.htm
+	awk -f javahtml.awk $^ > $@  
+troubleshootingVergil.htm: troubleshooting.htm
+	awk -f javahtml.awk $^ > $@  
+
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
