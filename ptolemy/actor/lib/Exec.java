@@ -512,8 +512,16 @@ public class Exec extends TypedAtomicActor {
                 }
             }
 
-            // Read any remaining data.
-            _read();
+            try {
+                // Read any remaining data.
+                _read();
+            } catch (Throwable throwable) {
+                if (_debugging) {
+                    _debug("WARNING: getAndReset(): _read() threw an "
+                            + "exception, which we are ignoring.\n"
+                            + throwable.getMessage());
+                }
+            }
 
             String results = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
