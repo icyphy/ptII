@@ -1,5 +1,4 @@
-/*
-A operation taking two operands of type float, and producing a value of
+/* A operation taking two operands of type float, and producing a value of
 type float.
 
 This file was automatically generated with a preprocessor, so that
@@ -37,14 +36,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 /** A operation taking two operands of type float, and producing a value of
- *  type float. This interface attempts to mimic a first-class function of two
- *  variables.
- *  @author Jeff Tsay
- */
+type float. This interface attempts to mimic a first-class function of two
+variables.
+@author Jeff Tsay
+@version $Id$
+*/
 public interface FloatBinaryOperation {
 
-    /** Operate on the operands, returning a value of the same type. Note that the
-     *  operation need not be commutative.
+    /** Operate on the operands, returning a value of the same
+     *  type. Note that the operation need not be commutative.
      */
     float operate(float leftOperand, float rightOperand);
 }

@@ -1,5 +1,4 @@
-/*
-A operation taking one operand of type Complex, and producing a value of
+/* A operation taking one operand of type Complex, and producing a value of
 type Complex.
 
 This file was automatically generated with a preprocessor, so that
@@ -37,10 +36,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 /** A operation taking one argument of type Complex, and producing a value of
- *  type Complex. This interface attempts to mimic a first-class function of
- *  a single variable.
- *  @author Jeff Tsay
- */
+type Complex. This interface attempts to mimic a first-class function of
+a single variable.
+
+@author Jeff Tsay
+@version $Id$
+*/
 public interface ComplexUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */

@@ -1,8 +1,4 @@
-/*
-A library for mathematical operations on arrays of longs.
-
-This file was automatically generated with a preprocessor, so that
-similar array operations are supported on ints, longs, floats, and doubles.
+/* A library for mathematical operations on arrays of longs.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -40,18 +36,14 @@ import java.lang.Long;              /* Needed by javadoc */
 //////////////////////////////////////////////////////////////////////////
 //// LongArrayMath
 /**
- * This class provides a library for mathematical operations on long arrays.
- * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException
- * will be thrown in the method or called methods.
- * <p>
- * This file was automatically generated with a preprocessor, so that
- * similar matrix operations are supported on ints, longs, floats, and doubles.
- * <p>
- *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- */
+This class provides a library for mathematical operations on long arrays.
+Unless explicity noted otherwise, all array arguments are assumed to be
+non-null. If a null array is passed to a method, a NullPointerException
+will be thrown in the method or called methods.
 
+@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+@version
+ */
 public class LongArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -97,9 +89,9 @@ public class LongArrayMath {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
-    /** Return a new array that is the result of appending length2 elements
-     *  of array2, starting from the array1[idx2] to length1 elements of array1,
-     *  starting from array1[idx1].
+    /** Return a new array that is the result of appending length2
+     *  elements of array2, starting from the array1[idx2] to length1
+     *  elements of array1, starting from array1[idx1].
      *  Appending empty arrays is supported. In that case, the corresponding
      *  idx may be any number. Allow System.arraycopy() to throw array access
      *  exceptions if idx .. idx + length - 1 are not all valid array indices,
@@ -112,9 +104,9 @@ public class LongArrayMath {
      *  @param length2 The number of elements of array2 to append.
      *  @return A new array of longs.
      */
-    public static final long[] append(final long[] array1,
-            final int idx1, final int length1, final long[] array2, final int idx2,
-            final int length2) {
+    public static final long[] append(
+            final long[] array1, final int idx1, final int length1,
+            final long[] array2, final int idx2, final int length2) {
         long[] retval = new long[length1 + length2];
 
         if (length1 > 0) {
@@ -195,9 +187,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the formed by bitwise ANDing z with each element
-     *  of the input array (array[i] & z).
-     *  If the length of the array is 0, return a new array of length 0.
+    /** Return a new array that is the formed by bitwise ANDing z with
+     *  each element of the input array (array[i] & z).  If the length
+     *  of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseAnd(final long[] array, final long z) {
         int length = array.length;
@@ -208,9 +200,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise AND of the two
-     *  input arrays (array1[i] & array2[i]).
-     *  If the lengths of both arrays are 0, return a new array of length 0.
+    /** Return a new array that is the element-by-element bitwise AND
+     *  of the two input arrays (array1[i] & array2[i]).  If the
+     *  lengths of both arrays are 0, return a new array of length 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
@@ -224,9 +216,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise complement of the
-     *  input array (~array[i]).
-     *  If the length of the array is 0, return a new array of length 0.
+    /** Return a new array that is the element-by-element bitwise
+     *  complement of the input array (~array[i]).  If the length of
+     *  the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseComplement(final long[] array) {
         int length = array.length;
@@ -237,9 +229,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the formed by bitwise ORing z with each element
-     *  of the input array (array[i] | z).
-     *  If the length of the array is 0, return a new array of length 0.
+    /** Return a new array that is the formed by bitwise ORing z with
+     *  each element of the input array (array[i] | z).  If the length
+     *  of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseOr(final long[] array, final long z) {
         int length = array.length;
@@ -266,9 +258,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the formed by bitwise XORing z with each element
-     *  of the input array (array[i] ^ z).
-     *  If the length of the array is 0, return a new array of length 0.
+    /** Return a new array that is the formed by bitwise XORing z with
+     *  each element of the input array (array[i] ^ z).  If the length
+     *  of the array is 0, return a new array of length 0.
      */
     public static final long[] bitwiseXor(final long[] array, final long z) {
         int length = array.length;
@@ -279,9 +271,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the element-by-element bitwise XOR of the two
-     *  input arrays (array1[i] ^ array2[i]).
-     *  If the lengths of both arrays are 0, return a new array of length 0.
+    /** Return a new array that is the element-by-element bitwise XOR
+     *  of the two input arrays (array1[i] ^ array2[i]).  If the
+     *  lengths of both arrays are 0, return a new array of length 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
@@ -295,9 +287,9 @@ public class LongArrayMath {
         return retval;
     }
 
-    /** Return a new array that is the formed by dividing each element of the input
-     *  array by z (array[i] / z).
-     *  If the length of the array is 0, return a new array of length 0.
+    /** Return a new array that is the formed by dividing each element
+     *  of the input array by z (array[i] / z).  If the length of the
+     *  array is 0, return a new array of length 0.
      */
     public static final long[] divide(final long[] array, final long z) {
         int length = array.length;
@@ -307,8 +299,6 @@ public class LongArrayMath {
         }
         return retval;
     }
-
-
 
 
     /** Return a new array that is the element-by-element division of
@@ -349,16 +339,13 @@ public class LongArrayMath {
     }
 
 
-
     /** Return a new array that is a copy of the argument except that the
      *  elements are limited to lie within the specified range.
-
-     *  If any value is MAX_VALUE or MIN_VALUE,
+     *  <p> If any value is MAX_VALUE or MIN_VALUE,
      *  then it is replaced by either the top or the bottom, depending on
      *  its sign.  To leave either the bottom or the top unconstrained,
      *  specify Long.MIN_VALUE or Long.MAX_VALUE.
-
-     *  If the length of the array is 0, return a new array of length 0.
+     *  <p> If the length of the array is 0, return a new array of length 0.
      *  @param array An array of longs.
      *  @param bottom The bottom limit.
      *  @param top The top limit.
@@ -444,8 +431,6 @@ public class LongArrayMath {
     }
 
 
-
-
     /** Return a new array of longs that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be
@@ -464,9 +449,9 @@ public class LongArrayMath {
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
-            throw new IllegalArgumentException("ptolemy.math." +
-                    "LongArrayMath.padMiddle() : newLength must be >= length of " +
-                    "array.");
+            throw new IllegalArgumentException("ptolemy.math."
+                    + "LongArrayMath.padMiddle() : newLength must be "
+                    + ">= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
@@ -545,12 +530,14 @@ public class LongArrayMath {
     }
 
     /** Return a new array that is constructed from the argument by
-     *  arithmetically shifting the elements in the array by the second argument.
-     *  If the second argument is positive, the elements are shifted left by
-     *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (arithmetically, with the >>> operator) by the absolute
-     *  value of the second argument. If the second argument is 0, no operation is
-     *  performed (the array is just copied).
+     *  arithmetically shifting the elements in the array by the
+     *  second argument.  If the second argument is positive, the
+     *  elements are shifted left by the second argument. If the
+     *  second argument is negative, the elements are shifted right
+     *  (arithmetically, with the >>> operator) by the absolute value
+     *  of the second argument. If the second argument is 0, no
+     *  operation is performed (the array is just copied).
+     *
      *  @param matrix A first array of longs.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
@@ -573,12 +560,14 @@ public class LongArrayMath {
     }
 
     /** Return a new array that is constructed from the argument by
-     *  logically shifting the elements in the array by the second argument.
-     *  If the second argument is positive, the elements are shifted left by
-     *  the second argument. If the second argument is negative, the elements
-     *  are shifted right (logically, with the >>> operator) by the absolute
-     *  value of the second argument. If the second argument is 0, no operation is
-     *  performed (the array is just copied).
+     *  logically shifting the elements in the array by the second
+     *  argument.  If the second argument is positive, the elements
+     *  are shifted left by the second argument. If the second
+     *  argument is negative, the elements are shifted right
+     *  (logically, with the >>> operator) by the absolute value of
+     *  the second argument. If the second argument is 0, no operation
+     *  is performed (the array is just copied).
+     *
      *  @param matrix A first array of longs.
      *  @param shiftAmount The amount to shift by, positive for left shift,
      *  negative for right shift.
@@ -632,8 +621,9 @@ public class LongArrayMath {
 
 
     /** Return a new array that is formed by converting the longs in
-     *  the argument array to doubles.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  the argument array to doubles.  If the length of the argument
+     *  array is 0, return a new array of length 0.
+     *
      *  @param array An array of long.
      *  @return A new array of doubles.
      */

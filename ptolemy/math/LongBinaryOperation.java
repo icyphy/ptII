@@ -1,9 +1,5 @@
-/*
-A operation taking two operands of type long, and producing a value of
+/* A operation taking two operands of type long, and producing a value of
 type long.
-
-This file was automatically generated with a preprocessor, so that
-similar operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -37,14 +33,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 /** A operation taking two operands of type long, and producing a value of
- *  type long. This interface attempts to mimic a first-class function of two
- *  variables.
- *  @author Jeff Tsay
+type long. This interface attempts to mimic a first-class function of two
+variables.
+
+@author Jeff Tsay
+@version $Id$
  */
 public interface LongBinaryOperation {
 
-    /** Operate on the operands, returning a value of the same type. Note that the
-     *  operation need not be commutative.
+    /** Operate on the operands, returning a value of the same
+     *  type. Note that the operation need not be commutative.
      */
     long operate(long leftOperand, long rightOperand);
 }

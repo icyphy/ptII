@@ -34,31 +34,30 @@ package ptolemy.math;
 import  java.io.Serializable;
 
 /** This class provides a complex data type and a library of functions that
- *  operate on and return complex numbers.  An instance of the class is
- *  immutable, meaning that its value is set in the constructor and
- *  cannot then be modified.  This is similar to the Java built-in classes
- *  like Double, Integer, etc.
- *  <p>
- *  Although this code is written from scratch, I looked at several designs
- *  and borrowed elements from each of them:
- *  <ul>
- *  <li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
- *       which borrowed design elements from the cfront and libg++
- *       Complex classes.
- *  <li> Version 1.0 of the Complex class by Alma services, dated Fri
- *       29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
- *       and obtained from the <a href="http://www.netlib.org/">
- *       Netlib Repository</a>.
- *  <li> The Complex class in JNL, a Java Numerical Library, dated 1997,
- *       by Visual Numerics, Inc.  This was used for interface design only,
- *       to compare the choice of method names and method templates.
- *  <li> Matlab, which was used to validate the results in the test
- *       suite, and influenced some of the method name choices.
- *  </ul>
- *
- *  @author Edward A. Lee, Jeff Tsay
- *  @version $Id$
- */
+operate on and return complex numbers.  An instance of the class is
+immutable, meaning that its value is set in the constructor and
+cannot then be modified.  This is similar to the Java built-in classes
+like Double, Integer, etc.
+<p>
+Although this code is written from scratch, I looked at several designs
+and borrowed elements from each of them:
+<ul>
+<li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
+     which borrowed design elements from the cfront and libg++
+     Complex classes.
+<li> Version 1.0 of the Complex class by Alma services, dated Fri
+     29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
+     and obtained from the <a href="http://www.netlib.org/">
+     Netlib Repository</a>.
+<li> The Complex class in JNL, a Java Numerical Library, dated 1997,
+     by Visual Numerics, Inc.  This was used for interface design only,
+     to compare the choice of method names and method templates.
+<li> Matlab, which was used to validate the results in the test
+     suite, and influenced some of the method name choices.
+</ul>
+@author Edward A. Lee, Jeff Tsay
+@version $Id$
+*/
 public class Complex implements Cloneable, Serializable {
 
     /** Construct a Complex equal to zero.
@@ -100,8 +99,8 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(real + z.real, imag + z.imag);
     }
 
-    /** Return a new complex number with value equal to the principal arc cosine
-     *  of this complex number.  This is defined by:
+    /** Return a new complex number with value equal to the principal
+     *  arc cosine of this complex number.  This is defined by:
      *  <pre>
      *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
      *  </pre>
@@ -437,8 +436,8 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex[] roots(int n) {
         if (n < 1) {
-            throw new IllegalArgumentException("Complex.roots() : n must be greater " +
-                    "than or equal to one.");
+            throw new IllegalArgumentException("Complex.roots(): "
+                    + "n must be greater than or equal to one.");
         }
 
         Complex[] retval = new Complex[n];
@@ -563,9 +562,11 @@ public class Complex implements Cloneable, Serializable {
      */
     public final String toString() {
         if (imag >= 0) {
-            return Double.toString(real) + " + " + Double.toString(imag) + "i";
+            return Double.toString(real) + " + "
+                + Double.toString(imag) + "i";
         } else {
-            return Double.toString(real) + " - " + Double.toString(-imag) + "i";
+            return Double.toString(real) + " - "
+                + Double.toString(-imag) + "i";
         }
     }
 

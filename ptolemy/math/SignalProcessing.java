@@ -1260,7 +1260,7 @@ public class SignalProcessing {
                 int direction) {
             if ((direction != 1) && (direction != -1)) {
                 throw new IllegalArgumentException(
-                        "ptolemy.math.SignalProcessing.LineSampleGenerator :  " +
+                        "ptolemy.math.SignalProcessing.LineSampleGenerator: " +
                         "direction must be either 1 or -1");
             }
 

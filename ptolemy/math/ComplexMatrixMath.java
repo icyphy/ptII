@@ -49,7 +49,6 @@ rows of the matrix are expected to have the same number of columns.
 @author Jeff Tsay
 @version $Id$
 */
-
 public class ComplexMatrixMath {
 
     // Private constructor prevents construction of this class.
@@ -149,7 +148,8 @@ public class ComplexMatrixMath {
      *  IllegalArgumentException.
      */
     public static final Complex[][] applyBinaryOperation(
-            ComplexBinaryOperation op, final Complex[][] matrix1, final Complex[][] matrix2) {
+            ComplexBinaryOperation op, final Complex[][] matrix1,
+            final Complex[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -211,8 +211,10 @@ public class ComplexMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real) > absoluteError) ||
-                        (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag) > absoluteError)) {
+                if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real)
+                        > absoluteError) ||
+                        (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag)
+                                > absoluteError)) {
                     return false;
                 }
             }
@@ -309,14 +311,14 @@ public class ComplexMatrixMath {
                 a[pivot] = a[swapRow];
                 a[swapRow] = aPtr;
 
-                // change sign of determinate because of swap
+                // Change sign of determinate because of swap.
                 det = det.multiply(a[pivot][pivot].negate());
             } else {
-                // calculate the determinate by the product of the pivots
+                // Calculate the determinate by the product of the pivots.
                 det = det.multiply(a[pivot][pivot]);
             }
 
-            // if almost singular matrix, give up now
+            // If almost singular matrix, give up now.
 
             // FIXME use epsilon instead of this ugly constant
             if (det.magnitudeSquared() <= 1.0E-9) {
@@ -331,12 +333,13 @@ public class ComplexMatrixMath {
             for (int row = pivot + 1; row < n; row++) {
                 Complex temp = a[row][pivot];
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] = a[row][col].subtract(a[pivot][col].multiply(temp));
+                    a[row][col] =
+                        a[row][col].subtract(a[pivot][col].multiply(temp));
                 }
             }
         }
 
-        // last pivot, no reduction required
+        // Last pivot, no reduction required.
         det = det.multiply(a[n-1][n-1]);
 
         return det;
@@ -575,7 +578,7 @@ public class ComplexMatrixMath {
             final Complex[][] destMatrix,
             final int destRowStart, final int destColStart,
             final int rowSpan, final int colSpan) {
-        // We should verify the parameters here
+        // We should verify the parameters here.
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
                     destMatrix[destRowStart + i], destColStart,

@@ -1,5 +1,4 @@
-/*
-A operation taking two operands of type double, and producing a value of
+/* A operation taking two operands of type double, and producing a value of
 type double.
 
 This file was automatically generated with a preprocessor, so that
@@ -37,14 +36,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 /** A operation taking two operands of type double, and producing a value of
- *  type double. This interface attempts to mimic a first-class function of two
- *  variables.
- *  @author Jeff Tsay
+type double. This interface attempts to mimic a first-class function of two
+variables.
+@author Jeff Tsay
+@version $Id$
  */
 public interface DoubleBinaryOperation {
 
-    /** Operate on the operands, returning a value of the same type. Note that the
-     *  operation need not be commutative.
+    /** Operate on the operands, returning a value of the same
+     *  type. Note that the operation need not be commutative.
      */
     double operate(double leftOperand, double rightOperand);
 }

@@ -167,9 +167,9 @@ public class FixPoint implements Cloneable, Serializable {
      *  <p>
      *  The precision of the result is equal to the maximum of the
      *  integer part and fractional part of the fixed point values
-     *  added. So when a number with precision <i>(6,3)</i> and
+     *  added. So when a number with precision <i>(6, 3)</i> and
      *  <i>(12.4)</i> are added, the resulting precision is equal to
-     *  <i>(max(6,12), max(3,4))</i>, which is <i>(12.4)</i>. If the
+     *  <i>(max(6, 12), max(3, 4))</i>, which is <i>(12.4)</i>. If the
      *  resulting value doesn't fits into this new precision, then the
      *  precision is changed to accomodate it. In particular, the number
      *  of bits for the integer part might be increased by one.
@@ -230,9 +230,9 @@ public class FixPoint implements Cloneable, Serializable {
      *  division is converted back to FixPoint with a precision
      *  equal to the maximum of the integer part and fractional part
      *  of the fixed point values divided. Thus when a number with
-     *  precision <i>(6,3)</i> is divided by a FixPoint with precision
+     *  precision <i>(6, 3)</i> is divided by a FixPoint with precision
      *  <i>(12.4)</i>, then the resulting FixPoint will have a
-     *  precision equal to <i>(max(6,12), max(3,4))</i>, which is
+     *  precision equal to <i>(max(6, 12), max(3, 4))</i>, which is
      *  <i>(12.4)</i>. If the BigDecimal resulting from the devision
      *  doesn't fit this precision, then this BigDecimal value is
      *  quantized to the closest value representable with the
@@ -260,7 +260,7 @@ public class FixPoint implements Cloneable, Serializable {
         // Alternatively, we calculated the precision on a
         // time-to-time basis, but this is much more involved.
         // double decimalPrecision =
-        // Math.log(Math.pow(2,cp.getFractionBitLength()))/Math.log(10);
+        // Math.log(Math.pow(2, cp.getFractionBitLength()))/Math.log(10);
 	BigDecimal dz = dx.divide(dy, 40, BigDecimal.ROUND_HALF_EVEN);
 
 	// Create a FixValue with the additional bits set
@@ -398,9 +398,9 @@ public class FixPoint implements Cloneable, Serializable {
      *  result is set to accommodate the result.
      *  The precision of the result is equal to the maximum of the
      *  integer part and fractional part of the fixed point values
-     *  subtracted. So when a number with precision <i>(6,3)</i> and
+     *  subtracted. So when a number with precision <i>(6, 3)</i> and
      *  <i>(12.4)</i> are subtracted, the resulting precision is
-     *  equal to <i>(max(6,12), max(3,4))</i>, which is
+     *  equal to <i>(max(6, 12), max(3, 4))</i>, which is
      *  <i>(12.4)</i>. If the resulting value doesn't fit into this
      *  new precision, then the precision is changed to accomodate the
      *  new value without loss of precision. For a subtraction this means
@@ -494,11 +494,11 @@ public class FixPoint implements Cloneable, Serializable {
      *  quantization mode selected, the appropriate value is
      *  determined.
      *  @param value The value that needs to be scaled.
-     *  @param newprecision The new precision.
+     *  @param newPrecision The new precision.
      *  @return Value with the desired new precision.
      */
     static FixPoint _scaleBits(
-            FixPoint value, Precision newprecision, int mode) {
+            FixPoint value, Precision newPrecision, int mode) {
         // Package friendly, is used by Quantizer
 	int delta, a, b = 0;
 
@@ -512,17 +512,17 @@ public class FixPoint implements Cloneable, Serializable {
         int sign = value._value.fixvalue.signum();
         FixValue absValue = value._value.abs();
 
-        Precision oldprecision = value.getPrecision();
-	FixValue integerPart  = absValue.getIntegerBits(oldprecision);
-	FixValue fractionPart = absValue.getFractionBits(oldprecision);
+        Precision oldPrecision = value.getPrecision();
+	FixValue integerPart  = absValue.getIntegerBits(oldPrecision);
+	FixValue fractionPart = absValue.getFractionBits(oldPrecision);
 
         // The FixPoint should fit between the min/max of the
         // new supplied precision. Only the fractional part can
         // become smaller. This is checked here.
 
         // Check Fractional Part
-        a = oldprecision.getFractionBitLength();
-        b = newprecision.getFractionBitLength();
+        a = oldPrecision.getFractionBitLength();
+        b = newPrecision.getFractionBitLength();
         delta = b-a;
 
         // scale the fractional part
@@ -532,15 +532,15 @@ public class FixPoint implements Cloneable, Serializable {
 	// fractional part
 	BigInteger total =
 	    integerPart.fixvalue.shiftLeft(
-                    newprecision.getFractionBitLength());
+                    newPrecision.getFractionBitLength());
 	total = total.add(fractionResult.fixvalue);
 
         FixPoint result = null;
 	// Return the FixValue cast to the new precision
         if (sign >= 0) {
-            result = new FixPoint(newprecision, total);
+            result = new FixPoint(newPrecision, total);
         } else {
-            result = new FixPoint(newprecision, total.negate());
+            result = new FixPoint(newPrecision, total.negate());
         }
         result.setError(fractionResult.getError());
 
@@ -655,7 +655,7 @@ public class FixPoint implements Cloneable, Serializable {
 	    _error       = NOOVERFLOW;
 	}
 
-	/** Create a FixValue with a particular valie and set the error field
+	/** Create a FixValue with a particular value and set the error field
          *  to the given error condition.
          *  @param value Set the BigInteger of this Fixvale to value
          *  @param err   The error condition of this FixValue

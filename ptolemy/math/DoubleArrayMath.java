@@ -40,18 +40,13 @@ import java.lang.Double;              /* Needed by javadoc */
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayMath
 /**
- * This class provides a library for mathematical operations on double arrays.
- * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException
- * will be thrown in the method or called methods.
- * <p>
- * This file was automatically generated with a preprocessor, so that
- * similar matrix operations are supported on ints, longs, floats, and doubles.
- * <p>
- *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- */
-
+This class provides a library for mathematical operations on double arrays.
+unless explicity noted otherwise, all array arguments are assumed to be
+non-null. If a null array is passed to a method, a NullPointerException
+will be thrown in the method or called methods.
+@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+@version $Id$
+*/
 public class DoubleArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -97,13 +92,14 @@ public class DoubleArrayMath {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
-    /** Return a new array that is the result of appending length2 elements
-     *  of array2, starting from the array1[idx2] to length1 elements of array1,
-     *  starting from array1[idx1].
-     *  Appending empty arrays is supported. In that case, the corresponding
-     *  idx may be any number. Allow System.arraycopy() to throw array access
-     *  exceptions if idx .. idx + length - 1 are not all valid array indices,
-     *  for both of the arrays.
+    /** Return a new array that is the result of appending length2
+     *  elements of array2, starting from the array1[idx2] to length1
+     *  elements of array1, starting from array1[idx1].  Appending
+     *  empty arrays is supported. In that case, the corresponding idx
+     *  may be any number. Allow System.arraycopy() to throw array
+     *  access exceptions if idx .. idx + length - 1 are not all valid
+     *  array indices, for both of the arrays.
+     *
      *  @param array1 The first array of doubles.
      *  @param idx1 The starting index for array1.
      *  @param length1 The number of elements of array1 to use.
@@ -113,8 +109,8 @@ public class DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] append(final double[] array1,
-            final int idx1, final int length1, final double[] array2, final int idx2,
-            final int length2) {
+            final int idx1, final int length1, 
+            final double[] array2, final int idx2, final int length2) {
         double[] retval = new double[length1 + length2];
 
         if (length1 > 0) {
@@ -170,7 +166,8 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double[] applyBinaryOperation(
-            DoubleBinaryOperation op, final double[] array1, final double[] array2) {
+            DoubleBinaryOperation op,
+            final double[] array1, final double[] array2) {
         int length = _commonLength(array1, array2,
                 "DoubleArrayMath.applyBinaryOperation");
         double[] retval = new double[length];
@@ -197,7 +194,8 @@ public class DoubleArrayMath {
 
 
 
-    // no need for an element-by-element division, use divide(array, 1.0 / z) instead
+    // no need for an element-by-element division, use divide(array,
+    // 1.0 / z) instead
 
 
     /** Return a new array that is the element-by-element division of
@@ -237,23 +235,22 @@ public class DoubleArrayMath {
         return sum;
     }
 
-    /** Return the L2-norm of the array, that is, the square root of the sum of the
-     *  squares of the elements.
+    /** Return the L2-norm of the array, that is, the square root of
+     *  the sum of the squares of the elements.
      */
     public static final double l2norm(final double[] array) {
         return (double) Math.sqrt(sumOfSquares(array));
     }
 
 
-    /** Return a new array that is a copy of the argument except that the
-     *  elements are limited to lie within the specified range.
-     *  If any value is infinite or NaN (not a number),
-     *  then it is replaced by either the top or the bottom, depending on
-     *  its sign.  To leave either the bottom or the top unconstrained,
+    /** Return a new array that is a copy of the argument except that
+     *  the elements are limited to lie within the specified range.
+     *  If any value is infinite or NaN (not a number), then it is
+     *  replaced by either the top or the bottom, depending on its
+     *  sign.  To leave either the bottom or the top unconstrained,
      *  specify Double.NEGATIVE_INFINITY or Double.POSITIVE_INFINITY.
-
-
-     *  If the length of the array is 0, return a new array of length 0.
+     *  <p>If the length of the array is 0, return a new array of length 0.
+     *
      *  @param array An array of doubles.
      *  @param bottom The bottom limit.
      *  @param top The top limit.
@@ -340,9 +337,9 @@ public class DoubleArrayMath {
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
-            throw new IllegalArgumentException("ptolemy.math." +
-                    "DoubleArrayMath.padMiddle() : newLength must be >= length of " +
-                    "array.");
+            throw new IllegalArgumentException("ptolemy.math."
+                    + "DoubleArrayMath.padMiddle() : newLength must be "
+                    + ">= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
@@ -379,8 +376,10 @@ public class DoubleArrayMath {
      *  Elements from the input array are copied to the output array,
      *  starting from array[startIdx] until one of the following conditions
      *  is met :
-     *  1) The input array has no more elements to copy.
-     *  2) The output array has been completely filled.
+     *  <ol>
+     *  <li> The input array has no more elements to copy.
+     *  <li> The output array has been completely filled.
+     *  </ol>
      *  startIdx must index a valid entry in array unless the input array
      *  is of zero length or the output array is of zero length.
      *  If case 1) is met, the remainder of the output array is filled with
@@ -461,8 +460,10 @@ public class DoubleArrayMath {
     }
 
     /** Return a new array that is formed by converting the doubles in
-     *  the argument array to complex numbers. Each complex number has real
-     *  part equal to the value in the argument matrix and a zero imaginary part.
+     *  the argument array to complex numbers. Each complex number has
+     *  real part equal to the value in the argument matrix and a zero
+     *  imaginary part.
+     *
      *  @param array An array of double.
      *  @return A new array of complex numbers.
      */
@@ -480,9 +481,8 @@ public class DoubleArrayMath {
 
 
     /** Return a new array that is formed by converting the doubles in
-     *  the argument array to doubles.
-     *  If the length of the argument array is 0,
-     *  return a new array of length 0.
+     *  the argument array to doubles.  If the length of the argument
+     *  array is 0, return a new array of length 0.
      *  @param array An array of double.
      *  @return A new array of doubles.
      */
@@ -498,9 +498,8 @@ public class DoubleArrayMath {
 
 
     /** Return a new array that is formed by converting the doubles in
-     *  the argument array to integers.
-     *  If the length of the argument array is 0,
-     *  return a new array of length 0.
+     *  the argument array to integers.  If the length of the argument
+     *  array is 0, return a new array of length 0.
      *  @param array An array of double.
      *  @return A new array of integers.
      */
@@ -516,8 +515,9 @@ public class DoubleArrayMath {
 
 
     /** Return a new array that is formed by converting the doubles in
-     *  the argument array to longs.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  the argument array to longs.  If the length of the argument
+     *  array is 0, return a new array of length 0.
+     *
      *  @param array An array of double.
      *  @return A new array of longs.
      */

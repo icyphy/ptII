@@ -1,8 +1,4 @@
-/*
-A library for mathematical operations on arrays of floats.
-
-This file was automatically generated with a preprocessor, so that
-similar array operations are supported on ints, longs, floats, and doubles.
+/* A library for mathematical operations on arrays of floats.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -40,18 +36,14 @@ import java.lang.Float;              /* Needed by javadoc */
 //////////////////////////////////////////////////////////////////////////
 //// FloatArrayMath
 /**
- * This class provides a library for mathematical operations on float arrays.
- * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException
- * will be thrown in the method or called methods.
- * <p>
- * This file was automatically generated with a preprocessor, so that
- * similar matrix operations are supported on ints, longs, floats, and doubles.
- * <p>
- *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- */
+This class provides a library for mathematical operations on float arrays.
+Unless explicity noted otherwise, all array arguments are assumed to be
+non-null. If a null array is passed to a method, a NullPointerException
+will be thrown in the method or called methods.
 
+@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+@version $Id$
+*/
 public class FloatArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -97,9 +89,9 @@ public class FloatArrayMath {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
-    /** Return a new array that is the result of appending length2 elements
-     *  of array2, starting from the array1[idx2] to length1 elements of array1,
-     *  starting from array1[idx1].
+    /** Return a new array that is the result of appending length2
+     *  elements of array2, starting from the array1[idx2] to length1
+     *  elements of array1, starting from array1[idx1].
      *  Appending empty arrays is supported. In that case, the corresponding
      *  idx may be any number. Allow System.arraycopy() to throw array access
      *  exceptions if idx .. idx + length - 1 are not all valid array indices,
@@ -112,9 +104,9 @@ public class FloatArrayMath {
      *  @param length2 The number of elements of array2 to append.
      *  @return A new array of floats.
      */
-    public static final float[] append(final float[] array1,
-            final int idx1, final int length1, final float[] array2, final int idx2,
-            final int length2) {
+    public static final float[] append(
+            final float[] array1, final int idx1, final int length1,
+            final float[] array2, final int idx2, final int length2) {
         float[] retval = new float[length1 + length2];
 
         if (length1 > 0) {
@@ -170,7 +162,8 @@ public class FloatArrayMath {
      *  IllegalArgumentException.
      */
     public static final float[] applyBinaryOperation(
-            FloatBinaryOperation op, final float[] array1, final float[] array2) {
+            FloatBinaryOperation op, final float[] array1,
+            final float[] array2) {
         int length = _commonLength(array1, array2,
                 "FloatArrayMath.applyBinaryOperation");
         float[] retval = new float[length];
@@ -197,7 +190,8 @@ public class FloatArrayMath {
 
 
 
-    // no need for an element-by-element division, use divide(array, 1.0 / z) instead
+    // no need for an element-by-element division, use divide(array,
+    // 1.0 / z) instead
 
 
     /** Return a new array that is the element-by-element division of
@@ -237,8 +231,8 @@ public class FloatArrayMath {
         return sum;
     }
 
-    /** Return the L2-norm of the array, that is, the square root of the sum of the
-     *  squares of the elements.
+    /** Return the L2-norm of the array, that is, the square root of
+     *  the sum of the squares of the elements.
      */
     public static final float l2norm(final float[] array) {
         return (float) Math.sqrt(sumOfSquares(array));
@@ -251,8 +245,7 @@ public class FloatArrayMath {
      *  then it is replaced by either the top or the bottom, depending on
      *  its sign.  To leave either the bottom or the top unconstrained,
      *  specify Float.NEGATIVE_INFINITY or Float.POSITIVE_INFINITY.
-
-
+     *
      *  If the length of the array is 0, return a new array of length 0.
      *  @param array An array of floats.
      *  @param bottom The bottom limit.
@@ -340,9 +333,9 @@ public class FloatArrayMath {
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
-            throw new IllegalArgumentException("ptolemy.math." +
-                    "FloatArrayMath.padMiddle() : newLength must be >= length of " +
-                    "array.");
+            throw new IllegalArgumentException("ptolemy.math."
+                    + "FloatArrayMath.padMiddle() : newLength must be "
+                    + ">= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
@@ -452,8 +445,8 @@ public class FloatArrayMath {
 
 
     /** Return a new array that is formed by converting the floats in
-     *  the argument array to doubles.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  the argument array to doubles.  If the length of the argument
+     *  array is 0, return a new array of length 0.
      *  @param array An array of float.
      *  @return A new array of doubles.
      */
@@ -466,8 +459,6 @@ public class FloatArrayMath {
         }
         return retval;
     }
-
-
 
 
     /** Return a new array that is formed by converting the floats in
@@ -489,8 +480,8 @@ public class FloatArrayMath {
 
 
     /** Return a new array that is formed by converting the floats in
-     *  the argument array to longs.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  the argument array to longs.  If the length of the argument
+     *  array is 0, return a new array of length 0.
      *  @param array An array of float.
      *  @return A new array of longs.
      */

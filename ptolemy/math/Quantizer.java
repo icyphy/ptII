@@ -118,7 +118,7 @@ public class Quantizer {
         // determine the scale factor by calculating
         // 2^fractionbitlength By multiply the given value 'x' with
         // this scale factor. An value is obtained of the fraction
-        // part is dropped. The integer remaining after the scaleing
+        // part is dropped. The integer remaining after the scaling
         // will be represented by the BigInteger.
         int number = precision.getFractionBitLength();
 

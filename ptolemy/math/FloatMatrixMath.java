@@ -5,9 +5,6 @@ Some algorithms are from
  [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
     Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-This file was automatically generated with a preprocessor, so that
-similar matrix operations are supported on ints, longs, floats, and doubles.
-
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
 
@@ -54,7 +51,6 @@ rows of the matrix are expected to have the same number of columns.
 @author Jeff Tsay
 @version $Id$
 */
-
 public class FloatMatrixMath {
 
     // private constructor prevents construction of this class.
@@ -77,8 +73,9 @@ public class FloatMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  adding the second matrix to the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      *  @param matrix1 The first matrix of floats.
      *  @param matrix2 The second matrix of floats.
      *  @return A new matrix of floats.
@@ -144,13 +141,14 @@ public class FloatMatrixMath {
 
     /** Return a new array that is formed by applying an instance of a
      *  FloatBinaryOperation to the two matrices, element by element,
-     *  using the elements of the first matrix as the left operands and the
-     *  elements of the second matrix as the right operands.
-     *  (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  If the matrices are not the same size, throw an IllegalArgumentException.
+     *  using the elements of the first matrix as the left operands
+     *  and the elements of the second matrix as the right operands.
+     *  (op.operate(matrix1[i][j], matrix2[i][j])).  If the matrices
+     *  are not the same size, throw an IllegalArgumentException.
      */
     public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float[][] matrix1, final float[][] matrix2) {
+            FloatBinaryOperation op,
+            final float[][] matrix1, final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -182,7 +180,6 @@ public class FloatMatrixMath {
         }
         return retval;
     }
-
 
 
     /** Return a new matrix that is a sub-matrix of the input
@@ -269,9 +266,10 @@ public class FloatMatrixMath {
         return det;
     }
 
-    /** Return a new matrix that is constructed by placing the elements of the input
-     *  array on the diagonal of the square matrix, starting from the top left corner
-     *  down to the bottom right corner. All other elements are zero. The size of of the
+    /** Return a new matrix that is constructed by placing the
+     *  elements of the input array on the diagonal of the square
+     *  matrix, starting from the top left corner down to the bottom
+     *  right corner. All other elements are zero. The size of of the
      *  matrix is n x n, where n is the length of the input array.
      */
     public static final float[][] diag(final float[] array) {
@@ -292,8 +290,8 @@ public class FloatMatrixMath {
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  second matrix.  If the two matrices are not the same size,
+     *  throw an IllegalArgumentException.
      */
     public static final float[][] divideElements(final float[][] matrix1,
             final float[][] matrix2) {
@@ -607,8 +605,9 @@ public class FloatMatrixMath {
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  multiplication of the two matrix arguments.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final float[][] multiplyElements(final float[][] matrix1,
             final float[][] matrix2) {
@@ -642,22 +641,25 @@ public class FloatMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is formed by orthogonalizing the columns of the
-     *  input matrix (the column vectors are orthogonal). If not all columns are
-     *  linearly independent, the output matrix will contain a column of zeros
-     *  for all redundant input columns.
+    /** Return a new matrix that is formed by orthogonalizing the
+     *  columns of the input matrix (the column vectors are
+     *  orthogonal). If not all columns are linearly independent, the
+     *  output matrix will contain a column of zeros for all redundant
+     *  input columns.
      */
     public static final float[][] orthogonalizeColumns(final float[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((float[][]) orthoInfo[0]);
     }
 
-    /** Return a new matrix that is formed by orthogonalizing the columns of the
-     *  input matrix (the column vectors are orthogonal and have norm 1). If not
-     *  all columns are linearly independent, the output matrix will contain a
-     *  column of zeros for all redundant input columns.
+    /** Return a new matrix that is formed by orthogonalizing the
+     *  columns of the input matrix (the column vectors are orthogonal
+     *  and have norm 1). If not all columns are linearly independent,
+     *  the output matrix will contain a column of zeros for all
+     *  redundant input columns.
      */
-    public static final float[][] orthonormalizeColumns(final float[][] matrix) {
+    public static final float[][] orthonormalizeColumns(
+            final float[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -671,10 +673,11 @@ public class FloatMatrixMath {
         return (float[][]) orthoInfo[0];
     }
 
-    /** Return a new matrix that is formed by orthonormalizing the rows of the
-     *  input matrix (the row vectors are orthogonal and have norm 1). If not all
-     *  rows are linearly independent, the output matrix will contain a row of
-     *  zeros for all redundant input rows.
+    /** Return a new matrix that is formed by orthonormalizing the
+     *  rows of the input matrix (the row vectors are orthogonal and
+     *  have norm 1). If not all rows are linearly independent, the
+     *  output matrix will contain a row of zeros for all redundant
+     *  input rows.
      */
     public static final float[][] orthonormalizeRows(final float[][] matrix) {
         int rows = _rows(matrix);
@@ -685,29 +688,33 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             orthogonalMatrix[i] = FloatArrayMath.scale(
-                    orthogonalMatrix[i], (float) Math.sqrt(oneOverNormSquaredArray[i]));
+                    orthogonalMatrix[i],
+                    (float) Math.sqrt(oneOverNormSquaredArray[i]));
         }
 
         return orthogonalMatrix;
     }
 
 
-    /** Return a pair of matrices that are the decomposition of the input matrix
-     *  (which must have linearly independent column vectors), which is m x n,
-     *  into the matrix product of Q, which is m x n with orthonormal column vectors,
-     *  and R, which is an invertible n x n upper triangular matrix.
-     *  Throw an IllegalArgumentException if the columns vectors of the input matrix
-     *  are not linearly independent.
+    /** Return a pair of matrices that are the decomposition of the
+     *  input matrix (which must have linearly independent column
+     *  vectors), which is m x n, into the matrix product of Q, which
+     *  is m x n with orthonormal column vectors, and R, which is an
+     *  invertible n x n upper triangular matrix.  Throw an
+     *  IllegalArgumentException if the columns vectors of the input
+     *  matrix are not linearly independent.
      *  @param matrix The input matrix of floats.
-     *  @return The pair of newly allocated matrices of floats, out[0] = Q, out[1] = R.
+     *  @return The pair of newly allocated matrices of floats,
+     *  out[0] = Q, out[1] = R.
      */
     public static final float[][][] qr(final float[][] matrix) {
         int columns = _columns(matrix);
 
-        /*  Find an orthogonal basis using _orthogonalizeRows().
-         *  Note that _orthogonalizeRows() orthogonalizes row vectors, so we have use the
-         *  transpose of input matrix to orthogonlize its columns vectors. The output will
-         *  be the transpose of Q.
+        /* Find an orthogonal basis using _orthogonalizeRows().  Note
+         *  that _orthogonalizeRows() orthogonalizes row vectors, so
+         *  we have use the transpose of input matrix to orthogonlize
+         *  its columns vectors. The output will be the transpose of
+         *  Q.
          */
         Object[] orthoRowInfo = _orthogonalizeRows(transpose(matrix));
 
@@ -716,18 +723,18 @@ public class FloatMatrixMath {
         // get the dot product matrix, dp[j][i] = <inColumn[i], outColumn[j]>
         float[][] dotProducts = (float[][]) orthoRowInfo[1];
 
-        // Normalize the row vectors of qT (column vectors of Q) by dividing by the
-        // norm of each row vector.
-        // To compute R, normalize each row of dotProducts by dividing each row
-        // the norm of each column vector of Q.
+        // Normalize the row vectors of qT (column vectors of Q) by
+        // dividing by the norm of each row vector.  To compute R,
+        // normalize each row of dotProducts by dividing each row the
+        // norm of each column vector of Q.
 
         float[] oneOverNormSquaredArray = (float[]) orthoRowInfo[2];
 
         // check that all columns were linearly independent
         Integer nullity = (Integer) orthoRowInfo[3];
         if (nullity.intValue() > 0) {
-            throw new IllegalArgumentException("qr() : not all column vectors are " +
-                    "linearly independent.");
+            throw new IllegalArgumentException("qr() : not all column "
+                    + "vectors are linearly independent.");
         }
 
         for (int i = 0; i < columns; i++) {
@@ -744,11 +751,10 @@ public class FloatMatrixMath {
     }
 
 
-
-
     /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  subtracting the second matrix from the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final float[][] subtract(final float[][] matrix1,
             final float[][] matrix2) {
@@ -765,8 +771,6 @@ public class FloatMatrixMath {
         }
         return retval;
     }
-
-
 
 
     /** Return a new matrix that is formed by converting the floats in
@@ -787,8 +791,6 @@ public class FloatMatrixMath {
         }
         return retval;
     }
-
-
 
 
     /** Return a new matrix that is formed by converting the floats in
@@ -831,13 +833,16 @@ public class FloatMatrixMath {
     }
 
 
-    /** Return a new matrix of floats that is initialized from a 1-D array.
-     *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
-     *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
-     *  entries are denoted by (row, column).
+    /** Return a new matrix of floats that is initialized from a 1-D
+     *  array.  The format of the array must be (0, 0), (0, 1), ...,
+     *  (0, n-1), (1, 0), (1, 1), ..., (m-1, n-1) where the output
+     *  matrix is to be m x n and entries are denoted by (row,
+     *  column).
      *  @param array An array of floats.
-     *  @param rows An integer representing the number of rows of the new matrix.
-     *  @param cols An integer representing the number of columns of the new matrix.
+     *  @param rows An integer representing the number of rows of the new
+     *  matrix.
+     *  @param cols An integer representing the number of columns of the new
+     *  matrix.
      *  @return A new matrix of floats.
      */
     public static final float[][] toMatrixFromArray(float[] array, int rows,
@@ -1008,10 +1013,11 @@ public class FloatMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.FloatMatrixMath." + caller + "() : one matrix " +
-                    _dimensionString(matrix1) +
-                    " is not the same size as another matrix " +
-                    _dimensionString(matrix2) + ".");
+                    "ptolemy.math.FloatMatrixMath." + caller
+                    + "() : one matrix "
+                    + _dimensionString(matrix1)
+                    + " is not the same size as another matrix "
+                    + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1037,25 +1043,29 @@ public class FloatMatrixMath {
     }
 
     /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :
-     *  1) A new set of row vectors out[0] ... out[n-1] which are the
-     *     orthogonalized  versions of each input row vector. If a row vector
-     *     rowArray[i] is a linear combination of the last 0 .. i - 1 row vectors,
-     *     set array[i] to an array of 0's (array[i] being the 0 vector is a
-     *     special case of this). Put the result in retval[0].<br>
-     *  2) An n x n matrix containing the dot products of the input row vectors
-     *     and the output row vectors,
-     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.
-     *     Put the result in retval[1].<br>
-     *  3) An array containing 1 / (norm(outArray[i])<sup>2</sup>), with n entries.
-     *     Put the result in retval[2].<br>
-     *  4) A count of the number of rows that were found to be linear combinations
-     *     of previous rows. Replace those rows with rows of zeros. The count
-     *     is equal to the nullity of the transpose of the input matrix. Wrap the
-     *     count with an Integer, and put it in retval[3].<br>
-     *
+     * <ol>
+     * <li> A new set of row vectors out[0] ... out[n-1] which are the
+     *     orthogonalized versions of each input row vector. If a row
+     *     vector rowArray[i] is a linear combination of the last 0
+     *     .. i - 1 row vectors, set array[i] to an array of 0's
+     *     (array[i] being the 0 vector is a special case of
+     *     this). Put the result in retval[0].<br>
+     * <li> An n x n matrix containing the dot products of the input
+     *     row vectors and the output row vectors,
+     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
+     *     the result in retval[1].<br>
+     * <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
+     *     with n entries.  Put the result in retval[2].<br>
+     * <li> A count of the number of rows that were found to be linear
+     * combinations of previous rows. Replace those rows with rows of
+     * zeros. The count is equal to the nullity of the transpose of
+     * the input matrix. Wrap the count with an Integer, and put it in
+     * retval[3].<br>
+     * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
-    protected static final Object[] _orthogonalizeRows(final float[][] rowArrays) {
+    protected static final Object[] _orthogonalizeRows(
+            final float[][] rowArrays) {
         int rows = rowArrays.length;
         int columns =  rowArrays[0].length;
         int nullity = 0;
@@ -1064,8 +1074,9 @@ public class FloatMatrixMath {
 
         float[] oneOverNormSquaredArray = new float[rows];
 
-        // A matrix containing the dot products of the input row vectors and
-        // output row vectors, dotProductMatrix[j][i] = <rowArray[i], outArray[j]>
+        // A matrix containing the dot products of the input row
+        // vectors and output row vectors, dotProductMatrix[j][i] =
+        // <rowArray[i], outArray[j]>
         float[][] dotProductMatrix = new float[rows][rows];
 
         for (int i = 0; i < rows; i++) {
@@ -1089,31 +1100,31 @@ public class FloatMatrixMath {
                                 dotProduct * oneOverNormSquaredArray[j]));
             }
 
-            // compute the dot product between the input and output vector
-            // for the diagonal entry of dotProductMatrix
+            // Compute the dot product between the input and output vector
+            // for the diagonal entry of dotProductMatrix.
             dotProductMatrix[i][i] =
                 FloatArrayMath.dotProduct(refArray, rowArray);
 
-            // check the norm to find zero rows, and save the 1 / norm^2 for later
-            // computation
-
+            // Check the norm to find zero rows, and save the 1 /
+            // norm^2 for later computation.
             float normSquared = FloatArrayMath.sumOfSquares(rowArray);
 
             if (normSquared == 0.0f) {
                 if (i == 0) {
-                    // The input row was the zero vector, we now have a reference to it.
-                    // Set the row to a new zero vector to ensure the output memory
-                    // is entirely disjoint from the input memory.
+                    // The input row was the zero vector, we now have
+                    // a reference to it.  Set the row to a new zero
+                    // vector to ensure the output memory is entirely
+                    // disjoint from the input memory.
                     orthogonalMatrix[i] = new float[columns];
                 } else {
-                    // Reuse the memory allocated by the last subtract() call --
-                    // the row is all zeros.
+                    // Reuse the memory allocated by the last
+                    // subtract() call -- the row is all zeros.
                     orthogonalMatrix[i] = rowArray;
                 }
 
-                // set the normalizing factor to 0.0f to avoid division by 0,
+                // Set the normalizing factor to 0.0f to avoid division by 0,
                 // it works because the projection onto the zero vector yields
-                // zero
+                // zero.
                 oneOverNormSquaredArray[i] = 0.0f;
 
                 nullity++;
@@ -1123,9 +1134,9 @@ public class FloatMatrixMath {
             }
         }
         return new Object[] { orthogonalMatrix, dotProductMatrix,
-                                  oneOverNormSquaredArray, new Integer(nullity) };
+                                  oneOverNormSquaredArray,
+                                  new Integer(nullity) };
     }
-
 
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final float[][] matrix) {

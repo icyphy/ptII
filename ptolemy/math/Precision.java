@@ -55,13 +55,13 @@ The fractional part thus has <i>m</i>-<i>n</i> bits.
  bits, with the integer part having m bits, and the fractional part
 having <i>n</i> bits.
 </ul>
-In both cases, the parenthese are optional.
+In both cases, the parentheses are optional.
 <p>
 The FixPoint class represents signed numbers in a sign-magnitude
 format. As a consequence, a
 single bit is used to represent the sign of the number.
 Therefore, when a precision is
-given of, for example, <i>(6,3)</i>, then 6 bits are used for the
+given of, for example, <i>(6, 3)</i>, then 6 bits are used for the
 integer part and 3 are used for the fractional part. Of the 6 integer
 bits, 5 are used to represent a number and 1 is used for the sign.
 <p>
@@ -69,7 +69,7 @@ In giving a precision, at least a single bit is required to describe
 the sign and thus the minimum precision that can be given to a
 FixPoint is equal to (1.0). Since a single bit is used, the
 FixPoint represents the numbers 0 and -1. Note that a
-precision of (2.0) represents the numbers 1,0,-1, and -2.
+precision of (2.0) represents the numbers 1, 0,-1, and -2.
 The representation is two's complement.
 <p>
 An instance of the class is immutable, meaning
@@ -203,7 +203,8 @@ public class Precision {
         BigDecimal tmp = new BigDecimal(_getTwoRaisedTo(ln - ib));
         BigDecimal one = new BigDecimal( _one );
         BigDecimal tmp2 = one.divide( tmp, 40, BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal tmp1 = new BigDecimal(_getTwoRaisedTo(ib-1)).subtract( tmp2 );
+        BigDecimal tmp1 =
+            new BigDecimal(_getTwoRaisedTo(ib-1)).subtract( tmp2 );
         //System.out.println("Find Max: " + tmp1.doubleValue());
         return tmp1;
     }

@@ -35,12 +35,12 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedMath
 /**
- * ExtendedMath is a library of additional mathematical operations
- * beyond those provided by the Java Math class.
- *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
- * @version $Id$
- */
+ExtendedMath is a library of additional mathematical operations
+beyond those provided by the Java Math class.
+
+@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+@version $Id$
+*/
 public class ExtendedMath {
 
     ///////////////////////////////////////////////////////////////////

@@ -1,9 +1,5 @@
-/*
-A operation taking one operand of type long, and producing a value of
+/* A operation taking one operand of type long, and producing a value of
 type long.
-
-This file was automatically generated with a preprocessor, so that
-similar operations are supported on ints, longs, floats, and doubles.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -37,10 +33,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 /** A operation taking one argument of type long, and producing a value of
- *  type long. This interface attempts to mimic a first-class function of
- *  a single variable.
- *  @author Jeff Tsay
- */
+type long. This interface attempts to mimic a first-class function of
+a single variable.
+
+@author Jeff Tsay
+@version $Id$
+*/
 public interface LongUnaryOperation {
 
     /** Operate on the operand, returning a value of the same type. */

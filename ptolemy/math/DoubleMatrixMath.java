@@ -75,8 +75,10 @@ public class DoubleMatrixMath {
     }
 
     /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  adding the second matrix to the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
+     *
      *  @param matrix1 The first matrix of doubles.
      *  @param matrix2 The second matrix of doubles.
      *  @return A new matrix of doubles.
@@ -142,13 +144,14 @@ public class DoubleMatrixMath {
 
     /** Return a new array that is formed by applying an instance of a
      *  DoubleBinaryOperation to the two matrices, element by element,
-     *  using the elements of the first matrix as the left operands and the
-     *  elements of the second matrix as the right operands.
-     *  (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  If the matrices are not the same size, throw an IllegalArgumentException.
+     *  using the elements of the first matrix as the left operands
+     *  and the elements of the second matrix as the right operands.
+     *  (op.operate(matrix1[i][j], matrix2[i][j])).  If the matrices
+     *  are not the same size, throw an IllegalArgumentException.
      */
     public static final double[][] applyBinaryOperation(
-            DoubleBinaryOperation op, final double[][] matrix1, final double[][] matrix2) {
+            DoubleBinaryOperation op,
+            final double[][] matrix1, final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -267,9 +270,10 @@ public class DoubleMatrixMath {
         return det;
     }
 
-    /** Return a new matrix that is constructed by placing the elements of the input
-     *  array on the diagonal of the square matrix, starting from the top left corner
-     *  down to the bottom right corner. All other elements are zero. The size of of the
+    /** Return a new matrix that is constructed by placing the
+     *  elements of the input array on the diagonal of the square
+     *  matrix, starting from the top left corner down to the bottom
+     *  right corner. All other elements are zero. The size of of the
      *  matrix is n x n, where n is the length of the input array.
      */
     public static final double[][] diag(final double[] array) {
@@ -290,8 +294,8 @@ public class DoubleMatrixMath {
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
-     *  second matrix.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  second matrix.  If the two matrices are not the same size,
+     *  throw an IllegalArgumentException.
      */
     public static final double[][] divideElements(final double[][] matrix1,
             final double[][] matrix2) {
@@ -605,8 +609,9 @@ public class DoubleMatrixMath {
     }
 
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  multiplication of the two matrix arguments.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final double[][] multiplyElements(final double[][] matrix1,
             final double[][] matrix2) {
@@ -640,22 +645,26 @@ public class DoubleMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is formed by orthogonalizing the columns of the
-     *  input matrix (the column vectors are orthogonal). If not all columns are
-     *  linearly independent, the output matrix will contain a column of zeros
-     *  for all redundant input columns.
+    /** Return a new matrix that is formed by orthogonalizing the
+     *  columns of the input matrix (the column vectors are
+     *  orthogonal). If not all columns are linearly independent, the
+     *  output matrix will contain a column of zeros for all redundant
+     *  input columns.
      */
-    public static final double[][] orthogonalizeColumns(final double[][] matrix) {
+    public static final double[][] orthogonalizeColumns(
+            final double[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((double[][]) orthoInfo[0]);
     }
 
-    /** Return a new matrix that is formed by orthogonalizing the columns of the
-     *  input matrix (the column vectors are orthogonal and have norm 1). If not
-     *  all columns are linearly independent, the output matrix will contain a
-     *  column of zeros for all redundant input columns.
+    /** Return a new matrix that is formed by orthogonalizing the
+     *  columns of the input matrix (the column vectors are orthogonal
+     *  and have norm 1). If not all columns are linearly independent,
+     *  the output matrix will contain a column of zeros for all
+     *  redundant input columns.
      */
-    public static final double[][] orthonormalizeColumns(final double[][] matrix) {
+    public static final double[][] orthonormalizeColumns(
+            final double[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -669,12 +678,14 @@ public class DoubleMatrixMath {
         return (double[][]) orthoInfo[0];
     }
 
-    /** Return a new matrix that is formed by orthonormalizing the rows of the
-     *  input matrix (the row vectors are orthogonal and have norm 1). If not all
-     *  rows are linearly independent, the output matrix will contain a row of
-     *  zeros for all redundant input rows.
+    /** Return a new matrix that is formed by orthonormalizing the
+     *  rows of the input matrix (the row vectors are orthogonal and
+     *  have norm 1). If not all rows are linearly independent, the
+     *  output matrix will contain a row of zeros for all redundant
+     *  input rows.
      */
-    public static final double[][] orthonormalizeRows(final double[][] matrix) {
+    public static final double[][] orthonormalizeRows(
+            final double[][] matrix) {
         int rows = _rows(matrix);
 
         Object[] orthoInfo = _orthogonalizeRows(matrix);
@@ -683,29 +694,34 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             orthogonalMatrix[i] = DoubleArrayMath.scale(
-                    orthogonalMatrix[i], (double) Math.sqrt(oneOverNormSquaredArray[i]));
+                    orthogonalMatrix[i],
+                    (double) Math.sqrt(oneOverNormSquaredArray[i]));
         }
 
         return orthogonalMatrix;
     }
 
 
-    /** Return a pair of matrices that are the decomposition of the input matrix
-     *  (which must have linearly independent column vectors), which is m x n,
-     *  into the matrix product of Q, which is m x n with orthonormal column vectors,
-     *  and R, which is an invertible n x n upper triangular matrix.
-     *  Throw an IllegalArgumentException if the columns vectors of the input matrix
-     *  are not linearly independent.
+    /** Return a pair of matrices that are the decomposition of the
+     *  input matrix (which must have linearly independent column
+     *  vectors), which is m x n, into the matrix product of Q, which
+     *  is m x n with orthonormal column vectors, and R, which is an
+     *  invertible n x n upper triangular matrix.  Throw an
+     *  IllegalArgumentException if the columns vectors of the input
+     *  matrix are not linearly independent.
+     *
      *  @param matrix The input matrix of doubles.
-     *  @return The pair of newly allocated matrices of doubles, out[0] = Q, out[1] = R.
+     *  @return The pair of newly allocated matrices of doubles,
+     *  out[0] = Q, out[1] = R.
      */
     public static final double[][][] qr(final double[][] matrix) {
         int columns = _columns(matrix);
 
-        /*  Find an orthogonal basis using _orthogonalizeRows().
-         *  Note that _orthogonalizeRows() orthogonalizes row vectors, so we have use the
-         *  transpose of input matrix to orthogonlize its columns vectors. The output will
-         *  be the transpose of Q.
+        /* Find an orthogonal basis using _orthogonalizeRows().  Note
+         * that _orthogonalizeRows() orthogonalizes row vectors, so
+         * we have use the transpose of input matrix to orthogonlize
+         * its columns vectors. The output will be the transpose of
+         * Q.
          */
         Object[] orthoRowInfo = _orthogonalizeRows(transpose(matrix));
 
@@ -714,22 +730,23 @@ public class DoubleMatrixMath {
         // get the dot product matrix, dp[j][i] = <inColumn[i], outColumn[j]>
         double[][] dotProducts = (double[][]) orthoRowInfo[1];
 
-        // Normalize the row vectors of qT (column vectors of Q) by dividing by the
-        // norm of each row vector.
-        // To compute R, normalize each row of dotProducts by dividing each row
-        // the norm of each column vector of Q.
+        // Normalize the row vectors of qT (column vectors of Q) by
+        // dividing by the norm of each row vector.  To compute R,
+        // normalize each row of dotProducts by dividing each row the
+        // norm of each column vector of Q.
 
         double[] oneOverNormSquaredArray = (double[]) orthoRowInfo[2];
 
         // check that all columns were linearly independent
         Integer nullity = (Integer) orthoRowInfo[3];
         if (nullity.intValue() > 0) {
-            throw new IllegalArgumentException("qr() : not all column vectors are " +
-                    "linearly independent.");
+            throw new IllegalArgumentException("qr() : not all "
+                    + "column vectors are linearly independent.");
         }
 
         for (int i = 0; i < columns; i++) {
-            double oneOverNorm = (double) Math.sqrt(oneOverNormSquaredArray[i]);
+            double oneOverNorm =
+                (double) Math.sqrt(oneOverNormSquaredArray[i]);
             qT[i] = DoubleArrayMath.scale(qT[i], oneOverNorm);
 
             // R is upper triangular, so normalize only upper elements
@@ -745,8 +762,9 @@ public class DoubleMatrixMath {
 
 
     /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.
-     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  subtracting the second matrix from the first one.  If the two
+     *  matrices are not the same size, throw an
+     *  IllegalArgumentException.
      */
     public static final double[][] subtract(final double[][] matrix1,
             final double[][] matrix2) {
@@ -764,9 +782,11 @@ public class DoubleMatrixMath {
         return retval;
     }
 
-    /** Return a new matrix that is formed by converting the doubles in
-     *  the argument matrix to complex numbers. Each complex number has real
-     *  part equal to the value in the argument matrix and a zero imaginary part.
+    /** Return a new matrix that is formed by converting the doubles
+     *  in the argument matrix to complex numbers. Each complex number
+     *  has real part equal to the value in the argument matrix and a
+     *  zero imaginary part.
+     *
      *  @param array An matrix of double.
      *  @return A new matrix of complex numbers.
      */
@@ -783,10 +803,6 @@ public class DoubleMatrixMath {
         }
         return retval;
     }
-
-
-
-
 
     /** Return a new matrix that is formed by converting the doubles in
      *  the argument matrix to floats.
@@ -853,8 +869,10 @@ public class DoubleMatrixMath {
      *  (1, 1), ..., (m-1, n-1) where the output matrix is to be m x n and
      *  entries are denoted by (row, column).
      *  @param array An array of doubles.
-     *  @param rows An integer representing the number of rows of the new matrix.
-     *  @param cols An integer representing the number of columns of the new matrix.
+     *  @param rows An integer representing the number of rows of the
+     *  new matrix.
+     *  @param cols An integer representing the number of columns of the
+     *  new matrix.
      *  @return A new matrix of doubles.
      */
     public static final double[][] toMatrixFromArray(double[] array, int rows,
@@ -981,7 +999,7 @@ public class DoubleMatrixMath {
      *  error matrix may contain negative entries; the absolute value
      *  is used.
      *  More concisely, abs(M1[i, j] - M2[i, j]) must be
-     *  within [-E[i,j], E[i,j]], for 0 <= i < m and 0 <= j < n
+     *  within [-E[i, j], E[i, j]], for 0 <= i < m and 0 <= j < n
      *  where M1, M2, and E are all m x n matrices.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
@@ -1025,8 +1043,8 @@ public class DoubleMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleMatrixMath." + caller + "() : one matrix " +
-                    _dimensionString(matrix1) +
+                    "ptolemy.math.DoubleMatrixMath." + caller
+                    + "() : one matrix " + _dimensionString(matrix1) +
                     " is not the same size as another matrix " +
                     _dimensionString(matrix2) + ".");
         }
@@ -1054,25 +1072,32 @@ public class DoubleMatrixMath {
     }
 
     /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :
-     *  1) A new set of row vectors out[0] ... out[n-1] which are the
-     *     orthogonalized  versions of each input row vector. If a row vector
-     *     rowArray[i] is a linear combination of the last 0 .. i - 1 row vectors,
-     *     set array[i] to an array of 0's (array[i] being the 0 vector is a
-     *     special case of this). Put the result in retval[0].<br>
-     *  2) An n x n matrix containing the dot products of the input row vectors
-     *     and the output row vectors,
-     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.
-     *     Put the result in retval[1].<br>
-     *  3) An array containing 1 / (norm(outArray[i])<sup>2</sup>), with n entries.
-     *     Put the result in retval[2].<br>
-     *  4) A count of the number of rows that were found to be linear combinations
-     *     of previous rows. Replace those rows with rows of zeros. The count
-     *     is equal to the nullity of the transpose of the input matrix. Wrap the
-     *     count with an Integer, and put it in retval[3].<br>
+     * <ol>
+     *  <li>A new set of row vectors out[0] ... out[n-1] which are the
+     *  orthogonalized versions of each input row vector. If a row
+     *  vector rowArray[i] is a linear combination of the last 0 .. i
+     *  - 1 row vectors, set array[i] to an array of 0's (array[i]
+     *  being the 0 vector is a special case of this). Put the result
+     *  in retval[0].<br>
      *
+     * <li> An n x n matrix containing the dot products of the input
+     *     row vectors and the output row vectors,
+     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
+     *     the result in retval[1].<br>
+     *
+     * <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
+     *     with n entries.  Put the result in retval[2].<br>
+     *
+     * <li> A count of the number of rows that were found to be linear
+     *     combinations of previous rows. Replace those rows with rows
+     *     of zeros. The count is equal to the nullity of the
+     *     transpose of the input matrix. Wrap the count with an
+     *     Integer, and put it in retval[3].
+     * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
-    protected static final Object[] _orthogonalizeRows(final double[][] rowArrays) {
+    protected static final Object[] _orthogonalizeRows(
+            final double[][] rowArrays) {
         int rows = rowArrays.length;
         int columns =  rowArrays[0].length;
         int nullity = 0;
@@ -1081,8 +1106,9 @@ public class DoubleMatrixMath {
 
         double[] oneOverNormSquaredArray = new double[rows];
 
-        // A matrix containing the dot products of the input row vectors and
-        // output row vectors, dotProductMatrix[j][i] = <rowArray[i], outArray[j]>
+        // A matrix containing the dot products of the input row
+        // vectors and output row vectors, dotProductMatrix[j][i] =
+        // <rowArray[i], outArray[j]>
         double[][] dotProductMatrix = new double[rows][rows];
 
         for (int i = 0; i < rows; i++) {
@@ -1106,25 +1132,25 @@ public class DoubleMatrixMath {
                                 dotProduct * oneOverNormSquaredArray[j]));
             }
 
-            // compute the dot product between the input and output vector
-            // for the diagonal entry of dotProductMatrix
+            // Compute the dot product between the input and output vector
+            // for the diagonal entry of dotProductMatrix.
             dotProductMatrix[i][i] =
                 DoubleArrayMath.dotProduct(refArray, rowArray);
 
-            // check the norm to find zero rows, and save the 1 / norm^2 for later
-            // computation
-
+            // Check the norm to find zero rows, and save the 1 /
+            // norm^2 for later computation.
             double normSquared = DoubleArrayMath.sumOfSquares(rowArray);
 
             if (normSquared == 0.0) {
                 if (i == 0) {
-                    // The input row was the zero vector, we now have a reference to it.
-                    // Set the row to a new zero vector to ensure the output memory
-                    // is entirely disjoint from the input memory.
+                    // The input row was the zero vector, we now have
+                    // a reference to it.  Set the row to a new zero
+                    // vector to ensure the output memory is entirely
+                    // disjoint from the input memory.
                     orthogonalMatrix[i] = new double[columns];
                 } else {
-                    // Reuse the memory allocated by the last subtract() call --
-                    // the row is all zeros.
+                    // Reuse the memory allocated by the last
+                    // subtract() call -- the row is all zeros.
                     orthogonalMatrix[i] = rowArray;
                 }
 
@@ -1140,7 +1166,8 @@ public class DoubleMatrixMath {
             }
         }
         return new Object[] { orthogonalMatrix, dotProductMatrix,
-                                  oneOverNormSquaredArray, new Integer(nullity) };
+                                  oneOverNormSquaredArray,
+                                  new Integer(nullity) };
     }
 
 

@@ -36,16 +36,15 @@ import java.util.Random;
 ///////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 /**
- * This class provides a library for statistical operations on arrays of
- * doubles.
- * Unless explicity noted otherwise, all array arguments are assumed to be
- * non-null. If a null array is passed to a method, a NullPointerException
- * will be thrown in the method or called methods.
- * <p>
- * @author Jeff Tsay
- * @version $Id$
- */
+This class provides a library for statistical operations on arrays of
+doubles.
+Unless explicity noted otherwise, all array arguments are assumed to be
+non-null. If a null array is passed to a method, a NullPointerException
+will be thrown in the method or called methods.
 
+@author Jeff Tsay
+@version $Id$
+*/
 public class DoubleArrayStat extends DoubleArrayMath {
 
     // Protected constructor prevents construction of this class.
@@ -317,10 +316,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array that is the cross-correlation of the two
      *  argument arrays, starting and ending at user-specified lag values.
-     *  The output array will have length (endlag - startlag + 1).  The first
+     *  The output array will have length (endLag - startLag + 1).  The first
      *  element of the output will have the cross-correlation at a lag of
-     *  startlag. The last element of the output will have the
-     *  cross-correlation at a lag of endlag.
+     *  startLag. The last element of the output will have the
+     *  cross-correlation at a lag of endLag.
      *  @param x The first array of doubles.
      *  @param y The second array of doubles.
      *  @param startLag An int indicating at which lag to start (may be
@@ -357,10 +356,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array that is the auto-correlation of the
      *  argument array, starting and ending at user-specified lag values.
-     *  The output array will have length (endlag - startlag + 1).  The first
+     *  The output array will have length (endLag - startLag + 1).  The first
      *  element of the output will have the auto-correlation at a lag of
-     *  startlag. The last element of the output will have the
-     *  auto-correlation at a lag of endlag.
+     *  startLag. The last element of the output will have the
+     *  auto-correlation at a lag of endLag.
      *  @param x An array of doubles.
      *  @param startLag An int indicating at which lag to start (may be
      *  negative).
@@ -565,5 +564,5 @@ public class DoubleArrayStat extends DoubleArrayMath {
     // a random number.  If we do not share a single Random, then
     // under Windows, closely spaced calls to nextGaussian() on two
     // separate Randoms could yield the same return value.
-    protected static Random _random = new Random();
+    private static Random _random = new Random();
 }
