@@ -184,10 +184,15 @@ public class SROptimizedScheduler extends Scheduler {
             Iterator outputIterator = outputList.iterator();
             while (outputIterator.hasNext()) {
                 IOPort outputPort = (IOPort) outputIterator.next();
+                int referenceDepth = outputPort.depthInHierarchy();
                 List inputList = outputPort.deepConnectedInPortList();
                 Iterator inputIterator = inputList.iterator();
                 while (inputIterator.hasNext()) {
                     IOPort inputPort = (IOPort) inputIterator.next();
+                    if (inputPort.depthInHierarchy() < referenceDepth) {
+                        // Port is higher in the hierarchy... skip.
+                        continue;
+                    }
                     Actor dependentActor =
                         (Actor) inputPortToActor.get(inputPort);
                     List dependentOutputList = dependentActor.outputPortList();
