@@ -25,9 +25,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
+
 package ptolemy.domains.ddf.kernel;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -37,7 +41,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
@@ -45,22 +48,48 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DDFDirector
+
 /**
-Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee   
+   Dynamic dataflow (DDF) domain is a superset of the synchronous dataflow(SDF)
+   and Boolean dataflow(BDF) domains. In the SDF domain, an actor consumes and 
+   produces a fixed number of tokens per firing. This static information makes 
+   possible compile-time scheduling. In the DDF domain, there are few constraints 
+   on the production and consumption behavior of actors and the schedulers make 
+   no attempt to construct a compile-time schedule. Instead, each actor has a set 
+   of firing rules and can be fired if one of them is satisfied, i.e. one set 
+   of firing patterns form a prefix of sequences of unconsumed tokens at input 
+   ports .
+   <p>
+   The scheduler implemented in this director fires all enabled and non 
+   deferrable actors once in a basic iteration. A deferrable actor is one 
+   which will not help the downstream actor become enabled because it either 
+   already has enough data or is waiting for data on another arc. If no actor 
+   fires, then one deferrable actor which has the smallest maximum number of 
+   tokens on its output arcs is fired. A user can treat several such basic 
+   iterations as a single iteration by specifying the number of times a 
+   particular actor must be fired in a single iteration.
+   <p>
+   The algorithm implementing one basic iteration goes like this:
+   E = enabled actors
+   D = deferrable enabled actors
+   F = actors that have fired once already in this one iteration
    
-@author Gang Zhou
+   One default iteration consists of:
+   if (E-D != 0) fire(E-D)
+   else if (D != 0) fire minimax(D)
+   else deadlocked.
    
+   The function "minimax(D)" returns the one actor with the smallest
+   maximum number of tokens on its output paths.
+ 
+   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee   
+   
+   @author Gang Zhou
 */
 public class DDFDirector extends Director {
 
@@ -77,6 +106,7 @@ public class DDFDirector extends Director {
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
+     * 
      *  @param workspace The workspace of this object.
      */
     public DDFDirector(Workspace workspace) 
@@ -108,65 +138,99 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
     
+    /** A Parameter representing the number of times that postfire may be
+     *  called before it returns false.  If the value is less than or
+     *  equal to zero, then the execution will never return false in postfire,
+     *  and thus the execution can continue forever.
+     *  The default value is an IntToken with the value zero.
+     */
     public Parameter iterations;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /**Prior to each basic iteration, scan all actors to put all enabled 
+     * and not deferrable actors in a list and find the minimax actor.
+     * Fire all actors in the list. If no actor has been fired, fire the 
+     * minimax actor. If still no actor has been fired, a deadlock has 
+     * been detected. This concludes one basic iteration. If some actors
+     * has a parameter named firingsPerIteration defined, continue to 
+     * execute basic iterations until the actors have been fired at 
+     * least the number of times given in that parameter.
+     * 
+     * @exception IllegalActionException If any actor executed by this
+     * actor return false in prefire.
+     */
     public void fire() throws IllegalActionException {
     	
-    	_firedOne = false;
-    	
-    	int minimaxSize = Integer.MAX_VALUE;
-    	Actor minimaxActor = null;
-    	
     	boolean repeatBasicIteration = true;
-    	while(repeatBasicIteration == true) {
+    	while(repeatBasicIteration) {
     		
-    		repeatBasicIteration = false;
+    		// The default value indicates basic iteration will not
+    		// be repeated until proved otherwise.
+      		repeatBasicIteration = false;
+      		
+            // The variable to store minimax actor.
+        	Actor minimaxActor = null;
+        	int minimaxSize = Integer.MAX_VALUE;
     		
-    	    TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+      		// The List to store actors that are enabled and not deferrable.
+    		List toBeFiredActors = new LinkedList();
+    		
+     	    TypedCompositeActor container = ((TypedCompositeActor)getContainer());
             Iterator actors = container.deepEntityList().iterator();       
             while (actors.hasNext()) {
+            	
+            	// Scan all actors to find all enabled and not deferrable actors. 
         	    Actor actor = (Actor)actors.next();
-        	    Variable enablingStatus = 
-        		    (Variable)((NamedObj)actor).getAttribute("enablingStatus");
-                int canFire = ((IntToken)enablingStatus.getToken()).intValue();
+        	    int[] flags = (int[])_actorsFlags.get(actor);
+                int canFire = flags[_enablingStatus];
                 if (canFire == _ENABLED_NOT_DEFERRABLE) {
-            	    if (fire(actor) == STOP_ITERATING) return;            	
-                } else if (canFire == _ENABLED_DEFERRABLE) {
-                	Variable maxNumberOfTokens = 
-            		        (Variable)((NamedObj)actor).getAttribute("maxNumberOfTokens");
-                    int newSize = ((IntToken)maxNumberOfTokens.getToken()).intValue();
+                	toBeFiredActors.add(actor);
+            	}
+            	
+                // Find the minimax actor.
+            	if (canFire == _ENABLED_DEFERRABLE) {          
+                    int newSize = flags[_maxNumberOfTokens];
                     if (newSize < minimaxSize) {
                 	    minimaxSize = newSize;
                 	    minimaxActor = actor; 
                     }
                 }           
             }
-        
+            
+            // No actor has been fired at the beginning of the  
+            // basic iteration.
+        	_firedOne = false;
+            
+            // Fire all enabled and not deferrable actors.
+            Iterator  enabledActors = toBeFiredActors.iterator();
+            while (enabledActors.hasNext()) {
+            	Actor actor = (Actor)enabledActors.next();
+                if (_fireActor(actor) == STOP_ITERATING) return;
+            }
+            
+            // If no actor has been fired, fire the minimax actor.
             if (!_firedOne && minimaxActor != null) {
-        	    if (fire(minimaxActor) == STOP_ITERATING) return;
+        	    if (_fireActor(minimaxActor) == STOP_ITERATING) return;
             }
         
-            //deadlock
+            // If still no actor has been fired, declare deadlock.
             if(!_firedOne) {
         	    _postfireReturns = false;
+        	    System.out.println("deadlock detected");
         	    return;
             }     
         
+            // Check to see if we need to repeat basic iteration to 
+            // satisfy firingsPerIteration for some actors.
             actors = container.deepEntityList().iterator();       
             while (actors.hasNext()) {
         	    Actor actor = (Actor)actors.next();
-        	    Variable firingsPerIteration = 
-    		        (Variable)((NamedObj)actor).getAttribute("firingsPerIteration");
-        	    if (firingsPerIteration != null) {
-        		    int requiredFirings = 
-        			        ((IntToken)firingsPerIteration.getToken()).intValue();
-        		    Variable numberOfFirings = 
-        		        (Variable)((NamedObj)actor).getAttribute("numberOfFirings");
-        		    int firingsDone = 
-        		    	    ((IntToken)numberOfFirings.getToken()).intValue();
+        	    int[] flags = (int[])_actorsFlags.get(actor);
+        	    int requiredFirings = flags[_firingsPerIteration];
+        	    if (requiredFirings > 0) {
+        		    int firingsDone = flags[_numberOfFirings];
         		    if (firingsDone < requiredFirings) {
         		    	repeatBasicIteration = true;
         		    	break;
@@ -176,41 +240,18 @@ public class DDFDirector extends Director {
     	}
     }
     
-    public int fire(Actor actor) throws IllegalActionException {
-    	
-    	int returnValue = actor.iterate(1);
-        if (returnValue == STOP_ITERATING) {
-            _postfireReturns = false;
-            return returnValue;
-        } else if (returnValue == NOT_READY) {
-            throw new IllegalActionException(this,
-                    (ComponentEntity) actor, "Actor " +
-                    "is not ready to fire.");
-        }
-        
-        _firedOne = true;
-        
-        Variable numberOfFirings = 
-        	    (Variable)((NamedObj)actor).getAttribute("numberOfFirings");
-        int firings = ((IntToken)numberOfFirings.getToken()).intValue();
-        numberOfFirings.setToken(new IntToken(++firings));
-        
-        Iterator connectedPorts = ((Entity)actor).connectedPortList().iterator();
-        while (connectedPorts.hasNext()) {
-        	Port connectedPort = (Port)connectedPorts.next();
-        	Actor container = (Actor)connectedPort.getContainer();
-        	_checkActorStatus(container);
-        }
-        _checkActorStatus(actor);
-        
-        return returnValue;
-    }
-    
     /** Initialize the actors associated with this director and then
      *  set the iteration count to zero.  The order in which the
-     *  actors are initialized is arbitrary. For each actor, dertermine
-     *  its enabling status: _NOT_ENABLED, _ENABLED_NOT_DEFERRABLE or
-     *  _ENABLED_DEFERRABLE. */
+     *  actors are initialized is arbitrary. 
+     * 
+     *  For each actor, dertermine its enabling status: 
+     *  _NOT_ENABLED, _ENABLED_NOT_DEFERRABLE or _ENABLED_DEFERRABLE. 
+     *  
+     *  Determine firingsPerIteration for each actor.
+     * 
+     *  @exception IllegalActionException If the firingsPerIteration
+     *  parameter does not contain an IntToken.
+     */
     
     public void initialize() throws IllegalActionException {
     	super.initialize();
@@ -219,12 +260,58 @@ public class DDFDirector extends Director {
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
+        	
+            // Get an array of actor flags from HashMap. 
+        	// Creat it if none found.
+        	int[] flags;
         	Actor actor = (Actor)actors.next();
-        	_checkActorStatus(actor);
-        	_resetNumberOfFirings(actor);
+        	if (_actorsFlags.containsKey(actor)) {
+        		flags = (int[])_actorsFlags.get(actor);
+        	} else {
+        		flags = new int[4];
+        		_actorsFlags.put(actor, flags);
+        	}
+        	
+        	// Determine actor enabling status.
+        	flags[_enablingStatus]  = _actorStatus(actor);
+        	
+        	// Determine required firingsPerIteration for each actor.
+        	// The default vaule 0 means no requirement on this actor.
+        	flags[_firingsPerIteration] = 0;
+            Parameter firingsPerIteration = 
+    		    (Parameter)((Entity)actor).getAttribute("firingsPerIteration");
+        	if (firingsPerIteration != null) {
+        		Token token = firingsPerIteration.getToken();
+        		if(token instanceof IntToken) {
+        			int value = ((IntToken)token).intValue();
+        			if (value > 0)
+        				flags[_firingsPerIteration] = value;
+        		} else       			
+					throw new IllegalActionException(this,
+		                    (ComponentEntity)actor, "The parameter " +
+		                    "firingsPerIteration must contain an IntToken.");
+        	}
         }	    
     }
     
+    /** Return a new SDFReceiver.
+     *  @return A new SDFReceiver.
+     */
+    public Receiver newReceiver() {
+        return new SDFReceiver();
+    }
+    
+    /** Return false if the system has finished executing, either by
+     *  reaching the iteration limit, or having an actor in the system return
+     *  false in postfire, or if the system is deadlocked.
+     * 
+     *  Increment the number of iterations.
+     *  
+     *  @return True if the Director wants to be fired again in the
+     *  future.
+     *  @exception IllegalActionException If the iterations parameter
+     *  does not contain a legal value.
+     */
     public boolean postfire() throws IllegalActionException {
     	int iterationsValue = ((IntToken)(iterations.getToken())).intValue();
         _iterationCount++;
@@ -235,54 +322,106 @@ public class DDFDirector extends Director {
         return _postfireReturns && super.postfire();
     }
     
+    
+    /** Initialize numberOfFirings to zero for each actor.
+     *  
+     *  Assume that the director is always ready to be fired, 
+     *  so return true because super.prefire() returns true. 
+     *
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
+        
+        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+        	Actor actor = (Actor)actors.next();
+        	int[] flags = (int[])_actorsFlags.get(actor);
+        	flags[_numberOfFirings] = 0;
+        }	       	
         return super.prefire();
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    protected int _checkActorStatus(Actor actor) 
+    /** Check actor enabling status. It could be in one of three statuses:
+     *  _NOT_ENABLED, _ENABLED_DEFERRABLE, _ENABLED_NOT_DEFERRABLE.
+     * 
+     * @param actor The actor to be checked.
+     * @return An int indicating actor enabing status.
+     * @exception IllegalActionException If any called method throws 
+     * IllegalActionException. 
+     */
+    protected int _actorStatus(Actor actor) 
 	        throws IllegalActionException {
+		   	
+    	if (!_isEnabled(actor)) return _NOT_ENABLED;	
     	
-        //Some functionalities below can be implemented using
-		//SDFUtilities, but we need to move that class to another
-		//package so that DDF package won't depend on SDF package.
-		//Then some protected methods need to become public.
+    	if (_isDeferrable(actor)) return _ENABLED_DEFERRABLE;
     	
-        //SDFUtilities._setOrCreate((NameObj)actor, 
-		//        "enablingStatus", new IntToken(_NOT_ENABLED));
-		
-    	//Create variable to store enablingStatus if it does not 
-    	//already exist.
-    	Variable enablingStatus = 
-    		    (Variable)((NamedObj)actor).getAttribute("enablingStatus");
-		if (enablingStatus == null) {
-			try {
-			    enablingStatus = new Variable((NamedObj)actor, "enablingStatus");
-			    enablingStatus.setVisibility(Settable.NOT_EDITABLE);
-                enablingStatus.setPersistent(false);
-		    } catch (KernelException ex) {
-		    	throw new InternalErrorException((NamedObj)actor, ex,
-                        "Should not occur");
-		    }
-		} 
-    	
-    	if (!_isEnabled(actor)) {
-    		enablingStatus.setToken(new IntToken(_NOT_ENABLED));
-    		return _NOT_ENABLED;
-    	}	
-    	
-    	if (_isDeferrable(actor)) {
-    		enablingStatus.setToken(new IntToken(_ENABLED_DEFERRABLE));
-    		return _ENABLED_DEFERRABLE;
-    	}	
-    		
-    	enablingStatus.setToken(new IntToken(_ENABLED_NOT_DEFERRABLE));
     	return _ENABLED_NOT_DEFERRABLE;
     	   	
     }
     
+    /** Iterate the actor once. Increment the firing number for it.
+     *  Update the enabling status for each connected actor as well
+     *  as itself.
+     * 
+     *  @param actor The actor to be fired.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @throws IllegalActionException If any called method throws 
+     *  IllegalActionException or actor is not ready.
+     */
+    protected int _fireActor(Actor actor) throws IllegalActionException {
+    	
+    	// Iterate once.
+    	int returnValue = actor.iterate(1);
+        if (returnValue == STOP_ITERATING) {
+            _postfireReturns = false;
+            return returnValue;
+        } else if (returnValue == NOT_READY) {
+            throw new IllegalActionException(this,
+                    (ComponentEntity) actor, "Actor " +
+                    "is not ready to fire.");
+        }
+        
+        // At least one actor has been fired in this basic iteration.
+        _firedOne = true;
+        
+        // Increment the firing number for this actor.
+        int[] flags = (int[])_actorsFlags.get(actor);
+        flags[_numberOfFirings]++;
+        
+        // Update enabling status for each connected actor.
+        Iterator connectedPorts = ((Entity)actor).connectedPortList().iterator();
+        while (connectedPorts.hasNext()) {
+        	Port connectedPort = (Port)connectedPorts.next();
+        	Actor container = (Actor)connectedPort.getContainer();
+        	int[] containerFlags = (int[])_actorsFlags.get(container);
+        	containerFlags[_enablingStatus] = _actorStatus(container);
+        }
+        
+        // Update enabling status for this actor. 
+        flags[_enablingStatus] = _actorStatus(actor);
+        
+        return returnValue;
+    }    
+    
+    /** Check each remote receiver to see if the number of tokens in the 
+     *  receiver is greater than or equal to the tokenConsumptionRate of 
+     *  the containing port. The actor is deferrable is the above test is 
+     *  true for any receiver. At the same time, find the maximum number 
+     *  of tokens in all receivers, which is used to find minimax actor
+     *  later on.     
+     * 
+     *  @param actor The actor to be checked.
+     *  @return true if the actor is deferrable, false if not.
+     *  @throws IllegalActionException If any called method throws 
+     *  IllegalActionException. 
+     */
     protected boolean _isDeferrable(Actor actor) 
     	    throws IllegalActionException {
     	
@@ -291,60 +430,66 @@ public class DDFDirector extends Director {
     	
     	Iterator outputPorts = actor.outputPortList().iterator();
     	while (outputPorts.hasNext()) {
+    		
     		IOPort outputPort = (IOPort)outputPorts.next();   		
-    	    
-    		Receiver[][] farReceivers = outputPort.getRemoteReceivers();
+    	    Receiver[][] farReceivers = outputPort.getRemoteReceivers();
     		for (int i=0; i < farReceivers.length; i++) 
     			for (int j=0; j < farReceivers[i].length; j++) {
     				SDFReceiver farReceiver = (SDFReceiver)farReceivers[i][j];
     				IOPort container = farReceiver.getContainer();
                     
-    				//int tokenConsumptionRate = SDFUtilities.
-    				//        getTokenConsumptionRate(container);
-    				   				
-                    //Having a self-loop doesn't make itself deferrable.
+    				// Having a self-loop doesn't make it deferrable.
     	    		if (container == outputPort) continue;
     	    		
+                    // int tokenConsumptionRate = SDFUtilities.
+    				//        getTokenConsumptionRate(container);
+    				   				
                     //The defalult vaule for tokenConsumptionRate is 1.
     				int tokenConsumptionRate = 1;
-    				Variable variable = 
-    					    (Variable)container.getAttribute("tokenConsumptionRate");
-    	    		if (variable != null) {
-    	    			Token token = variable.getToken();
+    				Parameter parameter = 
+    					    (Parameter)container.getAttribute("tokenConsumptionRate");
+    	    		if (parameter != null) {
+    	    			Token token = parameter.getToken();
     	    			tokenConsumptionRate = ((IntToken)token).intValue();      			
     	    		}
     	    		if (farReceiver.size() >= tokenConsumptionRate) {
     	    			deferrable = true;
     	    		} 		
-    	    		if (farReceiver.size() >= maxSize) {
+    	    		
+    	    		// Here we find the maximum number of tokens in all receivers
+    	    		// at the same time checking deferrability. The advantage of 
+    	    		// this is that it only adds a small additional operation for
+    	    		// now. If later on we need this information, we don't need 
+    	    		// to do traversing again. The disadvantage is that 1) we can
+    	    		// return from this method as soon as deferrable = true if we
+    	    		// don't perform this additional operation. 2) We will not need
+    	    		// this information if it turns out not all enabled actors are
+    	    		// deferrable. Therefore another approach is to perform this
+    	    		// operation only when needed, i.e., when all enabled actor are 
+    	    		// deferrable.
+    	    		if (farReceiver.size() > maxSize) {
     	    		    maxSize = farReceiver.size();	
     	    		}
     			}   			   		
     	}
-    	
-        //SDFUtilities._setOrCreate((NameObj)actor, 
-		//        "maxNumOfTokens", new IntToken(0));
-		
-    	//Create variable to store maximum number of tokens on the actor's
-    	//output arcs if it does not already exist, used to find minimax 
-    	//actor if all enabled actors are deferrable.
-    	Variable maxNumberOfTokens = 
-    		    (Variable)((NamedObj)actor).getAttribute("maxNumberofTokens");
-		if (maxNumberOfTokens == null) {
-			try {
-				maxNumberOfTokens = new Variable((NamedObj)actor, "maxNumberOfTokens");
-				maxNumberOfTokens.setVisibility(Settable.NOT_EDITABLE);
-				maxNumberOfTokens.setPersistent(false);
-		    } catch (KernelException ex) {
-		    	throw new InternalErrorException((NamedObj)actor, ex,
-                        "Should not occur");
-		    }
-		}
-		maxNumberOfTokens.setToken(new IntToken(maxSize));
+    	   
+        if (deferrable) {
+        	int[] flags = (int[])_actorsFlags.get(actor);
+        	flags[_maxNumberOfTokens] = maxSize;
+        }
 		
 		return deferrable;
     }
     
+    /** The actor is enabled if the tokenConsumptionRate on each 
+     *  input port is satisfied by all receivers contained by 
+     *  this port. 
+     * 
+     *  @param actor The actor to be checked.
+     *  @return true if the actor is enabled, false if not.
+     *  @throws IllegalActionException If any called method throws 
+     *  IllegalActionException. 
+     */
     protected boolean _isEnabled(Actor actor) 
 	        throws IllegalActionException {   	
     	Iterator inputPorts = actor.inputPortList().iterator();
@@ -356,10 +501,10 @@ public class DDFDirector extends Director {
     		
             //The defalult vaule for tokenConsumptionRate is 1.
     		int tokenConsumptionRate = 1;
-      		Variable variable = 
-      			    (Variable)inputPort.getAttribute("tokenConsumptionRate");
-    		if (variable != null) {
-    			Token token = variable.getToken();
+      		Parameter parameter = 
+      			    (Parameter)inputPort.getAttribute("tokenConsumptionRate");
+    		if (parameter != null) {
+    			Token token = parameter.getToken();
     			tokenConsumptionRate = ((IntToken)token).intValue();      			
     		}
     		
@@ -372,28 +517,7 @@ public class DDFDirector extends Director {
     	return true;
     }
     
-    protected void _resetNumberOfFirings(Actor actor) 
-	        throws IllegalActionException {
-        //SDFUtilities._setOrCreate((NameObj)actor, 
-		//        "numberOfFirings", new IntToken(0));
-		
-    	//Create variable to store number of firings during each iteration
-    	//of the director if it does not already exist, used to compare with 
-    	//required number of firings in each iteration for some actors. 
-    	Variable numberOfFirings = 
-    		    (Variable)((NamedObj)actor).getAttribute("numberOfFirings");
-		if (numberOfFirings == null) {
-			try {
-				numberOfFirings = new Variable((NamedObj)actor, "numberOfFirings");
-				numberOfFirings.setVisibility(Settable.NOT_EDITABLE);
-				numberOfFirings.setPersistent(false);
-		    } catch (KernelException ex) {
-		    	throw new InternalErrorException((NamedObj)actor, ex,
-                        "Should not occur");
-		    }
-		}
-		numberOfFirings.setToken(new IntToken(0));
-    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -409,11 +533,32 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private boolean _firedOne;
+    // A flag indicating whether at least one actor has been fired so far.
+    private boolean _firedOne = false;
+    
+    // The number of iterations.
     private int _iterationCount = 0;
+    
+    // The value that the postfire method will return.
     private boolean _postfireReturns;
-        
+    
+    // HashMap containing actor flags. Each actor maps to an array of 
+    // four integers, representing enablingStatus, numberOfFirings, 
+    // maxNumberOfTokens and firingsPerIteration. 
+    private HashMap _actorsFlags = new HashMap();
+    
+    // An indicator that the actor is enabled and deferrable. 
     private static final int _ENABLED_DEFERRABLE = 2;
+    
+    // An indicator that the actor is enabled and not deferrable. 
     private static final int _ENABLED_NOT_DEFERRABLE = 1; 
+    
+    // An indicator that the actor is not enabled. 
     private static final int _NOT_ENABLED = 0;
+    
+    // Indexes into an array of actor flags contained by a HashMap. 
+    private static final int _enablingStatus = 0;
+    private static final int _numberOfFirings = 1;
+    private static final int _maxNumberOfTokens = 2;
+    private static final int _firingsPerIteration = 3;
 }
