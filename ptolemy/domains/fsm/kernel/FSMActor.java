@@ -679,9 +679,9 @@ public class FSMActor extends CompositeEntity
      *  @param firings The number of firings of the modal model in
      *  the current iteration.
      */
-    public void setFiringsPerIteration(int firings) {
-        _firingsPerIteration = firings;
-    }
+    //public void setFiringsPerIteration(int firings) {
+    //    _firingsPerIteration = firings;
+    //}
 
     /** Set the number of firings so far in the current iteration.
      *  @param firings The number of firings that the modal model
@@ -1054,7 +1054,7 @@ public class FSMActor extends CompositeEntity
                         "Error creating input variables for port.\n"
                         + ex.getMessage());
             }
-            String shadowArrayName = shadowName + "Array";
+            String shadowArrayName = shadowName + "$";
             previousAttribute = getAttribute(shadowArrayName);
             try {
                 if (previousAttribute != null) {
@@ -1216,8 +1216,11 @@ public class FSMActor extends CompositeEntity
                 System.out.println(port.getFullName() + " port rate = " + portRate);
             }
             if (_firingsSoFar == 0 && channel == 0) {
-                Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
-                _hdfArrays.put(port, a_of_p);
+                //Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
+                //_hdfArrays.put(port, a_of_p);
+                // List l_of_p = new LinkedList[width];
+                List l_of_p = new LinkedList();
+                _hdfArrays.put(port, l_of_p);
             }
             int index = portRate * _firingsSoFar;
             // Update the value variable if there is/are token(s) in the channel.
@@ -1230,30 +1233,43 @@ public class FSMActor extends CompositeEntity
                     _debug("---", port.getName(),"("+channel+
                     ") has ", token.toString());
                 }
-                flag ++;
-                if (index < portRate * (_firingsSoFar + 1)) {
+                // List[] l_of_p = (linkedList)_hdfArrays.get(port);
+                List l_of_p = (LinkedList)_hdfArrays.get(port);
+                //l_of_p[channel].add(0, token);
+                l_of_p.add(0, token);
+                //flag ++;
+                //if (index < portRate * (_firingsSoFar + 1)) {
                     // Set the value of tokens here.
-                    Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
-                    a_of_p[channel][index] = token;
-                    if (_debug_info) {
-                        System.out.println("hdfArray index = " + index + 
-                            " value = " + a_of_p[channel][index].toString());
-                    }
-                    index ++;
-                }
+                  //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
+                    //a_of_p[channel][index] = token;
+                    //if (_debug_info) {
+                        //System.out.println("hdfArray index = " + index + 
+                          //  " value = " + a_of_p[channel][index].toString());
+                    //}
+                    //index ++;
+                //}
             }
             if (_debug_info) {
                 System.out.println("total tokens available at port: "
-                    + port.getFullName() + "  "+ flag);
+                    + port.getFullName() + "  ");
             }
 
             // The "portName_isPresent" is true only if there are 
             // enough tokens. FIXME.
-            if (index == portRate * _firingsPerIteration && index > 0) {
-                Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
+            //if (index == portRate * _firingsPerIteration && index > 0) {
+              //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
+              //List[] l_of_p = (LinkedList[])_hadArrays.get(port);
+            List l_of_p = (LinkedList)_hdfArrays.get(port);
+            //int length = l_of_p[channel].size();
+            int length = l_of_p.size();
+            if (length > 0) {
+                Token[] a = new Token[length];
+                //a= (Token[])(l_of_p.toArray());
+                l_of_p.toArray(a);      
                 shadowVariables[channel][0].setToken(BooleanToken.TRUE);
-                shadowVariables[channel][1].setToken(a_of_p[channel][index - 1]);
-                shadowVariables[channel][2].setToken(new ArrayToken(a_of_p[channel]));
+                shadowVariables[channel][1].setToken(a[0]);
+                //shadowVariables[channel][2].setToken(new ArrayToken(l_of_p[channel]));
+                shadowVariables[channel][2].setToken(new ArrayToken(a));
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
                 if (_debugging) {
