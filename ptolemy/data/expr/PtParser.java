@@ -76,7 +76,7 @@ of the parse tree. Thus the process is
 <br>
 </CENTER>
 <p>
-The parser can also be passed a symbol table of ptolemy.data.expr.Variables 
+The parser can also be passed a symbol table of ptolemy.data.expr.Variables
 which the expression to be parsed can reference.
 <p>
 Anything between quotes(") is taken to be one string.
@@ -209,7 +209,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param name The string name that the parser will recognize.
      *  @param value An Object constraining the value associated with 
      *   the constant.
-     *  @exception IllegalArgumentException If the constant cannot 
+     *  @exception IllegalArgumentException If the constant cannot
      *   be registered with the parser.
      */
     public static void registerConstant(String name, Object value)
@@ -253,7 +253,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param newClassName The fully qualified name of the Class to 
      *   be added to the search path for functions.
      *  @exception IllegalArgumentException If the Class named by the 
-     *   argument cannot be found.
+     *   argument cannot not be found.
      */
     public static void registerFunctionClass(String newClassName)
             throws IllegalArgumentException {
@@ -1174,7 +1174,7 @@ String tidied, x;
            // does not have to be reparsed whenever the Token in 
            // the Variable changes.
            jjtn007._var   = referredVar;
-           // Register the calling Variable as a listener 
+           // Register the calling Variable as a listener
            // of the Variable this ID references.
            if (_owner != null) {
                 referredVar._addValueDependent(_owner);
@@ -1184,8 +1184,10 @@ String tidied, x;
             Object tmp = _constantsRecognized.get(token.image);
             jjtn007._ptToken = (ptolemy.data.Token)tmp;
         } else {
-            {if (true) throw new ParseException("The ID " +
-                    token.image + " is undefined.");}
+            if (true) {
+                {if (true) throw new ParseException("The ID " + token.image +
+                        " is undefined.");}}
+
         }
           } finally {
      if (jjtc007) {
