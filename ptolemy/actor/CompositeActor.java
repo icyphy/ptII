@@ -374,12 +374,24 @@ public class CompositeActor extends CompositeEntity
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        // If the _functionDependency object is not constructed,
-        // construct a FunctionDependencyOfCompositeActor object.
-        if (_functionDependency == null) {
-            _functionDependency = new FunctionDependencyOfCompositeActor(this);
+        FunctionDependency functionDependency 
+            = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        if (functionDependency == null) {
+            try {
+                functionDependency 
+                    = new FunctionDependencyOfCompositeActor(
+                    	this, FunctionDependency.UniqueName);
+            } catch (NameDuplicationException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            }
         }
-        return _functionDependency;
+        return functionDependency;
     }
 
     /** Get the manager responsible for execution of this composite actor.
@@ -744,9 +756,6 @@ public class CompositeActor extends CompositeEntity
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
-        // because function dependency is not persistent,
-        // it gets reset each time the preinitialize method is called.
-        _functionDependency = null;
         if (_debugging) {
             _debug("Called preinitialize()");
         }
@@ -1145,7 +1154,4 @@ public class CompositeActor extends CompositeEntity
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
-
-    // Cached FunctionDependency object.
-    private FunctionDependencyOfCompositeActor _functionDependency;
 }

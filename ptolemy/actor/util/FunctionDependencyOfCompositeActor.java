@@ -42,7 +42,9 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.Source;
 import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
@@ -83,9 +85,14 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a FunctionDependency for the given actor.
      *  @param compositeActor The composite actor with which this function 
      *  dependency is associated.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public FunctionDependencyOfCompositeActor(CompositeActor compositeActor) {
-        super(compositeActor);
+    public FunctionDependencyOfCompositeActor(CompositeActor compositeActor,
+        String name) throws IllegalActionException, NameDuplicationException {
+        super(compositeActor, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,6 +134,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a dependency graph from a detailed dependency graph by 
      *  excluding the internal ports. The returned graph has an abstract
      *  view.
+     * @throws IllegalActionException
      */
     protected void _constructDependencyGraph() {
 
@@ -134,7 +142,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         _constructDetailedDependencyGraph();
 
         // get associated actor
-        Actor actor = getActor();
+        Actor actor = (Actor)getContainer();
         
         // Initialize the dependency graph
         _dependencyGraph = 
@@ -167,7 +175,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *  dependency.
      */
     protected List _getEntities() {
-        return ((CompositeActor)getActor()).deepEntityList();
+        return ((CompositeActor)getContainer()).deepEntityList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -208,9 +216,9 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     // output ports, and directed edges representing dependencies. This
     // graph includes both the ports of this actor and the ports of all
     // deeply contained opaque actors.
-    private void _constructDetailedDependencyGraph()  {
+    private void _constructDetailedDependencyGraph() {
         // get the actor
-        CompositeActor actor = (CompositeActor)getActor();
+        CompositeActor actor = (CompositeActor)getContainer();
 
         // initialize the detailed dependency graph
         _detailedDependencyGraph = 

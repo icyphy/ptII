@@ -39,7 +39,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -79,16 +83,30 @@ import ptolemy.kernel.util.Workspace;
     @Pt.ProposedRating Green (hyzheng)
     @Pt.AcceptedRating Green (eal)
 */
-public abstract class FunctionDependency {
+public abstract class FunctionDependency extends Attribute {
 
     /** Construct a FunctionDependency object for the given actor.
-     *  @param actor The actor.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public FunctionDependency(Actor actor) {
+    public FunctionDependency(Entity container, String name) 
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        // NOTE:
         // Only actors have function dependencies.
         // Other entities, such as a State, do not.
-        _actor = actor;
+        setPersistent(false);
+        _container = container;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
+    public static String UniqueName = "FUNCTIONDEPENDENCY";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,13 +122,6 @@ public abstract class FunctionDependency {
         return _dependencyGraph;
     }
     
-    /** Get the associated actor.
-     *  @return The associated actor.
-     */
-    public Actor getActor() {
-        return _actor;
-    }
-
     /** Get the output ports that depend on the given input port.
      *  @param inputPort The given input port.
      *  @return A set of output ports that depend on the input port.
@@ -119,10 +130,10 @@ public abstract class FunctionDependency {
     public Set getDependentOutputPorts(IOPort inputPort) {
         _validate();
         // ensure that the input port is inside the dependency graph
-        if (!inputPort.getContainer().equals(_actor)) {
+        if (!inputPort.getContainer().equals(_container)) {
             throw new InternalErrorException("The input port " +
                 inputPort.getName() + " does not belong to the " +
-                "actor " + ((NamedObj)_actor).getName());    
+                "actor " + _container.getName());    
         }
         Collection reachableOutputs =
             _dependencyGraph.reachableNodes(
@@ -144,10 +155,10 @@ public abstract class FunctionDependency {
     public Set getInputPortsDependentOn(IOPort outputPort) {
         _validate();
         // ensure that the output port is inside the dependency graph
-        if (!outputPort.getContainer().equals(_actor)) {
+        if (!outputPort.getContainer().equals(_container)) {
             throw new InternalErrorException("The output port " +
                 outputPort.getName() + " does not belong to the " +
-                "actor " + ((NamedObj)_actor).getName());    
+                "actor " + _container.getName());    
         }
         Collection backwardReachableInputs =
             _dependencyGraph.backwardReachableNodes(
@@ -159,6 +170,14 @@ public abstract class FunctionDependency {
             dependentInputPorts.add(node.getWeight());
         }
         return dependentInputPorts;
+    }
+
+    /** Add this attribute to the given container. 
+     */
+    public void setContainer(NamedObj container) 
+        throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        _functionDependencyVersion = -1;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,11 +197,11 @@ public abstract class FunctionDependency {
 
         // For each input and output port pair, add a directed 
         // edge going from the input port to the output port.
-        Iterator inputs = _actor.inputPortList().listIterator();
+        Iterator inputs = ((Actor)_container).inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
             Iterator outputs = 
-                _actor.outputPortList().listIterator();
+                ((Actor)_container).outputPortList().listIterator();
             while (outputs.hasNext()) {
                 // add an edge from the input port to the output port
                 dependencyGraph.addEdge(inputPort, outputs.next());
@@ -198,10 +217,10 @@ public abstract class FunctionDependency {
      *  This method should only be called from by the protected method
      *  _validate(). It is protected only so that subclasses can
      *  override it, not so they can call it.
+     * @throws IllegalActionException
      */
     protected void _constructDependencyGraph() {
-        _dependencyGraph
-                = _constructConnectedDependencyGraph();
+        _dependencyGraph = _constructConnectedDependencyGraph();
     }
 
     /** Construct and return a dependency graph containing all the
@@ -216,12 +235,12 @@ public abstract class FunctionDependency {
 
         // include all the externally visible ports of the associated actor
         // as nodes in the graph
-        Iterator inputs = _actor.inputPortList().listIterator();
+        Iterator inputs = ((Actor)_container).inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort input = (IOPort)inputs.next();
             dependencyGraph.addNodeWeight(input);
         }
-        Iterator outputs = _actor.outputPortList().listIterator();
+        Iterator outputs = ((Actor)_container).outputPortList().listIterator();
         while (outputs.hasNext()) {
             IOPort output = (IOPort)outputs.next();
             dependencyGraph.addNodeWeight(output);
@@ -237,7 +256,7 @@ public abstract class FunctionDependency {
      *  @see ptolemy.kernel.util.Workspace#getVersion()
      */
     protected final void _validate() {
-        Workspace workspace = ((NamedObj)_actor).workspace();
+        Workspace workspace = _container.workspace();
         long workspaceVersion = workspace.getVersion();
         if (_functionDependencyVersion != workspaceVersion) {
             try {
@@ -263,8 +282,8 @@ public abstract class FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    // The associated actor of this FunctionDependency object.
-    private Actor _actor;
+    // The container that contains this FunctionDependency attribute.
+    private Entity _container;
 
     // The version of the FunctionDependency, which is synchronized
     // to the version of the workspace.

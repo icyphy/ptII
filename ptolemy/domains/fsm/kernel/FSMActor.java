@@ -49,6 +49,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -337,12 +338,15 @@ public class FSMActor extends CompositeEntity
      *  @return A FunctionDependency object of an FSM actor.
      */
     public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
+        FunctionDependency functionDependency 
+            = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        if (functionDependency == null) {
             try {
                 TypedActor[] refinements = _currentState.getRefinement();
                 if (refinements == null || refinements.length < 1) {
-                    _functionDependency =
-                        new FunctionDependencyOfFSMActor(this);
+                    functionDependency 
+                        = new FunctionDependencyOfFSMActor(
+                            this, FunctionDependency.UniqueName);
                 } else {
                     //Throw an exception that in order to use refinements,
                     //a modal model has to be used.
@@ -355,9 +359,13 @@ public class FSMActor extends CompositeEntity
                 // Similar things happen in the _getEntities method
                 // in FunctionDependencyOfModalModel
                 MessageHandler.error("Invalid refinements.", e);
+            } catch (NameDuplicationException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
             }
         }
-        return _functionDependency;
+        return functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -638,10 +646,6 @@ public class FSMActor extends CompositeEntity
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
-        // because function dependency is not persistent,
-        // it gets reset each time the preinitialize method is called.
-        _functionDependency = null;
-
         _stopRequested = false;
         _reachedFinalState = false;
         _newIteration = true;
@@ -970,7 +974,7 @@ public class FSMActor extends CompositeEntity
         return flags[channel];
     }
 
-    /*  Set the map from input ports to boolean flags indicating whether a
+    /** Set the map from input ports to boolean flags indicating whether a
      *  channel is connected to an output port of the refinement of the
      *  current state.
      *  @exception IllegalActionException If the refinement specified
@@ -1420,8 +1424,4 @@ public class FSMActor extends CompositeEntity
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _hdfArrays;
-
-    // The FunctionDependence attribute of this actor.
-    private FunctionDependency _functionDependency;
-
 }

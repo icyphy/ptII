@@ -220,11 +220,24 @@ public class ModalModel extends CTCompositeActor {
      *  Otherwise, they are independent.
      */
     public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            _functionDependency =
-                new FunctionDependencyOfModalModel(this);
+        FunctionDependency functionDependency =
+            (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        if (functionDependency == null) {
+            try {
+                functionDependency 
+                    = new FunctionDependencyOfModalModel(
+                        this, FunctionDependency.UniqueName);
+            } catch (NameDuplicationException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            }
         }
-        return _functionDependency;
+        return functionDependency;
     }
 
     /** Get the FSM controller.
@@ -324,11 +337,9 @@ public class ModalModel extends CTCompositeActor {
      *  method of the CompositeActor throws a IllegalActionException.
      */
     public void preinitialize() throws IllegalActionException {
-        // because function dependency is not persistent,
-        // it gets reset each time the preinitialize method is called.
-        _functionDependency = null;
         super.preinitialize();
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -438,7 +449,4 @@ public class ModalModel extends CTCompositeActor {
     // by the user. This prevents setting the HDFFSMActor flag before
     // the FSMActor is created.
     private boolean _directorChanged = false;
-
-    private FunctionDependencyOfModalModel _functionDependency;
-
 }

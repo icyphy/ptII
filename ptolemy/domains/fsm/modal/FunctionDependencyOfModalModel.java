@@ -36,6 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ import ptolemy.util.MessageHandler;
     FIXME: two design choices can be chosen here. 1. dynamic configuration.
     2. conservation approximation.
     
-    FIXME: FSMAtomicActor need a better design.
+    FIXME: FSMAtomicActor needs a better design.
 
     @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
     @author Haiyang Zheng
@@ -60,9 +61,12 @@ public class FunctionDependencyOfModalModel
 
     /** Construct a FunctionDependency in the given actor.
      *  @param compositeActor The associated actor.
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
      */
-    public FunctionDependencyOfModalModel(CompositeActor compositeActor) {
-        super(compositeActor);
+    public FunctionDependencyOfModalModel(CompositeActor compositeActor,
+        String name) throws IllegalActionException, NameDuplicationException {
+        super(compositeActor, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,7 +80,7 @@ public class FunctionDependencyOfModalModel
         LinkedList entities = new LinkedList();
         try {
             Actor[] actors =
-                ((ModalModel)getActor()).getController().
+                ((ModalModel)getContainer()).getController().
                 currentState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {

@@ -187,12 +187,26 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependency
      */
     public FunctionDependency getFunctionDependency() {
-        // If the _functionDependency object is not constructed,
+        // If the functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
-        if (_functionDependency == null) {
-            _functionDependency = new FunctionDependencyOfAtomicActor(this);
+        FunctionDependency functionDependency 
+            = (FunctionDependency) getAttribute(FunctionDependency.UniqueName);
+        if (functionDependency == null) {
+            try {
+                functionDependency
+                    = new FunctionDependencyOfAtomicActor(
+                        this, FunctionDependency.UniqueName);
+            } catch (NameDuplicationException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            } catch (IllegalActionException e) {
+                // This should not happen.
+                throw new InternalErrorException("Failed to construct a" +
+                        "function dependency object for " + getName());
+            }
         }
-        return _functionDependency;
+        return functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -414,10 +428,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
             _debug("Called preinitialize()");
         }
         _stopRequested = false;
-        // because function dependency is not persistent,
-        // it gets reset each time the preinitialize method is called.
-        _functionDependency = null;
-
         // NOTE:  Receivers are also getting created
         // in connectionChanged().  Perhaps this is here to ensure
         // that the receivers are reset?
@@ -454,7 +464,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
     public void removeDependency(IOPort input, IOPort output) {
-        _functionDependency.removeDependency(input, output);
+        FunctionDependencyOfAtomicActor functionDependency 
+            = (FunctionDependencyOfAtomicActor) getFunctionDependency();
+        functionDependency.removeDependency(input, output);
     }
 
     /** Override the base class to invalidate the schedule and
@@ -566,7 +578,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super._addPort(port);
     }
 
-    /*  Create receivers for each input port.
+    /**  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
     protected void _createReceivers() throws IllegalActionException {
@@ -592,7 +604,4 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
-
-    // Cached FunctionDependency object.
-    private FunctionDependencyOfAtomicActor _functionDependency;
 }

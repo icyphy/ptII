@@ -29,8 +29,9 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.util.FunctionDependency;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
@@ -53,8 +54,13 @@ public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
     /** Construct a FunctionDependencyOfFSMActor in the given actor.
      *  @param actor The associated actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public FunctionDependencyOfFSMActor(Actor actor) {
-        super(actor);
+    public FunctionDependencyOfFSMActor(FSMActor fsmActor, String name) 
+        throws IllegalActionException, NameDuplicationException {
+        super(fsmActor, name);
     }
 }

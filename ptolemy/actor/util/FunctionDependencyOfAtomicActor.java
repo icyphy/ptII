@@ -29,11 +29,12 @@
 
 package ptolemy.actor.util;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor
@@ -72,9 +73,14 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
     /** Construct a FunctionDependencyOfAtomicActor in the given actor.
      *  @param actor The actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public FunctionDependencyOfAtomicActor(Actor actor) {
-        super(actor);
+    public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name) 
+        throws IllegalActionException, NameDuplicationException {
+        super(atomicActor, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,6 +130,6 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      */
     protected void _constructDependencyGraph() {
         super._constructDependencyGraph();
-        ((AtomicActor)getActor()).pruneDependencies();
+        ((AtomicActor)getContainer()).pruneDependencies();
     }
 }
