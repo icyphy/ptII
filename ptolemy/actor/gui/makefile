@@ -182,6 +182,7 @@ OPTIONAL_FILES = \
 	'PtolemyApplet$$StopButtonListener.class' \
 	'PtolemyApplication$$1.class' \
 	'PtolemyEffigy$$Factory.class' \
+	'PtolemyEffigy$$FactoryWithoutNew.class' \
 	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
 	'PtolemyFrame$$1.class' \
 	'PtolemyQuery$$1.class' \
