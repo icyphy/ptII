@@ -31,12 +31,16 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.*;
+import ptolemy.actor.process.*;
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import java.util.Enumeration;
+import collections.LinkedList;
+import java.awt.event.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,6 +67,8 @@ public class CSPProcessor extends CSPActor {
          
          _code = code;
          
+         // _topFrame = FIXME
+         
     }
          
     ////////////////////////////////////////////////////////////////////////
@@ -70,9 +76,20 @@ public class CSPProcessor extends CSPActor {
 
     /**
      */
+    public void addListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(listener);
+    }
+    
+    /**
+     */
     public void accessMemory(boolean read) throws IllegalActionException {
         
         // State 1 
+        generateEvents( new ExecEvent( this, 1 ) );
+        // _topFrame.notifyEvent(this);
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 1: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -96,6 +113,7 @@ public class CSPProcessor extends CSPActor {
         _requestOut.broadcast(iToken); 
         
         // State 2 
+        generateEvents( new ExecEvent( this, 2 ) );
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 2: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -106,6 +124,7 @@ public class CSPProcessor extends CSPActor {
         BooleanToken bToken = (BooleanToken)_requestIn.get(0); 
         
         // State 3 
+        generateEvents( new ExecEvent( this, 3 ) );
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 3: " +getName());
         } else if( getName().equals("proc2") ) {
@@ -115,6 +134,7 @@ public class CSPProcessor extends CSPActor {
         }
         if( bToken.booleanValue() ) {
             // State 4
+            generateEvents( new ExecEvent( this, 4 ) );
             if( getName().equals("proc1") ) {
 	        System.out.println("STATE 4: " +getName());
             } else if( getName().equals("proc2") ) {
@@ -140,7 +160,7 @@ public class CSPProcessor extends CSPActor {
      */
     public boolean endYet() {
         double time = _dir.getCurrentTime();
-        if( time > 50.0 ) {
+        if( time > 500.0 ) {
             System.out.println(getName() + " is ending because of time.");
             return true;
         }
@@ -164,6 +184,20 @@ public class CSPProcessor extends CSPActor {
         
     /**
      */
+    public void generateEvents(ExecEvent event) {
+        if( _listeners == null ) {
+            return;
+        }
+        Enumeration enum = _listeners.elements();
+        while( enum.hasMoreElements() ) {
+            ExecEventListener newListener = 
+                    (ExecEventListener)enum.nextElement();
+            newListener.stateChanged(event);
+        }
+    }
+    
+    /**
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         CompositeActor ca = (CompositeActor)getContainer();
@@ -179,6 +213,15 @@ public class CSPProcessor extends CSPActor {
         return false;
     }
     
+    /**
+     */
+    public void removeListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            return;
+        }
+        _listeners.removeOneOf(listener);
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     ////                        private methods                         ////
 
@@ -190,4 +233,6 @@ public class CSPProcessor extends CSPActor {
     private int _code;
     
     private CSPDirector _dir;
+    
+    private LinkedList _listeners;
 }
