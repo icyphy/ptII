@@ -47,4 +47,7 @@
 
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
+   
+  <!-- JNI Library -->
+  <input source="jni/jni.xml"/>
 </entity>
