@@ -940,9 +940,13 @@ EOF
 done
 
 # Add the user classpath (we prepend to be able to override classes,
-# but Berkeley prefers to append, so append)
+# but Berkeley prefers to append, so that the user does not 
+# accidentally override the path to the Ptolemy II classes, so we append)
 if [ "$CLASSPATH" != "" ]; then
-    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
+	# $CLASSPATH may have double quotes in it.  Sadly, installing
+	# the Quicktime Java tool sets CLASSPATH to something like
+        # .:"C:\Program Files\Java\j2re1.4.2_06\lib\ext\QTJava.zip"
+    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\\"/g'`"
 else
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
