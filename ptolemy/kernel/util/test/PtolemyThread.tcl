@@ -75,11 +75,11 @@ test PtolemyThread-1.1 {Test the constructor} {
 	# so we substitute -xxx for the number.
 	set threadName [$thread getName]
 	regsub {Thread-[0-9]*} $threadName {Thread-xxx} newThreadName
-	lappend results [list [$thread getReadDepth] $newThreadName]
+	lappend results [list $newThreadName]
 
     }
     list $results [$threadGroup activeCount]
-} {{{0 Thread-xxx} {0 Thread-xxx} {0 pthread2} {0 pthread4} {0 Thread-xxx} {0 pthread6} {0 pthread7}} 3}
+} {{Thread-xxx Thread-xxx pthread2 pthread4 Thread-xxx pthread6 pthread7} 3}
 
 test PtolemyThread-2.1 {Test addDebugListener} {
     set pthread1 [java::new ptolemy.kernel.util.test.TestPtolemyThread]
