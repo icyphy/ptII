@@ -35,34 +35,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import net.sourceforge.jrefactory.ast.Node;
+import org.eclipse.jdt.core.dom.ASTNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// Type
 /**
  *  During AST analysis, a type is assigned to each expression or
  *  sub-expression (which can be as simple as reference to a local variable)
- *  in a Java program. This class is the class of the type objects to be
- *  assigned to those expressions.
+ *  in a Java program. This class represents the type objects to be assigned
+ *  to those expressions.
  *  <p>
  *  This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
  *  <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
- *  and <tt>short</tt>) as well as object types (including arrays). It also
- *  represents <tt>null</tt> and </tt>void</tt> (the "return value" of a
+ *  and <tt>short</tt>) as well as object types (including arrays). It
+ *  treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
  *  <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
  *  primitive.
  *  <p>
  *  Manipulation can also be done on those types by means of the given operations.
  *  <p>
- *  This class cannot be directed instantiated. Users should use {@link
- *  #createType(String)} to create a type object with a name. If the name refers
- *  to a class, it must be the full name (including package) of the class.
+ *  This class cannot be directed instantiated with "<tt>new</tt>". Users should
+ *  use {@link #createType(String)} to create a type object with a name. If the
+ *  name refers to a class, it must be a full name (including the package).
  *  <p>
  *  Objects of this class can also be associated with AST nodes during AST
  *  analysis. When the analyzer resolves the type of a node representing an
  *  expression or sub-expression in the Java program, it creates a type and
- *  associates it with that node with {@link #setType(Node, Type)}. This
- *  information can be extracted with {@link #getType(Node)}.
+ *  associates it with that node with {@link #setType(ASTNode, Type)}. This
+ *  information can be extracted with {@link #getType(ASTNode)}.
  * 
  *  @author Thomas Feng
  *  @version $Id$
@@ -258,7 +258,7 @@ public class Type {
         }
     }
     
-    /** Check the number of dimensions of an array type.
+    /** Count the number of dimensions of an array type.
      * 
      *  @return The number of dimensions (>1) if the type is an array;
      *   otherwise, return 1 (scalar).
@@ -339,10 +339,10 @@ public class Type {
      *  @param node The node with a type associated with it.
      *  @return The type. <tt>null</tt> if the node has no type
      *   associated with it.
-     *  @see #setType(Node, Type)
+     *  @see #setType(ASTNode, Type)
      */
-    public static Type getType(Node node) {
-        return (Type)_typeTable.get(node);
+    public static Type getType(ASTNode node) {
+        return (Type)node.getProperty("type");
     }
 
     /** Test if this type is an array type.
@@ -385,7 +385,7 @@ public class Type {
      *  @param nTo The node whose type is updated.
      *  @param nFrom The node whose type is fetched.
      */
-    public static void propagateType(Node nTo, Node nFrom) {
+    public static void propagateType(ASTNode nTo, ASTNode nFrom) {
         setType(nTo, getType(nFrom));
     }
     
@@ -426,9 +426,8 @@ public class Type {
      * 
      *  @param node The node associated with a type.
      */
-    public static void removeType(Node node) {
-        if (_typeTable.containsKey(node))
-            _typeTable.remove(node);
+    public static void removeType(ASTNode node) {
+        node.setProperty("type", null);
     }
     
     /** Get the type object associated with a node.
@@ -436,13 +435,10 @@ public class Type {
      *  @param node The node associated with a type.
      *  @param type The type associated with the node. If no type
      *   is associated with the node, <tt>null</tt> is returned.
-     *  @see #getType(Node)
+     *  @see #getType(ASTNode)
      */
-    public static void setType(Node node, Type type) {
-        if (type == null)
-            removeType(node);
-        else
-            _typeTable.put(node, type);
+    public static void setType(ASTNode node, Type type) {
+        node.setProperty("type", type);
     }
     
     /** Convert the name of an array type to the Java run-time
@@ -653,13 +649,6 @@ public class Type {
      */
     private Class _classObject;
     
-    /** The table of types for AST nodes.
-     * 
-     *  @see #getType(Node)
-     *  @see #setType(Node, Type)
-     */
-    private static Hashtable _typeTable = new Hashtable();
-
     /** The table of created {@link Type} objects, indexed by
      *  their full name. When a user creates a type object
      *  with the same name again, the first one created and
