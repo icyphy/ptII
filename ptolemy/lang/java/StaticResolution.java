@@ -204,11 +204,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             int categories) {
 
         //System.out.println("StaticResolution.resolveAName(): " +
-	//			 nameString(name));
+	//			 name.hashCode() + " " + nameString(name));
 
         // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
-            //System.out.println("decl already defined");
+            //System.out.println("StaticResolution.resolveAName(): decl already defined, returning name" + name.hashCode());
             return name;
         }
 
@@ -448,8 +448,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         try {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (Exception ex) {
+	    ex.printStackTrace();
             throw new RuntimeException("StaticResolution.loadFile(" + 
-                    file + ", " + pass + "): " + ex.toString());
+				       file + ", " + pass + ")");
         }
     }
 
@@ -667,7 +668,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             JavaDecl currentPackage,
             int categories) {
 
-	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage);
+	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage + " " + name.hashCode());
         ScopeIterator possibles = new ScopeIterator();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
@@ -739,6 +740,15 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) {
+	    System.out.println("StaticResolution_findPossibles(): looking " +
+			       "up " + name.getIdent() + 
+			       "\nwith reflection Current Class: " +
+			       ((currentClass == null) ?
+				"null " : currentClass.toString()) +
+			       " Current Package: " +
+			       ((currentPackage == null) ?
+				"null " : currentPackage.fullName()) +
+			       "\n categories :" + categories);
   	    // Use reflection
   	    ClassDeclNode classDeclNode =
   		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
@@ -749,7 +759,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     new TypeNameNode(classDeclNode.getName()),
                     classDeclNode.getModifiers(),
                     classDeclNode, currentPackage);
-  	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
+  	    //System.out.println("possibles.hasNext false, reflection: " + classDecl);
   	    classDecl.setScope(scope);
   	    scope.add(classDecl);
   	    possibles = ((Scope) scope).lookupFirst(name.getIdent(), categories);
