@@ -266,7 +266,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 if (width > i + 1) textArea.append("\n");
 
                 // Regrettably, the default in swing is that the top
-                // of the textarea is visible, not the most recent text.
+                // of the textArea is visible, not the most recent text.
                 // So we have to manually move the scrollbar.
                 // The (undocumented) way to do this is to set the
                 // caret position (despite the fact that the caret
