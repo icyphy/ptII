@@ -174,8 +174,7 @@ import ptolemy.kernel.util.Workspace;
    language).  Thus, a variable contained by a named object is not
    persistent, in that if the object is exported to a MoML file, the
    variable will not be represented.  If you prefer that the variable
-   be represented, then you should use the derived class Parameter instead
-   or call setPersistent(true).
+   be represented, then you should use the derived class Parameter instead.
    <p>
    A variable is also normally not settable by casual users from the user
    interface.  This is because, by default, getVisibility() returns EXPERT.
@@ -747,11 +746,6 @@ public class Variable extends Attribute
         _parseTree = null;
         _parseTreeValid = false;
 
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        if (changed) {
-            setOverrideDepth(0);
-        }
-
         _notifyValueListeners();
     }
 
@@ -846,9 +840,6 @@ public class Variable extends Attribute
         // Override any expression that may have been previously given.
         if (_currentExpression != null) {
             _currentExpression = null;
-
-            // Make sure the new value is exported in MoML.
-            setOverrideDepth(0);
 
             _parseTree = null;
             _parseTreeValid = false;
@@ -1446,6 +1437,20 @@ public class Variable extends Attribute
             }
         }
         return result;
+    }
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
     }
 
     /** Set the token value and type of the variable.
