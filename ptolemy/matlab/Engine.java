@@ -46,6 +46,7 @@ import ptolemy.data.IntMatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 
@@ -111,7 +112,8 @@ ArrayTokens).
 <td>StringToken, if the mxArray is 1xn, ArrayToken of StringTokens
 otherwise.
 </table>
-<p> {@link #put(long[] eng, String name, Token t)} converts a PtolemyII
+<p>
+{@link #put(long[] eng, String name, Token t)} converts a PtolemyII
 Token to a matlab engine mxArray. Recursion is used if t is a
 RecordToken or ArrayToken. The type of mxArray created is determined
 according to the following table.
@@ -152,7 +154,7 @@ Debug statements to stdout are enabled by calling {@link
 <p>{@link #evalString(long[] eng, String)} send a string to the matlab
 engine for evaluation.
 
-<p>{@link #open} and {@link #close} are used to open / close the
+{@link #open} and {@link #close} are used to open / close the
 connection to the matlab engine.<p>
 
 All callers share the same matlab engine and its workspace.
@@ -166,9 +168,12 @@ calls if needed.<p>
 @since Ptolemy II 2.0
 */
 public class Engine {
-    /** Load the "ptmatlab" native interface. */
+    /** Load the "ptmatlab" native interface. Use a classpath-relative
+     * pathname without the shared library suffix (which is selected
+     * and appended by {@link UtilityFunctions#loadLibrary}) for
+     * portability. */
     static {
-        System.loadLibrary("ptmatlab");
+        UtilityFunctions.loadLibrary("ptolemy/matlab/ptmatlab");
     }
 
     /** Output buffer (allocated for each opened instance) size. */
@@ -431,6 +436,8 @@ public class Engine {
     ptmatlabGetComplexMatrix(long mxArray, int n, int m);
     private native double[][]
     ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
+    private native int[][]
+	ptmatlabGetLogicalMatrix(long mxArray, int nRows, int nCols);
     private native String ptmatlabGetFieldNameByNumber(long mxArray, int k);
     private native long
     ptmatlabGetFieldByNumber(long mxArray, int k, int n, int m);
@@ -473,9 +480,8 @@ public class Engine {
             if (ptmatlabIsComplex(ma)) {
                 Complex[][] a = ptmatlabGetComplexMatrix(ma, nRows, nCols);
                 if (a == null) {
-                    throw new IllegalActionException("can't get complex "
-                            + "matrix from matlab "
-                            + "engine.");
+                    throw new IllegalActionException
+                        ("can't get complex matrix from matlab engine.");
                 }
                 if (scalarMatrices) {
                     retval = new ComplexToken(a[0][0]);
@@ -485,9 +491,8 @@ public class Engine {
             } else {
                 double[][] a = ptmatlabGetDoubleMatrix(ma, nRows, nCols);
                 if (a == null) {
-                    throw new IllegalActionException("can't get double "
-                            + "matrix from matlab "
-                            + "engine.");
+                    throw new IllegalActionException
+                        ("can't get double matrix from matlab engine.");
                 }
                 if (scalarMatrices) {
                     double tmp = a[0][0];
@@ -510,6 +515,17 @@ public class Engine {
                         retval = new DoubleMatrixToken(a);
                     }
                 }
+            }
+        } else if (maClassStr.equals("logical")) {
+            int[][] a = ptmatlabGetLogicalMatrix(ma, nRows, nCols);
+            if (a == null) {
+                throw new IllegalActionException
+                    ("can't get logical matrix from matlab engine.");
+            }
+            if (scalarMatrices) {
+                retval = new IntToken(a[0][0]);
+            } else {
+                retval = new IntMatrixToken(a);
             }
         } else if (maClassStr.equals("struct")) {
             int nfields = ptmatlabGetNumberOfFields(ma);

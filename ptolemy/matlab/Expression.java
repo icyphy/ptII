@@ -163,21 +163,6 @@ public class Expression extends TypedAtomicActor {
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
 
-        try {
-            matlabEngine = new Engine();
-        } catch (LinkageError err) {
-            throw new IllegalActionException(this, err,
-                 "There was a problem invoking the Ptolemy II Matlab interface"
-                 + ".\nThe interface only works under Windows, and requires\n"
-                 + "that Matlab be installed on the local machine, and that\n"
-                 + "ptmatlab.dll be in the user's path.\n"
-                 + "ptmatlab.dll can be found in $PTII/bin\n"
-                 + "libeng.dll must also bin the the user's path.\n"
-                 + "libeng.dll is part of Matlab, and is found in\n"
-                 + "the bin/win32 directory under the Matlab directory."
-                                             );
-        }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -205,23 +190,6 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-
-    public Object clone(Workspace workspace)
-             throws CloneNotSupportedException {
-        Expression newObject = (Expression)super.clone(workspace);
-        newObject._iteration =
-            (Variable)newObject.getAttribute("iteration");
-        newObject.engine = null;
-        return newObject;
-    }
-
     /** Must specify port types using moml (TypeAttribute) - the default
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
@@ -236,6 +204,17 @@ public class Expression extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        try {
+            matlabEngine = new Engine();
+        } catch (LinkageError err) {
+            throw new IllegalActionException(this, err,
+                 "There was a problem invoking the Ptolemy II Matlab interface"
+                 + ".\nThe interface has been tested under Windows and Linux,\n"
+                 + "requires that Matlab be installed on the local machine."
+                 + "Refer to $PTII/ptolemy/matlab/makefile for more"
+                 + "information.");
+        }
+
         // First set default debugging level, then check for more
         matlabEngine.setDebugging((byte)0);
         Parameter debugging = ((Parameter)getAttribute("_debugging"));

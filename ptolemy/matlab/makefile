@@ -78,10 +78,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-PTLIB = $(ROOT)/bin/ptmatlab.dll
+PTMATLAB_LIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
 all: jclass
 
-jclass: $(PTLIB)
+jclass: $(PTMATLAB_LIB)
 
 install: jclass jars $(PTPACKAGE)Windows.jar
 	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in $PTII/lib"
@@ -95,22 +96,15 @@ include $(ROOT)/mk/ptcommon.mk
 
 #--- Specialized part of the makefile: ---
 
-ptmatlab.h:	Engine.class
-	CLASSPATH="$(CLASSPATH)" javah -jni -o $@ ptolemy.matlab.Engine
-
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
-# $(PTDLLTOOL) is set to dlltool by configure in $PTII/mk/ptII.mk
 # -fno-exceptions  - see note at bottom
-$(PTLIB): ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
-	$(PTCC) \
-		"-I$(MATLAB_DIR)/extern/include" \
-		"-I$(PTJAVA_DIR)/include" \
-		"-I$(PTJAVA_DIR)/include/win32" \
-		-fno-exceptions \
-		 -c -o ptmatlab.obj ptmatlab.cc
-	$(PTDLLTOOL) --add-stdcall-alias --dllname ptmatlab.dll \
-		--output-exp ptmatlab_exp.obj ptmatlab.obj
-	$(PTCC) -shared -o $@ ptmatlab.obj ptmatlab_exp.obj -L. -leng -lmx
+
+$(PTMATLAB_LIB): ptmatlab.cc Engine.class
+	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
+	$(PTCC) -I$(MATLAB_DIR)/extern/include -I$(PTJAVA_DIR)/include \
+		-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) -fno-exceptions -c -o ptmatlab.o '$<'
+	$(PTCC) -shared -o $@ ptmatlab.o -L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_CFLAG) -lc -leng -lmx
+
 
 # Jar file for Web Start that contains the dll
 $(PTPACKAGE)Windows.jar: $(PTLIB)
@@ -122,16 +116,9 @@ $(PTPACKAGE)Windows.jar: $(PTLIB)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-# Create library files used to link against matlab dlls. Rebuild if
-# ptinvoke changes
-libeng.a:	$(MATLAB_DIR)/extern/include/libeng.def ../../bin/ptinvoke
-	$(PTDLLTOOL) --input-def $< --output-lib $@
-
-libmx.a:	$(MATLAB_DIR)/extern/include/libmx.def ../../bin/ptinvoke
-	$(PTDLLTOOL) --input-def $< --output-lib $@
 
 ptmatlab_clean:
-	rm -f ptmatlab.h *.obj $(PTLIB) libeng.a libmx.a
+	rm -f ptmatlab.h *.o $(PTMATLAB_LIB)
 
 # Note: -fno-exceptions was added to remove the exception handling frames,
 # which for gcc 3.2-3 (prerelease) was introducing an unresolved
