@@ -136,7 +136,13 @@ public class MoMLApplication {
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression 
         // language) are not localized.
-        java.util.Locale.setDefault(java.util.Locale.US);
+	// FIXME: This is a workaround for the locale problem, not a fix.
+	try {
+	    java.util.Locale.setDefault(java.util.Locale.US);
+	} catch (java.security.AccessControlException accessControl) {
+	    // FIXME: If the application is run under Web Start, then this
+	    // exception will be thrown.
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,9 +192,13 @@ public class MoMLApplication {
         } catch (MalformedURLException ex) {
             try {
                 File file = new File(spec);
-                if(!file.exists()) {
-                    throw new MalformedURLException();
-                }
+		try {
+		    if(!file.exists()) {
+			throw new MalformedURLException();
+		    }
+		} catch (java.security.AccessControlException accessControl) {
+		    throw new MalformedURLException();		    
+		}
                 return file.getCanonicalFile().toURL();
             } catch (MalformedURLException ex2) {
                 try {

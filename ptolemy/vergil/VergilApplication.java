@@ -80,8 +80,16 @@ public class VergilApplication extends MoMLApplication {
         // on the local computer and always use dot, otherwise Ptolemy
         // will crash using its own init files.
 
-        // This is a workaround, not a fix:
-        java.util.Locale.setDefault(java.util.Locale.US);
+        // Even if the user is set up for foreign locale, use the US locale.
+        // This is because certain parts of Ptolemy (like the expression 
+        // language) are not localized.
+	try {
+	    // FIXME: This is a workaround for the locale problem, not a fix.
+	    java.util.Locale.setDefault(java.util.Locale.US);
+	} catch (java.security.AccessControlException accessControl) {
+	    // FIXME: If the application is run under Web Start, then this
+	    // exception will be thrown.
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
