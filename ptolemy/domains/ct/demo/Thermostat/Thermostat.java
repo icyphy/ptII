@@ -109,7 +109,7 @@ public void init() {
         responsePlot.plot.setImpulses(false);
         //responsePlot.plot.addLegend(1, "Trigger");
         responsePlot.plot.setXRange(0.0, 5.0);
-        responsePlot.plot.setYRange(-0.1, 0.3);
+        responsePlot.plot.setYRange(0.0, 0.2);
         responsePlot.plot.setSize(500, 300);
 
         CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
