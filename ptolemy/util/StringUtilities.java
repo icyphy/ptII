@@ -261,6 +261,10 @@ public class StringUtilities {
 	    System.setProperty("ptolemy.ptII.dir", home);
 	    return home;
         }
+	if (property == null) {
+	    return "";
+	}
+
 	return property;
     }
 
