@@ -123,7 +123,7 @@ public class Quantizer {
         int number = precision.getFractionBitLength();
 
         // This division divides two number in a precision of 40
-        // decimal behind the point. This is equvalent with a
+        // decimal behind the point. This is equivalent with a
         // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
         BigDecimal resolution = _one.divide( _getTwoRaisedTo(number+1),
                 40, BigDecimal.ROUND_HALF_EVEN);
@@ -279,7 +279,7 @@ public class Quantizer {
         if ( x.signum() >= 0 ) {
             // calculate epsilon
             // This division divides two number in a precision of 40
-            // decimal behind the point. This is equvalent with a
+            // decimal behind the point. This is equivalent with a
             // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
             epsilon = _one.divide(_getTwoRaisedTo(number+5),
                     40, BigDecimal.ROUND_HALF_EVEN);
@@ -287,7 +287,7 @@ public class Quantizer {
         } else {
             // calculate epsilon
             // This division divides two number in a precision of 40
-            // decimal behind the point. This is equvalent with a
+            // decimal behind the point. This is equivalent with a
             // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
             tmp = _one.divide(_two, 40, BigDecimal.ROUND_HALF_EVEN);
             epsilon = tmp.subtract( _one.divide(_getTwoRaisedTo(number+11),

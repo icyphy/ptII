@@ -297,7 +297,7 @@ public class Precision {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The total numer of bits. */
+    /** The total number of bits. */
     private int _length   = 0;
 
     /** The number of bits in the integer part. */
