@@ -168,7 +168,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     thisLocal = body.getThisLocal();
                 } catch (Exception ex) {
                     //FIXME: what if no thisLocal?
-                    continue;
+                    throw new RuntimeException("method " + method + " does not have a thisLocal!");
                 }
                 /*Jimple.v().newLocal("this", 
                         RefType.v(entityClass));
@@ -368,52 +368,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                 }
             }            
         }
-    }
-
-    /** Attempt to determine the constant value of the given local, which is assumed to have a token 
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the token.  If the value can be determined, then return it, otherwise
-     *  return null.
-     */ 
-    public static Token getTokenValue(Entity entity, Local local, 
-            Unit location, LocalDefs localDefs) {
-        SootClass parameterClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-
-        List definitionList = localDefs.getDefsOfAt(local, location);
-        if(definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
-            Value value = (Value)stmt.getRightOp();
-            if(value instanceof CastExpr) {
-                // If the local was defined by a cast, then recurse on the value we are
-                // casting from.  Note that we assume the type is acceptable.
-                return getTokenValue(entity, (Local)((CastExpr)value).getOp(), stmt, localDefs);
-            } else if(value instanceof InstanceInvokeExpr) {
-                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                if(r.getMethod().equals(getTokenMethod)) {
-                    // If the token was defined by getting the token of a variable, then try to symbolically
-                    // evaluate the variable and then get it's value.
-                    // FIXME: can this be generalized?
-                    Variable variable = (Variable) getAttributeValue(entity, (Local)r.getBase(), stmt, localDefs);
-                    try {
-                        return variable.getToken();
-                    } catch (Exception ex) {
-                        // System.out.println("getToken on parameter =" + variable);
-                    }
-                }
-            } else {
-                // System.out.println("unknown value = " + value);
-            }
-        } else {
-            System.out.println("more than one definition of = " + local);
-            for(Iterator i = definitionList.iterator();
-                i.hasNext();) {
-                System.out.println(i.next().toString());
-            }
-        }
-        return null;
     }
 
     /** Attempt to determine the constant value of the given local, which is assumed to have a variable

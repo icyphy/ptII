@@ -276,6 +276,28 @@ public class PtolemyUtilities {
     }
 
     /** Inline the given invocation expression, given knowledge that the
+     *  method was invoked on the given named object.  In general, 
+     *  methods that return information that can be determined from the
+     *  given object return that value, methods that set information 
+     *  are removed and methods that are non-sensical in generated
+     *  code throw an exception.
+     *  @param body The body in which the invoke occured.
+     *  @param unit The unit in which the invoke occured.
+     *  @param box The value box containing the invoke expression.
+     *  @param typeable A reference to an object that has the same
+     *  resolve type as the typeable object that the invoke would have
+     *  occured on, has the code actually been executed.
+     */
+    public static void inlineNamedObjMethods(JimpleBody body,
+            Unit unit, ValueBox box, InstanceInvokeExpr expr, 
+            NamedObj typeable) {
+        String name = expr.getMethod().getName();
+        // FIXME name matching here is rather imprecise.
+        if(name.equals("getType")) {
+        }
+    }
+
+    /** Inline the given invocation expression, given knowledge that the
      *  method was invoked on the given Typeable object, and that the 
      *  typeable object has a final resolved type.  The getType method
      *  will be replace with code that returns the resolved type as a 

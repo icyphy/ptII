@@ -194,76 +194,12 @@ public class ModelTransformer extends SceneTransformer {
         Local thisLocal = body.getThisLocal();
 
         // Now instantiate all the stuff inside the model.
-
-        _externalPorts(body, thisLocal, modelClass);
-        _entities(body, thisLocal, modelClass, options);
-        _attributes(body, _model, modelClass);
-
-        // handle the communication
-        if(Options.getBoolean(options, "deep")) {
-            SootMethod clinitMethod;
-            Body clinitBody;
-            if(modelClass.declaresMethodByName("<clinit>")) {
-                clinitMethod = modelClass.getMethodByName("<clinit>");
-                clinitBody = clinitMethod.retrieveActiveBody();
-            } else {
-                clinitMethod = new SootMethod("<clinit>", new LinkedList(),
-                        VoidType.v(), Modifier.PUBLIC);
-                modelClass.addMethod(clinitMethod);
-                clinitBody = Jimple.v().newBody(clinitMethod);
-                clinitMethod.setActiveBody(clinitBody);
-                clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
-            }
-            Chain clinitUnits = clinitBody.getUnits();
-            
-            // Create a new local variable.
-            BaseType tokenType = RefType.v("ptolemy.data.Token");
-            Type arrayType = ArrayType.v(tokenType, 1);
-            Local arrayLocal = 
-                Jimple.v().newLocal("bufferArray", arrayType);
-            clinitBody.getLocals().add(arrayLocal);
-
-            // If we're doing deep (SDF) codegen, then create a
-            // queue for every channel of every relation.
-            for(Iterator relations = _model.relationList().iterator();
-                relations.hasNext();) {
-                IORelation relation = (IORelation)relations.next();
-                Parameter bufferSizeParameter = 
-                    (Parameter)relation.getAttribute("bufferSize");
-                int bufferSize;
-                try {
-                    bufferSize = 
-                        ((IntToken)bufferSizeParameter.getToken()).intValue();
-                } catch (Exception ex) {
-                    System.out.println("No BufferSize parameter for " + 
-                            relation);
-                    continue;
-                }
-
-                for(int i=0; i < relation.getWidth(); i++) {
-                    SootField field = new SootField("_" + 
-                            relation.getName() + "_" + i, arrayType, Modifier.PUBLIC | Modifier.STATIC);
-                    modelClass.addField(field);
-
-                    // Create the new buffer
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
-                            Jimple.v().newStaticFieldRef(field),
-                            arrayLocal));
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(arrayLocal, 
-                            Jimple.v().newNewArrayExpr(tokenType, 
-                                    IntConstant.v(bufferSize))));
-                    
-                }
-            }
-        } else {
-            _relations(body, thisLocal);
-            _links(body);
-            _linksOnPortsContainedByContainedEntities(body);
-        }
+        _composite(body, thisLocal, _model, modelClass, options);
 
         units.add(Jimple.v().newReturnVoidStmt());
 
         Scene.v().setActiveHierarchy(new Hierarchy());
+ 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -306,6 +242,78 @@ public class ModelTransformer extends SceneTransformer {
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());
     }
+
+    // Write the given composite.
+    private void _composite(JimpleBody body, Local thisLocal, 
+            CompositeEntity composite, EntitySootClass modelClass,
+            Map options) {
+
+        _externalPorts(body, thisLocal, composite, modelClass);
+        _entities(body, thisLocal, composite, modelClass, options);
+        _attributes(body, composite, modelClass);
+
+        // handle the communication
+        if(Options.getBoolean(options, "deep")) {
+            SootMethod clinitMethod;
+            Body clinitBody;
+            if(modelClass.declaresMethodByName("<clinit>")) {
+                clinitMethod = modelClass.getMethodByName("<clinit>");
+                clinitBody = clinitMethod.retrieveActiveBody();
+            } else {
+                clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+                        VoidType.v(), Modifier.PUBLIC);
+                modelClass.addMethod(clinitMethod);
+                clinitBody = Jimple.v().newBody(clinitMethod);
+                clinitMethod.setActiveBody(clinitBody);
+                clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
+            }
+            Chain clinitUnits = clinitBody.getUnits();
+            
+            // Create a new local variable.
+            BaseType tokenType = RefType.v("ptolemy.data.Token");
+            Type arrayType = ArrayType.v(tokenType, 1);
+            Local arrayLocal = 
+                Jimple.v().newLocal("bufferArray", arrayType);
+            clinitBody.getLocals().add(arrayLocal);
+
+            // If we're doing deep (SDF) codegen, then create a
+            // queue for every channel of every relation.
+            for(Iterator relations = composite.relationList().iterator();
+                relations.hasNext();) {
+                IORelation relation = (IORelation)relations.next();
+                Parameter bufferSizeParameter = 
+                    (Parameter)relation.getAttribute("bufferSize");
+                int bufferSize;
+                try {
+                    bufferSize = 
+                        ((IntToken)bufferSizeParameter.getToken()).intValue();
+                } catch (Exception ex) {
+                    System.out.println("No BufferSize parameter for " + 
+                            relation);
+                    continue;
+                }
+
+                for(int i=0; i < relation.getWidth(); i++) {
+                    SootField field = new SootField("_" + 
+                            relation.getName() + "_" + i, arrayType, Modifier.PUBLIC | Modifier.STATIC);
+                    modelClass.addField(field);
+
+                    // Create the new buffer
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
+                            Jimple.v().newStaticFieldRef(field),
+                            arrayLocal));
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(arrayLocal, 
+                            Jimple.v().newNewArrayExpr(tokenType, 
+                                    IntConstant.v(bufferSize))));
+                    
+                }
+            }
+        } else {
+            _relations(body, thisLocal, composite);
+            _links(body, composite);
+            _linksOnPortsContainedByContainedEntities(body, composite);
+        }
+   }
 
     // Create a new instance field with the given name
     // and type and add it to the
@@ -424,10 +432,10 @@ public class ModelTransformer extends SceneTransformer {
 
     // Create and set entities.
     private void _entities(JimpleBody body, Local thisLocal, 
-			   EntitySootClass modelClass,
-			   Map options) {
+            CompositeEntity composite, EntitySootClass modelClass,
+            Map options) {
 	_entityLocalMap = new HashMap();
-	for(Iterator entities = _model.entityList().iterator();
+	for(Iterator entities = composite.entityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
@@ -448,6 +456,10 @@ public class ModelTransformer extends SceneTransformer {
 						  thisLocal, entity.getName());
 	    _entityLocalMap.put(entity, local);
 
+            if(entity instanceof CompositeEntity) {
+                _composite(body, local, (CompositeEntity)entity, modelClass, options);
+            }
+
 	    if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then we
 		// include a field for each actor.
@@ -457,7 +469,7 @@ public class ModelTransformer extends SceneTransformer {
 		// If we are doing shallow code generation, then
 		// include code to initialize the parameters of this
 		// entity.
-		_initializeParameters(body, _model,
+		_initializeParameters(body, composite,
 				      entity, thisLocal);
 	    }
 	}
@@ -465,10 +477,10 @@ public class ModelTransformer extends SceneTransformer {
 
     // Create and set external ports.
     private void _externalPorts(JimpleBody body, Local thisLocal,
-            EntitySootClass modelClass) {
+            CompositeEntity composite, EntitySootClass modelClass) {
 	_portLocalMap = new HashMap();
 
-	for(Iterator ports = _model.portList().iterator();
+	for(Iterator ports = composite.portList().iterator();
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
@@ -526,12 +538,12 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set links.
-    private void _links(JimpleBody body) {
+    private void _links(JimpleBody body, CompositeEntity composite) {
 	// To get the ordering right,
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
 	Chain units = body.getUnits();
-	for(Iterator ports = _model.portList().iterator();
+	for(Iterator ports = composite.portList().iterator();
 	    ports.hasNext();) {
 	    ComponentPort port = (ComponentPort)ports.next();
 	    Iterator relations = port.insideRelationList().iterator();
@@ -561,7 +573,7 @@ public class ModelTransformer extends SceneTransformer {
 
     // Produce the links on ports contained by contained entities.
     private void _linksOnPortsContainedByContainedEntities(
-            JimpleBody body) {
+            JimpleBody body, CompositeEntity composite) {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
         Local tempPortLocal = Jimple.v().newLocal("tempPort",
@@ -571,7 +583,7 @@ public class ModelTransformer extends SceneTransformer {
 
 	Chain units = body.getUnits();
 
-        for(Iterator entities = _model.entityList().iterator();
+        for(Iterator entities = composite.entityList().iterator();
             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             Iterator ports = entity.portList().iterator();
@@ -653,9 +665,9 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set relations.
-    private void _relations(JimpleBody body, Local thisLocal) {
+    private void _relations(JimpleBody body, Local thisLocal, CompositeEntity composite) {
 	_relationLocalMap = new HashMap();
-	for(Iterator relations = _model.relationList().iterator();
+	for(Iterator relations = composite.relationList().iterator();
 	    relations.hasNext();) {
 	    Relation relation = (Relation)relations.next();
 	    String className = relation.getClass().getName();
