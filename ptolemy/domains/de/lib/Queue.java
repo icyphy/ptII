@@ -158,5 +158,6 @@ public class Queue extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The FIFOQueue. */
     protected FIFOQueue _queue;
 }

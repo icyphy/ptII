@@ -142,5 +142,7 @@ public class AttributeExpressionAttribute extends AbstractTextAttribute {
 
     /** Most recent value of the rounding parameter. */
     protected int _displayWidth = 0;
+
+    /** The name of the attribute. Defaults to the empty string. */
     protected String _attributeName = "";
 }

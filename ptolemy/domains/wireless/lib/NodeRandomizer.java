@@ -260,8 +260,10 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  The moml should set the _location attribute, which is the
      *  location as used in Vergil, the visual editor.  Derived
      *  classes may override this to store the location differently.
+     *  @param container The container.
      *  @param location The specified location.
      *  @param node The node for which to set the location.
+     *  @return MoML that sets the location of the specified node.
      *  @exception IllegalActionException If the location attribute
      *  cannot be set.
      */

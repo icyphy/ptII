@@ -128,6 +128,8 @@ public class VariableFIR extends FIR {
     /** Set a flag that causes recalculation of various local variables
      *  that are used in execution on the next invocation of fire().
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the attribute contains
+     *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

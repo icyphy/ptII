@@ -98,7 +98,10 @@ public class EventButton extends Source implements Placeable {
         }
     }
 
-    /** Set the background */
+    /** Get the background color.
+     *  @return The Color of the background.
+     *  @see #setBackground(Color)
+     */
     public Color getBackground() {
         return _button.getBackground();
     }
@@ -152,7 +155,10 @@ public class EventButton extends Source implements Placeable {
         return super.postfire();
     }
 
-    /** Set the background */
+    /** Set the background color.
+     *  @param background The background color.
+     *  @see #getBackground()
+     */
     public void setBackground(Color background) {
         _button.setBackground(background);
     }

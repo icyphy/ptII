@@ -190,6 +190,10 @@ public class DTDirector extends SDFDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public DTDirector()
             throws IllegalActionException, NameDuplicationException {
@@ -202,6 +206,10 @@ public class DTDirector extends SDFDirector {
      *  Increment the version number of the workspace.
      *
      *  @param workspace The workspace of this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public DTDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -689,7 +697,8 @@ public class DTDirector extends SDFDirector {
     /** Get the number of times an actor repeats in the schedule of an
      *  SDF graph.  If the actor does not exist, throw an exception.
      *
-     *  @param actor The actor whose firing count is needed
+     *  @param actor The actor whose firing count is needed.
+     *  @return The number of times an actor repeats in the schedule.
      *  @exception IllegalActionException If actor does not exist.
      */
     protected int _getRepetitions(Actor actor) throws IllegalActionException {

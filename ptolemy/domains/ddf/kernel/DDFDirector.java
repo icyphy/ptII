@@ -116,6 +116,10 @@ public class DDFDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public DDFDirector()
             throws IllegalActionException, NameDuplicationException {
@@ -127,6 +131,10 @@ public class DDFDirector extends Director {
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public DDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

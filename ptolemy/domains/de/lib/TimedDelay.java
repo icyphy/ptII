@@ -241,9 +241,12 @@ public class TimedDelay extends DETransformer {
     ////                       protected method                    ////
 
     /** Initialize the delay parameter.
+     *  @exception IllegalActionException If delay parameter cannot be set.
+     *  @exception NameDuplicationException If there already is a parameter
+     *  named "delay".   
      */
     protected void _init() 
-        throws NameDuplicationException, IllegalActionException  {
+        throws IllegalActionException, NameDuplicationException  {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         _delay = ((DoubleToken)delay.getToken()).doubleValue();

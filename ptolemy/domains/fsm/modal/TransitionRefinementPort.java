@@ -422,9 +422,9 @@ public class TransitionRefinementPort extends RefinementPort {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Flag indicating if this port has a sibling,
-     *  should be set for all output ports and their
-     *  associated input port siblings
+    /** Flag indicating if this port has a sibling.
+     *  This flag should be set to true for all output ports and their
+     *  associated input port siblings.
      */
     protected boolean _hasSibling = false;
 
