@@ -59,6 +59,14 @@ a GNU autoconf script that looks for your Java compiler, reads in
 cd $PTII
 ./configure
 </pre>
+<CODE>$PTII/configure</CODE> creates <CODE>$PTII/config.status</CODE>
+and <CODE>$PTII/config.cache</CODE>.  If you would like to reconfigure
+Ptolemy II to use a different Java compiler, set your path so
+that the appropriate compiler is first in your path, then
+remove <CODE>config.status</CODE> and rerun configure.  You
+may also use the <CODE>--with-java=</CODE> configure command line
+argument.  For more information, run <CODE>configure -help</CODE>.
+
 
  <p>To build:
 <pre>
@@ -127,6 +135,7 @@ the Environment tab of the System control panel
  <p>Currently, Ptolemy II does not support building via Microsoft
 Visual Studio <CODE>nmake</CODE> under Windows.  Also, we have not
 tried building Ptolemy II under Windows '95 or Windows '98.
+
 
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
