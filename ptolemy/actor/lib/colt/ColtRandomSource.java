@@ -183,11 +183,13 @@ public abstract class ColtRandomSource extends Source {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == generatorClass) {
             String generatorClassValue
                     = ((StringToken)generatorClass.getToken()).stringValue();
-        	if (generatorClassValue != null && !generatorClassValue.equals(_generatorClassName)) {
+        	if (generatorClassValue != null
+                        && !generatorClassValue.equals(_generatorClassName)) {
         		_createGenerator();
             }
         } else if (attribute == seed) {
@@ -283,7 +285,11 @@ public abstract class ColtRandomSource extends Source {
      */
     protected abstract void _createdNewRandomNumberGenerator();
     
-    /** Generate a new random number. */
+    /** Generate a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes may throw it if there is a problem processing
+     *  a parameter or if there is some other problem.
+     */
     protected abstract void _generateRandomNumber() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
