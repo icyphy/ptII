@@ -136,38 +136,59 @@ public class SuperBlock implements GraphNode {
 	} //if else (last instanceof IfStmt)
     }
 
-    public Object createDataFlow(DirectedGraph graph, Object value){
-	Collection c=_graph.nodes(value);
+    public Node createDataFlow(DirectedGraph graph, Object value){
 
+	System.out.println(">>>>>>>>>createDataFlow on " + this +" for " + value);
+	System.out.println(">>>>>>>>>>>>> "+value.getClass());
 	Collection pred=_labels.keySet();
 	GraphNode predecessor;
-
+	Node returnNode;
+	
 	if (pred.size() == 0){
 	    predecessor= null;
 	} else{
 	    predecessor= (GraphNode)pred.toArray()[0];
 	}
+
+	if (predecessor == this) predecessor = null; //hack to fix a hack
 	
-	if ( c.size() == 0 ){
+	if (!_graph.containsNodeWeight(value)){
 	    //This block doesn't define 'value', so pass the request to its
 	    //predecessor
 	    if (predecessor == null) return null; //No predecessor
-	    
+	    return predecessor.createDataFlow(graph, value);
+	}
+
+	Collection c=_graph.nodes(value);
+	Set equalSet=new HashSet();
+	
+	for (Iterator i=c.iterator(); i.hasNext();){
+	    Object o = i.next();
+	    //if (o == value){
+		equalSet.add(o);
+		//}
+	}
+
+	if (equalSet.size() == 0){
+	    //This block doesn't define 'value', so pass the request to its
+	    //predecessor
+	    if (predecessor == null) return null; //No predecessor
 	    return predecessor.createDataFlow(graph, value);
 	}
 	
-	Node nodes[]=new Node[c.size()];
-	System.arraycopy(c.toArray(), 0, nodes, 0, c.size());
+	
+	Node nodes[]=new Node[equalSet.size()];
+	System.arraycopy(equalSet.toArray(), 0, nodes, 0, equalSet.size());
 
 	//When is the last time this block defines (i.e. write to) this value?
 	Node lastDefinition=nodes[0];
 	
 	for (int i=1; i < nodes.length; i++ ){
-	    if (graph.reachableNodes(lastDefinition).contains(nodes[i])){
+	    if (_graph.reachableNodes(lastDefinition).contains(nodes[i])){
 		//If nodes[i] is reachable from lastDefintion, then nodes[i]
 		//is defined later and needs to be the new lastDefinition
 		lastDefinition=nodes[i];
-	    } else if (!graph.reachableNodes(nodes[i]).contains(lastDefinition)){ //DEBUG
+	    } else if (!_graph.reachableNodes(nodes[i]).contains(lastDefinition)){ //DEBUG
 		//Shouldn't happen.  This means that two references to 'value' are
 		//not mutually reachable.  So we can't determine which was assigned
 		//last in the code.  Soot optimizations should keep this from
@@ -176,24 +197,28 @@ public class SuperBlock implements GraphNode {
 	    }
 	}
 
-	if (graph.sourceNodes().contains(lastDefinition)){
+	if (_graph.sourceNodes().contains(lastDefinition)){
 	    //if lastDefinition is a source, then it really isn't defined here
 	    if (predecessor == null) {
-		graph.addNode(lastDefinition);
+ 		if (!graph.containsNode(lastDefinition)){
+		    graph.addNode(lastDefinition);
+ 		} 
 		return lastDefinition;
 	    }
 	    
-	    Object gn=predecessor.createDataFlow(graph, value);
+	    Node gn=predecessor.createDataFlow(graph, value);
 	    if (gn == null){
 		//Nobody else wrote to it.. must be some kind of invariant or constant
-		graph.addNode(lastDefinition);
+ 		if (!graph.containsNode(lastDefinition)){
+		    graph.addNode(lastDefinition);
+ 		}
 		return lastDefinition;
 	    } else {
 		return gn;
 	    }
 	}
 
-	Collection sources=graph.sourceNodes();
+	Collection sources=_graph.sourceNodes();
 
 	Vector currentBlockDefs = new Vector();
 	Vector predecessorDefs  = new Vector();
@@ -202,12 +227,13 @@ public class SuperBlock implements GraphNode {
 
 	for (int i=0; i< currentBlockDefs.size(); i++){
 	    Node currNode = (Node)currentBlockDefs.elementAt(i);
-
+	    System.out.println("currentBlockDefs: "+currNode);
 	    if (!graph.containsNode(currNode))
 		graph.addNode(currNode);
 
-	    for (Iterator j=graph.predecessors(currNode).iterator(); j.hasNext();){
+	    for (Iterator j=_graph.predecessors(currNode).iterator(); j.hasNext();){
 		Node predNode = (Node)j.next();
+		System.out.println("  "+predNode);
 		if (sources.contains(predNode)){
 		    //If its a source, look for it later in the predecessor node
 		    predecessorDefs.add(predNode);
@@ -220,19 +246,23 @@ public class SuperBlock implements GraphNode {
 	    }
 	}
 
+	if (predecessor != null){
 	for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
 	    Node n = (Node)i.next();
-	    Object result = predecessor.createDataFlow(graph, n.weight());
+	    System.out.println("going to "+predecessor+" to look for "+n);
+	    Node result = predecessor.createDataFlow(graph, n.weight());
 	    if (result != null)
 		graph.addEdge(result, n);
+	}
 	}
 	
 	return lastDefinition;
     }
     
     public String toString(){
-	return _block.toString();
+	return _block.toShortString();
     }
+
 
     /** Combine Labels that have same parent label. **/
     protected void _shrinkLabels(DirectedGraph graph){

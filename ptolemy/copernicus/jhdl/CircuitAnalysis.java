@@ -286,8 +286,40 @@ public class CircuitAnalysis {
     protected DirectedGraph _analyzeMethod(SootMethod method) 
 	throws IllegalActionException {
         Body body = method.retrieveActiveBody();
-  	MergedControlFlowGraph mcfg = new MergedControlFlowGraph(body);
+  	DirectedGraph mcfg = new MergedControlFlowGraph(body);
+	mcfg = _extractDataFlow(mcfg);
+	
 	return mcfg;
+    }
+
+    protected DirectedGraph _extractDataFlow(DirectedGraph graph){
+
+	//Make the requiredNodeMap from each graph's requiredNodeSet
+	Map requiredNodeMap = new HashMap();
+	for (Iterator i=graph.nodes().iterator(); i.hasNext();){
+	    GraphNode gn = (GraphNode)((Node)i.next()).weight();
+	    if (gn instanceof SuperBlock){
+		SuperBlock sb = (SuperBlock)gn;
+		BlockDataFlowGraph bdfg = (BlockDataFlowGraph)sb.getGraph();
+		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+		    requiredNodeMap.put(j.next(), sb);
+		}
+	    }
+	}
+
+	DirectedGraph dg=new DirectedGraph();
+	
+	Set keys=requiredNodeMap.keySet();
+	for (Iterator i=keys.iterator(); i.hasNext(); ){
+	    Object requiredValue=i.next();
+	    GraphNode gn=(GraphNode)requiredNodeMap.get(requiredValue);
+	    System.out.println("extracting: "+requiredValue+" block: "+gn);
+	    //DirectedGraph dg=new DirectedGraph();
+	    gn.createDataFlow(dg, requiredValue);
+	}
+
+	return dg;
+	
     }
 
     /**
