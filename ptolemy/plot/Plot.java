@@ -184,6 +184,18 @@ import javax.swing.RepaintManager;
  */
 public class Plot extends PlotBox {
 
+    /** Construct a plot.
+     */
+    public Plot() {
+        // NOTE: Swing double buffering has a bug... the graphics
+        // object returned by getGraphics() is not the same as
+        // the one passed to paintComponent, and it draws lines
+        // differently (one pixel off?). This means that XOR drawing
+        // doesn't work...  Turning off double buffering helps.
+        RepaintManager repaintManager = RepaintManager.currentManager(this);
+        repaintManager.setDoubleBufferingEnabled(false);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -706,9 +718,6 @@ public class Plot extends PlotBox {
     public void setPointsPersistence(int persistence) {
         //   FIXME: No file format yet.
         _pointsPersistence = persistence;
-RepaintManager repaintManager = RepaintManager.currentManager(this);
-repaintManager.setDoubleBufferingEnabled(false);
-
     }
 
     /** If the argument is true, then datasets with the same name
@@ -961,11 +970,6 @@ repaintManager.setDoubleBufferingEnabled(false);
      */
     protected void _drawPlot(Graphics graphics,
             boolean clearfirst) {
-
-        // NOTE: Swing double buffering has a bug... the graphics
-        // object returned later by getGraphics() is not the same as
-        // this one, and is one pixel off. This means that XOR drawing
-        // doesn't work...
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
