@@ -115,31 +115,42 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    public void event(String actorName, double time, int scheduleEvent) {
+    public void event(final String actorName, double time, int scheduleEvent) {
         try {
             if (scheduleEvent == -1) {
                 if (plot != null) {
                     plot.clear(true);
                     _taskMap.clear();
                     _taskState.clear();
+                    System.out.println("clearing");
                 }
             } else {
                 if (_taskMap != null) {
                     Object taskID = _taskMap.get(actorName);
                     int id;
                     if (taskID == null) {
+                        
                         id = _taskMap.size();
+                        final int finalid = id;
                         _taskMap.put(actorName, new Integer(id));
                         _taskState.add(new Integer(0));
-                        plot.addLegend(id, actorName);
+                        System.out.println("adding legend");
+                        // Note: addLegend is not intended to be
+                        // called from outside the swing thread.
+                        Runnable doAddPoint = new Runnable() {
+                                public void run() {
+                                    plot.addLegend(finalid, actorName);
+                                }
+                            };
+                        plot.deferIfNecessary(doAddPoint);
                     } else {
                         id = ((Integer) taskID).intValue();
                     }
                     int _oldState = ((Integer) _taskState.get(id)).intValue();
                     plot.addPoint(id, time, id  + _oldState/2.1, true);
                     plot.addPoint(id, time, id + scheduleEvent/2.1, true);
-                    plot.repaint();
                     _taskState.set(id, new Integer(scheduleEvent));
+                    plot.repaint();
                 }
             }
         } catch (Exception e) {
