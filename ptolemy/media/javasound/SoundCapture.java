@@ -336,7 +336,7 @@ public class SoundCapture {
      *  valued audio samples are sufficient. The
      *  returned audio samples will have values in the range
      *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). The
-     *  range of sample values returned is therfore dependent
+     *  range of sample values returned is therefore dependent
      *  on the bit resolution of the audio data. If this is not
      *  desired, then use getSamples() instead.
      *  <p>
