@@ -114,6 +114,11 @@ inputs and outputs if it is embedded as an opaque actor. The construction
 is made inside the preinitialize method after its director initializes.
 By this way, the construction is in a bottom up way based on its entities'
 IODependence information.
+<p>
+Note that IODependence only handles the one way relation from input to
+output. It does not handle the direct feed back loop but leaves it to 
+the scheduler to handle this because different domains assign direct 
+feed back loops different semantics.  
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
@@ -1209,12 +1214,22 @@ public class CompositeActor extends CompositeEntity implements Actor {
             while (insideDelayedOutputs.hasNext()) {
                 IOPort insideOutput = (IOPort)insideDelayedOutputs.next();
                 List connectedInsideInputs = insideOutput.sinkPortList();
+                // IODependence only handles the one way relation from input to
+                // output. It does not handle the direct feed back loop but 
+                // leaves it to the scheduler to handle this because different 
+                // domains assign direct feed back loops different semantics.  
+                connectedInsideInputs.remove(insidePort);
                 _resolveIODependence(inputInfo, connectedInsideInputs, true);    
             }
             // Iterate the direct feedthrough output ports
             while (insideDirectFeedthroughOutputs.hasNext()) {
                 IOPort insideOutput = (IOPort)insideDirectFeedthroughOutputs.next();
                 List connectedInsideInputs = insideOutput.sinkPortList();
+                // IODependence only handles the one way relation from input to
+                // output. It does not handle the direct feed back loop but 
+                // leaves it to the scheduler to handle this because different 
+                // domains assign direct feed back loops different semantics.  
+                connectedInsideInputs.remove(insidePort);
                 _resolveIODependence(inputInfo, connectedInsideInputs, delayed);    
             }
         }
