@@ -280,7 +280,9 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $director initialize
 
     set token [java::new ptolemy.data.StringToken foo]
-    $p1 send 0 $token
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token} 0 $token
     # check that token got only as far as p2
     set res1 [$p2 hasToken 0]
     set res2 [$p5 hasToken 0]

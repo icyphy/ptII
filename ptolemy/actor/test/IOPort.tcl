@@ -346,7 +346,9 @@ test IOPort-9.1 {Check connectivity via send} {
 
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
-    $p1 send 0 $token
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token} 0 $token
     set received [$p2 get 0]
     $received toString
 } {"foo"}
@@ -357,7 +359,9 @@ test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     catch {$p1 hasToken 0} res2
     catch {$p2 hasRoom 0} res3
     set res4 [$p2 hasToken 0]
-    $p1 send 0 $token
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token} 0 $token
     set res5 [$p1 hasRoom 0]
     catch {$p1 hasToken 0} res6
     catch {$p2 hasRoom 0} res7
@@ -387,7 +391,9 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p2 unlinkAll
     # token to send
     set token [java::new ptolemy.data.StringToken foo]
-    $p1 send 0 $token
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token} 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
 } {0 {ptolemy.kernel.util.IllegalActionException: ..E2.P2:
@@ -445,7 +451,9 @@ test IOPort-9.4 {Check loopback send} {
     # created on the fly.
     $director preinitialize
 
-    $p1 send 0 $token
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token} 0 $token
     set received [$p2 get 0]
     $received toString
 } {"foo"}
