@@ -160,7 +160,7 @@ public final class Manager extends NamedObj implements Runnable {
      **/
     public void fireExecutionError(Exception e) {
         // if any exceptions get up to this level, then we have to tell
-        // the gui by enscapsulating in an event.
+        // the gui by encapsulating in an event.
         ExecutionEvent event = new ExecutionEvent(this, _iteration, e);
         Enumeration listeners = _ExecutionListeners.elements();
         // if nobody is listening, then just dump the stack trace.

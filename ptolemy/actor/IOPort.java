@@ -1511,7 +1511,7 @@ public class IOPort extends ComponentPort {
     ////                         private variables                 ////
 
     // Indicate whether the port is an input, an output, or both.
-    // The value may be overriden in transparent ports, in that if
+    // The value may be overridden in transparent ports, in that if
     // a transparent port is inside linked to an input or output port,
     // then it will be considered an inside or output port respectively.
     // This determination is cached, so we need variables to track the
