@@ -28,6 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
+package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
@@ -101,18 +102,18 @@ public class DiningPhilosophers {
             eatingRate.getToken();
 
             // Set up the actors and connections
-            CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
-            CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
-            CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
-            CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
+            Philosopher p1 = new Philosopher(univ, "Aristotle");
+            Philosopher p2 = new Philosopher(univ, "Plato");
+            Philosopher p4 = new Philosopher(univ, "Descartes");
+            Philosopher p3 = new Philosopher(univ, "Sartre");
 
-            CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
+            Philosopher p5 = new Philosopher(univ, "Socrates");
 
-            CSPChopstick f1 = new CSPChopstick(univ, "Chopstick1");
-            CSPChopstick f2 = new CSPChopstick(univ, "Chopstick2");
-            CSPChopstick f3 = new CSPChopstick(univ, "Chopstick3");
-            CSPChopstick f4 = new CSPChopstick(univ, "Chopstick4");
-            CSPChopstick f5 = new CSPChopstick(univ, "Chopstick5");
+            Chopstick f1 = new Chopstick(univ, "Chopstick1");
+            Chopstick f2 = new Chopstick(univ, "Chopstick2");
+            Chopstick f3 = new Chopstick(univ, "Chopstick3");
+            Chopstick f4 = new Chopstick(univ, "Chopstick4");
+            Chopstick f5 = new Chopstick(univ, "Chopstick5");
 
             // Now connect up the Actors
             TypedIORelation r1 =

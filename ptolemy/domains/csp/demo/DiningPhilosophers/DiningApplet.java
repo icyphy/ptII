@@ -98,11 +98,11 @@ public class DiningApplet extends Applet
         thinkingRate.getToken();
 
         // Set up the actors and connections
-        CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
-        CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
-        CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
-        CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
-        CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
+        Philosopher p1 = new Philosopher(univ, "Aristotle");
+        Philosopher p2 = new Philosopher(univ, "Plato");
+        Philosopher p3 = new Philosopher(univ, "Sartre");
+        Philosopher p4 = new Philosopher(univ, "Descartes");
+        Philosopher p5 = new Philosopher(univ, "Socrates");
 
         _philosophers[0] = p1;
         _philosophers[1] = p2;
@@ -123,11 +123,11 @@ public class DiningApplet extends Applet
             }
         }
 
-        CSPChopstick f1 = new CSPChopstick(univ, "Chopstick1");
-        CSPChopstick f2 = new CSPChopstick(univ, "Chopstick2");
-        CSPChopstick f3 = new CSPChopstick(univ, "Chopstick3");
-        CSPChopstick f4 = new CSPChopstick(univ, "Chopstick4");
-        CSPChopstick f5 = new CSPChopstick(univ, "Chopstick5");
+        Chopstick f1 = new Chopstick(univ, "Chopstick1");
+        Chopstick f2 = new Chopstick(univ, "Chopstick2");
+        Chopstick f3 = new Chopstick(univ, "Chopstick3");
+        Chopstick f4 = new Chopstick(univ, "Chopstick4");
+        Chopstick f5 = new Chopstick(univ, "Chopstick5");
 
         // Now connect up the Actors
         TypedIORelation r1 =
@@ -278,7 +278,7 @@ public class DiningApplet extends Applet
     // the panel containing the animation for the applet.
     public TablePanel _table;
 
-    public CSPPhilosopher[] _philosophers = new CSPPhilosopher[5];
+    public Philosopher[] _philosophers = new Philosopher[5];
 
     public TypedCompositeActor univ;
     public CSPDirector _localDirector;

@@ -40,7 +40,7 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.awt.*;
 import java.util.Random;
-import ptolemy.domains.csp.lib.CSPPhilosopher;
+import ptolemy.domains.csp.demo.DiningPhilosophers.Philosopher;
 
 class TablePanel extends Panel {
     ///////////////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ class TablePanel extends Panel {
     /**
      * Constructs the new panel. Initializes the objects and the display.
      */
-    protected TablePanel(CSPPhilosopher[] philosophers) {
+    protected TablePanel(Philosopher[] philosophers) {
         _philosophers = philosophers;
         for (int i = 0; i < 5; i++) {
             philsLoc[i] = new PhilosopherCoords();
@@ -145,7 +145,7 @@ class TablePanel extends Panel {
 
     // Coordinates of philosophers
     private PhilosopherCoords[] philsLoc = new PhilosopherCoords[5];
-    private CSPPhilosopher[] _philosophers;
+    private Philosopher[] _philosophers;
 
     /*
      * Constants used to draw the table and philosophers.
