@@ -102,50 +102,50 @@ public final class SNR extends SDFAtomicActor {
 	Parameter p;
 	
         p = (Parameter) getAttribute("originalXFramesize");
-        originalXFramesize = ((IntToken)p.getToken()).intValue();
-        if(originalXFramesize < 0) 
+        _originalXFramesize = ((IntToken)p.getToken()).intValue();
+        if(_originalXFramesize < 0) 
             throw new IllegalActionException(
                     "The value of the xframesize (original image) parameter("
-                    + originalXFramesize +
+                    + _originalXFramesize +
                     ") must be greater than zero.");
         
         p = (Parameter) getAttribute("modifiedXFramesize");
-        modifiedXFramesize = ((IntToken)p.getToken()).intValue();
-        if(modifiedXFramesize < 0) 
+        _modifiedXFramesize = ((IntToken)p.getToken()).intValue();
+        if(_modifiedXFramesize < 0) 
             throw new IllegalActionException(
                     "The value of the xframesize (modified image) parameter("
-                    + modifiedXFramesize +
+                    + _modifiedXFramesize +
                     ") must be greater than zero.");
         
         p = (Parameter) getAttribute("originalYFramesize");
-        originalYFramesize = ((IntToken)p.getToken()).intValue();
-        if(originalYFramesize < 0) 
+        _originalYFramesize = ((IntToken)p.getToken()).intValue();
+        if(_originalYFramesize < 0) 
             throw new IllegalActionException(
                     "The value of the yframesize (original image) parameter(" 
-                    + originalYFramesize + 
+                    + _originalYFramesize + 
                     ") must be greater than zero.");
         
         p = (Parameter) getAttribute("modifiedYFramesize");
-        modifiedYFramesize = ((IntToken)p.getToken()).intValue();
-        if(modifiedYFramesize < 0) 
+        _modifiedYFramesize = ((IntToken)p.getToken()).intValue();
+        if(_modifiedYFramesize < 0) 
             throw new IllegalActionException(
                     "The value of the yframesize (modified image) parameter(" 
-                    + modifiedYFramesize + 
+                    + _modifiedYFramesize + 
                     ") must be greater than zero.");
         
-        if ((originalXFramesize != modifiedXFramesize))
+        if ((_originalXFramesize != _modifiedXFramesize))
             throw new IllegalActionException(
                     "The value of the original XFramesize parameter(" 
-                    + originalXFramesize + 
+                    + _originalXFramesize + 
                     ") is not the same as the modified XFramesize parameter."
-                    + modifiedXFramesize );
+                    + _modifiedXFramesize );
         
-        if ((originalYFramesize != modifiedYFramesize))
+        if ((_originalYFramesize != _modifiedYFramesize))
             throw new IllegalActionException(
                     "The value of the original YFramesize parameter(" 
-                    + originalYFramesize + 
+                    + _originalYFramesize + 
                     ") is not the same asthe  modified YFramesize parameter."
-                    + modifiedYFramesize );
+                    + _modifiedYFramesize );
     }
     
     /** Fire the actor.
@@ -177,8 +177,8 @@ public final class SNR extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         
         int i, j;
-        int originalFrame[] = new int[originalXFramesize * originalYFramesize];
-        int modifiedFrame[] = new int[modifiedXFramesize * modifiedYFramesize];
+        int originalFrame[] = new int[_originalXFramesize * _originalYFramesize];
+        int modifiedFrame[] = new int[_modifiedXFramesize * _modifiedYFramesize];
         int signalPower = 0;
         int noisePower = 0;
         int originalFrameElement;
@@ -200,18 +200,18 @@ public final class SNR extends SDFAtomicActor {
         modifiedMessage = (IntMatrixToken) inputport2.get(0);
         modifiedFrame = modifiedMessage.intArray();
         
-        for(j = 0; j < originalYFramesize; j ++) 
-            for(i = 0; i < originalXFramesize; i ++) {    
+        for(j = 0; j < _originalYFramesize; j ++) 
+            for(i = 0; i < _originalXFramesize; i ++) {    
                 
-                originalFrameElement = originalFrame[originalXFramesize*j+i];
-                modifiedFrameElement = modifiedFrame[originalXFramesize*j+i];
+                originalFrameElement = originalFrame[_originalXFramesize*j+i];
+                modifiedFrameElement = modifiedFrame[_originalXFramesize*j+i];
                 
                 if ((originalFrameElement < 0) || 
                         (originalFrameElement > 255 ))
                     throw new IllegalActionException("SNR:"+
                             "The original image contains a pixel at " + i + 
                             ", " + j + " with value " 
-                            + originalFrame[originalXFramesize*j+i] +
+                            + originalFrame[_originalXFramesize*j+i] +
                             " that is not between 0 and 255.");
                 
                 if ((modifiedFrameElement < 0) || 
@@ -219,7 +219,7 @@ public final class SNR extends SDFAtomicActor {
                     throw new IllegalActionException("SNR:"+
                             "The modified image contains a pixel at " + i + 
                             ", " + j + " with value " 
-                            + modifiedFrame[originalXFramesize*j+i] +
+                            + modifiedFrame[_originalXFramesize*j+i] +
                             "that is not between 0 and 255.");
                 
                 signalPower = signalPower + 
@@ -232,32 +232,14 @@ public final class SNR extends SDFAtomicActor {
         SNR = 10 * Math.log ((double) signalPower / noisePower) / 
             Math.log (10.0) ;
         
-        message = new DoubleToken(SNR);
-        outputport.send(0, message);
+        _message = new DoubleToken(SNR);
+        outputport.send(0, _message);
     }
     
-    DoubleToken message;
+    private DoubleToken _message;
     
-    private int originalFrame[];
-    private int modifiedFrame[];
-    private int originalXFramesize;
-    private int modifiedXFramesize;
-    private int originalYFramesize;
-    private int modifiedYFramesize;
-    private int originalFrameElement;
-    private int modifiedFrameElement;
-    private int signalPower;
-    private int noisePower;
-    private int SNR;
+    private int _originalXFramesize;
+    private int _modifiedXFramesize;
+    private int _originalYFramesize;
+    private int _modifiedYFramesize;
 }
-
-
-
-
-
-
-
-
-
-
-
