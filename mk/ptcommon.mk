@@ -560,7 +560,7 @@ checkjunk:
 
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
-	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTCLASSALLJAR) \
+	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTAUXJAR) $(PTCLASSALLJAR) \
 	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)
 
 clean:
