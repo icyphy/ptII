@@ -118,11 +118,10 @@ public class VersionAttribute
      *  <code>int</code>s, then they are compared as integers.  If the
      *  elements cannot be parsed as integers, they are compared as Strings.
      *
-     *  @param object The VersionAttribute to compare against. 
-     *  @return 0 if the argument is an exact match according to the
-     *   version syntax and padding rules, a number less than 0 if the
-     *   argument is less than this version, a number greater than 0 if
-     *   the argument is greater than this version.
+     *  @param object The VersionAttribute to compare against.
+     *  @return A negative integer, zero, or a positive integer if this
+     *   object is less than, equal to, or greater than the specified
+     *   object, respectively.
      */
     public int compareTo(Object object) {
 	VersionAttribute version = (VersionAttribute) object;
@@ -170,6 +169,27 @@ public class VersionAttribute
         }
 	return 0;
     }
+
+    /** Return true if the specified object is an instance of
+     *  VersionAttribute and represents the same version as this one.
+     *  @return True if the specified version is the same as this one.
+     */
+    public boolean equals(Object obj) {
+        if (obj instanceof VersionAttribute) {
+            return (compareTo(obj) == 0);
+        }
+        return false;
+    }
+
+    /** Return true if this version is less than the specified version.
+     *  This method uses compareTo(), but may yield more readable code
+     *  in certain circumstances.
+     *  @see #compareTo(VersionAttribute)
+     *  @return True if this version is less than the specified version.
+     */
+    public boolean isLessThan(VersionAttribute version) {
+        return (compareTo(version) < 0);
+    }
     
     /** Return an iterator over the elements of the version,
      *  each of which is a String.
@@ -210,8 +230,19 @@ public class VersionAttribute
 
     /** The VersionAttribute that contains the version of the Ptolemy II
      *  release that is currently running.  This variable may be read
-     *  to change the Ptolemy II functionality depending on the
-     *  version number:
+     *  to take action if the assumed version does not match the current
+     *  version.  For example,
+     *  <p>
+     *  <pre>
+     *  VersionAttribute assumedVersion = ...;
+     *  if (VersionAttribute.CURRENT_VERSION.isLessThan(assumedVersion)) {
+     *      throw new IllegalActionException("You need to upgrade!");
+     *  }
+     *  </pre>
+     *  <p>
+     *  Similarly, this variable may be used to change the Ptolemy II
+     *  functionality depending on the version number:
+     *  <p>
      *  <pre>
      *  if (VersionAttribute.CURRENT_VERSION.compareTo("2.0") >= 0 ) {
      *      // Perform some operation if the current version is
@@ -224,7 +255,6 @@ public class VersionAttribute
     static {
 	try {
 	    CURRENT_VERSION = new VersionAttribute("2.0-devel");
-
 	} catch (Exception ex) {
 	    throw new ExceptionInInitializerError("Failed to create "
 						  + "CURRENT_VERSION: "
