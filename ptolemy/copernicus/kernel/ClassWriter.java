@@ -59,12 +59,39 @@ public class ClassWriter extends SceneTransformer {
         return super.getDeclaredOptions() + " debug outDir"; 
     }
     
+
+    /** Write out the class file.
+     *  This transform can be used to take snapshots, and is
+     *  usually called in conjunction with JimpleWriter inside addTransforms():
+     *  <pre>
+     *   Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
+     *           ClassWriter.v()));
+     *   Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
+     *           JimpleWriter.v()));
+     *  </pre>
+     *  Sample option arguments:
+     *	<code>-p wjtp.snapshot1 outDir:jimple1</code>
+     *
+     *  @see JimpleWriter
+     *  @param phaseName The name of the phase, for example 
+     *  <code>wjtp.snapshot1</code>.
+     *  @param options The options Map.  This method uses the
+     *  <code>outDir</code> option to specify where the .class
+     *  file should be written
+     */ 
     protected void internalTransform(String phaseName, Map options)
     {
         System.out.println("ClassWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
         String outDir = Options.getString(options, "outDir");
+
+        if(!outDir.equals("")) {
+            File outDirFile = new File(outDir);
+            if (!outDirFile.isDirectory()) {
+                outDirFile.mkdirs();
+            }
+        }
 
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
