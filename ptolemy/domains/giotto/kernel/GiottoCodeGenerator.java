@@ -81,12 +81,7 @@ import ptolemy.kernel.util.Workspace;
 // Java imports.
 import java.awt.Frame;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGenerator
@@ -185,7 +180,7 @@ public class GiottoCodeGenerator extends Attribute {
     /** Return the correct Giotto type string for the given port.
      */
     private static String _getTypeString(IOPort port) {
-        return "Token";//ort.getType().toString();
+        return "Token_port";//ort.getType().toString();
     }
 
     /** Topology analysis and initialization.
@@ -298,7 +293,7 @@ public class GiottoCodeGenerator extends Attribute {
                 String portID = StringUtilities.sanitizeName(
                         port.getName(model));
                 String portTypeID = _getTypeString(port);
-                String portInitialValue = "init_" + portID;
+                String portInitialValue = "CGinit_" + portID;
                 _checkGiottoID(portID);
                 codeString +=  "  "
                     + portTypeID
@@ -325,10 +320,10 @@ public class GiottoCodeGenerator extends Attribute {
 
 	codeString += "task "
             + taskName
-            + "_task (";
+            + " (";
 
-	String stateParas = taskName.toUpperCase() + 
-            "_PARAM param := init_" + taskName + "_param";
+	String stateParas = ""; //taskName.toUpperCase() + 
+        //  "_PARAM param := init_" + taskName + "_param";
 
         // Write the input port specification of the task  
         first = true;
@@ -377,9 +372,9 @@ public class GiottoCodeGenerator extends Attribute {
             + _endLine;
 	codeString +=  "{"
             + _endLine;
-	codeString +=  "        schedule "
+	codeString +=  "        schedule CG"
             + taskName
-            + "_task(" + inputPorts + "," + outputPorts + ")"
+            + "_Task(" + inputPorts + "," + outputPorts + ")"
             + _endLine;
 	codeString +=  "}"
             + _endLine;
@@ -430,7 +425,8 @@ public class GiottoCodeGenerator extends Attribute {
 	//get the "deep source" ports(the driver's inputs) for
 	//each input port of this actor.
         int currentDepth = model.depthInHierarchy();
-	    
+        
+        Map driverIOMap = new LinkedHashMap();
 	for(Iterator inPorts = actor.inputPortList().iterator();
             inPorts.hasNext();) {
 	    IOPort inPort = (IOPort) inPorts.next();
@@ -445,13 +441,14 @@ public class GiottoCodeGenerator extends Attribute {
 	    Iterator sourcePorts = inPort.sourcePortList().iterator();
 	    while (sourcePorts.hasNext()) {
 		IOPort port = (IOPort)sourcePorts.next();
-		sanitizedPortName = StringUtilities.sanitizeName(
+		String sanitizedPortName2 = StringUtilities.sanitizeName(
                         port.getName(model));
                 if (driverParas.length() == 0) {
-                    driverParas +=  sanitizedPortName;
+                    driverParas +=  sanitizedPortName2;
                 } else {
-                    driverParas += ", " + sanitizedPortName;
+                    driverParas += ", " + sanitizedPortName2;
                 }
+                driverIOMap.put(sanitizedPortName2, sanitizedPortName);
 	    }
 	}
 
@@ -477,12 +474,17 @@ public class GiottoCodeGenerator extends Attribute {
         codeString += ")" + _endLine;
 	codeString +=  "{"
             + _endLine;
-	codeString +=  "  if c_true() then "
-            + actorName
-            + "_input_driver( "
-            + driverParas
-             + ")"
-            + _endLine;
+        
+        for(Iterator sourceNames = driverIOMap.keySet().iterator();
+            sourceNames.hasNext();) {
+            String sourceName = (String) sourceNames.next();
+            String destName = (String) driverIOMap.get(sourceName);
+            codeString +=  
+                "          if constant_true() then copy_Token_port( "
+                + sourceName + ", " + destName
+                + ")"
+                + _endLine;
+        }
 	codeString +=  "}"
             + _endLine;
 
@@ -645,7 +647,6 @@ public class GiottoCodeGenerator extends Attribute {
                 + actorFreq
                 + " do "
                 + actorName
-                + "_task"
                 + "("
                 + actorName
                 + "_driver);"

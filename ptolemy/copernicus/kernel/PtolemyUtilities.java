@@ -634,6 +634,45 @@ public class PtolemyUtilities {
         return local;
     }
 
+    /** Create a constructor in theClass that has the same signature
+     * as the given method.  Add instructions to the body of the
+     * constructor that call the given method with the same arguments.
+     */
+    public static SootMethod createSuperConstructor(SootClass theClass,
+            SootMethod superConstructor) {
+        // Create the constructor.
+        SootMethod constructor = new SootMethod("<init>",
+                superConstructor.getParameterTypes(),
+                superConstructor.getReturnType(),
+                superConstructor.getModifiers());
+
+        theClass.addMethod(constructor);
+        // System.out.println("creating constructor = " +
+        //        constructor.getSignature());
+
+        // create empty body
+        JimpleBody body = Jimple.v().newBody(constructor);
+        // Add this and read the parameters into locals
+        body.insertIdentityStmts();
+        constructor.setActiveBody(body);
+
+        Chain units = body.getUnits();
+        Local thisLocal = body.getThisLocal();
+
+        // get a list of the locals that reference the parameters of the
+        // constructor.  What a nice hack.
+        List parameterList = new ArrayList();
+        parameterList.addAll(body.getLocals());
+        parameterList.remove(thisLocal);
+
+        // Call the super constructor.
+        units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                thisLocal, superConstructor, parameterList)));
+
+        units.add(Jimple.v().newReturnVoidStmt());
+        return constructor;
+    }
+
     /** If the given type is a reference type to a class that
      *  derives from ptolemy.data.Token, or array whose element type
      *  derives from ptolemy.data.Token, then return that
