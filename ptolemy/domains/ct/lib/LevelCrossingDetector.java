@@ -52,16 +52,10 @@ import ptolemy.kernel.util.Workspace;
    An event detector that converts continuous signals to discrete events when
    the continuous signal crosses a level threshold.
    <p>
-   This actor has a parameter <i>crossingDirectionsBeingDetected</i>. This 
-   parameter is used to configure the directions of the level crossings this
-   actor need to detect. There are three possible directions: rising, falling,
-   and both directions. Rising means this actor only detects the level 
-   crossings when the input value goes from below the level threshold to above 
-   it. Falling means this actor only detects the level crossings when the input
-   value goes from above the level threshold to below it. Both-directions means
-   a level corssing is detected as long as the level threshold is crossed. The 
-   default value of the crossingDirectionsBeingDetected parameter is 
-   "bothDirections". 
+   This actor has a parameter <i>direction</i>. This parameter
+   can constrain the actor to detect only rising or falling transitions.
+   It has three possible values, "rising", "falling", and "both", where
+   "both" is the default.
    <p>
    When the <i>trigger</i> equals the level threshold (within the specified
    <i>errorTolerance</i>), this actor outputs a discrete event with value
@@ -124,29 +118,29 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 new DoubleToken(_errorTolerance));
 
         // By default, this director detects both directions of leve crossings.
-        crossingDirectionsBeingDetected = new Parameter(this, 
-                "crossingDirectionsBeingDetected", 
-                new StringToken("bothDirections"));
+        direction = new Parameter(this, 
+                "direction", 
+                new StringToken("both"));
         _detectRisingCrossing = true;
         _detectFallingCrossing = true;
         
-        crossingDirectionsBeingDetected.setTypeEquals(BaseType.STRING);
-        crossingDirectionsBeingDetected.addChoice(
-                new StringToken("bothDirections").toString());
-        crossingDirectionsBeingDetected.addChoice(
+        direction.setTypeEquals(BaseType.STRING);
+        direction.addChoice(
+                new StringToken("both").toString());
+        direction.addChoice(
                 new StringToken("falling").toString());
-        crossingDirectionsBeingDetected.addChoice(
+        direction.addChoice(
                 new StringToken("rising").toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** A parameter specifying which directions this actor detects the 
-     *  level crossings in. There are three choices: falling, rising, and 
-     *  bothDirections. The default value is bothDirections.
+    /** A parameter that can be used to limit the detected level crossings
+     *  to rising or falling. There are three choices: "falling", "rising", and 
+     *  "both". The default value is "both".
      */
-    public Parameter crossingDirectionsBeingDetected;
+    public Parameter direction;
 
     /** A parameter that specifies the value of output events
      *  if the <i>useEventValue</i> parameter is checked. By default,
@@ -198,16 +192,16 @@ public class LevelCrossingDetector extends TypedAtomicActor
                         "Error tolerance must be greater than 0.");
             }
             _errorTolerance = tolerance;            
-        } else if (attribute == crossingDirectionsBeingDetected) {
+        } else if (attribute == direction) {
             String crossingDirections = ((StringToken) 
-                    crossingDirectionsBeingDetected.getToken()).stringValue();
+                    direction.getToken()).stringValue();
             if (crossingDirections.equalsIgnoreCase("falling")) {
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = false;
             } else if (crossingDirections.equalsIgnoreCase("rising")) {
                 _detectFallingCrossing = false;
                 _detectRisingCrossing = true;
-            } else if (crossingDirections.equalsIgnoreCase("bothDirections")) {
+            } else if (crossingDirections.equalsIgnoreCase("both")) {
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = true;
             } else {
