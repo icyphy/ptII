@@ -40,6 +40,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test is similar to the SDFInCT.xml. The only difference is that a DE layer&#10;resides between the CT and SDF layer. See the SDFInCT.xml for more detailed&#10;explanation of this model. The test results are the same.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 230.0}">
+        </property>
+    </property>
     <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 130.0]">
         </property>
@@ -63,7 +69,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320582253, 0.4679686033}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320473275, 0.4679528916}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

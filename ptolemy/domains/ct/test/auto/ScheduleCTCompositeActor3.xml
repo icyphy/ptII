@@ -21,8 +21,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -47,12 +45,14 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 55.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 118, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1365, -16, 795, 626}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 508]">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -81,7 +81,7 @@ subsystems.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 285.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -106,21 +106,21 @@ subsystems.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.0, 254.0}">
     </property>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 215.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 215.0]">
         </property>
     </entity>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -135,6 +135,8 @@ subsystems.</text></svg></configure>
             </property>
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
@@ -284,7 +286,7 @@ subsystems.</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 245.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -292,16 +294,27 @@ subsystems.</text></svg></configure>
             </property>
         </port>
     </entity>
+    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 215.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 245.0]">
+        </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="NonStrictTest.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
-    <link port="modal model.input" relation="relation"/>
-    <link port="modal model.output" relation="relation3"/>
-    <link port="EventSource.output" relation="relation"/>
+    <link port="modal model.input" relation="relation4"/>
+    <link port="modal model.output" relation="relation"/>
+    <link port="EventSource.output" relation="relation4"/>
+    <link port="Sampler.input" relation="relation"/>
+    <link port="Sampler.output" relation="relation3"/>
+    <link port="Sampler.trigger" relation="relation4"/>
 </entity>

@@ -62,7 +62,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.0526280771228, 0.0555475451849, 0.0588096848312, 0.0624785541795, 0.0666352313374, 0.0713838669426, 0.0768605163306, 0.0832463635308, 0.0907881141418, 0.0998305394621}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.0526213987476, 0.0555242947726, 0.0587589953414, 0.0623991454265, 0.066492991773, 0.0711581527849, 0.0765227687588, 0.0827563328802, 0.0900878338092, 0.0988343810969}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

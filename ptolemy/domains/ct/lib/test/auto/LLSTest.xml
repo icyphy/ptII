@@ -21,8 +21,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -46,6 +44,8 @@
             </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
@@ -236,7 +236,9 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051666666667, 0.2213933611111, 0.349843229588, 0.4918017425663, 0.6486895591595, 0.8220767444645, 1.0136984820906, 1.2254724391238, 1.459517957305, 1.7181772624816, 1.8988722379193, 2.0985703016071, 2.3192699449928, 2.5631798342079, 2.8327409134387, 3.1306508328354, 3.4598909454219, 3.8237561431821, 4.2258878309067, 4.6703103677904}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051666666667, 0.2213933611111, 0.349843229588, 0.4918017425663, 0.6486895591595, 0.8220767444645, 1.0136984820906, 1.2254724391238, 1.459517957305, 1.7181772624816, 1.8988731002058, 2.0985761552894, 2.3192827184021, 2.563193950954, 2.8327570344214, 3.1306786397473, 3.459925263778, 3.8238062675425, 4.2259503397893, 4.6703932269755}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 130.0]">
         </property>

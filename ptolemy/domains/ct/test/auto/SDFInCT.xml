@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
@@ -32,13 +32,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1188, 300, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The level crossing detector detects the time points when a continuous sinewave&#10;crosses level 0.2. Its output events trigger the SDF model to fire. The SDF&#10;model generate 2 output events for each trigger input. Although the input port &#10;of the NonStrictTest2 actor has a DISCRETE signal type, its capcity is only 1. &#10;Therefore, only the second event from the SDF model gets recorded.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 220.0]">
+        </property>
     </property>
     <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 130.0]">
@@ -135,11 +141,11 @@
         <link port="NonStrictTest.input" relation="relation2"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320582253, 0.4679686033}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320473275, 0.4679528916}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 175.0}">
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">

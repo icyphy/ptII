@@ -21,8 +21,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -46,6 +44,8 @@
             </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
@@ -128,48 +128,78 @@
             </port>
         </entity>
         <entity name="stateAdder_0" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="feedback_0_0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="A(0, 0)">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="b_0_0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="B(0, 0)">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="outputAdder0" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="outputScale_0_0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="C(0, 0)">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="feedThrough_0_0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="D(0, 0)">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <relation name="relation_state_0" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -212,7 +242,9 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.3955811663945, 0.9476506767316, 1.7181224772787, 2.3978055229583, 3.3463607034348, 4.670166447055}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.3955811663986, 0.9476482283747, 1.7181155505379, 2.397800014518, 3.3463526030786, 4.6701589412541}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 130.0]">
         </property>
