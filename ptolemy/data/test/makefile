@@ -56,11 +56,12 @@ JSIMPLE_TESTS = \
 	ComplexToken.tcl \
 	DoubleMatrixToken.tcl \
 	DoubleToken.tcl \
-	IntMatrixToken.tcl \
-	IntToken.tcl \
+	Event.tcl \
 	FixMatrixToken.tcl \
 	FixToken.tcl \
 	FunctionToken.tcl \
+	IntMatrixToken.tcl \
+	IntToken.tcl \
 	LongMatrixToken.tcl \
 	LongToken.tcl \
 	ObjectToken.tcl \
