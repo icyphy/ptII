@@ -23,9 +23,6 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (johnr)
 */
 
 package ptolemy.apps.vergil.graph;
@@ -49,6 +46,9 @@ import java.net.*;
 
 @author  Steve Neuendorffer
 @version $Id$
+@Pt.ProposedRating Red (neuendor)
+@Pt.AcceptedRating Red (johnr)
+
 */
 public class MetaGraphTableau extends Tableau {
 

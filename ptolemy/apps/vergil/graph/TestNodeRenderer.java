@@ -27,9 +27,9 @@ import ptolemy.kernel.*;
  * A factory which creates and returns a NodeFigure given a node input
  * to render.
  *
- * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author  Michael Shilman
  * @version $Revision$
- * @rating  Red
+ * @Pt.AcceptedRating  Red
  */
 public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
 

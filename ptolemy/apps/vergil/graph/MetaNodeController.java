@@ -53,7 +53,7 @@ import ptolemy.kernel.*;
  *
  * @author         Steve Neuendorffer
  * @version        $Revision$
- * @rating      Red
+ * @Pt.AcceptedRating      Red
  */
 public class MetaNodeController extends CompositeEntity
     implements NodeController {
