@@ -1289,14 +1289,25 @@ public class CTMultiSolverDirector extends CTDirector {
         // states and outputs are inaccurate.
         while (!_stopRequested) {
             while (!_stopRequested) {
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+                Iterator actors = schedule.get(
+                        CTSchedule.STATEFUL_ACTORS).actorIterator();
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor)actors.next();
+                    if (_debugging) {
+                        _debug("Restore states " + (Nameable)actor);
+                    }
+                    actor.goToMarkedState();
+                }
                 // Reset the round counts and the convergencies to false.
                 // NOTE: some solvers have their convergencies depending on 
                 // the round counts. For example, it takes 3 rounds for a
                 // RK-23 solver to solve states.
-                solver.resetRoundCount();
+                solver._resetRoundCount();
                 solver._setConverged(false);
                 // repeating resolving states until states converge.
-                while (!solver.isConverged() && solver.resolveStates()) {
+                while (!solver._isConverged() && solver.resolveStates()) {
                     // fire dynamic actors
                     _setExecutionPhase(
                         CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
@@ -1377,24 +1388,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 // outputs are generated successfully.
                 break;
             }
-
-            // Restore the saved state of the stateful actors.
-            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-            Iterator actors = schedule.get(
-                    CTSchedule.STATEFUL_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                CTStatefulActor actor = (CTStatefulActor)actors.next();
-                if (_debugging) {
-                    _debug("Restore states " + (Nameable)actor);
-                }
-                actor.goToMarkedState();
-            }
         }
-        
-//        // postfire all event generators to update their states.
-//        // NOTE: no events should be produced. Instead, they will be produced
-//        // at discrete phase of executions.
-//        postfireEventGenerators();
         
         // postfire all continuous actors to commit their states.
         updateContinuousStates();

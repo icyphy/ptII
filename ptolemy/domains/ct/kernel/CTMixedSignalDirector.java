@@ -376,6 +376,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 //                }
 //            }
             
+            // set the start time of the current iteration
+            // The begin time of an iteration can be changed only by directors.
+            // On the other hand, the model time may be changed by ODE solvers. 
+            // The reason is that when the CurrentTime actor is involved in a 
+            // multi-step integration, it needs to report the current time at 
+            // the intermediate steps. The CurrentTime actor reports the model 
+            // time.
+            _setIterationBeginTime(getModelTime());
+
             double aheadLength 
                 = outsideNextIterationTime.subtract(_outsideTime).
                     getDoubleValue();
