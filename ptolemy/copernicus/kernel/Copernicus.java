@@ -352,7 +352,11 @@ public class Copernicus {
         String footer = "</class>\n";
         writer.write(footer, 0, footer.length());
         writer.close();
-        return temporaryFile.toString();
+	
+	// Substitute backslashes here because setting a parameter to include
+	// backslashes causes problems.
+        return 
+	    StringUtilities.substitute(temporaryFile.toString(), "\\", "/");
     }
 
     /** Create a new instance of this application, passing it the
