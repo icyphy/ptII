@@ -180,8 +180,8 @@ public class PNDirector extends ProcessDirector {
      *  
      *  @exception IllegalActionException If any of the called methods throw
      *  it. 
-     *  @see ptolemy.domains.pn.kernel.PNDirector#_processTopologyRequests()
-     *  @see ptolemy.domains.pn.kernel.PNDirector#_handleDeadlock()
+     *  @see _processTopologyRequests
+     *  @see _handleDeadlock
      */
     public void fire()
 	    throws IllegalActionException {
@@ -218,6 +218,8 @@ public class PNDirector extends ProcessDirector {
      *  blocked on a delay. It also queues the actor in a priority 
      *  queue with the given time as the index to keep a count of actors 
      *  blocked at the current time.
+     *  @exception IllegalActionException If the operation is not
+     *  permissible (e.g. the given time is in the past).
      */
     public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {

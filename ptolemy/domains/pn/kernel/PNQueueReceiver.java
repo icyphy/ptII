@@ -137,7 +137,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Return true as the Kahn process networks model of computation does
      *  not allow polling for data.
      * @return true
-     * @exception IllegalActionException never thrown in this class.
      */
     public boolean hasToken() {
 	return true;
