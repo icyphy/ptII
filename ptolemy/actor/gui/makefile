@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CompositeActorApplication.java \
 	Configuration.java \
 	Configurer.java \
 	DebugListenerTableau.java \

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
@@ -70,13 +70,14 @@ parameter in the models, with the name given relative to the top-level
 entity.  For example, to specify the iteration count in an SDF model,
 you can invoke this on the command line as follows:
 <pre>
-    ptolemy -director.iterations 2 model.xml
+    CLASSPATH=$PTII  java ptolemy.actor.gui.CompositeActorApplication -director.iterations 2 model.xml
 </pre>
 This assumes that the model given in file "model.xml" has a director
 named "director" with a parameter named "iterations".
 If more than one model is given on the command line, then the
 parameter values will be set for all models that have such
 a parameter.
+(In reality, "-iterations 2" will also work.)
 <p> 
 This class implements the ExecutionListener interface so that it can count
 the number of actively executing models.  The waitForFinish method can
@@ -91,6 +92,8 @@ executing.  This is because if it did, then the any displays created
 by the models would disappear immediately.  However, it would be better
 if the application were to exit when all displays have been closed.
 This currently does not happen.
+<p> 
+This class is used by the codegen facility.
 
 @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
 @version $Id$
@@ -324,7 +327,7 @@ public class CompositeActorApplication
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version 1.0, Build $Id$");
+            System.out.println("Version 1.1, Build $Id$");
             // quit the program if the user asked for the version            
             // Don't call System.exit(0) here, it will break the test suites
         } else if (arg.equals("")) {
