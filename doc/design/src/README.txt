@@ -36,7 +36,13 @@ http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
    setenv DISPLAY thesun:0
    xrdb -remove
    setenv QUADRALAYHOME /usr/tools/tools2/www/quadralay
-   set path = ($path $QUADRALAYHOME/bi)n
+   set path = ($path $QUADRALAYHOME/bin)
    cd ~ptII/doc/design/src
-   wpublish
-3. Then open up design.wdt.     
+3. start maker, then
+   open up design.book and update the cross references
+
+   If you run into font problems, open up a frame file
+   choose File -> Preferences -> Deselect Remember Missing Font Names
+   then click Set.  Then open up each file and save it with the new fonts.
+
+4. start wpublish, then open up design.wdt.     
