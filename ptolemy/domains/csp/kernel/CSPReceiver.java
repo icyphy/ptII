@@ -62,13 +62,16 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Construct a CSPReceiver with no container.
      */
-    public CSPReceiver() {}
+    public CSPReceiver() {
+	_boundaryDetector = new BoundaryDetector(this);
+    }
 
     /** Construct a CSPReceiver with the specified container.
      *  @param container The port containing this receiver.
      */
     public CSPReceiver(IOPort container) {
         _container = container;
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
 
@@ -174,6 +177,17 @@ public class CSPReceiver implements ProcessReceiver {
      *  boundary port; return false otherwise.
      */
      public boolean isConnectedToBoundary() {
+	 return _boundaryDetector.isConnectedToBoundary();
+     }
+
+    /** Return true if this receiver is connected to the inside of a
+     *  boundary port. A boundary port is an opaque port that is contained
+     *  by a composite actor. If this receiver is connected to the inside
+     *  of a boundary port, then return true; otherwise return false.
+     *  This method is not synchronized so the caller should be.
+     * @return True if this receiver is connected to the inside of a
+     *  boundary port; return false otherwise.
+     public boolean isConnectedToBoundary() {
          if( _connectedBoundaryCacheIsOn ) {
              return _isConnectedBoundaryValue;
          } else {
@@ -220,6 +234,7 @@ public class CSPReceiver implements ProcessReceiver {
              return _isConnectedBoundaryValue;
          }
      }
+     */
 
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -230,6 +245,18 @@ public class CSPReceiver implements ProcessReceiver {
      * @return True if this receiver is contained on the inside of
      *  a boundary port; return false otherwise.
      */
+     public boolean isInsideBoundary() {
+	 return _boundaryDetector.isInsideBoundary();
+     }
+
+    /** Return true if this receiver is contained on the inside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the inside of a boundary port then return true; otherwise
+     *  return false. This method is not synchronized so the caller
+     *  should be.
+     * @return True if this receiver is contained on the inside of
+     *  a boundary port; return false otherwise.
      public boolean isInsideBoundary() {
          if( _insideBoundaryCacheIsOn ) {
              return _isInsideBoundaryValue;
@@ -267,6 +294,7 @@ public class CSPReceiver implements ProcessReceiver {
              return _isInsideBoundaryValue;
          }
      }
+     */
 
     /** Return true if this receiver is contained on the outside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -277,6 +305,18 @@ public class CSPReceiver implements ProcessReceiver {
      * @return True if this receiver is contained on the outside of
      *  a boundary port; return false otherwise.
      */
+     public boolean isOutsideBoundary() {
+	 return _boundaryDetector.isOutsideBoundary();
+     }
+
+    /** Return true if this receiver is contained on the outside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the outside of a boundary port then return true; otherwise
+     *  return false. This method is not synchronized so the caller
+     *  should be.
+     * @return True if this receiver is contained on the outside of
+     *  a boundary port; return false otherwise.
      public boolean isOutsideBoundary() {
          if( _outsideBoundaryCacheIsOn ) {
              return _isInsideBoundaryValue;
@@ -314,6 +354,7 @@ public class CSPReceiver implements ProcessReceiver {
              return _isOutsideBoundaryValue;
          }
      }
+     */
 
     /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
@@ -406,12 +447,15 @@ public class CSPReceiver implements ProcessReceiver {
         _conditionalSendWaiting = false;
 	_rendezvousComplete = false;
 	_modelFinished = false;
+	_boundaryDetector.reset();
+	/*
     	_insideBoundaryCacheIsOn = false;
     	_isInsideBoundaryValue = false;
     	_outsideBoundaryCacheIsOn = false;
     	_isOutsideBoundaryValue = false;
     	_connectedBoundaryCacheIsOn = false;
     	_isConnectedBoundaryValue = false;
+	*/
     }
 
     /** Set the container of this CSPReceiver to the specified IOPort.
@@ -641,6 +685,7 @@ public class CSPReceiver implements ProcessReceiver {
     // The token being transferred during the rendezvous.
     private Token _token;
 
+    /*
     private boolean _insideBoundaryCacheIsOn = false;
     private boolean _isInsideBoundaryValue = false;
 
@@ -649,4 +694,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
+    */
+
+    private BoundaryDetector _boundaryDetector;
 }
