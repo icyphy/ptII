@@ -132,7 +132,7 @@ public class NamedObj implements Nameable, Serializable {
      *  @exception IllegalActionionException Thrown if trying to attach 
      *  a Param which is not contained by this NamedObj.
      */
-    public void addParam(Param p) throws NameDuplicationException, IllegalActionException {
+    public void addParam(Param p) throws NameDuplicationException, IllegalActionException{
         if (((NamedObj)p.getContainer()) != this) {
             throw new IllegalActionException("Trying to attach a param to a namedObj that is not its container");
         }
@@ -244,12 +244,14 @@ public class NamedObj implements Nameable, Serializable {
     }
 
     /** Remove the param attached to this NamedObj with the given name
-     *  If no Parm with the given name exists, do nothing.
+     *  If no Param with the given name exists, do nothing.
      *  @param name The name of the Param to be removed.
      *  @return The removed Param if it is found, null otherwise
      */
     public Param removeParam(String name) {
-        return (Param)_params.remove(name);
+        Param p = (Param)_params.remove(name);
+        workspace().incrversion();
+        return p;
     }
 
 
