@@ -106,7 +106,7 @@ public class UndoContext {
 
     /**
      *  Used to handle the "rename" element. Replace the value of the "name"
-     *  atribute the given value. This is a bit of a hack as ideally a child
+     *  attribute the given value. This is a bit of a hack as ideally a child
      *  context should not modify the parent context, but with rename that is
      *  exactly what is required FIXME: use a better exception class
      *
