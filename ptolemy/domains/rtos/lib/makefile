@@ -49,7 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	PeriodicTrigger.java
+	RTOSCompositeFacade.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	rtosentities.xml
