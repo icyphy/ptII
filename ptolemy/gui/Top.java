@@ -651,13 +651,21 @@ public abstract class Top extends JFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
 	    try {
-		if (actionCommand.equals("Open File")) _open();
-		else if (actionCommand.equals("Open URL")) _openURL();
-		else if (actionCommand.equals("Save")) _save();
-		else if (actionCommand.equals("SaveAs")) _saveAs();
-		else if (actionCommand.equals("Print")) _print();
-		else if (actionCommand.equals("Close")) _close();
-		else if (actionCommand.equals("Exit")) _exit();
+		if (actionCommand.equals("Open File")) {
+		    _open();
+		} else if (actionCommand.equals("Open URL")) {
+		    _openURL();
+		} else if (actionCommand.equals("Save")) {
+		    _save();
+		} else if (actionCommand.equals("SaveAs")) {
+		    _saveAs();
+		} else if (actionCommand.equals("Print")) {
+		    _print();
+		} else if (actionCommand.equals("Close")) {
+		    _close();
+		} else if (actionCommand.equals("Exit")) {
+		    _exit();
+		}
 	    } catch (Exception exception) {
 		// If we do not catch exceptions here, then they
 		// disappear to stdout, which is bad if we launched
@@ -677,8 +685,11 @@ public abstract class Top extends JFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
 	    try {
-		if (actionCommand.equals("About")) _about();
-		else if (actionCommand.equals("Help")) _help();
+		if (actionCommand.equals("About")){
+		    _about();
+		} else if (actionCommand.equals("Help")) {
+		    _help();
+		}
 	    } catch (Exception exception) {
 		// If we do not catch exceptions here, then they
 		// disappear to stdout, which is bad if we launched
