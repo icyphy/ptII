@@ -67,7 +67,6 @@ are selected first in situations involving simultaneous event times.
 
 @author John S. Davis II
 @version @(#)DDEIOPort.java	1.5	11/16/98
-@see ptolemy.domains.dde.kernel.Event
 */
 
 public class DDEIOPort extends TypedIOPort {
