@@ -46,7 +46,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.977173388761, 0.782290389121, 0.716376852477, 0.17035747919, 0.5732095029671, 0.2648833242711, 0.3080830171239, 0.8702724122559, 0.5145386646036, 0.1984330233536, 0.4483712154906, 0.4866159928497, 0.8457034198218, 0.0745290601044, 0.162882695382, 0.45868594083, 0.4458095130976, 0.6255568221677, 0.212561246648, 0.3983730392065, 0.3865481286775, 0.3172287920024, 0.8986850632937, 0.5793196179438, 0.3357649089303}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -133,7 +133,7 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -145,7 +145,7 @@
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0459198331824, 1.3286441019975, 1.0739701355921, 1.2877272123809, 0.2726191312436, 1.2589413774866, 0.9199234668375, 0.36065215698, 1.4120952815849, 0.9988753071431, 1.9598425239219, 1.4915229096279, 0.4830983533911, 0.9275319791551, 1.2884299099248, 1.0379758303458, 0.6672206325223, 1.6389381897729, 0.6000647608847, 0.0603765022383, 0.1242531854999, 0.2048670057355, 1.2453559056801, 0.7728421697059, 1.2952559668025}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -157,7 +157,7 @@
     <entity name="Test4" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.8909120552158, 0.0011951637521, 0.3837295064106, 0.8719497776549, 0.0025576409824, 0.1975140680347, 1.7608698814986, 2.827051441793, 1.8518292728283, 0.2982403965394, 0.0070893646117, 1.6719336430701, 0.3457297846481, 0.0683957053527, 0.6463120664735, 1.0876923771757, 0.3964356769641, 1.4522728817546, 2.8432072702072, 2.2529200207139, 0.0211173526208, 0.0242534127512, 0.0270213004761, 0.3148301753306, 3.3258383343041}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -169,7 +169,7 @@
     <entity name="Test5" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.4078104439361, 0.4836759814398, 0.9771569119654, 1.0715462882549, 0.894571363281, 6.0114909720453, 0.6199072214625, 0.4984361702208, 0.9480651387475, 0.215607856022, 1.5202233861911, 1.5115105880756, 0.2730399384954, 0.5999430168903, 1.3230371317613, 4.0839451279115, 0.7847958458287, 4.8694241388069, 4.8513964799989, 0.3413411635881, 1.0558063076424, 0.3759193533696, 2.7556023300296, 0.5559641284676, 0.8495669946162}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -181,7 +181,7 @@
     <entity name="Test6" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.2925302608796, -0.8273844529105, -0.178849819976, -0.2054274527378, 1.0464940763444, -1.0891078506578, -0.1571061299126, 2.7697277649704, 2.0111096880608, -1.7610564259893, -0.0190172835, -0.6629908572972, 0.6126648113541, 0.0614605361016, 0.5583339231584, -0.0164034112765, 0.0163706314458, -1.7585882480381, -2.9450872924648, -1.0282029707672, 1.3436898515192, -1.8297379586262, 1.0678884598087, -0.9073578106136, 0.6521586362202}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -193,7 +193,7 @@
     <entity name="Test7" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.6381311292302, 3.0551106529605, 0.023054255133, 0.4955306293136, 1.746915555201, 1.7168654157839, 0.326351200311, 0.0365201563119, 0.0095414504246, 0.2511683920582, 0.1610727252889, 2.8988165331123, 0.3212765224625, 2.5228889722703, 0.185966053883, 0.5622222911836, 0.2395181741688, 1.0242002907564, 0.4069069787703, 2.6559763665663, 1.2245653433987, 0.7462011755206, 0.325671945631, 0.9155102707761, 0.0359296059033}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -205,7 +205,7 @@
     <entity name="Test8" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -217,7 +217,7 @@
     <entity name="Test9" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 6.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 2.0, 1.0, 4.0, 2.0, 1.0, 1.0, 1.0, 6.0, 4.0, 2.0, 1.0, 2.0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -229,7 +229,7 @@
     <entity name="Test10" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 3, 0, 4, 5, 1, 1, 0, 2, 0, 1, 3, 1, 0, 0, 1, 3, 0, 0, 1, 0, 0, 1, 3}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -241,7 +241,7 @@
     <entity name="Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5503979711198, 1.4082867020045, 2.1045743736133, 0.8396500894964, 1.3438373516998, 0.4190773601651, 0.6989505971328, 1.7024799243527, 1.8357918143427, 1.2801432608021, 0.8860103684518, 2.1495782906961, 0.6355049040032, 0.3007148376862, 2.3446588700788, 0.7619824676783, 1.9708557897353, -0.5552362510405, 0.6613918186936, 0.038975208904, 3.3070836671802, 0.7819887451713, -0.3385239671393, 2.2870440816541, 1.918252801031}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -253,7 +253,7 @@
     <entity name="Test12" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 0, 1, 1, 0, 3, 1, 2, 2, 1, 1, 1, 3, 1, 1, 1, 0, 0, 1, 1, 3, 2, 0, 0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -265,7 +265,7 @@
     <entity name="Test13" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 3, 3, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 2, 1, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -277,7 +277,7 @@
     <entity name="Test14" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.1479107250932, 0.3729421428449, -0.4147985948803, 0.6690262900551, -1.4654724399796, 2.3000534786199, -0.9872330671958, -0.9884643637514, 0.2735035485457, -0.6429824367026, 3.19273246989, 0.2919647579134, 1.3132920540515, -5.1534245507641, -38.939835958985, -11.460220215418, -0.0653915721696, -0.9594486500155, -8.8798450934754, -0.3694750667706, -28.0787585936582, 1.6895914591173, 0.8643767691085, 1.2224557373736, -0.2801533181778}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -289,7 +289,7 @@
     <entity name="Test15" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.7316194749286, -0.6293656278374, -0.1327424701506, -0.5622496041045, 2.3781147332696, -0.7421362493668, 0.107681613108, 2.1002534489738, -1.3063222967339, 3.0389361635527, -2.2559560466629, -0.4668036935173, -1.1918932906338, -1.1398194809961, 0.0542645800904, 0.9992701076467, -2.3937638539711, 0.1031107398415, 0.0625224034427, -0.4955781483483, 1.1362575246483, 0.9138691263355, 2.0537092808264, 0.6602435997845, -1.4165381240687}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
@@ -301,7 +301,7 @@
     <entity name="Test16" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{23, 3, 7, 17, 1, 1, 5, 1, 8, 1, 1, 6, 1, 2, 7, 7, 9, 1, 4, 12, 11, 1, 1, 21, 1}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
