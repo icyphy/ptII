@@ -333,9 +333,6 @@ public class Audio {
      *  @param input The input stream.
      *  @return The audio data as an array of doubles.
      *  @exception IOException If an I/O error occurs reading the stream.
-     *  @exception IllegalArgumentException If the input stream
-     *   is not an understood format.  This is a runtime exception, so it need
-     *   not be declared explicitly
      */
     public static double[] readAudio(DataInputStream input)
             throws IOException {
