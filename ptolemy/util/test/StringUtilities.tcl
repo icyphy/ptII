@@ -82,6 +82,10 @@ test StringUtilities-1.6 {substitution checks} {
     java::call ptolemy.util.StringUtilities escapeForXML "\"My n&me is <&rf>\""
 } {&quot;My n&amp;me is &lt;&amp;rf&gt;&quot;}
 
+test StringUtilities-1.7 {substitution checks} {
+    java::call ptolemy.util.StringUtilities substitute "\"foo\"" "\"" "aaa"
+} {aaafooaaa}
+
 test StringUtilities-2.0 {abbreviate short string} {
     java::call ptolemy.util.StringUtilities abbreviate "short string"
 } {short string}
@@ -117,7 +121,7 @@ test StringUtilities-4.2.1 {split longer string} {
     set result [java::call ptolemy.util.StringUtilities split \
 	"This string is long, and should be abbreviated, it is more than 80 characters long, is it not? And, it has another line, so this long line should be split into at least three smaller lines, right?  I mean right?"]
     list $result	
-} {{{This string is long, and should be abbreviated, it is more than 80 characters
+} {{This string is long, and should be abbreviated, it is more than 80 characters
 long, is it not? And, it has another line, so this long line should be split
 into at least three smaller lines, right?  I mean right?}}
 
