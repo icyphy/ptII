@@ -418,7 +418,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 				tests \
 			);  \
 		    fi ; \
@@ -728,7 +728,7 @@ remote1distjsall_1:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -744,7 +744,7 @@ remote1distjsall_2:
 		install)
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
-			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			JTCLSHFLAGS="-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
 
@@ -985,7 +985,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k \
-			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 			tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -1088,7 +1088,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) \
-			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 		tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -1255,7 +1255,7 @@ remote4javatest:
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
 		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=66000 \
+		"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=66000 -Xmx256M" \
 		test_long)
 
 ##########################################################################
@@ -1332,7 +1332,7 @@ remote5shallowtest:
 	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
 		PTII=$(REMOTE5PTIIDIST) \
 		$(MAKE) \
-			JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=20800 \
+			"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=20800 -Xmx256M" \
 			test_long)
 
 
@@ -1432,7 +1432,7 @@ remote6buildjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 				jsoriginal clean jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -1447,7 +1447,7 @@ remote6autojsall:
 			( cd $$x/test ; \
 			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
 				jstest_jauto; \
 			);  \
 		    fi ; \
