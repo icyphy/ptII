@@ -31,7 +31,7 @@
 #  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
 #  and ptolemy/web/nightly/toc.htm on the website
 MAJOR_VERSION = 	2.0
-MINOR_VERSION =		beta
+MINOR_VERSION =		-beta
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
@@ -55,7 +55,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
+PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -229,14 +229,16 @@ $(PTII_SRC): $(PTII_FULL)
 update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
-	gzip installshield/ptII$(WINDOWS_VERSION)setup.jar
-	cp -p $(PTII_FULL) $(PTII_SRC) \
+	-gzip installshield/ptII$(WINDOWS_VERSION)setup.jar
+	-cp -p $(PTII_FULL) $(PTII_SRC) \
 		installshield/ptII$(WINDOWS_VERSION)setup.jar.gz \
 		installshield/applet/ptII$(WINDOWS_VERSION)setup.exe \
 		$(PTII_FTP)
 untar:
 	rm -rf $(PTII_FTP)/ptII$(VERSION)
-	cd $(PTII_FTP); /usr/tools/gnu/bin/tar -zxf $(PTII_FULL)
+	cd $(PTII_FTP); $(TAR) -zxf $(PTII_FULL)
+	@echo "Don't forget to do "
+	@echo "  cd $PTIIHOME; make jnlp_dist STOREPASSWORD=\"-storepass xxx\""
 
 # Make the distribution, run htmlchek
 htmlchek:
