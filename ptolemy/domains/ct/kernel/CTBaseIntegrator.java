@@ -36,7 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.TimedActor;
-import java.util.Enumeration;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,24 +72,24 @@ by all the step size control actors.
 tentative state: This is the resolved state which has not been confirmed.
 It is a starting point for other actor to control the successfulness
 of this integration step.
-history: The previous states, which may be used by some integration method.
+history: The previous states and their derivatives. They may be used 
+by multistep methods.
 <P>
 For different ODE solving methods, the functionality
-of a integrator could be different. This class provide a basic
-implementation of the integrator, so some solver-dependent methods are
-delegated to the current ODE solver.
+of an integrator may be different. This class provide a basic
+implementation of the integrator, and some solver-dependent methods are
+delegated to the ODE solvers.
 <P>
 An integrator has one parameter: <code>initialState</code>. At the
 initialization stage of the simulation, the state of the integrator is
-set to the initial state. The initialState will not impact the simulation
-after the simulation starts. The default value of the parameter is 0.
+set to the initial state. Changing the initialState does not impact 
+the simulation after the simulation starts. 
+The default value of the parameter is 0.
+<P>
 An integrator can possibly have several auxiliary variables--
 <code>_auxVariables</code>. The number of <code>_auxVariables</code> is get
 from the ODE solver.
 <P>
-The integrator remembers the history states and
-their derivatives for the past several steps. The history is used for
-multistep methods.
 
 @author Jie Liu
 @version $Id$
@@ -101,14 +101,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
                CTDynamicActor, CTStatefulActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
-     *  A integrator has one single input port and one single
+     *  An integrator has one single input port and one single
      *  output port.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *
      *  @exception NameDuplicationException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
-     */
+     *
     public CTBaseIntegrator()
             throws NameDuplicationException, IllegalActionException {
 	super();
@@ -136,7 +136,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param workspace The workspace that will list the entity.
      *  @exception NameDuplicationException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
-     */
+     *
     public CTBaseIntegrator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
@@ -151,7 +151,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         initialState = new Parameter(this, "initialState",
                 new DoubleToken(_initState));
     }
-
+    */
     /** Construct an integrator, with a name, a input port, a output port
      *  and a TypedCompositeActor as the container.
      *  A integrator has one single input port and one single
@@ -226,28 +226,27 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the history information of the last index-th step.
-     *  The history array is a two dimensional array, in which
-     *  the first dimension is the capacity of the history,
-     *  and the second dimension has length 2.<BR>
-     *  history[*][0] is the state at the last index-th step;<Br>
-     *  history[*][1] is its derivative.<Br>
+     *  The index start from 0, and getHistory(0) gives the 
+     *  state and derivative of time t(n-1), assuming the current
+     *  time is t(n). If the index is less than 0 or grater than
+     *  the history capacity, an runtime IndexOutOfBoundsException
+     *  will be thrown.
+     *  The returned history array has length 2, where the first 
+     *  element is the history state, and the second element is 
+     *  the corresponding derivative.
+     *  
      *  @param index The index
      *  @return The history array at that index point.
-     *  @exception IllegalActionException If the index is out of bound.
      */
-    public double[] getHistory(int index) throws IllegalActionException {
-        if( index != 0) {
-            throw new IllegalActionException(this,
-                    " history request out of range.");
-        }
-        return _history;
+    public double[] getHistory(int index) {        
+        return ((DoubleDouble)_history.get(index)).toArray();
     }
 
     /** Return the history capacity.
      *  FIXME: In this implementation, it always returns 1.
      */
     public final int getHistoryCapacity() {
-        return 1;
+        return _historyCapacity;
     }
 
     /** Return the initial state.
@@ -266,7 +265,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _tentativeState;
     }
 
-    /** Return the state of the integrator.
+    /** Return the state of the integrator. The returned state is the 
+     *  latest confirmed state. This is the same as getHistory(0)[0].
      *
      *  @return A double number as the state of the integrator.
      */
@@ -295,13 +295,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
             throw new IllegalActionException( this,
                     " no ODE solver available");
         }
-        super.preinitialize();
+        super.initialize();
         _initState = ((DoubleToken)initialState.getToken()).doubleValue();
         _tentativeState = _initState;
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         if(_debugging) _debug(getName(), " init, token = " + _initState);
-        _history = new double[2];
     }
 
     /** Emit the tentative output, which is the tentative state of the
@@ -421,8 +420,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  the capacity is set to 0.
      *  @param cap The capacity.
      */
-    // FIXME: In the current implementation, it does nothing.
     public final void setHistoryCapacity(int cap) {
+        _historyCapacity = (cap>0) ? cap : 0;
     }
 
     /** Set the tentative state. Tentative state is the state that
@@ -456,8 +455,16 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *        capacity 1.
      */
     protected void _pushHistory(double state, double derivative) {
-        _history[0] = state;
-        _history[1] = derivative;
+        if (_history == null) {
+            _history = new LinkedList();
+        }
+        DoubleDouble entry = new DoubleDouble(state, derivative);
+        if (_history.size() >= _historyCapacity) {
+            // the history list has achieved its capacity, 
+            // so remove the oldest entry.
+            _history.removeLast();
+        }
+        _history.addFirst(entry);
     }
 
     /** Set the state of the integrator.
@@ -489,10 +496,39 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     // The history states and its derivative.
     // This variable is needed by Linear Multistep (LMS) methods,
-    // like Trapezoidal rule.
-    // FIXME: In the current implementation, the highest LMS method is of
-    // order 2. So only the information of the last step is needed. But
-    // the interface is provided to have multiple histories and retrieve
-    // them by index.
-    private double[] _history = new double[2];
+    // like Trapezoidal rule and backward defferential formula.
+    private LinkedList _history;
+    
+    // The capacity of the history list.
+    private int _historyCapacity = 1;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                           Inner Class                     ////
+    
+    /** A data structure for storing two double numbers
+     */
+    public class DoubleDouble {
+        
+        /** construct the Double pair.
+         */
+        public DoubleDouble(double first, double second) {
+            _data[0] = first;
+            _data[1] = second;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                         public methods                ////
+        
+        /** Return the data as a double array.
+         */
+        public double[] toArray() {
+            return _data;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                        private variables               ////
+        
+        // The data as a form of a double array of two elements
+        private double[] _data = new double[2];
+    }
 }
