@@ -306,6 +306,7 @@ public class ActorTransformer extends SceneTransformer {
     ////                         private variables                 ////
 
     // Create and set attributes.
+    /*
     public static void _createFieldsForExistingAttributes(
             JimpleBody body, NamedObjConstructorAnalysis analysis, 
             NamedObj context, Local contextLocal, 
@@ -320,10 +321,10 @@ public class ActorTransformer extends SceneTransformer {
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
-        /*    NamedObj classObject = _findDeferredInstance(namedObj);
-        System.out.println("Class object for " + namedObj.getFullName());
-        System.out.println(classObject.exportMoML());
-        */
+        //NamedObj classObject = _findDeferredInstance(namedObj);
+        //System.out.println("Class object for " + namedObj.getFullName());
+        //System.out.println(classObject.exportMoML());
+        
 
         for(Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
@@ -361,7 +362,7 @@ public class ActorTransformer extends SceneTransformer {
             }
 	}
     }
-
+    */
     private static void _implementExecutableInterface(SootClass theClass) {
         // Loop through all the methods and remove calls to super.
         for(Iterator methods = theClass.getMethods().iterator();
