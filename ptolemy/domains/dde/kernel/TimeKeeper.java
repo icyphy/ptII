@@ -410,8 +410,10 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
         String actorName = ((Nameable)_actor).getName();
+        /*
         System.out.println("Actor: " + actorName + " called "
         	+ "sendOutNullTokens.");
+        */
         if( rcvr.isInsideBoundary() ) {
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
                 IOPort port = (IOPort)rcvr.getContainer();
@@ -471,8 +473,10 @@ public class TimeKeeper {
 		    }
 		}
             }
+            /*
             System.out.println("Actor: " + actorName + " called "
         	    + "sendOutNullTokens.");
+            */
             return;
         }
     }
@@ -589,10 +593,10 @@ public class TimeKeeper {
      *  Return false otherwise.
      * @return True if a search for ignored receivers is taking
      *  place; otherwise return false.
-     */
     public boolean searchingForIgnoredTokens() {
 	return _searchingForIgnoredTokens;
     }
+     */
 
     /** Specify according to the parameter whether or not this
      *  TimeKeeper currently has receivers that contain IGNORE
@@ -626,24 +630,6 @@ public class TimeKeeper {
 	    }
 	    _ignoredReceivers = false;
 	}
-        
-        /*
-	_searchingForIgnoredTokens = true;
-	if( _ignoredReceivers ) {
-	    RcvrTimeTriple triple;
-	    DDEReceiver rcvr;
-	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
-	        triple = (RcvrTimeTriple)_rcvrTimeList.at(i);
-		rcvr = (DDEReceiver)triple.getReceiver();
-		if( rcvr.getRcvrTime() ==
-			TimedQueueReceiver.IGNORE ) {
-		    rcvr.clearIgnoredTokens();
-		}
-	    }
-	    _ignoredReceivers = false;
-	}
-	_searchingForIgnoredTokens = false;
-        */
     }
 
     /** Update the list of TimedQueueReceivers.
@@ -728,10 +714,10 @@ public class TimeKeeper {
     /** Set a flag indicating whether a search for ignored
      *  tokens is taking place as per the specified parameter.
      * @param search The search flag.
-     */
     synchronized void setSearchForIgnoredTokens(boolean search) {
 	_searchingForIgnoredTokens = search;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods		   ////
@@ -854,7 +840,7 @@ public class TimeKeeper {
 
     // A flag to prevent infinite cycles while searching for
     // receivers with receiver time = TimedQueueReceiver.IGNORE
-    private boolean _searchingForIgnoredTokens = false;
+    // private boolean _searchingForIgnoredTokens = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
