@@ -113,7 +113,7 @@ test DoubleToken-2.2 {Create a non-empty instance and query its value as an int}
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.DoubleToken to an int losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleToken '12.0' to the type int.}}
 
 ######################################################################
 ####
@@ -123,7 +123,7 @@ test DoubleToken-2.3 {Create a non-empty instance and query its value as a long}
    catch {$p longValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.DoubleToken to a long losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleToken '12.0' to the type long.}}
 
 ######################################################################
 ####

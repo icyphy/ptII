@@ -89,7 +89,7 @@ test ComplexToken-2.1 {Test doubleValue} {
     # use the Complex above
     catch {$p doubleValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.ComplexToken to a double losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '3.3 + 4.4i' to the type double.}}
 
 ######################################################################
 ####
@@ -98,7 +98,7 @@ test ComplexToken-2.2 {Test intValue} {
     # use the Complex above
     catch {$p intValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.ComplexToken to an int losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '3.3 + 4.4i' to the type int.}}
 
 ######################################################################
 ####
@@ -107,7 +107,7 @@ test ComplexToken-2.3 {Test longValue} {
     # use the Complex above
     catch {$p longValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.ComplexToken to a long losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '3.3 + 4.4i' to the type long.}}
 
 ######################################################################
 ####

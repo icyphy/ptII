@@ -88,7 +88,7 @@ test LongToken-2.1 {Create a non-empty instance and query its value as a double}
     catch {$p doubleValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to a double losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type double.}}
 
 ######################################################################
 ####
@@ -98,7 +98,7 @@ test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to an int losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type int.}}
 
 ######################################################################
 ####
@@ -115,7 +115,7 @@ test LongToken-2.4 {Create a non-empty instance and query its value as a complex
     set p [java::new {ptolemy.data.LongToken long} 12]
     catch {$p complexValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to a Complex losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type Complex.}}
 
 ######################################################################
 ####

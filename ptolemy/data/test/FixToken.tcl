@@ -151,17 +151,17 @@ test FixToken-4.0 {Test fixValue} {
 test FixToken-4.1 {Test doubleValue} {
     catch {$p doubleValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to a double losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(5.573486328125,16,4)' to the type double.}}
 
 test FixToken-4.2 {Test intValue} {
     catch {$p intValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to an int losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(5.573486328125,16,4)' to the type int.}}
 
 test FixToken-4.3 {Test longValue} {
     catch {$p longValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to a long losslessly.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(5.573486328125,16,4)' to the type long.}}
 
 test FixToken-4.4 {Test toString} {
     $p toString
@@ -204,7 +204,7 @@ test FixToken-5.1 {Test equality between FixToken and IntToken} {
         catch { [$r1 {isEqualTo ptolemy.data.Token} $i1] } msg
 	list $msg
 
-} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.FixToken 'fix(5.375,32,4)' and ptolemy.data.IntToken '8' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported between ptolemy.data.FixToken 'fix(5.375,32,4)' and ptolemy.data.IntToken '8' because the types are incomparable.}}
 
 
 # Helper proc: given a FixPoint, print out a string like
