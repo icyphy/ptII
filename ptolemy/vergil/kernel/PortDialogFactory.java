@@ -38,6 +38,7 @@ import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import java.awt.Component;
@@ -96,7 +97,7 @@ public class PortDialogFactory implements MenuItemFactory {
                         DialogTableau.createDialog(
                             (Frame) parent,
                             _configuration,
-                            ((ActorGraphFrame) parent).getEffigy(),
+                            ((BasicGraphFrame) parent).getEffigy(),
                             PortConfigurerDialog.class,
                             (Entity) target);
                     if (dialogTableau != null) {
