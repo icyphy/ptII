@@ -205,6 +205,16 @@ public class Fraction extends Object {
         return numerator / denominator;
     }
     
+    /** Convert the fraction to a float.
+     *  @return The float value.
+     */
+    public float toFloat() {
+        float numerator, denominator;
+        numerator = (float)_num;
+        denominator = (float)_den;
+        return numerator / denominator;
+    }
+    
     /** Convert the fraction to a readable string.
      */
     public String toString() {
