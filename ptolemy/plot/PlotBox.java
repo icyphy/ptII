@@ -880,7 +880,7 @@ public class PlotBox extends JPanel implements Printable {
         //  super.paintComponent(graphics);
         //         _drawPlot(graphics, true);
         BufferedImage newPlotImage = _plotImage;
-        if(newPlotImage == null) {
+        if (newPlotImage == null) {
             Rectangle bounds = getBounds();
             newPlotImage = new BufferedImage(
                     bounds.width, bounds.height,
