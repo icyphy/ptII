@@ -31,8 +31,11 @@ package ptolemy.plot;
 
 import java.awt.Graphics;
 import java.awt.EventQueue;
-import java.io.*;
-import java.util.*;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Random;
+import java.util.Vector;
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,7 +117,7 @@ data is used to calculate the histogram.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.3
- */
+*/
 public class Histogram extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
