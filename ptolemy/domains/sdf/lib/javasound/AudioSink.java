@@ -63,10 +63,10 @@ audio, tokens are read from channel 0 of the input port. For multichannel
 token is read on each channel of the input port, on each firing,
 corresponding
 to the number of audio channels. In the actual implementation,
-serveral tokens may be consumed on each channel, on each
+several tokens may be consumed on each channel, on each
 firing, in order to
 improve performance. The number of tokens consumed on each
-channel on each firing is set by parameter <i>tokenConsimptionRate</i>.
+channel on each firing is set by parameter <i>tokenConsumptionRate</i>.
 <p>
 <h2>Notes on audio sinks and required parameters</h2>
 <p>(1) Real-time playback of audio. Note that this
@@ -85,15 +85,15 @@ resolution.
 channels.
 <li><i>bufferSize</i> may be set to optimize latency.
 This controls the delay from the time audio sample are read by this
-actor until the audio is acutally heard at the speaker. A lower
+actor until the audio is actually heard at the speaker. A lower
 bound on the latency is given by
 (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
-Ideally, the smallest value that gives acceptable performance (no unerflow)
+Ideally, the smallest value that gives acceptable performance (no underflow)
 should be used.
 <li><i>tokenProductionRate</i> may be set to optimize
 performance.
 </ul>
-<p>(2) Write to a sound file on the native file sytem.
+<p>(2) Write to a sound file on the native file system.
 <p>
 The following parameters are relavent to writing to a sound
 file.
@@ -162,7 +162,7 @@ public class AudioSink extends SDFAtomicActor {
      *  by this actor. Possible choices are:
      *  <p>(1) The speaker. Audio samples are sent to the speaker.
      *  To use this mode, <i>sink</i> must be set to "speaker". The
-     *  latency between when the samples are recieved by this actor
+     *  latency between when the samples are received by this actor
      *  and when they actually make it to the speaker roughly
      *  corresponds to the size of the internal audio buffer.
      *  If this mode is used, than it is important to call the
@@ -176,7 +176,7 @@ public class AudioSink extends SDFAtomicActor {
     public Parameter sink;
 
     /** The name of the file to write to. If no value is specified,
-     *  the default vaule of "soundFile.wav" will be used. Note
+     *  the default value of "soundFile.wav" will be used. Note
      *  that audio will only be written to a sound file if
      *  parameter <i>sink</i> is set to "file".
      *  <p>
@@ -206,7 +206,7 @@ public class AudioSink extends SDFAtomicActor {
      *  smallest value that gives acceptable performance (no overflow)
      *  should be used. The value should be chosen larger than the
      *  production rate of this actor.
-     *  The defulat value is 4096.
+     *  The default value is 4096.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio data is sent to the speaker in real-time.
