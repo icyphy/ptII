@@ -46,7 +46,7 @@ director and when an actor is executed that contains a breakpoint with a
 name corresponding to the name of a called method, will suspend the executing
 thread.
 
-@see ptolemy.kernel.util.FiringEvent
+@see ptolemy.actor.FiringEvent
 @see DebugController
 
 @author  B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
