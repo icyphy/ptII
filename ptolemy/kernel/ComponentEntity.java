@@ -113,16 +113,17 @@ public class ComponentEntity extends Entity {
      *  yourself if you want it there).
      *  The result is a new entity with the same ports as the original, but
      *  no connections.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ComponentEntity newobj = (ComponentEntity)super.clone(ws);
-        newobj._container = null;
-        return newobj;
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
+        newObject._container = null;
+        return newObject;
     }
 
     /** Get the container entity.
@@ -218,21 +219,22 @@ public class ComponentEntity extends Entity {
             // NOTE: The following code is quite tricky.  It is very careful
             // to leave a consistent state even in the face of unexpected
             // exceptions.  Be very careful if modifying it.
-            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
-            if (prevcontainer == container) return;
+            CompositeEntity previousContainer =
+                (CompositeEntity)getContainer();
+            if (previousContainer == container) return;
 
             // Do this first, because it may throw an exception, and we have
             // not yet changed any state.
             if (container != null) {
                 container._addEntity(this);
-                if (prevcontainer == null) {
+                if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
             _container = container;
-            if (prevcontainer != null) {
+            if (previousContainer != null) {
                 // This is safe now because it does not throw an exception.
-                prevcontainer._removeEntity(this);
+                previousContainer._removeEntity(this);
             }
             if (container == null) {
                 Iterator ports = portList().iterator();

@@ -141,33 +141,34 @@ public class Entity extends NamedObj {
      *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are not connected to anything.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
      *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Entity newentity = (Entity)super.clone(ws);
-        newentity._portList = new NamedList(newentity);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Entity newEntity = (Entity)super.clone(workspace);
+        newEntity._portList = new NamedList(newEntity);
         // Clone the ports.
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
-            Port newport = (Port)port.clone(ws);
+            Port newPort = (Port)port.clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally (the original was successfully
             // incorporated, so this one should be too).  If they do, throw an
             // InvalidStateException.
             try {
-                newport.setContainer(newentity);
+                newPort.setContainer(newEntity);
             } catch (KernelException ex) {
-                ws.remove(newentity);
+                workspace.remove(newEntity);
                 throw new InvalidStateException(this,
                         "Failed to clone an Entity: " + ex.getMessage());
             }
         }
-        return newentity;
+        return newEntity;
     }
 
     /** Return a list of the ports that are connected to contained ports.
@@ -186,18 +187,18 @@ public class Entity extends NamedObj {
             // That list will not be corrupted by changes
             // in the topology.
             // The linked list is cached for efficiency.
-            if (_workspace.getVersion() != _connectedportsversion) {
+            if (_workspace.getVersion() != _connectedPortsVersion) {
                 // Cache is not valid, so update it.
-                _connectedports = new LinkedList();
+                _connectedPorts = new LinkedList();
                 Iterator ports = _portList.elementList().iterator();
 
                 while( ports.hasNext() ) {
                     Port port = (Port)ports.next();
-                    _connectedports.addAll( port.connectedPortList() );
+                    _connectedPorts.addAll( port.connectedPortList() );
                 }
-                _connectedportsversion = _workspace.getVersion();
+                _connectedPortsVersion = _workspace.getVersion();
             }
-            return Collections.unmodifiableList(_connectedports);
+            return Collections.unmodifiableList(_connectedPorts);
         } finally {
             _workspace.doneReading();
         }
@@ -287,18 +288,18 @@ public class Entity extends NamedObj {
             _workspace.getReadAccess();
             // This method constructs a list and then enumerates it.
             // The list is cached for efficiency.
-            if (_workspace.getVersion() != _linkedrelationsversion) {
+            if (_workspace.getVersion() != _linkedRelationsVersion) {
                 // Cache is not valid.  Update it.
-                _linkedrelations = new LinkedList();
+                _linkedRelations = new LinkedList();
                 Iterator ports = _portList.elementList().iterator();
 
                 while( ports.hasNext() ) {
                     Port port = (Port)ports.next();
-                    _linkedrelations.addAll( port.linkedRelationList() );
+                    _linkedRelations.addAll( port.linkedRelationList() );
                 }
-                _linkedrelationsversion = _workspace.getVersion();
+                _linkedRelationsVersion = _workspace.getVersion();
             }
-            return Collections.unmodifiableList(_linkedrelations);
+            return Collections.unmodifiableList(_linkedRelations);
         } finally {
             _workspace.doneReading();
         }
@@ -451,10 +452,10 @@ public class Entity extends NamedObj {
                     result += " ";
                 }
                 result += "ports {\n";
-                Iterator iter = portList().iterator();
-                while (iter.hasNext()) {
-                    Port port = (Port)iter.next();
-                    result += port._description(detail, indent+1, 2) + "\n";
+                Iterator portLists = portList().iterator();
+                while (portLists.hasNext()) {
+                    Port port = (Port)portLists.next();
+                    result += port._description(detail, indent + 1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }
@@ -503,10 +504,10 @@ public class Entity extends NamedObj {
     private NamedList _portList;
 
     // Cached list of connected ports.
-    private transient LinkedList _connectedports;
-    private transient long _connectedportsversion = -1;
+    private transient LinkedList _connectedPorts;
+    private transient long _connectedPortsVersion = -1;
 
     // @serial Cached list of linked relations.
-    private transient LinkedList _linkedrelations;
-    private transient long _linkedrelationsversion = -1;
+    private transient LinkedList _linkedRelations;
+    private transient long _linkedRelationsVersion = -1;
 }

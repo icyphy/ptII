@@ -117,15 +117,17 @@ public class ComponentRelation extends Relation {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new relation with no links and no container.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the attributes
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ComponentRelation newobj = (ComponentRelation)super.clone(ws);
-        newobj._container = null;
-        return newobj;
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ComponentRelation newObject =
+            (ComponentRelation)super.clone(workspace);
+        newObject._container = null;
+        return newObject;
     }
 
     /** Deeply list the ports linked to this relation. Look through
@@ -136,31 +138,31 @@ public class ComponentRelation extends Relation {
     public List deepLinkedPortList() {
         try {
             _workspace.getReadAccess();
-            if (_deeplinkedportsversion == _workspace.getVersion()) {
+            if (_deepLinkedPortsVersion == _workspace.getVersion()) {
                 // Cache is valid.  Use it.
-                return _deeplinkedports;
+                return _deepLinkedPorts;
             }
-            Iterator nearports = linkedPortList().iterator();
-            _deeplinkedports = new LinkedList();
+            Iterator nearPorts = linkedPortList().iterator();
+            _deepLinkedPorts = new LinkedList();
 
-            while( nearports.hasNext() ) {
-                ComponentPort port = (ComponentPort)nearports.next();
+            while( nearPorts.hasNext() ) {
+                ComponentPort port = (ComponentPort)nearPorts.next();
                 if (port._isInsideLinkable(this.getContainer())) {
                     // Port is above me in the hierarchy.
                     if (port.isOpaque()) {
                         // Port is opaque.  Append it to list.
-                        _deeplinkedports.add(port);
+                        _deepLinkedPorts.add(port);
                     } else {
                         // Port is transparent.  See through it.
-                        _deeplinkedports.addAll(port.deepConnectedPortList());
+                        _deepLinkedPorts.addAll(port.deepConnectedPortList());
                     }
                 } else {
                     // Port below me in the hierarchy.
-                    _deeplinkedports.addAll(port.deepInsidePortList());
+                    _deepLinkedPorts.addAll(port.deepInsidePortList());
                 }
             }
-            _deeplinkedportsversion = _workspace.getVersion();
-            return Collections.unmodifiableList(_deeplinkedports);
+            _deepLinkedPortsVersion = _workspace.getVersion();
+            return Collections.unmodifiableList(_deepLinkedPorts);
         } finally {
             _workspace.doneReading();
         }
@@ -214,18 +216,19 @@ public class ComponentRelation extends Relation {
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
-            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
-            if (prevcontainer == container) return;
+            CompositeEntity previousContainer
+                = (CompositeEntity)getContainer();
+            if (previousContainer == container) return;
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addRelation(this);
-                if (prevcontainer == null) {
+                if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
             _container = container;
-            if (prevcontainer != null) {
-                prevcontainer._removeRelation(this);
+            if (previousContainer != null) {
+                previousContainer._removeRelation(this);
             }
             if (container == null) {
                 unlinkAll();
@@ -325,6 +328,6 @@ public class ComponentRelation extends Relation {
     // A cache of the deeply linked ports, and the version used to
     // construct it.
     // 'transient' means that the variable will not be serialized.
-    private transient List _deeplinkedports;
-    private transient long _deeplinkedportsversion = -1;
+    private transient List _deepLinkedPorts;
+    private transient long _deepLinkedPortsVersion = -1;
 }

@@ -165,22 +165,23 @@ public class ComponentPort extends Port {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new port with no connections and no container.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the
      *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ComponentPort newobj = (ComponentPort)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ComponentPort newObject = (ComponentPort)super.clone(workspace);
         try {
-            newobj._insideLinks = new CrossRefList(newobj);
+            newObject._insideLinks = new CrossRefList(newObject);
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
                     "Internal error in ComponentPort clone() method!"
                     + ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** Deeply list the ports connected to this port on the outside.
@@ -400,9 +401,9 @@ public class ComponentPort extends Port {
      *  @return True if the container entity is opaque.
      */
     public boolean isOpaque() {
-        ComponentEntity ent = (ComponentEntity)getContainer();
-        if (ent == null) return true;
-        return ent.isOpaque();
+        ComponentEntity entity = (ComponentEntity)getContainer();
+        if (entity == null) return true;
+        return entity.isOpaque();
     }
 
     /** Link this port with the specified relation.  The only constraints are
@@ -635,9 +636,9 @@ public class ComponentPort extends Port {
             }
             Nameable container = getContainer();
             if (container != null) {
-                Nameable relcont = relation.getContainer();
-                if (container != relcont &&
-                        container.getContainer() != relcont) {
+                Nameable relationContainer = relation.getContainer();
+                if (container != relationContainer &&
+                        container.getContainer() != relationContainer) {
                     throw new IllegalActionException(this, relation,
                             "Link crosses levels of the hierarchy");
                 }
@@ -668,9 +669,9 @@ public class ComponentPort extends Port {
      *  @return An unmodifiable list of ComponentPort objects.
      */
     protected List _deepConnectedPortList(LinkedList path) {
-        if (_deeplinkedportsversion == _workspace.getVersion()) {
+        if (_deepLinkedPortsVersion == _workspace.getVersion()) {
             // Cache is valid.  Use it.
-            return _deeplinkedports;
+            return _deepLinkedPorts;
         }
         if(path == null) {
             path = new LinkedList();
@@ -680,21 +681,21 @@ public class ComponentPort extends Port {
             }
         }
         path.add(0, this);
-        Iterator nearrelations = linkedRelationList().iterator();
+        Iterator nearRelations = linkedRelationList().iterator();
         LinkedList result = new LinkedList();
 
-        while( nearrelations.hasNext() ) {
+        while( nearRelations.hasNext() ) {
             ComponentRelation relation =
-                (ComponentRelation)nearrelations.next();
+                (ComponentRelation)nearRelations.next();
 
             // A null link (supported since indexed links) might
             // yield a null relation here. EAL 7/19/00.
             if (relation != null) {
-                Iterator connectedports
+                Iterator connectedPorts
                         = relation.linkedPortList(this).iterator();
-                while (connectedports.hasNext()) {
+                while (connectedPorts.hasNext()) {
                     ComponentPort port
-                            = (ComponentPort)connectedports.next();
+                            = (ComponentPort)connectedPorts.next();
                     // NOTE: If level-crossing transitions are not allowed,
                     // then a simpler test than that of the following
                     // would work.
@@ -718,10 +719,10 @@ public class ComponentPort extends Port {
                 }
             }
         }
-        _deeplinkedports = Collections.unmodifiableList(result);
-        _deeplinkedportsversion = _workspace.getVersion();
+        _deepLinkedPorts = Collections.unmodifiableList(result);
+        _deepLinkedPortsVersion = _workspace.getVersion();
         path.remove(0);
-        return _deeplinkedports;
+        return _deepLinkedPorts;
     }
 
     /** Deeply enumerate the ports connected to this port on the outside.
@@ -763,9 +764,9 @@ public class ComponentPort extends Port {
      *  @return An unmodifiable list of ComponentPort objects.
      */
     protected List _deepInsidePortList(LinkedList path) {
-        if (_deeplinkedinportsversion == _workspace.getVersion()) {
+        if (_deepLinkedInPortsVersion == _workspace.getVersion()) {
             // Cache is valid.  Use it.
-            return _deeplinkedinports;
+            return _deepLinkedInPorts;
         }
         if(path == null) {
             path = new LinkedList();
@@ -784,35 +785,35 @@ public class ComponentPort extends Port {
             Iterator relations = insideRelationList().iterator();
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
-                Iterator insideports = relation.linkedPortList(this).iterator();
-                while (insideports.hasNext()) {
-                    ComponentPort downport =
-                        (ComponentPort)insideports.next();
+                Iterator insidePorts = relation.linkedPortList(this).iterator();
+                while (insidePorts.hasNext()) {
+                    ComponentPort downPort =
+                        (ComponentPort)insidePorts.next();
                     // The inside port may not be actually inside,
                     // in which case we want to look through it
                     // from the inside (this supports transparent
                     // entities).
-                    if (downport._isInsideLinkable(relation.getContainer())) {
+                    if (downPort._isInsideLinkable(relation.getContainer())) {
                         // The inside port is not truly inside.
                         // Check to see whether it is transparent.
-                        if (downport.isOpaque()) {
-                            result.add(downport);
+                        if (downPort.isOpaque()) {
+                            result.add(downPort);
                         } else {
                             result.addAll(
-                                    downport._deepConnectedPortList(path));
+                                    downPort._deepConnectedPortList(path));
                         }
                     } else {
                         // The inside port is truly inside.
                         result.addAll(
-                                downport._deepInsidePortList(path));
+                                downPort._deepInsidePortList(path));
                     }
                 }
             }
         }
-        _deeplinkedinports = Collections.unmodifiableList(result);
-        _deeplinkedinportsversion = _workspace.getVersion();
+        _deepLinkedInPorts = Collections.unmodifiableList(result);
+        _deepLinkedInPortsVersion = _workspace.getVersion();
         path.remove(0);
-        return _deeplinkedinports;
+        return _deepLinkedInPorts;
     }
 
     /** If this port is transparent, then deeply enumerate the ports
@@ -869,13 +870,14 @@ public class ComponentPort extends Port {
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "insidelinks {\n";
-                Iterator enum = insideRelationList().iterator();
-                while (enum.hasNext()) {
-                    Relation rel = (Relation)enum.next();
-                    if (rel != null) {
-                        result += rel._description(detail, indent+1, 2) + "\n";
+                Iterator insideRelations = insideRelationList().iterator();
+                while (insideRelations.hasNext()) {
+                    Relation relation = (Relation)insideRelations.next();
+                    if (relation != null) {
+                        result += relation._description(detail,
+                                indent + 1, 2) + "\n";
                     } else {
-                        result += _getIndentPrefix(indent+1) + "null\n";
+                        result += _getIndentPrefix(indent + 1) + "null\n";
                     }
                 }
                 result += _getIndentPrefix(indent) + "}";
@@ -896,9 +898,9 @@ public class ComponentPort extends Port {
     protected boolean _isInsideLinkable(Nameable entity) {
         try {
             _workspace.getReadAccess();
-            Nameable portcontainer = getContainer();
+            Nameable portContainer = getContainer();
             while (entity != null) {
-                if (portcontainer == entity) return true;
+                if (portContainer == entity) return true;
                 entity = entity.getContainer();
             }
             return false;
@@ -953,8 +955,8 @@ public class ComponentPort extends Port {
     // A cache of the deeply linked ports, and the version used to
     // construct it.
     // 'transient' means that the variable will not be serialized.
-    private transient List _deeplinkedports;
-    private transient long _deeplinkedportsversion = -1;
-    private transient List _deeplinkedinports;
-    private transient long _deeplinkedinportsversion = -1;
+    private transient List _deepLinkedPorts;
+    private transient long _deepLinkedPortsVersion = -1;
+    private transient List _deepLinkedInPorts;
+    private transient long _deepLinkedInPortsVersion = -1;
 }
