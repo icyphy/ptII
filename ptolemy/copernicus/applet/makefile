@@ -44,7 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	applet
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-DIRS =
+DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
