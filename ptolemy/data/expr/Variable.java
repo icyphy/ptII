@@ -877,19 +877,6 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
-	// If this variable has a structured type, and the TypeTerm of this
-	// variable is unsettable, make the component of the structured type
-	// to be unsettable. The TypeTerm of this variable can be unsettable
-	// if the token or expression of this variable is not null, even
-	// though the type contains NaT currently.
-	// if (_varType instanceof StructuredType) {
-	//     if ( !getTypeTerm().isSettable()) {
-	//     	((StructuredType)_varType).fixType();
-	//     } else  {
-	//     	((StructuredType)_varType).unfixType();
-	//     }
-	// }
-
         // Include all relative types that have been specified.
 	List result = new LinkedList();
 	result.addAll(_constraints);
@@ -1406,16 +1393,6 @@ public class Variable extends Attribute implements Typeable, Settable {
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
-	/** Disallow the value of this term to be changed.
-	 */
-	public void fixValue() {
-	    _valueFixed = true;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-	    	((StructuredType)value).fixType();
-	    }
-	}
-
 	/** Return this Variable.
 	 *  @return A Variable.
 	 */
@@ -1484,12 +1461,6 @@ public class Variable extends Attribute implements Typeable, Settable {
          */
         public boolean isSettable() {
 	    return ( !_declaredType.isConstant());
-
-//	    if (_token != null || _currentExpression != null ||
-//		_declaredType.isConstant() || _valueFixed) {
-//		return false;
-//	    }
-//	    return true;
         }
 
         /** Check whether the current type of this term is acceptable,
@@ -1547,21 +1518,9 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
         }
 
-	/** Allow the value of this term to be changed, if this term is a
-	 *  variable.
-	 */
-	public void unfixValue() {
-	    _valueFixed = false;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-		((StructuredType)value).unfixType();
-	    }
-	}
-
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
         private Variable _variable = null;
-	private boolean _valueFixed = false;
     }
 }

@@ -67,13 +67,6 @@ public abstract class StructuredType implements Type, Cloneable {
         return super.clone();
     }
 
-    /** If this type is a variable, disallow it to be changed by the
-     *  type resolution procedure. Calling unfixType() will reverse the
-     *  effect of this method. This method does nothing if this type
-     *  is a constant.
-     */
-    public abstract void fixType();
-
     /** Return the user of this StructuredType. If the user is not set,
      *  return null.
      *  @return An Object.
@@ -100,12 +93,6 @@ public abstract class StructuredType implements Type, Cloneable {
     //  @exception IllegalActionException If this type is a constant.
     public abstract void reset();
     // throws IllegalActionException;
-
-    /** If this type is a variable, allow it to be changed by the type
-     *  resolution procedure. This method reverses the effect of fixValue().
-     *  If this type is a constant, this method does nothing.
-     */
-    public abstract void unfixType();
 
     /** Update this StructuredType to the specified Structured Type.
      *  The specified StructuredType must not be a constant, otherwise an

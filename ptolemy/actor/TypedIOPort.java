@@ -611,16 +611,6 @@ public class TypedIOPort extends IOPort implements Typeable {
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
-	/** Disallow the value of this term to be changed.
-	 */
-	public void fixValue() {
-	    _valueFixed = true;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-		((StructuredType)value).fixType();
-	    }
-	}
-
 	/** Return this TypedIOPort.
 	 *  @return A TypedIOPort.
 	 */
@@ -686,10 +676,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    if (_declaredType.isConstant() || _valueFixed) {
-		return false;
-	    }
-	    return true;
+	    return !_declaredType.isConstant();
         }
 
         /** Check whether the current type of this port is acceptable.
@@ -751,21 +738,9 @@ public class TypedIOPort extends IOPort implements Typeable {
             return "(" + _port.toString() + ", " + getType() + ")";
         }
 
-	/** Allow the value of this term to be changed, if this term is a
-	 *  variable.
-	 */
-	public void unfixValue() {
-	    _valueFixed = false;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-		((StructuredType)value).unfixType();
-	    }
-	}
-
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
         private TypedIOPort _port = null;
-	private boolean _valueFixed = false;
     }
 }

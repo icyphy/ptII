@@ -137,12 +137,6 @@ public class ArrayType extends StructuredType {
 	}
     }
 
-    /** Disallow type resolution to change this type.
-     */
-    public void fixType() {
-	getElementTypeTerm().fixValue();
-    }
-
     /** Convert the argument MatrixToken to an ArrayToken. If the argument
      *  has more than one row, convert it to an ArrayToken containing an
      *  ArrayToken (an array of array).
@@ -336,12 +330,6 @@ public class ArrayType extends StructuredType {
 	    // element type is a structured type.
 	    ((StructuredType)_elementType).reset();
 	}
-    }
-
-    /** Allow type resolution to change this type, if this type is a variable.
-     */
-    public void unfixType() {
-	getElementTypeTerm().unfixValue();
     }
 
     /** Update this Type to the specified ArrayType.
@@ -540,16 +528,6 @@ public class ArrayType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
-	/** Disallow the value of this term to be changed.
-	 */
-	public void fixValue() {
-	    _valueFixed = true;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-		((StructuredType)value).fixType();
-	    }
-	}
-
         /** Return this ArrayType.
          *  @return an ArrayType.
          */
@@ -614,10 +592,7 @@ public class ArrayType extends StructuredType {
 	 *  @return True if the element type is a type variable.
      	 */
     	public boolean isSettable() {
-	    if(isConstant() || _valueFixed) {
-		return false;
-	    }
-	    return true;
+	    return !isConstant();
 	}
 
         /** Check whether the current element type is acceptable.
@@ -686,21 +661,9 @@ public class ArrayType extends StructuredType {
 	    return "(ArrayElementType, " + getValue() + ")";
 	}
 
-	/** Allow the type of this term to be changed, if this term is a
-	 *  variable.
-	 */
-	public void unfixValue() {
-	    _valueFixed = false;
-	    Object value = getValue();
-	    if (value instanceof StructuredType) {
-		((StructuredType)value).unfixType();
-	    }
-	}
-
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
 
 	private ArrayType _arrayType = null;
-	private boolean _valueFixed = false;
     }
 }
