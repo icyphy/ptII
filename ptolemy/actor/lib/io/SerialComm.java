@@ -269,7 +269,10 @@ public class SerialComm extends TypedAtomicActor
      *  The one and only method required to implement SerialPortEventListener
      *  <p>
      *  Call the directors fireAt() method when new data is available.
-     *  @exception InternalErrorException If try fails.
+     *  By the reqirement of serialEvent() implementing
+     *  SerialPortEventListener, no exceptions can be thrown.
+     *  However, runtime exceptions are always permitted anyway.
+     *  Thus KernelRuntimeException is permitted.
      */
     public void serialEvent(SerialPortEvent e) {
         try {
