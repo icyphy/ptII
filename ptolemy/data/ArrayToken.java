@@ -227,7 +227,7 @@ public class ArrayToken extends Token {
 	    throws IllegalActionException {
 	if ( !(t instanceof ArrayToken)) {
 	    throw new IllegalActionException("The argument is not " +
-                    "an ArrayToken.");
+                    "an ArrayToken, its type was: " + t.getType() + ".");
 	}
 
 	int length = ((ArrayToken)t).length();
