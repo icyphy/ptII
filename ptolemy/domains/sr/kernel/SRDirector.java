@@ -365,12 +365,12 @@ public class SRDirector extends StaticSchedulingDirector {
                         if (initValues.length() != initialToken) {
                             throw new IllegalActionException(port,
                                     "tokenInitProduction '"
-                                    + initialToken + "' does not match " +
+                                    + initialToken + "' does not match "
                                     + "number of initialTokens '"
-                                    + initValues.length + "'");
+                                    + initValues.length() + "'");
                         }
 
-                        port.broadcast(initvalues.arrayValue(),
+                        port.broadcast(initValues.arrayValue(),
                                 initValues.length());
                     }
                 }
