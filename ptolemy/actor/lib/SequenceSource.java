@@ -91,7 +91,7 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Override the base class to determine which function is being
+   /** Override the base class to determine which attribute is being
      *  specified.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
@@ -141,6 +141,5 @@ public class SequenceSource extends Source implements SequenceActor {
     private int _firingCountLimit;
 
     // The current number of elapsed iterations.
-    // 
     private int _iterationCount = 0;
 }
