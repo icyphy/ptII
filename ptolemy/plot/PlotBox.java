@@ -1819,6 +1819,7 @@ public class PlotBox extends JPanel implements Printable {
         //////////////////// horizontal axis
         int yCoord1 = _uly+tickLength;
         int yCoord2 = _lry-tickLength;
+        int charwidth = _labelFontMetrics.stringWidth("8");
         if (_xticks == null) {
             // auto-ticks
 
@@ -1827,7 +1828,6 @@ public class PlotBox extends JPanel implements Printable {
             int nx = 10;
             double xStep = 0.0;
             int numfracdigits = 0;
-            int charwidth = _labelFontMetrics.stringWidth("8");
             if (_xlog) {
                 // X axes log labels will be at most 6 chars: -1E-02
                 nx = 2 + width/((charwidth * 6) + 10);
@@ -1968,24 +1968,23 @@ public class PlotBox extends JPanel implements Printable {
                 if (labxpos > preLength) {
                     // calculate the length of the label
                     preLength = xCoord1
-                        + _labelFontMetrics.stringWidth(label)/2 + 10;
+                            + _labelFontMetrics.stringWidth(label)/2 + 10;
 
-                        // Draw the label.
-                        // NOTE: 3 pixel spacing between axis and labels.
-                        graphics.drawString(label,
-                                labxpos, _lry + 3 + labelheight);
+                    // Draw the label.
+                    // NOTE: 3 pixel spacing between axis and labels.
+                    graphics.drawString(label,
+                            labxpos, _lry + 3 + labelheight);
 
-                        // Draw the label mark on the axis
-                        graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
-                        graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-
-                        // Draw the grid line
-                        if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                            graphics.setColor(Color.lightGray);
-                            graphics.drawLine(xCoord1, yCoord1,
-                                    xCoord1, yCoord2);
-                            graphics.setColor(_foreground);
-                        }
+                    // Draw the label mark on the axis
+                    graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                    graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
+                    
+                    // Draw the grid line
+                    if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                        graphics.setColor(Color.lightGray);
+                        graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                        graphics.setColor(_foreground);
+                    }
                 }
             }
         }
@@ -2011,16 +2010,30 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         int charcenter = 2 + _labelFontMetrics.stringWidth("W")/2;
-        int charheight = labelheight;
         if (_ylabel != null) {
-            // Vertical label is fairly complex to draw.
             int yl = _ylabel.length();
-            int starty = _uly + (_lry-_uly)/2 - yl*charheight/2 + charheight;
-            for (int i = 0; i < yl; i++) {
-                String nchar = _ylabel.substring(i, i+1);
-                int cwidth = _labelFontMetrics.stringWidth(nchar);
-                graphics.drawString(nchar, charcenter - cwidth/2, starty);
-                starty += charheight;
+            if (graphics instanceof Graphics2D) {
+                int starty = _uly
+                        + (_lry-_uly)/2
+                        + _labelFontMetrics.stringWidth(_ylabel)/2
+                        - charwidth;
+                Graphics2D g2d = (Graphics2D)graphics;
+                // NOTE: Fudge factor so label doesn't touch axis labels.
+                int startx = charcenter + halflabelheight - 2;
+                g2d.rotate(Math.toRadians(-90), startx, starty);
+                g2d.drawString(_ylabel, startx, starty);
+                g2d.rotate(Math.toRadians(90), startx, starty);
+            } else {
+                // Not graphics 2D, no support for rotation.
+                // Vertical label is fairly complex to draw.
+                int starty = _uly
+                        + (_lry-_uly)/2 - yl*halflabelheight + labelheight;
+                for (int i = 0; i < yl; i++) {
+                    String nchar = _ylabel.substring(i, i+1);
+                    int cwidth = _labelFontMetrics.stringWidth(nchar);
+                    graphics.drawString(nchar, charcenter - cwidth/2, starty);
+                    starty += labelheight;
+                }
             }
         }
         graphics.setFont(previousFont);
