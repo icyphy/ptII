@@ -80,7 +80,7 @@ public class PlotApplet extends Applet implements Runnable {
      */
     public void init() {
         if (_debug > 8) System.out.println("PlotApplet: init");
-        int width,height;
+        int width, height;
         setLayout(new BorderLayout());
 
         if ( plot() == null) {
@@ -112,7 +112,7 @@ public class PlotApplet extends Applet implements Runnable {
         }
         if (_debug > 8)
             System.out.println("PlotApplet: init: about to resize"+width);
-        plot().resize(width,height);
+        plot().resize(width, height);
 
         // Process the background parameter.
         try {
