@@ -126,7 +126,7 @@ model is known as a Lorenz attractor.</text>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion" value="2.0">
+    <property name="requireVersion" class="ptolemy.kernel.attributes.RequireVersion" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="requireVersion" class="ptolemy.vergil.icon.ValueIcon">
