@@ -47,7 +47,7 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test BranchController-2.1 {createBranches(), hasIn/OutputPorts()} {
+test BranchController-2.1 {addBranches(), hasIn/OutputPorts()} {
    
     set top [java::new ptolemy.actor.process.MultiBranchActor]
     set cntlr1 [java::new ptolemy.actor.process.BranchController $top]
@@ -57,27 +57,27 @@ test BranchController-2.1 {createBranches(), hasIn/OutputPorts()} {
     set inport [java::new ptolemy.actor.IOPort $top inport true false]
     set outport [java::new ptolemy.actor.IOPort $top outport false true]
     
-    $cntlr1 createBranches $inport
-    $cntlr2 createBranches $outport
+    $cntlr1 addBranches $inport
+    $cntlr2 addBranches $outport
    
     set val 1
     if { [$cntlr1 hasInputPorts] != 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$cntlr2 hasOutputPorts] != 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$cntlr1 hasOutputPorts] == 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$cntlr2 hasInputPorts] == 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$cntlr3 hasOutputPorts] == 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$cntlr3 hasInputPorts] == 1 } {
-    	$val = 0
+    	set val 0
     }
    
    list $val
@@ -88,7 +88,7 @@ test BranchController-2.1 {createBranches(), hasIn/OutputPorts()} {
 ######################################################################
 ####
 #
-test BranchController-2.2 {Multiple createBranches() invocations} {
+test BranchController-2.2 {Multiple addBranches() invocations} {
    
     set top [java::new ptolemy.actor.process.MultiBranchActor]
     set cntlr1 [java::new ptolemy.actor.process.BranchController $top]
@@ -98,12 +98,12 @@ test BranchController-2.2 {Multiple createBranches() invocations} {
     set outport [java::new ptolemy.actor.IOPort $top outport false true]
     set port [java::new ptolemy.actor.IOPort]
     
-    $cntlr1 createBranches $inport
-    $cntlr2 createBranches $outport
-    catch { $cntlr1 createBranches $inport } msg1
-    catch { $cntlr1 createBranches $port } msg2
-    catch { $cntlr1 createBranches $outport } msg3
-    catch { $cntlr2 createBranches $inport } msg4
+    $cntlr1 addBranches $inport
+    $cntlr2 addBranches $outport
+    catch { $cntlr1 addBranches $inport } msg1
+    catch { $cntlr1 addBranches $port } msg2
+    catch { $cntlr1 addBranches $outport } msg3
+    catch { $cntlr2 addBranches $inport } msg4
    
    list $msg1 $msg2 $msg3 $msg4
 
@@ -116,30 +116,28 @@ This port is already controlled by this BranchController} {ptolemy.kernel.util.I
 #
 test BranchController-3.1 {Check pre-activation state} {
    
-    set top [java::new ptolemy.actor.process.MultiBranchActor]
+    set top [java::new ptolemy.actor.CompositeActor]
     set cntlr [java::new ptolemy.actor.process.BranchController $top]
     set branch [java::new ptolemy.actor.process.Branch $cntlr]
     
     set val 1
     if { [$cntlr isIterationOver] != 1 } {
-    	$val 0
+    	set val 0
     }
     $cntlr setActive true
     if { [$cntlr isIterationOver] != 1 } {
-    	$val 0
+    	set val 0
     }
     set parent [$cntlr getParent]
     if { $parent != $top } {
-    	$val 0
+    	set val 0
     }
-    if { [$cntlr canBranchEngage $branch] == 1  } {
-    	$val 0
+    if { [$cntlr canBranchEngage $branch] != 0  } {
+    	set val 0
     }
     if { [$cntlr areEngagementsComplete] != 1  } {
-    	$val 0
+    	set val 0
     }
-    
-    
     
    list $val
 
@@ -156,35 +154,35 @@ test BranchController-4.1 {activateBranches() with no branches, infinite iterati
     
     set val 1
     
-    if { [$cntlr isActive] == 1  } {
-    	$val 0
+    if { [$cntlr isActive] != 0  } {
+    	set val 0
     }
     
     $cntlr activateBranches
     
-    if { [$cntlr isActive] != 1  } {
-    	$val 0
+    if { [$cntlr isActive] != 0  } {
+        set val 0
     }
-    if { [$cntlr canBranchEngage $branch] != 1  } {
-    	$val 0
+    if { [$cntlr canBranchEngage $branch] != 0  } {
+ 	set val 0
     }
-    if { [$cntlr areEngagementsComplete] == 1  } {
-    	$val 0
+    if { [$cntlr areEngagementsComplete] != 1  } {
+ 	set val 0
     }
-    if { [$cntlr isIterationOver] == 1  } {
-    	$val 0
+    if { [$cntlr isIterationOver] != 1  } {
+     	set val 0
     }
     
     $cntlr endIteration
     
-    if { [$cntlr canBranchEngage $branch] == 1  } {
-    	$val 0
+    if { [$cntlr canBranchEngage $branch] != 0  } {
+ 	set val 0
     }
-    if { [$cntlr areEngagementsComplete] != 1  } {
-    	$val 0
+    if { [$cntlr areEngagementsComplete] == 0  } {
+     	set val 0
     }
-    if { [$cntlr isIterationOver] != 1  } {
-    	$val 0
+    if { [$cntlr isIterationOver] == 0  } {
+      	set val 0
     }
     
    list $val
