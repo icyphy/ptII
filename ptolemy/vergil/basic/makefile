@@ -104,7 +104,7 @@ OPTIONAL_FILES = \
 	'EditorDropTarget$$DTListener.class' \
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
-	'ParameterizedNodeController$$1.class'
+	'ParameterizedNodeController$$1.class' \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
 	'RunnableGraphController$$StopModelAction.class
