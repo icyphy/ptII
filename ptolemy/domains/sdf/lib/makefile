@@ -34,7 +34,7 @@ ME =		ptolemy/domains/sdf/lib
 # Rule for index.xml uses this
 TITLE = 	"Synchronous dataflow actors"
 
-DIRS = 		vq test
+DIRS = 		security vq test
 
 # Root of the Java directory
 ROOT =		../../../..
