@@ -741,14 +741,39 @@ public class CTScheduler extends Scheduler {
             }
         }
 
-        // Construct an array of sink actors.
+        // The assumption that the CTEventGenerators do not 
+        // appear in an integration path and they
+        // bridge the continous actors and discrete actors
+        // only applies to the ATOMIC actors, like a 
+        // LevelCrossingDetector.  
+        // For a ModalModel or CT subSystem (CTCompositeActor),
+        // which may generate discrete events and have to implement
+        // the CTEventGenerator interface, the assumption 
+        // is not true any more. 
+        // There is a possibility that they are added into the 
+        // outputSchedule multiple times. 
+        
+        // The situation happens when an actor in the sinkActors
+        // list happens to be in the backward reachable nodes of 
+        // another actor in the sinkActors list. (See comment below
+        // for details.)
+
         if (!sinkActors.isEmpty()) {
+            // Construct an array of sink actors.
             Object[] sinkArray = sinkActors.toArray();
             // Output map.
             Object[] gx = arithmeticGraph.backwardReachableNodes(sinkArray);
             Object[] gxSorted = arithmeticGraph.topologicalSort(gx);
             for (int i = 0; i < gxSorted.length; i++) {
                 Actor a = (Actor)gxSorted[i];
+
+                if (sinkActors.contains(a)) {
+                    // If Actor a is already in the sinkActors list, 
+                    // we don't add it to the outputSchedule until the
+                    // next while loop, which handles the sinkActors only. 
+                    continue;
+                }
+
                 outputSchedule.add(new Firing(a));
                 if (a instanceof CTStepSizeControlActor) {
                     outputSSCActors.add(new Firing(a));
