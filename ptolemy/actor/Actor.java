@@ -44,17 +44,18 @@ and the Relations are constrained to be IORelations.
 public abstract class Actor extends ComponentEntity implements Executable {
     /** Constructor
      */	
-    public Actor() {
+    /*    public Actor() {
         super();
     }
 
     public Actor(Workspace workspace) {
         super(workspace);
-    }
+    } */
      
     public Actor(CompositeActor container, String name) 
             throws NameDuplicationException {
         super((CompositeEntity)container, name);
+        container.getDirector().registerNewActor(this);
     }
     
     ////////////////////////////////////////////////////////////////////////
