@@ -92,8 +92,8 @@ OPTIONAL_JSRCS = \
 
 # OPTIONAL_JSRCS depends on PtParser.java, but we want javadoc
 # to generate docs for PtParser, so we modify the javadoc
-# rule to also operate on OPTIONAL_JSRCS2
-OPTIONAL_JSRCS2 = PtParser.java
+# rule to also operate on DERIVED_JSRCS
+DERIVED_JSRCS = PtParser.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
