@@ -83,14 +83,11 @@ OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: tests
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 	chmod a+x ptjdriver
-
-install: $(EXTRA_SRCS) jclass javadocs
-	chmod a+x ptjdriver
-
-
 
 test_java: jclass
 	#$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
