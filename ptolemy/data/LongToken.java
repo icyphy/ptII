@@ -83,11 +83,11 @@ public class LongToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return token.addR(this);
             } else if (token instanceof LongToken) {
-                long result = _value + ((LongToken)token).getValue();
+                long result = _value + ((LongToken)token).longValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 LongToken tmp = (LongToken)this.convert(token);
-                long result = _value + tmp.getValue();
+                long result = _value + tmp.longValue();
                 return new LongToken(result);
             } else {
                 throw new Exception();
@@ -111,7 +111,7 @@ public class LongToken extends ScalarToken {
      */
     public Token addR(Token token) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(token);
-        long result = tmp.getValue() + _value;
+        long result = tmp.longValue() + _value;
         return new LongToken(result);
     }
 
@@ -167,13 +167,13 @@ public class LongToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return token.equals(this);
             } else if (token instanceof LongToken) {
-                if ( _value == ((LongToken)token).getValue()) {
+                if ( _value == ((LongToken)token).longValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.HIGHER) {
                 LongToken tmp = (LongToken)this.convert(token);
-                if ( _value == tmp.getValue()) {
+                if ( _value == tmp.longValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
@@ -186,13 +186,6 @@ public class LongToken extends ScalarToken {
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
-    }
-
-    /** Get the long value contained by this token.
-     *  @return The long value contained by this token.
-     */
-    public long getValue() {
-        return _value;
     }
 
     /** Return the value in the token as a long.
@@ -216,11 +209,11 @@ public class LongToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return token.moduloR(this);
             } else if (token instanceof LongToken) {
-                long result = _value % ((LongToken)token).getValue();
+                long result = _value % ((LongToken)token).longValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 LongToken tmp = (LongToken)this.convert(token);
-                long result = _value % tmp.getValue();
+                long result = _value % tmp.longValue();
                 return new LongToken(result);
             } else {
                 throw new Exception();
@@ -245,7 +238,7 @@ public class LongToken extends ScalarToken {
      */
     public Token moduloR(Token token) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(token);
-        long result = tmp.getValue() %  _value;
+        long result = tmp.longValue() %  _value;
         return new LongToken(result);
     }
 
@@ -266,11 +259,11 @@ public class LongToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightFactor.multiplyR(this);
             } else if (rightFactor instanceof LongToken) {
-                long result = _value * ((LongToken)rightFactor).getValue();
+                long result = _value * ((LongToken)rightFactor).longValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.HIGHER){
                 LongToken tmp = (LongToken)this.convert(rightFactor);
-                long result = _value * tmp.getValue();
+                long result = _value * tmp.longValue();
                 return new LongToken(result);
             } else {
                 throw new Exception();
@@ -296,7 +289,7 @@ public class LongToken extends ScalarToken {
      */
     public Token multiplyR(Token leftFactor) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(leftFactor);
-        long result = tmp.getValue() * _value;
+        long result = tmp.longValue() * _value;
         return new LongToken(result);
     }
 
@@ -330,11 +323,11 @@ public class LongToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.subtractR(this);
             } else if (rightArg instanceof LongToken) {
-                long result = _value -  ((LongToken)rightArg).getValue();
+                long result = _value -  ((LongToken)rightArg).longValue();
                 return new LongToken(result);
             } else if (typeInfo == CPO.HIGHER){
                 LongToken tmp = (LongToken)this.convert(rightArg);
-                long result = _value - tmp.getValue();
+                long result = _value - tmp.longValue();
                 return new LongToken(result);
             } else {
                 throw new Exception();
@@ -359,7 +352,7 @@ public class LongToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(leftArg);
-        long result = tmp.getValue() - _value;
+        long result = tmp.longValue() - _value;
         return new LongToken(result);
     }
 

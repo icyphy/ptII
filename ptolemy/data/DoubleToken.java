@@ -92,11 +92,11 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.addR(this);
             } else if (rightArg instanceof DoubleToken) {
-                double result = _value + ((DoubleToken)rightArg).getValue();
+                double result = _value + ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
             } else  if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(rightArg);
-                double result = _value + tmp.getValue();
+                double result = _value + tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
                 throw new Exception();
@@ -122,7 +122,7 @@ public class DoubleToken extends ScalarToken {
     public Token addR(ptolemy.data.Token leftArg) 
             throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
-        double result = tmp.getValue() + _value;
+        double result = tmp.doubleValue() + _value;
         return new DoubleToken(result);
     }
 
@@ -188,11 +188,11 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return divisor.divideR(this);
             } else if (divisor instanceof DoubleToken) {
-                double result = _value / ((DoubleToken)divisor).getValue();
+                double result = _value / ((DoubleToken)divisor).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(divisor);
-                double result = _value / tmp.getValue();
+                double result = _value / tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
                 throw new Exception();
@@ -217,7 +217,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token divideR(Token dividend) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(dividend);
-        double result = tmp.getValue() / _value;
+        double result = tmp.doubleValue() / _value;
         return new DoubleToken(result);
     }
 
@@ -242,13 +242,13 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return token.equals(this);
             } else if (token instanceof DoubleToken) {
-                if ( _value == ((DoubleToken)token).getValue()) {
+                if ( _value == ((DoubleToken)token).doubleValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(token);
-                if ( _value == tmp.getValue()) {
+                if ( _value == tmp.doubleValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
@@ -261,14 +261,6 @@ public class DoubleToken extends ScalarToken {
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
-    }
-
-
-    /** Get the double value contained by this token.
-     *  @return The double value contained by this token.
-     */
-    public double getValue() {
-        return _value;
     }
 
     /** Return a new Token whose value is the value of this token
@@ -286,11 +278,11 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.moduloR(this);
             } else if (rightArg instanceof DoubleToken) {
-                double result = _value % ((DoubleToken)rightArg).getValue();
+                double result = _value % ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(rightArg);
-                double result = _value % tmp.getValue();
+                double result = _value % tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
                 throw new Exception();
@@ -316,7 +308,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token moduloR(Token leftArg) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
-        double result = tmp.getValue() %  _value;
+        double result = tmp.doubleValue() %  _value;
         return new DoubleToken(result);
     }
 
@@ -337,11 +329,12 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightFactor.multiplyR(this);
             } else if (rightFactor instanceof DoubleToken) {
-                double result = _value * ((DoubleToken)rightFactor).getValue();
+                double result = _value *
+				((DoubleToken)rightFactor).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(rightFactor);
-                double result = _value * tmp.getValue();
+                double result = _value * tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
                 throw new Exception();
@@ -367,7 +360,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token multiplyR(Token leftFactor) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftFactor);
-        double result = tmp.getValue() * _value;
+        double result = tmp.doubleValue() * _value;
         return new DoubleToken(result);
     }
 
@@ -403,11 +396,11 @@ public class DoubleToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.subtractR(this);
             } else if (rightArg instanceof DoubleToken) {
-                double result = _value -  ((DoubleToken)rightArg).getValue();
+                double result = _value -  ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(rightArg);
-                double result = _value - tmp.getValue();
+                double result = _value - tmp.doubleValue();
                 return new DoubleToken(result);
             } else {
                 throw new Exception();
@@ -432,7 +425,7 @@ public class DoubleToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
-        double result = tmp.getValue() - _value;
+        double result = tmp.doubleValue() - _value;
         return new DoubleToken(result);
     }
 

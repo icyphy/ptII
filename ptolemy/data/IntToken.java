@@ -84,11 +84,11 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.addR(this);
             } else if (rightArg instanceof IntToken) {
-                int result = _value + ((IntToken)rightArg).getValue();
+                int result = _value + ((IntToken)rightArg).intValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(rightArg);
-                int result = _value + tmp.getValue();
+                int result = _value + tmp.intValue();
                 return new IntToken(result);
             } else {
                 throw new Exception();
@@ -114,7 +114,7 @@ public class IntToken extends ScalarToken {
     public Token addR(ptolemy.data.Token leftArg) 
             throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
-        int result = tmp.getValue() + _value;
+        int result = tmp.intValue() + _value;
         return new IntToken(result);
     }
 
@@ -212,7 +212,7 @@ public class IntToken extends ScalarToken {
      */
     public Token divideR(Token dividend) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(dividend);
-        double result = tmp.getValue() / _value;
+        double result = tmp.intValue() / _value;
         if (result == (int)result) {
             return new IntToken((int)result);
         } else {
@@ -241,13 +241,13 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return token.equals(this);
             } else if (token instanceof IntToken) {
-                if ( _value == ((IntToken)token).getValue()) {
+                if ( _value == ((IntToken)token).intValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(token);
-                if ( _value == tmp.getValue()) {
+                if ( _value == tmp.intValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
@@ -260,13 +260,6 @@ public class IntToken extends ScalarToken {
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
-    }
-
-    /** Get the int value contained by this token.
-     *  @return The int value contained in this token.
-     */
-    public int getValue() {
-        return _value;
     }
 
     /** Return the value in the token as a int.
@@ -298,11 +291,11 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.moduloR(this);
             } else if (rightArg instanceof IntToken) {
-                int result = _value % ((IntToken)rightArg).getValue();
+                int result = _value % ((IntToken)rightArg).intValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(rightArg);
-                int result = _value % tmp.getValue();
+                int result = _value % tmp.intValue();
                 return new IntToken(result);
             } else {
                 throw new Exception();
@@ -326,7 +319,7 @@ public class IntToken extends ScalarToken {
      */
     public Token moduloR(Token leftArg) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
-        int result = tmp.getValue() %  _value;
+        int result = tmp.intValue() %  _value;
         return new IntToken(result);
     }
 
@@ -347,11 +340,11 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightFactor.multiplyR(this);
             } else if (rightFactor instanceof IntToken) {
-                int result = _value * ((IntToken)rightFactor).getValue();
+                int result = _value * ((IntToken)rightFactor).intValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER){
                 IntToken tmp = (IntToken)this.convert(rightFactor);
-                int result = _value * tmp.getValue();
+                int result = _value * tmp.intValue();
                 return new IntToken(result);
             } else {
                 throw new Exception();
@@ -377,7 +370,7 @@ public class IntToken extends ScalarToken {
      */
     public Token multiplyR(Token leftFactor) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftFactor);
-        int result = tmp.getValue() * _value;
+        int result = tmp.intValue() * _value;
         return new IntToken(result);
     }
 
@@ -411,11 +404,11 @@ public class IntToken extends ScalarToken {
             if (typeInfo == CPO.LOWER) {
                 return rightArg.subtractR(this);
             } else if (rightArg instanceof IntToken) {
-                int result = _value -  ((IntToken)rightArg).getValue();
+                int result = _value -  ((IntToken)rightArg).intValue();
                 return new IntToken(result);
             } else if (typeInfo == CPO.HIGHER){
                 IntToken tmp = (IntToken)this.convert(rightArg);
-                int result = _value - tmp.getValue();
+                int result = _value - tmp.intValue();
                 return new IntToken(result);
             } else {
                 throw new Exception();
@@ -439,7 +432,7 @@ public class IntToken extends ScalarToken {
      */
     public Token subtractR(Token leftArg) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
-        int result = tmp.getValue() - _value;
+        int result = tmp.intValue() - _value;
         return new IntToken(result);
     }
 

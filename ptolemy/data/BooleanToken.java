@@ -35,7 +35,7 @@ import ptolemy.graph.CPO;
 /**
  * A token that contains a boolean variable.
  *
- * @author Neil Smyth
+ * @author Neil Smyth, Yuhong Xiong
  * @version $Id$
 */
 
@@ -87,6 +87,13 @@ public class BooleanToken extends Token {
         }
     }
 
+    /** Return the value of this BooleanToken.
+     *  @return The boolean value of this Token.
+     */
+    public boolean booleanValue() {
+        return _value;
+    }
+
     /** Convert the specified token into an instance of BooleanToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of BooleanToken,
@@ -132,18 +139,11 @@ public class BooleanToken extends Token {
             String str = "Cannot compare a BooleanToken with a ";
             throw new IllegalActionException(str + "non-BooleanToken");
         }
-        boolean arg = ((BooleanToken)token).getValue();
+        boolean arg = ((BooleanToken)token).booleanValue();
         if ((_value && arg) || !(_value || arg)) {
             return new BooleanToken(true);
         }
         return new BooleanToken(false);
-    }
-
-    /** Returns the value currently stored in this BooleanToken
-     *  @return The boolean value contained in this Token.
-     */
-    public boolean getValue() {
-        return _value;
     }
 
     /** Return a new BooleanToken with the logical not of the value
@@ -151,7 +151,7 @@ public class BooleanToken extends Token {
      *  @return a new BooleanToken with the opposite value to this token.
     */
     public BooleanToken negate() {
-        return new BooleanToken(!getValue());
+        return new BooleanToken(!booleanValue());
     }
 
     /** Get the value contained in this Token as a String.

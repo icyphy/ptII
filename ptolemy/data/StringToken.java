@@ -80,10 +80,10 @@ public class StringToken extends Token {
         try {
             if (typeInfo == CPO.HIGHER) {
                 StringToken tmp = (StringToken)this.convert(token);
-                String result = _value + tmp.getValue();
+                String result = _value + tmp.stringValue();
                 return new StringToken(result);
             } else if (token instanceof StringToken) {
-                String result = _value + ((StringToken)token).getValue();
+                String result = _value + ((StringToken)token).stringValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.LOWER) {
                 return token.addR(this);
@@ -108,7 +108,7 @@ public class StringToken extends Token {
      */
     public Token addR(ptolemy.data.Token token) throws IllegalActionException {
         StringToken tmp = (StringToken)this.convert(token);
-        String result = tmp.getValue() + _value;
+        String result = tmp.stringValue() + _value;
         return new StringToken(result);
     }
 
@@ -172,13 +172,6 @@ public class StringToken extends Token {
             str = str + " and " + token.getClass().getName();
             throw new IllegalActionException(str);
         }
-    }
-
-    /**  Get the value of the String currently contained in this token.
-     *   @return The value currently contained.
-     */
-    public String getValue() {
-        return _value;
     }
 
     /** Return the value of this Token as a String.

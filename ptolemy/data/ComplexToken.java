@@ -260,13 +260,6 @@ public class ComplexToken extends ScalarToken {
         }
     }
 
-    /** Return the Complex value contained by this token.
-     *  @return The Compelx value contained by this token.
-     */
-    public Complex getValue() {
-        return complexValue();
-    }
-
     /** Return a new token whose value is the product of this token
      *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type
