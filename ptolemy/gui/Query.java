@@ -997,8 +997,7 @@ public class Query extends JPanel {
         preferredSize.width += 25;
 
         // Applets seem to need this, see CT/SigmaDelta
-        // If you adjust this, try the GR/Pendulum demo
-        _widgetsHeight += widget.getPreferredSize().height + 20;
+        _widgetsHeight += widget.getPreferredSize().height;
         preferredSize.height = _widgetsHeight;
 
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -1103,7 +1102,9 @@ public class Query extends JPanel {
     private Map _previous = new HashMap();
 
     // The sum of the height of the widgets added using _addPair
-    private int _widgetsHeight;
+    // If you adjust this, try the GR/Pendulum demo, which has
+    // only one parameter.
+    private int _widgetsHeight = 20;
 
     // The number of horizontal characters in a text box.
     private int _width = DEFAULT_ENTRY_WIDTH;
