@@ -247,6 +247,10 @@ public class Plot extends PlotBox {
      */
     public synchronized void drawPlot(Graphics graphics,
             boolean clearfirst) {
+        if (_debug > 7) System.out.println("Plot: drawPlot");
+        _calledDrawPlot = true;
+        // We must call PlotBox::drawPlot() before calling _drawPlotPoint
+        // so that _xscale and _yscale are set.
         super.drawPlot(graphics, clearfirst);
         // Plot the points
         for (int dataset = 0; dataset < _numsets; dataset++) {
@@ -302,6 +306,7 @@ public class Plot extends PlotBox {
      * Draw the axes and the accumulated points.
      */
     public void paint(Graphics graphics) {
+        if (_debug > 7) System.out.println("Plot: paint");
         drawPlot(graphics,true);
     }
 
@@ -850,6 +855,8 @@ public class Plot extends PlotBox {
      * If the specified point is below the y axis or outside the
      * x range, do nothing.  If the <i>clip</i> argument is true,
      * then do not draw above the y range.
+     * Note that PlotBox::drawPlot() should be called before
+     * calling this method so that _xscale and _yscale are properly set.
      */
     protected void _drawBar (Graphics graphics, int dataset,
             long xpos, long ypos, boolean clip) {
@@ -1216,6 +1223,7 @@ public class Plot extends PlotBox {
             System.out.println("Plot: _parseBinaryStream _connected = "+
                     _connected);
         }
+
         try {
             c = in.readByte();
             if ( c != 'd') {
@@ -1611,10 +1619,16 @@ public class Plot extends PlotBox {
         if (_pointsPersistence > 0) {
             if (pts.size() > _pointsPersistence) erasePoint(dataset,0);
         }
-        _drawPlotPoint(graphics, dataset, pts.size() - 1);
+        // If drawPlot() has not yet been called, then we need not
+        // attempt to draw the point yet.
+        if (_calledDrawPlot) {
+            _drawPlotPoint(graphics, dataset, pts.size() - 1);
+        }
     }
 
     /* Draw the specified point and associated lines, if any.
+     * Note that PlotBox::drawPlot() should be called before
+     * calling this method so that _xscale and _yscale are properly set.
      */
     private synchronized void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
@@ -1675,6 +1689,8 @@ public class Plot extends PlotBox {
      * Erase the point at the given index in the given dataset.  If
      * lines are being drawn, also erase the line to the next points
      * (note: not to the previous point).
+     * Note that PlotBox::drawPlot() should be called before
+     * calling this method so that _xscale and _yscale are properly set.
      */
     private synchronized void _erasePoint(Graphics graphics,
             int dataset, int index) {
@@ -1735,6 +1751,11 @@ public class Plot extends PlotBox {
     private double _baroffset = 0.05;
     private boolean _connected = true;
     private boolean _impulses = false;
+
+    // Optimization to prevent attempting to plot data if we have not yet
+    // called drawPlot.  
+    private boolean _calledDrawPlot = false;
+
     private boolean _firstinset = true; // Is this the first datapoint in a set
     private int _filecount = 0;         // Number of files read in.
     // Have we seen a DataSet line in the current data file?
