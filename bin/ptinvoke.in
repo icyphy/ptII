@@ -369,6 +369,12 @@ fi
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
 SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 
+#### TinyOS - Used by the NC domain
+# FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
+# In the short term, we just use TOSROOT, which the user should have
+# set during the installation of TinyOS.
+TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT}
+
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
@@ -385,7 +391,7 @@ fi
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSHJARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
