@@ -79,6 +79,10 @@ public class ComSystem extends SDFApplet {
             // Create the adder.
             Add add = new Add(_toplevel, "add");
 
+            // Create the filter.
+            RaisedCosine filter = new RaisedCosine(_toplevel, "filter");
+            filter.interpolation.setToken(new IntToken(16));
+
             // Create and configure plotter
             TimePlot myplot = new TimePlot(_toplevel, "plot");
             myplot.setPanel(this);
@@ -87,13 +91,17 @@ public class ComSystem extends SDFApplet {
             myplot.plot.setXRange(0.0, 20.0);
             myplot.plot.setWrap(true);
             myplot.plot.setYRange(-1.3, 1.3);
+            myplot.plot.setMarksStyle("none");
             myplot.plot.setPointsPersistence(100);
+            // FIXME: The following causes Netscape 4.5 to crash...
+            // myplot.plot.setMarksStyle("dots");
             myplot.timed.setToken(new BooleanToken(false));
 
             _toplevel.connect(ramp.output, sin.input);
             _toplevel.connect(sin.output, add.input);
             _toplevel.connect(noise.output, add.input);
-            _toplevel.connect(add.output, myplot.input);
+            _toplevel.connect(add.output, filter.input);
+            _toplevel.connect(filter.output, myplot.input);
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }

@@ -58,6 +58,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Delay.java \
+	FIR.java \
+	RaisedCosine.java \
 	SDFConsumer.java \
 	SDFRamp.java \
 	SDFPrint.java \
