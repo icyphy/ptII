@@ -43,7 +43,7 @@ A node renderer for an abstract syntax tree.  This is used by
 ASTModel to create a browsable image of an abstract syntax tree.
 Each node is rendered by its class name, as a string.
 
-@see #ASTTreeModel
+@see ASTModel
 @author Edward A. Lee
 @version $Id$
 */

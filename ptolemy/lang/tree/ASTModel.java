@@ -51,7 +51,7 @@ JTree tree = new JTree(new ASTModel(rootNode));
 tree.setCellRenderer(new ASTNodeRenderer());
 </pre>
 
-@see #ASTNodeRenderer
+@see ASTNodeRenderer
 @author Edward A. Lee
 @version $Id$
 */
