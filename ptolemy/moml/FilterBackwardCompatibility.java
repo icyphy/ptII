@@ -79,7 +79,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // that first
             return null;
 	}
-        
+
 
 	if (attributeName.equals("name")) {
 	    // Save the name of the for later use if we see a "class"
@@ -96,13 +96,13 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// We will do the above checks only if we found a
 		// class that had port name changes, but have not
 		// yet found the next class.
-		
+
 		// Here, we add the port name and the new port name
 		// to a map for later use.
 
 		String containerName =
 		    container.getFullName();
-		
+
 		String newPort = (String)_portMap.get(attributeValue);
 
 		// Save the container.newPort name for later use.
@@ -125,7 +125,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                 } else {
                     //_debug("filterAttributeValue: not return '"
                     //       + attributeValue + "' did not match");
-                    
+
                     // Saw a name that did not match.
                     // However, we might have other names that
                     // did match, so keep looking
@@ -151,7 +151,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// which will open up a large xml file and then close after 2 seconds.
 	// If you place the above command in a file five times, you
 	// can get averages with:
-	// sh c:/tmp/timeit | awk '{sum+=$4; print sum, sum/NR, $0}'	
+	// sh c:/tmp/timeit | awk '{sum+=$4; print sum, sum/NR, $0}'
 
 	//_debug("filterAttributeValue: " + attributeName + "\t"
 	//       + attributeValue );
@@ -172,7 +172,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		|| _actorsThatRequireUpdating.contains(attributeValue)) {
 		//_debug("filterAttributeValue: class " + attributeValue
 		//       + _currentActorFullName);
-		
+
 		if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
 		    // We found a class with a port name change.
 		    _currentlyProcessingActorThatRequiresUpdating = true;
@@ -212,7 +212,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 		    //_debug("filterAttributeValue: need _icon saw class: "
 		    //	   + _currentActorFullName + "\n"
-		    //	   + attributeValue + "\n" 
+		    //	   + attributeValue + "\n"
 		    //	   + _actorsThatShouldHaveIcons + "\n"
 		    //	   + _iconMoML);
 		} else if (_currentlyProcessingActorWithPropertyClassChanges
@@ -300,7 +300,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    return elementName;
 	}
 	//_debug("filterEndElement2: "
-	//       + _currentlyProcessingActorThatMayNeedAnIcon + " " 
+	//       + _currentlyProcessingActorThatMayNeedAnIcon + " "
 	//       + _currentActorFullName);
 
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
@@ -326,7 +326,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// the UI doesn't prompt to save.
 	    //request.setPersistent(false);
 	    //container.requestChange(request);
-		
+
 		//_debug("filterEndElement: added\n" + _iconMoML
 		//       + "\ncontainer: " +  container
 		//       + "\nicon: " + icon
@@ -379,7 +379,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     private static boolean
     _currentlyProcessingActorWithPortNameChanges = false;
 
-    // Set to true if we are currently processing an actor that may 
+    // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
     private boolean _currentlyProcessingActorThatMayNeedAnIcon = false;
 
@@ -484,7 +484,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	// In alphabetic order by actor class name.
 	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-				       "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n" 
+				       "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
 				       + "<property name=\"attributeName\" value=\"value\"/>\n"
 				       + "<property name=\"displayWidth\" value=\"40\"/>\n"
 				       + "</property>\n");

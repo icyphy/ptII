@@ -211,7 +211,7 @@ public class MoMLParser extends HandlerBase {
     ////                         public methods                    ////
 
     /**  Add a MoMLFilter to the end of the list of MoMLFilters used
-     *  to translate names.  
+     *  to translate names.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
@@ -560,7 +560,7 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** Return the value set by setModified(), or false if setModified()
-     *  has yet not been called. 
+     *  has yet not been called.
      *  @see #setModified(boolean)
      *  @return True if the data has been modified.
      */
@@ -821,7 +821,7 @@ public class MoMLParser extends HandlerBase {
      *  @param modified True if the data was modified while parsing.
      *  @see #isModified()
      *  @see MoMLFilter
-     */	
+     */
     public static void setModified(boolean modified) {
 	_modified = modified;
     }
@@ -1795,7 +1795,7 @@ public class MoMLParser extends HandlerBase {
                                 "-- "
                                 + errorMessage.toString()
                                 + className
-                                + ": Exception:\n" 
+                                + ": Exception:\n"
                                 + ex4.getMessage());
 		    }
                 }
@@ -2252,7 +2252,7 @@ public class MoMLParser extends HandlerBase {
 		    // If the user invoked file -> Open URL
 		    // then do not warn for any URLS below the URL
 		    // they entered.
-		    
+
 		    // This code is not foolproof, but will work
 		    // for most simple situations.
 		    String lastOverallURLBase = null;
@@ -2277,7 +2277,7 @@ public class MoMLParser extends HandlerBase {
 		    }
 		    // If we get to here, the the user did not hit cancel,
 		    // so we cache the file
-		    _approvedRemoteXmlFiles.add(xmlFile); 
+		    _approvedRemoteXmlFiles.add(xmlFile);
                 }
             }
             input = xmlFile.openStream();

@@ -156,7 +156,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
     ////                         private variables                 ////
 
 
-    // True if we are currently processing an annotation. 
+    // True if we are currently processing an annotation.
     private boolean _currentlyProcessingAnnotation = false;
 
     // The the full name of the annotation we are currently processing
