@@ -48,6 +48,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
 import javax.swing.Box;
@@ -130,6 +131,7 @@ public class Configuration extends CompositeEntity {
      */
     public Configuration(Workspace workspace) {
 	super(workspace);
+        _configurations.add(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -209,6 +211,26 @@ public class Configuration extends CompositeEntity {
                     throw new InternalErrorException(this, kernelException,
                             null);
                 }
+            }
+        }
+        return null;
+    }
+
+    /** Find an effigy for the specified model by searching all the
+     *  configurations that have been created. Although typically there is
+     *  only one, in principle there may be more than one.  This can be used
+     *  to find a configuration, which is typically the result of calling
+     *  toplevel() on the effigy.
+     *  @param model The model for which to find an effigy.
+     *  @return An effigy, or null if none can be found.
+     */
+    public static Effigy findEffigy(NamedObj model) {
+        Iterator configurations = _configurations.iterator();
+        while (configurations.hasNext()) {
+            Configuration configuration = (Configuration)configurations.next();
+            Effigy effigy = configuration.getEffigy(model);
+            if (effigy != null) {
+                return effigy;
             }
         }
         return null;
@@ -535,7 +557,12 @@ public class Configuration extends CompositeEntity {
                 }
             }
         }
-
         return null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The list of configurations that have been created.
+    private static List _configurations = new LinkedList();
 }
