@@ -49,11 +49,12 @@ public class PNPrimeExample {
         ramp.initialize(2);
         ramp.setCycles(Integer.parseInt(args[1]));
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
+        sieve.initialize(2);
         IORelation queue = new IORelation(myUniverse, "2_queue");
         PNPort port = (PNPort)sieve.getPort("input");
+        port.getQueue().setCapacity(1);
         port.link(queue);
         port = (PNPort)ramp.getPort("output");
-        port.getQueue().setCapacity(1);
         port.link(queue);
 
         //FIXME: Should I use connect() rather than all the above stuff??
