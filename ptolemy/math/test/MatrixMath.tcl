@@ -1564,6 +1564,19 @@ testMatrixMatrix subtract $types
 
 ######################################################################
 ####
+#  *ArrayMath Test out sumOfSquares(xxx[])
+# FIXME: no Complex sumOfSquares(Complex [])
+
+set types [list \
+	[list Double double double {{6.0}}] \
+	[list Float float float {{6.0}}] \
+	[list Integer int int {{6}}] \
+	[list Long long long {{6}}]]
+
+testArrayMathArray sumOfSquares $types 4_4
+
+######################################################################
+####
 ##  (NEW) *ArrayMath Test out Complex[] toComplexArray(xxx[])
 
 set types [list \
