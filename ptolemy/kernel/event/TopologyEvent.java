@@ -256,8 +256,8 @@ public class TopologyEvent extends java.util.EventObject {
     public void doTopologyChange() throws Exception {
         if(_mutationDone) {
             throw new IllegalActionException("TopologyEvent.doTopologyChange()"
-                    + ": attempt to implement topology change that has already been"
-                    + "implemented.");
+                    + ": attempt to implement topology change that has " +
+                    "already been implemented.");
         }
         _mutationDone = true;
 	switch (getID()) {
@@ -312,8 +312,8 @@ public class TopologyEvent extends java.util.EventObject {
             throws IllegalActionException {
         if(!_mutationDone) {
             throw new IllegalActionException("TopologyEvent.notifyListeners()"
-                    + ": attempt to notify listeners of a topology change that has not"
-                    + " been implemented.");
+                    + ": attempt to notify listeners of a topology change " +
+                    "that has not been implemented.");
         }
 
         switch (getID()) {
