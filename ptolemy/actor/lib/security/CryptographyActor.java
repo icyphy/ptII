@@ -95,7 +95,7 @@ Cryptography Extension (JCE).
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class CryptographyActor extends TypedAtomicActor {
+abstract public class CryptographyActor extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -281,19 +281,16 @@ public class CryptographyActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
 
-    /** Processes the data based on parameter specifications.  This
-     *  base class returns the data in its original form.  Subclasses
-     *  should process the data using one of the signature or cipher
-     *  classes provided in the JCE or JCA.
+    /** Processes the data based on parameter specifications.
+     *  Subclasses should process the data using one of the signature
+     *  or cipher classes provided in the JCE or JCA.
      *
      * @param dataBytes the data to be processed.
      * @return dataBytes the data unchanged.
      * @exception IllegalActionException Not thrown in this base class
      */
-    protected byte[] _process(byte [] dataBytes)
-            throws IllegalActionException {
-        return dataBytes;
-    }
+    abstract protected byte[] _process(byte [] dataBytes)
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

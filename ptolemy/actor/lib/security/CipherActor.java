@@ -59,6 +59,9 @@ algorithm is needed, the provider may also be specified in the
 <i>provider</i> parameter. The <i>keySize</i> parameter allows
 implementations of algorithms using various key sizes.
 
+<p>Derived classes should implement the abstract 
+{@link #CryptographyActor._process(byte)[]} method.
+
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
@@ -73,7 +76,7 @@ Cryptography Extension (JCE).
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class CipherActor extends CryptographyActor {
+abstract public class CipherActor extends CryptographyActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
