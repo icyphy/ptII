@@ -81,15 +81,6 @@ public class Rectangle2D extends RectangularFigure2D {
      *  @exception IllegalActionException If a parameter value is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-
-        //         java.awt.geom.RoundRectangle2D.Double rectangle =
-        //             new java.awt.geom.RoundRectangle2D.Double(
-        //                     ((DoubleToken)xPosition.getToken()).doubleValue(),
-        //                     ((DoubleToken)yPosition.getToken()).doubleValue(),
-        //                     ((DoubleToken)width.getToken()).doubleValue(),
-        //                     ((DoubleToken)height.getToken()).doubleValue(),
-        //                     ((DoubleToken)arcWidth.getToken()).doubleValue(),
-        //                     ((DoubleToken)arcHeight.getToken()).doubleValue());
         java.awt.geom.RoundRectangle2D.Double rectangle =
             new java.awt.geom.RoundRectangle2D.Double();
         rectangle.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());

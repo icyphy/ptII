@@ -60,12 +60,6 @@ public class Ellipse2D extends RectangularFigure2D {
      *  @exception IllegalActionException If a parameter value is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
-        //         java.awt.geom.Ellipse2D.Double ellipse =
-        //             new java.awt.geom.Ellipse2D.Double(
-        //                     ((DoubleToken)xPosition.getToken()).doubleValue(),
-        //                     ((DoubleToken)yPosition.getToken()).doubleValue(),
-        //                     ((DoubleToken)width.getToken()).doubleValue(),
-        //                     ((DoubleToken)height.getToken()).doubleValue());
         java.awt.geom.Ellipse2D.Double ellipse =
             new java.awt.geom.Ellipse2D.Double();
         ellipse.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
