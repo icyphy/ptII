@@ -39,7 +39,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
 // Java imports.
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -200,7 +199,8 @@ public class CSPDirector extends ProcessDirector {
      *  @return false indicating the iteration is over.
      */
     public boolean postfire() {
-        if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
+        List ports = ((CompositeActor)getContainer()).inputPortList();
+        if ( ports.iterator().hasNext() ) {
             return true;
         } else {
             return _notDone;
