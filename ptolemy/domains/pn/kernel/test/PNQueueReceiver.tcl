@@ -84,7 +84,7 @@ test PNQueueReceiver-2.2 {Check for correct IOPort container in new receiver} {
 test PNQueueReceiver-3.1 {Check hasRoom} {
     # hasRoom(int) always returns true
     list [$rec hasRoom] [$rec hasRoom -1] [$rec hasRoom 0] [$rec hasRoom 10]
-} {1}
+} {1 1 1 1}
 
 ######################################################################
 ####
