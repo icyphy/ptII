@@ -105,7 +105,11 @@ the entire book
 
 An html version of the UsingVergil chapter can be found at 
 $PTII/doc/design/usingVergil/index.htm
-To generate this file, do
+This file is updated using WebWorks software, which
+comes with Frame6, but is a separate cd installation
+
+After installing WebWorks Standard edition, you may want to upgrade 
+http://www.webworks.com/support/wwpse_downloads.asp
 
 
 Figures
