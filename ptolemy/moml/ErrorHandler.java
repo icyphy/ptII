@@ -74,7 +74,7 @@ public interface ErrorHandler {
     public int handleError(
             String element,
             NamedObj context,
-            Exception exception);
+            Throwable exception);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

@@ -86,7 +86,7 @@ public class VergilErrorHandler implements ErrorHandler {
     public int handleError(
             String element,
             NamedObj context,
-            Exception exception) {
+            Throwable exception) {
 
        if (_skipping) {
            return CONTINUE;
@@ -211,7 +211,7 @@ public class VergilErrorHandler implements ErrorHandler {
     private int _showStackTrace(Component context,
 				boolean skipElement,
 				boolean skippingEnabled,
-				Exception exception, 
+				Throwable exception, 
 				String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.

@@ -84,7 +84,7 @@ public class StreamErrorHandler implements ErrorHandler {
     public int handleError(
             String element,
             NamedObj context,
-            Exception exception) {
+            Throwable exception) {
        String message = "Error encountered in:\n"
                + element
                + "\n"
