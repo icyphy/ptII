@@ -162,29 +162,40 @@ public class ImageFigure extends AbstractFigure
         // FIXME: This should probably create some default error
         // image if the infoflags argument contains ERROR or ABORT.
         
-        // NOTE: Incredibly stupidly, when Java calls this method
-        // with a new width and height, it hasn't set those fields
-        // in the image yet.  Thus, even though width and height
-        // have been updated, they are not accessible in the image,
-        // which will still return -1 to getWidth() and getHeight().
-        // Go figure...  I guess the idea is that we have to
-        // duplicate the image information locally. Dumb.
-
-        if ((infoflags & ImageObserver.HEIGHT) != 0) {
+        if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
+            // NOTE: Incredibly stupidly, when Java calls this method
+            // with a new width and height, it hasn't set those fields
+            // in the image yet.  Thus, even though width and height
+            // have been updated, they are not accessible in the image,
+            // which will still return -1 to getWidth() and getHeight().
+            // Go figure...  I guess the idea is that we have to
+            // duplicate the image information locally. Dumb.
             _height = height;
-        }
-        if ((infoflags & ImageObserver.WIDTH) != 0) {
             _width = width;
-        }
-        repaint();
 
-        // Make sure this gets called again if there are further updates.
+            // In case the width or height is later updated.
+            _image.getWidth(this);
+            _image.getHeight(this);
+            // repaint();
+            return true;
+        }
+        // A zillion calls are made with PROPERTIES or SOMEBITS.
+        // If these occur, do not call repaint().
+        if ((infoflags & (ImageObserver.PROPERTIES | ImageObserver.SOMEBITS)) != 0) {
+            // In case the width or height is later updated.
+            _image.getWidth(this);
+            _image.getHeight(this);
+            return true;
+        }
+        if ((infoflags & ImageObserver.ALLBITS) != 0) {
+            repaint();
+            // Return false, indicating that the image is completely loaded.
+            return false;
+        }
+        // In case the width or height is later updated.
         _image.getWidth(this);
         _image.getHeight(this);
-        
-        // Despite the Java documentation, returning false here
-        // appears to never be correct. The image never gets
-        // rendered.
+
         return true;
     }
 
