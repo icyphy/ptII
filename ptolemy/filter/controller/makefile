@@ -1,8 +1,8 @@
-#Makefile for ptolemy.filter.controller package
+# Makefile for the Java classes used to implement the Ptolemy PN domain kernel
 #
-# @Authors: William Wu
+# @Authors: William Wu, Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile        1.52 03/02/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
@@ -26,43 +26,64 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
-# $Id$ %S%
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
 # Root of the Java directory
-ROOT =          ../../..
+ROOT =		../../..
+
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+# Flags to pass to javadoc. (Override value in ptII.mk)
+JDOCFLAGS = 	-author -version -public
 
-JPACKAGE =      ptolemy.filter.controller
-JVERSION =      1.0
-JDIST =         $(JPACKAGE)$(JVERSION)
-JZIP =          top/$(JPACKAGE).zip
 
-DIRS =  demo #test
+DIRS = 		#demo test #doc
 
-CLASSPATH =     ../../..
-# Order matters here.
+CLASSPATH = ../../..
 
-# Sources that compile under JDK1.0.2 and later
+# Used to build zip files
+PTPACKAGE = 	ptolemy.filter.controller
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/filter/controller
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS = \
        Manager.java \
        FilterApplication.java
 
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+MISC_FILES =	$(DIRS) doc test demo
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(PTCLASSJAR)
+
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(JZIP)
-	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs $(JZIP)
-	chmod a+x pxgraph testpxgraph
+
+all: jclass
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
 
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
 
 
