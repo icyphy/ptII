@@ -261,34 +261,50 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 }
                 MoMLParser parser = new MoMLParser();
                 NamedObj toplevel = null;
-                try {
-                    // If the following fails, we should remove the effigy.
-                    toplevel = parser.parse(base, in.openStream());
+		try {
+		    try {
+			// If the following fails, we should remove the effigy.
+			toplevel = parser.parse(base, in.openStream());
+		    
+			if (toplevel != null) {
+			    effigy.setModel(toplevel);
 
-                    if (toplevel != null) {
-                        effigy.setModel(toplevel);
+			    // Identify the URL from which the model was read
+			    // by inserting an attribute into both the model
+			    // and the effigy.
+			    URLAttribute url =
+				new URLAttribute(toplevel,
+					     toplevel.uniqueName("url"));
+			    url.setURL(in);
+		    
+			    // This is used by TableauFrame in its
+			    //_save() method.
+			    effigy.url.setURL(in);
 
-                        // Identify the URL from which the model was read by
-                        // inserting an attribute into both the model and the
-                        // effigy.
-                        URLAttribute url = new URLAttribute(
-                                toplevel, toplevel.uniqueName("url"));
-                        url.setURL(in);
-
-                        // This is used by TableauFrame in its _save() method.
-                        effigy.url.setURL(in);
-
-                        return effigy;
-                    } else {
-                        effigy.setContainer(null);
-                    }
-                } finally {
-                    // If we failed to populate the effigy with a model,
-                    // then we remove the effigy from its container.
-                    if (toplevel == null) {
-                        effigy.setContainer(null);
-                    }
-                }
+			    return effigy;
+			} else {
+			    effigy.setContainer(null);
+			}
+		    } catch (Exception e) {
+			// Need this catch so we get better error messages
+			// out of the ptolemy script.
+			// If we don't report the exception message,
+			// touch foo.xml
+			// ptolemy foo.xml
+			// will quickly return without an error message
+			e.printStackTrace();
+			// We rethrow, which is not strictly necessary
+			// but could help if the finally statement is
+			// removed.
+			throw e;
+		    }
+		} finally {
+		    // If we failed to populate the effigy with a model,
+		    // then we remove the effigy from its container.
+			    if (toplevel == null) {
+			effigy.setContainer(null);
+		    }
+		}
                 return null;
             }
 	}
