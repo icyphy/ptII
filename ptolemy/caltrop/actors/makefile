@@ -36,7 +36,7 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar$(CLASSPATHSEPARATOR)$(ROOT)/lib/saxon7.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
