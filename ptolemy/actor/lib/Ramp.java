@@ -113,7 +113,7 @@ public class Ramp extends SequenceSource {
             _stateToken = init.getToken();
         } else if (attribute == init) {
             _stateToken = init.getToken();
-        }
+        } else super.attributeChanged(attribute);
     }
 
     /** Clone the actor into the specified workspace. This calls the
