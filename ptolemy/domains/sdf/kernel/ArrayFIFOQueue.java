@@ -119,6 +119,14 @@ public final class ArrayFIFOQueue implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this queue of any contained objects.
+     */
+    public void clear() {
+        _queueFront = 0;
+        _queueBack = 0;
+        _queueSize = 0;
+    }
+
     /** Clone this queue. The cloned queue has no container. The
      *  objects in the queue themselves are not cloned.
      *  @return A clone of this queue

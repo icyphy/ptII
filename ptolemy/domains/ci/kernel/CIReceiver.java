@@ -71,6 +71,12 @@ public class CIReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver.
+     */
+    public void clear() {
+        _tokens.clear();
+    }
+
     /** Get a token from this receiver.
      *  @return A token from this receiver.
      *  @exception ptolemy.actor.NoTokenException If there is no token.

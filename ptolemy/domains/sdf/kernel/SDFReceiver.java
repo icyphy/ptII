@@ -102,6 +102,12 @@ public class SDFReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+     */
+    public void clear() {
+        _queue.clear();
+    }
+
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
      *  exception.
