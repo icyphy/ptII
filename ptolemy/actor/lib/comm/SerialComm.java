@@ -1,4 +1,4 @@
-/* An actor that operates a serial port.
+/* Ptolemy Actors that operate on the Serial port
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -27,7 +27,7 @@
 @AcceptedRating red (winthrop@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.io;
+package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.*;

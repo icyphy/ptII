@@ -28,7 +28,7 @@
 @AcceptedRating red (winthrop@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.io;
+package ptolemy.actor.lib.net;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.*;

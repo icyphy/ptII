@@ -1,4 +1,4 @@
-# Makefile for io (a.k.a. I/O) Java classes.
+# Makefile for Ptolemy actors that use java.net classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,35 +29,27 @@
 #                                               PT_COPYRIGHT_VERSION_2
 #                                               COPYRIGHTENDKEY
 
-# This directory contains io (a.k.a I/O) classes.
-
-ME =            ptolemy/actor/lib/io
+ME =            ptolemy/actor/lib/net
 
 DIRS =
 
 # Root of the Java directory
 ROOT =          ../../../..
 
- JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
- JINI_JAR =      $(JINI_JAR_PATH)/jini-jspaces.jar
-
-
-# COMMAPI_DIR is set in $PTII/mk/ptII.mk by running configure
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(CLASSPATHSEPARATOR)$(JINI_JAR)
+CLASSPATH =     $(ROOT)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     io
+PTPACKAGE =     net
 PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = DatagramSender.java \
         DatagramReceiver.java \
-        SerialComm.java \
         RxDatagram.java \
         TxDatagram.java
 
@@ -75,30 +67,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
-
-#demo: $(JCLASS)
-#	# Download the nqc program
-#	nqc -d tank.nqc
-#	# Start it
-#	nqc -run
-#	# Start up Ptolemy
-#	#CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.apps.lego.BrownianMotion
-#	$(PTII)/bin/ptolemy BrownianMotion.xml
-
-##############
-# MoML rules
-.SUFFIXES: .xml .class
-.class.xml:
-	rm -f `basename $< .class`.xml
-	CLASSPATH="$(CLASSPATH)" $(JAVA) \
-	        ptolemy.apps.lego.`basename $< .class` \
-		-dumpMoML `basename $< .class`.xml
-
-moml: BrownianMotion.xml TiltDriver.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
