@@ -128,7 +128,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the mode of parse tree evaluator to constrction mode with mode
+    /** Set the mode of parse tree evaluator to construction mode with mode
      *  as true, to update mode with mode as false.
      *  @param mode The mode of the parse tree evaluator.
      */
