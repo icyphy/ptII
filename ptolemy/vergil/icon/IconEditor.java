@@ -266,10 +266,10 @@ public class IconEditor {
 	_context.setSize (WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
 
 	// This layout makes the windows appear in the top-left corner of the screen.
-	_context.setLocation (0, 75);
+	//_context.setLocation (0, 75);
 	
 	// There is no need for the user to be able to resize the window.
-	_context.setResizable (WINDOW_RESIZABLE);
+	//_context.setResizable (WINDOW_RESIZABLE);
 	
 	// Only set the window visible now so the user doesn't see it being 
 	// constructed.
