@@ -135,8 +135,14 @@ public class Port extends NamedObj {
     }
 
 
-    /** Set the Entity which owns this Port. */
-    public void setEntity(Entity entity) {
+    /** Set the Entity which owns this Port. 
+     * @exception NameDuplicationException Attempt to store two 
+     *  instances of the same class with identical names in the same 
+     *  container.
+     */
+    public void setEntity(Entity entity) throws NameDuplicationException {
+	PortList list = entity.getPortList();
+	list.addPort( this );
 	_entity = entity;
     }
 
