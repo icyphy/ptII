@@ -134,21 +134,10 @@ public class CTPeriodicSampler extends Transformer
             // register for the next event.
             _nextSamplingTime += _samplePeriod;
             getDirector().fireAt(this, _nextSamplingTime);
+            if (_debugging) _debug(getFullName(), " produces event at: "
+                    + director.getCurrentTime());
         }
     }
-
-    /** Check the current time of the director and determine
-     *  whether there is an event to be emitted.
-     *  @exception IllegalActionException Never thrown.
-     *
-    public void fire() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getDirector();
-        double now = dir.getCurrentTime();
-        _hasCurrentEvent = false;
-        if(Math.abs(now - _nextSamplingTime)<dir.getTimeResolution()) {
-            _hasCurrentEvent = true;
-        }
-        }*/
 
     /** Return true if there is a current event.
      *  @return If there is a discrete event to emit.
@@ -156,11 +145,13 @@ public class CTPeriodicSampler extends Transformer
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
         if(Math.abs(director.getCurrentTime() - _nextSamplingTime)
-                < director.getTimeResolution()) {
+                < director.getTimeResolution() ) {
             _hasCurrentEvent = true;
         } else {
             _hasCurrentEvent = false;
         }
+        if(_debugging) _debug(getFullName(), " has event at: "
+                + director.getCurrentTime() + " is " + _hasCurrentEvent );
         return _hasCurrentEvent;
     }
 
