@@ -26,13 +26,15 @@
 */
 
 package pt.data;
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
 /** 
 A token that contains a reference to an arbitrary scalar object.
+It provides interface for type conversion among different scalar types.
 
-@author Mudit Goel
+@author Yuhong Xiong, Mudit Goel
 @version $Id$
 */
 public abstract class ScalarToken extends Token {
@@ -40,11 +42,77 @@ public abstract class ScalarToken extends Token {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    public abstract byte byteValue();
-    //public abstract Object complexValue();
-    public abstract double doubleValue();
-    //public abstract Object fixValue();
-    public abstract int intValue();
-    public abstract long longValue();
+    /** Return the value in the token as a byte.
+      * In this base class, we just throw an exception.
+      * @exception IllegalActionException
+      */
+    public byte byteValue()
+	    throws IllegalActionException {
+	Class myclass = getClass();
+	throw new IllegalActionException("Value in class "
+		+ myclass.getName() + " cannot be converted to a byte" + 
+		"without loss of information.");
+    }
 
+    // Return the value in the token as a Complex.
+    // In this base class, we just throw an exception.
+    // @exception IllegalActionException
+    //
+    // FIXME: restore this method after the Complex class is available.
+//    public Complex complexValue()
+//	    throws IllegalActionException {
+//	Class myclass = getClass();
+//	throw new IllegalActionException("Value in class "
+//		+ myclass.getName() + " cannot be converted to a Complex" +
+//		"without loss of information.");
+//    }
+
+    /** Return the value in the token as a double.
+      * In this base class, we just throw an exception.
+      * @exception IllegalActionException
+      */
+    public double doubleValue()
+	    throws IllegalActionException {
+	Class myclass = getClass();
+	throw new IllegalActionException("Value in class "
+		+ myclass.getName() + " cannot be converted to a double" +
+		"without loss of information.");
+    }
+
+    // Return the value in the token as a Fix.
+    // In this base class, we just throw an exception.
+    // @exception IllegalActionException
+    //
+    // FIXME: restore this method after the Fix class is available.
+//    public Fix fixValue()
+//	    throws IllegalActionException {
+//	Class myclass = getClass();
+//	throw new IllegalActionException("Value in class "
+//		+ myclass.getName() + " cannot be converted to a Fix" +
+//		"without loss of information.");
+//    }
+
+    /** Return the value in the token as an int.
+      * In this base class, we just throw an exception.
+      * @exception IllegalActionException
+      */
+    public int intValue()
+	    throws IllegalActionException {
+	Class myclass = getClass();
+	throw new IllegalActionException("Value in class "
+		+ myclass.getName() + " cannot be converted to an int" +
+		"without loss of information.");
+    }
+
+    /** Return the value in the token as a long integer.
+      * In this base class, we just throw an exception.
+      * @exception IllegalActionException
+      */
+    public long longValue()
+	    throws IllegalActionException {
+	Class myclass = getClass();
+	throw new IllegalActionException("Value in class "
+	      + myclass.getName() + " cannot be converted to a long integer" +
+		"without loss of information.");
+    }
 }
