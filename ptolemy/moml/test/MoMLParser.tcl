@@ -316,7 +316,7 @@ set result {<?xml version="1.0" standalone="no"?>
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -409,7 +409,7 @@ set result {<?xml version="1.0" standalone="no"?>
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
