@@ -867,6 +867,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
+    /*  Set the map from input ports to boolean flags indicating whether a
+     *  channel is connected to an output port of the refinement of the
+     *  current state.
+     *  @exception IllegalActionException If the refinement specified
+     *   for one of the states is not valid.
+     */
+    protected void _setCurrentConnectionMap() throws IllegalActionException {
+        if (_connectionMapsVersion != workspace().getVersion()) {
+            _buildConnectionMaps();
+        }
+        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
+    }
+
     /** Set the input variables for channels that are connected to an
      *  output port of the refinement of current state.
      *  @exception IllegalActionException If a value variable cannot take
@@ -951,8 +964,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    // Current state.
+    protected State _currentState = null;
+
     // A map from ports to corresponding input variables.
     protected Map _inputVariableMap = new HashMap();
+
+    // The last chosen transition.
+    protected Transition _lastChosenTransition = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1055,19 +1074,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _setCurrentConnectionMap();
     }
 
-    /*  Set the map from input ports to boolean flags indicating whether a
-     *  channel is connected to an output port of the refinement of the
-     *  current state.
-     *  @exception IllegalActionException If the refinement specified
-     *   for one of the states is not valid.
-     */
-    private void _setCurrentConnectionMap() throws IllegalActionException {
-        if (_connectionMapsVersion != workspace().getVersion()) {
-            _buildConnectionMaps();
-        }
-        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1090,16 +1096,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // current state.
     private Map _currentConnectionMap = null;
 
-    // Current state.
-    private State _currentState = null;
-
     // Cached reference to the initial state.
     private State _initialState = null;
 
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
-
-    // The last chosen transition.
-    private Transition _lastChosenTransition = null;
 
 }
