@@ -41,7 +41,8 @@ import ptolemy.moml.MoMLParser;
    This class filters MoML files for backward compatibility between
    GR models constructed in version 4.0 or earlier. In particular, it
    handles the switch to using ColorAttribute for all colors, plus
-   some parameter renaming.
+   some parameter renaming. It also handles some conversions from
+   matrix parameters to arrays.
    
    @author Edward A. Lee
    @version $Id$
@@ -83,6 +84,10 @@ public class GRColorChanges implements MoMLFilter {
     /** If the container is a property named "diffuseColor" contained
      *  by one of the GR actors, then check the format of its parameter
      *  to change it, if necessary, from matrix format to array format.
+     *  Also fix the background color of ViewScreen3D.
+     *  If the property name is "polygon" contained by an instance
+     *  of PolyCylinder3D, perform a similar change from matrix
+     *  to array.
      *  @param container The object defined by the element that this
      *   is the end of.
      *  @param elementName The element name.
@@ -105,12 +110,29 @@ public class GRColorChanges implements MoMLFilter {
             }
         }
         // Fix the background color of the ViewScreen actor.
+        // Note that the ViewScreen actor also has a name change.
         if (container != null
               && container.getName().equals("backgroundColor")) {
             NamedObj actor = container.getContainer();
             if (actor != null
-                    && actor.getClass().getName().equals(
+                    && actor.getClass().getName().startsWith(
                     "ptolemy.domains.gr.lib.ViewScreen")) {
+                String value = ((Settable)container).getExpression().trim();
+                if (value.startsWith("[")) {
+                    value = value.replace('[', '{');
+                    value = value.replace(']', '}');
+                    ((Settable)container).setExpression(value);
+                    MoMLParser.setModified(true);
+                }
+            }
+        }
+        // Fix the polygon attribute of the PolyCylinder3D actor.
+        if (container != null
+              && container.getName().equals("polygon")) {
+            NamedObj actor = container.getContainer();
+            if (actor != null
+                    && actor.getClass().getName().equals(
+                    "ptolemy.domains.gr.lib.PolyCylinder3D")) {
                 String value = ((Settable)container).getExpression().trim();
                 if (value.startsWith("[")) {
                     value = value.replace('[', '{');
