@@ -52,7 +52,7 @@ import java.awt.Paint;
 figures. The parameters <i>redComponent</i>, <i>greenComponent</i>,
 <i>blueComponent</i> determine the color of the object.  
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -178,7 +178,7 @@ abstract public class GRShape2D extends GRActor2D {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables                 ////
 
-    private BasicFigure _figure;
+    protected BasicFigure _figure;
 }
