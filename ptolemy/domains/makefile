@@ -38,8 +38,8 @@ ME =		ptolemy/domains
 #   Java 3D was found
 # PTRTOS_DIR is set by configure in $PTII/mk/ptII.mk to rtos if
 #   java.util.Timer is found.
-DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp petrinet \
-		$(PTRTOS_DIR) sr $(PTJAVA3D_DIR)
+DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp \
+		$(PTRTOS_DIR) sr $(PTJAVA3D_DIR) #petrinet
 
 # Root of Ptolemy II directory
 ROOT =		../..
