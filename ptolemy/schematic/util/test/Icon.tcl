@@ -54,7 +54,7 @@ test Icon-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.Icon]
     set e1 [java::new ptolemy.schematic.util.Icon "TestIcon"]
     list [$e0 toString] [$e1 toString]
-} {Icon() TestIcon()}
+} {{ptolemy.schematic.util.Icon {Icon}()} {ptolemy.schematic.util.Icon {TestIcon}()}}
 
 test Icon-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
@@ -74,7 +74,7 @@ test Icon-3.1 {addGraphicElement} {
     set t2 [java::new ptolemy.schematic.util.GraphicElement GraphicElement2]
     $e0 addGraphicElement $t1
     $e0 toString
-} {Icon(
+} {ptolemy.schematic.util.Icon {Icon}(
 ....GraphicElement1())}
 
 test Icon-3.2 {containsGraphicElement} {
@@ -95,6 +95,6 @@ test Icon-3.3 {GraphicElements} {
 test Icon-3.4 {removeGraphicElement} {
     $e0 removeGraphicElement $t1
     $e0 toString
-} {Icon(
+} {ptolemy.schematic.util.Icon {Icon}(
 ....GraphicElement2())}
 

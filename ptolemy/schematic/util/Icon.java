@@ -136,7 +136,7 @@ public class Icon extends PTMLObject {
      */
     public String toString() {
         Enumeration els = graphicElements();
-        String str = getName() + "(";
+        String str = super.toString() + "(";
         while(els.hasMoreElements()) {
             GraphicElement g = (GraphicElement) els.nextElement();
             str += "\n...." + g.toString();

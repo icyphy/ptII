@@ -116,7 +116,7 @@ public class TerminalStyle extends PTMLObject {
      */
     public String toString() {
         Enumeration terms = terminals();
-        String str = getName() + "(";
+        String str = super.toString() + "(";
         while(terms.hasMoreElements()) {
             Terminal term = (Terminal) terms.nextElement();
             str += term.toString();

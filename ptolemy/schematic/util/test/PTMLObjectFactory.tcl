@@ -57,23 +57,42 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 	    createIconLibrary $xmllib]
     $iconlib toString
 } {SDF({}{
-LoadImage()
-SaveImage(
-....line(style=dotted,width=5,points=0 0 10 10)
-....rect(color=blue,fill=hatch,points=0 0 10 10)
-....ellipse(fill=blue,points=0 0 10 10)
-....polygon(points=0 0 10 10 15 10 15 0)
-....textline(font=helvetica,points=0 0)
-....textbox(alignX=center,alignY=top,points=0 0 100 100)
-....image(format=gif,compression=zip,file=icon.gif,points=0 0 100 100))})}
+ptolemy.schematic.util.Icon {LoadImage}(
+....rectangle(content=,color=red,fill=red,coords=-20 -20 40 40)
+....text(content=Hello!,font=helvetica,coords=0 0)
+....polygon(content=,coords=0 0 30 30 0 30 30 0,fill=blue)
+....ellipse(content=,fill=yellow,coords=0 0 10 10))
+ptolemy.schematic.util.Icon {SaveImage}(
+....rectangle(content=,outline=red,fill=blue,coords=0 0 10 10))})}
 
 ######################################################################
 ####
 #
 test PTMLObjectFactory-2.2 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
+    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml"]
+    set iconroot [java::call ptolemy.schematic.util.PTMLObjectFactory createIconLibrary $xmllib]
     set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleEntityLibrary.ptml"]   
+    
     set entitylib [java::call ptolemy.schematic.util.PTMLObjectFactory \
-	    createEntityLibrary $xmllib $iconlib]
-    $entitylib toString
-} {}
+	    createEntityLibrary $xmllib $iconroot]
+    list [$iconroot toString] [$entitylib toString]
+} {{root({SDF({}{
+ptolemy.schematic.util.Icon {LoadImage}(
+....rectangle(content=, color=red, fill=red, coords=-20 -20 40 40)
+....text(content=Hello!, font=helvetica, coords=0 0)
+....polygon(content=, coords=0 0 30 30 0 30 30 0, fill=blue)
+....ellipse(content=, fill=yellow, coords=0 0 10 10))
+ptolemy.schematic.util.Icon {SaveImage}(
+....rectangle(content=, outline=red, fill=blue, coords=0 0 10 10))})}{})} {SDF({}{
+ptolemy.schematic.util.EntityTemplate {LoadImage}(
+ptolemy.schematic.util.Icon {LoadImage}(
+....rectangle(content=, color=red, fill=red, coords=-20 -20 40 40)
+....text(content=Hello!, font=helvetica, coords=0 0)
+....polygon(content=, coords=0 0 30 30 0 30 30 0, fill=blue)
+....ellipse(content=, fill=yellow, coords=0 0 10 10))
+ptolemy.schematic.util.TerminalStyle {1out}(output((44.0, 44.0))))
+ptolemy.schematic.util.EntityTemplate {SaveImage}(
+ptolemy.schematic.util.Icon {SaveImage}(
+....rectangle(content=, outline=red, fill=blue, coords=0 0 10 10))
+ptolemy.schematic.util.TerminalStyle {1in}(input((-4.0, -4.0))))})}}

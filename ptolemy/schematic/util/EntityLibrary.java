@@ -103,22 +103,36 @@ public class EntityLibrary extends PTMLObject {
     }
 
     /**
+     * Get the Entity that is stored in this EntityLibrary with the given name
+     */
+    public EntityTemplate getEntity(String name)
+            throws IllegalActionException {
+        Enumeration allEntities = entities();
+        while(allEntities.hasMoreElements()) {
+            EntityTemplate entity = (EntityTemplate) allEntities.nextElement();
+            if(name.equals(entity.getName()))
+                return entity;
+        }
+        throw new IllegalActionException("Entity does not exist with " +
+                "the name " + name);
+    }
+    
+    /**
      * Get the Entity that is stored in this EntityLibrary with the specified
      * type signature
      */
-    // public Entity getEntity(EntityType e) {
-    //    return (Entity) _Entities.at(e);
-    //}
-    //    public Entity getEntity(String s) {
-    //    return (Entity) _Entities.at(s);
-    // }
-
-    /** 
-     * return the URL of the given sublibrary.
-     */
-    //public EntityLibrary getSubLibrary(String name) {
-    //    return (EntityLibrary) _sublibraries.at(name);
-    //}
+    public EntityLibrary getSubLibrary(String name) 
+        throws IllegalActionException {
+        Enumeration allLibraries = entities();
+        while(allLibraries.hasMoreElements()) {
+            EntityLibrary library = (EntityLibrary) allLibraries.nextElement();
+            if(name.equals(library.getName()))
+                return library;
+        }
+        throw new IllegalActionException(
+                "Entity library does not exist with " +
+                "the name " + name);
+    }
 
     /** Return the version of this library.
      */

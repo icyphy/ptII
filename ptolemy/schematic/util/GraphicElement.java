@@ -159,7 +159,7 @@ public class GraphicElement extends Object {
             
         while(els.hasMoreElements()) {
             String name = (String) els.nextElement();
-            str += "," + name + "=" + getAttribute(name);
+            str += ", " + name + "=" + getAttribute(name);
         }
         return str + ")";
     }

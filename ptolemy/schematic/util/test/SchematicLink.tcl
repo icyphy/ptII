@@ -50,33 +50,31 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test SchematicLink-2.1 {Constructor tests} {
-    set t1 [java::new ptolemy.schematic.util.SchematicTerminal To]
-    set t2 [java::new ptolemy.schematic.util.SchematicTerminal From]
+    set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
+    set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+    set t1 [java::new ptolemy.schematic.util.SchematicTerminal To $tt1]
+    set t2 [java::new ptolemy.schematic.util.SchematicTerminal From $tt2]
     set e0 [java::new ptolemy.schematic.util.SchematicLink $t1 $t2]
     list [$t2 description] [[$e0 getTo] description] [$t1 description] \
 	    [[$e0 getFrom] description]
 } {{ptolemy.schematic.util.SchematicTerminal(From)
 parameters
 template
-    null
 X=0.0
 Y=0.0
 } {ptolemy.schematic.util.SchematicTerminal(To)
 parameters
 template
-    null
 X=0.0
 Y=0.0
 } {ptolemy.schematic.util.SchematicTerminal(To)
 parameters
 template
-    null
 X=0.0
 Y=0.0
 } {ptolemy.schematic.util.SchematicTerminal(From)
 parameters
 template
-    null
 X=0.0
 Y=0.0
 }}

@@ -73,7 +73,7 @@ install: jclass $(PTCLASSJAR)
 editor:
 	$(JAVA) -classpath $(ROOT) ptolemy.schematic.editor.Editor
 grapheditor:
-	$(JAVA) -classpath $(ROOT) ptolemy.schematic.editor.GraphEditor
+	$(JAVA) -classpath $(ROOT) -DPTII=$(PTII) ptolemy.schematic.editor.GraphEditor
 
 
 depend:

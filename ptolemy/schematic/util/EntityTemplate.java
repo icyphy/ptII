@@ -160,6 +160,28 @@ public class EntityTemplate extends PTMLObject {
 	_terminalstyle = tstyle;
     }
 
+    /**
+     * Return a string this representing Icon.
+     */
+    public String toString() {
+        Enumeration els = ports();
+        String str = super.toString() + "(";
+        while(els.hasMoreElements()) {
+            EntityPort g = (EntityPort) els.nextElement();
+            str += "\n...." + g.toString();
+        }
+        if(_icon == null)            
+            str += "\nIcon = null";
+        else 
+            str += "\n" + _icon.toString();
+        if(_terminalstyle == null) 
+            str += "\nTerminalStyle = null";
+        else
+            str += "\n" + _terminalstyle.toString();
+        
+        return str + ")";
+    }
+
     public static final String DEFAULTICONNAME = "default";
     private NamedList _ports;
     private Icon _icon;

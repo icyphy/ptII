@@ -52,15 +52,9 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test SchematicEntity-2.1 {Constructor tests} {
     set template [java::new ptolemy.schematic.util.EntityTemplate "TestEntityTemplate"]
-    set e0 [java::new ptolemy.schematic.util.SchematicEntity $template]
-    set e1 [java::new ptolemy.schematic.util.SchematicEntity "TestSchematicEntity" $template]
-    list [$e0 description] [$e1 description]
-} {{ptolemy.schematic.util.SchematicEntity(TestEntityTemplate)
-parameters
-template
-ports
-terminals
-} {ptolemy.schematic.util.SchematicEntity(TestSchematicEntity)
+    set e0 [java::new ptolemy.schematic.util.SchematicEntity "TestSchematicEntity" $template]
+    list [$e0 description]
+} {{ptolemy.schematic.util.SchematicEntity(TestSchematicEntity)
 parameters
 template
 ports
@@ -102,7 +96,7 @@ test SchematicEntity-3.2 {setY, getY tests} {
 
 
 test SchematicEntity-3.7 {toString} {
-    $e1 setX 1.1
-    $e1 setY 2.4
-    $e1 toString
+    $e0 setX 1.1
+    $e0 setY 2.4
+    $e0 toString
 } {ptolemy.schematic.util.SchematicEntity {TestSchematicEntity}}

@@ -123,7 +123,6 @@ public class PTMLObjectFactory {
     public static IconLibrary createIconLibrary(XMLElement e) 
             throws IllegalActionException, NameDuplicationException {
 
-        PTMLParser parser = null;
         _checkElement(e, "iconlibrary");
 
         IconLibrary iconlibrary = new IconLibrary();
@@ -155,6 +154,7 @@ public class PTMLObjectFactory {
             } else if(etype.equals("description")) {
                 iconlibrary.setDocumentation(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
+                iconlibrary.addTerminalStyle(_createTerminalStyle(child));
             } else {
                 _unknownElementType(child, "iconlibrary");
             }
@@ -173,6 +173,35 @@ public class PTMLObjectFactory {
 
         return iconlibrary;
             
+    }
+
+    /** 
+     * Parse an Icon Library from the given url string. 
+     * Create a PTMLParser and point it at the URL, then call createIconLibrary
+     * on the returned tree of XMLElements.
+     */
+    public static IconLibrary parseIconLibrary(URL url) 
+            throws Exception {
+
+        String urlstring = url.toString();        
+        XMLElement root = _parser.parse(urlstring);
+        return PTMLObjectFactory.createIconLibrary(root);
+    }
+
+    /** 
+     * Parse an entity library from the given url string. 
+     * Point the PTMLParser at the URL, then call createIconLibrary
+     * on the returned tree of XMLElements.  All Icons and TerminalStyles
+     * should be contained within the given IconLibrary, which will be used
+     * to resolve references.
+     */
+    public static EntityLibrary parseEntityLibrary(URL url, 
+            IconLibrary iconLib) 
+            throws Exception {
+
+        String urlstring = url.toString();        
+        XMLElement root = _parser.parse(urlstring);
+        return PTMLObjectFactory.createEntityLibrary(root, iconLib);
     }
 
     /** 
@@ -231,9 +260,12 @@ public class PTMLObjectFactory {
                     entity.setName(_getString(e, n));
                 } catch (Exception ex) {};
             } else if (n.equals("icon")) {
-                _findIcon(iconroot, _getString(e, n));
+                Icon icon = _findIcon(iconroot, _getString(e, n));
+                entity.setIcon(icon);
             } else if (n.equals("terminalstyle")) {
-                _findTerminalStyle(iconroot, _getString(e, n));
+                TerminalStyle terminalstyle =
+                    _findTerminalStyle(iconroot, _getString(e, n));
+                entity.setTerminalStyle(terminalstyle);
             } else {
                 _unknownAttribute(e, n);
             }
@@ -335,6 +367,36 @@ public class PTMLObjectFactory {
         return terminal;
     }
 
+    private static TerminalStyle _createTerminalStyle(XMLElement e)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "terminalstyle");
+
+        TerminalStyle terminalStyle = new TerminalStyle();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            String etype = child.getElementType();
+            if(etype.equals("terminal")) {
+                terminalStyle.addTerminal(_createTerminal(child));
+            } else {
+                _unknownElementType(child, "terminalstyle");
+            }    
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                try {
+                    terminalStyle.setName(_getString(e, n));
+                } catch (Exception ex) {};
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return terminalStyle;
+    }
+
     /** Return the icon with the given name in the given root icon library.
      *  If no icon with the given name exists, then throw an exception.
      */
@@ -423,14 +485,12 @@ public class PTMLObjectFactory {
         URL newurl = new URL(baseurl, urloffset);
         String url = newurl.toString();
         
-        if(_parser == null) _parser = new PTMLParser();
-        
         XMLElement sublibtree = _parser.parse(url);
         return sublibtree;
     }
 
     /** 
-     * Print a message about the unknown element
+     * Print a message about the unknown element.
      */
     private static void _unknownElementType(XMLElement el, String parent) {
             String etype = el.getElementType();
@@ -466,6 +526,6 @@ public class PTMLObjectFactory {
         }
      }
 
-    private static PTMLParser _parser = null;
+    private static PTMLParser _parser = new PTMLParser();
 }
 

@@ -51,6 +51,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.DataOutputStream;
 
+import java.net.URL;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -265,13 +267,23 @@ public class GraphEditor extends AbstractApplication {
         
         JPalette p2 = new JPalette();
         SchematicPalette p3 = new SchematicPalette();
-       	SchematicTerminal n = new SchematicTerminal("test1", null);
 
-	p3.addNode(n, 30, 30);
+        try {
+            parseLibraries();
+            EntityTemplate template = _entityLibrary.getEntity("SaveImage");
+            SchematicEntity node = new SchematicEntity("test1", template);
+            p3.addNode(node, 60, 50);
+            
+            template = _entityLibrary.getEntity("LoadImage");
+            node = new SchematicEntity("test2", template);
+            p3.addNode(node, 60, 140);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
-        s.addShade("Test2", openIcon, p2,"open group -- disabled!");
+        s.addShade("Test2", openIcon, p2, "open group -- disabled!");
 
-        s.addShade("Test3", saveIcon, p3,"save group -- boring...");
+        s.addShade("Test3", saveIcon, p3, "save group -- boring...");
         s.setEnabledAt(1, false);
     }
     
@@ -386,6 +398,42 @@ public class GraphEditor extends AbstractApplication {
         ge.setVisible(true);
     }
 
+    /** Parse the xml libraries
+     */
+    public void parseLibraries () {
+        URL iconlibURL = null;
+        URL entitylibURL = null;
+        // Get the path to the icon library. Read the PTII root from
+        // the system properties
+        try {
+            URL urlbase = new URL("file:" + System.getProperty("PTII"));
+            iconlibURL = new URL(urlbase, 
+                    "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
+            entitylibURL = new URL(urlbase, 
+                    "ptII/ptolemy/schematic/util/test/exampleEntityLibrary.ptml");
+        }
+        catch (Exception ex) {
+            System.out.println("Couldn't construct url");
+            System.out.println(ex.getMessage());
+        }
+
+        // Parse the icon libraries
+        _iconLibrary = null;
+        _entityLibrary = null;
+        try {
+            _iconLibrary = PTMLObjectFactory.parseIconLibrary(iconlibURL);
+            System.out.println("Parsed:\n" + _iconLibrary);
+
+            _entityLibrary = 
+                PTMLObjectFactory.parseEntityLibrary(entitylibURL, 
+                        _iconLibrary);
+            System.out.println("Parsed:\n" + _entityLibrary);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    } 
+
     /** Redo the layout of the given JGraph.
      */
     public void redoLayout (JGraph jgraph, String type) {
@@ -456,5 +504,7 @@ public class GraphEditor extends AbstractApplication {
                 "We can't program for nuts",
                 JOptionPane.WARNING_MESSAGE);
     }
+    IconLibrary _iconLibrary;
+    EntityLibrary _entityLibrary;
 }
 

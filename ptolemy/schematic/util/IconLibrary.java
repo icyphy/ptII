@@ -63,6 +63,7 @@ public class IconLibrary extends PTMLObject {
         super(name);
         _sublibraries = (NamedList) new NamedList();
         _icons = (NamedList) new NamedList();
+        _terminalstyles = (NamedList) new NamedList();
    }
 
     /**
