@@ -75,14 +75,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         _controller = controller;
 
         Point2D origin = new Point(0,0);
-        // NOTE: The quadrant constraint is not needed anymore with
-        // new zoom capability.
-        // appendConstraint(new QuadrantConstraint(
-        //        origin, SwingConstants.SOUTH_EAST));
-        // NOTE: I don't know why the following is needed anymore,
-        // but if it isn't here, dragging causes things to move random
-        // amounts.  Beats me... EAL
-        appendConstraint(new SnapConstraint());
+        // Create a snap constraint with the default snap resolution.
+        _snapConstraint = new SnapConstraint();
+        appendConstraint(_snapConstraint);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,6 +230,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             frame.changeExecuted(null);
         }
     }
+    
+    /** Specify the snap resolution. The default snap resolution is 5.0.
+     *  @param resolution The snap resolution.
+     */
+    public void setSnapResolution(double resolution) {
+        _snapConstraint.setResolution(resolution);
+    }
 
     /** Drag all selected nodes and move any attached edges.
      *  Update the locatable nodes with the current location.
@@ -273,12 +275,12 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             double[] oldTranslation = new double[2];
             oldTranslation[0] = x;
             oldTranslation[1] = y;
-            snapTranslation = SnapConstraint.constrainPoint(oldTranslation);
+            snapTranslation = _snapConstraint.constrain(oldTranslation);
         } else {
             double[] newUpperLeft = new double[2];
             newUpperLeft[0] = originalUpperLeft[0] + x;
             newUpperLeft[1] = originalUpperLeft[1] + y;
-            double[] snapLocation = SnapConstraint.constrainPoint(newUpperLeft);
+            double[] snapLocation = _snapConstraint.constrain(newUpperLeft);
             snapTranslation = new double[2];
             snapTranslation[0] = snapLocation[0] - originalUpperLeft[0];
             snapTranslation[1] = snapLocation[1] - originalUpperLeft[1];
@@ -333,7 +335,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // the movement of vertexes by themselves
             result[0] = e.getLayerX();
             result[1] = e.getLayerY();
-            return SnapConstraint.constrainPoint(result);
+            return _snapConstraint.constrain(result);
         }
         /*
          * else {
@@ -355,4 +357,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     // Used to undo a locatable node movement
     private double[] _dragStart;
+    
+    // Locally defined snap constraint.
+    private SnapConstraint _snapConstraint;
 }

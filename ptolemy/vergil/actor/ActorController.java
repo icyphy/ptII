@@ -284,8 +284,6 @@ public abstract class ActorController extends AttributeController {
                 Port port = (Port) nodes.next();
                 StringAttribute cardinal =
                     (StringAttribute)port.getAttribute("_cardinal");
-                StringAttribute ordinal  =
-                    (StringAttribute)port.getAttribute("_ordinal");
 
                 if (cardinal == null) {
                     if (!(port instanceof IOPort)) {

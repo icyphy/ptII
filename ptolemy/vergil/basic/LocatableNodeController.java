@@ -66,11 +66,18 @@ import diva.graph.NodeInteractor;
 */
 public class LocatableNodeController extends BasicNodeController {
 
+    /** Create an instance associated with the specified graph controller.
+     *  @param controller The graph controller.
+     */
     public LocatableNodeController(GraphController controller) {
         super(controller);
         NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
-        nodeInteractor.setDragInteractor(new LocatableNodeDragInteractor(this));
+        _dragInteractor = new LocatableNodeDragInteractor(this);
+        nodeInteractor.setDragInteractor(_dragInteractor);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public mtehods                 ////
 
     /** Add a node to this graph editor and render it
      * at the given location.
@@ -156,6 +163,13 @@ public class LocatableNodeController extends BasicNodeController {
             ((Locatable)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");
+    }
+
+    /** Specify the snap resolution. The default snap resolution is 5.0.
+     *  @param resolution The snap resolution.
+     */
+    public void setSnapResolution(double resolution) {
+        _dragInteractor.setSnapResolution(resolution);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -257,4 +271,11 @@ public class LocatableNodeController extends BasicNodeController {
         }
         return false;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    // The drag interactor, which is remembered so we can change the
+    // snap resolution.
+    private LocatableNodeDragInteractor _dragInteractor;
 }

@@ -43,23 +43,51 @@ import diva.canvas.interactor.PointConstraint;
    @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {
+    
+    /** Construct a new instance of a snap constraint. 
+     */
+    public SnapConstraint() {
+        super();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Modify the specified point to snap to grid.
+    /** Modify the specified point to snap to grid using the local
+     *  resolution.
      *  @param point The point to modify.
      */
     public void constrain(Point2D point) {
-        // Invoke the static version of this method.
-        Point2D newPoint = constrainPoint(point);
-        point.setLocation(newPoint.getX(), newPoint.getY());
+        double x = Math.round(point.getX()/_resolution)*_resolution;
+        double y = Math.round(point.getY()/_resolution)*_resolution;
+        point.setLocation(x, y);
+    }
+    
+    /** Modify the specified point to snap to grid using the local
+     *  resolution.
+     *  @param point The point to modify (a dimension 2 array).
+     */
+    public double[] constrain(double[] point) {
+        double[] result = new double[2];
+        result[0] = Math.round(point[0]/_resolution)*_resolution;
+        result[1] = Math.round(point[1]/_resolution)*_resolution;
+        return result;
     }
 
-    /** Modify the specified point to snap to grid.
-     *  This is a static version of the constrain() method.
-     *  The constrain method cannot be static because it is defined
-     *  in a base class.
+    /** Modify the specified point to snap to grid using the local
+     *  resolution.
+     *  @param x The x dimension of the point to modify.
+     *  @param y The y dimension of the point to modify.
+     */
+    public double[] constrain(double x, double y) {
+        double[] result = new double[2];
+        result[0] = Math.round(x/_resolution)*_resolution;
+        result[1] = Math.round(y/_resolution)*_resolution;
+        return result;
+    }
+
+    /** Modify the specified point to snap to grid using the global
+     *  default resolution.
      *  @param point The point to modify.
      */
     public static Point2D constrainPoint(Point2D point) {
@@ -70,21 +98,23 @@ public class SnapConstraint implements PointConstraint {
         return new Point2D.Double(result[0], result[1]);
     }
 
-    /** Modify the specified point to snap to grid.
+    /** Modify the specified point to snap to grid using the global
+     *  default resolution.
      *  @param point The point to modify (a dimension 2 array).
      */
     public static double[] constrainPoint(double[] point) {
         return constrainPoint(point[0], point[1]);
     }
 
-    /** Modify the specified point to snap to grid.
+    /** Modify the specified point to snap to grid using the global
+     *  default resolution.
      *  @param x The x dimension of the point to modify.
      *  @param y The y dimension of the point to modify.
      */
     public static double[] constrainPoint(double x, double y) {
         double[] result = new double[2];
-        result[0] = Math.round(x/_resolution)*_resolution;
-        result[1] = Math.round(y/_resolution)*_resolution;
+        result[0] = Math.round(x/_defaultResolution)*_defaultResolution;
+        result[1] = Math.round(y/_defaultResolution)*_defaultResolution;
         return result;
     }
 
@@ -95,19 +125,19 @@ public class SnapConstraint implements PointConstraint {
         return true;
     }
 
-    /** Set the resolution. Note that this sets the snap resolution
-     *  globally.
+    /** Set the resolution for this instance.
      *  @param resolution The new resolution.
      */
-    public static void setResolution(double resolution) {
+    public void setResolution(double resolution) {
         _resolution = resolution;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The resolution. */
-    private static double _resolution = 5.0;
+    /** The default resolution globally. */
+    private static double _defaultResolution = 5.0;
+
+    /** The resolution for this instance. */
+    private double _resolution = 5.0;
 }
-
-

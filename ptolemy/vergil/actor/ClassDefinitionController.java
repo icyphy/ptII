@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -41,7 +40,6 @@ import javax.swing.KeyStroke;
 
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -202,7 +200,9 @@ public class ClassDefinitionController extends ActorController {
         // FIXME: Can we adjust the location here?
         // NOTE: This controller is expected to be used
         // only for class definitions, which must be instances
-        // of InstantiableNamedObj, so this cast should be safe.b
+        // of InstantiableNamedObj, so this cast should be safe.
+        // However, the key bindings are active even if it's not
+        // a class, so if it's not a class, we just do nothing here.
         if (((InstantiableNamedObj)object).isClassDefinition()) {
             if (subclass) {
                 moml.append("<class name=\""
@@ -219,14 +219,11 @@ public class ClassDefinitionController extends ActorController {
                         + object.getName()
                         + "\"/>");
             }
-        } else {
-            throw new InternalErrorException(
-                    "Expected target to be a class definition");
+            moml.append("</group>");
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this, container, moml.toString());
+            container.requestChange(request);
         }
-        moml.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, container, moml.toString());
-        container.requestChange(request);
     }
 
     ///////////////////////////////////////////////////////////////////

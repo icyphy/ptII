@@ -69,7 +69,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         _container = container;
         // To get resizing to snap to grid, use a custom resizer,
         // rather than the one provided by the base class.
-        setHandleInteractor(new Resizer());
+        _resizer = new Resizer();
+        setHandleInteractor(_resizer);
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -177,11 +178,24 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         return m;
     }
 
+    /** Set the snap resolution.
+     *  @param resolution The snap resolution.
+     */
+    public void setSnapResolution(double resolution) {
+        _resizer.setSnapResolution(resolution);
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    ////                         private members                         ////
+
     // FIXME: Instance used to work around Diva bug.
     private FigureDecorator _instanceDecorator;
 
     // Container of the icon to be manipulated.
     private NamedObj _container;
+    
+    // The local instance of the resizer.
+    private Resizer _resizer;
 
     /////////////////////////////////////////////////////////////////////////
     ////                         inner classes                           ////
@@ -194,10 +208,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         /** Create a new resizer.
          */
         public Resizer() {
-            // NOTE: I don't know why the following is needed anymore,
-            // but if it isn't here, dragging causes things to move random
-            // amounts.  Beats me... EAL
-            appendConstraint(new SnapConstraint());
+            _snapConstraint = new SnapConstraint();
+            appendConstraint(_snapConstraint);
         }
 
         /** Override the base class to notify the enclosing BoundsInteractor.
@@ -207,12 +219,19 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             super.mouseReleased(e);
             AttributeBoundsManipulator.this.mouseReleased(e);
         }
+        
+        /** Set the snap resolution.
+         *  @param resolution The snap resolution.
+         */
+        public void setSnapResolution(double resolution) {
+            _snapConstraint.setResolution(resolution);
+        }
 
         /** Translate the grab-handle.
          */
         public void translate(LayerEvent e, double x, double y) {
             // Snap to grid.
-            double[] snapped = SnapConstraint.constrainPoint(x, y);
+            double[] snapped = _snapConstraint.constrain(x, y);
 
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();
@@ -227,5 +246,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                             parent.getChild().getBounds(),
                             geometry.getBounds()));
         }
+        
+        private SnapConstraint _snapConstraint;
     }
 }
