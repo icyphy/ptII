@@ -1710,7 +1710,6 @@ public class Plot extends PlotBox {
             // most data consists of two data points, we want
             // to handle that case as efficiently as possible.
 
-            System.out.println("Plot: line = <" + line + ">");
             int fieldsplit = line.indexOf(",");
             if (fieldsplit == -1) {
                 fieldsplit = line.indexOf(" ");
