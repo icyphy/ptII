@@ -30,10 +30,10 @@
 
 package ptolemy.codegen.saveasjava;
 
-import ptolemy.moml.MoMLParser;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 import java.io.IOException;
 import java.io.FileWriter;
@@ -67,7 +67,7 @@ public class MoMLToJava {
         String code;
 
         // The model representation returned from saving as Java
-        String[] savedmodel;
+        String generatedCode;
 
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
@@ -82,18 +82,17 @@ public class MoMLToJava {
         // Convert the Ptolemy II model to Java code
         try {
             SaveAsJava saver = new SaveAsJava();
-            savedmodel = saver.save(toplevel);
-            code = savedmodel[0];
+            generatedCode = saver.generate(toplevel);
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
-            + "Exception raised when attempting to save model as Java\n");
+            + "Exception raised when attempting to generate Java\n");
         }
 
         // Write the Java text to a file.
         try {
-            FileWriter outfile = new FileWriter(savedmodel[1] + ".java");
+            FileWriter outfile = new FileWriter(toplevel.getName() + ".java");
             PrintWriter outprinter = new PrintWriter(outfile);
-            outprinter.print(code);
+            outprinter.print(generatedCode);
             outfile.close();
         } catch (IOException ex) {
             MessageHandler.error("Could not create output file:\n\n"
