@@ -56,7 +56,7 @@ derived class, where the mutation is specified as MoML code.
 
 @author  Edward A. Lee
 @version $Id$
-@see ChangeList
+@see ChangeListener
 */
 public abstract class ChangeRequest {
 

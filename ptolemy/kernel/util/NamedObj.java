@@ -669,7 +669,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return The named object that is refered to.
      *  @see #exportMoML(Writer, int)
      *  @see #deferredMoMLDefinitionFrom()
-     *  @see setDeferMoMLDefinitionTo()
+     *  @see #setDeferMoMLDefinitionTo(NamedObj)
      */
     public NamedObj getDeferMoMLDefinitionTo() {
 	return _deferTo;
