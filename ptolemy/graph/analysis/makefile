@@ -49,6 +49,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	analyzer/analyzer.jar \
+	strategy/strategy.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
