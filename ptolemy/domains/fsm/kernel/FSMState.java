@@ -293,7 +293,7 @@ public class FSMState extends ComponentEntity {
         try {
             workspace().getWriteAccess();
             FSMController cont = (FSMController)getContainer();
-            trans = new FSMTransition(cont, cont._uniqueTransitionName());
+            trans = new FSMTransition(cont, cont.uniqueName("_Trans"));
             _incomingPort().link(trans);
             source._outgoingPort().link(trans);
         } catch (IllegalActionException ex) {
@@ -313,7 +313,7 @@ public class FSMState extends ComponentEntity {
         try {
             workspace().getWriteAccess();
             FSMController cont = (FSMController)getContainer();
-            trans = new FSMTransition(cont, cont._uniqueTransitionName());
+            trans = new FSMTransition(cont, cont.uniqueName("_Trans"));
             _outgoingPort().link(trans);
             dest._incomingPort().link(trans);
         } catch (IllegalActionException ex) {

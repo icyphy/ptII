@@ -771,16 +771,6 @@ public class FSMController extends CompositeEntity implements TypedActor {
     }
 
 
-    protected synchronized String _uniqueStateName() {
-        return super.uniqueName("_State");
-    }
-
-
-    protected synchronized String _uniqueTransitionName() {
-        return super.uniqueName("_Trans");
-    }
-
-
     protected void _updateLocalVariables(VariableList vlist)
             throws IllegalActionException, IllegalArgumentException {
         if (vlist == null) {
