@@ -53,9 +53,9 @@ TYPACKAGE = 	pt.kernel
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
 TYPACKAGE_DIR = pt/kernel
 TYVERSION =	1.0
-TYDIST =	$(JPACKAGE)$(JVERSION)
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		pt/kernel/pt.kernel.zip
-JARFILE = 	$(JPACKAGE).jar
+JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	ComponentEntity.java \

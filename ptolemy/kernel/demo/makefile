@@ -43,6 +43,15 @@ include $(CONFIG)
 
 CLASSPATH = ../../..
 
+# Used to build zip files
+TYPACKAGE = 	pt.kernel.demo
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/kernel/demo
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		pt/kernel/pt.kernel.zip
+JARFILE = 	$(TYPACKAGE).jar
+
 TCL_SRCS =
 
 
