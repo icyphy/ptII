@@ -58,10 +58,12 @@ a microphone or line-in, this actor should be fired often enough
 to prevent overflow of the internal audio buffer.
 <p>
 The output is of type DoubleToken, and semantically, one output
-token is produced on each firing. In the actual implementation,
-serveral tokens may be produced on each firing in order to
+token is produced on each channel, on each firing, corresponding
+to the number of audio channels. In the actual implementation,
+serveral tokens may be produced on each channel, on each 
+firing, in order to
 improve performance. The number of tokens produced on each
-firing is set by parameter <i>tokenProductionRate</i>.
+channel on each firing is set by parameter <i>tokenProductionRate</i>.
 <p>
 <h2>Notes on audio sources and required parameters</h2>
 <p>(1) Real-time capture from a microphone or line-in
@@ -77,7 +79,13 @@ a mic or line-in, and should be set accordingly:
 resolution.
 <li><i>channels</i> should be set to desired number of audio 
 channels.
-<li><i>bufferSize</i> should be set to optimize performance.
+<li><i>bufferSize</i> may be set to optimize latency. 
+This controls the delay from the time audio sample are read by this
+actor until the audio is acutally heard at the speaker. A lower 
+bound on the latency is given by 
+(<i>bufferSize</i> / <i>sampleRate</i>) seconds.
+Ideally, the smallest value that gives acceptable performance (no unerflow)
+should be used. 
 <li><i>tokenProductionRate</i> may be set to optimize 
 performance.
 </ul>
@@ -88,12 +96,16 @@ a sound file, and should be set accordingly:
 <ul>
 <li><i>channels</i> should be set to desired number of audio 
 channels. The default is 1. Choose 2 only if the sound file
-is known to be stereo.
+is known to be stereo. Setting <i>channels</i> to a higher
+value than the number of channels in the sound file will
+result in a NullPointerException being thrown by this actor.
 <li><i>tokenProductionRate</i> may be set to optimize 
+performance. The default value should result in reasonable
 performance.
 </ul>
-<p>The sound file is not periodically repeated. postfire()
-will return false when the end of the sound file is reached.
+<p>The sound file is not periodically repeated by this actor. 
+postfire()
+will therefore return false when the end of the sound file is reached.
 <p>There are security issues involed with accessing files.
 Applications have no restrictions. Applets, however, are
 only allowed access to files specified by a URL and located
@@ -109,6 +121,8 @@ a sound file, and should be set accordingly:
 <li><i>tokenProductionRate</i> should be set to optimize 
 performance.
 </ul>
+<p>
+Note: Requires Java 2 v1.3.0 RC1 or later.
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.SoundCapture
@@ -157,7 +171,7 @@ public class AudioSource extends SDFAtomicActor {
 	bufferSize.setTypeEquals(BaseType.INT);
 
 	tokenProductionRate = new Parameter(this, "tokenProductionRate",
-					    new IntToken(512));
+					    new IntToken(256));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -222,11 +236,9 @@ public class AudioSource extends SDFAtomicActor {
      *  2 for stereo, etc.
      *  The default vaule is 1 (mono).
      *  <p>
-     *  Note that it is only necessary to set this parameter for the
-     *  case where audio is captured in real-time from the microphone
-     *  or line-in. The number of channels is automatically
-     *  determined when capturing samples from a sound file.
+     *  
      */
+    // FIXME: set this automatically when capturing from a file.
     public Parameter channels;
 
     /** Requested size of the internal audio input
@@ -253,7 +265,7 @@ public class AudioSource extends SDFAtomicActor {
      *  also affects the latency, since production rate tokens
      *  must be available before this actor can fire.
      *  <p>
-     *  The default value is 512.
+     *  The default value is 256.
      */
     public Parameter tokenProductionRate;
 
@@ -315,7 +327,7 @@ public class AudioSource extends SDFAtomicActor {
      *  of sound file reached).
      */
     // FIXME: If audio is read from file and file channels < parameter
-    // channels => bad.
+    // channels => exception thrown. Set channels param automatically.
     public boolean postfire() throws IllegalActionException {
 	//System.out.println("AudioSource: postfire(): invoked");
 	// Read in audio data.

@@ -111,15 +111,19 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
             _sdfDirector.setScheduleValid(false);
 
 	    // ********** FOR DEBUF ONLY ************
-	    //_sdfDirector.iterations.setToken(new IntToken(100));
+	    //_sdfDirector.iterations.setToken(new IntToken(1000));
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 22050;
+	    int sampleRate = 44100;
 
 	    int channels = 2;
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
-	    int cPRate = 512;
+	    int cPRate = 256;
+
+	    // Size of internal Java Sound buffer (in samples) to use 
+	    //for real-time capture/playback.
+	    int buffSize = 4096;
 
 	    AudioSource soundSource = new AudioSource(this, "soundSource");
 	    // Set the production rate(a performance optimization).
@@ -141,6 +145,7 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    soundSource.source.setToken(new StringToken("mic"));
 	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
 	    soundSource.channels.setToken(new IntToken(channels));
+	    soundSource.bufferSize.setToken(new IntToken(buffSize));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.pathName.setToken(new StringToken("outputFile.wav"));
@@ -150,6 +155,7 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	  soundSink.sampleSizeInBits.setToken(new IntToken(16));
 	  soundSink.tokenConsumptionRate.setToken(new IntToken(cPRate));
 	  soundSink.channels.setToken(new IntToken(channels));
+	  soundSink.bufferSize.setToken(new IntToken(buffSize));
 
 	  //this.connect(soundSource.output, soundSink.input);
 	  TypedIORelation rel1 =

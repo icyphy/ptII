@@ -53,26 +53,65 @@ import ptolemy.domains.sdf.kernel.*;
 //// AudioSink
 /**
 This actor reads in audio data from one input channel and records the
-data to a sound file and/or plays the audio data. The input is of type
+data to a sound file and/or plays the audio data. The input port is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
-of the audio data and should be in the range [-1,1]. Valid sound file
-formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
+of the audio data and should be in the range [-1,1]. Single channel
 (mono) and multichannel audio (stereo) are supported. For single
-audio, data is read from channel 0 of the input port. For multichannel
-(stereo) audio, audio is read from channel 0 (left) and channel 1
-(right) of the input port.
+audio, tokens are read from channel 0 of the input port. For multichannel
+(stereo) audio, tokens are read from channel 0 (left) and channel 1
+(right) of the input port. Semantically, one
+token is read on each channel of the input port, on each firing, 
+corresponding
+to the number of audio channels. In the actual implementation,
+serveral tokens may be consumed on each channel, on each 
+firing, in order to
+improve performance. The number of tokens consumed on each
+channel on each firing is set by parameter <i>tokenConsimptionRate</i>.
 <p>
- This actor
-will save the accumulated audio data to the file specified by the
-<i>pathName</i> parameter if <i>saveAudio</i> is true. It is true
-by default. The audio file format to use is inferred from the
-<i>fileName</i> parameter.
+<h2>Notes on audio sinks and required parameters</h2>
+<p>(1) Real-time playback of audio. Note that this
+actor cannot automatically set the appropriate sample
+rate or number of audio channels. These parameters must
+be set manually.
 <p>
-The sampling rate to use can be specified by the <i>sampleRate</i>
-parameter. The default sampling rate is 22050 Hz. The number of
-bits/sample can be specified by the <i>sampleSizeInBits</i>
-parameter. The default sample size is 16 bits.
-
+<ul>
+<li><i>sink</i> should be set to "speaker".
+<li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
+DoubleTokens read in by this actor will be interpreted as having
+this sample rate.
+<li><i>sampleSizeInBits</i> should be set to desired bit 
+resolution.
+<li><i>channels</i> should be set to desired number of audio 
+channels.
+<li><i>bufferSize</i> may be set to optimize latency. 
+This controls the delay from the time audio sample are read by this
+actor until the audio is acutally heard at the speaker. A lower 
+bound on the latency is given by 
+(<i>bufferSize</i> / <i>sampleRate</i>) seconds.
+Ideally, the smallest value that gives acceptable performance (no unerflow)
+should be used.
+<li><i>tokenProductionRate</i> may be set to optimize 
+performance.
+</ul>
+<p>(2) Write to a sound file on the native file sytem.
+<p>
+The following parameters are relavent to writing to a sound
+file.
+<ul>
+<li><i>sink</i> should be set to "file".
+<li><i>channels</i> should be set to desired number of audio 
+channels.
+<li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
+DoubleTokens read in by this actor will be interpreted as having
+this sample rate.
+<li><i>sampleSizeInBits</i> should be set to desired bit 
+resolution.
+<li><i>tokenProductionRate</i> may be set to optimize 
+performance. The default value should result in reasonable
+performance.
+</ul>
+<p>
+Note: Requires Java 2 v1.3.0 RC1 or later.
 @author  Brian K. Vogel
 @version  $Id$
 @see ptolemy.media.javasound.SoundCapture
@@ -109,7 +148,7 @@ public class AudioSink extends SDFAtomicActor {
 	bufferSize.setTypeEquals(BaseType.INT);
 
 	tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
-					    new IntToken(512));
+					    new IntToken(256));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,10 +196,8 @@ public class AudioSink extends SDFAtomicActor {
 
     /** The number of audio channels to use. 1 for mono,
      *  2 for stereo, etc.
-     *  The default vaule is 1 (mono).
+     *  The default vaule is 1.
      */
-    // FIXME: Currently, only single channel audio is allowed, so
-    // do not set this!
     public Parameter channels;
 
     /** Requested size of the internal audio input
@@ -188,7 +225,7 @@ public class AudioSink extends SDFAtomicActor {
      *  also affects the latency, since consumption rate tokens
      *  must be available before this actor can fire.
      *  <p>
-     *  The default value is 512.
+     *  The default value is 256.
      */
     public Parameter tokenConsumptionRate;
 
@@ -237,10 +274,7 @@ public class AudioSink extends SDFAtomicActor {
 	    // For each samples in the current channel:
 	    for (int i = 0; i < _consumptionRate; i++) {
 		// Convert to double[].
-		// *************************************************
-		// FIXME: remove multiply after debug is complete!!
-		// *************************************************
-		_audioInDoubleArray[j][i] = 1.23456789*audioTokenArray[i].doubleValue();
+		_audioInDoubleArray[j][i] = audioTokenArray[i].doubleValue();
 	    }
 	}
 	// write out samples to speaker and/or file.
@@ -260,7 +294,7 @@ public class AudioSink extends SDFAtomicActor {
 	    // Write audio data to a file.
 	    System.out.println("AudioSink: initialize(): playback to file");
 	    String pathNameString = 
-		((StringToken)pathName.getToken()).stringValue();
+		((StringToken)pathName.getToken()).toString();
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	    int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
 	    int channelsInt = ((IntToken)channels.getToken()).intValue();
