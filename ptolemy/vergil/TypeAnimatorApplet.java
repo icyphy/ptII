@@ -98,7 +98,8 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
     /** Create the model.  This overrides the base class to attach
      *  type listeners to all the ports contained by top-level entities.
      *  @param workspace The workspace in which to create the model.
-     *  @exception Exception If something goes wrong.
+     *  @exception Exception If there was a problem creating the model.
+     *  @return  The model that was created
      */
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {

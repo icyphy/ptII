@@ -97,6 +97,7 @@ public class URIAttribute extends SingletonAttribute {
      *  such an attribute.  Note that this URI may represent a
      *  file on the local filesystem, in which case it will use
      *  the "file" scheme.
+     *  @param container The container to start searching.
      *  @return A URI, or null if none can be found.
      */
     public static URI getModelURI(NamedObj container) {
@@ -113,13 +114,17 @@ public class URIAttribute extends SingletonAttribute {
             }
             container = (NamedObj)container.getContainer();
         }
-        if (modelURI != null) return modelURI.getURI();
-        else return null;
+        if (modelURI != null) {
+            return modelURI.getURI();
+        } else {
+        return null;
+        }
     }
 
     /** Get the URI that has been set by setURI(),
      *  or null if there is none.
      *  @return The URI.
+     *  @see #setURI(URI)
      */
     public URI getURI() {
         return _value;
@@ -133,6 +138,7 @@ public class URIAttribute extends SingletonAttribute {
      *  @exception MalformedURLException If the URI cannot be converted to
      *   a URL.
      *  @exception IllegalArgumentException If the URI is not absolute.
+     *  @see #setURL(URL)
      */
     public URL getURL() throws MalformedURLException {
         // Warning, this method used to call java.net.URI.toURL(), which has
@@ -162,6 +168,7 @@ public class URIAttribute extends SingletonAttribute {
      *  @param uri The new URI.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
+     *  @see #getURI()
      */
     public void setURI(URI uri) throws IllegalActionException {
         _value = uri;
@@ -176,6 +183,7 @@ public class URIAttribute extends SingletonAttribute {
      *  @param url The URL.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
+     *  @see #getURL()
      */
     public void setURL(URL url) throws IllegalActionException {
         try {

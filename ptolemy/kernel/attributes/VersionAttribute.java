@@ -123,7 +123,7 @@ public class VersionAttribute
      *  <p> "1.2.2-005" is greater than "1.2.2.4",
      *  <br> "1.3.1" is an greater than "1.3"
      *  <br> "1.3-beta" is an greater than "1.3-alpha"
-     *  <b>
+     *  <p>
      *  Version-id contain one or more elements. When two version-id's
      *  are compared, they are normalized by padding the shortest
      *  version-id with additional elements containing "0".
@@ -191,17 +191,18 @@ public class VersionAttribute
 
     /** Return true if the specified object is an instance of
      *  VersionAttribute and represents the same version as this one.
+     *  @param object  The specified object that is compared against.
      *  @return True if the specified version is the same as this one.
      */
-    public boolean equals(Object obj) {
+    public boolean equals(Object object) {
         // If the _tupleList is null, then we are not fully constructed.
         // Defer to the superclass, so that we return true if the argument
         // is the same object as this.
         if (_tupleList == null) {
-            return super.equals(obj);
+            return super.equals(object);
         }
-        if (obj instanceof VersionAttribute) {
-            return (compareTo(obj) == 0);
+        if (object instanceof VersionAttribute) {
+            return (compareTo(object) == 0);
         }
         return false;
     }
@@ -209,8 +210,9 @@ public class VersionAttribute
     /** Return true if this version is less than the specified version.
      *  This method uses compareTo(), but may yield more readable code
      *  in certain circumstances.
-     *  @see #compareTo(Object)
+     *  @param version  The VersionAttribute that is compared against.
      *  @return True if this version is less than the specified version.
+     *  @see #compareTo(Object)
      */
     public boolean isLessThan(VersionAttribute version) {
         return (compareTo(version) < 0);

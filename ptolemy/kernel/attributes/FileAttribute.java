@@ -258,6 +258,7 @@ public class FileAttribute extends StringAttribute {
 
     /** Clone the attribute into the specified workspace.  The resulting
      *  object has no base directory name nor any reference to any open stream.
+     *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
@@ -307,8 +308,9 @@ public class FileAttribute extends StringAttribute {
      *  by URIAttribute.getModelURI() is returned, which is the URI
      *  of the first container above this attribute in the hierarchy that
      *  has a URIAttribute, or null if there none.
-     *  @see URIAttribute#getModelURI(NamedObj)
      *  @return A directory name, or null if there is none.
+     *  @see #setBaseDirectory(URI)
+     *  @see URIAttribute#getModelURI(NamedObj)
      */
     public URI getBaseDirectory() {
         if (_baseDirectory != null) {
@@ -410,6 +412,7 @@ public class FileAttribute extends StringAttribute {
      *  If this is not called, then the default is the directory
      *  containing the file returned by URIAttribute.getModelURI().
      *  @param directory The base directory.
+     *  @see #getBaseDirectory()   
      *  @see URIAttribute#getModelURI(NamedObj)
      */
     public void setBaseDirectory(URI directory) {

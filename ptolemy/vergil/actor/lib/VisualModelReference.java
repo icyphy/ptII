@@ -222,6 +222,7 @@ public class VisualModelReference
     /** Clone this actor into the specified workspace.
      *  Override the base class to ensure that private variables are
      *  reset to null.
+     *  @param workspace The workspace for the cloned object.
      *  @return A new instance of VisualModelReference.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
