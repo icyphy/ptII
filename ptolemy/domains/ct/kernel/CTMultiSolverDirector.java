@@ -1155,8 +1155,11 @@ public class CTMultiSolverDirector extends CTDirector {
             if (foundOne) {
                 return predictedStep;
             } else {
-                // NOTE: This is a little bit conservative...
-                // But safety is more important.
+                // NOTE: We multiple the step size by 1.5.
+                predictedStep = getCurrentStepSize() * 1.5; 
+                if (predictedStep <= getMaxStepSize()) {
+                    return predictedStep;
+                }
                 return getCurrentStepSize();
             }
         } else {
