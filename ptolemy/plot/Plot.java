@@ -824,65 +824,64 @@ public class Plot extends PlotBox {
         // Draw a line to the previous point, if appropriate.
         if (connected) {
             if (clip) {
-                 // Is the previous point in range?
-                 boolean previnside = prevx >= _ulx && prevx <= _lrx &&
-                         prevy >= _uly && prevy <= _lry;
-                 // If the previous point is out of x range, adjust
-                 // prev point to boundary.
-                 int tmp;
-                 if (pointinside) {
-                     if (prevx < _ulx) {
-                         prevy = prevy + ((ypos - prevy) *
-					  (_ulx - prevx))/(xpos - prevx);
-                         prevx = _ulx;
-                     } else if (prevx > _lrx) {
-                         prevy = prevy + ((ypos - prevy) *
-					  (_lrx - prevx))/(xpos - prevx);
-                         prevx = _lrx;
-                     }
-
-                     // If prev point is out of y range, adjust to boundary.
-                     // Note that y increases downward
-                     if (prevy < _uly) {
-                         prevx = prevx + ((xpos - prevx) *
-					  (_uly - prevy))/(ypos - prevy);
-                         prevy = _uly;
-                     } else if (prevy > _lry) {
-                         prevx = prevx + ((xpos - prevx) *
-					  (_lry - prevy))/(ypos - prevy);
-                         prevy = _lry;
-                     }
-                 }
-
-                 // If we are in line drawing mode, and the previous
-                 // point was in range, but the current point is out
-                 // of range, recompute the current point position to
-                 // lie on the boundary of the plot
-                 if (!pointinside && previnside) {
-                      showsomething = true;
-                      // Adjust current point to lie on the boundary.
-                      if (xpos < _ulx) {
-	                      ypos = ypos + ((prevy - ypos) *
-					     (_ulx - xpos))/(prevx - xpos);
-	                      xpos = _ulx;
-                      } else if (xpos > _lrx) {
-	                      ypos = ypos + ((prevy - ypos) *
-					     (_lrx - xpos))/(prevx - xpos);
-	                      xpos = _lrx;
-                      }
-                      if (ypos < _uly) {
-	                      xpos = xpos + ((prevx - xpos) *
-					     (_uly - ypos))/(prevy - ypos);
-	                      ypos = _uly;
-                      } else if (ypos > _lry) {
-	                      xpos = xpos + ((prevx - xpos) *
-					     (_lry - ypos))/(prevy - ypos);
-	                      ypos = _lry;
-                      }
-                  }
+                // Rule out impossible cases.
+                if (!((prevx < _ulx && xpos < _ulx) ||
+                (prevx > _lrx && xpos > _lrx) ||
+                (prevy < _uly && ypos < _uly) ||
+                (prevy > _lry && ypos > _lry))) {
+                    // If the previous point is out of x range, adjust
+                    // prev point to boundary.
+                    if (xpos != prevx) {
+                        if (prevx < _ulx) {
+                            prevy = prevy + ((ypos - prevy) * (_ulx - prevx))/(xpos - prevx);
+                            prevx = _ulx;
+                        } else if (prevx > _lrx) {
+                            prevy = prevy + ((ypos - prevy) * (_lrx - prevx))/(xpos - prevx);
+                            prevx = _lrx;
+                        }
+                    }
+                    
+                    // If prev point is out of y range, adjust to boundary.
+                    // Note that y increases downward
+                    if (ypos != prevy) {
+                        if (prevy < _uly) {
+                            prevx = prevx + ((xpos - prevx) * (_uly - prevy))/(ypos - prevy);
+                            prevy = _uly;
+                        } else if (prevy > _lry) {
+                            prevx = prevx + ((xpos - prevx) * (_lry - prevy))/(ypos - prevy);
+                            prevy = _lry;
+                        }
+                    }
+                    
+                    // Adjust current point to lie on the boundary.
+                    if (xpos != prevx) {
+                        if (xpos < _ulx) {
+                            ypos = ypos + ((prevy - ypos) * (_ulx - xpos))/(prevx - xpos);
+                            xpos = _ulx;
+                        } else if (xpos > _lrx) {
+                            ypos = ypos + ((prevy - ypos) * (_lrx - xpos))/(prevx - xpos);
+                            xpos = _lrx;
+                        }
+                    }
+                    if (ypos != prevy) {
+                        if (ypos < _uly) {
+                            xpos = xpos + ((prevx - xpos) * (_uly - ypos))/(prevy - ypos);
+                            ypos = _uly;
+                        } else if (ypos > _lry) {
+                            xpos = xpos + ((prevx - xpos) * (_lry - ypos))/(prevy - ypos);
+                            ypos = _lry;
+                        }
+                    }
+                }
+                 
+                 // Are the new points in range?
+                 showsomething = prevx >= _ulx && prevx <= _lrx &&
+                         prevy >= _uly && prevy <= _lry &&
+                         xpos >= _ulx && xpos <= _lrx &&
+                         ypos >= _uly && ypos <= _lry;
              }
 
-             if (showsomething) {
+             if (showsomething || !clip) {
                  graphics.drawLine(xpos, ypos, prevx, prevy);
              }
         }
