@@ -19,7 +19,7 @@ Electrical Engineering \& Computer Science\\
 University of California, Berkeley\\ 
 \\}
 
-\date{15 July 2002}
+\date{19 July 2002}
 \maketitle
 
 %-----------------------------------------------------------------------------
@@ -125,16 +125,16 @@ situation.
 
 To apply a smooth bias, we first draw a circle of radius $r_{o}$
 around each path of radius $r_{min}$ in figure \ref{paths}, as in
-figure \ref{circles}.  We choose $r_{min} < r_{o} < 3r_{min}$, so that
-the larger circles do not encircle both smaller circles.  We call the
-circular path that a plane would take to go right at the minimum
-turning radius the \textit{r-path} and the center of this circle the
-\r-circle.  We call the circle of radius $r_{o}$ centered at r-center
-the r-extension, because it will be used to extend the region of
-SoftWalls bias for smooth control.  Similarly the l-path is the
-circular path that a plane would take to go left at the minimum
-turning radius, which is centered at l-center and surrounded by
-l-extension.
+figure \ref{circles}.  We choose $r_{min} < r_{o} < 2r_{min}$, so that
+the larger circles do not encircle the centers of the opposing
+circles.  We call the circular path that a plane would take to go
+right at the minimum turning radius the \textit{r-path} and the center
+of this circle the \textit{r-circle}.  We call the circle of radius
+$r_{o}$ centered at r-center the \textit{r-extension}, because it will
+be used to extend the region of SoftWalls bias for smooth control.
+Similarly the \textit{l-path} is the circular path that a plane would
+take to go left at the minimum turning radius, which is centered at
+the \textit{l-center} and surrounded by the \textit{l-extension}.
 
 
 \begin{figure}[btp]
@@ -148,24 +148,31 @@ teh minimum turning radius.
 \end{figure}
 
 
-Suppose the l-extension crosses the no-fly-zone boundary, but the
-r-extension is still outside the no-fly zone.  We do nothing until the
-r-extension crosses the boundary.  After the r-extension crosses the
-boundary, we still have an escape path, i.e. the r-path, but we would
-like to start applying bias.  If the aircraft gets close enough for
-the r-path to touch the boundary, we will move along the r-path to
-avoid entering the zone.  When the nearest point of the boundaray and
-r-center is between the r-extension and the r-path (and the l-extension
-has crossed the boundary), we will apply the following bias:
+When none of the two extension circles intersect the no-fly-zone
+boundary, the SoftWalls bias is zero.  At any instant, we are
+interested in two points on the boundary.  The one closest to r-center
+has distance $d_{r}$ from r-center, and the one closest to l-center
+has distance $d_{l}$.  When one of the extension circles, say
+l-extension, crosses the boundary, the bias remains zeros until the
+second circle, r-extension, intersects the boundary.  At that point
+the bias increases linearly as $d_{r}$ decreases up to the point
+where the r-path intersects the boundary, and the maximum bias is
+applied:
 \[
-\dot{\theta_{s}} = \frac{d}{r_{o} - r_{min}} (\dot{\theta_{M}} + s/r_{min})
+\dot{\theta_{s}} = \frac{d_{r} - r_{min}}{r_{o} - r_{min}}
+(\dot{\theta_{M}} + s/r_{min})
 \]
-where $d$ is the distance between r-center and the boundary point to
-r-center.  We will apply this bias until the l-extension no longer
-crosses the boundary.  This will keep the aircraft out of the no-fly
-zone while increasing the bias gradually.
 
-
+When the l-extension leaves the no-fly zone, we should decrease the
+bias linearly as $d_{l}$ increases, until there is zero bias applied:
+\[
+\dot{\theta_{s}} = \max{ \{(\frac{d_{r} - r_{min}}{r_{o} - r_{min}} +
+\frac{r_{o} - d_{l}}{r_{o} - r_{min}}) (\dot{\theta_{M}} + s/r_{min}),
+0 \}}
+\]
+Then at the point where the resistant pilot's aricraft is parallel to
+the wall at distance $2r_{min}$, zero bias is applied, and an escape
+path is available.
 
 \end{document}
 
