@@ -189,10 +189,10 @@ public class Relation extends Node {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */
     public int APublicMethod() {
         return 1;
     }
+     */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////

@@ -1,4 +1,4 @@
-/* One line description of file.
+/* A Port is the interface between Entities and Relations.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -30,11 +30,9 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// Port
 /** 
-Description of the class
-@author 
+A Port is the interface between Entities and Relations.
+@author John S. Davis, II
 @version $Id$
-@see classname
-@see full-classname
 */
 public class Port extends GenericPort {
     /** 
@@ -42,70 +40,59 @@ public class Port extends GenericPort {
      */	
     public Port(String name) {
 	 super(name);
+	 _connected = false;
+	 _multiPortContainer = null;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Return the MultiPort which contains this Port.
+     */	
+    public MultiPort getMultiPortContainer() {
+        return _multiPortContainer;
+    }
+
     /** Return true if this Port is connected to another Port. Return false
      *  otherwise.
      */	
     public boolean isConnected() {
+	MultiPort multiPort = null;
+	setMultiPortContainer( multiPort );
         return _connected;
     }
 
-    /** Description
-     * @see full-classname/method-name
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Set the MuliPort which contains this Port.
      */	
-    public int APublicMethod() {
-        return 1;
+    public void setMultiPortContainer(MultiPort multiPort) {
+	/*
+	if( multiPort == null )
+	{
+	     // FIXME: Throw an exception here!
+	}
+	*/
+	_multiPortContainer = multiPort;
+        return; 
     }
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Description
-     * @see full-classname/method-name
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int AProtectedMethod() {
-        return 1;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
-
-    /** Description */
-    protected int aProtectedVariable;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname/method-name
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int APrivateMethod() {
-        return 1;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* This variable is set to true if is is connected through a relation
+    /* This variable is set to true if it is connected through a relation
      * to another port.  
      */
     private boolean _connected;
+
+    /* The MultiPort which contains this Port.
+     */
+    private MultiPort _multiPortContainer;
 }
