@@ -2389,7 +2389,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-8.3 {test input with a relative source with a file ending in .moml} {
-    // RIM uses .moml files, so leave them in.
+    # RIM uses .moml files, so leave them in.
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -2512,8 +2512,6 @@ test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
-    </property>
     <entity name="A" class="ptolemy.actor.TypedAtomicActor">
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
