@@ -93,9 +93,17 @@ public class Complex implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the magnitude or absolute value of the specified complex number.
+     *  @param x The specified number.
+     *  @return A non-negative number that is the absolute value of
+     *  this complex number.
+     */
+    public static double abs(Complex x) {
+        return x.magnitude();
+    }
 
     /** Return the principal arc cosine of this complex number.  This
-     * is defined by:
+     *  is defined by:
      *  <pre>
      *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
      *  </pre>
@@ -110,6 +118,20 @@ public class Complex implements Cloneable, Serializable {
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
         return new Complex(c4.imag, -c4.real);
+    }
+
+    /** Return the principal arc cosine of the specified complex number.  This
+     *  is defined by:
+     *  <pre>
+     *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
+     *  </pre>
+     *  where <code>z</code> is this complex number.
+     *
+     *  @return A new complex number with value equal to the
+     *  arc cosine of the given complex number.
+     */
+    public static Complex acos(Complex z) {
+        return z.acos();
     }
 
     /** Return the principal hyperbolic arc cosine of this
@@ -143,6 +165,13 @@ public class Complex implements Cloneable, Serializable {
      */
     public final double angle() {
         return  Math.atan2(imag, real);
+    }
+
+    /** Return the angle or argument of this complex number.
+     *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
+     */
+    public static double angle(Complex z) {
+        return  z.angle();
     }
 
     /** Return the principal arc sine of this complex number.
@@ -326,6 +355,17 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, imag);
     }
 
+    /** Return the exponential of the specified complex number,
+     *  or <em>e<sup>z</sup></em>,
+     *  where <code>z</code> is the argument.
+     *  @param z A complex exponent.
+     *  @return A new complex number with value equal to the exponential
+     *  of this complex number.
+     */
+    public static Complex exp(Complex z) {
+        return z.exp();
+    }
+
     /** Return true if both the real and imaginary parts of this
      *  complex number are close to those of the argument.  The
      *  epsilon field is used to determine closeness.
@@ -383,15 +423,32 @@ public class Complex implements Cloneable, Serializable {
      *  number.  The principal value is returned, which
      *  is
      *  <pre>
-     *  log(z) = log(mag(z)) + i * angle(z)
+     *  log(z) = log(abs(z)) + i * angle(z)
      *  </pre>
-     *  where <code>z</code> is this complex number.
+     *  where <code>z</code> is this complex number, <code>abs(z)</code>
+     *  is its magnitude, and <code>angle(z)</code> is its angle.
      *
      *  @return A new complex number with value equal to the natural logarithm
      *  of this complex number.
      */
     public final Complex log() {
         return  new Complex( Math.log(magnitude()), angle() );
+    }
+
+    /** Return the natural logarithm of the specified complex
+     *  number.  The principal value is returned, which
+     *  is
+     *  <pre>
+     *  log(z) = log(abs(z)) + i * angle(z)
+     *  </pre>
+     *  where <code>z</code> is this complex number, <code>abs(z)</code>
+     *  is its magnitude, and <code>angle(z)</code> is its angle.
+     *
+     *  @return A new complex number with value equal to the natural logarithm
+     *  of this complex number.
+     */
+    public static Complex log(Complex z) {
+        return z.log();
     }
 
     /** Return the magnitude or absolute value of this complex number.
@@ -448,7 +505,7 @@ public class Complex implements Cloneable, Serializable {
      *  @param angle The angle.
      *  @return A new complex number with the specified magnitude and angle.
      */
-    public static final Complex polarToComplex(double magnitude,
+    public static Complex polarToComplex(double magnitude,
             double angle) {
         if (magnitude < 0.0) {
             angle +=  Math.PI;
@@ -477,6 +534,17 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
+    /** Return a new complex number with value <em>z <sup>y</sup></em>
+     *  where <em>z</em> is the first argument and <em>y</em> is the second
+     *  argument.
+     *  @param z The number to be raised to a power.
+     *  @param y The exponent.
+     *  @return A new complex number that with value <em>z <sup>y</sup></em>.
+     */
+    public static Complex pow(Complex z, double y) {
+        return z.pow(y);
+    }
+
     /** Return <em>z<sup>y</sup></em>
      *  where <em>z</em> is this complex number and <em>y</em> is the
      *  argument, a Complex.
@@ -494,6 +562,28 @@ public class Complex implements Cloneable, Serializable {
         double magnitude = Math.exp((lnrho*y.real) - (theta*y.imag));
         double angle =  (lnrho*y.imag) + (theta*y.real);
         return polarToComplex(magnitude, angle);
+    }
+
+    /** Return a new complex number with value <em>z <sup>y</sup></em>
+     *  where <em>z</em> is the first argument and <em>y</em> is the second
+     *  argument.
+     *  @param z The number to be raised to a power.
+     *  @param y The exponent.
+     *  @return A new complex number that with value <em>z <sup>y</sup></em>.
+     */
+    public static Complex pow(Complex z, Complex y) {
+        return z.pow(y);
+    }
+
+    /** Return a new complex number with value <em>z <sup>y</sup></em>
+     *  where <em>z</em> is the first argument and <em>y</em> is the second
+     *  argument.
+     *  @param z The number to be raised to a power.
+     *  @param y The exponent.
+     *  @return A new complex number that with value <em>z <sup>y</sup></em>.
+     */
+    public static Complex pow(double z, Complex y) {
+        return (new Complex(z, 0.0)).pow(y);
     }
 
     /** Return the reciprocal of this complex number.
@@ -617,6 +707,21 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
+    /** Return a new complex number with its value equal to the
+     *  the square root of the specified complex number.
+     *  The square root is defined to be:
+     *  <pre>
+     *  sqrt(z) = sqrt(mag(z))*(cos(angle(z)/2) + i * sin(angle(z)/2) )
+     *  </pre>
+     *  where <code>z</code> is this complex number.
+     *
+     *  @return A new complex number equal to the square root of
+     *  this complex number.
+     */
+    public static Complex sqrt(Complex z) {
+        return z.sqrt();
+    }
+
     /** Return a new complex number formed by subtracting the specified
      *  complex number from this complex number.
      *
@@ -674,7 +779,7 @@ public class Complex implements Cloneable, Serializable {
      *
      * @return A string of the form "<em>x</em> + <em>y</em>i".
      */
-    public static final String toString(Complex value) {
+    public static String toString(Complex value) {
         if (value.imag >= 0) {
             return Double.toString(value.real) + " + "
                 + Double.toString(value.imag) + "i";
