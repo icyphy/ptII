@@ -252,7 +252,11 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param model The associated model.
      */
     public void setModel(CompositeActor model) {
+        // If there was a previous model, close its displays.
+        _closeDisplays();
         _model = model;
+        // For the new model, in case displays are open, close them.
+        _closeDisplays();
         if (_parameterQuery != null) {
             _controlPanel.remove(_parameterQuery);
             _parameterQuery = null;
@@ -391,7 +395,8 @@ public class ModelPane extends JPanel implements CloseListener {
     }
 
     /** Notify the contained instances of PtolemyQuery that the window
-     *  has been closed.  This method is called if this pane is contained
+     *  has been closed, and remove all Placeable displays by calling
+     *  place(null).  This method is called if this pane is contained
      *  within a container that supports such notification.
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
@@ -402,6 +407,9 @@ public class ModelPane extends JPanel implements CloseListener {
         }
         if (_parameterQuery != null) {
             _parameterQuery.windowClosed(window, button);
+        }
+        if (_model != null) {
+            _closeDisplays();
         }
     }
 
@@ -449,7 +457,7 @@ public class ModelPane extends JPanel implements CloseListener {
 
         // Put placeable objects in a reasonable place.
         Iterator atomicEntities = model
-            .allAtomicEntityList().iterator();
+                .allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if (object instanceof Placeable) {
@@ -502,6 +510,23 @@ public class ModelPane extends JPanel implements CloseListener {
 
     // Indicator given to the constructor of how much to show.
     private int _show;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Close any open displays by calling place(null).
+     */
+    private void _closeDisplays() {
+        if (_model != null) {
+            Iterator atomicEntities = _model.allAtomicEntityList().iterator();
+            while (atomicEntities.hasNext()) {
+                Object object = atomicEntities.next();
+                if (object instanceof Placeable) {
+                    ((Placeable) object).place(null);
+                }
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
