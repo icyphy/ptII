@@ -129,7 +129,7 @@ public class Exec extends TypedAtomicActor {
     public Parameter blocking;
 
     /** The command to be executed.  The command is parsed by
-     * {@link ptolemy.util.StringUtility#tokenizeForExec(String)}
+     * {@link ptolemy.util.StringUtilities#tokenizeForExec(String)}
      * into tokens and then executed as a  separate process.
      * The initial default is the string "echo 'Hello, world.'".   
      * FIXME: Should this be an array of strings instead of a string?
