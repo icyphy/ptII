@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil/kernel/attributes
 
-DIRS =		
+DIRS =		demo	
 
 # Root of the Java directory
 ROOT =		../../../..
