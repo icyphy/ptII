@@ -92,7 +92,7 @@ public class Main extends KernelMain {
         //        CTransformer.v(_toplevel));
 
         // Add transformers to do other passes.
-        // "jtp" mean "java tranformation package.
+        // "jtp" mean "java transformation package.
         // These transformers are required to be a body transformer,
         // and are applied after scene transformers.
 
