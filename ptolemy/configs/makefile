@@ -45,10 +45,11 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	configs
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
 
 JSRCS =
 
+# These files go into PTCLASSALLJAR
 OTHER_FILES_TO_BE_JARED = \
 	intro.htm \
 	introDSP.htm \
@@ -60,6 +61,12 @@ OTHER_FILES_TO_BE_JARED = \
 	vergilConfigurationDSP.xml \
 	vergilConfigurationPtiny.xml \
 	vergilWelcomeWindow.xml
+
+# Include these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		doc/doc.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
