@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -129,6 +131,7 @@ public class UtilityFunctions {
      *   (in order).
      *  @exception IllegalActionException If the arrays do not have 
      *   compatible types.
+     *  @since Ptolemy II 4.1
      */
     public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2) 
             throws IllegalActionException {
@@ -149,8 +152,10 @@ public class UtilityFunctions {
      *  @param token Array of arrays which are to be concatenated.
      *  @exception IllegalActionException If the argument is not an array of
      *   arrays.
+     *  @since Ptolemy II 4.1
      */
-    public static ArrayToken concatenate(ArrayToken token) throws IllegalActionException {
+    public static ArrayToken concatenate(ArrayToken token)
+            throws IllegalActionException {
         if (!(token.getElementType() instanceof ArrayType )) {
             throw new IllegalActionException(
                    "The argument to concatenate(ArrayToken) "
@@ -181,6 +186,43 @@ public class UtilityFunctions {
      */
     public static RecordToken constants() {
         return Constants.constants();
+    }
+
+    /** Extract a sub-array consisting of all of the elements of an
+     *  array for which the given predicate function returns true.
+     *  If the given array has type {X}, then the given function should
+     *  have type function(x:X)(boolean).  Example usage:
+     *  <p><code>even = function(x:int)(x%2==0)<br/>
+     *  filter(even,[1:1:20].toArray)</code></p>
+     *  @param f A function that takes exactly one parameter (of the
+     *       same type as the elements of the given array) and returns
+     *       a boolean value.
+     *  @param array  An array, on whose elements the given function
+     *       will operate.
+     *  @return  The subarray of this array containing exactly those
+     *       elements, in order, for which the given function returns
+     *       true.
+     *  @exception IllegalActionException
+     *  @since Ptolemy II 4.1 
+     */
+    // FIXME: This function has not been reviewed.
+    public static ArrayToken filter(FunctionToken f, ArrayToken array)
+            throws IllegalActionException {
+        List result = new LinkedList();
+        for (int i=0; i<array.length(); i++) {
+            Token element = array.getElement(i);
+            Token[] elementList = { element } ;
+            // FIXME: Should we check that the function actually
+            // returns a boolean value?
+            if (f.apply(elementList) != BooleanToken.FALSE) {
+                result.add(element);
+            }
+        }
+        // FIXME: Not sure how to do the array cast.
+        // return new ArrayToken((Token[])(result.toArray()));
+        Token[] resultArray = new Token[result.size()];
+        System.arraycopy(result.toArray(), 0, resultArray, 0, result.size());
+        return new ArrayToken(resultArray);
     }
 
     /** Find a file or directory. If the file does not exist as is, then
