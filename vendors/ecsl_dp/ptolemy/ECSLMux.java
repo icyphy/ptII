@@ -34,6 +34,7 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,7 +69,26 @@ public class ECSLMux extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
+        DisplayOption = new StringParameter(this, "DisplayOption");
+        Inputs = new StringParameter(this, "Inputs");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Determines how the icon is displayed.  A common value is the 
+     *  string "bar", which means to display as a bar
+     *  <p>FIXME: Currently ignored.
+     */
+    public StringParameter DisplayOption;
+
+    /** The number of inputs.
+     *  <p>FIXME: Currently ignored.
+     */
+    public StringParameter Inputs;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** FIXME: noop
      *  @exception IllegalActionException If there is no director,
