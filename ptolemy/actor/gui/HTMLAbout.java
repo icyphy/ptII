@@ -115,114 +115,61 @@ public class HTMLAbout {
                 + "<code>about:copyright</code></a> "
                 + " Display information about the copyrights.\n");
 
-        // set needCloser to true if we found a configuration and need
-        // to close the html tag.
-        boolean needCloser = false;
+        htmlBuffer.append("</ul>\n<table>\n");
         if (_configurationExists("full")) {
-            needCloser = true;
             htmlBuffer.append(
-                    "<li>Full\n"
-                    + " <ul>\n"
-                    + "  <li><a href=\"about:demos\"><code>about:demos</code></a>"
-                    + "   Open up all the .xml in"
-                    + "   <code>ptolemy/configs/doc/completeDemos.htm</code>.\n"
-                    + "   (May fail in Ptiny, DSP, HyVisual or VisualSense configurations).\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/demos.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/doc/demos.htm</code></a>\n"
-                    + "   Open up the .xml files in\n"
-                    + "   <code>ptolemy/configs/doc/demos.htm</code>.\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew"
-                    + version + ".htm\">"
-                    + "   <code>about:demos#ptolemy/configs/doc/whatsNew"
-                    + version + ".htm</code></a>\n"
-                    + "   Open up the .xml files in\n"
-                    + "   <code>ptolemy/configs/doc/whatsNew"
-                    + version + ".htm</code>.\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/"
-                    + "whatsNew3.0.2.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/doc/"
-                    + "whatsNew3.0.2.htm</code></a>\n"
-                    + "   Open up the .xml files in\n"
-                    + "   <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>.\n"
-                    + " </ul>\n");
+                    "<tr rowspan=4><center><b>Full</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew"
+                            + version + ".htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
         // Don't include DSP here, it uses the Ptiny demos anyway.
 
         if (_configurationExists("hyvisual")) {
-            needCloser = true;
             htmlBuffer.append(
-                    "<li>HyVisual\n"
-                    + " <ul>\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/hyvisual/intro.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/hyvisual/intro.htm</code></a>"
-                    + "   \nOpen up the .xml files in\n"
-                    + "   <code>ptolemy/configs/hyvisual/intro.htm</code>.\n"
-                    + " </ul>\n");
+                    "<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
         }
 
         if (_configurationExists("ptiny")) {
-            needCloser = true;
             htmlBuffer.append(
-                    "<li>Ptiny\n"
-                    + " <ul>\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/completeDemosPtiny.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
-                    + "   \nOpen up the .xml files in\n"
-                    + "   <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
-
-                    + "  <li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-                    + "   \nOpen up the .xml files in\n"
-                    + "   <code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
-                    + " </ul>\n");
+                    "<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
         }
-
-        //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
-        //             + "Run all the demonstrations.\n"
-        //             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
-        //             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-        //             + "\nRun all the .xml files in\n"
-        //             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
 
         if (_configurationExists("visualsense")) {
-            needCloser = true;
             htmlBuffer.append(
-                    "<li>VisualSense\n"
-                    + " <ul>\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/visualsense/intro.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/visualsense/intro.htm</code></a>"
-                    + "   \nOpen up the .xml files in\n"
-                    + "   <code>ptolemy/configs/visualsense/intro.htm</code>.\n"
-                    + "  <li><a href=\"about:demos#ptolemy/configs/visualsense/completeDemos.htm\">"
-                    + "   <code>about:demos#ptolemy/configs/visualsense/completeDemos.htm</code></a>"
-                    + "   \nOpen up the .xml files in\n"
-                    + "   <code>ptolemy/configs/visualsense/completeDemos.htm</code>.\n"
-                    + " </ul>\n");
+                    "<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
         }
 
-        if (needCloser) {
-            htmlBuffer.append("</ul>\n");
-        }
+        htmlBuffer.append("</table>\n");
+
 
         htmlBuffer.append("</body>\n</html>\n");
         return htmlBuffer.toString();
     }
 
-    /** Call Configuration.openModel() on all the local .xml, .htm and .html
+    /** Call Configuration.openModel() on relative URLs that match a regexp.
      *  files are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
      *  to the .xml, .htm and .html files.
      *  If this argument is the empty string, then
      *  "ptolemy/configs/doc/completeDemos.htm" is used.
+     *  @param regexp The regular expression of the links we are interested
+     *  in.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched.
      */
-    public static URL demos(String demosFileName, Configuration configuration)
-            throws Exception {
+    public static URL generateLinks(String demosFileName, String regexp,
+            Configuration configuration)  throws Exception {
 
         URL demosURL = _getDemoURL(demosFileName);
-        List modelList = _getURLs(demosURL, ".*(.xml|.htm|.html)");
+        List modelList = _getURLs(demosURL, regexp);
         Iterator models = modelList.iterator();
         while (models.hasNext()) {
             String model = (String)models.next();
@@ -277,7 +224,18 @@ public class HTMLAbout {
             // If there is no fragment, then use
             // "ptolemy/configs/doc/completeDemos.htm"
             URI aboutURI = new URI(event.getDescription());
-            newURL = demos(aboutURI.getFragment(), configuration);
+            newURL = generateLinks(aboutURI.getFragment(), ".*.xml$",
+                    configuration);
+        } else if (event.getDescription()
+                .startsWith("about:links")) {
+            // Expand all the local .html, .htm, .pdf, .xml files in
+            // the fragment and return a URL pointing to the fragment.
+            // If there is no fragment, then use
+            // "ptolemy/configs/doc/completeDemos.htm"
+            URI aboutURI = new URI(event.getDescription());
+            newURL = generateLinks(aboutURI.getFragment(),
+                    ".*(.htm|.html|.pdf|.xml)",
+                    configuration);
         } else if (event.getDescription()
                 .startsWith("about:runAllDemos")) {
             URI aboutURI = new URI(event.getDescription());
@@ -302,7 +260,7 @@ public class HTMLAbout {
             throws Exception {
 
         URL demosURL = _getDemoURL(demosFileName);
-        List modelList = _getModelURLs(demosURL);
+        List modelList = _getURLs(demosURL, ".*.xml$");
         Iterator models = modelList.iterator();
         while (models.hasNext()) {
             String model = (String)models.next();
@@ -328,6 +286,21 @@ public class HTMLAbout {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Return a string containing HTML with links the the about:demos
+    // and about:links pages
+    private static String _aboutHTML(String fileName) {
+        return "  <tr>\n"
+            + "    <code>" + fileName + "</code>\n"
+            + "    <td><a href=\"about:demos#" + fileName
+            + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
+            + "    <td><a href=\"about:links#" + fileName
+            + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+            // RunAllDemos does not work, it runs in the wrong thread?
+            // + "    <td><a href=\"about:runAllDemos#" + fileName
+            // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
+            + "  </tr>\n";
+    }
+    
     // Return the URL of the file that contains links to .xml files
     private static URL _getDemoURL(String demosFileName) throws IOException {
         // Open the completeDemos.htm file and read the contents into
@@ -339,11 +312,6 @@ public class HTMLAbout {
     }
 
 
-
-    // Return a list of URLs for local .xml files linked to in demosURL.
-    private static List  _getModelURLs(URL demosURL) throws IOException {
-        return _getURLs(demosURL, ".xml$");
-    }
 
     private static List _getURLs(URL demosURL, String regexp)
             throws IOException {
