@@ -870,14 +870,16 @@ public class ComplexArrayMath {
         return toString(array, ", ", "{", "}");
     }
 
-    /** Return a new String representing the array, formatted as
-     *  specified by the ArrayStringFormat argument.
-     *  To get a String in the Ptolemy expression language format,
-     *  call this method with ArrayStringFormat.exprASFormat as the
-     *  format argument.
+    /** Return a new String representing the array, formatted 
+     *  specified starting with vectorBegin, where each
+     *  successive element is separated by elementDelimiter
+     *  and ending with vectorEnd.
      *
      *  @param array An array of complex numbers.
-     *  @param format The type of ArrayStringFormat.
+     *  @param elementDelimiter The delimiter between elements,
+     *  typicalling ", "
+     *  @param vectorBegin The start of the array, typically "{"
+     *  @param vectorEnd The end of the array, typically "}"
      *  @return A new string representing the array in the format specified
      *  by the ArrayStringFormat argument.
      */
