@@ -158,7 +158,7 @@ public class TimeKeeper {
      *  highest priority and lowest nonnegative rcvrTime. If no triples
      *  exist, return null.
      */
-    public synchronized  RcvrTimeTriple getHighestPriorityTriple() {
+    public synchronized  TimedQueueReceiver getHighestPriorityReceiver() {
         double time = -10.0;
 	double firstTime = -10.0;
         int maxPriority = 0;
@@ -168,7 +168,7 @@ public class TimeKeeper {
 
 	while( rcvrNotFound ) {
 	    if( cnt == _rcvrTimeList.size() ) {
-	        return highPriorityTriple;
+	        return null;
 	    }
 
 	    RcvrTimeTriple triple = 
@@ -190,7 +190,7 @@ public class TimeKeeper {
 	    }
 	    cnt++;
 	}
-	return highPriorityTriple;
+	return highPriorityTriple.getReceiver();
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -258,10 +258,14 @@ public class TimeKeeper {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
                     rcvr.setReceivingTimeKeeper(this);
                     // rcvr.setReceivingTimeKeeper(_timeKeeper);
+		    updateRcvrList(rcvr, rcvr.getRcvrTime(), 
+			    rcvr.getPriority());
+		    /*
                     RcvrTimeTriple triple = new RcvrTimeTriple(
 			    rcvr, rcvr.getRcvrTime(),
 			    rcvr.getPriority() );
 		    updateRcvrList(triple);
+		    */
 		}
 	    }
 	}
@@ -382,11 +386,14 @@ public class TimeKeeper {
 
 		    // Is the following necessary?? 
 		    //
+		    updateRcvrList( (ODFReceiver)rcvrs[i][j], 
+			    _currentTime, currentPriority );
+		    /* 
                     RcvrTimeTriple triple = new RcvrTimeTriple(
                             (ODFReceiver)rcvrs[i][j],
 			    _currentTime, currentPriority );
                     updateRcvrList( triple );
-		    //
+		    */ 
 
                     currentPriority++;
                 }
@@ -428,7 +435,11 @@ public class TimeKeeper {
      *  ports of the actor that are managed by this time keeper.
      * @param triple The RcvrTimeTriple to be positioned in the list.
      */
-    public synchronized void updateRcvrList(RcvrTimeTriple triple) {
+    // RFIXME: public synchronized void updateRcvrList(RcvrTimeTriple triple) {
+    public synchronized void updateRcvrList(TimedQueueReceiver tqr,
+	    double time, int priority ) {
+	RcvrTimeTriple triple = 
+	        new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
     }
@@ -452,7 +463,7 @@ public class TimeKeeper {
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
 	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeList.at(i);
-	    Receiver testRcvr = testTriple.getReceiver();
+	    TimedQueueReceiver testRcvr = testTriple.getReceiver();
             double time = testTriple.getTime();
             String testPort = testRcvr.getContainer().getName();
             String testString = "null";
@@ -512,11 +523,12 @@ public class TimeKeeper {
      */
     private void _removeRcvrTriple(RcvrTimeTriple triple) {
 
-        Receiver rcvrToBeRemoved = triple.getReceiver();
+        TimedQueueReceiver rcvrToBeRemoved = triple.getReceiver();
 
 	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
-	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeList.at(cnt);
-	    Receiver nextRcvr = nextTriple.getReceiver();
+	    RcvrTimeTriple nextTriple = 
+		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	    TimedQueueReceiver nextRcvr = nextTriple.getReceiver();
 
 	    if( rcvrToBeRemoved == nextRcvr ) {
 	        _rcvrTimeList.removeAt( cnt );
@@ -542,6 +554,67 @@ public class TimeKeeper {
 
     // The delay time associated with this actor. 
     private double _delayTime = 0.0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+
+    // A RcvrTimeTriple is a data structure for storing a receiver 
+    // along with its rcvrTime and priority. RcvrTimeTriples are 
+    // used by ODFActors to order incoming events according to time 
+    // stamps. Each ODFActor has a RcvrTimeTriple associated with 
+    // each receiver it owns. In situations where multiple receivers 
+    // of an ODFActor have simultaneous events, the priority of the 
+    // RcvrTimeTriples are used to determine order.
+
+    public class RcvrTimeTriple extends NamedObj {
+
+        // Construct a RcvrTimeTriple with a TimeQueueReceiver, 
+	// a rcvr time and a priority. The rcvr time must be 
+	// greater than or equal to any previous rcvr times 
+	// associated with the TimedQueueReceiver. 
+        public RcvrTimeTriple(TimedQueueReceiver rcvr, 
+		double rcvrTime, int priority ) {
+            super();
+            _rcvr = rcvr; 
+	    _priority = priority; 
+	    _rcvrTime = rcvrTime;
+	    if( !(rcvr instanceof TimedQueueReceiver) ) {
+	        throw new IllegalArgumentException(
+			rcvr.getContainer().getName() + 
+			" is not a TimedQueueReceiver.");
+	    } 
+	    if( rcvrTime < _rcvrTime && rcvrTime != -1 ) {
+	        throw new IllegalArgumentException(
+			"Rcvr times must be monotonically " 
+			+ "non-decreasing.");
+	    }
+	}
+
+        ///////////////////////////////////////////////////////////
+	////                     public methods                ////
+
+        // Return the TimedQueueReceiver of this RcvrTimeTriple.
+        public TimedQueueReceiver getReceiver() {
+            return _rcvr;
+        }
+
+        // Return the priority of this RcvrTimeTriple.
+        public int getPriority() {
+            return _priority;
+        }
+
+        // Return the time of this RcvrTimeTriple.
+        public double getTime() {
+            return _rcvrTime;
+        }
+
+        ///////////////////////////////////////////////////////////
+        ////                     private variables             ////
+
+        private TimedQueueReceiver _rcvr; 
+	private double _rcvrTime = 0.0; 
+	private int _priority;
+    }
 
 }
 
