@@ -179,7 +179,7 @@ public class PrintThreads {
     private final static String _getLineSeparator() {
 	String results =  new String("\n");
 	try {
-	    results = System.getProperty("lineSeparator");
+	    results = System.getProperty("line.separator");
 	} catch (Exception e) {
 	    // getProperty() will throw an exception if we are
 	    // running in an applet, in which case we default to "\n".
