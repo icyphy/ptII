@@ -43,7 +43,7 @@ fi
 
 # The sed calls split up words with internal capitalization
 spell $LOCALFILE ${1+"$@"} | \
-	sed -e 's/\./ /g' | spell $LOCALFILE | 
+	sed -e 's/\./ /g' | spell $LOCALFILE | \
 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | spell $LOCALFILE | \
 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' \
         | spell $LOCALFILE
