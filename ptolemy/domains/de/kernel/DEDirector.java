@@ -205,7 +205,8 @@ public class DEDirector extends Director {
      *  the workspace. Increment the version number of the workspace.
      */
     public DEDirector() {
-        this(null);
+        super();
+        _initParameters();
     }
 
     /**  Construct a director in the  workspace with an empty name.
@@ -487,8 +488,11 @@ public class DEDirector extends Director {
             // so we don't check for it here.
 
             // Set the depth equal to the depth of the actor.
+            // put a pure event into the local event queue
             _enqueueEvent(actor, time);
             if (_isEmbedded()) {
+                // put a pure event into the local event queue of upper
+                // level in hierarchy
                 _requestFiring();
             }
             _eventQueue.notifyAll();
@@ -764,6 +768,9 @@ public class DEDirector extends Director {
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
+//        System.out.println(getContainer().getName() +
+//            " The length of event queue is " + 
+//            _eventQueue.size() + " :");
         return super.postfire();
     }
 
@@ -783,12 +790,17 @@ public class DEDirector extends Director {
         if (_debugging) {
             _debug("DE director prefiring!");
         }
+        
+        // A top-level DE director is always ready to fire.
         if (!_isEmbedded()) {
             return true;
         }
-        // If the outside time is larger (later) than the first event
-        // in the queue, then there's something wrong with the outside
-        // domain.
+
+        // If embedded, in particular, inside inside a CT model.
+        // DE time is always accurate. And the time resolution is infinite small. 
+        // CT is responsible to handle the time resolution problem caused by
+        // event detection or other things.            
+
         CompositeActor container = (CompositeActor)getContainer();
         double outsideCurrentTime = ((Actor)container).
             getExecutiveDirector().getCurrentTime();
@@ -801,11 +813,14 @@ public class DEDirector extends Director {
         // a firing as soon as possible.
         if (nextEventTime == Double.NEGATIVE_INFINITY) {
             nextEventTime = outsideCurrentTime;
+            return true;
         }
-
-        // FIXME: Ideally, we should add this test. But DT does not
-        // return a correct getCurrentTime.
-        if (outsideCurrentTime > nextEventTime + 1e-10) {
+        
+        // If the outside time is larger (later) than the first event
+        // in the queue, then there's something wrong with the outside
+        // domain.
+        
+        if (outsideCurrentTime > nextEventTime) {
             throw new IllegalActionException(this,
                     "Missed a firing at "
                     + nextEventTime + "."
@@ -813,7 +828,7 @@ public class DEDirector extends Director {
                     + outsideCurrentTime + ".");
         }
 
-        // Now we check if there's any input.
+        // Now we check if there's any external input.
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
         while (inputPorts.hasNext()) {
@@ -826,36 +841,18 @@ public class DEDirector extends Director {
             }
         }
         if (hasInput) {
-            // FIXME: Also need a time resolution parameter, like the one
-            // in CT.
-            if (outsideCurrentTime < (getCurrentTime() - 1e-10)) {
-                throw new IllegalActionException(this,
-                        "Received an event in the past at "
-                        + "an opaque composite actor boundary: "
-                        + "Outside time is " + outsideCurrentTime
-                        + ". Local current time is "
-                        + getCurrentTime() + ".");
-            }
-
-            // Otherwise it is a proper timing relation.
-            // We set the current time.
-            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
-                // Round up the error in double number calculation.
-                setCurrentTime(nextEventTime);
-            } else {
-                // Input events are early than the next event in the queue.
-                // So we process the input events first.
-                setCurrentTime(outsideCurrentTime);
-            }
+            // If there is at least one external input
+            setCurrentTime(outsideCurrentTime);
             return true;
         } else {
-            // If there is no input, we test whether there's anything
-            // internal to fire.
-            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
-                // Round up the error in double number calculation.
+            // If there is no external input
+            if (nextEventTime == outsideCurrentTime) {
+                // If there is an internal event scheduled to happen 
+                // at the current time, it is the right time to fire.
                 setCurrentTime(nextEventTime);
                 return true;
             } else {
+                // If there is no internal event, it is not the correct time to fire.
                 return false;
             }
         }
