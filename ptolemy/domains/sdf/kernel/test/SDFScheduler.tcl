@@ -602,7 +602,7 @@ test SDFScheduler-8.7.1 {input Multiport with no connections - disconnected grap
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} s1
     list $sched1 $s1
-} {{{Consumer2 Consumer1}} {{Consumer2 Consumer1}}
+} {{{Consumer2 Consumer1}} {{Consumer2 Consumer1}}}
 
 
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
