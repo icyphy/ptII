@@ -71,17 +71,14 @@ public class SquareWave extends TypedCompositeActor {
         dir.STAT = true;
         //dir.addDebugListener(new StreamListener());
 
-        // Parameters
-        period = new Parameter(this, "period", new DoubleToken(4.0));
-        double[][] b = {{500.0}};
-        numerator = new Parameter(this, "numerator",
-                new DoubleMatrixToken(b));
-        numerator.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        double[][] a = {{1.0, 10.0, 1000.0}};
-        denominator = new Parameter(this, "denominator",
-                new DoubleMatrixToken(a));
-        denominator.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        // Top level Parameters
+        period = new Parameter(this, "period", new DoubleToken(2.0));
 
+        numerator = new Parameter(this, "numerator");
+        numerator.setExpression("{500.0}");
+        denominator = new Parameter(this, "denominator");
+        denominator.setExpression("{1.0, 10.0, 1000.0}");
+ 
         Clock sqwv = new Clock(this, "SQWV");
         sqwv.period.setExpression("period");
         sqwv.values.setExpression("{2.0, -2.0}");
