@@ -193,7 +193,8 @@ public class Exec extends TypedAtomicActor {
                 _exec();
             }
             // FIXME: What if there is no input?
-            if (input.hasToken(0)) {
+            if (input.numberOfSources() > 0 
+                    && input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
                 if ((line = ((StringToken)input.get(0)).stringValue())
                             != null) {
@@ -220,11 +221,20 @@ public class Exec extends TypedAtomicActor {
 
             String errorString;
             String outputString;
+            if (_debugging) {
+                _debug("Exec: about to call _outputGobbler.*GetAndReset");
+            }
+
             if (_blocking) {
                 outputString = _outputGobbler.blockingGetAndReset();
             } else {
                 outputString = _outputGobbler.nonblockingGetAndReset();
             }
+
+            if (_debugging) {
+                _debug("Exec: about to call _errorGobbler.*GetAndReset");
+            }
+
             errorString = _errorGobbler.nonblockingGetAndReset();
             if (_debugging) {
                 _debug("Exec: Error: '" + errorString + "'");
@@ -373,13 +383,13 @@ public class Exec extends TypedAtomicActor {
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
 
-            _errorGobbler =
-                new _StreamReaderThread(_process.getErrorStream(),
-                        "Exec Stderr Gobbler");
-
             _outputGobbler =
                 new _StreamReaderThread(_process.getInputStream(),
                         "Exec Stdout Gobbler");
+
+            _errorGobbler =
+                new _StreamReaderThread(_process.getErrorStream(),
+                        "Exec Stderr Gobbler", _outputGobbler);
 
             _errorGobbler.start();
             _outputGobbler.start();
@@ -403,9 +413,15 @@ public class Exec extends TypedAtomicActor {
     private class _StreamReaderThread extends Thread {
 
         _StreamReaderThread(InputStream inputStream, String name) {
+             this(inputStream, name, null);
+        }
+
+        _StreamReaderThread(InputStream inputStream, String name,
+                _StreamReaderThread otherStream) {
             super(name);
             _inputStream = inputStream;
             _lockingStringBuffer = new LockingStringBuffer();
+            _otherStream = otherStream;
         }
 
         public String blockingGetAndReset() throws IllegalActionException {
@@ -431,14 +447,31 @@ public class Exec extends TypedAtomicActor {
             try {
                 InputStreamReader inputStreamReader =
                     new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader =
-                    new BufferedReader(inputStreamReader);
-                String line = null;
-                while ( (line = bufferedReader.readLine()) != null) {
+                // We read the data as a char[] instead of using readline()
+                // so that we can get strings that do not end in end of
+                // line chars such as prompts to stderr.
+
+                //BufferedReader bufferedReader =
+                //    new BufferedReader(inputStreamReader);
+                //String line = null;
+                //while ( (line = bufferedReader.readLine()) != null) {
+                //    if (_debugging) {
+                //        _debug("Gobbler: " + line);
+                //    }
+                //    _lockingStringBuffer.append(line + "\n");
+                char [] chars = new char[80];
+                int length; // Number of characters read.
+
+                while ((length = inputStreamReader.read(chars, 0, 80))
+                        != -1 ) {
                     if (_debugging) {
-                        _debug("Gobbler: " + line);
+                        _debug("Gobbler: " + String.valueOf(chars, 0, length));
                     }
-                    _lockingStringBuffer.append(line);
+                    _lockingStringBuffer.append(chars, 0, length );
+                    if (_otherStream != null) {
+                        // Wake up the other thread
+                        _otherStream.notifyStringBuffer();
+                    }
                 }
             } catch (IOException ioe) {
                 _lockingStringBuffer.append("IOException: " + ioe);
@@ -447,6 +480,10 @@ public class Exec extends TypedAtomicActor {
 
         // StringBuffer that we read and write to in a locking fashion
         private LockingStringBuffer _lockingStringBuffer;
+
+        // If non-null, then the other stream to notify if this stream
+        // gets any data.
+        private _StreamReaderThread _otherStream;
 
         // StringBuffer to update
         private StringBuffer _stringBuffer;
@@ -475,10 +512,31 @@ public class Exec extends TypedAtomicActor {
             notifyAll();
         }
 
+        /** Always append the value to the internal StringBuffer.
+         *  @param chars the characters to be appended
+         *  @param offset the index of the first character to append.
+         *  @param length the number of characters to append.
+         */
+        public synchronized void append(char[] chars, int offset, int length) {
+            // If we have the lock, we always append.
+            _stringBuffer.append(chars, offset, length);
+            _appendCalled = true;
+            if (_debugging) {
+                _debug("Exec: append(char[]): set _appendCalled to true");
+            }
+
+            notifyAll();
+        }
+
         /** Always append the value to the internal StringBuffer. */
         public synchronized void append(String value) {
             // If we have the lock, we always append.
             _stringBuffer.append(value);
+            _appendCalled = true;
+            if (_debugging) {
+                _debug("Exec: append(String): set _appendCalled to true");
+            }
+
             notifyAll();
         }
 
@@ -492,8 +550,12 @@ public class Exec extends TypedAtomicActor {
                 throws IllegalActionException {
             while (_stringBuffer.length() == 0
                     && !_stopRequested
-                    && !_stopFireRequested) {
+                    && !_stopFireRequested
+                   && !_appendCalled ) {
                 try {
+                    if (_debugging) {
+                        _debug("Exec: _blockingGetAndReset: wait() loop " + _appendCalled );
+                    }
                     wait();
                 } catch (InterruptedException ex) {                
                     // FIXME: Pass in a Nameable for this exception
@@ -501,8 +563,26 @@ public class Exec extends TypedAtomicActor {
                             "Thread interrupted waiting for exec() data.");
                 }
             }
+            if (_appendCalled) {
+                _appendCalled = false;
+                // FIXME? If we write to stderr, then appendCalled gets
+                // set to true. Wait 100ms to see if anything appears
+                // on stdout
+                if (_debugging) {
+                    _debug("Exec: _blockingGetAndReset: about 2 sleep");
+                }
+                try {
+                    Thread.currentThread().sleep(100);
+                } catch (InterruptedException ex) {                
+                    // FIXME: Pass in a Nameable for this exception
+                    throw new IllegalActionException(null, ex, 
+                            "Thread interrupted waiting 100 ms. "
+                            + "for exec() data.");
+                }
+            }
             String returnValue = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
+
             notifyAll();
             return returnValue;
         }
@@ -513,6 +593,10 @@ public class Exec extends TypedAtomicActor {
         public synchronized String nonblockingGetAndReset() {
             String returnValue = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
+            _appendCalled = false;
+            if (_debugging) {
+                _debug("Exec: nonblockingGetAndReset(): set _appendCalled to false");
+            }
             notifyAll();
             return returnValue;
         }
@@ -542,4 +626,9 @@ public class Exec extends TypedAtomicActor {
 
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
+
+    // Indicator that append() was called.
+    // We use this to handle the case where we are blocking on
+    // stdout, but stderr gets output and we want to proceed.
+    private boolean _appendCalled = false;
 }
