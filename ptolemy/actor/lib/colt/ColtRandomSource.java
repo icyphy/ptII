@@ -112,7 +112,7 @@ public abstract class ColtRandomSource extends RandomSource
                 randomElement = new Ranmar(coltSeed);
                 index = 4;
             } else {
-                // need something .. 
+                // need something ..
                 randomElement = new DRand(coltSeed);
                 index = 0;
             }
@@ -129,7 +129,7 @@ public abstract class ColtRandomSource extends RandomSource
     protected AbstractDistribution rng = null;
     protected static RandomElement randomElement = new DRand();
 
-    protected String [] randomElementClassNames = 
+    protected String [] randomElementClassNames =
     {
         "DRand",
         "MersenneTwister (MT19937)",
