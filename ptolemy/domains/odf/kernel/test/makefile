@@ -47,15 +47,19 @@ TCL_SRCS = \
 
 JSRCS = \
 	ODFGet.java \
+	ODFGetNToken.java \
 	ODFGetToken.java \
 	ODFPut.java \
 	ODFPutToken.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	ODFThread.tcl \
-	RcvrTimeTriple.tcl \
-	TimedQueueReceiver.tcl
+	TimeKeeper.tcl \
+	TimedQueueReceiver.tcl \
+	ODFReceiver.tcl \
+	RcvrTimeTriple.tcl 
+	#ODFActor.tcl \
+	#ODFThread.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
