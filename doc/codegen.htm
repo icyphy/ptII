@@ -62,8 +62,58 @@ Orthogonal Communication Model</a>
 
 <li> Select View -&gt; Code Generator
 
-<li> 
+<li> Hit the Generate Button
+
+<li> The code generator will invoke an separate java process that
+generates code in 
+<CODE>$PTII/ptolemy/copernicus/cg/OrthogonalCom</CODE> or in
+<CODE>~/FIXME</CODE> and then run it.  Generating the code usually
+takes around 90 seconds on a fast machinen.
+
 </ol>
+
+Things to note:
+<menu>
+<li> After a model is run, Ptolemy II prints out the amount of time
+and memory the model consumed.  Usually, this output goes to standard
+out, which could be hidden if Vergil was started by clicking on an
+icon.  
+ <p>For 20 iterations, the non code generation environment reports"
+<pre>
+661 ms. Memory: 7868K Free: 1569K (20%)  
+</pre>
+ <p>The code generator also prints out time and memory stats:
+<pre>
+OrthogonalCom: Execution stats:           80 ms. Memory: 1984K Free: 1740K (88%)
+</pre>
+From the above, we can see that the code generator runs about 8-9
+times faster and in roughly one quarter of the memory.
+
+<li> Increase the number of iterations in the model by going to the
+graph editor and right clicking on the green SDF Director Icon.
+Run the model, you should see times like:
+<pre>
+2023 ms. Memory: 8440K Free: 2655K (31%)
+</pre>
+
+
+Change the iterations from 20 to 2000 and save the model and then do 
+View -&gt; Code Generator -&gt; Generate.
+ <br>You should see stats like:
+<pre>
+OrthogonalCom: Execution stats:           861 ms. Memory: 1984K Free:
+1524K (77%)
+</pre>
+This indicates that the deep code generation version is roughly 2.3
+times faster than the regular interpreted version.
+
+<li> Soot produces .class files, and we can run a disassembler
+convert the .class files back to .java files.  Unfortunately, there
+are various reasons that the resulting .java files will not compile.
+See the <a href="#disassemblers">Disassemblers</a> section for
+information about disassemblers.
+
+</menu>
 
 
 
@@ -96,6 +146,68 @@ display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet 
 <h2>The code generator user interface</h2>
 Christopher Hylands and Professor Edward A. Lee developed an initial
 draft of a graphical user interface to control code generation.  
+
+ <p>The user interface reads its parameters from a moml file, the
+ default is 
+<a href="../ptolemy/copernicus/kernel/Generator.xml"><CODE>$PTII/ptolemy/copernicus/kernel/Generator.xml</CODE></a>.
+This file lists the parameters, the initial default value
+the documentation for the parameter.
+ <p>The documentation for a parameter is viewable as a tool tip.
+Try moving the mouse over the name of the parameter, a tool
+tip should pop up.
+ <p>There are quite a few different parameters, and parameters
+can refer to each other by name.  The values of some parameters,
+such as the <CODE>modelName</CODE> and <CODE>iterations</CODE>
+are derived from the model itself and not actually settable.
+ <p>There are several buttons:
+<dl>
+
+<dt> <CODE>More Info</CODE>
+<dd> Brings up this file.
+
+<dt> <CODE>Parameters</CODE>
+<dd> Display the name of the parameter, the value, the value
+the parameter evaluates to and the documentation.
+<dt> <CODE>Generate</CODE>
+<dd> Run the code generator.  Note that the 
+<CODE>compile</CODE>, <CODE>show</CODE> and 
+<CODE>run</CODE> checkboxes determine whether code is generated
+shown and run.
+<dt> <CODE>Cancel</CODE>
+<dd> Stop a Generation that is in progress
+<dt> <CODE>Clear</CODE>
+<dd> Clear the output display
+</dl>
+
+<h3>How the user interface works</h3>
+
+The code generator is controlled by a GeneratorAttribute
+that contains parameters read in from the 
+<I>initialParametersURL</I> parameter.  
+
+ <p>When the user hits View -&gt; Code Generator, the model
+is queried and any necessary updates to the Parameters occurs.
+
+ <p>When the user hits the <CODE>Generate</CODE> button, the model is
+again queried and any necessary updates occur.
+
+ <p>Each of the code generators contains template files
+that determine what command is actually run.
+For example, the
+java code generator uses
+<a href="../ptolemy/copernicus/java/compileCommandTemplate.txt"><CODE>$PTII/ptolemy/copernicus/java/compileCommandTemplate.txt</CODE></a>
+to determine what command to run to generate the code and
+<a href="../ptolemy/copernicus/java/runCommandTemplate.txt"><CODE>$PTII/ptolemy/copernicus/java/runCommandTemplate.txt</CODE></a>
+to determine what command to run the generated code.
+The format of the files is fairly straightforward, parameters are
+substituted in and the command is executed.
+
+We use template files
+so that the code generator can be run without requiring the
+<CODE>make</CODE> program.
+
+<h3>User Interface Limitations</h3>
+
 Unfortunately, this UI has many design issues:
 <menu>
 <li> The interface is cluttered because there are many different
@@ -238,7 +350,43 @@ Soot works with byte codes.  A Java decompiler or disassembler
 can help with debugging
 <dl>
 <dt> <CODE>jode</CODE>
-<dd> <a href="http://jode.sourceforge.net/download.php" target="_top">http://jode.sourceforge.net/download.php</a> - Written in Java, but full GPL, so we can't distribute it.
+<dd> <a href="http://jode.sourceforge.net/download.php"
+target="_top">http://jode.sourceforge.net/download.php</a> - Written
+in Java, but full GPL, so we can't distribute it.
+<CODE>$PTII/bin/configure</CODE> looks for jode in 
+<CODE>$PTII/vendors/jode/1.1.1</CODE>, and if it finds it, then
+<CODE>$PTII/bin/jode</CODE> can be used to invoke jode.
+
+<ol>
+<li> Download <a href="http://prdownloads.sourceforge.net/jode/jode-1.1.1.jar"></a>
+and save it as <CODE>$PTII/ptolemy/vendors/jode/1.1.1/jode.jar</CODE>
+
+<li> Rerun configure:
+<pre>
+cd $PTII
+rm config.*
+./configure
+</pre>
+
+<li> Update <CODE>$PTII/bin/jode</CODE>:
+<pre>
+cd $PTII/bin
+make
+
+</pre>
+
+<li> Test it out be decompiling NamedObj:
+<pre>
+$PTII/bin/jode ptolemy.kernel.util.NamedObj
+</pre>
+
+</ol>
+
+ <br>For example, this command will decompile 
+the Main class that is generated by the deep code generator:
+<pre>
+$PTII/bin/jode ptolemy.copernicus.java.cg.OrthogonalCom.Main 
+</pre>
 
 <dt> <CODE>javap</CODE>
 <dd> <a href="http://java.sun.com/j2se/1.3/docs/tooldocs/solaris/javap.html" target="_top"><CODE>http://java.sun.com/j2se/1.3/docs/tooldocs/solaris/javap.html</CODE></a> - Shipped with Sun's JDK.
