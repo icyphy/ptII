@@ -87,10 +87,10 @@ public class FSMTransition extends ComponentRelation {
             _actions.setRespondToChange(false);
             _localVarUpdates = new VariableList(this, "LocalVarUpdates");
             _localVarUpdates.setRespondToChange(false);
-        } catch (IllegalActionException ex) {
-            // this should not happen
-        } catch (NameDuplicationException ex) {
-            // this should not happen
+
+        } catch (Exception ex) {
+            // FIXME: This should not be happening
+            throw new InvalidStateException(ex.getMessage());
         }
     }
 
@@ -252,6 +252,9 @@ public class FSMTransition extends ComponentRelation {
         }
 
         if (inputVarS != null) {
+            if (_te == null) {
+                _createVarLists();
+            }
             _te.addToScope(inputVarS.getVariables());
             _tc.addToScope(inputVarV.getVariables());
 
