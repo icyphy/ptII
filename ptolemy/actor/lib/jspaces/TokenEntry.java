@@ -30,6 +30,8 @@
 */
 package ptolemy.actor.lib.jspaces;
 
+import ptolemy.data.Token;
+
 import net.jini.core.entry.Entry;
 
 //////////////////////////////////////////////////////////////////////////
