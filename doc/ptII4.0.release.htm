@@ -1012,7 +1012,7 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 	<li> Applets seems to be trying to download tmp.jar, which
 	is not found.
 
-        <li> The SDF TrellisDecoder and VitebiDecoder applets do
+        <li> The SDF TrellisDecoder and ViterbiDecoder applets sometimes do
 	not properly display the result values.
 	
 	<li> We've experienced problems with the browser freezing
@@ -1222,6 +1222,9 @@ expressions of double-valued inputs.
 in an array.  This causes problems when Ptolemy is run on
 European machines that use a comma "1,0" instead of a period "1.1"
 in floating point numbers.
+
+<li> The Display actor uses the Swing JTextArea component which is 
+known to have memory leaks.
 
 <li> The readFile() parameter function does not work with applets.
 Instead, use readResource().
