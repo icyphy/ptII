@@ -163,11 +163,11 @@ The new statically checked units system associates
 units with ports and checks compatibility in connections.
 
 <li>
-<a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.htm">
+<a href="../ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.htm">
 Higher-Order Components</a>.
 Version 4.0 adds <i>higher-order components</i>,
 which are components (like actors) that operate on other
-components rather than directly on data.
+components and functions rather than directly on data.
 
 <li>
 <a href="../ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.htm">
@@ -398,11 +398,6 @@ An actor that outputs data read from a URL.
 </dl>
 
 <li> <b><a href="codeDoc/ptolemy/actor/lib/hoc/package-summary.html">ptolemy.actor.lib.hoc</a></b>
-
-<dl>
-<dt><a href="codeDoc/ptolemy/actor/lib/hoc/IterateOverArray.html">IterateOverArray</a>:
-<dd>(Edward A. Lee, Steve Neuendorffer)
-An actor that iterates a contained actor over input arrays.
 
 <dt><a href="codeDoc/ptolemy/actor/lib/hoc/MobileFunction.html">MobileFunction</a>:
 <dd>(Yang Zhao)
@@ -1269,42 +1264,6 @@ Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
 
 <a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
 The SerialComm actor will only work under Windows.
-
-
-<li> IterateOverArray has the following problems
-     <menu>
-
-	<li> IterateOverArray: When you drop in an actor, and then
-	another actor, and then select "undo," the second actor is
-	deleted without the first one being re-created. Thus, undo is
-        only a partial undo. The fix to this is extremely
-        complicated. Probably the only viable
-        mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
-        stack and then to manipulate the contents of that stack directly.
-	
-	<li> IterateOverArray: There should be an option to reset
-	between firings of the inside actor.
-
-
-	<li> IterateOverArray: If you drop a new actor onto an IterateOverArray
-        in a subclass, it will simply acquire the new contents, but not
-        actually do anything with them. It should somehow refuse to accept
-        the new object in the subclass, since to do so, it would have to
-        delete the original object defined in the base class, and this would
-        violate the derived invariant.
-
-        
-	<li> IterateOverArray: If an instance of IterateOverArray in a derived
-        class has overridden values of parameters, those are lost if
-        contained entity of the instance in the base class is replaced and
-        then an undo is requested.
-
-       
-        <li> IterateOverArray: When an actor with a display icon like
-        Const, Expression, or MathFunction is put into
-        IterateOverArray, the CopyCatIcon doesn't reflect the text display.
-
-     </menu>
 
 </ul>
 
