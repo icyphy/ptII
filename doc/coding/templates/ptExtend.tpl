@@ -7,15 +7,7 @@
 //--></SCRIPT>
     <COMMENT>
         <SCRIPT LANGUAGE="JavaScript1.1"><!--
-        var _ns = (navigator.appName.indexOf("Netscape") >= 0 \
-	&& ((_info.indexOf("Win") > 0 \
-	    && _info.indexOf("Win16") < 0 \
-	    && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) \
-	|| (_info.indexOf("Sun") > 0) \
-	|| (_info.indexOf("Linux") > 0) \
-	|| (_info.indexOf("AIX") > 0) \
-	|| (_info.indexOf("OS/2") > 0) \
-	|| (_info.indexOf("IRIX") > 0 )));
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
         var _ns6 = ((_ns == true) && (_info.indexOf("Mozilla/5") >= 0));
 //--></SCRIPT>
     </COMMENT>
