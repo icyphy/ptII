@@ -119,7 +119,7 @@ derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
 the protected method _checkContainer().
 
-@authors Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
+@author Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
 @version $Id$
 @since Ptolemy II 0.2
 */
