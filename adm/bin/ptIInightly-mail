@@ -51,15 +51,19 @@ echo "To see the complete build and test log, see:" >> $mailmsg
 echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
 echo "" >> $mailmsg
 
+AWK=awk
+if [ -f /usr/local/bin/gawk ]; then
+    AWK=/usr/local/bin/gawk
+fi
 # print out 'Entering directory' lines
-awk ' $0 ~ /Entering directory/ { indir=$0 }
+$AWK ' $0 ~ /Entering directory/ { indir=$0 }
       $0 ~ /\*\*\*/ { 	print indir
 			print $0
 		      }' $ptbuildlog >> $mailmsg
 
 echo "javadoc had the following `grep 'javadoc: warning' $ptbuildlog | wc -l` warnings" >> $mailmsg
 
-awk ' $0 ~ /^Generating/ { indir=$0 }
+$AWK ' $0 ~ /^Generating/ { indir=$0 }
       { if ($0 ~ /javadoc: warning/) {
 	    print indir
 	    print $0
@@ -81,7 +85,7 @@ echo "" >> $mailmsg
 # The deprecated section works with jdk1.3 and probably won't work with jdk1.2
 echo "The build had the following `egrep 'has been deprecated' $ptbuildlog| egrep 'in ptolemy.' | wc -l ` warnings for using deprecated ptolemy methods" >> $mailmsg
 echo "The warnings are broken down as:" >> $mailmsg
-egrep 'has been deprecated' $ptbuildlog | egrep 'in ptolemy.' | awk '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
+egrep 'has been deprecated' $ptbuildlog | egrep 'in ptolemy.' | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
 
 echo "" >> $mailmsg
 echo "The warnings themselves are:" >> $mailmsg
