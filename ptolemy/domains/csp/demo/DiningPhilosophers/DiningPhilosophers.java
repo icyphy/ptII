@@ -116,70 +116,66 @@ public class DiningPhilosophers {
             Chopstick f5 = new Chopstick(univ, "Chopstick5");
 
             // Now connect up the Actors
-            TypedIORelation r1 =
-                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftIn"),
-                        (TypedIOPort)f5.getPort("rightOut"));
-            TypedIORelation r2 =
-                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftOut"),
-                        (TypedIOPort)f5.getPort("rightIn"));
-            TypedIORelation r3 =
-                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightIn"),
-                        (TypedIOPort)f1.getPort("leftOut"));
-            TypedIORelation r4 =
-                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightOut"),
-                        (TypedIOPort)f1.getPort("leftIn"));
-
-            TypedIORelation r5 =
-                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftIn"),
-                        (TypedIOPort)f1.getPort("rightOut"));
-            TypedIORelation r6 =
-                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftOut"),
-                        (TypedIOPort)f1.getPort("rightIn"));
-            TypedIORelation r7 =
-                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightIn"),
-                        (TypedIOPort)f2.getPort("leftOut"));
-            TypedIORelation r8 =
-                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightOut"),
-                        (TypedIOPort)f2.getPort("leftIn"));
-
-            TypedIORelation r9  =
-                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftIn"),
-                        (TypedIOPort)f2.getPort("rightOut"));
-            TypedIORelation r10 =
-                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftOut"),
-                        (TypedIOPort)f2.getPort("rightIn"));
-            TypedIORelation r11 =
-                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightIn"),
-                        (TypedIOPort)f3.getPort("leftOut"));
-            TypedIORelation r12 =
-                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightOut"),
-                        (TypedIOPort)f3.getPort("leftIn"));
-
-            TypedIORelation r13 =
-                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftIn"),
-                        (TypedIOPort)f3.getPort("rightOut"));
-            TypedIORelation r14 =
-                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftOut"),
-                        (TypedIOPort)f3.getPort("rightIn"));
-            TypedIORelation r15 =
-                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightIn"),
-                        (TypedIOPort)f4.getPort("leftOut"));
-            TypedIORelation r16 =
-                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightOut"),
-                        (TypedIOPort)f4.getPort("leftIn"));
-
-            TypedIORelation r17 =
-                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftIn"),
-                        (TypedIOPort)f4.getPort("rightOut"));
-            TypedIORelation r18 =
-                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftOut"),
-                        (TypedIOPort)f4.getPort("rightIn"));
-            TypedIORelation r19 =
-                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightIn"),
-                        (TypedIOPort)f5.getPort("leftOut"));
-            TypedIORelation r20 =
-                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightOut"),
-                        (TypedIOPort)f5.getPort("leftIn"));
+            TypedIORelation r1 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p1.getPort("leftIn"),
+                    (TypedIOPort)f5.getPort("rightOut"));
+            TypedIORelation r2 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p1.getPort("leftOut"),
+                    (TypedIOPort)f5.getPort("rightIn"));
+            TypedIORelation r3 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p1.getPort("rightIn"),
+                    (TypedIOPort)f1.getPort("leftOut"));
+            TypedIORelation r4 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p1.getPort("rightOut"),
+                    (TypedIOPort)f1.getPort("leftIn"));
+            TypedIORelation r5 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p2.getPort("leftIn"),
+                    (TypedIOPort)f1.getPort("rightOut"));
+            TypedIORelation r6 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p2.getPort("leftOut"),
+                    (TypedIOPort)f1.getPort("rightIn"));
+            TypedIORelation r7 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p2.getPort("rightIn"),
+                    (TypedIOPort)f2.getPort("leftOut"));
+            TypedIORelation r8 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p2.getPort("rightOut"),
+                    (TypedIOPort)f2.getPort("leftIn"));
+            TypedIORelation r9  = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p3.getPort("leftIn"),
+                    (TypedIOPort)f2.getPort("rightOut"));
+            TypedIORelation r10 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p3.getPort("leftOut"),
+                    (TypedIOPort)f2.getPort("rightIn"));
+            TypedIORelation r11 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p3.getPort("rightIn"),
+                    (TypedIOPort)f3.getPort("leftOut"));
+            TypedIORelation r12 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p3.getPort("rightOut"),
+                    (TypedIOPort)f3.getPort("leftIn"));
+            TypedIORelation r13 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p4.getPort("leftIn"),
+                    (TypedIOPort)f3.getPort("rightOut"));
+            TypedIORelation r14 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p4.getPort("leftOut"),
+                    (TypedIOPort)f3.getPort("rightIn"));
+            TypedIORelation r15 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p4.getPort("rightIn"),
+                    (TypedIOPort)f4.getPort("leftOut"));
+            TypedIORelation r16 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p4.getPort("rightOut"),
+                    (TypedIOPort)f4.getPort("leftIn"));
+            TypedIORelation r17 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p5.getPort("leftIn"),
+                    (TypedIOPort)f4.getPort("rightOut"));
+            TypedIORelation r18 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p5.getPort("leftOut"),  
+                    (TypedIOPort)f4.getPort("rightIn"));
+            TypedIORelation r19 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p5.getPort("rightIn"),
+                    (TypedIOPort)f5.getPort("leftOut"));
+            TypedIORelation r20 = (TypedIORelation)univ.connect(
+                    (TypedIOPort)p5.getPort("rightOut"),
+                    (TypedIOPort)f5.getPort("leftIn"));
 
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
