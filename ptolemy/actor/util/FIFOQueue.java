@@ -153,7 +153,7 @@ public class FIFOQueue implements Cloneable {
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
             }
-            throw new NoSuchElementException("No Object at offset "
+            throw new NoSuchElementException("No object at offset "
                     + offset + " in the FIFOQueue" + str);
         }
         return resultObject;
