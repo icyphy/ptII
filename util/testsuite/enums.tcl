@@ -90,6 +90,37 @@ proc enumToFullNames {enum} {
 }
 
 ######################################################################
+#### enumToTokenValues
+# Invoke enumToObjects followed by objectsToTokenValues.
+#
+proc enumToTokenValues {iter} {
+    return [objectsToTokenValues [enumToObjects $iter]]
+}
+
+######################################################################
+#### iterToList
+# Convert an iteration to a list.  The list contains references
+# to instances of Java Object.
+#
+proc iterToObjects {iter} {
+    set results {}
+    if {$iter != [java::null]} {
+        while {[$iter hasNext] == 1} {
+            lappend results [$iter next]
+	}
+    }
+    return $results
+}
+
+######################################################################
+#### iterToTokenValues
+# Invoke iterToObjects followed by objectsToTokenValues.
+#
+proc iterToTokenValues {iter} {
+    return [objectsToTokenValues [iterToObjects $iter]]
+}
+
+######################################################################
 #### mapMethod
 # Invoke the first argument (the name of a method that takes no arguments)
 # for each of the objects given by remaining arguments.
@@ -153,6 +184,27 @@ proc objectsToFullNames {objlist} {
                     getFullName]
         } else {
             lappend results NOT_NAMEABLE.
+        }
+    }
+    return $results
+}
+
+######################################################################
+#### objectsToTokenValues
+# Return a list of the token values of the objects in the argument,
+# which is a list.
+# These objects are assumed to be instances of Token.  If any
+# object in the list is not, then its value is reported as
+# NOT_A_TOKEN.
+#
+proc objectsToTokenValues {objlist} {
+    set results {}
+    foreach obj $objlist {
+        if [ java::instanceof $obj ptolemy.data.Token] {
+            lappend results [[java::cast ptolemy.data.Token \
+                    $obj] stringValue]
+        } else {
+            lappend results NOT_A_TOKEN.
         }
     }
     return $results

@@ -1,6 +1,6 @@
-# Makefile the Ptolemy II test suite that uses Tcl Blend
+# Utilities for creating models.
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Author: Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -28,46 +28,24 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-# Root of the Java directory
-ROOT =		../..
+# Create an SDF model with no actors in it and return it.
+# The optional argument sets the number of iterations to be executed.
+# It defaults to one.
+#
+proc sdfModel {{iters 1}} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector]
+    $e0 setDirector $director
+    $e0 setName top
+    $e0 setManager $manager
 
-ME =		util/testsuite
+    set iterparam [java::cast ptolemy.data.expr.Parameter \
+            [$director getAttribute iterations]]
+    $iterparam setToken [java::new ptolemy.data.IntToken $iters];
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-TCL_SRCS = \
-	description.tcl \
-	enums.tcl \
-	init.tcl \
-	jdktools.tcl \
-	models.tcl \
-	tclshrc.tcl \
-	testDefs.tcl \
-	testEnums.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) \
-	chkjava \
-	rmtrailingspace
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	doc
-
-# Do make sources so that we ensure that the subdirectories are checked out
-all:  sources $(MISC_SRCS)
-	-chmod a+x chkjava rmtrailingspace
-
-install: all
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
-
-
-
+    return $e0
+}
+    
