@@ -88,7 +88,7 @@ public class TNLManip {
             } else if (obj instanceof List) {
                 retval.add(cloneList((List) obj));
             } else {
-                throw new RuntimeException("unknown object in list : " +
+                throw new RuntimeException("unknown object in list: " +
                         obj.getClass());
             }
         }
@@ -182,8 +182,10 @@ public class TNLManip {
             } else if (child instanceof List) {
                 sb.append(toString((List) child, nextprefix));
             } else {
-                throw new RuntimeException("unknown object in list : " +
-                        child.getClass());
+                throw new RuntimeException("toString(" + list + ", \"" +
+					   prefix + 
+					   "\"): unknown object in list: " +
+					   child.getClass());
             }
         }
         sb.append(prefix);
@@ -232,7 +234,7 @@ public class TNLManip {
                 retList.add(retval);
             } else {
                 // FIXME: This should not be a runtime exception!
-                throw new RuntimeException("unknown object in list : " +
+                throw new RuntimeException("unknown object in list: " +
                         obj.getClass());
             }
         }
