@@ -46,25 +46,27 @@ import java.util.LinkedList;
 and outputs. It is an attribute associated with an actor. For atomic actors,
 this attribute is constructed inside the constructor. For composite actors,
 this attribute is constructed in the preinitialize method of the composite
-actors, after their directors finish preinitialization. The process is in a
-bottom-up way because the upper level IO dependence information is built on
-those of the lower level.
+actors, after their directors finish preinitialization. The process is 
+performed in a bottom-up way because the upper level IO dependence
+information is built from those of the lower level.
 <p>
-It contains a list of elements of <i>IOInformation</i>, each corresponds to
-one input port. To access the IOInformation, use <i>getInputPort(IOPort)</i>
-method which does name mapping search. To add one IOInformation of an input
-port, use <i>addInputPort(IOPort)</i>. This method returns an IOInformation
-object.
+This object contains a list of instances of <i>IOInformation</i>, each of
+which corresponds to one input port. To access the IOInformation, use the
+<i>getInputPort(IOPort)</i>, method which does a name mapping search.
+To add one IOInformation of an input port, use <i>addInputPort(IOPort)</i>.
+This method returns an IOInformation object.
 <p>
 Each input port has an IOInformation, which is an inner class providing
 access to the relation between the input port and all the output ports.
-Output ports are divided into three groups: (a)those immediately dependent
-on the input, (b)those not immediately dependent on the input, and (c)those
+Output ports are divided into three groups: (a) those immediately dependent
+on the input, (b) those not immediately dependent on the input, and (c) those
 not dependent on the input. The outputs in group (a) can be accessed with
-<i>getDelayToPorts()</i>method, and the outputs in group (b) can be accessed
+<i>getDelayToPorts()</i> method, and the outputs in group (b) can be accessed
 with <i>getDirectFeedthroughPort</i> method. The outputs in group (c) are
 discarded.
-
+<p>
+This attribute is not persistent by default, so it will not be recorded
+in a MoML representation of the model containing it.
 
 @author Haiyang Zheng
 @version $Id$
