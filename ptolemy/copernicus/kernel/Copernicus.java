@@ -63,7 +63,7 @@ A Standalone application that generates code using the Ptolemy II code
 generation system.  This class acts a wrapper for the copernicus.*.Main
 classes by providing defaults arguments for the various backends. 
 
-The <i>generatorAttribute</a> Parameter names a MoML file that
+The <i>generatorAttribute</i> Parameter names a MoML file that
 contains definitions for other Parameters and Variables that control
 the compilation and execution of the model
 
@@ -257,9 +257,14 @@ public class Copernicus {
 	    return 0;
 	}
         System.out.println("About to execute:\n ");
-	for (int i = 0; i < commands.length; i++) {
-	    System.out.println("	" + commands[i]);
+	for (int i = 0; i < (commands.length - 1); i++) {
+            System.out.println("	\"" + commands[i] + "\" \\");
 	}
+
+        if (commands.length > 0) {
+            System.out.println("	\"" + commands[commands.length - 1]
+                    + "\"");
+        }
         System.out.flush();
         
 	// 0 indicates normal execution
