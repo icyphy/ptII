@@ -47,7 +47,7 @@ known to contain a token or known not to contain a token) or unknown.  The
 isKnown() method returns true if the receiver has known status.  If the 
 receiver has known status, the hasToken() method returns whether the receiver 
 has a token.  If the receiver has unknown status, the hasToken() method 
-always returns false.
+will throw an exception.
 <p>
 In the course of an iteration in SR, receivers can change from unknown status 
 to known status, but never the other way around.
@@ -115,15 +115,16 @@ public class SRReceiver extends Mailbox {
     }
 
     /** Return true if the receiver contains a token, or false otherwise.
-     *  If the receiver has unknown status, this method will return false.
+     *  If the receiver has unknown status, this method will throw an
+     *  exception.
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
         if (isKnown()) {
             return super.hasToken();
         } else {
-            throw new UnknownTokenException("SRReceiver with unknown " +
-                        "state cannot contain a token.");
+            throw new UnknownTokenException(getContainer(),
+                    "hasToken() called on SRReceiver with unknown state.");
         }
     }
 
