@@ -228,6 +228,18 @@ public class SRDirector extends StaticSchedulingDirector {
 
         _initFiring();
 
+        // we compute the rough cost of the execution in this way.
+        // Assume the cost of one evaluation of an actor is 1, 
+        // the cost of the execution to reach a fixed point is 
+        // the number of actors in the schedule times the 
+        // iterations of the schedule at that instant.
+        // The sum of the cost of all instants is the cost of
+        // the whole execution.
+        int iterationCount = 0;
+        int numberOfActors = schedule.size();
+        // also, we calculate the real cost, which excludes the
+        // overhead caused by not-firing-allowed actors. 
+        
         // Here we need to check for each actor that iteration is allowed
         // (in other words, that the actor has not returned false in
         // postfire()).
@@ -249,6 +261,7 @@ public class SRDirector extends StaticSchedulingDirector {
                 Actor actor = firing.getActor();
                 if (_isIterationAllowed(actor)) {
                     _fireActor(actor);
+                    _realCost++;
                 } else {
                     // The postfire() method of this actor returned false in
                     // a previous iteration, so here, for the benefit of
@@ -258,9 +271,12 @@ public class SRDirector extends StaticSchedulingDirector {
                 }
 
             }
-        } while (usingRandomizedScheduler
-                && !_hasIterationConverged()
+            iterationCount++;
+        } while (//usingRandomizedScheduler &&
+                !_hasIterationConverged()
                 && !_stopRequested);
+        _debug("It takes " + iterationCount + " iterations to find a fixed point.");
+        _roughCost += iterationCount*numberOfActors;
     }
 
     /** Return the number of iterations to be executed by the director, which
@@ -283,6 +299,9 @@ public class SRDirector extends StaticSchedulingDirector {
         _actorsNotAllowedToIterate = null;
 
         _resetAllReceivers();
+
+        _realCost = 0;
+        _roughCost = 0;
 
         // Force the schedule to be computed.
         _debug(_schedulerClassName + " returns: " + _getSchedule());
@@ -341,6 +360,9 @@ public class SRDirector extends StaticSchedulingDirector {
                 "is complete.");
 
         _currentIteration++;
+
+        _debug("So far, the rough cost is " + _roughCost +
+                "; and the real cost is " + _realCost + ".");
 
         // All receivers must be reset before any actors are executed in the
         // next iteration.  Since some domains (including SR) might fire one
@@ -653,7 +675,9 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _init() {
         try {
             String schedulerClassName =
-                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
+                "ptolemy.domains.sr.kernel.SROptimizedScheduler";
+//            String schedulerClassName =
+//                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
             scheduler = new Parameter(
                     this, "scheduler", new StringToken(schedulerClassName));
             scheduler.setTypeEquals(BaseType.STRING);
@@ -662,6 +686,7 @@ public class SRDirector extends StaticSchedulingDirector {
             iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
             setCurrentTime(0.0);
+            
         } catch (KernelException ex) {
             throw new InternalErrorException(
                     "Cannot initialize SRDirector: " + ex.getMessage());
@@ -933,6 +958,19 @@ public class SRDirector extends StaticSchedulingDirector {
 
     // List of all receivers this director has created.
     private List _receivers;
+
+    // cost
+    // We calculate the real cost, which excludes the
+    // overhead caused by not-firing-allowed actors. 
+    private int _realCost;
+    // we compute the rough cost of the execution in this way.
+    // Assume the cost of one evaluation of an actor is 1, 
+    // the cost of the execution to reach a fixed point is 
+    // the number of actors in the schedule times the 
+    // iterations of the schedule at that instant.
+    // The sum of the cost of all instants is the cost of
+    // the whole execution.
+    private int _roughCost;
 
     // The name of the scheduler to be used, which depends on the scheduler
     // parameter.
