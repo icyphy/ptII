@@ -75,11 +75,6 @@ abstract public class GRShadedShape extends GRActor {
                    new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
-
-        /*pose = new Parameter(this,"pose",
-                new DoubleMatrixToken(_pose));
-         */
-
         _color = new Color3f(1.0f,1.0f,1.0f);
     }
     
