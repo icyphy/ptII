@@ -58,6 +58,8 @@ set complex8 2
 set complex0array [java::new {ptolemy.math.Complex[]} {0}]
 set complex2array [java::new {ptolemy.math.Complex[]} {2} \
 	[list $complex1 $complex2]]
+set complex3array [java::new {ptolemy.math.Complex[]} {3} \
+	[list $complex1 $complex2 $complex3]]
 set complex4array [java::new {ptolemy.math.Complex[]} {4} \
 	[list $complex1 $complex2 $complex3 $complex4]]
 
@@ -87,7 +89,9 @@ set double8 2
 
 set double0array [java::new {double[]} {0}]
 set double2array [java::new {double[]} {2} [list 2.0 -1.0]]
+set double3array [java::new {double[]} {3} [list 2.0 -1.0 1.0]]
 set double4array [java::new {double[]} {4} [list 2.0 -1.0 1.0 0.0]]
+
 
 set double1_1 [java::new {double[][]} 1 [list [list 2.0]]]
 set double2_2 [java::new {double[][]} {2 2} [list [list 2.0 -1.0] \
@@ -112,6 +116,7 @@ set float8 2
 
 set float0array [java::new {float[]} {0}]
 set float2array [java::new {float[]} {2} [list 2.0 -1.0]]
+set float3array [java::new {float[]} {3} [list 2.0 -1.0 1.0]]
 set float4array [java::new {float[]} {4} [list 2.0 -1.0 1.0 0.0]]
 set float1_1 [java::new {float[][]} 1 [list 2.0]]
 set float2_2 [java::new {float[][]} {2 2} [list [list 2.0 -1.0] \
@@ -134,6 +139,7 @@ set int8 2
 
 set int0array [java::new {int[]} {0}]
 set int2array [java::new {int[]} {2} [list 2 -1]]
+set int3array [java::new {int[]} {3} [list 2 -1 1]]
 set int4array [java::new {int[]} {4} [list 2 -1 1 0]]
 # array of length 2  with power of two elements
 set int2powerof2array [java::new {int[]} {2} [list 32 16]]
@@ -163,6 +169,7 @@ set long8 2
 
 set long0array [java::new {long[]} {0}]
 set long2array [java::new {long[]} {2} [list 2 -1]]
+set long3array [java::new {long[]} {3} [list 2 -1 1]]
 set long4array [java::new {long[]} {4} [list 2 -1 1 0]]
 # array of length 2  with power of two elements
 set long2powerof2array [java::new {long[]} {2} [list 32 16]]
@@ -320,7 +327,7 @@ proc testArrayMathArray {op types {matrixSize 2_2}} {
 	    {[subst $$array]} {} {} ArrayMath
 }
 
-# Test a *ArrayMath  operation that takes an array, and a scalar
+# Test a *ArrayMath  operation that takes an array, and an array
 # like xxx[] add(xxx[], xxx[])
 proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]"} \
@@ -1269,6 +1276,44 @@ set types [list \
 
 
 testMatrix orthonormalizeRows $types
+
+######################################################################
+####
+##  *ArrayMath Test out: xxx[] padMiddle(xxx[], int)
+
+# First, pad arrays of length 2 out to length 6
+set types [list \
+	[list Complex ptolemy.math.Complex complex {{2.0 - 2.0i 0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i 1.0 + 1.0i}}] \
+	[list Double double double {{2.0 0.0 0.0 0.0 0.0 -1.0}}] \
+	[list Float float float {{2.0 0.0 0.0 0.0 0.0 -1.0}}] \
+	[list Integer int int {{2 0 0 0 0 -1}}] \
+	[list Long long long {{2 0 0 0 0 -1}}]]
+
+testArrayMathArrayInt padMiddle $types 2_2 6
+
+
+# Then pad arrays of length 3 out to length 6
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i 0.0 + 0.0i 0.0 + 0.0i 1.0 + 1.0i -1.0 - 1.0i}}] \
+	[list Double double double {{2.0 -1.0 0.0 0.0 -1.0 1.0}}] \
+	[list Float float float {{2.0 -1.0 0.0 0.0 -1.0 1.0}}] \
+	[list Integer int int {{2 -1 0 0 -1 1}}] \
+	[list Long long long {{2 -1 0 0 -1 1}}]]
+
+testArrayMathArrayInt padMiddle $types 2_3 6
+
+
+# Then pad arrays of length 3 down to length 3, which is really a resize.
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i -1.0 - 1.0i}}] \
+	[list Double double double {{2.0 -1.0 1.0}}] \
+	[list Float float float {{2.0 -1.0 1.0}}] \
+	[list Integer int int {{2 -1 1}}] \
+	[list Long long long {{2 -1 1}}]]
+
+testArrayMathArrayInt padMiddle $types 2_3 3
 
 ######################################################################
 ####
