@@ -53,23 +53,22 @@ package ptplot;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
 /** 
- * A flexible signal plotter.  The plot can be configured and data can be
- * provided either through a file with commands or
- * through direct invocation of the public methods of the class or
- * by passing pxgraph arguments through the "pxgraphargs" parameter.
- * If a file is used, the file can be given as a URL through the
- * applet parameter called "dataurl". The file contains any number
- * commands, one per line.  Unrecognized commands and commands with
- * syntax errors are ignored.  Comments are denoted by a line starting
- * with a pound sign "#".  The recognized commands include those
- * supported by the base class, plus a few more.  The commands are case
- * insensitive, but are usually capitalized.
- * The following command defines the number of data sets to be plotted.
+ * A flexible signal plotter.  The plot can be configured and data can
+ * be provided either through a file with commands or through direct
+ * invocation of the public methods of the class or by passing pxgraph
+ * arguments through the "pxgraphargs" parameter.  If a file is used,
+ * the file can be given as a URL through the <code>setDataurl</code>
+ * method in the parent class.  The file contains any number commands,
+ * one per line.  Unrecognized commands and commands with syntax
+ * errors are ignored.  Comments are denoted by a line starting with a
+ * pound sign "#".  The recognized commands include those supported by
+ * the base class, plus a few more.  The commands are case
+ * insensitive, but are usually capitalized.  The following command
+ * defines the number of data sets to be plotted.
  * <pre>
  * NumSets: <i>positiveInteger</i>
  * </pre>
@@ -216,6 +215,15 @@ public class Plot extends PlotBox {
     }
 
     /**
+     * Get the minimum size of this component.
+     */
+    public Dimension getMinimumSize() {
+        if (_debug > 8) System.out.println("Plot: getMinimumSize");
+        return new Dimension(_width, _height);
+    }
+
+
+    /**
      * Get the preferred size of this component.
      */
     public Dimension getPreferredSize() {
@@ -224,28 +232,13 @@ public class Plot extends PlotBox {
     }
 
     /**
-     * Initialize the applet.  If a dataurl parameter has been specified,
-     * read the file given by the URL and parse the commands in it.
-     * Also, make a button for auto-scaling the plot.
+     * Initialize the plotter, parse any data files.
      */
     public synchronized void init() {
         if (_debug > 8) System.out.println("Plot: init");
 
         setNumSets(_numsets);
         _currentdataset = -1;
-
-//         // Check to see if pxgraphargs has been given. 
-//         // Need the catch here because applets used as components have
-//         // no parameters. 
-//         String pxgraphargs = null;
-//         try {
-//             pxgraphargs = getParameter("pxgraphargs");
-//             parsePxgraphargs(pxgraphargs);
-//         } catch (NullPointerException e) {
-//         } catch (CmdLineArgException e) {
-//             System.out.println("Plot: failed to parse `"+pxgraphargs+
-//                     "': " +e);
-//         }
 
         super.init();
         if (_dataurls != null ) {
@@ -506,12 +499,13 @@ public class Plot extends PlotBox {
             dataurl=args[i];
         }
         argsread = i++;
-        // Now we call methods in the Plot applet and the Frame
-        // according to the defaults and the values that over rode them
+
+        // Now we've parsed the parameters, so we call parent class methods.
         setDataurl(dataurl); // Set the dataurl in PlotBox
         setTitle(title);
-        System.out.println("Plot: skipping resize()"+(_width-10)+" "+(_height-10));
-        //resize(_width-10,_height-10);
+        if (_debug > 9) 
+            System.out.println("Plot: resize()"+_width+" "+_height);
+        resize(_width,_height);
 
         if (_debug > 0) {
             System.err.println("Plot: dataurl = " + dataurl);
@@ -526,6 +520,17 @@ public class Plot extends PlotBox {
             _dataurls.addElement(args[i]);
         }
         return argsread;
+    }
+
+    /**
+     * Resize this component. 
+     */
+    public void resize(int width, int height) {
+        if (_debug > 8)
+            System.out.println("Plot: resize"+width+" "+height);
+        _width = width;
+        _height = height;
+        super.resize(_width,_height);
     }
 
     /**
