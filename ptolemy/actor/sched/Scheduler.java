@@ -26,7 +26,7 @@
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-FIXME: Caching should move into StaticSchedulingDirector.
+FIXME: Cacheing should move into StaticSchedulingDirector.
 */
 
 package ptolemy.actor.sched;
