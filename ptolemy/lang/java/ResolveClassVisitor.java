@@ -156,24 +156,27 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         }
         me.setSuperClass(superDecl);
 
-        // initialize the implements list.
-        LinkedList declInterfaceList = new LinkedList();
+        // Initialize the implements list. Note that this should be skipped
+        // for shallowly-loaded ASTs, which will have null interface lists.
+        List interfaces = node.getInterfaces();
+        if (interfaces != null) {
+            LinkedList declInterfaceList = new LinkedList();
+            Iterator interfaceItr = interfaces.iterator();
 
-        Iterator interfaceItr = node.getInterfaces().iterator();
+            while (interfaceItr.hasNext()) {
+                ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
+                        (NamedNode) interfaceItr.next());
 
-        while (interfaceItr.hasNext()) {
-            ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
-                    (NamedNode) interfaceItr.next());
-
-            if ((intf.category & CG_INTERFACE) == 0) {
-                throw new RuntimeException("class " + node.getName().getIdent() +
-                        " cannot implement class " + intf.getName() +
-			" " + intf.category);
+                if ((intf.category & CG_INTERFACE) == 0) {
+                    throw new RuntimeException("class " + node.getName().getIdent() +
+                            " cannot implement class " + intf.getName() +
+			    " " + intf.category);
+                }
+                declInterfaceList.addLast(intf);
             }
-            declInterfaceList.addLast(intf);
-        }
 
-        me.setInterfaces(declInterfaceList);
+            me.setInterfaces(declInterfaceList);
+        }
 
         // add this declaration to outer class's scope, if applicable
         _addUserTypeToEnclosingClassScope(args.get(1), me);
@@ -260,23 +263,27 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             return null;
         }
 
-        LinkedList declInterfaceList = new LinkedList();
+        
+        // Initialize the implements list. Note that this should be skipped
+        // for shallowly-loaded ASTs, which will have null interface lists.
+        List interfaces = node.getInterfaces();
+        if (interfaces != null) {
+            LinkedList declInterfaceList = new LinkedList();
+            Iterator interfaceItr = interfaces.iterator();
 
-        Iterator interfaceItr = node.getInterfaces().iterator();
+            while (interfaceItr.hasNext()) {
+                ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
+                        (NamedNode) interfaceItr.next());
 
-        while (interfaceItr.hasNext()) {
-            ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
-                    (NamedNode) interfaceItr.next());
-
-            if ((intf.category & CG_INTERFACE) == 0) {
-                throw new RuntimeException("class " + node.getName().getIdent() +
-                        " cannot implement class " + intf.getName() +
-			" " + intf.category);
+                if ((intf.category & CG_INTERFACE) == 0) {
+                    throw new RuntimeException("class " + node.getName().getIdent() +
+                            " cannot implement class " + intf.getName() +
+			    " " + intf.category);
+                }
+                declInterfaceList.addLast(intf);
             }
-            declInterfaceList.addLast(intf);
+            me.setInterfaces(declInterfaceList);
         }
-
-        me.setInterfaces(declInterfaceList);
 
         // add this declaration to outer class's scope, if applicable
         _addUserTypeToEnclosingClassScope(args.get(1), me);

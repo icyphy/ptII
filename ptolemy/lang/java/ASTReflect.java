@@ -76,7 +76,8 @@ public final class ASTReflect {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Use reflection to set the members subtree of the AST asslociated with
+    /** Use reflection to set the members and interfaces subtrees of the 
+     *  AST asslociated with
      *  a class or interface declaration. 
      *  This ensures so-called "deep loading" of a class's AST
      *  for a class that was originally loaded shallowly. 
@@ -107,6 +108,10 @@ public final class ASTReflect {
 
         // Fill in the members list of the given class declaration
         declNode.setMembers(memberList);
+
+        // Similarly, fill in the interface list	
+        List interfaceList = _typeNodeList(myClass.getInterfaces());
+        declNode.setInterfaces(interfaceList);
     }
  
     /** Use reflection to generate the ClassDeclNode of a class.
@@ -221,7 +226,6 @@ public final class ASTReflect {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
-	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
 	LinkedList memberList = new LinkedList();
 
@@ -240,7 +244,7 @@ public final class ASTReflect {
 	ClassDeclNode classDeclNode =
 	    new ClassDeclNode(modifiers,
                     className,
-                    interfaceList,
+                    null,
                     null,
                     superClass);
 
@@ -262,11 +266,10 @@ public final class ASTReflect {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
-	List interfaceList = _typeNodeList(myClass.getInterfaces());
 	InterfaceDeclNode interfaceDeclNode =
 	    new InterfaceDeclNode(modifiers,
                     className,
-                    interfaceList,
+                    null,
                     null);
 
 	return interfaceDeclNode;
