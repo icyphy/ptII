@@ -97,7 +97,29 @@ OPTIONAL_FILES = $(SHELL_FILES) \
 	makebat \
 	ptmatlab.dll
 
-all: ptinvoke ptscripts ptbats
+# Files to be removed by make clean
+KRUFT = $(SHELL_FILES) $(BAT_FILES)
+
+all: $(SHELL_FILES) $(BAT_FILES)
+
+# We use a dependency here so that each time we run make we
+# do not recreate the files unless it is necessary.
+$(SHELL_FILES): ptinvoke
+	for file in $(SHELL_FILES); do \
+		echo "$$file"; \
+		rm -f "$$file"; \
+		ln -s ptinvoke "$$file"; \
+		chmod a+x "$$file"; \
+	done
+
+$(BAT_FILES): ptinvoke
+	rm -f makebat
+	ln -s ptinvoke makebat
+	for file in $(SHELL_FILES); do \
+		rm -f "$$file.bat"; \
+		makebat "$$file"; \
+	done
+
 
 ptinvoke: ptinvoke.in ../config.status
 	(cd ..; ./config.status)
@@ -107,27 +129,8 @@ ptinvoke: ptinvoke.in ../config.status
 ../config.status: ../configure
 	(cd ..; /bin/sh ./configure)
 
-# Get the rest of the rules
-ptscripts: ptinvoke
-	for file in $(SHELL_FILES); do \
-		echo "$$file"; \
-		rm -f "$$file"; \
-		ln -s ptinvoke "$$file"; \
-		chmod a+x "$$file"; \
-	done
-
-ptbats: ptinvoke
-	rm -f makebat
-	ln -s ptinvoke makebat
-	for file in $(SHELL_FILES); do \
-		rm -f "$$file.bat"; \
-		makebat "$$file"; \
-	done
-
-
 install: all
-
-fast: install
+fast: all
 demo: all
 
 # Get the rest of the rules
