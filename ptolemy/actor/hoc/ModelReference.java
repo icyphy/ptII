@@ -519,9 +519,12 @@ public class ModelReference
                     if (_debugging) {
                         _debug("** Lingering for " + lingerTimeValue + " milliseconds.");
                     }
+                    _lingeringThread = Thread.currentThread();
                     Thread.sleep(lingerTimeValue);
                 } catch (InterruptedException ex) {
                     // Ignore.
+                } finally {
+                    _lingeringThread = null;
                 }
             }
         }
@@ -566,6 +569,9 @@ public class ModelReference
         if (_model instanceof Executable) {
             ((Executable)_model).stop();
         }
+        if (_lingeringThread != null) {
+            _lingeringThread.interrupt();
+        }
         super.stop();
     }
 
@@ -574,6 +580,9 @@ public class ModelReference
     public void stopFire() {
         if (_model instanceof Executable) {
             ((Executable)_model).stopFire();
+        }
+        if (_lingeringThread != null) {
+            _lingeringThread.interrupt();
         }
         super.stopFire();
     }
@@ -687,6 +696,9 @@ public class ModelReference
 
     /** Indicator of what the last call to iterate() returned. */
     private transient int _lastIterateResult = NOT_READY;
+    
+    /** Reference to a thread that is lingering. */
+    private Thread _lingeringThread = null;
 
     /** The manager currently managing execution. */
     private Manager _manager = null;
