@@ -61,24 +61,24 @@ public class NotSchedulableException extends InvalidStateException {
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
      *  The unschedulable actors are set to null.
-     *  @param obj The object.
+     *  @param nameable The object.
      *  @param detail The message.
      */
-    public NotSchedulableException(Nameable obj, String detail) {
-        super(obj, detail);
+    public NotSchedulableException(Nameable nameable, String detail) {
+        super(nameable, detail);
         _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
      *  The unschedulable actors are set to null.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  @param nameable1 The first object.
+     *  @param nameable2 The second object.
      *  @param detail The message.
      */
-    public NotSchedulableException(Nameable obj1, Nameable obj2,
+    public NotSchedulableException(Nameable nameable1, Nameable nameable2,
             String detail) {
-        super(obj1, obj2, detail);
+        super(nameable1, nameable2, detail);
         _unschedulableActors = null;
     }
 
@@ -88,7 +88,6 @@ public class NotSchedulableException extends InvalidStateException {
      *  enumeration may be used by the UI to illustrate the unschedulable
      *  actors, or by the directors to perform some actions to correct
      *  the error.
-     *  @param obj The object.
      *  @param detail The message.
      *  @param actors The unschedulable actors.
      */
