@@ -137,7 +137,7 @@ public class ArrayExtract extends Transformer {
         ArrayExtract newObject = (ArrayExtract)(super.clone(workspace));
 
         // set the type constraints
-        newObject.output.setTypeAtLeast(input);
+        newObject.output.setTypeAtLeast(newObject.input);
 
         return newObject;
     }
