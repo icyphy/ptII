@@ -129,15 +129,15 @@ test ComplexArrayMath-12.2 {subtract} {
 } {}
 
 ####################################################################
-test ComplexArrayMath-13.1 {mag: empty array} {
+test ComplexArrayMath-13.1 {magnitude: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
-    set da2 [java::call ptolemy.math.ComplexArrayMath mag $ca0]
+    set da2 [java::call ptolemy.math.ComplexArrayMath magnitude $ca0]
     $da2 getrange 0 
 } {}
 
 ####################################################################
 test ComplexArrayMath-13.2 {mag} {
-    set da2 [java::call ptolemy.math.ComplexArrayMath mag $ca1]
+    set da2 [java::call ptolemy.math.ComplexArrayMath magnitude $ca1]
     epsilonDiff [$da2 getrange 0] \
 	    {2.2360679775 5.0 7.74661216275 10.6301458127}
 } {}

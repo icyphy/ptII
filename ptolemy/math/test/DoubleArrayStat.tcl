@@ -99,6 +99,12 @@ test DoubleArrayStat-3.1 {mean} {
 }  1019.298
 
 ####################################################################
+test DoubleArrayStat-3.1 {productOfElements} {
+    set r [java::call ptolemy.math.DoubleArrayStat productOfElements $a2]
+    list $r
+}  1019.298
+
+####################################################################
 test DoubleArrayStat-1.1 {relativeEntropy} {
     set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy $p1 \
            $p2]
@@ -108,8 +114,8 @@ test DoubleArrayStat-1.1 {relativeEntropy} {
 } {1}
 
 ####################################################################
-test DoubleArrayStat-3.1 {stdDev} {
-    set r [java::call ptolemy.math.DoubleArrayStat stdDev $a2]
+test DoubleArrayStat-3.1 {standardDeviation} {
+    set r [java::call ptolemy.math.DoubleArrayStat standardDeviation $a2]
     set br [java::call ptolemy.math.SignalProcessing close $r \
             2130.652535614383]
     list $br
