@@ -532,7 +532,7 @@ public class Complex implements Cloneable, Serializable {
         return c1.divide(cos());
     }
 
-    /** Return a new complex number with value equal to the hyberbolic tangent
+    /** Return a new complex number with value equal to the hyperbolic tangent
      *  of this complex number.  This is defined by:
      *  <pre>
      *  tanh(z) = sinh(z)/cosh(z)
