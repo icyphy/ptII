@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Helicopter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="CTDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -52,7 +52,7 @@ Five controllers are applied sequentially to the modes.</text>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 667]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-6, -6]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[182, 131]">
     </property>
     <port name="port" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
@@ -338,11 +338,11 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="_location" class="ptolemy.moml.Location" value="480.0, 369.0">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="296.0, 195.0">
+            <property name="_location" class="ptolemy.moml.Location" value="295.0, 195.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[290, 238]">
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -466,206 +466,6 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 351.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 387.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 315.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 279.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 207.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 171.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 243.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 135.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 63.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 99.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R20" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="_R21" class="ptolemy.actor.TypedIORelation">
@@ -674,54 +474,54 @@ Five controllers are applied sequentially to the modes.</text>
             </relation>
             <relation name="_R23" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="inputPx" relation="_R0"/>
-            <link port="inputDPx" relation="_R1"/>
-            <link port="inputDDPx" relation="_R2"/>
-            <link port="inputD3Px" relation="_R3"/>
-            <link port="inputD4Px" relation="_R4"/>
-            <link port="inputPz" relation="_R5"/>
-            <link port="inputDPz" relation="_R6"/>
-            <link port="inputDDPz" relation="_R7"/>
-            <link port="inputD3Pz" relation="_R8"/>
-            <link port="inputD4Pz" relation="_R9"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="relation9"/>
+            <link port="inputDPx" relation="relation10"/>
+            <link port="inputDDPx" relation="relation8"/>
+            <link port="inputD3Px" relation="relation7"/>
+            <link port="inputD4Px" relation="relation5"/>
+            <link port="inputPz" relation="relation4"/>
+            <link port="inputDPz" relation="relation6"/>
+            <link port="inputDDPz" relation="relation3"/>
+            <link port="inputD3Pz" relation="relation"/>
+            <link port="inputD4Pz" relation="relation2"/>
             <link port="outputVx" relation="_R20"/>
             <link port="outputVz" relation="_R21"/>
             <link port="outputV" relation="_R22"/>
             <link port="outputR" relation="_R23"/>
-            <link port="Hover.inputPx" relation="_R10"/>
-            <link port="Hover.inputDPx" relation="_R11"/>
-            <link port="Hover.inputDDPx" relation="_R12"/>
-            <link port="Hover.inputD3Px" relation="_R13"/>
-            <link port="Hover.inputD4Px" relation="_R14"/>
-            <link port="Hover.inputPz" relation="_R15"/>
-            <link port="Hover.inputDPz" relation="_R16"/>
-            <link port="Hover.inputDDPz" relation="_R17"/>
-            <link port="Hover.inputD3Pz" relation="_R18"/>
-            <link port="Hover.inputD4Pz" relation="_R19"/>
+            <link port="Hover.inputPx" relation="relation9"/>
+            <link port="Hover.inputDPx" relation="relation10"/>
+            <link port="Hover.inputDDPx" relation="relation8"/>
+            <link port="Hover.inputD3Px" relation="relation7"/>
+            <link port="Hover.inputD4Px" relation="relation5"/>
+            <link port="Hover.inputPz" relation="relation4"/>
+            <link port="Hover.inputDPz" relation="relation6"/>
+            <link port="Hover.inputDDPz" relation="relation3"/>
+            <link port="Hover.inputD3Pz" relation="relation"/>
+            <link port="Hover.inputD4Pz" relation="relation2"/>
             <link port="Hover.outputVx" relation="_R20"/>
             <link port="Hover.outputVz" relation="_R21"/>
             <link port="Hover.outputV" relation="_R22"/>
             <link port="Hover.outputR" relation="_R23"/>
-            <link port="HPx.input" relation="_R0"/>
-            <link port="HPx.output" relation="_R10"/>
-            <link port="HDPx.input" relation="_R1"/>
-            <link port="HDPx.output" relation="_R11"/>
-            <link port="HDDPx.input" relation="_R2"/>
-            <link port="HDDPx.output" relation="_R12"/>
-            <link port="HD3Px.input" relation="_R3"/>
-            <link port="HD3Px.output" relation="_R13"/>
-            <link port="HD4Px.input" relation="_R4"/>
-            <link port="HD4Px.output" relation="_R14"/>
-            <link port="HPz.input" relation="_R5"/>
-            <link port="HPz.output" relation="_R15"/>
-            <link port="HDPz.input" relation="_R6"/>
-            <link port="HDPz.output" relation="_R16"/>
-            <link port="HDDPz.input" relation="_R7"/>
-            <link port="HDDPz.output" relation="_R17"/>
-            <link port="HD3Pz.input" relation="_R8"/>
-            <link port="HD3Pz.output" relation="_R18"/>
-            <link port="HD4Pz.input" relation="_R9"/>
-            <link port="HD4Pz.output" relation="_R19"/>
         </entity>
         <entity name="AccelCTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
             <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -758,7 +558,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[485, 462]">
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -767,7 +567,7 @@ Five controllers are applied sequentially to the modes.</text>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 135.0">
+                <property name="_location" class="ptolemy.moml.Location" value="200.0, 135.0">
                 </property>
             </port>
             <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
@@ -889,7 +689,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-2.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="408.0, 53.0">
+                <property name="_location" class="ptolemy.moml.Location" value="420.0, 55.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -902,207 +702,9 @@ Five controllers are applied sequentially to the modes.</text>
                     </property>
                 </port>
             </entity>
-            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 323.18182373046875">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 126.81818008422852">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 257.7272720336914">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 355.9090881347656">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 290.4545593261719">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 159.5454559326172">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 388.6363525390625">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 192.27272033691406">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 94.09091186523438">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R5" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex" class="ptolemy.moml.Vertex" value="224.0, 58.0">
                 </vertex>
-            </relation>
-            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="_R20" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -1112,55 +714,53 @@ Five controllers are applied sequentially to the modes.</text>
             </relation>
             <relation name="_R23" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="inputPx" relation="_R0"/>
-            <link port="inputDPx" relation="_R1"/>
-            <link port="inputDDPx" relation="_R2"/>
-            <link port="inputD3Px" relation="_R3"/>
-            <link port="inputD4Px" relation="_R4"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="relation7"/>
+            <link port="inputDPx" relation="relation2"/>
+            <link port="inputDDPx" relation="relation5"/>
+            <link port="inputD3Px" relation="relation8"/>
+            <link port="inputD4Px" relation="relation6"/>
             <link port="inputPz" relation="_R5"/>
-            <link port="inputDPz" relation="_R6"/>
-            <link port="inputDDPz" relation="_R7"/>
-            <link port="inputD3Pz" relation="_R8"/>
-            <link port="inputD4Pz" relation="_R9"/>
+            <link port="inputDPz" relation="relation9"/>
+            <link port="inputDDPz" relation="relation3"/>
+            <link port="inputD3Pz" relation="relation"/>
+            <link port="inputD4Pz" relation="relation4"/>
             <link port="outputVx" relation="_R20"/>
             <link port="outputVz" relation="_R21"/>
             <link port="outputV" relation="_R22"/>
             <link port="outputR" relation="_R23"/>
-            <link port="Accel.inputPx" relation="_R10"/>
-            <link port="Accel.inputDPx" relation="_R11"/>
-            <link port="Accel.inputDDPx" relation="_R12"/>
-            <link port="Accel.inputD3Px" relation="_R13"/>
-            <link port="Accel.inputD4Px" relation="_R14"/>
-            <link port="Accel.inputPz" relation="_R15"/>
-            <link port="Accel.inputDPz" relation="_R16"/>
-            <link port="Accel.inputDDPz" relation="_R17"/>
-            <link port="Accel.inputD3Pz" relation="_R18"/>
-            <link port="Accel.inputD4Pz" relation="_R19"/>
+            <link port="Accel.inputPx" relation="relation7"/>
+            <link port="Accel.inputDPx" relation="relation2"/>
+            <link port="Accel.inputDDPx" relation="relation5"/>
+            <link port="Accel.inputD3Px" relation="relation8"/>
+            <link port="Accel.inputD4Px" relation="relation6"/>
+            <link port="Accel.inputPz" relation="_R5"/>
+            <link port="Accel.inputDPz" relation="relation9"/>
+            <link port="Accel.inputDDPz" relation="relation3"/>
+            <link port="Accel.inputD3Pz" relation="relation"/>
+            <link port="Accel.inputD4Pz" relation="relation4"/>
             <link port="Accel.outputVx" relation="_R20"/>
             <link port="Accel.outputVz" relation="_R21"/>
             <link port="Accel.outputV" relation="_R22"/>
             <link port="Accel.outputR" relation="_R23"/>
             <link port="Mon1.input" relation="_R5"/>
-            <link port="HPx.input" relation="_R0"/>
-            <link port="HPx.output" relation="_R10"/>
-            <link port="HDPx.input" relation="_R1"/>
-            <link port="HDPx.output" relation="_R11"/>
-            <link port="HDDPx.input" relation="_R2"/>
-            <link port="HDDPx.output" relation="_R12"/>
-            <link port="HD3Px.input" relation="_R3"/>
-            <link port="HD3Px.output" relation="_R13"/>
-            <link port="HD4Px.input" relation="_R4"/>
-            <link port="HD4Px.output" relation="_R14"/>
-            <link port="HPz.input" relation="_R5"/>
-            <link port="HPz.output" relation="_R15"/>
-            <link port="HDPz.input" relation="_R6"/>
-            <link port="HDPz.output" relation="_R16"/>
-            <link port="HDDPz.input" relation="_R7"/>
-            <link port="HDDPz.output" relation="_R17"/>
-            <link port="HD3Pz.input" relation="_R8"/>
-            <link port="HD3Pz.output" relation="_R18"/>
-            <link port="HD4Pz.input" relation="_R9"/>
-            <link port="HD4Pz.output" relation="_R19"/>
         </entity>
         <entity name="Cruise1CTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
             <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -1197,11 +797,11 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[290, 238]">
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="96.0, 350.0">
+                <property name="_location" class="ptolemy.moml.Location" value="105.0, 350.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
@@ -1226,7 +826,7 @@ Five controllers are applied sequentially to the modes.</text>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="97.0, 385.0">
+                <property name="_location" class="ptolemy.moml.Location" value="105.0, 390.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
@@ -1359,206 +959,6 @@ Five controllers are applied sequentially to the modes.</text>
                     </property>
                 </port>
             </entity>
-            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 351.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 63.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 315.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 243.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 171.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 387.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 99.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 135.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 279.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="204.0, 207.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R20" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="_R21" class="ptolemy.actor.TypedIORelation">
@@ -1571,56 +971,56 @@ Five controllers are applied sequentially to the modes.</text>
                 <vertex name="vertex" class="ptolemy.moml.Vertex" value="393.0, 242.0">
                 </vertex>
             </relation>
-            <link port="inputPx" relation="_R0"/>
-            <link port="inputDPx" relation="_R1"/>
-            <link port="inputDDPx" relation="_R2"/>
-            <link port="inputD3Px" relation="_R3"/>
-            <link port="inputD4Px" relation="_R4"/>
-            <link port="inputPz" relation="_R5"/>
-            <link port="inputDPz" relation="_R6"/>
-            <link port="inputDDPz" relation="_R7"/>
-            <link port="inputD3Pz" relation="_R8"/>
-            <link port="inputD4Pz" relation="_R9"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="relation9"/>
+            <link port="inputDPx" relation="relation"/>
+            <link port="inputDDPx" relation="relation8"/>
+            <link port="inputD3Px" relation="relation6"/>
+            <link port="inputD4Px" relation="relation4"/>
+            <link port="inputPz" relation="relation10"/>
+            <link port="inputDPz" relation="relation2"/>
+            <link port="inputDDPz" relation="relation3"/>
+            <link port="inputD3Pz" relation="relation7"/>
+            <link port="inputD4Pz" relation="relation5"/>
             <link port="outputVx" relation="_R20"/>
             <link port="outputVz" relation="_R21"/>
             <link port="outputV" relation="_R22"/>
             <link port="outputR" relation="_R23"/>
-            <link port="Cruise1.inputPx" relation="_R10"/>
-            <link port="Cruise1.inputDPx" relation="_R11"/>
-            <link port="Cruise1.inputDDPx" relation="_R12"/>
-            <link port="Cruise1.inputD3Px" relation="_R13"/>
-            <link port="Cruise1.inputD4Px" relation="_R14"/>
-            <link port="Cruise1.inputPz" relation="_R15"/>
-            <link port="Cruise1.inputDPz" relation="_R16"/>
-            <link port="Cruise1.inputDDPz" relation="_R17"/>
-            <link port="Cruise1.inputD3Pz" relation="_R18"/>
-            <link port="Cruise1.inputD4Pz" relation="_R19"/>
+            <link port="Cruise1.inputPx" relation="relation9"/>
+            <link port="Cruise1.inputDPx" relation="relation"/>
+            <link port="Cruise1.inputDDPx" relation="relation8"/>
+            <link port="Cruise1.inputD3Px" relation="relation6"/>
+            <link port="Cruise1.inputD4Px" relation="relation4"/>
+            <link port="Cruise1.inputPz" relation="relation10"/>
+            <link port="Cruise1.inputDPz" relation="relation2"/>
+            <link port="Cruise1.inputDDPz" relation="relation3"/>
+            <link port="Cruise1.inputD3Pz" relation="relation7"/>
+            <link port="Cruise1.inputD4Pz" relation="relation5"/>
             <link port="Cruise1.outputVx" relation="_R20"/>
             <link port="Cruise1.outputVz" relation="_R21"/>
             <link port="Cruise1.outputV" relation="_R22"/>
             <link port="Cruise1.outputR" relation="_R23"/>
             <link port="Mon1.input" relation="_R22"/>
             <link port="Mon2.input" relation="_R23"/>
-            <link port="HPx.input" relation="_R0"/>
-            <link port="HPx.output" relation="_R10"/>
-            <link port="HDPx.input" relation="_R1"/>
-            <link port="HDPx.output" relation="_R11"/>
-            <link port="HDDPx.input" relation="_R2"/>
-            <link port="HDDPx.output" relation="_R12"/>
-            <link port="HD3Px.input" relation="_R3"/>
-            <link port="HD3Px.output" relation="_R13"/>
-            <link port="HD4Px.input" relation="_R4"/>
-            <link port="HD4Px.output" relation="_R14"/>
-            <link port="HPz.input" relation="_R5"/>
-            <link port="HPz.output" relation="_R15"/>
-            <link port="HDPz.input" relation="_R6"/>
-            <link port="HDPz.output" relation="_R16"/>
-            <link port="HDDPz.input" relation="_R7"/>
-            <link port="HDDPz.output" relation="_R17"/>
-            <link port="HD3Pz.input" relation="_R8"/>
-            <link port="HD3Pz.output" relation="_R18"/>
-            <link port="HD4Pz.input" relation="_R9"/>
-            <link port="HD4Pz.output" relation="_R19"/>
         </entity>
         <entity name="ClimbCTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
             <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -1657,11 +1057,11 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[290, 238]">
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="169.0, 385.0">
+                <property name="_location" class="ptolemy.moml.Location" value="180.0, 385.0">
                 </property>
             </port>
             <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
@@ -1686,7 +1086,7 @@ Five controllers are applied sequentially to the modes.</text>
             </port>
             <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="93.0, 258.0">
+                <property name="_location" class="ptolemy.moml.Location" value="90.0, 60.0">
                 </property>
             </port>
             <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
@@ -1786,7 +1186,7 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-10.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="491.0, 57.71428680419922">
+                <property name="_location" class="ptolemy.moml.Location" value="490.0, 60.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1817,207 +1217,9 @@ Five controllers are applied sequentially to the modes.</text>
                     </property>
                 </port>
             </entity>
-            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 388.6363525390625">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 192.27272033691406">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 355.9090881347656">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 126.81818008422852">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 323.18182373046875">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 257.7272720336914">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 94.09091186523438">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 159.5454559326172">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 225.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="260.0, 290.4545593261719">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex" class="ptolemy.moml.Vertex" value="180.0, 63.0">
+                <vertex name="vertex" class="ptolemy.moml.Vertex" value="275.0, 60.0">
                 </vertex>
-            </relation>
-            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="_R20" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -2029,56 +1231,54 @@ Five controllers are applied sequentially to the modes.</text>
             </relation>
             <relation name="_R23" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="inputPx" relation="_R0"/>
-            <link port="inputDPx" relation="_R1"/>
-            <link port="inputDDPx" relation="_R2"/>
-            <link port="inputD3Px" relation="_R3"/>
-            <link port="inputD4Px" relation="_R4"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="relation9"/>
+            <link port="inputDPx" relation="relation4"/>
+            <link port="inputDDPx" relation="relation8"/>
+            <link port="inputD3Px" relation="relation2"/>
+            <link port="inputD4Px" relation="relation7"/>
             <link port="inputPz" relation="_R5"/>
-            <link port="inputDPz" relation="_R6"/>
-            <link port="inputDDPz" relation="_R7"/>
-            <link port="inputD3Pz" relation="_R8"/>
-            <link port="inputD4Pz" relation="_R9"/>
+            <link port="inputDPz" relation="relation"/>
+            <link port="inputDDPz" relation="relation3"/>
+            <link port="inputD3Pz" relation="relation5"/>
+            <link port="inputD4Pz" relation="relation6"/>
             <link port="outputVx" relation="_R20"/>
             <link port="outputVz" relation="_R21"/>
             <link port="outputV" relation="_R22"/>
             <link port="outputR" relation="_R23"/>
-            <link port="Climb.inputPx" relation="_R10"/>
-            <link port="Climb.inputDPx" relation="_R11"/>
-            <link port="Climb.inputDDPx" relation="_R12"/>
-            <link port="Climb.inputD3Px" relation="_R13"/>
-            <link port="Climb.inputD4Px" relation="_R14"/>
-            <link port="Climb.inputPz" relation="_R15"/>
-            <link port="Climb.inputDPz" relation="_R16"/>
-            <link port="Climb.inputDDPz" relation="_R17"/>
-            <link port="Climb.inputD3Pz" relation="_R18"/>
-            <link port="Climb.inputD4Pz" relation="_R19"/>
+            <link port="Climb.inputPx" relation="relation9"/>
+            <link port="Climb.inputDPx" relation="relation4"/>
+            <link port="Climb.inputDDPx" relation="relation8"/>
+            <link port="Climb.inputD3Px" relation="relation2"/>
+            <link port="Climb.inputD4Px" relation="relation7"/>
+            <link port="Climb.inputPz" relation="_R5"/>
+            <link port="Climb.inputDPz" relation="relation"/>
+            <link port="Climb.inputDDPz" relation="relation3"/>
+            <link port="Climb.inputD3Pz" relation="relation5"/>
+            <link port="Climb.inputD4Pz" relation="relation6"/>
             <link port="Climb.outputVx" relation="_R20"/>
             <link port="Climb.outputVz" relation="_R21"/>
             <link port="Climb.outputV" relation="_R22"/>
             <link port="Climb.outputR" relation="_R23"/>
             <link port="Mon1.input" relation="_R5"/>
             <link port="Mon2.input" relation="_R22"/>
-            <link port="HPx.input" relation="_R0"/>
-            <link port="HPx.output" relation="_R10"/>
-            <link port="HDPx.input" relation="_R1"/>
-            <link port="HDPx.output" relation="_R11"/>
-            <link port="HDDPx.input" relation="_R2"/>
-            <link port="HDDPx.output" relation="_R12"/>
-            <link port="HD3Px.input" relation="_R3"/>
-            <link port="HD3Px.output" relation="_R13"/>
-            <link port="HD4Px.input" relation="_R4"/>
-            <link port="HD4Px.output" relation="_R14"/>
-            <link port="HPz.input" relation="_R5"/>
-            <link port="HPz.output" relation="_R15"/>
-            <link port="HDPz.input" relation="_R6"/>
-            <link port="HDPz.output" relation="_R16"/>
-            <link port="HDDPz.input" relation="_R7"/>
-            <link port="HDDPz.output" relation="_R17"/>
-            <link port="HD3Pz.input" relation="_R8"/>
-            <link port="HD3Pz.output" relation="_R18"/>
-            <link port="HD4Pz.input" relation="_R9"/>
-            <link port="HD4Pz.output" relation="_R19"/>
         </entity>
         <entity name="Cruise2CTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
             <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -2115,7 +1315,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[290, 238]">
             </property>
             <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2241,206 +1441,6 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 279.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 63.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 387.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 351.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 171.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 135.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 243.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 99.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 207.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="240.0, 315.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R20" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="_R21" class="ptolemy.actor.TypedIORelation">
@@ -2449,54 +1449,54 @@ Five controllers are applied sequentially to the modes.</text>
             </relation>
             <relation name="_R23" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="inputPx" relation="_R0"/>
-            <link port="inputDPx" relation="_R1"/>
-            <link port="inputDDPx" relation="_R2"/>
-            <link port="inputD3Px" relation="_R3"/>
-            <link port="inputD4Px" relation="_R4"/>
-            <link port="inputPz" relation="_R5"/>
-            <link port="inputDPz" relation="_R6"/>
-            <link port="inputDDPz" relation="_R7"/>
-            <link port="inputD3Pz" relation="_R8"/>
-            <link port="inputD4Pz" relation="_R9"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="relation7"/>
+            <link port="inputDPx" relation="relation"/>
+            <link port="inputDDPx" relation="relation10"/>
+            <link port="inputD3Px" relation="relation9"/>
+            <link port="inputD4Px" relation="relation4"/>
+            <link port="inputPz" relation="relation3"/>
+            <link port="inputDPz" relation="relation6"/>
+            <link port="inputDDPz" relation="relation2"/>
+            <link port="inputD3Pz" relation="relation5"/>
+            <link port="inputD4Pz" relation="relation8"/>
             <link port="outputVx" relation="_R20"/>
             <link port="outputVz" relation="_R21"/>
             <link port="outputV" relation="_R22"/>
             <link port="outputR" relation="_R23"/>
-            <link port="Cruise2.inputPx" relation="_R10"/>
-            <link port="Cruise2.inputDPx" relation="_R11"/>
-            <link port="Cruise2.inputDDPx" relation="_R12"/>
-            <link port="Cruise2.inputD3Px" relation="_R13"/>
-            <link port="Cruise2.inputD4Px" relation="_R14"/>
-            <link port="Cruise2.inputPz" relation="_R15"/>
-            <link port="Cruise2.inputDPz" relation="_R16"/>
-            <link port="Cruise2.inputDDPz" relation="_R17"/>
-            <link port="Cruise2.inputD3Pz" relation="_R18"/>
-            <link port="Cruise2.inputD4Pz" relation="_R19"/>
+            <link port="Cruise2.inputPx" relation="relation7"/>
+            <link port="Cruise2.inputDPx" relation="relation"/>
+            <link port="Cruise2.inputDDPx" relation="relation10"/>
+            <link port="Cruise2.inputD3Px" relation="relation9"/>
+            <link port="Cruise2.inputD4Px" relation="relation4"/>
+            <link port="Cruise2.inputPz" relation="relation3"/>
+            <link port="Cruise2.inputDPz" relation="relation6"/>
+            <link port="Cruise2.inputDDPz" relation="relation2"/>
+            <link port="Cruise2.inputD3Pz" relation="relation5"/>
+            <link port="Cruise2.inputD4Pz" relation="relation8"/>
             <link port="Cruise2.outputVx" relation="_R20"/>
             <link port="Cruise2.outputVz" relation="_R21"/>
             <link port="Cruise2.outputV" relation="_R22"/>
             <link port="Cruise2.outputR" relation="_R23"/>
-            <link port="HPx.input" relation="_R0"/>
-            <link port="HPx.output" relation="_R10"/>
-            <link port="HDPx.input" relation="_R1"/>
-            <link port="HDPx.output" relation="_R11"/>
-            <link port="HDDPx.input" relation="_R2"/>
-            <link port="HDDPx.output" relation="_R12"/>
-            <link port="HD3Px.input" relation="_R3"/>
-            <link port="HD3Px.output" relation="_R13"/>
-            <link port="HD4Px.input" relation="_R4"/>
-            <link port="HD4Px.output" relation="_R14"/>
-            <link port="HPz.input" relation="_R5"/>
-            <link port="HPz.output" relation="_R15"/>
-            <link port="HDPz.input" relation="_R6"/>
-            <link port="HDPz.output" relation="_R16"/>
-            <link port="HDDPz.input" relation="_R7"/>
-            <link port="HDDPz.output" relation="_R17"/>
-            <link port="HD3Pz.input" relation="_R8"/>
-            <link port="HD3Pz.output" relation="_R18"/>
-            <link port="HD4Pz.input" relation="_R9"/>
-            <link port="HD4Pz.output" relation="_R19"/>
         </entity>
         <relation name="rSubPx" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex" class="ptolemy.moml.Vertex" value="204.0, 135.0">
@@ -2979,8 +1979,8 @@ Five controllers are applied sequentially to the modes.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Helicopter Position</title>
-<xRange min="-4.464903751167566E-5" max="212.3615496330894"/>
-<yRange min="1.5" max="10.975309469683456"/>
+<xRange min="-4.464903751167566E-5" max="212.36154870485683"/>
+<yRange min="1.5" max="10.975309903779399"/>
 </plot>?>
         </configure>
     </entity>
@@ -3003,7 +2003,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Horizontal Speed</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-2.6081690452206085E-4" max="5.3458406199202715"/>
+<yRange min="-2.6081690452206085E-4" max="5.345840153749054"/>
 </plot>?>
         </configure>
     </entity>
@@ -3026,7 +2026,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Vertical Position</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="1.5" max="10.975309469683456"/>
+<yRange min="1.5" max="10.975309903779399"/>
 </plot>?>
         </configure>
     </entity>
@@ -3049,7 +2049,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Pitch Angle</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-0.029413093164408523" max="0.04148829691037313"/>
+<yRange min="-0.02941305421488377" max="0.041488296910328466"/>
 </plot>?>
         </configure>
     </entity>
