@@ -109,6 +109,9 @@ public class Test extends NonStrictTest {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        // Note that the parent class (NonStrictTest) does not have a multiport
+        // input port.
+        input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
