@@ -89,8 +89,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljsimpletests.tcl
 
 # These tests require a graphics terminal, but do use TclBlend and Java
 test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
