@@ -530,7 +530,7 @@ jodeDecompileDemo:
 		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
 		"$(JODE)" -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
 		relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
-		sh $(ROOT)/ptolemy/copernicus/shallow/test/jode2java \
+		sh "$(ROOT)/ptolemy/copernicus/shallow/test/jode2java" \
 			$$relativetargetpath/$$class.java \
 				> jodeDecompile.java; \
 		mv jodeDecompile.java $$relativetargetpath/$$class.java; \
