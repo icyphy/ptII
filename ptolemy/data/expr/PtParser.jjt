@@ -273,7 +273,7 @@ public class PtParser {
             registerConstant("PI", new DoubleToken(java.lang.Math.PI));
             registerConstant("E", new DoubleToken(java.lang.Math.E));
             registerClass("java.lang.Math");
-            //registerClass("ptolemy.data.expr.UnilityFunctions");
+            registerClass("ptolemy.data.expr.UtilityFunctions");
         }
     }
     
