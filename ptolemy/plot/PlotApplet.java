@@ -168,6 +168,16 @@ public class PlotApplet extends JApplet {
         return _plot;
     }
 
+    /** Set the plot object to operate on.
+     *  @param plot The plot object to associate with this applet.
+     */
+    public void setPlot(PlotBox plot) {
+        // FIXME: this method is necessary for PxgraphApplet to work
+        // properly.  We could modify newPlot() to set _plot, but
+        // that would change the newPlot() contract, so we add another method.
+        _plot = plot;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
