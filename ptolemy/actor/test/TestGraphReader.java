@@ -26,9 +26,6 @@ weighted graphs.
 
 package ptolemy.actor.test;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.GraphReader;
 import ptolemy.graph.DirectedGraph;
@@ -37,8 +34,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 //////////////////////////////////////////////////////////////////////////
-//// TestReading
+//// TestGraphReader
 /** An application for testing the conversion of Ptolemy models into
 weighted graphs. 
 <p>
@@ -55,8 +55,9 @@ about this weighted graph.
 
 public class TestGraphReader {
 
-    // Make the constructor private to prevent instantiation of this class
-    private TestGraphReader() {}
+    // Make the constructor protected to prevent instantiation of this class
+    // outside of subclasses.
+    protected TestGraphReader() {}
 
     /** Convert a MoML file that contains a Ptolemy II specification into a
      *  weighted graph representation, and display information about
@@ -65,35 +66,24 @@ public class TestGraphReader {
      */
     public static void main(String[] args) {
 
-        if (args.length != 1) {
-            throw new RuntimeException("TestReading expects exactly one "
-                    + "argument.");
-        }
-
-        // The Ptolemy II model returned by the Java parser.
-        NamedObj toplevel;
-
-        try {
-            MoMLParser parser = new MoMLParser();
-            toplevel = parser.parseFile(args[0]);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage()
-                    + "Exception raised from the MoML parser\n");
-        }
-
-        if (! (toplevel instanceof CompositeActor)) {
-            throw new RuntimeException("Top level must be a CompositeActor "
-                    + "(in this case, it is '"
-                    + ((toplevel == null) ? "null" : 
-                    toplevel.getClass().getName())
-                    + "')\n");
-        }
-
+        TestGraphReader tester = new TestGraphReader();
+        CompositeActor toplevel = tester._readGraph(args);
         GraphReader graphReader = new GraphReader();
-        DirectedGraph graph = (DirectedGraph)(graphReader.convert(
-                (CompositeActor)toplevel));
+        DirectedGraph graph = (DirectedGraph)(graphReader.convert(toplevel));
+        tester._printGraph(graph);
+    }
 
-        System.out.println("Finished converting graph. A description follows.");
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Print information about a graph to standard output. This method
+     *  is called by {@link #main(String[])} to display information about the
+     *  model that is read. It should be overridden to change the way this
+     *  information is displayed.
+     *
+     * @param graph The graph for which information is to be printed.
+     */
+    protected void _printGraph(DirectedGraph graph) {
         System.out.println(graph.toString()); 
 
         // Determine the source nodes
@@ -119,5 +109,40 @@ public class TestGraphReader {
                     ((Node)(sinks.next())).getWeight()); 
             System.out.println(); 
         }
+
+    }
+
+    /** Convert a MoML file that contains a Ptolemy II specification into a
+     *  composite actor representation.
+     *  @param args The name of the MoML file.
+     *  @return The composite actor representation.
+     */
+    protected CompositeActor _readGraph(String[] args) {
+       if (args.length != 1) {
+            throw new RuntimeException("TestGraphReader expects exactly one "
+                    + "argument.");
+        }
+
+        // The Ptolemy II model returned by the Java parser.
+        NamedObj toplevel;
+
+        try {
+            MoMLParser parser = new MoMLParser();
+            toplevel = parser.parseFile(args[0]);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage()
+                    + "Exception raised from the MoML parser\n");
+        }
+
+        if (! (toplevel instanceof CompositeActor)) {
+            throw new RuntimeException("Top level must be a CompositeActor "
+                    + "(in this case, it is '"
+                    + ((toplevel == null) ? "null" : 
+                    toplevel.getClass().getName())
+                    + "')\n");
+        }
+
+        return (CompositeActor)toplevel;
+
     }
 }
