@@ -8,6 +8,9 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 
+/**
+ * @version $Id$
+ */
 public class SDFDelay extends SDFAtomicActor {
     public IOPort inputport;
     public IOPort outputport;
