@@ -99,9 +99,12 @@ test Delay-2.4 {test with type change} {
 
 test Delay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {[true, false]}
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {true false 0 1 2} {KNOW_ERROR}
+    catch { [$e0 getManager] execute } msg
+    list $msg
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
+  .top.rec.input: matrix
+  .top.delay.output: matrix
+}}
 
 test Delay-3.0 {test in feedback loop} {
     $ramp setContainer [java::null]
