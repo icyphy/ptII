@@ -29,15 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains classes used for dataflow and pn channels that
-# should _not_ go into the kernel so that we can keep the kernel free
-# of the notion of dataflow.  These classes are concurrent functional
-# classes:
-#  FIFOQueue
-#  Star
-#  Galaxy
-#  Universe
-# Note that none of these classes would be relevant to FSMs, for example.
+# This directory contains classes used for the Ptolemy II parser, PtParser.
+# The parser is generated using JavaCC and JJTree. It creates a syntax
+# tree of Node objects. The node classes used by PtrParser when generating
+# the tree are the ASTPt*.java files.
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -72,7 +67,7 @@ JSRCS = \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =   PtParser.jjt $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -88,13 +83,13 @@ JCLASS = $(JSRCS:%.java=%.class)
 LIB = dummylib
 
 all: PtParser $(JCLASS) 
-install: PTSimpleParser javadocs $(JARFILE)
+install: PTParser javadocs $(JARFILE)
 docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
 
-PtParser : PtParser.jjt
+PtParser :  sources PtParser.jjt
 	rm -f PtParser.jj
 	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
 	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
