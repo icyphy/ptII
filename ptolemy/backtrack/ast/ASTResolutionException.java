@@ -1,6 +1,6 @@
 /* A name in a source program cannot be resolved.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -37,14 +37,14 @@ package ptolemy.backtrack.ast;
    If an appropriate type cannot be found, this exception is raised.
    <p>
    Because AST functions are not declared to raise exceptions, this exception
-   is subclassed from {@link RuntimeException}.
+   is designed to be a descendant of {@link RuntimeException}.
 
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (tfeng)
 */
-public class ASTResolutionException extends ASTException {
+public class ASTResolutionException extends ASTRuntimeException {
 
     /** Construct an exception representing a name resolution failure.
      * 
