@@ -10,6 +10,10 @@
         <property name="_location" class="ptolemy.moml.Location" value="109.0, 75.0">
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -41,6 +45,10 @@
         </port>
     </entity>
     <entity name="DownSample1" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="320.0, 246.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
