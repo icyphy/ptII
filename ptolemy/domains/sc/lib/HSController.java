@@ -93,7 +93,7 @@ public class HSController extends SCController {
             if (trans.isEnabled()) {
                 if (_takenTransition != null) {
                     // Nondeterminate transition!
-                    System.out.println("Nondeterminate transition!");
+                    //System.out.println("Nondeterminate transition!");
                 } else {
                     _takenTransition = trans;
                 }
@@ -111,7 +111,7 @@ public class HSController extends SCController {
                 if (trans.isEnabled()) {
                     if (_takenTransition != null) {
                         // Nondeterminate transition!
-                        System.out.println("Nondeterminate transition!");
+                        //System.out.println("Nondeterminate transition!");
                     } else {
                         _takenTransition = trans;
                     }
