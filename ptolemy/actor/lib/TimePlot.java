@@ -87,7 +87,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
             newobj.input.setMultiport(true);
             newobj.input.setDeclaredType(DoubleToken.class);
             newobj.timed
-                    = new Parameter(this, "timed", new BooleanToken(true));
+                = new Parameter(this, "timed", new BooleanToken(true));
             return newobj;
         } catch (KernelException ex) {
             // Errors should not occur here...

@@ -58,7 +58,7 @@ FIXME: Rework above.  Inputs must be of type TypedIOPort.
 
 public class Expression extends TypedAtomicActor {
 
-// FIXME: This class won't deal with mutations properly.
+    // FIXME: This class won't deal with mutations properly.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -109,9 +109,9 @@ public class Expression extends TypedAtomicActor {
             newobj.output = new TypedIOPort(this, "output", false, true);
             expression = new Parameter(this, "expression", new StringToken(""));
             newobj._time =
-                    new PassiveVariable(this, "time", new DoubleToken(0.0));
+                new PassiveVariable(this, "time", new DoubleToken(0.0));
             newobj._firing =
-                    new PassiveVariable(this, "firing", new IntToken(0));
+                new PassiveVariable(this, "firing", new IntToken(0));
             return newobj;
         } catch (KernelException ex) {
             // Errors should not occur here...
@@ -147,7 +147,7 @@ public class Expression extends TypedAtomicActor {
                         attr.setContainer(null);
                     }
                     PassiveVariable pvar =
-                            new PassiveVariable(this, portname);
+                        new PassiveVariable(this, portname);
                     _variables.prepend(pvar);
                 } catch (IllegalActionException ex) {
                     // Not expected because a variable can be added to this
