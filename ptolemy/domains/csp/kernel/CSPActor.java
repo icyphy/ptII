@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@AcceptedRating none
 
 */
 
