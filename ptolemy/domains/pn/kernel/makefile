@@ -34,9 +34,9 @@ ROOT =		../../../../..
 
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-# Flags to pass to javadoc. (Override value in tycho.mk)
+# Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
 
@@ -84,7 +84,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk
 
 
 
