@@ -215,7 +215,7 @@ public class Chop extends SDFTransformer {
             // that is read.
             hiLim = offsetValue + nread - 1;
             if (hiLim >= nwrite) hiLim = nwrite - 1;
-            
+
             if (offsetValue >= 0) {
                 loLim = offsetValue;
                 inidx = 0;
@@ -223,7 +223,7 @@ public class Chop extends SDFTransformer {
                 loLim = 0;
                 inidx = -offsetValue;
             }
-            
+
             if (attribute == numberToWrite) {
                 buffer = new Token[nwrite];
             }
@@ -288,14 +288,6 @@ public class Chop extends SDFTransformer {
                     destination, length);
         }
         output.send(0, buffer, nwrite);
-    }
-
-    /** Calculate the token production rate and the token consumption
-     *  rate based on the parameters <i>blockSize</i> and <i>numberOfTimes</i>.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-	super.initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
