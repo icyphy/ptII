@@ -237,8 +237,10 @@ public class ModelTransformer extends SceneTransformer {
 
                 // Create a new local variable.
                 // FIXME: This is probably not the right type for a relation...
-                ptolemy.data.type.Type type = ((TypedIOPort)relation.linkedPortList().get(0)).getType();
-                BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                ptolemy.data.type.Type type = 
+                    ((TypedIOPort)relation.linkedPortList().get(0)).getType();
+                BaseType tokenType =
+                    PtolemyUtilities.getSootTypeForTokenType(type);
                 Type arrayType = ArrayType.v(tokenType, 1);
                 Local arrayLocal = 
                     Jimple.v().newLocal("bufferArray", arrayType);
@@ -271,7 +273,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set attributes.
-    public static void createFieldsForAttributes(JimpleBody body, NamedObj context,
+    public static void createFieldsForAttributes(JimpleBody body, 
+            NamedObj context,
             Local contextLocal, NamedObj namedObj, Local namedObjLocal, 
             SootClass theClass) {
         // A local that we will use to set the value of our
@@ -280,7 +283,7 @@ public class ModelTransformer extends SceneTransformer {
                 PtolemyUtilities.attributeType);
         body.getLocals().add(attributeLocal);
 	Local settableLocal = Jimple.v().newLocal("settable",
-						  PtolemyUtilities.settableType);
+                PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
         NamedObj classObject = _findDeferredInstance(namedObj);
@@ -304,7 +307,8 @@ public class ModelTransformer extends SceneTransformer {
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
-                local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
                         namedObjLocal, attribute.getName());
             }
 
@@ -321,17 +325,18 @@ public class ModelTransformer extends SceneTransformer {
                         Jimple.v().newCastExpr(
                                 local,
                                 PtolemyUtilities.settableType)));
+                String expression = ((Settable)attribute).getExpression();
 		// call setExpression.
 		body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.setExpressionMethod,
-                                StringConstant.v(
-                                        ((Settable)attribute).getExpression()))));
+                                StringConstant.v(expression))));
 	    }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
-            createFieldsForAttributes(body, context, contextLocal, attribute, local, theClass);
+            createFieldsForAttributes(body, context, contextLocal, 
+                    attribute, local, theClass);
 	}
     }
 
@@ -363,7 +368,8 @@ public class ModelTransformer extends SceneTransformer {
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
-                _composite(body, local, (CompositeEntity)entity, modelClass, options);
+                _composite(body, local, (CompositeEntity)entity,
+                        modelClass, options);
             } else {
                 _ports(body, thisLocal, composite, local, entity, modelClass);
             }
@@ -371,7 +377,8 @@ public class ModelTransformer extends SceneTransformer {
             if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then we
 		// include a field for each actor.
-		SootUtilities.createAndSetFieldFromLocal(body, local, modelClass,
+		SootUtilities.createAndSetFieldFromLocal(
+                        body, local, modelClass,
                         PtolemyUtilities.actorType, entity.getName());
             } else {
 		// If we are doing shallow code generation, then
@@ -400,7 +407,8 @@ public class ModelTransformer extends SceneTransformer {
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
-            String fieldName = SootUtilities.sanitizeName(port.getName(container));
+            String fieldName =
+                SootUtilities.sanitizeName(port.getName(container));
 	    Local portLocal;
 
             portLocal = Jimple.v().newLocal("port",
@@ -423,7 +431,8 @@ public class ModelTransformer extends SceneTransformer {
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
-                Local local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                Local local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
                         entityLocal, port.getName());
                 if(port instanceof IOPort) {
                     IOPort ioport = (IOPort)port;
@@ -453,6 +462,27 @@ public class ModelTransformer extends SceneTransformer {
 
             }
 
+            
+           //   // Set the type of the port if we need to.
+//              if(Options.getBoolean(options, "deep") &&
+//                      (port instanceof TypedIOPort)) {
+//                  TypedIOPort typedPort = (TypedIOPort)port;
+
+//                          // Build a type expression.
+//                  Local typeLocal =
+//                      _buildConstantTypeLocal(body, typedPort.getType());
+//                  Local ioportLocal =
+//                      Jimple.v().newLocal("typed_" + port.getName(),
+//                              ioportType);
+//                  body.getLocals().add(ioportLocal);
+//                  body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
+//                          Jimple.v().newCastExpr(portLocal,
+//                                  ioportType)));
+//                  body.getUnits().add(Jimple.v().newInvokeStmt(
+//                          Jimple.v().newVirtualInvokeExpr(ioportLocal,
+//                                  portSetTypeMethod, typeLocal)));
+//              }
+                    
             _portLocalMap.put(port, portLocal);
 	    SootUtilities.createAndSetFieldFromLocal(body, 
                     portLocal, modelClass, PtolemyUtilities.portType,
@@ -465,8 +495,7 @@ public class ModelTransformer extends SceneTransformer {
 	// To get the ordering right,
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
-	Chain units = body.getUnits();
-	for(Iterator ports = composite.portList().iterator();
+        for(Iterator ports = composite.portList().iterator();
 	    ports.hasNext();) {
 	    ComponentPort port = (ComponentPort)ports.next();
 	    Iterator relations = port.insideRelationList().iterator();
@@ -483,12 +512,11 @@ public class ModelTransformer extends SceneTransformer {
 		Local portLocal = (Local)_portLocalMap.get(port);
 		Local relationLocal = (Local)_relationLocalMap.get(relation);
 		// call the _insertLink method with the current index.
-		units.add(Jimple.v()
-			  .newInvokeStmt(Jimple.v()
-					 .newVirtualInvokeExpr(portLocal,
-							       PtolemyUtilities.insertLinkMethod,
-							       IntConstant.v(index),
-							       relationLocal)));
+		body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(portLocal,
+                                PtolemyUtilities.insertLinkMethod,
+                                IntConstant.v(index),
+                                relationLocal)));
 
 	    }
 	}
@@ -497,13 +525,7 @@ public class ModelTransformer extends SceneTransformer {
     // Produce the links on ports contained by contained entities.
     private void _linksOnPortsContainedByContainedEntities(
             JimpleBody body, CompositeEntity composite) {
-        // This local is used to store the return from the getPort
-        // method, before it is stored in a type-specific local variable.
-        //       Local tempPortLocal = Jimple.v().newLocal("tempPort",
-        //        RefType.v("ptolemy.kernel.Port"));
-        //body.getLocals().add(tempPortLocal);
-	Chain units = body.getUnits();
-
+   
         for(Iterator entities = composite.entityList().iterator();
             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
@@ -519,52 +541,8 @@ public class ModelTransformer extends SceneTransformer {
                 } else {
                     throw new RuntimeException("Found a port: " + port + 
                             " that does not have a local variable!");
-                    // Otherwise, create a new local for the given port.
-                    /*
-                      Local entityLocal = (Local)_entityLocalMap.get(entity);
-                    portLocal = Jimple.v().newLocal(port.getName(),
-                            PtolemyUtilities.portType);
-                    body.getLocals().add(portLocal);
-                    _portLocalMap.put(port, portLocal);
-                    // Reference the port.
-                    SootClass entityClass = Scene.v().getSootClass(
-                            entity.getClass().getName());
-                    SootMethod method =
-                        SootUtilities.searchForMethodByName(entityClass,
-                                "getPort");
-
-                    // First assign to temp
-                    units.add(Jimple.v().newAssignStmt(tempPortLocal,
-                            Jimple.v().newVirtualInvokeExpr(entityLocal,
-                                    method,
-                                    StringConstant.v(port.getName()))));
-                    // and then cast to portLocal
-                    units.add(Jimple.v().newAssignStmt(portLocal,
-                            Jimple.v().newCastExpr(tempPortLocal,
-                                    PtolemyUtilities.portType)));
-                    */
                 }
-                    /*
-                    // Set the type of the port if we need to.
-                    if(Options.getBoolean(options, "deep") &&
-                            (port instanceof TypedIOPort)) {
-                        TypedIOPort typedPort = (TypedIOPort)port;
-
-                        // Build a type expression.
-                        Local typeLocal =
-                            _buildConstantTypeLocal(body, typedPort.getType());
-                        Local ioportLocal =
-                            Jimple.v().newLocal("typed_" + port.getName(),
-                                    ioportType);
-                        body.getLocals().add(ioportLocal);
-                        units.add(Jimple.v().newAssignStmt(ioportLocal,
-                                Jimple.v().newCastExpr(portLocal,
-                                        ioportType)));
-                        units.add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(ioportLocal,
-                                        portSetTypeMethod, typeLocal)));
-                    }
-                    */
+              
                 Iterator relations = port.linkedRelationList().iterator();
                 int index = -1;
                 while (relations.hasNext()) {
@@ -580,9 +558,10 @@ public class ModelTransformer extends SceneTransformer {
                         _relationLocalMap.get(relation);
 
                     // Call the _insertLink method with the current index.
-                    units.add(Jimple.v().newInvokeStmt(
+                    body.getUnits().add(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.insertLinkMethod, IntConstant.v(index),
+                                    PtolemyUtilities.insertLinkMethod, 
+                                    IntConstant.v(index),
                                     relationLocal)));
                 }
             }
@@ -590,7 +569,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set relations.
-    private void _relations(JimpleBody body, Local thisLocal, CompositeEntity composite) {
+    private void _relations(JimpleBody body, Local thisLocal,
+            CompositeEntity composite) {
 	_relationLocalMap = new HashMap();
 	for(Iterator relations = composite.relationList().iterator();
 	    relations.hasNext();) {
