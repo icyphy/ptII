@@ -2,7 +2,7 @@
 A class that generates the other required files in the
 transitive closure.
 
-Copyright (c) 2001 The University of Maryland.
+Copyright (c) 2001-2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -49,6 +49,7 @@ import soot.Value;
 
 import soot.jimple.InvokeStmt;
 import soot.jimple.AssignStmt;
+import soot.jimple.IdentityStmt;
 import soot.jimple.InvokeExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.Stmt;
@@ -190,7 +191,15 @@ public class RequiredFileGenerator {
                 loadClassAndSupport("java.lang.String");
          SootMethod initStringWithCharArray = stringClass.getMethod(
                 "void <init>(char[])");
+
+         SootClass system = Scene.v()
+                .loadClassAndSupport("java.lang.System");
+         SootMethod initSystem = system
+                .getMethodByName("initializeSystemClass");
+
+
          _requiredMethods.add(initStringWithCharArray);
+         _requiredMethods.add(initSystem);
 
          _growRequiredTree();
     }
@@ -279,7 +288,8 @@ public class RequiredFileGenerator {
         }
 
         // The set of required classes is all classes that declare atleast
-        // one required method.
+        // one required method or field. We've already taken care of the
+        // fields. Here we take care of the methods.
         requiredMethodsIter = ((HashSet)_requiredMethods.clone()).iterator();
         while (requiredMethodsIter.hasNext()) {
             SootMethod thisMethod =
@@ -313,11 +323,15 @@ public class RequiredFileGenerator {
         // Set of all the called methods.
         HashSet targets = new HashSet();
 
+
         // FIXME: What about native methods?
-        // It was found that "clinit" methods need to be generated even though
-        // they are not concrete.
-        if(method.isConcrete()
-                ||(method.toString().indexOf("clinit") != -1)) {
+        // It was found that "clinit" methods need to be generated even
+        // though they are not concrete.
+        /*if(method.isConcrete()
+                ||(method.toString().indexOf("clinit") != -1)
+                ||(method.getName().indexOf("<init>") != -1))
+        */
+        try {
             method.getDeclaringClass().setApplicationClass();
 
 
@@ -327,6 +341,7 @@ public class RequiredFileGenerator {
 
             while (unitsIter.hasNext()) {
                 Unit unit = (Unit)unitsIter.next();
+
                 if (unit instanceof InvokeStmt) {
                         InvokeExpr invokeExpr = (InvokeExpr)(((InvokeStmt)unit)
                                 .getInvokeExpr());
@@ -334,10 +349,10 @@ public class RequiredFileGenerator {
                         targets.add(invokeExpr.getMethod());
 
                 }
-                // The unit may not be an ivoke statement by itself. It may
-                // have an RHS thats an invoke statement. For example , a =
-                // b()
-                // DefinitionStmt includes both AssignStmt and IdentityStmt
+                // The unit may not be an invoke statement by itself. It
+                // may have an RHS thats an invoke statement. For example,
+                // a = b().  DefinitionStmt includes both AssignStmt and
+                // IdentityStmt.
                 else if ((unit instanceof AssignStmt)) {
                     Value rightOp = ((AssignStmt)unit).getRightOp();
 
@@ -346,7 +361,20 @@ public class RequiredFileGenerator {
 
                     }
                 }
+                else if (unit instanceof IdentityStmt) {
+                    Value rightOp = ((IdentityStmt)unit).getRightOp();
+
+                    if (rightOp instanceof InvokeExpr) {
+                        targets.add(((InvokeExpr)rightOp).getMethod());
+
+                    }
+                }
+
             }
+        }
+        // In case some method cannot be analysed (for example some
+        // non-concrete methods).
+        catch (Exception e) {
         }
 
         return ((Collection) targets);
@@ -455,7 +483,10 @@ public class RequiredFileGenerator {
         // Create any parent directories, if required.
         if (fileName.lastIndexOf('/')>0) {
         // The file requires some directories.
-            if(verbose) System.out.println(className);
+            if(verbose) {
+                System.out.println(className);
+            }
+
             File dummyFile = new File(fileName.substring(0,
                                         fileName.lastIndexOf('/')));
             dummyFile.mkdirs();

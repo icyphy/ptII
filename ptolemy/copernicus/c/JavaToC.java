@@ -37,6 +37,7 @@ import java.io.IOException;
 
 import soot.Scene;
 import soot.SootClass;
+import soot.SootMethod;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
@@ -64,7 +65,9 @@ public class JavaToC {
      *  .h files).
      *  @param classPath The classpath to use during the conversion.
      *  @param className The name of the class to translate.
-     *  @param generateSingleClass Indicates whether (true) or not (false)
+     *  @param generateSingleClass Indicates whether (true) or not (false).
+     *  @param verbose Whether it should output standard messages during
+     *  compilation.
      *  "single class mode" should be used during the conversion
      *  (see {@link Context#getSingleClassMode()} for details).
      */
@@ -156,6 +159,8 @@ public class JavaToC {
         String classPath = new String(args[0]);
         String className = new String();
 
+        //_test(classPath);
+
         // Default flags.
         String compileMode = new String("full");
         boolean verbose = false;
@@ -197,5 +202,25 @@ public class JavaToC {
 
         // If no className specified
         if(className.equals("")) showHelp();
+
     }
-}
+
+    /** A dummy method used solely for testing purposes.
+     *  @param classPath The classPath.
+     */
+    private static void _test(String classPath) {
+
+            CNames.setup();
+            String className = new String("java.lang.System");
+
+            Scene.v().reset();
+            Scene.v().setSootClassPath(classPath);
+            Scene.v().loadClassAndSupport(className);
+            SootClass sootClass = Scene.v().getSootClass(className);
+            SootMethod method = sootClass.getMethodByName("nullInputStream");
+
+            System.out.println(OverriddenMethodGenerator.isOverridden(method));
+
+            throw new RuntimeException();
+        }
+    }

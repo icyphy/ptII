@@ -194,12 +194,32 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param v The integer constant.
      */
     public void caseIntConstant(IntConstant v) {
-        _push(v.toString());
+        int constant = v.value;
+        int maxInt = 32767;
+
+        if (constant > maxInt) {
+            constant = maxInt;
+        }
+        else if (constant < -maxInt) {
+            constant = -maxInt;
+        }
+
+        _push(Integer.toString(constant));
     }
 
     public void caseLongConstant(LongConstant v) {
         // FIXME: verify long qualifier
-        _push(v.toString());
+        long constant = v.value;
+        long maxLong = 2147483647;
+
+        if (constant > maxLong) {
+            constant = maxLong;
+        }
+        else if (constant < -maxLong) {
+            constant = -maxLong;
+        }
+
+        _push(Long.toString(constant));
     }
 
     public void caseNullConstant(NullConstant v) {
@@ -417,7 +437,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseShrExpr(ShrExpr v) {
-        _generateBinaryOperation(v,">>");
+        // Make sure that is never shifted by more than 31.
+        if (v.getOp2() instanceof IntConstant) {
+            IntConstant constant = (IntConstant)v.getOp2();
+            if (constant.value > 31) {
+                v.setOp2(IntConstant.v(31));
+            }
+        }
+
+        _generateBinaryOperation(v, ">>");
     }
 
     /** Generate code for a special invoke expression.
@@ -478,12 +506,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // The method that was invoked.
         SootMethod method = v.getMethod();
 
-        // Comment out native method calls and replace them with a zero.
-        // FIXME: Native methods are disabled by this.
-
+        // Handling native methods here.
         if (method.isNative()) {
-            _push("/*" + CNames.functionNameOf(method) + "("
-                    + _generateArguments(v, 0) + ")" + "*/" + 0);
+            _push(CNames.functionNameOf(method) + "("
+                    + _generateArguments(v, 0) + ")");
         }
         else {
             _push(CNames.functionNameOf(method) + "("

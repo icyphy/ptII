@@ -106,9 +106,12 @@ public class CodeFileGenerator extends CodeGenerator {
                     bodyCode.append(_comment("Prototypes for functions that "
                             + "implement private methods"));
                 }
+                // FIXME: Do natives have to be extern?
+                /*
                 if (method.isNative()) {
                     bodyCode.append("extern ");
                 }
+                */
                 bodyCode.append(_generateMethodHeader(method) + ";\n");
             }
         }
@@ -119,20 +122,19 @@ public class CodeFileGenerator extends CodeGenerator {
         methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod thisMethod = (SootMethod)methods.next();
-            String methodCode = _generateMethod(thisMethod);
-;
-
-            // Generate only required methods and initialization methods.
+            String methodCode = new String();
 
             if (RequiredFileGenerator.isRequiredMethod(thisMethod)) {
+                methodCode = _generateMethod(thisMethod);
                 bodyCode.append(methodCode);
             }
 
-
-            // bodyCode.append(methodCode);
             if (methodCode.length() != 0) {
                     bodyCode.append("\n");
             }
+
+
+
         }
 
         // Declare the run-time structure that is to contain class information.
@@ -280,7 +282,8 @@ public class CodeFileGenerator extends CodeGenerator {
     private String _generateMethod(SootMethod method) {
 
         byte indentLevel;
-        if (method.isConcrete() && !(method.isNative())) {
+        if (method.isConcrete() && !method.isNative() &&
+                !OverriddenMethodGenerator.isOverridden(method)) {
             StringBuffer code = new StringBuffer();
             String description = "Function that implements Method " +
                     method.getSubSignature();
@@ -515,7 +518,15 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_comment(description));
             return code.toString();
         } else {
-            return "";
+            if (method.isNative() || method.isAbstract()) {
+                return NativeMethodGenerator.getCode(method);
+            }
+            else if (OverriddenMethodGenerator.isOverridden(method)) {
+                return OverriddenMethodGenerator.getCode(method);
+            }
+            else {
+                return "";
+            }
         }
     }
 
@@ -531,21 +542,11 @@ public class CodeFileGenerator extends CodeGenerator {
             if (!method.isStatic()
                     && RequiredFileGenerator.isRequiredMethod(method)) {
 
-                // Comment out native method references.
-                if (method.isNative()) {
-                    code.append("/* Native Method Reference Commented "
-                            + "out.\n");
-                }
-
                 code.append(_indent(1) + argumentReference
                         + "methods." + CNames.methodNameOf(method) + " = "
                         + CNames.functionNameOf(method) + ";\n");
                 _updateRequiredTypes(method.getDeclaringClass().getType());
 
-                // Commenting out of native method ends.
-                if (method.isNative()) {
-                    code.append("*/\n");
-                }
             }
         }
         return code.toString();

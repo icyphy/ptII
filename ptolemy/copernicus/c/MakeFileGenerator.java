@@ -61,12 +61,18 @@ public class MakeFileGenerator {
 
         code.append("#Standard variables\n");
         code.append("RUNTIME = ../runtime\n");
+        code.append("NATIVE_BODIES = ../native_bodies\n");
+        // Overridden bodies.
+        code.append("OVER_BODIES = "
+                + OverriddenMethodGenerator.overriddenBodyLib
+                + "\n");
         code.append("LIB = " + System.getProperty("j2c_lib","/j2c_lib")
                 + "\n");
 
-        // The -g3 flag is for gdb debugging.
-        code.append("CFLAGS = -Wall -pedantic -g3\n");
-        code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB)\n\n");
+        // The -g flag is for gdb debugging.
+        code.append("CFLAGS = -g -Wall -pedantic\n");
+        code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB) "
+                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)\n\n");
 
         code.append("THIS = " + className + ".make\n");
 
@@ -98,11 +104,12 @@ public class MakeFileGenerator {
                 + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
 
         code.append(className + ".exe : $(OBJECTS)\n");
-        code.append("\tgcc $(OBJECTS) -o "+ className +".exe\n");
+        code.append("\tgcc -g $(OBJECTS) -o "+ className +".exe\n");
 
         code.append(".c.o:\n");
-        code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $< -o $@ "
-                + "2>err.txt\n\n");
+        code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
+                + "-I $(NATIVE_BODIES) $< -o $@ "
+                + "\n\n");
 
         code.append(".PHONY:depend\n\n");
         code.append("depend:\n");

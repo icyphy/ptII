@@ -35,6 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.copernicus.c;
 
 import soot.SootClass;
+import soot.SootMethod;
 
 /** A C code generator for generating the c file containing the wrapper "main"
     method. This simply does some initialization and calls the main method of
@@ -84,26 +85,61 @@ public class MainFileGenerator extends CodeGenerator {
 
         headerCode.append("\n");
 
-        // Generate the actual "main" method.
-        bodyCode.append("int main()\n{\n");
-        bodyCode.append(_indent(1) + instanceName + " instance;\n");
+        headerCode.append("#ifndef A_DEF_iA1_i1195259493_String\n"
+                + "#define A_DEF_iA1_i1195259493_String\n"
+                + "typedef PCCG_ARRAY_INSTANCE_PTR iA1_i1195259493_String;\n"
+                + "#endif\n");
 
-        bodyCode.append(_indent(1)
-                + "\ninstance = malloc(sizeof(instance));\n");
 
-        bodyCode.append(_indent(1) + "instance->class = "
-                + "malloc(sizeof(instance->class));\n");
-
-        bodyCode.append("\n");
-
-        bodyCode.append(_indent(1) + structInitFunction
-                + "(instance->class);\n");
 
         // Call the actual main method of the class, if it exists.
         if (mainExists){
+            SootMethod mainMethod = source.getMethodByName("main");
+
+            // Generate the actual "main" method.
+            bodyCode.append("\nint main()\n{\n");
+            bodyCode.append(_indent(1) + instanceName + " instance;\n");
+
+            // String array for calling main with "String[] args".
+            if (mainMethod.getParameterCount() == 1) {
+                bodyCode.append(_indent(1)
+                        + "iA1_i1195259493_String string_array;\n");
+            }
+
+            bodyCode.append("\n"+ _indent(1)
+                    + "instance = malloc(sizeof(instance));\n");
+
+            bodyCode.append(_indent(1) + "instance->class = "
+                    + "malloc(sizeof(instance->class));\n");
+
+            bodyCode.append("\n");
+
+            bodyCode.append(_indent(1) + structInitFunction
+                    + "(instance->class);\n");
+
+
             bodyCode.append(_indent(1)
-                    + CNames.functionNameOf(source.getMethodByName("main"))
-                    + "(instance);\n" );
+                    + CNames.functionNameOf(mainMethod) + "(" );
+
+            // If the method is non-static, put the name of the instance as
+            // the first argument.
+            if (!mainMethod.isStatic()) {
+                bodyCode.append("instance");
+                if (mainMethod.getParameterCount() == 1) {
+                    // Assume that the only possible argument is String[]
+                    // args, or nothing.
+                    bodyCode.append(", string_array");
+                }
+            }
+            else {
+                if (mainMethod.getParameterCount() == 1) {
+                    // Assume that the only possible argument is String[]
+                    // args, or nothing.
+                    bodyCode.append("string_array");
+                }
+            }
+
+            bodyCode.append(");\n");
         }
 
         bodyCode.append(_indent(1) + "return(0);\n");

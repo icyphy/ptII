@@ -1,7 +1,7 @@
 /*
 A class that takes care of common File I/O functions.
 
-Copyright (c) 2002 The University of Maryland.
+Copyright (c) 2001-2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -34,6 +34,8 @@ import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 /** A class that takes care of common File I/O functions.
 
@@ -44,9 +46,9 @@ import java.io.IOException;
 
 public class FileHandler {
 
-    /** Tells whether a file with a given name exists.
+    /** Tells whether a file or directory with a given name exists.
      *  @param fileName A fileName.
-     *  @return True if a file with that name exists.
+     *  @return True if a file or directory with that name exists.
      */
     public static boolean exists(String fileName) {
         File f = new File(fileName);
@@ -64,9 +66,39 @@ public class FileHandler {
             out.close();
         }
         catch(IOException e) {
-            System.err.println("ERROR: Could not create file: "+fileName);
+            System.err.println("FileHandler.write(String, String): "
+                    + "ERROR: Could not create file: " + fileName + "\n");
         }
     }
+
+    /** Reads the contents of a text file and returns them as a String.
+     *  Prints an error statement and returns an empty string if an IO
+     *  error occurs.
+     *  @param fileName The file to read from.
+     *  @return A String containing the entire contents of the file.
+     */
+    public static String readStringFromFile(String fileName) {
+        StringBuffer code = new StringBuffer();
+        // We assume that its reading code. It can read any kind of text.
+
+        try {
+            BufferedReader input = new BufferedReader(new FileReader(fileName));
+            String line; // We read from the file one line at a time.
+
+            // Keep reading till no more lines are left. Append the lines
+            // one-by-one to "code" in order.
+            while ((line = input.readLine()) != null) {
+                code.append(line + "\n");
+            }
+        }
+        catch (IOException e) {
+            System.err.println("FileHandler.readStringFromFile(String):\n"
+                    + "ERROR!: Unable to access file " + fileName );
+        }
+
+        return code.toString();
+    }
+
 
 }
 

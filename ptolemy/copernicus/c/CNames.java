@@ -148,6 +148,7 @@ public class CNames {
             }
             _functionMap.put(method, name);
         }
+
         return name;
     }
 
