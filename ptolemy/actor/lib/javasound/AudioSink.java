@@ -146,7 +146,7 @@ public class AudioSink extends Sink {
 	bufferSize = new Parameter(this, "bufferSize",
                 new IntToken(intBufferSize));
 	bufferSize.setTypeEquals(BaseType.INT);
-	// Hardcode the the fraction of of the buffer to put data
+	// Hard code the the fraction of of the buffer to put data
 	// at a time = 1/putFactor.
 	_putFactor = 8;
 	attributeChanged(bufferSize);
@@ -164,7 +164,7 @@ public class AudioSink extends Sink {
      *  the default value of "" will be used.
      *  <p>
      *  The encoding to use is determined by the file extension.
-     *  E.g., "somefile.au" will create a Sun AU format file.
+     *  E.g., "someFile.au" will create a Sun AU format file.
      *  The allowable file formats are AU, WAV, and , AIFF.
      *  <p>
      *  It is safe to change this parameter during execution. If
@@ -173,7 +173,7 @@ public class AudioSink extends Sink {
      *  will be closed.
      *  <p>
      *  An exception will be occur if the path references a
-     *  non-exsistant or unsupported sound file.
+     *  non-existent or unsupported sound file.
      */
     public Parameter pathName;
 
@@ -378,7 +378,7 @@ public class AudioSink extends Sink {
                             "Cannot playback audio:\n" +
                             ex.getMessage());
 		}
-		// Reset pointer to begining of array.
+		// Reset pointer to beginning of array.
 		_curElement = 0;
 	    }
 	}
@@ -524,7 +524,7 @@ public class AudioSink extends Sink {
     // putSamples() method of SoundPlayback.
     private int _curElement;
     private Token[][] _inArray;
-    // Hardcode the the fraction of of the buffer to put data
+    // Hard code the the fraction of of the buffer to put data
     // at a time = 1/putFactor.
     private int _putFactor;
     private boolean _safeToInitialize = false;

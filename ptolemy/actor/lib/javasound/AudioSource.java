@@ -161,7 +161,7 @@ public class AudioSource extends Source {
 	bufferSize = new Parameter(this, "bufferSize",
                 new IntToken(intBufferSize));
 	bufferSize.setTypeEquals(BaseType.INT);
-	// Hardcode the the fraction of of the buffer to get data
+	// Hard code the the fraction of of the buffer to get data
 	// at a time = 1/getFactor.
 	_getFactor = 8;
 	attributeChanged(bufferSize);
@@ -175,7 +175,7 @@ public class AudioSource extends Source {
      *  URL. Note that it is possible to load a file from the native
      *  file system by using the prefix "file:///" instead of "http://".
      *  The sound file format is determined from the file extension.
-     *  For example, "file:///C:/someDir/someFile.wav" will be
+     *  For example, "file:///C:/someDirectory/someFile.wav" will be
      *  interpreted as a WAVE file. Allowable file formats include
      *  WAV, AU, and AIFF.
      *  <p>
@@ -183,7 +183,7 @@ public class AudioSource extends Source {
      *  open sound file will be saved.
      *  <p>
      *  An exception will be occur if the path references a
-     *  non-exsistant or unsupported sound file.
+     *  non-existent or unsupported sound file.
      */
     public Parameter pathName;
 
@@ -540,7 +540,7 @@ public class AudioSource extends Source {
     private boolean _haveASample;
     private int _getSamplesArrayPointer;
     private DoubleToken[] _audioSendArray = new DoubleToken[1];
-    // Hardcode the the fraction of of the buffer to get data
+    // Hard code the the fraction of of the buffer to get data
     // at a time = 1/getFactor.
     private int _getFactor;
     private boolean _safeToInitialize = false;
