@@ -64,6 +64,7 @@ JSRCS =	Documentation.java \
 	MoMLParser.java \
 	MoMLWriter.java \
 	ParserAttribute.java \
+	RethrowErrorHandler.java \
 	StreamErrorHandler.java \
 	URLAttribute.java \
 	Vertex.java
