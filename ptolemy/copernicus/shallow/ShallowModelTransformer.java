@@ -119,7 +119,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	body.getLocals().add(settableLocal);
 
         for (Iterator attributes = namedObj.attributeList().iterator();
-	    attributes.hasNext();) {
+             attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
             // FIXME: This is horrible...  I guess we need an attribute for
@@ -359,7 +359,7 @@ public class ShallowModelTransformer extends SceneTransformer {
         body.getLocals().add(entityLocal);
 
 	for (Iterator entities = composite.entityList().iterator();
-	    entities.hasNext();) {
+             entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ShallowModelTransformer: entity: " + entity);
             Local local;
@@ -425,7 +425,7 @@ public class ShallowModelTransformer extends SceneTransformer {
         body.getLocals().add(tempPortLocal);
 
 	for (Iterator ports = entity.portList().iterator();
-	    ports.hasNext();) {
+             ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
             String fieldName = getFieldNameForPort(port, container);
@@ -499,7 +499,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
         for (Iterator ports = composite.portList().iterator();
-	    ports.hasNext();) {
+             ports.hasNext();) {
 	    ComponentPort port = (ComponentPort)ports.next();
 	    Iterator relations = port.insideRelationList().iterator();
 	    int index = -1;
@@ -530,7 +530,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             JimpleBody body, CompositeEntity composite) {
 
         for (Iterator entities = composite.entityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
             Iterator ports = entity.portList().iterator();
             while (ports.hasNext()) {
@@ -576,7 +576,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             CompositeEntity composite) {
 	_relationLocalMap = new HashMap();
 	for (Iterator relations = composite.relationList().iterator();
-	    relations.hasNext();) {
+             relations.hasNext();) {
 	    Relation relation = (Relation)relations.next();
 	    String className = relation.getClass().getName();
 	    // Create a new local variable.
@@ -592,11 +592,11 @@ public class ShallowModelTransformer extends SceneTransformer {
         // Loop through all the methods
 
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 Iterator boxes = unit.getUseBoxes().iterator();
                 while (boxes.hasNext()) {
@@ -759,12 +759,12 @@ public class ShallowModelTransformer extends SceneTransformer {
         if (object instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) object;
             for (Iterator entities = composite.entityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 _updateCreatedSet(prefix, context, entity, set);
             }
             for (Iterator relations = composite.relationList().iterator();
-                relations.hasNext();) {
+                 relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
                 _updateCreatedSet(prefix, context, relation, set);
             }
@@ -772,13 +772,13 @@ public class ShallowModelTransformer extends SceneTransformer {
         if (object instanceof Entity) {
             Entity entity = (Entity) object;
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 _updateCreatedSet(prefix, context, port, set);
             }
         }
         for (Iterator attributes = object.attributeList().iterator();
-            attributes.hasNext();) {
+             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
             _updateCreatedSet(prefix, context, attribute, set);
         }

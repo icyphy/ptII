@@ -147,7 +147,7 @@ public class CommandLineTemplate {
                 long totalMemory2 = runtime.totalMemory()/1024;
                 long freeMemory2 = runtime.freeMemory()/1024;
                 String standardStats = timeAndMemory(startTime,
-                                totalMemory2, freeMemory2);
+                        totalMemory2, freeMemory2);
 
                 System.out.println(modelName +
                         ": Execution stats:           "
@@ -239,48 +239,48 @@ public class CommandLineTemplate {
         // Iterate through the model, looking for something that is Placeable.
         boolean hasPlaceable = false;
         /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
-        while (atomicEntities.hasNext()) {
-            Object object = atomicEntities.next();
-            if (object instanceof Placeable) {
-                hasPlaceable = true;
-                break;
-            }
+           while (atomicEntities.hasNext()) {
+           Object object = atomicEntities.next();
+           if (object instanceof Placeable) {
+           hasPlaceable = true;
+           break;
+           }
            }
 
-        if (hasPlaceable) {
-            // The model has an entity that is Placeable, so create a frame.
-            try {
-                // A model frame with no buttons... just place the
-                // placeable actors.
-                ModelFrame frame = new ModelFrame(model, null,
-                        new ModelPane(model, ModelPane.HORIZONTAL, 0));
+           if (hasPlaceable) {
+           // The model has an entity that is Placeable, so create a frame.
+           try {
+           // A model frame with no buttons... just place the
+           // placeable actors.
+           ModelFrame frame = new ModelFrame(model, null,
+           new ModelPane(model, ModelPane.HORIZONTAL, 0));
 
-                _openCount++;
-                frame.addWindowListener(new WindowAdapter() {
-                    public void windowClosed(WindowEvent event) {
-                        synchronized(CommandLineTemplate.this) {
-                            _openCount--;
-                            CommandLineTemplate.this.notifyAll();
-			    // FIXME: is this right?  We need
-			    // to exit if all the windows are closed?
-			    if (_openCount == 0) {
-				System.exit(0);
-			    }
-                        }
-                    }
-                });
-                frame.setBackground(new Color(0xe5e5e5));
-                frame.pack();
-                frame.centerOnScreen();
-                frame.setVisible(true);
-                // FIXME: Use a JFrame listener to determine when all windows
-                // are closed.
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.out.println("startRun: " + ex);
-            }
-        }
-         */
+           _openCount++;
+           frame.addWindowListener(new WindowAdapter() {
+           public void windowClosed(WindowEvent event) {
+           synchronized(CommandLineTemplate.this) {
+           _openCount--;
+           CommandLineTemplate.this.notifyAll();
+           // FIXME: is this right?  We need
+           // to exit if all the windows are closed?
+           if (_openCount == 0) {
+           System.exit(0);
+           }
+           }
+           }
+           });
+           frame.setBackground(new Color(0xe5e5e5));
+           frame.pack();
+           frame.centerOnScreen();
+           frame.setVisible(true);
+           // FIXME: Use a JFrame listener to determine when all windows
+           // are closed.
+           } catch (Exception ex) {
+           ex.printStackTrace();
+           System.out.println("startRun: " + ex);
+           }
+           }
+        */
 
         Manager manager = model.getManager();
         try {
@@ -316,7 +316,7 @@ public class CommandLineTemplate {
 	    + " ms. Memory: "
 	    + totalMemory + "K Free: " + freeMemory + "K ("
 	    + Math.round( (((double)freeMemory)/((double)totalMemory))
-			  * 100.0)
+                    * 100.0)
 	    + "%)";
     }
 

@@ -125,10 +125,10 @@ public class CommandLineTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         /* SootClass actorClass =  Scene.v().loadClassAndSupport(
-                "ptolemy.actor.TypedAtomicActor");
-        Type actorType = RefType.v(actorClass);
-        SootClass compositeActorClass =
-            Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
+           "ptolemy.actor.TypedAtomicActor");
+           Type actorType = RefType.v(actorClass);
+           SootClass compositeActorClass =
+           Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
         */
         // SootClass applicationClass = Scene.v().loadClassAndSupport(
         //        "ptolemy.actor.gui.CompositeActorApplication");
@@ -170,7 +170,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // initialize the field by creating a model
         // in all the <init> methods.
         for (Iterator methods = mainClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore things that aren't initializers.
             if (!method.getName().equals("<init>"))
@@ -223,15 +223,15 @@ public class CommandLineTransformer extends SceneTransformer {
         SootMethod mainStartRunMethod =
             mainClass.getMethodByName("startRun");
         for (Iterator methods = mainClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 for (Iterator boxes = unit.getUseBoxes().iterator();
-                    boxes.hasNext();) {
+                     boxes.hasNext();) {
                     ValueBox box = (ValueBox)boxes.next();
                     if (box.getValue() instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr expr =
@@ -276,7 +276,7 @@ public class CommandLineTransformer extends SceneTransformer {
                 mainClass.getMethodByName("stopRun"), mainClass);
 
         for (Iterator methods = mainClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             LocalSplitter.v().transform(body, phaseName + ".lns");
@@ -292,58 +292,58 @@ public class CommandLineTransformer extends SceneTransformer {
         // Take the instance of main, and convert it to be a static class.
         /*
           // FIXME this is currently broken.
-        {
-            // First find the constructor statement.
-            SootMethod mainMethod = mainClass.getMethodByName("main");
-            JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
-            Chain units = body.getUnits();
-            for (Iterator stmts = units.iterator(); stmts.hasNext();) {
-                Stmt stmt = (Stmt)stmts.next();
-                // filter out anything that is not a definition.
-                if (!(stmt instanceof DefinitionStmt)) {
-                    continue;
-                }
-                DefinitionStmt newStmt = (DefinitionStmt)stmt;
-                Value value = (newStmt).getRightOp();
-                if (!(value instanceof NewExpr)) {
-                    continue;
-                }
-                RefType type = ((NewExpr)value).getBaseType();
-                if (type.getSootClass() != mainClass) {
-                    continue;
-                }
-                InvokeStmt constructorStmt = null;
-                // Now walk forward and find the constructor.
-                while (stmts.hasNext()) {
-                    stmt = (Stmt)stmts.next();
-                    if (stmt instanceof InvokeStmt &&
-                            ((InvokeStmt)stmt).getInvokeExpr()
-                            instanceof SpecialInvokeExpr) {
-                        constructorStmt = (InvokeStmt)stmt;
-                    }
-                    break;
-                }
+          {
+          // First find the constructor statement.
+          SootMethod mainMethod = mainClass.getMethodByName("main");
+          JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
+          Chain units = body.getUnits();
+          for (Iterator stmts = units.iterator(); stmts.hasNext();) {
+          Stmt stmt = (Stmt)stmts.next();
+          // filter out anything that is not a definition.
+          if (!(stmt instanceof DefinitionStmt)) {
+          continue;
+          }
+          DefinitionStmt newStmt = (DefinitionStmt)stmt;
+          Value value = (newStmt).getRightOp();
+          if (!(value instanceof NewExpr)) {
+          continue;
+          }
+          RefType type = ((NewExpr)value).getBaseType();
+          if (type.getSootClass() != mainClass) {
+          continue;
+          }
+          InvokeStmt constructorStmt = null;
+          // Now walk forward and find the constructor.
+          while (stmts.hasNext()) {
+          stmt = (Stmt)stmts.next();
+          if (stmt instanceof InvokeStmt &&
+          ((InvokeStmt)stmt).getInvokeExpr()
+          instanceof SpecialInvokeExpr) {
+          constructorStmt = (InvokeStmt)stmt;
+          }
+          break;
+          }
 
-                // Now we actually have a creation of the main object,
-                // so create a class just for that instance.
-                SootClass staticMainClass =
-                    SootUtilities.createStaticClassForInstance(
-                            mainClass, body, newStmt, constructorStmt,
-                            Options.getString(options, "targetPackage")
-                            + ".StaticMain");
+          // Now we actually have a creation of the main object,
+          // so create a class just for that instance.
+          SootClass staticMainClass =
+          SootUtilities.createStaticClassForInstance(
+          mainClass, body, newStmt, constructorStmt,
+          Options.getString(options, "targetPackage")
+          + ".StaticMain");
 
-                // Remove the extra Main method that we created in
-                // doing this.
-                SootMethod staticMainMethod =
-                    staticMainClass.getMethodByName("main");
-                staticMainClass.removeMethod(staticMainMethod);
+          // Remove the extra Main method that we created in
+          // doing this.
+          SootMethod staticMainMethod =
+          staticMainClass.getMethodByName("main");
+          staticMainClass.removeMethod(staticMainMethod);
 
-                break;
-            }
-        }
+          break;
+          }
+          }
         */
         for (Iterator methods = mainClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             System.out.println("method = " + method.toString());
             SootMethod method2 = Scene.v().getMethod(method.toString());
@@ -388,19 +388,19 @@ public class CommandLineTransformer extends SceneTransformer {
 			IntToken token = (IntToken)((Variable)attribute).getToken();
 			iterationLimit = token.intValue();
 			System.out.println("CommandLineTransformer"
-					   + "_insertIterateCalls(): "
-					   + "iterationLimit was the default,"
-					   + " read director.iterations, "
-					   + "value is now "
-					   + iterationLimit);
+                                + "_insertIterateCalls(): "
+                                + "iterationLimit was the default,"
+                                + " read director.iterations, "
+                                + "value is now "
+                                + iterationLimit);
 		    }
 		}
 	    } catch (Exception e) {
 		System.out.println("CommandLineTransformer"
-				   + "_insertIterateCalls(): "
-				   + "Could not read director.iterations "
-				   + "defaulting to " + _iterationsDefault
-				   + ": " + e);
+                        + "_insertIterateCalls(): "
+                        + "Could not read director.iterations "
+                        + "defaulting to " + _iterationsDefault
+                        + ": " + e);
 	    }
 	}
 

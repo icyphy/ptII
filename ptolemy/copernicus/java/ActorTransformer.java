@@ -130,7 +130,7 @@ public class ActorTransformer extends SceneTransformer {
 
         // Create an instance class for every actor.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = entity.getClass().getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
@@ -195,26 +195,26 @@ public class ActorTransformer extends SceneTransformer {
             // Loop over all the constructors and add code to each one to
             // populate the actor with parameter values, etc...
             /*     for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
-                if (!method.getName().equals("<init>")) {
-                    continue;
-                }
+                   methods.hasNext();) {
+                   SootMethod method = (SootMethod)methods.next();
+                   if (!method.getName().equals("<init>")) {
+                   continue;
+                   }
 
-                JimpleBody initBody = (JimpleBody)method.retrieveActiveBody();
-                NamedObjConstructorAnalysis analysis = new
-                    NamedObjConstructorAnalysis(initBody);
-                Local thisLocal = initBody.getThisLocal();
-                for (Iterator ports = entity.portList().iterator();
-                    ports.hasNext();) {
-                    TypedIOPort port = (TypedIOPort)ports.next();
-                    //FIXME WRONG!
-                    _createFieldsForExistingAttributes(
-                            body, analysis, classEntity, thisLocal,
-                            port, thisLocal, entityInstanceClass);
+                   JimpleBody initBody = (JimpleBody)method.retrieveActiveBody();
+                   NamedObjConstructorAnalysis analysis = new
+                   NamedObjConstructorAnalysis(initBody);
+                   Local thisLocal = initBody.getThisLocal();
+                   for (Iterator ports = entity.portList().iterator();
+                   ports.hasNext();) {
+                   TypedIOPort port = (TypedIOPort)ports.next();
+                   //FIXME WRONG!
+                   _createFieldsForExistingAttributes(
+                   body, analysis, classEntity, thisLocal,
+                   port, thisLocal, entityInstanceClass);
 
-                }
-                }*/
+                   }
+                   }*/
 
             // replace the previous dummy body
             // for the initialization method with a new one.
@@ -241,8 +241,8 @@ public class ActorTransformer extends SceneTransformer {
 
             // Initialize the parameters of the class entity.
             for (Iterator attributes =
-                    entity.attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
+                     entity.attributeList(Settable.class).iterator();
+                 attributes.hasNext();) {
                 Settable settable = (Settable)attributes.next();
                 Settable classSettable = (Settable)classEntity.getAttribute(
                         settable.getName());
@@ -274,7 +274,7 @@ public class ActorTransformer extends SceneTransformer {
             body.getLocals().add(ioportLocal);
 
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort)ports.next();
                 if (classEntity.getPort(port.getName()) != null) {
                     // Call the getPort method to get a reference to the port.
@@ -397,11 +397,11 @@ public class ActorTransformer extends SceneTransformer {
     private static void _implementExecutableInterface(SootClass theClass) {
         // Loop through all the methods and remove calls to super.
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 Iterator boxes = unit.getUseBoxes().iterator();
                 while (boxes.hasNext()) {
@@ -432,6 +432,16 @@ public class ActorTransformer extends SceneTransformer {
         // from TypedAtomicActor, we need to implement all of these methods.
         /*  if (!theClass.declaresMethodByName("initialize")) {
             SootMethod method = new SootMethod("initialize",
+            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+            }
+        */
+        if (!theClass.declaresMethodByName("preinitialize")) {
+            SootMethod method = new SootMethod("preinitialize",
                     new LinkedList(), VoidType.v(), Modifier.PUBLIC);
             theClass.addMethod(method);
             JimpleBody body = Jimple.v().newBody(method);
@@ -439,63 +449,53 @@ public class ActorTransformer extends SceneTransformer {
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnVoidStmt());
         }
-         */
-                if (!theClass.declaresMethodByName("preinitialize")) {
-                    SootMethod method = new SootMethod("preinitialize",
-                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
-                }
-                if (!theClass.declaresMethodByName("initialize")) {
-                    SootMethod method = new SootMethod("initialize",
-                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
-                }
-                if (!theClass.declaresMethodByName("prefire")) {
-                    SootMethod method = new SootMethod("prefire",
-                            new LinkedList(), IntType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnStmt(
-                                                IntConstant.v(1)));
-                }
-                if (!theClass.declaresMethodByName("fire")) {
-                    SootMethod method = new SootMethod("fire",
-                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
-                }
-                if (!theClass.declaresMethodByName("postfire")) {
-                    SootMethod method = new SootMethod("postfire",
-                            new LinkedList(), IntType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnStmt(
-                                                IntConstant.v(1)));
-                }
-                if (!theClass.declaresMethodByName("wrapup")) {
-                    SootMethod method = new SootMethod("wrapup",
-                            new LinkedList(), VoidType.v(), Modifier.PUBLIC);
-                    theClass.addMethod(method);
-                    JimpleBody body = Jimple.v().newBody(method);
-                    method.setActiveBody(body);
-                    body.insertIdentityStmts();
-                    body.getUnits().add(Jimple.v().newReturnVoidStmt());
-                    }
+        if (!theClass.declaresMethodByName("initialize")) {
+            SootMethod method = new SootMethod("initialize",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
+        if (!theClass.declaresMethodByName("prefire")) {
+            SootMethod method = new SootMethod("prefire",
+                    new LinkedList(), IntType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnStmt(
+                    IntConstant.v(1)));
+        }
+        if (!theClass.declaresMethodByName("fire")) {
+            SootMethod method = new SootMethod("fire",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
+        if (!theClass.declaresMethodByName("postfire")) {
+            SootMethod method = new SootMethod("postfire",
+                    new LinkedList(), IntType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnStmt(
+                    IntConstant.v(1)));
+        }
+        if (!theClass.declaresMethodByName("wrapup")) {
+            SootMethod method = new SootMethod("wrapup",
+                    new LinkedList(), VoidType.v(), Modifier.PUBLIC);
+            theClass.addMethod(method);
+            JimpleBody body = Jimple.v().newBody(method);
+            method.setActiveBody(body);
+            body.insertIdentityStmts();
+            body.getUnits().add(Jimple.v().newReturnVoidStmt());
+        }
     }
 
     // Inline invocation sites from methods in the given class to
@@ -504,11 +504,11 @@ public class ActorTransformer extends SceneTransformer {
         // FIXME: what if the inlined code contains another call
         // to this class???
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
@@ -527,11 +527,11 @@ public class ActorTransformer extends SceneTransformer {
 
     private static void _removeAttributeInitialization(SootClass theClass) {
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt)units.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
