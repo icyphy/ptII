@@ -90,7 +90,7 @@ set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 java::call $debug register $debugger
 
 # Run it
-$manager go 5
+$manager blockingGo 5
 
 
 
