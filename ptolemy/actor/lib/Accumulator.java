@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -48,8 +48,8 @@ Output the initial value plus the sum of all the inputs since
 the last time a true token was received at the reset port.
 One output is produced each time the actor is fired. The
 inputs and outputs can be any token type that supports addition.
-The output type is constrained to be the greater than or
-equal to the input type and the initial value type.
+The output type is constrained to be greater than or
+equal to the input type and the type of the <i>init</i> parameter.
 
 @author Edward A. Lee
 @version $Id$
@@ -74,6 +74,7 @@ public class Accumulator extends Transformer {
 
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);
+        reset.setMultiport(true);
 
         init = new Parameter(this, "init", new IntToken(0));
 
@@ -85,14 +86,14 @@ public class Accumulator extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The value produced by the ramp on its first iteration.
+    /** The value produced by the actor on its first iteration.
      *  The default value of this parameter is the integer 0.
      */
     public Parameter init;
 
-    /** The reset port of type BooleanToken. If this port
-     *  receives a True token, then the accumulator state will be
-     *  reset to the initial value.
+    /** If this port receives a True token on any channel, then the
+     *  accumulator state will be reset to the initial value.
+     *  This is a multiport and has type boolean.
      */
     public TypedIOPort reset;
 
@@ -115,10 +116,10 @@ public class Accumulator extends Transformer {
         return newObject;
     }
 
-    /** Consume at most one token from the <i>input</i> port,
-     *  add it to the running sum, and produce the result at the
+    /** Consume at most one token from each channel of the <i>input</i>
+     *  port, add it to the running sum, and produce the result at the
      *  <i>output</i> port.  If there is no input token available,
-     *  the current value of the running sum is the output value.
+     *  the current value of the running sum is produced at the output.
      *  If there is a true-valued token on the <i>reset</i> input,
      *  then the running sum is reset to the initial value before
      *  adding the input.
@@ -166,6 +167,9 @@ public class Accumulator extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /** The running sum. */
     private Token _sum;
+    
+    /** The latest sum, prior to a state commit. */
     private Token _latestSum;
 }
