@@ -30,6 +30,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.lang.ref.WeakReference;
@@ -311,7 +312,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_N,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -335,7 +337,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {

@@ -305,11 +305,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     /** The interactor for creating new relations. */
     private RelationCreator _relationCreator; 
 
-    /** The filter for shift operations. */
-    private MouseFilter _shiftFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.SHIFT_MASK);
-
     /** The filter for shortcut operations.  This is used for creation
      *  of relations and creation of links from relations. Under PC,
      *  this is a control-1 click.  Under Mac OS X, the control key is

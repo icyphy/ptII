@@ -30,6 +30,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.Event;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
@@ -546,7 +547,8 @@ public abstract class ActorController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {

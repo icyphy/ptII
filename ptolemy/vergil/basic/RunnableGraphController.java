@@ -31,6 +31,7 @@ package ptolemy.vergil.basic;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
 import java.net.URL;
 
 import javax.swing.Action;
@@ -207,7 +208,8 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Run the model. */
@@ -252,7 +254,8 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Pause the model. */
@@ -292,7 +295,8 @@ public abstract class RunnableGraphController
             }
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_H, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Stop the model. */

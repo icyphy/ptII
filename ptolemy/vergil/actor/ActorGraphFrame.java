@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.actor;
 
 import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -375,7 +376,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     + " selected actors.");
             //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
             //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
-            //                java.awt.Event.CTRL_MASK));
+            //       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             //putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
             //        new Integer(KeyEvent.VK_H));
         }
@@ -525,7 +526,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             super("Automatic Layout");
             putValue("tooltip", "Layout the Graph (Ctrl+T)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_T, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_L));
         }

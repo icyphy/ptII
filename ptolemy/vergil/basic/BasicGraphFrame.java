@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
@@ -1589,7 +1590,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_C));
         }
@@ -1613,7 +1614,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_X,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_T));
         }
@@ -1674,7 +1675,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", "Execute The Model");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_G));
         }
@@ -1706,7 +1707,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_P));
         }
@@ -1955,7 +1956,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Redo the last change undone.");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                            (java.awt.Event.CTRL_MASK)));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             // FIXME: Why is this R?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_R));
@@ -1989,7 +1990,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Undo the last change.");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                            java.awt.Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             // FIXME: Why is this U?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
@@ -2029,7 +2030,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Event.CTRL_MASK
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_Z));
@@ -2061,7 +2062,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+=)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_M));
         }
@@ -2092,7 +2093,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Event.CTRL_MASK
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_F));
@@ -2124,7 +2125,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
         }

@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.fsm;
 
 import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -131,7 +132,8 @@ public class StateController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
         public void actionPerformed(ActionEvent e) {
 
