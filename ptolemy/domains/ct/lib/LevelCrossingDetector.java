@@ -55,13 +55,11 @@ import ptolemy.kernel.util.Workspace;
 A event detector that converts continuous signals to discrete events when
 the continuous signal crosses a level threshold.
 When the <i>trigger</i> equals to the level threshold (within the specified
-<i>errorTolerance</i>), this actor outputs the value from the
-<i>input</i> port as a discrete event. This actor controls
-the integration step size to accurately resolve the time
-at which the level crossing occurs. If the input port is not connected,
-the output event value will be the <i>defaultEventValue</i>.
+<i>errorTolerance</i>), this actor outputs a discrete event with the value as
+<i>defaultEventValue</i>. This actor controls the integration step size to
+accurately resolve the time at which the level crossing occurs.
 
-@author Jie Liu
+@author Jie Liu, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -175,12 +173,12 @@ public class LevelCrossingDetector extends Transformer
         return newObject;
     }
 
-    /** Consume the input token and the trigger token. The trigger token
-     *  will be used for finding the level crossing in the isThisStepAccurate()
-     *  method to control the step size. The input token will be
-     *  used in emitCurrentEvent() if the trigger equals the level (within the
-     *  given error tolerance). Notice that this method does not
-     *  produce any output.
+    /** Consume the trigger token. The trigger token will be used 
+     *  for finding the level crossing in the isThisStepAccurate()
+     *  method to control the step size. If it is discrete phase,
+     *  and if the trigger equals the level (within the
+     *  given error tolerance), output a discrete event with the value
+     *  of specified level. 
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
@@ -207,11 +205,7 @@ public class LevelCrossingDetector extends Transformer
                                     : "inputToken == null, sending "
                                     + "defaultEventValue.getToken()"));
                 }
-                if (_inputToken != null) {
-                    output.send(0, _inputToken);
-                } else {
-                    output.send(0, defaultEventValue.getToken());
-                }
+		output.send(0, new DoubleToken(_level));
                 _eventNow = false;
             }
         }
