@@ -57,6 +57,7 @@ public class ObjectToken extends Token {
     }
 
     /** Construct a token with a reference to the specified object.
+     *  @param value The specified object referred to by this token.
      *  @exception IllegalActionException If the argument is not of
      *  the appropriate type
      *  (may be thrown by derived classes, but is not thrown here).
@@ -151,6 +152,9 @@ public class ObjectToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // This is protected to allow access in derived classes only.
+
+    /** The actual Object.
+     *  This is protected to allow access in derived classes only.
+     */
     protected Object _value = null;
 }
