@@ -264,7 +264,7 @@ public class IterateOverArray extends TypedCompositeActor
      *  UI or via MoML).
      *  @param name The name of the port to create.
      *  @return A new instance of IteratePort, an inner class.
-     *  @param NameDuplicationException If the container already has a port
+     *  @exception NameDuplicationException If the container already has a port
      *  with this name.
      */
     public Port newPort(String name) throws NameDuplicationException {
@@ -869,8 +869,8 @@ public class IterateOverArray extends TypedCompositeActor
         /** Override the base class to return a specialized port.
          *  @param name The name of the port to create.
          *  @return A new instance of IteratePort, an inner class.
-         *  @param NameDuplicationException If the container already has a port
-         *  with this name.
+         *  @exception NameDuplicationException If the container already has 
+         *  a port with this name.
          */
         public Port newPort(String name) throws NameDuplicationException {
             try {

@@ -111,7 +111,7 @@ public class StaticSchedulingDirector extends Director {
     /** Override the base class to also listen to the scheduler, if there
      *  is one.
      *  @param listener The listener to which to send debug messages.
-     *  @see removeDebugListener(DebugListener)
+     *  @see #removeDebugListener(DebugListener)
      */
     public synchronized void addDebugListener(DebugListener listener) {
         super.addDebugListener(listener);
