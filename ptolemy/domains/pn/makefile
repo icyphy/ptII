@@ -32,7 +32,7 @@
 DIRS = kernel actors demo
 
 # Root of Tycho directory
-ROOT =		../../../..
+ROOT =		../../..
 
 # $(ME) is used in ptdir.mk
 ME =		ptolemy/domains/pn

@@ -33,9 +33,7 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../../../../..
-
-ME =		java/pt/domains/pn/kernel/test
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
