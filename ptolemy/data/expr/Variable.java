@@ -289,7 +289,7 @@ public class Variable extends Attribute implements Typeable {
      *  setTypeEquals() and setTypeAtMost()), but none of the dynamic
      *  type constraints (those relative to other variables).
      *  @param workspace The workspace in which to place the cloned variable.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
