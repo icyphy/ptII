@@ -205,7 +205,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
 	lib/jython.jar \
-	ptolemy/actor/hoc/demo/demo.jar \
+	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -214,8 +214,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/python/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
-	ptolemy/cal/cal.jar \
-	ptolemy/cal/demo/demo.jar \
+	ptolemy/caltrop/cal.jar \
+	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
