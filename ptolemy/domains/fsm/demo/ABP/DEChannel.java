@@ -64,6 +64,7 @@ public class DEChannel extends DEActor {
         output.setTypeEquals(IntToken.class);
         input = new DEIOPort(this, "input", true, false);
         input.setTypeEquals(IntToken.class);
+        input.delayTo(output);
         _dropRate = new Parameter(this, "DropRate", new DoubleToken(dropRate));
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
         _minDelay = new Parameter(this, "MinDelay", new DoubleToken(minDelay));

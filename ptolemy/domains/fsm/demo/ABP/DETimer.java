@@ -59,6 +59,7 @@ public class DETimer extends DEActor {
         expired.setTypeEquals(Token.class);
         set = new DEIOPort(this, "set", true, false);
         set.setTypeEquals(DoubleToken.class);
+        set.delayTo(expired);
     }
 
 

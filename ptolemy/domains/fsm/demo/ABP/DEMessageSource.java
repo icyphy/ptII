@@ -66,6 +66,8 @@ public class DEMessageSource extends DEActor {
         next = new DEIOPort(this, "next", true, false);
         next.setTypeEquals(Token.class);
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
+        next.delayTo(request);
+        next.delayTo(output);
     }
 
 
