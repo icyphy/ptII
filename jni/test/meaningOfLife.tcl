@@ -55,8 +55,10 @@ proc testJNI {modelbase} {
 
     set namedObj [$parser parseFile "./$modelbase.xml"]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
+    
 
-    # Create the JNI files and compile them
+    # Create the JNI files and compile them.
+    # generateJNI also deletes relations and ports and recreates the ports
     java::call jni.JNIUtilities generateJNI $toplevel
 
     runModel $modelbase
@@ -65,7 +67,14 @@ proc testJNI {modelbase} {
 proc runModel {modelbase} {
     puts "Running $modelbase"
     set parser [java::new ptolemy.moml.MoMLParser]
-    set namedObj [$parser parseFile "./$modelbase.xml"]
+    $parser reset
+
+    # Why does parseFile fail, yet parse(URL,URL) work?
+    #set namedObj [$parser parseFile "./$modelbase.xml"]
+    set file [java::new java.io.File $modelbase.xml]
+    set namedObj [$parser {parse java.net.URL java.net.URL} \
+		      [java::null] [$file toURL]]
+
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
     # Run the model
