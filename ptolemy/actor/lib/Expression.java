@@ -44,7 +44,7 @@ Evaluate an expression that may include references to the inputs,
 current time, and a count of the firing.  The inputs are
 referenced by the variables input<i>n</i>, where <i>n</i>
 ranges from zero to the width of the input port minus one.
-The type is polymorphic, with the only constaint that the
+The type is polymorphic, with the only constraint that the
 types of the inputs must all be less than (in the type order)
 the type of the output.  What this means (loosely) is that
 the types of the input tokens can be converted losslessly into
