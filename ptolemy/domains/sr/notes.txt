@@ -1,12 +1,10 @@
 
 To Do:
 
-review comments for correctness
 FIXMEs
 
-verify that sr tests are running in the nightly build
-
 add SRDirector and srentities to vergil library
+verify that sr tests are running in the nightly build
 
 SR in SR (to make the inner actor strict, use an inner director)
 FSM composite actor in SR
