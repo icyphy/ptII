@@ -28,6 +28,8 @@
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
+Review synchronization of getCurrentTime(), setCurrentTime(), and
+the new method, fireAtCurrentTime().
 */
 
 package ptolemy.actor;
@@ -195,7 +197,22 @@ public class Director extends Attribute implements Executable {
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
+    }
 
+    /** Schedule a firing of the given actor at the current time. This
+     *  method is synchronized on the director, and calls
+     *  fireAt(Actor, double) with the second argument being the
+     *  result of getCurrentTime().  This ensures that current time does
+     *  not advance between the call to getCurrentTime() and fireAt().
+     *  Derived classes may need to synchronize additional critical
+     *  sections.
+     *  @param actor The actor scheduled to be fired.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public synchronized void fireAtCurrentTime(Actor actor)
+            throws IllegalActionException {
+         fireAt(actor, getCurrentTime());
     }
 
     /** Return the current time of the model being executed by this director.
@@ -205,7 +222,7 @@ public class Director extends Attribute implements Executable {
      *
      *  @return The current time.
      */
-    public double getCurrentTime() {
+    public synchronized double getCurrentTime() {
         return _currentTime;
     }
 
@@ -443,9 +460,14 @@ public class Director extends Attribute implements Executable {
             Director executiveDirector =
                    ((Actor)container).getExecutiveDirector();
             if (executiveDirector != null) {
-                double outTime = executiveDirector.getCurrentTime();
-                if (getCurrentTime() < outTime) {
-                    setCurrentTime(outTime);
+                // Do not allow current time to change between the
+                // call to the outside getCurrentTime() and the call
+                // to setCurrentTime().
+                synchronized(this) {
+                    double outTime = executiveDirector.getCurrentTime();
+                    if (getCurrentTime() < outTime) {
+                        setCurrentTime(outTime);
+                    }
                 }
             }
         }
@@ -615,7 +637,8 @@ public class Director extends Attribute implements Executable {
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
+    public synchronized void setCurrentTime(double newTime)
+            throws IllegalActionException {
         if (newTime < getCurrentTime()) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
