@@ -131,10 +131,10 @@ all: JavaVisitor.class jclass
 install: jclass $(PTCLASSJAR)
 
 Yylex.java: Yylex
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JAVA) com.JLex.Main Yylex
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) "$(JAVA)" com.JLex.Main Yylex
 
 run_GenerateVisitor JavaVisitor.java: NodeTypes.def ../GenerateVisitor.class
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JAVA) ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) "$(JAVA)" ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
 ../GenerateVisitor.class: ../GenerateVisitor.java
 	(cd ..; $(MAKE) GenerateVisitor.class)
 
@@ -158,49 +158,49 @@ demo: PrintTree RegenerateCode
 
 PrintTree:
 	@echo "Print out the AST"
-	CLASSPATH=$(CLASSPATH) $(JAVA) \
+	CLASSPATH=$(CLASSPATH) "$(JAVA)" \
 		ptolemy.lang.java.PrintTree ./nodetypes/IntLitNode.java
 
 RegenerateCode:
 	@echo "Regenerate the code"
-	CLASSPATH=$(CLASSPATH) $(JAVA) \
+	CLASSPATH=$(CLASSPATH) "$(JAVA)" \
 		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
 analysis:
 	@echo "Perform static semantic analysis"
 	@echo " (You can ignore ambiguous reference warnings)"
 	CLASSPATH="$(CLASSPATH)" \
-	 $(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
+	 "$(JAVA)" ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
 codegen: generate_codegen compile_codegen run_codegen 
 generate_codegen:
 	CLASSPATH="$(CLASSPATH)" \
-	 $(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	 "$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	 -class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 	 -iterations 50 \
 	 -outdir $(ROOT) -outpkg cg.OrthogonalCom
 
 compile_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
-	 $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
+	 "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
 run_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
-		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
+		"$(JAVA)" -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 # Generate code for a trivial ramp demo - much faster for testing
 ramp: generate_ramp compile_ramp run_ramp 
 generate_ramp:
 	CLASSPATH="$(CLASSPATH)" \
-	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.apps.kvm.demo.ramp.RampSystem \
 	-iterations 50 \
 	-outdir $(ROOT) -outpkg cg.RampSystem
 
 compile_ramp:
-	(cd $(ROOT)/cg/RampSystem; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
+	(cd $(ROOT)/cg/RampSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
 run_ramp: 	
 	(cd $(ROOT)/cg/RampSystem; \
-		$(JAVA) -classpath ../.. cg.RampSystem.CG_Main)
+		"$(JAVA)" -classpath ../.. cg.RampSystem.CG_Main)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
