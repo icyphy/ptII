@@ -31,6 +31,7 @@
 package ptolemy.actor;
 
 import java.util.Enumeration;
+import java.util.List;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,9 +66,17 @@ public interface Actor extends Executable {
      */
     public Manager getManager();
 
+    /** Return a list of the input ports of this actor.
+     *  Note that implementations should return ports directly
+     *  contained by this actor, whether they are transparent or not.
+     *  @return A list of input IOPort objects.
+     */
+    public List inputPortList();
+
     /** Return an enumeration of the input ports of this actor.
      *  Note that implementations should return ports directly
      *  contained by this actor, whether they are transparent or not.
+     *  @deprecated Use inputPortList() instead.
      *  @return An enumeration of input IOPort objects.
      */
     public Enumeration inputPorts();
@@ -79,9 +88,17 @@ public interface Actor extends Executable {
      */
     public Receiver newReceiver() throws IllegalActionException;
 
+    /** Return a list of the output ports of this actor.
+     *  Note that implementations should return ports directly
+     *  contained by this actor, whether they are transparent or not.     
+     *  @return A list of output IOPort objects.
+     */
+    public List outputPortList();
+
     /** Return an enumeration of the output ports of this actor.
      *  Note that implementations should return ports directly
-     *  contained by this actor, whether they are transparent or not.
+     *  contained by this actor, whether they are transparent or not.     
+     *  @deprecated Use outputPortList() instead.
      *  @return An enumeration of output IOPort objects.
      */
     public Enumeration outputPorts();

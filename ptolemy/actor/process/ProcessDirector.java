@@ -37,10 +37,8 @@ import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
-// import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessDirector
@@ -223,9 +221,9 @@ public class ProcessDirector extends Director {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         // Reset the receivers.
-        Enumeration ports = actor.inputPorts();
-        while( ports.hasMoreElements() ) {
-            IOPort port = (IOPort)ports.nextElement();
+        Iterator ports = actor.inputPortList().iterator();
+        while( ports.hasNext() ) {
+            IOPort port = (IOPort)ports.next();
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -301,15 +299,15 @@ public class ProcessDirector extends Director {
 	    // Obtaining a list of all actors in this compositeActor
 	    CompositeActor cont = (CompositeActor)getContainer();
             Iterator actors = cont.deepEntityList().iterator();
-	    Enumeration actorPorts;
+	    Iterator actorPorts;
 	    ProcessReceiver nextRec;
 
 	    while (actors.hasNext()) {
 		// Obtaining all the ports of each actor
 		Actor actor = (Actor)actors.next();
-		actorPorts = actor.inputPorts();
-		while (actorPorts.hasMoreElements()) {
-		    IOPort port = (IOPort)actorPorts.nextElement();
+		actorPorts = actor.inputPortList().iterator();
+		while (actorPorts.hasNext()) {
+		    IOPort port = (IOPort)actorPorts.next();
 		    // Setting paused flag in the receivers..
 		    Receiver[][] receivers = port.getReceivers();
 		    for (int i = 0; i < receivers.length; i++) {
@@ -326,9 +324,9 @@ public class ProcessDirector extends Director {
 	    // output ports, need to set the finished flag
 	    // there as well.
 	    // NOTE: is this the best way to set these flags.
-	    actorPorts  = cont.outputPorts();
-	    while (actorPorts.hasMoreElements()) {
-		IOPort port = (IOPort)actorPorts.nextElement();
+	    actorPorts  = cont.outputPortList().iterator();
+	    while (actorPorts.hasNext()) {
+		IOPort port = (IOPort)actorPorts.next();
 		// Terminating the ports and hence the star
 		Receiver[][] receivers = port.getReceivers();
 		for (int i = 0; i < receivers.length; i++) {
@@ -448,14 +446,14 @@ public class ProcessDirector extends Director {
 
 	CompositeActor cont = (CompositeActor)getContainer();
         Iterator actors = cont.deepEntityList().iterator();
-        Enumeration actorPorts;
+        Iterator actorPorts;
         ProcessReceiver nextRec;
         LinkedList recs = new LinkedList();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            actorPorts = actor.inputPorts();
-            while (actorPorts.hasMoreElements()) {
-                IOPort port = (IOPort)actorPorts.nextElement();
+            actorPorts = actor.inputPortList().iterator();
+            while (actorPorts.hasNext()) {
+                IOPort port = (IOPort)actorPorts.next();
                 // Setting finished flag in the receivers.
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
@@ -470,9 +468,9 @@ public class ProcessDirector extends Director {
             // If this director is controlling a CompositeActor with
             // output ports, need to set the finished flag
             // there as well.
-            actorPorts  = cont.outputPorts();
-            while (actorPorts.hasMoreElements()) {
-                IOPort port = (IOPort)actorPorts.nextElement();
+            actorPorts  = cont.outputPortList().iterator();
+            while (actorPorts.hasNext()) {
+                IOPort port = (IOPort)actorPorts.next();
                 // Terminating the ports and hence the actor
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {

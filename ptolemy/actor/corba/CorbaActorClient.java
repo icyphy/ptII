@@ -36,9 +36,10 @@ import ptolemy.kernel.Port;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import java.util.Enumeration;
+
 import java.util.Iterator;
 import java.util.StringTokenizer;
+
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 import ptolemy.actor.corba.util.*;
@@ -372,9 +373,9 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  FIXME: How to set width?
      */
     protected void _transferInputs() throws IllegalActionException {
-        Enumeration inputPorts = inputPorts();
-        while(inputPorts.hasMoreElements()) {
-            IOPort port = (IOPort)(inputPorts.nextElement());
+        Iterator inputPorts = inputPortList().iterator();
+        while(inputPorts.hasNext()) {
+            IOPort port = (IOPort)(inputPorts.next());
             String inputName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
                 if(port.hasToken(i)) {
@@ -417,10 +418,10 @@ public class CorbaActorClient extends TypedAtomicActor {
      *      match, or the tokens values are invalid.
      *  FIXME: how to set width?
      */
-     protected void _transferOutputs() throws IllegalActionException {
-        Enumeration outputPorts = outputPorts();
-        while(outputPorts.hasMoreElements()) {
-            IOPort port = (IOPort)(outputPorts.nextElement());
+    protected void _transferOutputs() throws IllegalActionException {
+        Iterator outputPorts = outputPortList().iterator();
+        while(outputPorts.hasNext()) {
+            IOPort port = (IOPort)(outputPorts.next());
             String portName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
                 try {
@@ -437,7 +438,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                 } catch (CorbaIllegalActionException ex1) {
                     throw new IllegalActionException(this,
                             "Illegal Action on remote actor. "
-                            + ex1.getMessage());
++ ex1.getMessage());
                 } catch (CorbaUnknownPortException ex2) {
                     throw new IllegalActionException(this,
                             "Unknow port name" + portName +
