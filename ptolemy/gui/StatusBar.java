@@ -50,7 +50,7 @@ public class StatusBar extends JPanel {
 
     /** Create a new status bar with an empty label and progress at zero.
      */
-    public StatusBar () {
+    public StatusBar() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         _message = new JTextField(30);
         _message.setEditable(false);
@@ -97,7 +97,7 @@ public class StatusBar extends JPanel {
      *  is null, then clear the message.
      *  @param message The message to display.
      */
-    public void setMessage (String message) {
+    public void setMessage(String message) {
         _message.setText(message);
     }
 
