@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel;
+package pt.domains.pn.kernel;
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRedirect
