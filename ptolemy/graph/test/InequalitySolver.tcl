@@ -124,7 +124,7 @@ test InequalitySolver-2.2 {construct inequality constraints} {
     $tx setName X
     set ta [java::new ptolemy.graph.test.TestVariable]
     $ta setName A
-    set tb [java::new ptolemy.graph.test.TestVariable]
+    set tb [java::new ptolemy.graph.test.TestVariable]p
     $tb setName B
 
     set iaw [java::new ptolemy.graph.Inequality $ta $tw]
@@ -134,8 +134,9 @@ test InequalitySolver-2.2 {construct inequality constraints} {
 
     list [$tw isSettable] [$ta isSettable] [$tx getAssociatedObject] \
 	[$tb getAssociatedObject] \
-	[$tw isValueAcceptable] [$ta isValueAcceptable]
-} {0 1 x java0x0 1 1}
+	[$tw isValueAcceptable] [$ta isValueAcceptable] \
+	[list [$iaw toString] [$ibx toString] [$iba toString] [$iab toString]]
+} {0 1 x java0x0 1 1 {{ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestConstantW(constant)_w} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestConstantX(constant)_x} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestVariableA(variable)_null} {ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestVariableB(variable)_null}}
 
 ######################################################################
 ####

@@ -159,6 +159,14 @@ public class TestVariable implements InequalityTerm {
 	}
     }
 
+
+    /** Override the base class to describe the variable.
+     *  @return A string describing the variable.
+     */
+    public String toString() {
+        return getClass().getName() + getInfo();
+    }
+
     /** Allow the value of this term to be changed.
      */
     public void unfixValue() {

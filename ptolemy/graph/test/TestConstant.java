@@ -136,6 +136,13 @@ public class TestConstant implements InequalityTerm {
 		"is a constant.");
     }
 
+    /** Override the base class to describe the constant.
+     *  @return A string describing the constant
+     */
+    public String toString() {
+        return getClass().getName() + getInfo();
+    }
+
     /** Do nothing.
      */
     public void unfixValue() {}
