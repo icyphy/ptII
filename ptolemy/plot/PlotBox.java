@@ -1001,8 +1001,8 @@ public class PlotBox extends Panel {
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
         if (graphics == null) {
-            throw new RuntimeException("PlotBox._drawPlot: Attempt to draw axes"
-                    + " without a Graphics object.");
+            throw new RuntimeException("PlotBox._drawPlot: Attempt to draw " +
+                    "axes without a Graphics object.");
         }
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = getBounds();
