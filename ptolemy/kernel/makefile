@@ -54,11 +54,11 @@ CLASSPATH = ../..
 
 JSRCS = \
 	CentralizedExecutive.java \
+	CrossRefList.java \
 	DataPort.java \
 	DistributedExecutive.java \
 	Entity.java \
 	Executive.java \
-	FIFORelation.java \
 	GenericPort.java \
 	GraphElement.java \
 	GraphException.java \
@@ -66,7 +66,6 @@ JSRCS = \
 	IntervalTag.java \
 	InvalidMoCException.java \
 	IntParam.java \
-	MultiPort.java \
 	NamedObj.java \
 	NamedObjList.java \
 	NameDuplicationException.java \
@@ -89,15 +88,17 @@ JSRCS = \
 	StatusArray.java \
 	Tag.java \
 	TagInterface.java \
-	Target.java \
 	TimedTag.java \
 	TimedHasValue.java \
 	TimedNoValue.java \
 	ThreadedEntity.java \
 	Value.java \
 	ValueInterface.java
+	#FIXME: FIFORelation.java \
 	#FIXME: Galaxy.java \
+	#FIXME: MultiPort.java \
 	#FIXME: Star.java \
+	#FIXME: Target.java \
 	#FIXME: Universe.java \
 
 EXTRA_SRCS =	$(JSRCS)
