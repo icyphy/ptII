@@ -704,3 +704,28 @@ Edge Set:
 
 }}
 
+######################################################################
+####
+#
+test Graph-10.4 {checking hiddenEdges() and edgeCount() and
+hiddenEdgeCount()} {
+    set oneg [java::new ptolemy.graph.Graph]
+    set n1  [java::new {java.lang.String String} node1]
+    set n2  [java::new {java.lang.String String} node2]
+    set n3  [java::new {java.lang.String String} node3]
+    set node1 [$oneg addNodeWeight $n1]
+    set node2 [$oneg addNodeWeight $n2]
+    set node3 [$oneg addNodeWeight $n3]
+    set edge1 [$oneg addEdge $node1 $node2]
+    set edge2 [$oneg addEdge $node2 $node3]
+    set edge3 [$oneg addEdge $node3 $node2]
+    set edge4 [$oneg addEdge $node2 $node1]
+    $oneg hideEdge $edge3
+    $oneg hideEdge $edge4
+    set result1 [$oneg edgeCount]
+    set result2 [$oneg hiddenEdgeCount]
+    set result3 [[$oneg hiddenEdges] contains $edge3]
+    set result4 [[$oneg hiddenEdges] contains $edge4]
+    list $result1 $result2 $result3 $result4
+} {2 2 1 1}
+
