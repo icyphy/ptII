@@ -281,11 +281,11 @@ public class Plot extends PlotBox {
 	}
     }
 
-	/**
-	 * Draw the axes and the accumulated points.
-	 */
-	public void paint(Graphics g) {
-	    drawPlot(true);
+    /**
+     * Draw the axes and the accumulated points.
+     */
+    public void paint(Graphics g) {
+	drawPlot(true);
     }
 
     /** Parse pxgraph style command line arguments.
