@@ -33,7 +33,7 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	4.0
-MINOR_VERSION =		alpha
+MINOR_VERSION =		beta
 
 VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
