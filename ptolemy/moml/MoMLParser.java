@@ -320,7 +320,8 @@ public class MoMLParser extends HandlerBase {
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        if (publicID.equals("-//UC Berkeley//DTD MoML 1//EN")) {
+        if (publicID != null &&
+                publicID.equals("-//UC Berkeley//DTD MoML 1//EN")) {
             // This is the generic MoML DTD.
             return new StringReader(MoML_DTD_1);
         } else {
