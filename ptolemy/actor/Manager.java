@@ -44,7 +44,6 @@ import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
 
-import java.util.Enumeration;
 import java.util.Collections;
 import java.util.List;
 import java.util.LinkedList;

@@ -32,7 +32,6 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.Enumeration;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
