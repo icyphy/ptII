@@ -32,7 +32,7 @@
 
 ME =		ptolemy/hsif
 
-DIRS =		xsl
+DIRS =		demo xsl
 
 # Root of the Java directory
 ROOT =		../..
