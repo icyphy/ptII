@@ -158,6 +158,8 @@ public class MergedControlFlowGraph extends DirectedGraph {
     }
 
     protected void _extractDataFlow(DirectedGraph graph){
+
+	//Make the requiredNodeMap from each graph's requiredNodeSet
 	Map requiredNodeMap = new HashMap();
 	for (Iterator i=graph.nodes().iterator(); i.hasNext();){
 	    GraphNode gn = (GraphNode)((Node)i.next()).weight();
@@ -169,14 +171,19 @@ public class MergedControlFlowGraph extends DirectedGraph {
 		}
 	    }
 	}
+
+	System.out.println("Extracting");
+	DirectedGraph dg=new DirectedGraph();
 	
 	Set keys=requiredNodeMap.keySet();
 	for (Iterator i=keys.iterator(); i.hasNext(); ){
 	    Object requiredValue=i.next();
+	    System.out.println("extracting: "+requiredValue);
 	    GraphNode gn=(GraphNode)requiredNodeMap.get(requiredValue);
-	    DirectedGraph dg=new DirectedGraph();
+	    //DirectedGraph dg=new DirectedGraph();
 	    gn.createDataFlow(dg, requiredValue);
 	}
+
 	
     }
 

@@ -11,6 +11,7 @@ public class MuxNode implements GraphNode {
 	_falseInput = label.branch() ? secondInput : firstInput;
     }
 
+    //A place holder.  We probably need another class for these "specific" muxes
     public MuxNode(Object trueInput, Object falseInput, Object condition, int dummy){
 	//_trueInput = trueInput;
 	//_falseInput = falseInput;

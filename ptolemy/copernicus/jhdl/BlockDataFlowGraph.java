@@ -435,7 +435,10 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     protected Node _createInstanceInvokeExprNode(InstanceInvokeExpr iie) {
 
-	if (iie.getMethod().getName().equals("put")){
+	//The data flattening will start from output ports, so
+	//they are the required nodes
+	if (iie.getMethod().getName().equals("send")){
+	    System.out.println("output port");
 	    _requiredNodeSet.add(iie);
 	}
 	    

@@ -154,9 +154,17 @@ public class CircuitAnalysis {
 //              }
 //          }
 
+
+
+
+	
 	SynthesisToDotty.writeDotFile(GraphToDotty.validFileName(entity.getName()),
 				      fire_graph);
 
+
+
+
+	
 	/* This isn't ready yet.. this should act on graphs at each node,
 	   not the top-level control flow graph
         // Go though and eliminate unnecessary nodes.  These are nodes
