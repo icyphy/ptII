@@ -125,7 +125,7 @@ order.</text>
     <entity name="Timed Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Poisson), bus (regular)">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Regular), bus (Poisson)">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -143,7 +143,7 @@ order.</text>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="5.301875460070818"/>
+<yRange min="0.0" max="4.8524822199016455"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -156,7 +156,7 @@ order.</text>
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, regular">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="480.0, 275.0">
         </property>
@@ -165,14 +165,14 @@ order.</text>
             <property name="multiport"/>
         </port>
         <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+<?plotml<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="5.3999999999999995"/>
-<yRange min="0.0" max="26.0"/>
+<xRange min="0.1" max="5.0"/>
+<yRange min="0.0" max="25.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
@@ -504,8 +504,8 @@ order.</text>
     <link port="Timed Plotter.input" relation="relation5"/>
     <link port="Timed Plotter.input" relation="relation6"/>
     <link port="Timed Plotter.input" relation="relation7"/>
-    <link port="Histogram.input" relation="relation4"/>
     <link port="Histogram.input" relation="relation7"/>
+    <link port="Histogram.input" relation="relation4"/>
     <link port="Regular Bus Arrivals.output" relation="relation2"/>
     <link port="Regular Waiting Time.output" relation="relation4"/>
     <link port="Regular Waiting Time.waiter" relation="relation6"/>
