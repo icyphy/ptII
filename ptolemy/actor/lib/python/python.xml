@@ -12,6 +12,9 @@
       <property name="style" class="ptolemy.actor.gui.style.TextStyle">
       </property>
     </property>
+    <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorFactory">
+      <property name="attributeName" value="script"/>
+    </property>
   </entity>
 
       </group>

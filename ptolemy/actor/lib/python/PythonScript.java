@@ -35,6 +35,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 
@@ -52,8 +53,14 @@ import org.python.util.PythonInterpreter;
 //// PythonScript
 /**
 An actor of this class executes a Python script. Upon creation, the actor
-has no port, and no parameter other than {@link #script script}. As an
-example, a simplified version of the {@link ptolemy.actor.lib.Scale Scale}
+has no ports, and no parameter other than {@link #script script}, which
+has visibility EXPERT, and therefore does not normally show up in a
+configure dialog for the actor.  To make the script visible and editable,
+a good tactic is to include within the actor an instance of TextEditorFactory
+with its <i>attributeName</i> parameter set to <i>script</i>.
+The functionality of an actor of this type is given by a Python script.
+As an example, a simplified version of the
+{@link ptolemy.actor.lib.Scale Scale}
 actor can be implemented by the following script:
 <pre>
 1.  class Main :
@@ -69,9 +76,12 @@ Line 1 defines a Python class Main. This name is fixed. An instance of this
 class is created when the actor is initialized. Line 2 is a description of
 the purpose of the script. Lines 3-8 define the fire() method, which is
 called by the {@link #fire() fire()} method of this actor. In the method body,
-<i>input</i> and <i>output</i> are ports added to the actor, and <i>scale</i>
-is a parameter added to the actor. The Main class can provide other methods
-in the {@link ptolemy.actor.Executable Executable} interface as needed.
+<i>input</i> and <i>output</i> are ports that have to have been
+added to the actor, and <i>scale</i> is a parameter that has to have been
+added to the actor (these can be added in the XML that defines the
+actor instance in an actor library). The Main class can provide other
+methods in the {@link ptolemy.actor.Executable Executable} interface
+as needed.
 <p>
 In the script, use <code>self.actor</code> to access the actor. For example,
 <code>self.actor.getDirector()</code> returns the current director of the
@@ -80,7 +90,7 @@ final message sent to the debug listeners of the actor will have the string
 "From script: " inserted at the beginning. To avoid generating the debug
 message when there are no listeners, use:
 <pre>
-  if serf.actor.isDebugging() :
+  if self.actor.isDebugging() :
     self.actor.debug(someMessage)
 </pre>
 <p>
@@ -108,9 +118,15 @@ public class PythonScript extends TypedAtomicActor {
      *   by the proposed container.
      */
     public PythonScript(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         script = new StringAttribute(this, "script");
+        // Set the visibility to expert, as casual users should
+        // not see the script.  This is particularly true if one
+        // installs an actor that is an instance of this with a
+        // particular script in the library.
+        script.setVisibility(Settable.EXPERT);
+
         // initialize the script to provide an empty template:
         //
         // # This is a template.
@@ -121,12 +137,26 @@ public class PythonScript extends TypedAtomicActor {
         //     return
         //
         script.setExpression(
-                "# This is a template.\n" +
-                "class Main :\n" +
-                "  \"description here\"\n" +
-                "  def fire(self) :\n" +
-                "    # read input, compute, send output\n" +
-                "    return\n\n");
+            "# This is a template.\n"
+                + "class Main :\n"
+                + "  \"description here\"\n"
+                + "  def fire(self) :\n"
+                + "    # Create ports, e.g. input and output.\n"
+                + "    # Read input, for example using\n"
+                + "    # token = self.input.get(0)\n"
+                + "    # compute, and send an output using\n"
+                + "    # self.output.broadcast(token)\n"
+                + "    return\n\n");
+        _attachText(
+            "_iconDescription",
+            "<svg>\n"
+                + "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"60\" height=\"30\" "
+                + "style=\"fill:black\"/>\n"
+                + "<text x=\"-22\" y=\"4\""
+                + "style=\"font-size:14; fill:white; font-family:SansSerif\">"
+                + "Python</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,7 +177,7 @@ public class PythonScript extends TypedAtomicActor {
      *   the script.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == script) {
             _evaluateScript();
         } else {
@@ -160,7 +190,8 @@ public class PythonScript extends TypedAtomicActor {
      *  @param message The debug message.
      */
     public void debug(String message) {
-        if (_debugging) _debug("From script: ", message);
+        if (_debugging)
+            _debug("From script: ", message);
     }
 
     /** Invoke the fire() method if defined in the script.
@@ -304,9 +335,10 @@ public class PythonScript extends TypedAtomicActor {
         // of the Main class object
         PyObject object = _class.__call__();
         if (object == null) {
-            throw new IllegalActionException(this,
-                    "Error in creating an instance of the Main class " +
-                    "defined in the script.");
+            throw new IllegalActionException(
+                this,
+                "Error in creating an instance of the Main class "
+                    + "defined in the script.");
         }
         // set up access to this actor
         // first create an attribute "actor" on the object
@@ -317,27 +349,35 @@ public class PythonScript extends TypedAtomicActor {
         // give the object access to attributes and ports of this actor
         Iterator attributes = attributeList().iterator();
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
             String mangledName = _mangleName(attribute.getName());
             if (_debugging) {
-                _debug("set up reference to attribute \"" +
-                        attribute.getName() + "\" as \"" +
-                        mangledName + "\"");
+                _debug(
+                    "set up reference to attribute \""
+                        + attribute.getName()
+                        + "\" as \""
+                        + mangledName
+                        + "\"");
             }
-            object.__setattr__(new PyString(mangledName),
-                    new PyJavaInstance(attribute));
+            object.__setattr__(
+                new PyString(mangledName),
+                new PyJavaInstance(attribute));
         }
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             String mangledName = _mangleName(port.getName());
             if (_debugging) {
-                _debug("set up reference to port \"" +
-                        port.getName() + "\" as \"" +
-                        mangledName + "\"");
+                _debug(
+                    "set up reference to port \""
+                        + port.getName()
+                        + "\" as \""
+                        + mangledName
+                        + "\"");
             }
-            object.__setattr__(new PyString(mangledName),
-                    new PyJavaInstance(port));
+            object.__setattr__(
+                new PyString(mangledName),
+                new PyJavaInstance(port));
         }
 
         // populate the method map
@@ -345,7 +385,7 @@ public class PythonScript extends TypedAtomicActor {
             String methodName = _METHOD_NAMES[i];
             PyMethod method = null;
             try {
-                method = (PyMethod)object.__findattr__(methodName);
+                method = (PyMethod) object.__findattr__(methodName);
             } catch (ClassCastException ex) {
                 // the object has an attribute with the methodName but
                 // is not a method, ignore
@@ -371,19 +411,23 @@ public class PythonScript extends TypedAtomicActor {
                 if (i >= 0) {
                     message = message.substring(i);
                 }
-                throw new IllegalActionException(this,
-                        ex, "Error in evaluating script:\n" + message);
+                throw new IllegalActionException(
+                    this,
+                    ex,
+                    "Error in evaluating script:\n" + message);
             }
             // get the class defined by the script
             try {
-                _class = (PyClass)_interpreter.get(_CLASS_NAME);
+                _class = (PyClass) _interpreter.get(_CLASS_NAME);
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
-                        "The script does not define a Main class.");
+                throw new IllegalActionException(
+                    this,
+                    "The script does not define a Main class.");
             }
             if (_class == null) {
-                throw new IllegalActionException(this,
-                        "The script does not define a Main class.");
+                throw new IllegalActionException(
+                    this,
+                    "The script does not define a Main class.");
             }
         }
     }
@@ -395,8 +439,8 @@ public class PythonScript extends TypedAtomicActor {
      *  error in calling the method.
      */
     private PyObject _invokeMethod(String methodName, Object[] args)
-            throws IllegalActionException {
-        PyMethod method = (PyMethod)_methodMap.get(methodName);
+        throws IllegalActionException {
+        PyMethod method = (PyMethod) _methodMap.get(methodName);
         PyObject returnValue = null;
         if (method != null) {
             try {
@@ -408,13 +452,15 @@ public class PythonScript extends TypedAtomicActor {
                         if (!(args[i] instanceof PyObject))
                             convertedArgs[i] = new PyJavaInstance(args[i]);
                         else
-                            convertedArgs[i] = (PyObject)args[i];
+                            convertedArgs[i] = (PyObject) args[i];
                     }
                     returnValue = _object.__call__(convertedArgs);
                 }
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                        "Error in calling the " + methodName + " method:");
+                throw new IllegalActionException(
+                    this,
+                    ex,
+                    "Error in calling the " + methodName + " method:");
             }
         }
         return returnValue;
@@ -452,8 +498,8 @@ public class PythonScript extends TypedAtomicActor {
         try {
             String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
             _interpreter.exec("import sys\n");
-            _interpreter.exec("sys.path.append('"
-                    + ptIIDir + "/vendors/jython/Lib')");
+            _interpreter.exec(
+                "sys.path.append('" + ptIIDir + "/vendors/jython/Lib')");
         } catch (Exception ex) {
         }
     }
@@ -472,7 +518,15 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES =
-    {"fire", "initialize", "postfire", "prefire", "preinitialize",
-     "stop", "stopFire", "terminate", "wrapup"};
+        {
+            "fire",
+            "initialize",
+            "postfire",
+            "prefire",
+            "preinitialize",
+            "stop",
+            "stopFire",
+            "terminate",
+            "wrapup" };
 
 }
