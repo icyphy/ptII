@@ -36,6 +36,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.NoTokenException;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -122,6 +123,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+
+    /** The period of an iteration.  This is a double that defaults to 0.1. */
+    public Parameter period;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -316,14 +320,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         setScheduler(scheduler);
 
-	_setPeriod(_DEFAULT_GIOTTO_PERIOD);
+        period = new Parameter(this, "period");
+        period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
 
 	setCurrentTime(0.0);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));
-
-        // FIXME: Remove this after debugging, or when GUI supports it.
-        // addDebugListener(new StreamListener());
     }
 
     /** Iterate actors according to the schedule.
@@ -336,6 +338,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
 
 	boolean postfire = true;
+
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
 	if (schedule != null)
 	    while (schedule.hasMoreElements()) {
@@ -353,7 +357,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         GiottoActorComparator.getFrequency(actor);
 
 		    _nextIterationTime =
-                        currentTime + (_period / actorFrequency);
+                        currentTime + (periodValue / actorFrequency);
 
 		    if (_debugging)
 			_debug("Prefiring " +
@@ -400,7 +404,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    int maxFrequency =
                         GiottoActorComparator.getFrequency(actor);
 
-		    setCurrentTime(currentTime + (_period / maxFrequency));
+		    setCurrentTime(currentTime + (periodValue / maxFrequency));
 
 		    if (_synchronizeToRealTime) {
 			long elapsedTime = System.currentTimeMillis()
@@ -469,19 +473,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	return postfire;
     }
 
-    /** Set period of this director.
-     *
-     * @param period
-     */
-    private void _setPeriod(double period) {
-	_period = period;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The current period in milliseconds.
-    private double _period = _DEFAULT_GIOTTO_PERIOD;
 
     // The time of the next iteration in milliseconds.
     private double _nextIterationTime = 0.0;
