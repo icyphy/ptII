@@ -302,6 +302,9 @@ REMOTE1HOST = tycho
 REMOTE1LOG = $(GENLOGDIR)/remote1.out
 
 # JavaScope database, gets removed every night
+# Note that this must be a directory called jsdatabase in the user's
+# home directory.  Overriding this is tricky, it requires setting
+# up a javascope.properties file that can be read at runtime
 JSDATABASE=/users/ptII/jsdatabase
 
 # Directory to place output in
@@ -328,7 +331,7 @@ bldmastrcoverage:
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
 		JFLAGS="-deprecation -g" \
-		JSDATABASE=/home/bldmastr/ptII/js \
+		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
 		remote1distclean \
@@ -484,16 +487,14 @@ remote1distjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				jsall JSINSTRFLAGS="-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)";\
+				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
 		done ; \
 	fi
 	jssummary -HTML -PROGRESS \
-		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE) \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
-		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE) \
 		-OUTDIR=$(JSOUTDIR) 
 	# Add links and colorize the coverage.html page
 	sh $(PTIIADM)/bin/coveragerating $(PTII) \
