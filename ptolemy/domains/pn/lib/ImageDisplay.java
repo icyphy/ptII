@@ -54,12 +54,12 @@ public final class ImageDisplay extends AtomicActor {
 	new Parameter(this, "FrameName", new StringToken("ImageDisplay"));
     }
 
-    public ImageDisplay(CompositeActor container, String name, Picture pan) 
-            throws IllegalActionException, NameDuplicationException {
-        super(container,name);
-        _port_image = new IOPort(this, "image", true, false);
-        _panel = pan;
-    }
+//     public ImageDisplay(CompositeActor container, String name, Picture pan) 
+//             throws IllegalActionException, NameDuplicationException {
+//         super(container,name);
+//         _port_image = new IOPort(this, "image", true, false);
+//         _panel = pan;
+//     }
 
     public void initialize() throws IllegalActionException {
         _frame = null;
@@ -68,12 +68,13 @@ public final class ImageDisplay extends AtomicActor {
 	StringToken name = 
 	    (StringToken)((Parameter)getAttribute("FrameName")).getToken();
 	_framename = name.stringValue();
+	if(_panel == null) {
+            _frame = new _PictureFrame(_framename);
+            _panel = _frame.getPanel();
+        } else {
+            _frame = null;
+        }
     }
-
-    //    public void wrapup() throws IllegalActionException {
-        //      _frame.setVisible(false);
-        //_frame.dispose();
-    //}
 
     public void fire() throws IllegalActionException {
         IntMatrixToken message = (IntMatrixToken)_port_image.get(0);
@@ -85,49 +86,79 @@ public final class ImageDisplay extends AtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            if (_panel == null) {
-                if(_frame != null) {
-                    _frame.dispose();
-                }
-                _frame = new _PictureFrame(_framename, xsize, ysize);
+
+            if(_panel == null) {
+                System.out.println("panel disappeared!");
+                _frame = new _PictureFrame(_framename);
 		_frame.addWindowListener(new _PictureFrameListener(_frame));
-                _frame._picture.setImage(_RGBbuffer);
-                
-                System.out.println("new buffer with rows = "+
-			ysize + " and col = " + xsize);
-                _panel = _frame._picture;
-            } 
-            
-            // convert the B/W image to a packed RGB image
-            int i, j, index = 0;
-            for(j = 0; j<ysize; j++) {
-                for(i = 0; i < xsize; i++, index++) {
-                    int tem = 0;
-                    if (frame[j][i] == 0) tem = 255;
-                    else tem = 0;
-                    _RGBbuffer[index] = (255 << 24) |
-                        ((tem & 255) << 16) | 
-                        ((tem & 255) << 8) | 
-                        (tem & 255);
-                }  
+                //_frame._picture.setImage(_RGBbuffer);
+                _panel = _frame.getPanel();
+            } else {
+                _frame = null;
             }
-             _panel.displayImage();
-            
-        }
+            if(_picture != null)
+                _panel.remove(_picture);
+            _panel.setSize(xsize, ysize);
+            _picture = new Picture(xsize, ysize);
+            _picture.setImage(_RGBbuffer);
+            _panel.add("Center", _picture);
+            _panel.validate();
+
+            Container c = _panel.getParent();
+            while(c.getParent() != null) {
+                c = c.getParent();
+            }
+            if(c instanceof Window) {
+                ((Window) c).pack();
+            } else {
+                c.validate();
+            }
+
+            _panel.invalidate();
+            _panel.repaint();
+
+            if(_frame != null) {
+                _frame.pack();
+            }
+
+            System.out.println("new buffer");
+	}
+
+	// convert the B/W image to a packed RGB image
+	int i, j, index = 0;
+	for(j = 0; j<ysize; j++) {
+	    for(i = 0; i < xsize; i++, index++) {
+		int tem = 0;
+		if (frame[j][i] == 0) tem = 255;
+		else tem = 0;
+		_RGBbuffer[index] = (255 << 24) |
+		    ((tem & 255) << 16) | 
+		    ((tem & 255) << 8) | 
+		    (tem & 255);
+	    }  
+	}
+	_picture.displayImage();
+	_picture.repaint();
+    }
+
+    public void setPanel(Panel panel) {
+        _panel = panel;
     }
 
     private class _PictureFrame extends Frame {
-        public _PictureFrame(String title, int xsize, int ysize) {
+        public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            _picture = new Picture(xsize, ysize);
-            this.setVisible(true);
-            add("Center",_picture);
+	     this.show();
+            _panel = new Panel();
+            this.add("Center", _panel);
             this.pack();
-
+            this.validate();
         }
-        private Picture _picture;        
-     
+        public Panel getPanel() {
+            return _panel;
+        }
+        private Panel _panel;
     }
 
     private class _PictureFrameListener implements WindowListener {
@@ -152,11 +183,13 @@ public final class ImageDisplay extends AtomicActor {
 	private Window _window;
     }
 
-    private Picture _panel;
+    //private Picture _panel;
+    private Picture _picture;
     private _PictureFrame _frame;
+    private Panel _panel;
     private IOPort _port_image;
     private int _oldxsize, _oldysize;
-    private Image _image;
+    //private Image _image;
     private int _RGBbuffer[] = null;
     private String _framename;
 
