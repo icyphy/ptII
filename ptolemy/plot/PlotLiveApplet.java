@@ -36,19 +36,19 @@ import java.awt.*;
 import java.net.*;              // Need URL
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotLiveApplet
+//// PlotLiveDemoApplet
 /** 
  */
-public class PlotLiveApplet extends PlotApplet implements Runnable {
+public class PlotLiveDemoApplet extends Applet implements Runnable {
 
     public void init() {
-        if (_debug > 8) System.out.println("PlotLiveApplet: init");
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
         int width,height;
         setLayout(new BorderLayout());
 
         _myPlotLiveDemo = new PlotLiveDemo();
         add("Center",_myPlotLiveDemo);
-        show();
+        //        show();
 
         _myPlotLiveDemo.resize(300,300);
         _myPlotLiveDemo.init();
@@ -59,7 +59,7 @@ public class PlotLiveApplet extends PlotApplet implements Runnable {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveApplet 1.1: Demo of PlotLive.\n" +
+        return "PlotLiveDemoApplet 1.1: Demo of PlotLive.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
             "    Christopher Hylands, @eecs.berkeley.edu\n" +
             "($Id$)";
@@ -68,28 +68,28 @@ public class PlotLiveApplet extends PlotApplet implements Runnable {
     /** 
      */
     public void paint(Graphics graphics) {
-        if (_debug > 8) System.out.println("PlotLiveApplet: paint");
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
         _myPlotLiveDemo.paint(graphics);
     }
 
     public void resize(int width, int height) {
         if (_debug > 8)
-            System.out.println("PlotLiveApplet: resize"+width+" "+height);
+            System.out.println("PlotLiveDemoApplet: resize"+width+" "+height);
         super.resize(width,height);
     }
     public void run () {
-        if (_debug > 8) System.out.println("PlotLiveApplet: run");
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: run");
 // 	while (true) {
 // 	    try {
 // 		Thread.currentThread().sleep(speed);
 // 	    } catch (InterruptedException e) {
 // 	    }
-        if (_debug > 10) System.out.println("PlotLiveApplet: run calling repaint");
+        if (_debug > 10) System.out.println("PlotLiveDemoApplet: run calling repaint");
 	repaint();
     }
 
     public void start () {
-        if (_debug > 8) System.out.println("PlotLiveApplet: start");
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: start");
 	_plotThread = new Thread(this);
         _plotThread.start();
         _myPlotLiveDemo.start();
@@ -97,21 +97,23 @@ public class PlotLiveApplet extends PlotApplet implements Runnable {
     }
 
     public void stop () {
-        if (_debug > 8) System.out.println("PlotLiveApplet: stop");
+        if (_debug > 8) System.out.println("PlotLiveDemoApplet: stop");
         _plotThread.stop();
         super.stop();
     }
 
 //     public void update (Graphics graphics) {
-//         if (_debug > 8) System.out.println("PlotLiveApplet: update");
+//         if (_debug > 8) System.out.println("PlotLiveDemoApplet: update");
 //         paint(graphics);
 //         super.update(graphics);
 //     }
 
+    protected int _debug = 9;
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    PlotLiveDemo _myPlotLiveDemo;
-    Thread _plotThread;
+    private PlotLiveDemo _myPlotLiveDemo;
+    private Thread _plotThread;
+
 }
 
