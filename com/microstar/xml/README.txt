@@ -156,8 +156,11 @@ AElfred now has a SAX 1.0 (gamma) driver built-in to the main
 distribution, so there is no need to use an external driver.  The
 class name of the driver is
 
-  com.microstar.xml.SAXDriver
+  com.microstar.xml.driver.SAXDriver
 
+[Ptolemy Note:  We moved SAXDriver.java into the driver subdirectory
+because 'make fast' runs javac *.java, which was causing problems
+because SAXDriver uses SAX, which we do not ship]
 
 STARTUP
 -------
@@ -258,8 +261,12 @@ com/microstar/xml/HandlerBase.class
                         that provides a default implementation for all
                         the handlers.
 
-com/microstar/xml/SAXDriver.class
+com/microstar/xml/driver/SAXDriver.class
                         A SAX driver for AElfred.
+
+[Ptolemy Note:  We moved SAXDriver.java into the driver subdirectory
+because 'make fast' runs javac *.java, which was causing problems
+because SAXDriver uses SAX, which we do not ship]
 
 Neither of the required classes refers to these, and you may leave
 them out of a web installation if you do not need them.
