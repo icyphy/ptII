@@ -150,6 +150,13 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  In this base class,
+     *  the method does nothing.
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute) {}
+
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
      *  This method read-synchronizes on the workspace.
