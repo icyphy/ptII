@@ -518,6 +518,7 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.UNKNOWN);
             _basicLattice.addNodeWeight(BaseType.NUMERICAL);
             _basicLattice.addNodeWeight(BaseType.OBJECT);
+			_basicLattice.addNodeWeight(BaseType.XMLTOKEN);
             _basicLattice.addNodeWeight(BaseType.SCALAR);
             _basicLattice.addNodeWeight(BaseType.STRING);
             _basicLattice.addNodeWeight(BaseType.EVENT);
@@ -526,6 +527,8 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
 
+			_basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
+		    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
             _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
