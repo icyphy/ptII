@@ -32,6 +32,7 @@ package ptolemy.lang.java;
 
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
+import ptolemy.lang.Scope;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,7 +41,7 @@ import java.util.List;
 @version $Id$
 @author Shuvra S. Bhattacharyya 
  */
-public final class NodeUtil {
+public final class NodeUtil implements JavaStaticSemanticConstants {
 
     /*  FIXME: Ideally, the functionality in this class should be contained within
      *  appropriate AST nodes.
@@ -72,6 +73,15 @@ public final class NodeUtil {
                     + compileUnit.toString());
 
         else return (UserTypeDeclNode)(definedTypes.get(0));
+    }
+
+    /** Return the scope associated with an abstract syntax tree (AST) node.
+     *  Return null if the AST node does not have a defined scope.
+     *  @param node The AST node.
+     *  @return The scope of the AST node.
+     */
+    public static Scope getScope(TreeNode node) {
+        return (Scope)(node.getProperty(SCOPE_KEY));
     }
 
     /** Given an AST TypedDecl, return the class or interface declaration 

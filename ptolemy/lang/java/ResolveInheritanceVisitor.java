@@ -101,6 +101,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
             }
 
             _fillInInheritedMembers(me, superClass);
+            
         } else {
             if (me != StaticResolution.OBJECT_DECL) {
                 throw new RuntimeException("ResolveInheritanceVisitor." +

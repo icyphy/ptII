@@ -153,7 +153,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         ClassDecl ocl;
 
-        if (StaticResolution.debugLoading) {
+        if (StaticResolution.traceLoading) {
             System.out.println("ResolvePackageVisitor._visitUserTypeDeclNode pkg scope:");
             System.out.println(_pkgScope.toString());  
         }
@@ -168,31 +168,24 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
                 ocl = (ClassDecl) _pkgScope.lookupLocal(className);
             }
 
-        if (StaticResolution.debugLoading) { 
-            System.out.println("_visitUserTypeDeclNode: The package's source follows.");
-            if (ocl == null) System.out.println("class decl does not exist yet"); 
-            else if (ocl.getSource() == null) System.out.println("null source"); 
-            else System.out.println(ocl.getSource().toString()); 
-        }
+            if ((ocl != null) && ((ocl.getSource() == null) ||
+                    (ocl.getSource() == AbsentTreeNode.instance) ||
+                    (ocl.getSource() == node))) {
+
+                // Assume this is the definition of 'ocl'
+                ocl.setSource(node);
+                ocl.setModifiers(node.getModifiers());
     
-        if ((ocl != null) && ((ocl.getSource() == null) ||
-                (ocl.getSource() == AbsentTreeNode.instance) ||
-                (ocl.getSource() == node))) {
-            // Assume this is the definition of 'ocl'
-            ocl.setSource(node);
-            ocl.setModifiers(node.getModifiers());
+                // fix category if this is an interface
+                if (!isClass) {
+                    ocl.category = CG_INTERFACE;
+                }
     
-            // fix category if this is an interface
-            if (!isClass) {
-                ocl.category = CG_INTERFACE;
-            }
-    
-        } else {
+            } else {
                 int modifiers = node.getModifiers();
                 JavaDecl encDecl;
                 // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
     
-                //if (topLevel) {
     
                 // Set the enclosing declaration
                 if (!isInner) {
@@ -216,7 +209,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     
                 ClassDecl cl = new ClassDecl(className,
                         isClass ? CG_CLASS : CG_INTERFACE,
-                        new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
+                        new TypeNameNode(node.getName()), node.getModifiers(), 
+                                node, encDecl);
     
                 if (ocl != null)  { // Redefinition in same package.
                     throw new RuntimeException("ResolvePackageVisitor: " +
@@ -245,7 +239,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         node.getName().setProperty(DECL_KEY, ocl);
 
         LinkedList memberArgs = new LinkedList();
-        memberArgs.addLast(scope);                  // scope for this class
+        memberArgs.addLast(scope);                // scope for this class
         memberArgs.addLast(Boolean.TRUE);         // inner class = true
         memberArgs.addLast(ocl);                  // last class decl
         TNLManip.traverseList(this, memberArgs, node.getMembers());
