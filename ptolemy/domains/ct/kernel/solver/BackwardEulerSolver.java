@@ -69,8 +69,8 @@ public class BackwardEulerSolver extends FixedStepSolver
         super(workspace, _name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Vote if a fixed point has reached. The final result is the
      *  <i>and</i> of all votes.
@@ -181,16 +181,17 @@ public class BackwardEulerSolver extends FixedStepSolver
         return 1;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                       protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Set the convergence flag.
      *  @param converge The flag setting.
      */
     protected void _setConverge(boolean converge) {
         _converge = converge;
     }
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // static name.
     private static final String _name="CT_Backward_Euler_Solver" ;

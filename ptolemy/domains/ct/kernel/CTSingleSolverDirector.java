@@ -329,8 +329,8 @@ public class CTSingleSolverDirector extends CTDirector {
         super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Process discrete events in the system. All the event generators
      *  will produce events, and event interpreters will consume events.
@@ -602,8 +602,9 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private void _initParameters() {
         try {
             _solverclass=
@@ -619,8 +620,8 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // parameter of ODE solver
     private CTParameter _paramODESolver;
