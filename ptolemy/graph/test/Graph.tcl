@@ -72,7 +72,16 @@ test Graph-2.2 {Create a graph with 2 nodes} {
 ######################################################################
 ####
 # 
-test Graph-2.3 {Create a graph with 4 nodes forming a diamond} {
+test Graph-2.3 {try to add duplicate nodes} {
+    # use the graph above
+    catch {$p add $n1} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: Graph.add: Object is already in the graph.}}
+
+######################################################################
+####
+# 
+test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]

@@ -121,7 +121,16 @@ test DirectedAcyclicGraph-2.5 {lub/glb of empty subset, use the CPO in 2.3} {
 ######################################################################
 ####
 # 
-test DirectedAcyclicGraph-2.6 {a 5 point CPO that's not a lattice} {
+test DirectedAcyclicGraph-2.6 {catch exception on self loop} {
+    # use the CPO above
+    catch {$p addEdge $n1 $n1} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: DirectedAcyclicGraph.addEdge: Cannot add a self loop in acyclic graph.}}
+
+######################################################################
+####
+# 
+test DirectedAcyclicGraph-2.7 {a 5 point CPO that's not a lattice} {
     set p [java::new ptolemy.graph.DirectedAcyclicGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
@@ -151,7 +160,7 @@ test DirectedAcyclicGraph-2.6 {a 5 point CPO that's not a lattice} {
 ######################################################################
 ####
 # 
-test DirectedAcyclicGraph-2.7 {a 6 point CPO that's not a lattice} {
+test DirectedAcyclicGraph-2.8 {a 6 point CPO that's not a lattice} {
     # add a bottom to the above lattice
     set n6 [java::new {java.lang.String String} node6]
     $p add $n6
@@ -210,3 +219,32 @@ test DirectedAcyclicGraph-3.2 { topologicalSort part of the graph } {
     set sort [$p {topologicalSort java.lang.Object[]} $nodeArray]
     list [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] [$sort get 4]
 } {node1 node3 node2 node5 node4}
+
+######################################################################
+####
+# 
+test DirectedAcyclicGraph-3.3 { top. sort cyclic graph, catch exceptin } {
+    set p [java::new ptolemy.graph.DirectedAcyclicGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p addEdge $n1 $n2
+    $p addEdge $n2 $n3
+    $p addEdge $n3 $n1
+
+    catch {$p topologicalSort} msg
+    list $msg
+} {{ptolemy.kernel.util.InvalidStateException: DirectedAcyclicGraph.topologicalSort: Graph is cyclic.}}
+
+######################################################################
+####
+# 
+test DirectedAcyclicGraph-3.4 { reachable nodes on cyclic graph } {
+    # use graph above
+    catch {$p compare $n1 $n2} msg
+    list $msg
+} {{ptolemy.kernel.util.InvalidStateException: DirectedAcyclicGraph._check: Graph is cyclic.}}
+

@@ -121,8 +121,9 @@ test InequalitySolver-2.2 {construct inequality constraints} {
     set iba [java::new ptolemy.graph.Inequality $tb $ta]
     set iab [java::new ptolemy.graph.Inequality $ta $tb]
 
-    list [$tw isSettable] [$ta isSettable]
-} {0 1}
+    list [$tw isSettable] [$ta isSettable] [$tx getAssociatedObject] \
+	[$tb getAssociatedObject]
+} {0 1 x java0x0}
 
 ######################################################################
 ####
