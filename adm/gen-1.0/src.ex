@@ -21,6 +21,7 @@ CVS
 adm
 brass
 collections
+config/*.class
 config.cache
 config.log
 config.status
