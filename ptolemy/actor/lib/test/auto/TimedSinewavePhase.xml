@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimedSinewavePhase" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 63, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 12, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -24,7 +24,67 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
         </property>
     </property>
-    <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine">
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{PI/2, 0.0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 125.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 190.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9980267284283, 0.9921147013145, 0.9822872507287, 0.9685831611286, 0.9510565162952, 0.9297764858883, 0.904827052466, 0.8763066800439, 0.844327925502, 0.8090169943749, 0.7705132427758, 0.7289686274214, 0.6845471059287, 0.6374239897487, 0.5877852522925, 0.535826794979, 0.4817536741017, 0.4257792915651, 0.3681245526847, 0.3090169943749, 0.2486898871649, 0.1873813145857, 0.1253332335643, 0.0627905195293, -3.2162452993533E-16, -0.0627905195293, -0.1253332335643, -0.1873813145857, -0.2486898871649, -0.3090169943749, -0.3681245526847, -0.4257792915651, -0.4817536741017, -0.535826794979, -0.5877852522925, -0.6374239897487, -0.6845471059287, -0.7289686274214, -0.7705132427758, -0.8090169943749, -0.844327925502, -0.8763066800439, -0.904827052466, -0.9297764858883, -0.9510565162952, -0.9685831611286, -0.9822872507287, -0.9921147013145, -0.9980267284283, 1.2246467991474E-16, -1.2098029496355E-15, -0.0627905195293, -0.1253332335643, -0.1873813145857, -0.2486898871649, -0.3090169943749, -0.3681245526847, -0.4257792915651, -0.4817536741017, -0.535826794979, -0.5877852522925, -0.6374239897487, -0.6845471059287, -0.7289686274214, -0.7705132427758, -0.8090169943749, -0.844327925502, -0.8763066800439, -0.904827052466, -0.9297764858883, -0.9510565162952, -0.9685831611286, -0.9822872507287, -0.9921147013145, -0.9980267284283, -1.0, -0.9980267284283, -0.9921147013145, -0.9822872507287, -0.9685831611286, -0.9510565162952, -0.9297764858883, -0.904827052466, -0.8763066800439, -0.844327925502, -0.8090169943749, -0.7705132427758, -0.7289686274214, -0.6845471059287, -0.6374239897487, -0.5877852522925, -0.535826794979, -0.4817536741017, -0.4257792915651, -0.3681245526847, -0.3090169943749, -0.2486898871649, -0.1873813145857, -0.1253332335643, -0.0627905195293, 1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimedSinewave2" class="ptolemy.actor.lib.TimedSine">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
@@ -77,7 +137,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 10.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 187, 839, 559}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 354, 839, 559}}">
         </property>
         <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,98 +163,32 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 70.0">
             </property>
         </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 75.0">
+            </property>
+        </property>
         <doc>This composite actor generates a timed sine wave.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 125.0">
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 200.0">
         </property>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{PI/2, 0.0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 125.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.01">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 190.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9980267284283, 0.9921147013145, 0.9822872507287, 0.9685831611286, 0.9510565162952, 0.9297764858883, 0.904827052466, 0.8763066800439, 0.844327925502, 0.8090169943749, 0.7705132427758, 0.7289686274214, 0.6845471059287, 0.6374239897487, 0.5877852522925, 0.535826794979, 0.4817536741017, 0.4257792915651, 0.3681245526847, 0.3090169943749, 0.2486898871649, 0.1873813145857, 0.1253332335643, 0.0627905195293, -3.2162452993533E-16, -0.0627905195293, -0.1253332335643, -0.1873813145857, -0.2486898871649, -0.3090169943749, -0.3681245526847, -0.4257792915651, -0.4817536741017, -0.535826794979, -0.5877852522925, -0.6374239897487, -0.6845471059287, -0.7289686274214, -0.7705132427758, -0.8090169943749, -0.844327925502, -0.8763066800439, -0.904827052466, -0.9297764858883, -0.9510565162952, -0.9685831611286, -0.9822872507287, -0.9921147013145, -0.9980267284283, -1.2098029496355E-15, -0.0627905195293, -0.1253332335643, -0.1873813145857, -0.2486898871649, -0.3090169943749, -0.3681245526847, -0.4257792915651, -0.4817536741017, -0.535826794979, -0.5877852522925, -0.6374239897487, -0.6845471059287, -0.7289686274214, -0.7705132427758, -0.8090169943749, -0.844327925502, -0.8763066800439, -0.904827052466, -0.9297764858883, -0.9510565162952, -0.9685831611286, -0.9822872507287, -0.9921147013145, -0.9980267284283, -1.0, -0.9980267284283, -0.9921147013145, -0.9822872507287, -0.9685831611286, -0.9510565162952, -0.9297764858883, -0.904827052466, -0.8763066800439, -0.844327925502, -0.8090169943749, -0.7705132427758, -0.7289686274214, -0.6845471059287, -0.6374239897487, -0.5877852522925, -0.535826794979, -0.4817536741017, -0.4257792915651, -0.3681245526847, -0.3090169943749, -0.2486898871649, -0.1873813145857, -0.1253332335643, -0.0627905195293}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 125.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="TimedSinewave.phase" relation="relation"/>
-    <link port="TimedSinewave.trigger" relation="relation3"/>
-    <link port="TimedSinewave.output" relation="relation2"/>
-    <link port="Clock.output" relation="relation"/>
-    <link port="Clock2.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="Clock.output" relation="relation2"/>
+    <link port="Clock2.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="TimedSinewave2.phase" relation="relation2"/>
+    <link port="TimedSinewave2.trigger" relation="relation"/>
+    <link port="TimedSinewave2.output" relation="relation3"/>
 </entity>
