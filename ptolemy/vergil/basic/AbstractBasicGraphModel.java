@@ -155,7 +155,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 	return _composite;
     }
 
-    /** Return the semantic object correspoding to the given node, edge,
+    /** Return the semantic object corresponding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this base class, if the argument is an
      *  instance of Port, then return the port.  If the argument is an
@@ -201,7 +201,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 	throw new UnsupportedOperationException("hack");
     }
 
-    /** Set the semantic object correspoding to the given node, edge,
+    /** Set the semantic object corresponding to the given node, edge,
      *  or composite.  The semantic objects in this graph model are
      *  fixed, so this method throws an UnsupportedOperationException.
      *  @param object The graph object that represents a node or an edge.

@@ -208,7 +208,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         return super.getNodeModel(node);
     }
 
-    /** Return the semantic object correspoding to the given node, edge,
+    /** Return the semantic object corresponding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this case, if the node is icon, the
      *  semantic object is an entity.  If it is a vertex or a link, the
