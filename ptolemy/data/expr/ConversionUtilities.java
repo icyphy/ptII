@@ -49,7 +49,7 @@ import java.util.StringTokenizer;
 /**
 This class contains a series of static methods that facilitate the
 runtime conversion of tokens to and from Java representations that are
-not tokens.  One might call this "marshalling and unmarshalling" of
+not tokens.  One might call this "marshaling and unmarshaling" of
 tokens.  Primarily this facility is used by the expression language to
 properly type references to Java methods, and later invoke those
 methods during expression evaluation.  Generally speaking this is
@@ -101,7 +101,7 @@ public class ConversionUtilities {
     ////                         public methods                    ////
 
     /** Convert a java object to a corresponding Token.  This method
-     * is called by the expression language to marshall numeric object
+     * is called by the expression language to marshal numeric object
      * into tokens.  If the argument is a token, this function returns
      * it.  If the argument is an array, an array token will be
      * returned.  If the argument is an array of array, then a matrix
@@ -214,7 +214,7 @@ public class ConversionUtilities {
     }
 
     /** Convert a Token to a corresponding Java object.  This method
-     * is called by the expression language to unmarshall numeric
+     * is called by the expression language to unmarshal numeric
      * objects from tokens.  If the argument is an array token, this
      * function returns an Java array of the correct type.  If the
      * argument is a matrix token, this function returns a square Java
