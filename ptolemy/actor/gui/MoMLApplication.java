@@ -33,6 +33,7 @@ package ptolemy.actor.gui;
 // Java imports
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.lang.reflect.Constructor;
@@ -54,6 +55,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -385,11 +387,34 @@ public class MoMLApplication {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
                         _parser.reset();
-                        NamedObj toplevel = _parser.parse(
-                                base, inURL.openStream());
-                        if (toplevel instanceof Configuration) {
-                            _config = (Configuration)toplevel;
-                        }
+			
+			try {
+			    NamedObj toplevel = _parser.parse(base, inURL.openStream());
+			    if (toplevel instanceof Configuration) {
+				_config = (Configuration)toplevel;
+			    }
+			} catch (Exception ex) {
+			    // Unfortunately, java.util.zip.ZipException
+			    // does not include the file name.
+
+			    // If inURL is a jarURL check for %20
+			    String detailMessage = "";
+			    try {
+				if (inURL.toString().indexOf("!/") != -1 
+				    && inURL.toString().indexOf("%20") != -1) {
+				    detailMessage = " The URL contains "
+					+ "'!/', so it may be a jar "
+					+ "URL, and jar URLs cannot contain "
+					+ "%20. This might happen if the "
+					+ "pathname to the jnlp file had a "
+					+ "space in it";
+				}
+			    } catch (Exception ex2) {
+				// Ignored
+			    }
+			    throw new Exception("Failed to parse '" + inURL 
+					    + "'" + detailMessage , ex);
+			}
                     }
                 } else {
                     // Argument not recognized.
