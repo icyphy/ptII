@@ -493,6 +493,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  in one step. This may not be the final derivative due to 
      *  error control or event detection.
      *  @param value The value to be set.
+     *  @see #getTentativeDerivative
      */
     public final void setTentativeDerivative(double value) {
         _tentativeDerivative = value;
