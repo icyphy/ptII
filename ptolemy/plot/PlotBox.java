@@ -1380,7 +1380,7 @@ public class PlotBox extends Panel {
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
-        output.println("# Ptolemy plot, version 1.2");
+        output.println("# Ptolemy plot, version 2.0");
         if (_title != null) output.println("TitleText: " + _title);
         if (_xlabel != null) output.println("XLabel: " + _xlabel);
         if (_ylabel != null) output.println("YLabel: " + _ylabel);
