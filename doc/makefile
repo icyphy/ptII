@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, java/doc
+# Makefile for the Ptolemy II documentation directory
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
@@ -29,15 +29,17 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME =		ptII/doc
+
+# Sub directories to run make in.
+DIRS =		 coding #internals #usersGuides
+
 # Root of Ptolemy II directory
 ROOT =		..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-# Sub directories to run make in.
-DIRS =		 coding #internals #usersGuides
 
 EXTRA_SRCS = \
 	demos.html \
@@ -52,32 +54,67 @@ MISC_FILES =	$(DIRS) design img
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
 
-ALLJSRCS = 		ptolemy/plot/*.java \
-			ptolemy/kernel/*.java \
-			ptolemy/kernel/util/*.java \
-			ptolemy/actor/*.java \
-			ptolemy/actor/util/*.java \
-			ptolemy/domains/ct/kernel/*.java \
-			ptolemy/domains/ct/lib/*.java \
-			ptolemy/domains/de/kernel/*.java \
-			ptolemy/domains/de/lib/*.java \
-			ptolemy/data/*.java \
-			ptolemy/data/expr/*.java
-
+ALLJSRCS = 		ptolemy.plot \
+			ptolemy.kernel \
+			ptolemy.kernel.event \
+			ptolemy.kernel.util \
+			ptolemy.actor \
+			ptolemy.actor.process \
+			ptolemy.actor.sched \
+			ptolemy.actor.util \
+			ptolemy.domains.csp.kernel \
+			ptolemy.domains.csp.lib \
+			ptolemy.domains.ct.kernel \
+			ptolemy.domains.ct.kernel/util \
+			ptolemy.domains.ct.lib \
+			ptolemy.domains.de.kernel \
+			ptolemy.domains.de.lib \
+			ptolemy.domains.od.kernel \
+			ptolemy.domains.od.lib \
+			ptolemy.domains.pn.kernel \
+			ptolemy.domains.pn.lib \
+			ptolemy.domains.sc.kernel \
+			ptolemy.domains.sc.lib \
+			ptolemy.domains.sdf.kernel \
+			ptolemy.domains.sdf.lib \
+			ptolemy.domains.sdf.lib.vq \
+			ptolemy.data \
+			ptolemy.data.expr \
+			ptolemy.graph \
+			ptolemy.math \
+			ptolemy.media
 
 all: suball codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \
+			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
+			../ptolemy/actor/process/*.java \
+			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
+			../ptolemy/domains/csp/lib/*.java \
+			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
-			../ptolemy/domains/de/lib/*.java \
+			../ptolemy/domains/ct/kernel/util/*.java \
 			../ptolemy/domains/de/kernel/*.java \
+			../ptolemy/domains/de/lib/*.java \
+			../ptolemy/domains/od/kernel/*.java \
+			../ptolemy/domains/od/lib/*.java \
+			../ptolemy/domains/pn/kernel/*.java \
+			../ptolemy/domains/pn/lib/*.java \
+			../ptolemy/domains/sc/kernel/*.java \
+			../ptolemy/domains/sc/lib/*.java \
+			../ptolemy/domains/sdf/kernel/*.java \
+			../ptolemy/domains/sdf/lib/*.java \
+			../ptolemy/domains/sdf/lib/vq/*.java \
 			../ptolemy/data/*.java \
-			../ptolemy/data/expr/*.java
+			../ptolemy/data/expr/*.java \
+			../ptolemy/graph/*.java \
+			../ptolemy/math/*.java \
+			../ptolemy/media/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
