@@ -222,6 +222,26 @@ set ts [$sampler getAttribute SamplePeriod]
 $ts setExpression 0.02
 $ts parameterChanged [java::null]
 
+#plot parameters
+set ctxmin [$plot getAttribute X_Min]
+$ctxmin setExpression 0.0
+$ctxmin parameterChanged [java::null]
+
+set ctxmax [$plot getAttribute X_Max]
+$ctxmax setExpression 15.0
+$ctxmax parameterChanged [java::null]
+
+
+#legends: 
+set ctlegs [$plot getAttribute Legends]
+$ctlegs setExpression {"Position Output Feedback"}
+$ctlegs  parameterChanged [java::null]
+
+set delegs [$deplot getAttribute Legends]
+$delegs setExpression {"Feedback DigitalOutput"}
+$delegs parameterChanged [java::null]
+
+
 $man startRun
 
 #source SigmaDelta.tcl
