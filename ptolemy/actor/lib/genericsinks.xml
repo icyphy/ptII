@@ -12,12 +12,14 @@
 
 <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
 <doc>Monitor and display values</doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
    <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
       <property name="attributeName" value="value"/>
-      <property name="displayWidth" value="10"/>
+      <property name="displayWidth" value="displayWidth"/>
    </property>
 </entity>
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
+<entity name="SetVariable" class="ptolemy.actor.lib.SetVariable"/>
 <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
 <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
       </group>
