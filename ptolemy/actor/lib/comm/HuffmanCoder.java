@@ -28,24 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.comm;
 
-import java.util.LinkedList;
-
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.SignalProcessing;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
@@ -63,7 +54,7 @@ import ptolemy.math.SignalProcessing;
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
-public class HuffmanCoder extends Transformer {
+public class HuffmanCoder extends HuffmanBasic {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -78,152 +69,22 @@ public class HuffmanCoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        pmf = new Parameter(this, "pmf");
-        pmf.setExpression("{0.5, 0.5}");
-        pmf.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        
-        alphabet = new Parameter(this, "alphabet");
-        alphabet.setExpression("{0, 1}");
-        alphabet.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        
         // Declare port types.
         ArrayType alphabetArrayType = (ArrayType)alphabet.getType();
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
         input.setTypeAtLeast(elementTerm);
         output.setTypeEquals(BaseType.BOOLEAN);
-        
-        huffmanCodeBook = 
-            new TypedIOPort(this, "huffmanCodeBook", false, true);
-        huffmanCodeBook.setTypeEquals(new ArrayType(BaseType.STRING));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The probability mass function. This parameter is an array
-     *  of doubles. Each element should be positive and the sum of
-     *  all elements should be 1.0. The default value is {0.5, 0.5}.
-     */
-    public Parameter pmf;
-
-    /** The alphabet of the input. This parameter is an ArrayToken.
-     *  Its default value is {0, 1}.
-     */
-    public Parameter alphabet;
-    
-    /** A port that produces the Huffman code book generated
-     *  based on the probability mass function. It is an array
-     *  of strings.
-     */
-    public TypedIOPort huffmanCodeBook;
-    
-    ////////////////////////////////////////////////////////////////////
-    ////                  public inner classes                      ////
-    
-    /** A class that defines the node in binary tree that is used
-     *  to construct the codebook of Huffman code.
-     */
-    public class Node {
-        
-        /** Construct the node with the given probability value
-         *  and its index in the <i>pmf</i> array.
-         * @param prob The given probability value.
-         * @param index The corresponding index in the pmf array.
-         */
-        public Node(double prob, int index) {
-            probability = prob;
-            indexInArray = index;
-            leftChild = null;
-            rightChild = null;
-            huffmanCode = "";
-        }
-        
-        /** Construct the parent node given the left child
-         *  and the right child.
-         * @param left The left child.
-         * @param right The right child.
-         */
-        public Node(Node left, Node right) {
-            probability = left.probability + right.probability;
-            indexInArray = -1;
-            leftChild = left;
-            rightChild  = right;
-            huffmanCode = "";
-        }
-        
-        // The probability of the node.
-        public double probability;
-        
-        // The corresponding index in the pmf array of this node.
-        // If the value is -1, then this node is constructed by
-        // combining at least two probabilities.
-        public int indexInArray;
-        
-        // The left child of the node.
-        public Node leftChild;
-        
-        // The right child of the node.
-        public Node rightChild;
-        
-        // The huffman code of this node.
-        public String huffmanCode;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** If the attribute being changed is <i>pmf</i>, then verify
-     *  all the elements are positive and their sum is 1.0.
-     *  @exception IllegalActionException If any element in <i>pmf</i>
-     *  is non-positive or the sum is not 1.0.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        _parametersInvalid = true;
-        if (attribute == pmf) {
-            ArrayToken pmfValue = (ArrayToken)pmf.getToken();
-            _pmf = new double[pmfValue.length()];
-            double sum = 0.0;
-            for (int i = 0; i < _pmf.length; i++) {
-                _pmf[i] = ((DoubleToken)pmfValue.getElement(i))
-                    .doubleValue();
-                if (_pmf[i] <= 0.0)
-                    throw new IllegalActionException(this,
-                        "Probabilities must be positive!");
-                sum = sum + _pmf[i];
-            }
-            if (!SignalProcessing.close(sum, 1.0))
-                throw new IllegalActionException(this,
-                    "Parameter values is required to sum to one.");
-        } else {
-            super.attributeChanged(attribute);
-        }
     }
 
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
      *  encode the input into booleans and send them to the output port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken alphabetArrayToken = (ArrayToken)alphabet.getToken();
-        if (_pmf.length != alphabetArrayToken.length()) {
-            throw new IllegalActionException(this,
-                "uncoded alphabet and pmf are required to be arrays" +
-                "with same length.");
-        }
         Token[] alphabetTokens = new Token[_pmf.length];
         for (int i = 0; i < _pmf.length; i ++) {
             alphabetTokens[i] = alphabetArrayToken.getElement(i);
-        }
-        if (_parametersInvalid) {
-            _parametersInvalid = false;
-            _codeBook = generateCodeBook(_pmf);
-            // FIXME: only produce the code book if the parameters
-            // have been updated.
-            StringToken[] codeBookTokens = new StringToken[_pmf.length];
-            for (int i = 0; i < _pmf.length; i ++) {
-                codeBookTokens[i] = new StringToken(_codeBook[i]);
-            }
-            huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
         }
         // Get the input token. Ready for output.
         Token inputToken = (Token)input.get(0);
@@ -237,74 +98,18 @@ public class HuffmanCoder extends Transformer {
                 break;
             }
         }
+        // FIXME: If the input is not found in the alphabet,
+        // which means it's probability of occurence is zero,
+        // we might want to ignore it (or give a warning message.)
         if (!validInput) {
             throw new IllegalActionException(this,
                 "Input is not matched to the alphabet");
         }
     }
     
-    /** Generate the Huffman code book given the probability
-     *  mass function.
-     * @param pmf The probability mass function.
-     * @return The code book, where each codeword is a string
-     *  of '0' and '1'.
-     */
-    public String[] generateCodeBook(double[] pmf) {
-        String[] codeBook = new String[pmf.length];
-        LinkedList list = new LinkedList();
-        // Generate the huffman code book.
-        for (int i = 0; i < _pmf.length; i ++) {
-        // Create a list of nodes;
-            Node node = new Node(_pmf[i], i);
-            list.add(node);   
-        }
-        // Construct the binary tree.
-        while (list.size() > 1) {
-            Node node1 = _findMinNode(list);
-            list.remove(node1);
-            Node node2 = _findMinNode(list);
-            list.remove(node2);
-            // node2 has larger prob than node1.
-            Node newNode = new Node(node2, node1);
-            list.add(newNode);
-        }
-        // Now there is only one element in the list,
-        // and its probability should be 1.
-        Node root = (Node)list.get(0);
-        root.huffmanCode = "";
-        _setCode(root, codeBook);
-        return codeBook;
-    }
-
-
-    /** Initialize the actor by resetting the _parametersInvalid to true.
-     *  Creat a linked list to store the nodes for the binary tree.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _parametersInvalid = true;
-    }
 
     ////////////////////////////////////////////////////////////
     ////                   private methods                  ////
-    
-    /** Find the node with the minimum probability value in the
-     *  given linked list.
-     *  @param list The given linked list. 
-     *  @return The node with the minimum probability value.
-     */
-    private Node _findMinNode(LinkedList list) {
-        double minProb = ((Node)list.get(0)).probability;
-        int index = 0;
-        for (int i = 1; i < list.size(); i ++) {
-            if (((Node)list.get(i)).probability < minProb) {
-                index = i;
-                minProb = ((Node)list.get(i)).probability;
-            }
-        }
-        return (Node)list.get(index);
-    }
     
     /** Given a codeword, which should be a string of '0' and '1',
      *  converted it to a sequence of booleans and send them to the
@@ -321,45 +126,5 @@ public class HuffmanCoder extends Transformer {
                 output.send(0, new BooleanToken(false));
         }
     }
-    
-    /** Set the Huffman codeword for the given node and all its children.
-     * @param node The given node.
-     * @param codeBook The code book to be generated.
-     */
-    private void _setCode(Node node, String[] codeBook) {
-        String parentCode = node.huffmanCode;
-        Node left, right;
-        if ((left = node.leftChild) != null) {
-            String leftCode = parentCode + "0";
-            left.huffmanCode = leftCode;
-            if (left.indexInArray >= 0) {
-                codeBook[left.indexInArray] = leftCode; 
-            } else {
-                _setCode(left, codeBook);
-            }
-        }
-        if ((right = node.rightChild) != null) {
-            String rightCode = parentCode + "1";
-            right.huffmanCode = rightCode;
-            if (right.indexInArray >= 0) {
-                codeBook[right.indexInArray] = rightCode;
-            } else {
-                _setCode(right, codeBook);
-            }
-        }
-    }
-
-    //////////////////////////////////////////////////////////////
-    ////                     private variables                ////
-
-    // The huffman code book.    
-    private String[] _codeBook;
-    
-    // Flag that indicates if the parameters are invalid. If it is
-    // true, then a new code book needs to be generated.
-    private boolean _parametersInvalid;
-    
-    // The probability mass function.
-    private double[] _pmf;
 
 }
