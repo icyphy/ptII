@@ -44,10 +44,31 @@
 # set args [java::new {java.lang.String[]} {1} {50}]
 # $PNPrimeExample main $args
 
+# If $TYCHO is not set, then try to set it.
+if [info exists env(TYCHO)] {
+    set TYCHO $env(TYCHO)
+} else { 
+    if [info exist env(PTOLEMY)] {
+	set TYCHO $env(PTOLEMY)/tycho
+    }
+
+    if [info exist env(TYCHO)] {
+	set TYCHO $env(TYCHO)
+    }
+
+    if {![info exist TYCHO]} {
+	# If we are here, then we are probably running jacl and we can't
+	# read environment variables
+	set TYCHO [file join [pwd] .. .. .. ..]
+    }
+}
+
 set myUniverse [java::new pt.domains.pn.kernel.PNUniverse]
 
-# FIXME: the 50 is hardwired in here
-set numberOfCycles 50
+# Find the number of primes up to this number
+if ![info exists numberOfCycles] {
+    set numberOfCycles 10
+}
 
 # FIXME: setNoCycles should be setNumberOfCycles or setCycleNumber 
 $myUniverse setNoCycles $numberOfCycles 
@@ -70,6 +91,34 @@ $port link $queue
 set port [$ramp getPort "output"]
 $port link $queue
 
+
+# If description2DAG is not present, load it
+if {[info procs description2DAG] == "" } {
+    puts sourcing
+    	source [file join $TYCHO java pt kernel test description.tcl]
+}
+
+# DAG filenames to be created.
+if ![info exists initialDAGFileName] {
+    set initialDAGFileName i.dag
+}
+if ![info exists finalDAGFileName] {
+    set finalDAGFileName final.dag
+}
+
+
+# Get the description and DAG of the Universe before we execute it.
+set initialDescription [$myUniverse description \
+	[java::field pt.kernel.Nameable LIST_CONTENTS]]
+description2DAG "Universe Structure Before Execute" \
+	$initialDAGFileName $initialDescription
+
 $myUniverse execute
+
+# Get the description and DAG of the Universe after we execute it.
+set finalDescription [$myUniverse description \
+	[java::field pt.kernel.Nameable LIST_CONTENTS]]
+description2DAG "Universe Structure After Execute" \
+	$finalDAGFileName $finalDescription
 
 puts "Bye World"
