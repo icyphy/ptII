@@ -602,7 +602,6 @@ public class PNDirector extends ProcessDirector {
     private int _writeBlockCount = 0;
     private LinkedList _pausedRecs = new LinkedList();
     private LinkedList _writeblockedQs = new LinkedList();
-    private PNActorListener _pnActorListener;
     private CalendarQueue _eventQueue; 
     private double _currenttime = 0;
 }
