@@ -95,7 +95,9 @@ public class StringUtilities {
      *  @param length The length to which to truncate the string.
      */
     public static String ellipsis(String string, int length) {
-        string = StringUtilities.split(string);
+        // Don't call split here, it messes up the formatting of
+        // error messages. 
+        //string = StringUtilities.split(string);
 
         // Third argument being true means return the delimiters as tokens.
         StringTokenizer tokenizer = new StringTokenizer(string, "\n", true);
