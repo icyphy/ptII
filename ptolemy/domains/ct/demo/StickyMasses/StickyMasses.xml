@@ -50,6 +50,14 @@ model of the dynamics in that mode.
            </configure>
         </property>
     </property>
+    <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="velocity1" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="position2" class="ptolemy.data.expr.Parameter" value="3.0">
+    </property>
+    <property name="velocity2" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
     <entity name="Const1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -89,7 +97,8 @@ model of the dynamics in that mode.
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
@@ -99,7 +108,8 @@ model of the dynamics in that mode.
 <yRange min="0.2586664613936116" max="2.2569570699726995"/>
 <noGrid/>
 </plot>?>
-                                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Hybrid System" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="Hybrid System (HS) Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -108,6 +118,14 @@ model of the dynamics in that mode.
             </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="248.0, 285.0">
+        </property>
+        <property name="position1" class="ptolemy.data.expr.Parameter" value="position1">
+        </property>
+        <property name="velocity1" class="ptolemy.data.expr.Parameter" value="velocity1">
+        </property>
+        <property name="position2" class="ptolemy.data.expr.Parameter" value="position2">
+        </property>
+        <property name="velocity2" class="ptolemy.data.expr.Parameter" value="velocity2">
         </property>
         <port name="force1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -266,7 +284,15 @@ model of the dynamics in that mode.
                 <property name="_location" class="ptolemy.moml.Location" value="74.0, 42.5">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="239.0, 135.0">
+            <property name="_location" class="ptolemy.moml.Location" value="239.0, 134.0">
+            </property>
+            <property name="position1" class="ptolemy.data.expr.Parameter" value="position1">
+            </property>
+            <property name="velocity1" class="ptolemy.data.expr.Parameter" value="velocity1">
+            </property>
+            <property name="position2" class="ptolemy.data.expr.Parameter" value="position2">
+            </property>
+            <property name="velocity2" class="ptolemy.data.expr.Parameter" value="velocity2">
             </property>
             <port name="force1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -304,9 +330,9 @@ model of the dynamics in that mode.
                 </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="velocity1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="311.0, 144.0">
+                <property name="_location" class="ptolemy.moml.Location" value="312.0, 143.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -316,7 +342,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="position1">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="445.0, 150.0">
                 </property>
@@ -343,7 +369,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="V2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="velocity2">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="323.0, 266.0">
                 </property>
@@ -355,7 +381,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="position2">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="449.0, 269.0">
                 </property>
@@ -493,26 +519,40 @@ model of the dynamics in that mode.
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="500.0, 382.5">
+                </property>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="240.0, 315.0">
             </property>
             <port name="STI" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="469.99998474121094, 130.5">
+                </property>
             </port>
             <port name="F" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="512.9999847412109, 271.5">
+                </property>
             </port>
             <port name="P1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="354.99998474121094, 324.50000762939453">
+                </property>
             </port>
             <port name="P2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="354.99998474121094, 370.50001525878906">
+                </property>
             </port>
             <port name="V1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="201.99998474121094, 383.50001525878906">
+                </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0236287">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="95.0, 278.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -524,6 +564,8 @@ model of the dynamics in that mode.
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.5893722">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="241.0, 265.0">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -533,6 +575,8 @@ model of the dynamics in that mode.
             </entity>
             <entity name="STI" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="346.0, 62.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -544,6 +588,8 @@ model of the dynamics in that mode.
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="499.0, 62.5">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -553,6 +599,8 @@ model of the dynamics in that mode.
             </entity>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="338.0, 186.5">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -564,6 +612,8 @@ model of the dynamics in that mode.
             <entity name="E2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="382.0, 265.5">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -571,32 +621,42 @@ model of the dynamics in that mode.
                     <property name="input"/>
                 </port>
             </entity>
-            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="420.0, 67.5">
+                </vertex>
             </relation>
             <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="169.0, 277.0">
+                </vertex>
             </relation>
             <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="309.0, 275.0">
+                </vertex>
             </relation>
             <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="297.0, 21.0">
+                </vertex>
+            </relation>
+            <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="28.0, 148.0">
+                </vertex>
             </relation>
             <link port="STI" relation="_R1"/>
             <link port="F" relation="_R5"/>
             <link port="P1" relation="_R4"/>
             <link port="P2" relation="_R4"/>
             <link port="V1" relation="_R3"/>
-            <link port="V1.input" relation="_R2"/>
+            <link port="V1.input" relation="relation1"/>
             <link port="V1.output" relation="_R3"/>
             <link port="P1.input" relation="_R3"/>
             <link port="P1.output" relation="_R4"/>
-            <link port="STI.input" relation="_R0"/>
+            <link port="STI.input" relation="relation0"/>
             <link port="STI.output" relation="_R1"/>
             <link port="Gain.input" relation="_R1"/>
-            <link port="Gain.output" relation="_R0"/>
-            <link port="E1.output" relation="_R2"/>
+            <link port="Gain.output" relation="relation0"/>
+            <link port="E1.output" relation="relation1"/>
             <link port="E1.P1" relation="_R4"/>
             <link port="E2.output" relation="_R5"/>
             <link port="E2.P1" relation="_R4"/>
