@@ -33,12 +33,12 @@ package ptolemy.kernel.util;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// Heritable
+//// Derivable
 /**
 This interface is for objects that can be inherited.  An inherited object
 is one that is inherited by its container from some other object.
 That is, it is a created in its container as a side effect of the
-creation of another instance of Heritable in some other container.
+creation of another instance of Derivable in some other container.
 <p>
 Note that unlike the real-world notion of inheritance that inspires
 the name of this interface, an inherited object is a <i>new</i> instance
@@ -62,7 +62,7 @@ Such a changed object is referred to as "modified heritage."
 @since Ptolemy II 4.0
 */
 
-public interface Heritable extends Nameable {
+public interface Derivable extends Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -83,26 +83,71 @@ public interface Heritable extends Nameable {
      *  @see #isModifiedHeritage()
      *  @see #getShadowedHeritageList()
      */
-    public List getHeritageList();
+    public List getDerivedList();
 
-    /** Return a list of objects to which a change to this
-     *  object should propagate, which is the list of objects that
-     *  are created as a side effect of creating this one (that is, they
-     *  are "heritage" that is "inherited" by their containers from
-     *  a container of this object), and that have not been locally
-     *  modified as indicated by isModifiedHeritage().  If an object
-     *  has been locally modified, then its heritage is also not
-     *  included in the list (it "shadows" changes to those objects).
+    /** Return a list of objects derived from this one that are
+     *  not overridden. An object is overridden if either its
+     *  getOverrideDepth() method returns 0, or if it is shadowed
+     *  by an object along the path from this object to it.
+     *  This shadowing is somewhat subtle, and requires some
+     *  notation to explain precisely.
+     *  <p>
+     *  A path from this object to a derived object is a sequence
+     *  of objects <i>x</i><sub>1</sub>, ..., <i>x</i><sub>n</sub>,
+     *  where <i>x</i><sub>1</sub> is this object and <i>x</i><sub>n</sub>
+     *  is the derived object.  For each pair <i>x</i><sub>i</sub>
+     *  and <i>x</i><sub>i+1</sub>, there is a pair of (deep) containers
+     *  <i>y</i><sub>i</sub> and <i>y'</i><sub>i+1</sub> above them
+     *  (respectively) in the hierarchy such that <i>y</i><sub>i</sub>
+     *  is a <i>parent</i> (not container)
+     *  of <i>y'</i><sub>i+1</sub>. Let <i>m</i><sub>i</sub>
+     *  be the depth in the hierarchy between <i>y</i><sub>i</sub>
+     *  and <i>x</i><sub>i</sub>.  That is, <i>m</i><sub>i</sub> = 1
+     *  if <i>y</i><sub>i</sub> is the immediate container of
+     *  <i>x</i><sub>i</sub>, and it is 2 if there is a container
+     *  in between, etc.  Then derivation chain is such that
+     *  <i>y'</i><sub>i+1</sub> is <i>m</i><sub>i</sub> levels
+     *  above <i>x</i><sub>i+1</sub> in the containment hierarchy.
+     *  That is, for each neighboring object in the derivation chain,
+     *  they each have a container the same depth above them in the
+     *  hierarchy where one container is the parent of the other.
+     *  A derivation chain is shadowed if for any such pair,
+     *  <i>x</i><sub>i</sub>, <i>x</i><sub>i+1</sub>, either
+     *  <i>x</i><sub>i+1</sub>.getOverrideDepth() returns 0
+     *  or it returns a number greater than <i>m</i><sub>i</sub>.
+     *  <p>
+     *  Note that between any two objects, there are zero or more
+     *  derivation chains between them. That is, the derivation
+     *  chain is not unique.  We define preferred derivation chain
+     *  to be the one found by a depth-first search.
+     *  FIXME: Explain this.
+     *  <p>
+     *  Intuitively, this means that shadowing will occur if
+     *  a change has been previously propagated higher in the
+     *  hierarchy than the change being considered now.
+     * 
+     *  FIXME: Move the above to the class comment.
+     * 
      *  Implementors may return an empty list, but should not return null.
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
      *  be clones constructed directly or indirectly).
+     *  <p>
+     *  If a non-null argument is given, then the specified list
+     *  will be populated with the integers <i>m</i><sub>i</sub>
+     *  in the derivation chain. Note that the length of this list
+     *  is the same as the length of the returned list, and that
+     *  the returned list does not include the first object in
+     *  the derivation chain (this object).
+     *  @param depthList If non-null, then the specified list will
+     *   be populated with instances of java.lang.Integer representing
+     *   the depths of propogation along the derivation chain.
      *  @return A list of objects of the same class as the object on
      *   which this is called.
      *  @see #isModifiedHeritage()
      *  @see #getHeritageList()
      */
-    public List getShadowedHeritageList();
+    public List getShadowedDerivedList(List depthList);
 
     /** Return true if this object is an inherited object.  An object
      *  is inherited it is created in its container as a side effect
@@ -121,15 +166,18 @@ public interface Heritable extends Nameable {
      *  @see #isModifiedHeritage()
      *  @return True if the object is an inherited object.
      */
-    public boolean isInherited();
+    public boolean isDerived();
 
-    /** Return true if this object is an inherited object that has been
-     *  modified locally.
-     *  @return True if this object is an inherited object and it has
-     *   been modified locally.
-     *  @see #setModifiedHeritage(boolean)
+    /** Return -1 if this is not an inherited object, 0 if this
+     *  is an inherited object that has been modified locally, and
+     *  a depth greater than zero if this inherited object has
+     *  been modified by propagation at the returned depth above
+     *  this object in the containment hierarchy.
+     *  @return An integer indicating whether this object has been
+     *   modified and how.
+     *  @see #setOverrideDepth(int)
      */
-    public boolean isModifiedHeritage();
+    public int getOverrideDepth();
 
     /** Set whether this object is an inherited object.  If an object
      *  is an inherited object, then normally has no persistent representation
@@ -140,10 +188,10 @@ public interface Heritable extends Nameable {
      *  it will call setInherited(false) on the container as
      *  well, making all containers above in the hierarchy not
      *  inherited objects.
-     *  @param classElement True to mark this object as an inherited object.
+     *  @param isDerived True to mark this object as an inherited object.
      *  @see #isInherited()
      */
-    public void setInherited(boolean classElement);
+    public void setDerived(boolean isDerived);
 
     /** Specify whether this object has been modified.  This has an
      *  effect only if setInherited() has been called with a true
@@ -153,9 +201,12 @@ public interface Heritable extends Nameable {
      *  true to specify that this inherited object has been
      *  modified. To reverse the effect of this call, call it again
      *  with false argument.
+     *  
+     *  FIXME: revise docs.
+     * 
      *  @param modified True to mark modified.
      *  @see #setInherited(boolean)
-     *  @see #isModifiedHeritage()
+     *  @see #getOverrideDepth()
      */
-    public void setModifiedHeritage(boolean modified);
+    public void setOverrideDepth(int depth);
 }

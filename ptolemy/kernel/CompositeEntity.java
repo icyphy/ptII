@@ -620,7 +620,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
                 // If both ends of the link are inherited objects, then
                 // suppress the export.
-                if (relation.isInherited() && port.isInherited()) {
+                if (relation.isDerived() && port.isDerived()) {
                     continue;
                 }
                 // Apply filter.
@@ -683,10 +683,10 @@ public class CompositeEntity extends ComponentEntity {
                     }
                     // If both ends of the link are inherited objects, then
                     // suppress the export.
-                    if (relation.isInherited()
-                            && port.isInherited()
+                    if (relation.isDerived()
+                            && port.isDerived()
                             && ((NamedObj)port.getContainer())
-                            .isInherited()) {
+                            .isDerived()) {
                         continue;
                     }
                     // Apply filter.

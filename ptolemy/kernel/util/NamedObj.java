@@ -28,7 +28,7 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 
 FIXME: Accepted rating was green, but
-FIXME: Need review of methods from Heritable and Changeable interfaces,
+FIXME: Need review of methods from Derivable and Changeable interfaces,
 FIXME: and also containedObjectsIterator()
 FIXME: and also the private method _getHeritageObject() and protected method _getHeritageList().
 */
@@ -134,7 +134,7 @@ in the description.
 
 public class NamedObj implements
         Changeable, Cloneable, Debuggable,
-        DebugListener, Heritable, Serializable {
+        DebugListener, Derivable, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -954,15 +954,15 @@ public class NamedObj implements
      *  In this base class, the returned list is empty.
      *  The implementation of this method uses the strategy
      *  pattern, and derived classes should override the
-     *  protected method _getHeritageList() to return an
+     *  protected method _getHeritageObject() to return an
      *  object of the appropriate type.
      *  @return A list of instances of of the same class as
      *   this object.  In this base class, the list is empty.
      *  @see #isModifiedHeritage()
      *  @see #getShadowedHeritageList()
      */
-    public List getHeritageList() {
-        return _getHeritageList(null, false, this, null);
+    public List getDerivedList() {
+        return _getHeritageList(null, false, this, 0, null, null);
     }
 
     /** Get the model error handler specified by setErrorHandler().
@@ -1044,7 +1044,25 @@ public class NamedObj implements
         }
     }
 
-    /** Return a list of objects to which a change to this
+    /** Return -1 if this is not an inherited object, 0 if this
+     *  is an inherited object that has been modified locally, and
+     *  a depth greater than zero if this inherited object has
+     *  been modified by propagation at the returned depth above
+     *  this object in the containment hierarchy.
+     *  @return An integer indicating whether this object has been
+     *   modified and how.
+     *  @see #setOverrideDepth(int)
+     */
+    public int getOverrideDepth() {
+        if (!_isInherited) {
+            return -1;
+        }
+        return _overrideDepth;
+    }
+
+    /** FIXME: Update per interface.
+     * 
+     *  Return a list of objects to which a change to this
      *  object should propagate, which is the list of objects that
      *  are created as a side effect of creating this one (that is, they
      *  are "heritage" that is "inherited" by their containers from
@@ -1063,8 +1081,8 @@ public class NamedObj implements
      *  @see #isModifiedHeritage()
      *  @see #getHeritageList()
      */
-    public List getShadowedHeritageList() {
-        return _getHeritageList(null, true, this, null);
+    public List getShadowedDerivedList(List depthList) {
+        return _getHeritageList(null, true, this, 0, null, depthList);
     }
 
     /** Get the source, which gives an external URL
@@ -1145,19 +1163,9 @@ public class NamedObj implements
      *  @see #isModifiedHeritage()
      *  @return True if the object is an inherited object.
      */
-    public final boolean isInherited() {
+    public final boolean isDerived() {
         // NOTE: New method added. EAL 12/03
         return _isInherited;
-    }
-
-    /** Return true if this object is an inherited object that has been
-     *  modified locally.
-     *  @return True if this object is an inherited object and it has
-     *   been modified locally.
-     *  @see #setModifiedHeritage(boolean)
-     */
-    public boolean isModifiedHeritage() {
-        return _isInherited && _modifiedHeritage;
     }
 
     /** Return true if this object is persistent.
@@ -1318,9 +1326,9 @@ public class NamedObj implements
      *  @param inherited True to mark this object as an inherited object.
      *  @see #isInherited()
      */
-    public final void setInherited(boolean inherited) {
+    public final void setDerived(boolean inherited) {
         _isInherited = inherited;
-        _modifiedHeritage = false;
+        _overrideDepth = -1;
     }
 
     /** Set the model error handler.
@@ -1339,13 +1347,16 @@ public class NamedObj implements
      *  true to specify that this inherited object has been
      *  modified. To reverse the effect of this call, call it again
      *  with false argument.
+     * 
+     *  FIXME doc
+     * 
      *  @param modified True to mark modified.
      *  @see #setInherited(boolean)
      *  @see #isModifiedHeritage()
      */
-    public void setModifiedHeritage(boolean modified) {
+    public void setOverrideDepth(int depth) {
         if (_isInherited) {
-            _modifiedHeritage = modified;
+            _overrideDepth = depth;
         }
     }
 
@@ -1839,7 +1850,7 @@ public class NamedObj implements
      *  @return The depth of the deferral.
      */
     protected int _getDeferralDepth(NamedObj definedObject) {
-        if (isInherited()) {
+        if (isDerived()) {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 return 1 + container._getDeferralDepth(definedObject);
@@ -1983,7 +1994,8 @@ public class NamedObj implements
             // not been locally changed, and that its contained objects
             // have not been locally changed.
             if (_isInherited) {
-                if (_modifiedHeritage) {
+                // FIXME: Is this right?
+                if (_overrideDepth == 0) {
                     return false;
                 } else {
                     // The object defers its definition, but the
@@ -2052,8 +2064,7 @@ public class NamedObj implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a list of objects to which a change to this
-     *  object should propagate.  This method is read-synchronized
+    /** Return a list of derived objects.  This method is read-synchronized
      *  on the workspace.
      *  @param visited A set of objects that have previously been
      *   visited. This should be non-null only on the recursive calls
@@ -2061,19 +2072,25 @@ public class NamedObj implements
      *  @param shadow True to shadow objects that have had local
      *   changes.
      *  @param context The context (this except in recursive calls).
+     *  @param depth The depth of the parent/child relationship
+     *   being examined (0 except in recursive calls).
      *  @param relativeName The name of the object relative to the
      *   context (null except in recursive calls).
+     *  @param depthList The list to populate with propagation depths,
+     *   or null to not specify one.
      *  @return A list of instances of the same class as this object
-     *   which should receive the same changes that are applied to
+     *   which are derived from
      *   this object. The list is empty in this base class, but
-     *   derived classes that override _getHeritageObject() can
+     *   subclasses that override _getHeritageObject() can
      *   return non-empty lists.
      */
     private List _getHeritageList(
             HashSet visited,
             boolean shadow,
             NamedObj context,
-            String relativeName) {
+            int depth,
+            String relativeName,
+            List depthList) {
         try {
             workspace().getReadAccess();
             LinkedList result = new LinkedList();
@@ -2108,13 +2125,23 @@ public class NamedObj implements
                     newRelativeName = context.getName() + "." + relativeName;
                 }
                 result.addAll(_getHeritageList(
-                        visited, shadow, container, newRelativeName));
+                        visited, 
+                        shadow, 
+                        container, 
+                        depth + 1, 
+                        newRelativeName, 
+                        depthList));
             }
             if (!(context instanceof Instantiable)) {
                 // This level can't possibly defer, so it has
                 // nothing to add.
                 return result;
             }
+            // Increment the depth by one to represent the parent
+            // relationship here.
+            depth = depth + 1;
+            
+            // Iterate over the children.
             List othersList = ((Instantiable)context).getChildren();
             if (othersList != null) {
                 Iterator others = othersList.iterator();
@@ -2143,17 +2170,36 @@ public class NamedObj implements
                         }
 
                         // Is it shadowed?
-                        if (shadow && candidate.isModifiedHeritage()) {
+                        int overrideDepth = candidate.getOverrideDepth();
+                        if (shadow && 
+                                (overrideDepth == 0
+                                || overrideDepth > depth)) {
                             // Yes, it is.
                             continue;
                         }
                         result.add(candidate);
+                        if (depthList != null) {
+                            depthList.add(new Integer(depth));
+                        }
+                        if (candidate.getFullName().equals("..iD.iAB.cABC.p")) {
+                            // FIXME: for debugging
+                            System.out.println("FIXME");
+                        }
 
                         // Add objects that this defers to.
                         // Note that if this candidate is modified from
                         // class and shadow is true, then it shadows other changes.
-                        result.addAll(candidate._getHeritageList(
-                                visited, shadow, candidate, null));
+                        if (depthList == null) {
+                            // Note that depth starts at zero for this call,
+                            // since this is checking propagation from here.
+                            result.addAll(candidate._getHeritageList(
+                                    visited, shadow, candidate, 0, null, null));
+                        } else {
+                            List subDepthList = new LinkedList();
+                            result.addAll(candidate._getHeritageList(
+                                    visited, shadow, candidate, 0, null, subDepthList));
+                            depthList.addAll(subDepthList);
+                        }
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
@@ -2203,11 +2249,11 @@ public class NamedObj implements
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
 
-    /** Flag indicating that this inherited object has been modified. */
-    private boolean _modifiedHeritage = false;
-
     /** The name */
     private String _name;
+
+    /** Flag indicating that this inherited object has been modified. */
+    private int _overrideDepth = -1;
 
     /** The value for the source MoML attribute. */
     private String _source;

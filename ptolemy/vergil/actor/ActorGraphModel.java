@@ -481,7 +481,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // FIXME: This could cause a name collision!
                     // (Unlikely though since auto naming will take
                     // into account subclasses).
-                    List heritageList = relation.getHeritageList();
+                    List heritageList = relation.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
                         ComponentRelation inherited 
@@ -1298,7 +1298,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // NOTE: We need the location right away, so we go ahead
                     // and create it and handle the propagation locally.
                     Locatable location = new Location(entity, "_location");
-                    List heritageList = entity.getHeritageList();
+                    List heritageList = entity.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
                         NamedObj inherited = (NamedObj)heritage.next();

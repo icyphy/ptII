@@ -400,8 +400,7 @@ public class Port extends NamedObj {
                 }
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                // EAL 12/03, 2/04
-                setModifiedHeritage(true);
+                setOverrideDepth(0);
             }
             if (previousContainer != null) {
                 previousContainer._removePort(this);

@@ -87,7 +87,7 @@ public class LocatableNodeController extends BasicNodeController {
         locateFigure(node);
         GraphModel model = getController().getGraphModel();
         Object object = model.getSemanticObject(node);
-        if (object instanceof NamedObj && ((NamedObj)object).isInherited()) {
+        if (object instanceof NamedObj && ((NamedObj)object).isDerived()) {
             float[] dash = {2.0f, 5.0f};
             Stroke stroke = new BasicStroke(
                     2f,                     /* width */

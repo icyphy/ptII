@@ -142,7 +142,7 @@ public class CompositePtolemyModel implements CompositeModel {
                 
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
-                List heritageList = object.getHeritageList();
+                List heritageList = object.getDerivedList();
                 Iterator heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
                     NamedObj inherited = (NamedObj)heritage.next();
@@ -237,7 +237,7 @@ public class CompositePtolemyModel implements CompositeModel {
                             // FIXME: Could get name collision here!
                             // (Unlikely though since auto naming will take
                             // into account subclasses).
-                            List heritageList = relation.getHeritageList();
+                            List heritageList = relation.getDerivedList();
                             Iterator heritage = heritageList.iterator();
                             while (heritage.hasNext()) {
                                 ComponentRelation inherited 

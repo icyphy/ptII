@@ -246,8 +246,7 @@ public class ComponentRelation extends Relation {
             } else {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                // EAL 12/03, 2/04
-                setModifiedHeritage(true);
+                setOverrideDepth(0);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.

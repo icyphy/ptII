@@ -513,7 +513,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             
             // Since this isn't delegated to the MoML parser,
             // we have to handle propagation here.
-            List heritageList = attribute.getHeritageList();
+            List heritageList = attribute.getDerivedList();
             Iterator heritage = heritageList.iterator();
             while (heritage.hasNext()) {
                 NamedObj inherited = (NamedObj)heritage.next();

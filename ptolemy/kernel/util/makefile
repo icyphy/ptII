@@ -62,8 +62,8 @@ JSRCS = \
 	DebugEvent.java \
 	Debuggable.java \
 	DebugListener.java \
+	Derivable.java \
 	Exportable.java \
-	Heritable.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \

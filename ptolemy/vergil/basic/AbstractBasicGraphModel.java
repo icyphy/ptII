@@ -264,7 +264,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
-                List heritageList = object.getHeritageList();
+                List heritageList = object.getDerivedList();
                 Iterator heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
                     NamedObj inherited = (NamedObj)heritage.next();

@@ -749,7 +749,7 @@ public class Variable extends Attribute
         
         // Make sure the new value is exported in MoML.  EAL 12/03.
         if (changed) {
-            setModifiedHeritage(true);
+            setOverrideDepth(0);
         }
 
         _notifyValueListeners();
@@ -847,8 +847,8 @@ public class Variable extends Attribute
         if (_currentExpression != null) {
             _currentExpression = null;
             
-            // Make sure the new value is exported in MoML.  EAL 12/03.
-            setModifiedHeritage(true);
+            // Make sure the new value is exported in MoML.
+            setOverrideDepth(0);
 
             _parseTree = null;
             _parseTreeValid = false;

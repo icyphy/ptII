@@ -54,7 +54,7 @@ are expected to be ignored by the execution engine of a model.
 @since Ptolemy II 4.0
 */
 
-public interface Instantiable extends Heritable {
+public interface Instantiable extends Derivable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
