@@ -30,6 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.StringAttribute;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -62,10 +63,24 @@ public class GenerateCopyrights {
      *  that contains a link to the copyright.  Note that if the
      *  copyright file need not be present on the local machine,
      *  we generate a link to the copy on the Ptolemy website.
+     *
+     *  <p>If the configuration contains an _applicationName attribute
+     *  then that attributed is used as the name of the application
+     *  in the generated text.  If _applicationName is not present,
+     *  then the default name is "Ptolemy II".
+     *
+     *  <p>If the configuration contains an _applicationCopyright
+     *  StringAttribute, then the value of that attributed is used
+     *  as the location of the copyright html file.  If 
+     *  _applicationCopyright is not present, then 
+     *  "ptolemy/configs/doc/copyright.htm" is used.
+     *
+     *  @param configuration The configuration to look for the
+     *  _applicationName and _applicationCopyright attributes in.  
      *  @return A String containing HTML that describes what
      *  copyrights are used by Entities in the configuration
      */
-    public static String generateHTML() {
+    public static String generateHTML(Configuration configuration) {
         // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
         // that use that as a copyright.
@@ -110,22 +125,72 @@ public class GenerateCopyrights {
                 "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 
+        // FIXME: This is really lame needing to add in sub package
+        // copyrights for other apps, but it is the best we can do right now.
+        _addIfPresent(copyrightsMap,
+                "mescal.domains.mescalPE.kernel.parser",
+                "mescal/configs/doc/cup-copyright.htm");
 
         // Now generate the HTML
 
-        String ptIICopyright = _findURL("ptolemy/configs/doc/copyright.htm");
+        String applicationName = "Ptolemy II";
+        try {
+            StringAttribute applicationNameAttribute =
+                (StringAttribute) configuration.getAttribute(
+                        "_applicationName",
+                        StringAttribute.class);
+            if (applicationNameAttribute != null) {
+                applicationName = applicationNameAttribute.getExpression();
+            }
+        } catch (Exception ex) {
+            // Ignore and use the default applicationName
+        }
+
+
+        String defaultApplicationCopyright =
+            "ptolemy/configs/doc/copyright.htm";
+        String applicationCopyright = defaultApplicationCopyright;
+        try {
+            StringAttribute applicationCopyrightAttribute =
+                (StringAttribute) configuration.getAttribute(
+                        "_applicationCopyright",
+                        StringAttribute.class);
+            if (applicationCopyrightAttribute != null) {
+                applicationCopyright =
+                    applicationCopyrightAttribute.getExpression();
+            }
+        } catch (Exception ex) {
+            // Ignore and use the default applicationCopyright
+        }
+
+        String applicationCopyrightURL = _findURL(applicationCopyright);
+
         String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
 
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
                 + "</head>\n<body>\n"
-                + "<h1>Ptolemy II Copyrights</h1>\n"
-                + "The primary copyright for the Ptolemy II System can be\n"
-                + "found in <a href=\"" + ptIICopyright + "\"><code>"
-                + _canonicalizeURLToPTII(ptIICopyright) + "</code></a>.\n"
+                + "<h1>" + applicationName + "</h1>\n"
+                + "The primary copyright for the " 
+                + applicationName + " System can be\n"
+                + "found in <a href=\"" + applicationCopyrightURL + "\"><code>"
+                + _canonicalizeURLToPTII(applicationCopyrightURL)
+                + "</code></a>.\n"
                 + "This configuration includes code that uses packages\n"
-                + "with the following copyrights.\n"
-                + "<p>Ptolemy II uses AElfred as an XML Parser.\n"
+                + "with the following copyrights.\n");
+        if (!applicationCopyright.equals(defaultApplicationCopyright)) {
+            // If the Ptolemy II copyright is not the main copyright, add it.
+            String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
+            htmlBuffer.append(                
+                    "<p>" + applicationName + " uses Ptolemy II "
+                    + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
+                    + "PtolemyII is covered by the copyright in\n "
+                    + "<a href=\"" + ptolemyIICopyright + "\"><code>"
+                    + _canonicalizeURLToPTII(ptolemyIICopyright)
+                    + "</code></a>\n");
+        }
+        htmlBuffer.append(                
+                "<p>" + applicationName + " uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n "
                 + "<a href=\"" + aelfredCopyright + "\"><code>"
                 + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
@@ -134,9 +199,11 @@ public class GenerateCopyrights {
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer.append(
-                    "<p>Below we list actors and the corresponding copyright "
+                    "<p>Below we list features and the "
+                    + "corresponding copyright "
                     + " of the package that is used.  If an actor is not "
-                    + "listed below, then the Ptolemy II copyright is the "
+                    + "listed below, then the " + applicationName +
+                    " copyright is the "
                     + "only copyright."
                     + "<table>\n"
                     + "  <tr><th>Actor</th>\n"
