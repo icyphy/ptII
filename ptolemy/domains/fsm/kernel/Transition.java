@@ -693,7 +693,8 @@ public class Transition extends ComponentRelation {
         if (container != null) {
             TypedCompositeActor modalModel =
                 (TypedCompositeActor)container.getContainer();
-            if(modalModel.getDirector() instanceof HSDirector) {
+            if (modalModel != null 
+                    && modalModel.getDirector() instanceof HSDirector) {
             
                 // FIXME: This is wrong...  what if the director changes?
                 _exeDirectorIsHSDirector = true;
