@@ -27,6 +27,8 @@
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
+package ptolemy.plot.demo;
+
 // This class is not in the ptolemy.plot package so that it is a
 // more realistic example.
 import ptolemy.plot.*;
@@ -44,10 +46,8 @@ import java.io.IOException;
 TwoPlotExample is a simple example that uses displays two plots side by side
 To compile and run this application, do the following:
 <pre>
-cd ptolemy/plot/demo
-setenv CLASSPATH ../../..:.
-javac TwoPlotExample.java
-java TwoPlotExample
+javac -classpath ../../.. TwoPlotExample.java
+java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
 </pre>
 
 @author Christopher Hylands
