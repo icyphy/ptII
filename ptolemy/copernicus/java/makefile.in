@@ -334,16 +334,18 @@ profileObfuscate:
 # Rules to run gcj, the GNU Java -> Native compiler
 # This code is very experimental, and not likely to work
 
-GCJ_DIR =	c:
+GCJ_DIR =	/usr
 
 # The GNU C/Java compiler 
 GCJ =		$(GCJ_DIR)/bin/gcj
 GCJ_LIBDIR =	$(GCJ_DIR)/lib
 
+GCJ_JAR = /usr/share/java/libgcj-3.2.jar
+
 # GCJ Options, see http://gcc.gnu.org/onlinedocs/
 # If there is no -g or -O option, then the default is -g1
 #GCJ_FLAGS =	-static
-GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check
+GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)
 
 # GCJ flags used at link time
 #GCJ_LINK_FLAGS = -v -Wl,-R,$(GCJ_LIBDIR)
