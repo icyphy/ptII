@@ -1,6 +1,6 @@
 #!/bin/sh
 
-srcdirs=`/users/ptII/adm/bin/ptIIdirs`
+srcdirs=`$PTII/adm/bin/ptIIdirs`
 for d in $srcdirs
 do
     if [ ! -d $d ]; then
@@ -9,6 +9,7 @@ do
     fi
     echo 
     echo "------------------------------- $d "
-    (chdir $d; /users/ptII/adm/copyright/fixcopyright *.tcl *.java makefile *.html)
-    #(chdir $d; /users/cxh/ptII/util/testsuite/rmtrailingspace *.java makefile *.html)
+    (chdir $d; $PTII/adm/copyright/chkcopyright *.tcl *.java makefile *.htm)
+    #(chdir $d; /users/ptII/adm/copyright/fixcopyright -n *.tcl *.java makefile *.htm)
+    #(chdir $d; /users/cxh/ptII/util/testsuite/rmtrailingspace *.java makefile *.htm)
 done
