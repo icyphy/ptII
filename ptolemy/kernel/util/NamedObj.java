@@ -757,7 +757,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  This method creates an instance of the data structure if one does
      *  not already exist, so the method never returns null.
      *  @return An instance of MoMLInfo.
-     *  @see NamedObj$MoMLInfo
+     *  @see NamedObj.MoMLInfo
      */
     public MoMLInfo getMoMLInfo() {
         if (_MoMLInfo == null) {
