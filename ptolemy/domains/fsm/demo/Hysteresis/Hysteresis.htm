@@ -1,0 +1,64 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Communication Link - Physical Level</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Hysteresis demo</H1>
+
+The following plot shows the noisy input signal (red) and the output
+signal (blue).
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width="600" height="350"
+ name="Hysteresis"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code" VALUE="ptolemy.domains.fsm.demo.Hysteresis.HysteresisApplet.class">
+<PARAM NAME="codebase" VALUE="../../../../..">
+<PARAM NAME="archive" VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/fsm/fsm.jar">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="defaultIterations" value="150">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.fsm.demo.Hysteresis.HysteresisApplet
+ codebase="../../../../.."
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/fsm/fsm.jar"
+ name="Hysteresis"
+ width="600" height="350"
+ background="#faf0e6"
+ defaultIterations="150"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+The input signal consists of a sinusoid plus a noise source.
+
+<P>
+The topology of the model is shown below:
+<P>
+<center>
+<img src="hysteresis_diagram.gif" alt="topology">
+</center>
+<P>
+Here, the numbers adjacent to each port indicate the SDF parameters
+of the port, namely the number of tokens consumed and produced.
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</BODY>
+</HTML>
