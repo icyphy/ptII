@@ -1102,7 +1102,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneWriting();
         }
     }
-
+    
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, class, entity, or relation.
      *  In this implementation, the argument

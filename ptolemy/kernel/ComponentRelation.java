@@ -204,15 +204,24 @@ public class ComponentRelation extends Relation {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._containedRelations.moveDown(this);
-                if (result >= 0) {
-                    _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (CompositeEntity)derived.getContainer();
+                    container._containedRelations.moveDown(derived);
                 }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -229,13 +238,24 @@ public class ComponentRelation extends Relation {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._containedRelations.moveToFirst(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (CompositeEntity)derived.getContainer();
+                    container._containedRelations.moveToFirst(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -254,13 +274,24 @@ public class ComponentRelation extends Relation {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._containedRelations.moveToIndex(this, index);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (CompositeEntity)derived.getContainer();
+                    container._containedRelations.moveToIndex(derived, index);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -277,13 +308,24 @@ public class ComponentRelation extends Relation {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._containedRelations.moveToLast(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (CompositeEntity)derived.getContainer();
+                    container._containedRelations.moveToLast(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -300,13 +342,24 @@ public class ComponentRelation extends Relation {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._containedRelations.moveUp(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (CompositeEntity)derived.getContainer();
+                    container._containedRelations.moveUp(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;

@@ -36,6 +36,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -120,7 +121,10 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
+   
+   FIXME: Need to review move*() methods to get to green again.
+   
    @see Attribute
    @see Workspace
 */
@@ -1267,7 +1271,8 @@ public class NamedObj implements
     /** Move this object down by one in the list of attributes of
      *  its container. If this object has no container or is already
      *  at last, do nothing.
-     *  Increment the version of the workspace.
+     *  This method gets write access on workspace
+     *  and increments the version.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
@@ -1275,15 +1280,24 @@ public class NamedObj implements
         NamedObj container = getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._attributes.moveDown(this);
-                if (result >= 0) {
-                    _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = derived.getContainer();
+                    container._attributes.moveDown(derived);
                 }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -1292,7 +1306,8 @@ public class NamedObj implements
     /** Move this object to the first position in the list
      *  of attributes of the container. If there is no container or
      *  this object is already first, do nothing.
-     *  Increment the version of the workspace.
+     *  This method gets write access on workspace
+     *  and increments the version.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
@@ -1300,13 +1315,24 @@ public class NamedObj implements
         NamedObj container = getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._attributes.moveToFirst(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = derived.getContainer();
+                    container._attributes.moveToFirst(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -1315,7 +1341,8 @@ public class NamedObj implements
     /** Move this object to the specified position in the list
      *  of attributes of the container. If there is no container or
      *  this object is already at the specified position, do
-     *  nothing. Increment the version of the workspace.
+     *  nothing. This method gets write access on workspace
+     *  and increments the version.
      *  @param index The position to move this object to.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
@@ -1325,13 +1352,24 @@ public class NamedObj implements
         NamedObj container = getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._attributes.moveToIndex(this, index);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = derived.getContainer();
+                    container._attributes.moveToIndex(derived, index);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -1340,7 +1378,8 @@ public class NamedObj implements
     /** Move this object to the last position in the list
      *  of attributes of the container.  If there is no container or
      *  this object is already last, do nothing.
-     *  Increment the version of the workspace.
+     *  This method gets write access on workspace
+     *  and increments the version.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
@@ -1348,13 +1387,24 @@ public class NamedObj implements
         NamedObj container = getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._attributes.moveToLast(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = derived.getContainer();
+                    container._attributes.moveToLast(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -1363,7 +1413,8 @@ public class NamedObj implements
     /** Move this object up by one in the list of
      *  attributes of the container. If there is no container or
      *  this object is already first, do
-     *  nothing. Increment the version of the workspace.
+     *  nothing. This method gets write access on workspace
+     *  and increments the version.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
@@ -1371,13 +1422,24 @@ public class NamedObj implements
         NamedObj container = getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._attributes.moveUp(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = derived.getContainer();
+                    container._attributes.moveUp(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -1636,7 +1698,6 @@ public class NamedObj implements
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
      *   an object with this name.
-     *  @see #getDerivedLevel()
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
@@ -1701,6 +1762,30 @@ public class NamedObj implements
      */
     public void setSource(String source) {
         _source = source;
+    }
+
+    /** Return an ordered list of contained objects filtered by the specified
+     *  filter. The attributes are listed first, followed by ports,
+     *  classes, entities, and relations, in that order. Within each
+     *  category, objects are listed in the order they were created
+     *  (or as later modified by methods like moveDown()). The filter
+     *  gives a collection of objects to include. Only objects
+     *  contained by the filter are included.
+     *  @param filter A collection specifying which objects to include
+     *   in the returned list.
+     *  @return A list of contained instances of NamedObj that are
+     *   in the specified filter, or an empty list if there are none.
+     */
+    public List sortContainedObjects(Collection filter) {
+        LinkedList result = new LinkedList();
+        Iterator containedObjects = containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj object = (NamedObj)containedObjects.next();
+            if (filter.contains(object)) {
+                result.add(object);
+            }
+        }
+        return result;
     }
 
     /** Return the class name and the full name of the object,

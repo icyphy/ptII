@@ -343,15 +343,24 @@ public class Port extends NamedObj {
         Entity container = (Entity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._portList.moveDown(this);
-                if (result >= 0) {
-                    _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (Entity)derived.getContainer();
+                    container._portList.moveDown(derived);
                 }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -368,13 +377,24 @@ public class Port extends NamedObj {
         Entity container = (Entity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._portList.moveToFirst(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (Entity)derived.getContainer();
+                    container._portList.moveToFirst(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -393,13 +413,24 @@ public class Port extends NamedObj {
         Entity container = (Entity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._portList.moveToIndex(this, index);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (Entity)derived.getContainer();
+                    container._portList.moveToIndex(derived, index);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -416,13 +447,24 @@ public class Port extends NamedObj {
         Entity container = (Entity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._portList.moveToLast(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (Entity)derived.getContainer();
+                    container._portList.moveToLast(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
@@ -439,13 +481,24 @@ public class Port extends NamedObj {
         Entity container = (Entity)getContainer();
         if (container != null) {
             try {
+                _workspace.getWriteAccess();
                 int result = container._portList.moveUp(this);
-                _workspace.incrVersion();
+                
+                // Propagate.
+                Iterator derivedObjects = getDerivedList().iterator();
+                while (derivedObjects.hasNext()) {
+                    NamedObj derived = (NamedObj)derivedObjects.next();
+                    container = (Entity)derived.getContainer();
+                    container._portList.moveUp(derived);
+                }
+                
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
                 // but we have already verified that it is, in theory.
                 throw new InternalErrorException(e);
+            } finally {
+                _workspace.doneWriting();
             }
         }
         return -1;
