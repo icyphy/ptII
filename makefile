@@ -103,7 +103,8 @@ EXTRA_SRCS = \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
 	vergilPtiny.jnlp.in \
-	vergilPtinySandbox.jnlp.in
+	vergilPtinySandbox.jnlp.in \
+	vergilVisualSense.jnlp.in
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
@@ -135,6 +136,7 @@ KRUFT = \
 	vergilHyVisual.jnlp \
 	vergilPtiny.jnlp \
 	vergilPtinySandbox.jnlp \
+	vergilVisualSense.jnlp \
 	ptKeystore
 
 # Files to be removed by 'make distclean'
