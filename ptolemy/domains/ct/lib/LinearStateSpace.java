@@ -154,7 +154,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      */
     public TypedIOPort output;
 
-    /** state outputs ports.
+    /** State output multiport.
      */
     public TypedIOPort stateOutput;
 
