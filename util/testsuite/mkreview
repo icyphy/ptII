@@ -32,25 +32,29 @@
 # 
 # This script expects as its arguments:
 if [ $# -lt 1 ]; then
-    echo "$0: Usage: $0 reviewname file1 [file2...]"
+    echo "$0: Usage: $0 reviewtopdir reviewname file1 [file2...]"
+    echo "reviewtopdir should be of the form: /users/ptII/public_html/reviews"
     echo "reviewname should be of the form YYYYMMDD"
     echo "file should be of the form: ptolemy/package/foo.java"
     echo "For example:"
-    echo "mkreview 19990430 ptolemy/data/expr/{Variable,VariableList}.java"
+    echo "mkreview 19990430 ~/ptIIweb/reviews ptolemy/data/expr/{Variable,VariableList}.java"
+    echo "Source files will be loaded from $PTII/file and a review created in $reviewtopdir/reviewname"
     exit 2
 fi
 # It generates PostScript and PDF versions of the source files and 
 # of the javadoc output
 
 # The name of the directory that the review materials will reside in
-reviewname=$1
+reviewtopdir=$1
+reviewname=$2
 reviewdate=`basename $reviewname`
 
 shift
+shift
+
 files=$@
 
 basedir=`dirname $1`
-reviewtopdir=/users/ptII/public_html/reviews
 
 
 # This directory will contain the docs
@@ -100,13 +104,13 @@ if [ "$DISPLAY" = "" ]; then
 else
     # html2ps is a hack that often does not work
     sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $basedir
-    psnup -n 2 < javadocs.ps > javadocs2up.ps
+    psnup -n 2 < ../javadocs.ps > ../javadocs2up.ps
 fi
 
 cd ..
 
 # Generate PostScript of the code
-enscript -Grp - $shortfiles > javafiles.ps
+enscript -Gp - $shortfiles > javafiles.ps
 psnup -n 2 < javafiles.ps > javafiles2up.ps
 
 # Generate PDF
@@ -152,7 +156,7 @@ EoF
 
 for file in $shortfiles
 do
-    echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code><a/>" >>$reviewfile
+    echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code></a>" >>$reviewfile
 done
 
 cat >>$reviewfile <<EOF
