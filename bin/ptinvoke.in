@@ -1,5 +1,4 @@
 #!/bin/sh
-#
 # Shell script that starts up Ptolemy II Java classes
 # Author:  Christopher Hylands
 # Version: $Id$
@@ -51,10 +50,10 @@ JINI_LIB=$JINI_DIR/lib
 # Java CLASSPATH separator
 # For Unix, this would be : 
 # For Cygwin, this would be ;
-CLASSPATHSEPARATOR=@CLASSPATHSEPARATOR@
+CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 
 # Jini Jar files
-JINI_JARS=${JINI_LIB}/jini-core.jar${CLASSPATHSEPARATOR}${JINI_LIB}/jini-jspaces.jar${CLASSPATHSEPARATOR}${JINI_LIB}/mahalo-dl.jar
+JINI_JARS="${JINI_LIB}/jini-core.jar${CLASSPATHSEPARATOR}${JINI_LIB}/jini-jspaces.jar${CLASSPATHSEPARATOR}${JINI_LIB}/mahalo-dl.jar"
 
 # Location of ptjacl.jar
 PTJACL_JAR=@PTJACL_JAR@
@@ -114,6 +113,15 @@ case "`basename $0`" in
 	javastartupclass=com.sun.jini.example.service.StartService 
 	javasourcedir=ptolemy/actor/gui
 	jarfile=$JINI_LIB/jini-examples.jar
+	case "${OSTYPE-no}" in
+	    cygwin32*)
+		JINI_DIR=`echo $JINI_DIR | sed 's@/@\\\\@g' | sed 's/jini1_0_1//'`
+		javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
+	    ;;
+	    *)    
+	    javaflag="-Dcom.sun.jini.example.service.rootDir=$JINI_DIR"
+	    ;;
+        esac
 	;;
     ptjini)
 	# Ptolemy II Application that uses Jini
@@ -227,9 +235,9 @@ if [ "$windows" = "yes" ]; then
     WINPTII=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
     if [ "${jarfile-no}" != "no" ]; then
 	if [ "${CLASSPATH}" != "no" ]; then
-	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile\;$CLASSPATH $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile\;$CLASSPATH $javastartupclass ${1+"$@"}
 	else
-	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile $javastartupclass ${1+"$@"}
 	fi    
     else
 	if [ "${CLASSPATH}" != "no" ]; then
