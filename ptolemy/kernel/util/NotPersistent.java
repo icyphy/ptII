@@ -34,7 +34,7 @@ package ptolemy.kernel.util;
 //// NotPersistent
 /**
 This is an interface for objects that are not persistent in external
-object representations.   Such objects are usually attributes that are 
+object representations.   Such objects are usually attributes that are
 used internally in visual editors and only represent internal state.
 
 @author Steve Neuendorffer

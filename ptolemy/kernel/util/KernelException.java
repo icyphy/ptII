@@ -108,7 +108,7 @@ public class KernelException extends Exception {
      *  Throwable.printStackTrace(), which prints the stack trace
      *  to stderr, which is likely to be hidden if we are running
      *  a Ptolemy application from anything but a shell console.
-     *  @param throwable An throwable. 
+     *  @param throwable An throwable.
      *  @return The stack trace of the throwable.
      */
     public static String stackTraceToString(Throwable throwable) {
