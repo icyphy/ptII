@@ -146,7 +146,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{exitAngle gamma reset preemptive _trigger p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {exitAngle gamma reset preemptive _guard p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
+} {{exitAngle gamma reset preemptive _trigger p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array} {exitAngle gamma reset preemptive _guard p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"
