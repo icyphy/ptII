@@ -77,8 +77,6 @@ public class RequiredFileGenerator {
      * in the transitive closure of methods called in the main class.
      *  @param classPath The classPath.
      *  @param className The main class.
-     *  @param compileMode The compilation mode.
-     *  @param verbose Whether routine messages are to be generated.
      *  @exception IOException If  file I/O errors occur.
      */
     public static void generateTransitiveClosureOf(String classPath,
@@ -194,7 +192,7 @@ public class RequiredFileGenerator {
     }
 
     /** Returns whether a given field is required or not.
-     *  @param source Any field.
+     *  @param field Any field.
      *  @return True if it is a required field.
      */
     public static boolean isRequired(SootField field) {
