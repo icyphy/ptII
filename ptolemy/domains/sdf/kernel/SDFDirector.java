@@ -108,8 +108,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception CloneNotSupportedException Not Thrown
      *  @exception IllegalActionException Not Thrown
      */
-    public boolean prefire() throws IllegalActionException, 
-            CloneNotSupportedException {
+    public boolean prefire() throws IllegalActionException {
         return true;
     }
 
@@ -135,13 +134,10 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** Calculate the current schedule, and fire the contained actors
      *  in the order given by the schedule. 
      *
-     *  @exception CloneNotSupportedException If the fire() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the fire() method of the
      *   container or one of the deeply contained actors throws it.
      */
-    public void fire()
-            throws IllegalActionException, CloneNotSupportedException {
+    public void fire() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
 
         if (container == null) {
