@@ -267,6 +267,13 @@ public class MoMLParser extends HandlerBase {
      *  If the first argument to parse() is null, then it is assumed that
      *  all URLs in the MoML file are absolute.
      *  <p>
+     *  It can be difficult to create an appropriate URL to pass as the
+     *  first argument, particularly if what you have a file or file name
+     *  in the directory that you want to use as a base.  The easiest
+     *  technique is to use the toURL() method of the File class.
+     *  Some of the URL constructors, for reasons we don't understand,
+     *  create URLs that do not work.
+     *  <p>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid MoML file.
      *  @param base The base URL for relative references, or null if
@@ -294,6 +301,13 @@ public class MoMLParser extends HandlerBase {
      *  </pre>
      *  If the first argument to parse() is null, then it is assumed that
      *  all URLs in the MoML file are absolute.
+     *  <p>
+     *  It can be difficult to create an appropriate URL to pass as the
+     *  first argument, particularly if what you have a file or file name
+     *  in the directory that you want to use as a base.  The easiest
+     *  technique is to use the toURL() method of the File class.
+     *  Some of the URL constructors, for reasons we don't understand,
+     *  create URLs that do not work.
      *  <p>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid MoML file.
