@@ -686,26 +686,35 @@ public class TypedIOPort extends IOPort implements Typeable {
         boolean wasTransferred = false;
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
-	    if (this.hasToken(i)) {
+            if (insideReceivers != null && insideReceivers[i] != null) {
                 try {
-                    Token token = this.get(i);
-                    if (insideReceivers != null && insideReceivers[i] != null) {
-                        if(_debugging) _debug(getName(),
-                                "transferring input from " + this.getName());
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
-                            TypedIOPort port =
-                                (TypedIOPort)insideReceivers[i][j].
-				getContainer();
-                            Type insideType = port.getType();
-
-                            if (insideType.isEqualTo(token.getType())) {
-                                insideReceivers[i][j].put(token);
-                            } else {
-                                Token newToken = insideType.convert(token);
-                                insideReceivers[i][j].put(newToken);
+                    if (this.isKnown(i)) {
+                        if (this.hasToken(i)) {
+                            Token token = this.get(i);
+                            if(_debugging) _debug(getName(),
+                                    "transferring input from " 
+                                    + this.getName());
+                            for (int j = 0; j < insideReceivers[i].length;
+                                 j++) {
+                                TypedIOPort port =
+                                    (TypedIOPort)insideReceivers[i][j].
+                                    getContainer();
+                                Type insideType = port.getType();
+                                
+                                if (insideType.isEqualTo(token.getType())) {
+                                    insideReceivers[i][j].put(token);
+                                } else {
+                                    Token newToken = insideType.convert(token);
+                                    insideReceivers[i][j].put(newToken);
+                                }
+                            }
+                            wasTransferred = true;
+                        } else {
+                            for (int j = 0; j < insideReceivers[i].length;
+                                 j++) {
+                                insideReceivers[i][j].setAbsent();
                             }
                         }
-                        wasTransferred = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
