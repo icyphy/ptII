@@ -575,9 +575,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
          *  @param currentStepSize The current step size.
          */
         public void rebalance(double currentStepSize) {
-            double timeresolution =
+            double timeResolution =
                 ((CTDirector) _container.getDirector()).getTimeResolution();
-            if(Math.abs(currentStepSize - _stepsize)>timeresolution) {
+            if(Math.abs(currentStepSize - _stepsize)>timeResolution) {
                 double[][] history = toDoubleArray();
                 int size = _entries.size();
                 for (int i = 0; i < size-1; i++) {
