@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 PTCLASSALLJARS = \
 		ptolemy.vergil.jar \
 		debugger/debugger.jar \
-		graph/graph.jar \
 		icon/icon.jar \
 		lib/lib.jar \
 		ptolemy/ptolemy.jar \
