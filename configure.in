@@ -401,5 +401,5 @@ AC_SUBST(PTJAVA_DIR)
 AC_SUBST(PTII_DEFAULT)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot ptolemy/moml/ptolemy, chmod a+x bin/ptjacl; cp bin/ptjacl bin/ptjaclapp)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke, chmod a+x bin/ptinvoke)
 
