@@ -603,42 +603,49 @@ public class Manager extends NamedObj implements Runnable {
 
                 // find the least solution (most specific types)
                 boolean resolved = solver.solveLeast();
-                if ( !resolved) {
-		    Iterator unsatisfied = solver.unsatisfiedInequalities();
-		    while (unsatisfied.hasNext()) {
-		        Inequality ineq = (Inequality)unsatisfied.next();
-		        InequalityTerm term =
-                            (InequalityTerm)ineq.getLesserTerm();
-		        Object typeObject = term.getAssociatedObject();
-		        if (typeObject != null) {
-			    // typeObject is a Typeable
-			    conflicts.add(typeObject);
-		        }
 
-		        term = (InequalityTerm)ineq.getGreaterTerm();
-		        typeObject = term.getAssociatedObject();
-		        if (typeObject != null) {
-			    // typeObject is a Typeable
-			    conflicts.add(typeObject);
-		        }
+		// If some inequalities are not satisfied, or type variables
+		// are resolved to unacceptable types, such as
+		// BaseType.UNKNOWN, add the inequalities to the list of type
+		// conflicts.
+		Iterator inequalities = constraintList.iterator();
+		while (inequalities.hasNext()) {
+		    Inequality inequality = (Inequality)inequalities.next();
+		    if ( !inequality.isSatisfied(TypeLattice.lattice())) {
+		        conflicts.add(inequality);
+		    } else {
+		        // check if type variables are resolved to unacceptable
+			// types
+		        InequalityTerm[] lesserVariables =
+			        inequality.getLesserTerm().getVariables();
+		        InequalityTerm[] greaterVariables =
+			        inequality.getGreaterTerm().getVariables();
+			boolean added = false;
+			for (int i=0; i<lesserVariables.length; i++) {
+			    InequalityTerm variable = lesserVariables[i];
+		            if ( !variable.isValueAcceptable()) {
+		                conflicts.add(inequality);
+				added = true;
+				break;
+			    }
+			}
+			if (added == false) {
+			    for (int i=0; i<greaterVariables.length; i++) {
+			        InequalityTerm variable = greaterVariables[i];
+			        if ( !variable.isValueAcceptable()) {
+		                    conflicts.add(inequality);
+				    break;
+				}
+			    }
+			}
 		    }
-                }
-
-	        // check whether resolved types are acceptable.
-                // They might be, for example, ANY.
-	        Iterator variableTerms = solver.variables();
-	        while (variableTerms.hasNext()) {
-		    InequalityTerm term = (InequalityTerm)variableTerms.next();
-		    if ( !term.isValueAcceptable()) {
-		        conflicts.add(term.getAssociatedObject());
-		    }
-	        }
+		}
 	    }
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + _container.getFullName()
-                        + " on the following Typeables:");
+                        + " on the following inequalities:");
 	    }
 	} catch (IllegalActionException illegalAction) {
 	    // this should not happen.
