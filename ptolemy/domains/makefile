@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = sdf pn
+DIRS = ct sdf pn
 
 # Root of Tycho directory
 ROOT =		../../..
