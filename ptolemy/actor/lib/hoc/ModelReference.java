@@ -39,12 +39,12 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -139,6 +139,8 @@ import ptolemy.moml.MoMLParser;
 
    <li> <i>modelFileOrURL</i>:
    The file name or URL of the model that this actor will execute.
+   This can be specified either by setting the parameter or by
+   providing a string at the input port.
 
    <li> <i>postfireAction</i>:
    The value of this string attribute determines what happens
@@ -195,7 +197,7 @@ public class ModelReference
         super(container, name);
 
         // FIXME: Need a way to specify a filter for the file browser.
-        modelFileOrURL = new FileParameter(this, "modelFileOrURL");
+        modelFileOrURL = new FilePortParameter(this, "modelFileOrURL");
 
         // Create the executionOnFiring parameter.
         executionOnFiring = new StringParameter(this, "executionOnFiring");
@@ -239,8 +241,10 @@ public class ModelReference
     public Parameter lingerTime;
 
     /** The file name or URL of the model that this actor represents.
+     *  This is empty by default, which means that there is no
+     *  associated model to execute.
      */
-    public FileParameter modelFileOrURL;
+    public FilePortParameter modelFileOrURL;
 
     /** The value of this string attribute determines what happens
      *  in the postfire() method.  The recognized values are:
@@ -268,6 +272,9 @@ public class ModelReference
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelFileOrURL) {
+            if (_debugging) {
+            	_debug("Setting modelFileOrURL to: " + modelFileOrURL.getExpression());
+            }
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
             if (url != null) {
@@ -456,9 +463,15 @@ public class ModelReference
                     }
                 }
             }
-            // Iterate over input ports and read any available values into
-            // the referenced model parameters.
-            _readInputs();
+            // Derived classes may need to read inputs earlier in their
+            // fire() method, before calling this class, in which case
+            // they are expected to set this flag to true.
+            if (!_alreadyReadInputs) {
+                // Iterate over input ports and read any available values into
+                // the referenced model parameters.
+                _readInputs();
+            }
+            _alreadyReadInputs = false;
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
                 if (_debugging) {
@@ -615,6 +628,7 @@ public class ModelReference
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        _alreadyReadInputs = false;
         if (_throwable != null) {
             Throwable throwable = _throwable;
             _throwable = null;
@@ -626,14 +640,23 @@ public class ModelReference
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                        protected variables                ////
+    
+    /** If a derived class calls modelFileOrURL.update() in its fire()
+     *  method prior to calling super.fire(), then it should set this
+     *  flag to true.
+     */
+    protected boolean _alreadyReadInputs = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
 
     /** Iterate over input ports and read any available values into
      *  the referenced model parameters.
      *  @exception IllegalActionException If reading the ports or
      *   setting the parameters causes it.
      */
-    private void _readInputs() throws IllegalActionException {
+    protected void _readInputs() throws IllegalActionException {
         // NOTE: This is an essentially exact copy of the code in RunCompositeActor,
         // but this class and that one can't easily share a common base class.
         if (_debugging) {
@@ -668,6 +691,9 @@ public class ModelReference
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     /** Iterate over output ports and read any available values from
      *  the referenced model parameters and produce them on the outputs.

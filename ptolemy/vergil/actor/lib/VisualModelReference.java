@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -256,12 +257,20 @@ public class VisualModelReference
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: Even though the superclass calls this, we have to
+        // call it here before the actions below. Regrettably,
+        // this requires disabling the call in the superclass
+        // because otherwise, if there are two pending input
+        // tokens, they will both be consumed in this firing.
+        _readInputs();
+        _alreadyReadInputs = true;
+
         if (_model instanceof CompositeActor) {
             CompositeActor executable = (CompositeActor) _model;
 
             // Will need the effigy for the model this actor is in.
             NamedObj toplevel = toplevel();
-            Effigy myEffigy = Configuration.findEffigy(toplevel);
+            final Effigy myEffigy = Configuration.findEffigy(toplevel);
 
             // If there is no such effigy, then skip trying to open a tableau.
             // The model may have no graphical elements.
@@ -269,34 +278,56 @@ public class VisualModelReference
                 try {
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
+                    // FIXME: Haven't dealt with open run control panel option.
                     if (_openOnFiringValue == _OPEN_IN_VERGIL
                             || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                        Configuration configuration =
-                            (Configuration) myEffigy.toplevel();
-                        if (_debugging) {
-                            _debug("** Using the configuration to open a tableau.");
+                        
+                        // NOTE: The opening must occur in the event thread.
+                        // Regrettably, we cannot continue with the firing until
+                        // the open is complete, so we use the very dangerous
+                        // invokeAndWait() method.                        
+                        Runnable doOpen = new Runnable() {
+                            public void run() {
+                                Configuration configuration
+                                        = (Configuration) myEffigy.toplevel();
+                                if (_debugging) {
+                                    _debug("** Using the configuration to open a tableau.");
+                                }
+                                try {
+									// NOTE: Executing this in the event thread averts
+									// a race condition... Previous close(), which was
+									// deferred to the UI thread, will have completed.
+                                    _exception = null;
+									_tableau = configuration.openModel(_model, myEffigy);
+                                    // Set this tableau to be a master so that when it
+                                    // gets closed, all its subwindows get closed.
+                                    _tableau.setMaster(true);
+								} catch (KernelException e) {
+									// Record the exception for later reporting.
+									_exception = e;
+								}
+                                _tableau.show();
+
+                                JFrame frame = _tableau.getFrame();
+                                if (frame != null) {
+                                    frame.toFront();
+                                    if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                                        if (frame instanceof ExtendedGraphFrame) {
+                                            ((ExtendedGraphFrame) frame).fullScreen();
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                        try {
+                        	SwingUtilities.invokeAndWait(doOpen);
+                        } catch (Exception ex) {
+                        	throw new IllegalActionException(this, null, ex, "Open failed.");
                         }
-                        // FIXME: Race condition... Previous close(), which was
-                        // deferred to the UI thread, may not have completed, so
-                        // we may open the old tableau as it is closing!
-                        _tableau = configuration.openModel(_model, myEffigy);
-
-                        // Do not allow editing on this tableau.  In particular,
-                        // if editing were allowed, then an attempt to save the
-                        // changes will result in a spectacular failure.  The
-                        // model that will be saved will actually be the referring
-                        // model rather than the referred to model.  This will
-                        // trash the referred to model, and will result in an
-                        // infinite loop when attempting to open either model.
-                        // FIXME: This doesn't work!!!! Can still save model!!!!
-                        _tableau.setEditable(false);
-                        // FIXME: Should instead prevent delegating the write.
-                        // One way would be to create an effigy that overrides
-                        // topEffigy() to return itself. However, there is a
-                        // cast in PtolemyEffigy that will fail if we do that...
-                        // ((Effigy)_tableau.getContainer()).setModifiable(false);
-
-                        _tableau.show();
+                        if (_exception != null) {
+                        	// An exception occurred while trying to open.
+                            throw new IllegalActionException(this, null, _exception, "Failed to open.");
+                        }
                     } else {
                         // Need an effigy for the model, or else graphical elements
                         // of the model will not work properly.  That effigy needs
@@ -320,6 +351,7 @@ public class VisualModelReference
                 }
             }
             // If we did not open in Vergil, then there is no tableau.
+            /** FIXME: Not needed anymore?
             if (_tableau != null) {
                 JFrame frame = _tableau.getFrame();
                 if (frame != null) {
@@ -335,6 +367,7 @@ public class VisualModelReference
                     }
                 }
             }
+            */
         }
         // Call this last so that we open before executing.
         super.fire();
@@ -356,31 +389,27 @@ public class VisualModelReference
                 if (_debugging) {
                     _debug("** Closing Vergil graph.");
                 }
-                if (frame instanceof ExtendedGraphFrame) {
-                    ((ExtendedGraphFrame) frame).cancelFullScreen();
-                }
                 if (frame instanceof TableauFrame) {
                     // NOTE: The closing will happen in the swing event
-                    // thread.  We should not proceed until it has
-                    // happened, otherwise we could create a race condition
-                    // where the next firing occurs before the close has
-                    // completed.  Thus, we use the very dangerous
-                    // invokeAndWait() facility here.
+                    // thread.  We can proceed on the assumption
+                    // that the next firing, if it opens vergil, will
+                    // do so in the event thread.
                     Runnable doClose = new Runnable() {
                             public void run() {
+                                if (frame instanceof ExtendedGraphFrame) {
+                                    ((ExtendedGraphFrame) frame).cancelFullScreen();
+                                }
                                 ((TableauFrame) frame).close();
                             }
                         };
-                    try {
-                        SwingUtilities.invokeAndWait(doClose);
-                    } catch (Exception ex) {
-                        // Ignore exceptions.  Bad side is model
-                        // remains open.
-                    }
+                    Top.deferIfNecessary(doClose);
                 } else if (frame != null) {
                     // This should be done in the event thread.
                     Runnable doClose = new Runnable() {
                             public void run() {
+                                if (frame instanceof ExtendedGraphFrame) {
+                                    ((ExtendedGraphFrame) frame).cancelFullScreen();
+                                }
                                 frame.hide();
                             }
                         };
@@ -409,6 +438,9 @@ public class VisualModelReference
 
     /** The value of the closeOnPostfire parameter. */
     private transient int _closeOnPostfireValue = _DO_NOTHING;
+    
+    /** Store exception thrown in event thread. */
+    private Exception _exception = null;
 
     // Tableau that has been created (if any).
     private Tableau _tableau;
