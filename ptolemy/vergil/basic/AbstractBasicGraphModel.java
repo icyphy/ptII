@@ -342,7 +342,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
             // Note that a change listener is registered with the top-level
             // model, as it probably has to be, since a change to a model
             // can have repercusions anywhere in the model.
-            if (change != null && change.getSource() == this) {
+            if (change != null
+                    && change.getSource() == AbstractBasicGraphModel.this) {
                 return;
             }
 
