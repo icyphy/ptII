@@ -144,6 +144,12 @@
 	</entity>
 	<entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
 	</entity>
+	<entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
+	</entity>	
+	<entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
+	</entity>	
+	<entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
+	</entity>		
 	<entity name="JAIPNMWriter" class="ptolemy.actor.lib.jai.JAIPNMWriter">
 	</entity>
 	<entity name="JAIScale" class="ptolemy.actor.lib.jai.JAIScale">

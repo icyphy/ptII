@@ -59,6 +59,9 @@ JSRCS = JAIBMPWriter.java \
 	JAIImageToken.java \
 	JAIInvert.java \
 	JAIJPEGWriter.java \
+	JAIMagnitude.java \
+	JAIPhase.java \
+	JAIPolarToComplex.java \
 	JAIPNMWriter.java \
 	JAIScale.java \
 	JAITIFFWriter.java 
