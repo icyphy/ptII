@@ -159,6 +159,8 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
+    # $dir addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+
     set initstep [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
@@ -182,6 +184,11 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7181292429552535]
+
+    #set debugger [java::cast ptolemy.data.expr.Parameter \
+	#    [$testV getAttribute Print]]
+    #set token [java::new ptolemy.data.BooleanToken true]
+    #$debugger setToken $token
 
     $man run
     list [$testV isSuccessful]  
