@@ -72,7 +72,9 @@ MISC_FILES =	alljtests.tcl
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	message.txt	
+	message.txt \
+	matrix.mat \
+	matrix1.mat
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
