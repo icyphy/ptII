@@ -32,12 +32,14 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
 
+// Deprecated -- will be deleted
+import ptolemy.kernel.mutation.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director
@@ -102,7 +104,7 @@ directors) should override the _writeAccessPreference() method to let
 the workspace to be write-protected. (Note that the workspace might still be
 not-write-protected, it all depends on other directors in the simulation).
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version: $Id$
 */
 public class Director extends NamedObj implements Executable {
@@ -145,12 +147,28 @@ public class Director extends NamedObj implements Executable {
      *  about any mutation that occurs in the container.
      *
      *  @param listener The new MutationListener.
+     *  @deprecated Use addTopologyListener() instead.
      */
     public void addMutationListener(MutationListener listener) {
         if (_mutationListeners == null) {
             _mutationListeners = new LinkedList();
         }
         _mutationListeners.insertLast(listener);
+    }
+
+    /** Add a topology change listener to this director. The listener
+     * will be notified of each change in the topology that
+     * happens when the Director decide it is safe to make
+     * topology changes. Change requests are queued by using
+     * the queueToploguChangeRequest() method.
+     *
+     *  @param listener The TopologyListener to add.
+     */
+    public void addTopologyListener(TopologyListener listener) {
+        if (_topologyListeners == null) {
+            _topologyListeners = new TopologyMulticaster();
+        }
+        _topologyListeners.addTopologyListener(listener);
     }
 
     /** Clone the director into the specified workspace. The new object is
@@ -169,6 +187,8 @@ public class Director extends NamedObj implements Executable {
         newobj._container = null;
         newobj._pendingMutations = null;
         newobj._mutationListeners = null;
+        newobj._queuedTopologyRequests = null;
+        newobj._topologyListeners = null;
         newobj._actorListener = null;
         return newobj;
     }
@@ -350,6 +370,7 @@ public class Director extends NamedObj implements Executable {
      *
      *  @param mutation A object with a perform() and update() method that
      *   performs a mutation and informs any listeners about it.
+     *  @deprecated Use queueTopologyChangeRequest instead.
      */
     public void queueMutation(Mutation mutation) {
         // The private member is created only if mutation is being used.
@@ -357,6 +378,24 @@ public class Director extends NamedObj implements Executable {
             _pendingMutations = new LinkedList();
         }
         _pendingMutations.insertLast(mutation);
+    }
+
+    /** Add a mutation object to the mutation queue. These mutations
+     *  are executed when the _performTopologyChanges() method is called,
+     *  which in this base class is in the prefire() method.  This method
+     *  also arranges that all additions of new actors are recorded.
+     *  The prefire() method then invokes the initialize() method of all
+     *  new actors after the mutations have been completed.
+     *
+     *  @param mutation A object with a perform() and update() method that
+     *   performs a mutation and informs any listeners about it.
+     */
+    public void queueTopologyChangeRequest(TopologyChangeRequest request) {
+        // Create the list of requests if it doesn't already exist
+        if (_queuedTopologyRequests == null) {
+            _queuedTopologyRequests = new LinkedList();
+        }
+        _queuedTopologyRequests.insertLast(request);
     }
 
     /** Schedule to be refired after a specified delay with respect to the
@@ -373,9 +412,19 @@ public class Director extends NamedObj implements Executable {
      *  if the listener is not listed with this director.
      *
      *  @param listener The MutationListener to be removed.
+     *  @deprecated Use removeTopologyListener() instead.
      */
     public void removeMutationListener(MutationListener listener) {
         _mutationListeners.removeOneOf(listener);
+    }
+
+    /** Remove a topology listener from this director.
+     *  If the listener is not attached to this director, do nothing.
+     *
+     *  @param listener The TopologyListener to be removed.
+     */
+    public void removeTopologyListener(TopologyListener listener) {
+        _topologyListeners.removeTopologyListener(listener);
     }
 
     /** Set the current time.
@@ -545,12 +594,25 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** Return an enumeration over the actors added to the topology in
+     * the most recent call to _processTopologyRequests(). This is intended
+     * so that directors can then initialize any new actors. The enumeration
+     * is over a copy of the list, so it is safe for actors to perform
+     * additional mutations during initialization.
+     */
+    protected Enumeration _newActors () {
+        LinkedList copy = new LinkedList();
+        copy.appendElements(_newActors.elements());
+        return copy.elements();
+    }
+
     /** Perform all pending mutations and inform all registered listeners
      *  of the mutations.  Return true if any mutations were performed,
      *  and false otherwise.
      *
      *  @exception IllegalActionException If the mutation throws it.
      *  @exception NameDuplicationException If the mutation throws it.
+     *  @deprecated Use _processTopologyChanges instead.
      */
     protected boolean _performMutations()
             throws IllegalActionException, NameDuplicationException {
@@ -583,6 +645,63 @@ public class Director extends NamedObj implements Executable {
         return result;
     }
 
+    /** Process the queued topology change requests. Registered topology
+     * listeners are informed of each change in a series of calls
+     * after successful completion of each request. If any queued
+     * request fails, the request is undone, snd no further requests
+     * are processed. Note that change requests processed successfully
+     * prior to the failed request are <i>not</i> undone.
+     *
+     * Any new actors added to the topology during the course of
+     * processing the mutation requests can be obtained with the
+     * _newActors() method.
+     *
+     *  @exception TopologyChangeFailedException If any of the requests fails.
+     */
+    protected void _processTopologyRequests()
+            throws TopologyChangeFailedException {
+        if (_queuedTopologyRequests == null) {
+            return;
+        }
+        _newActors.clear();
+
+        Enumeration enum = _queuedTopologyRequests.elements();
+        while (enum.hasMoreElements()) {
+            TopologyChangeRequest r = (TopologyChangeRequest)enum.nextElement();
+
+            // Record any new actors
+            Enumeration events = r.queuedEvents();
+            while (events.hasMoreElements()) {
+                TopologyEvent e = (TopologyEvent) events.nextElement();
+                if (e.getID() == TopologyEvent.ENTITY_ADDED) {
+                    if (e.entity instanceof Actor &&
+                            !_newActors.includes(e.entity)) {
+                        _newActors.insertLast(e.entity);
+                    }
+                } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
+                    _newActors.removeOneOf(e.entity);
+                }
+            }
+
+            // Change the topology
+            try {
+                r.performRequest();
+            }
+            catch (TopologyChangeFailedException topologyException) {
+                _newActors.clear();
+                throw topologyException;
+            }
+
+            // Inform all listeners, as long as the previous call
+            // didn't throw an exception
+            if (_topologyListeners != null) {
+                r.notifyListeners(_topologyListeners);
+            }
+        }
+        // Clear the request queue
+        _queuedTopologyRequests = null;
+    }
+
     /** Indicate whether this director would like to have write access
      *  during its iteration. By default, the return value is true, indicating
      *  the need for a write access.
@@ -600,8 +719,13 @@ public class Director extends NamedObj implements Executable {
     // The composite of which this is the local director.
     private CompositeActor _container = null;
 
-      // Support for mutations.
+    // Support for mutations.
+    private LinkedList _queuedTopologyRequests = null;
+    private TopologyMulticaster _topologyListeners = null;
+    private ActorListener _actorListener = null;
+    private LinkedList _newActors = null;
+   
+    // Deprecated -- will be deleted
     private LinkedList _pendingMutations = null;
     private LinkedList _mutationListeners = null;
-    private ActorListener _actorListener = null;
 }
