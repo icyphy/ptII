@@ -49,18 +49,13 @@ class PNInterleavingExample {
 	PNCompositeActor myUniverse = new PNCompositeActor();
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
-        //myUniverse.getDirector().registerNewActor(_interleave);
         PNAlternate _alternate = new PNAlternate(myUniverse, "alternate");
-        //myUniverse.getDirector().registerNewActor(_alternate);
         PNRedirect _redirect0 = new PNRedirect(myUniverse, "redirect0");
-        //myUniverse.getDirector().registerNewActor(_redirect0);
         _redirect0.setInitState(0);
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
-        //myUniverse.getDirector().registerNewActor(_redirect1);
         _redirect1.setInitState(1);
         //        PNPlot _plot = new PNPlot(myUniverse, "plot");
-        //_plot.initialize();
-
+        
         //FIXME: Find a neat way of specifying the queue length of input port!
         //FIXME: Need a nice way of doing the following.
         //Maybe a nice method that set all star parameters and links all ports
@@ -94,7 +89,7 @@ class PNInterleavingExample {
         queue = (IORelation)myUniverse.connect(portin, portout, "QT2");
         //portin.getQueue().setCapacity(1);
  
- 	myUniverse.execute();
+ 	myUniverse.start();
         System.out.println("Bye World\n");
 	return;
     }

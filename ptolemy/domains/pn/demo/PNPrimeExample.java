@@ -58,7 +58,7 @@ public class PNPrimeExample {
         portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
-        myUniverse.execute();
+        myUniverse.start();
         System.out.println("Bye World\n");
         return;
     }
