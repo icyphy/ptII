@@ -36,10 +36,9 @@ ME =		ptolemy/domains
 # DT has to come after SDF, sorry.
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
-# PTRTOS_DIR is set by configure in $PTII/mk/ptII.mk to rtos if
-#   java.util.Timer is found.
+# The rtos domain uses java.util.Timer, so it requires JDK 1.3
 DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp \
-		$(PTRTOS_DIR) sr $(PTJAVA3D_DIR) #petrinet
+		rtos sr $(PTJAVA3D_DIR) #petrinet
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -59,6 +58,7 @@ PTAUXALLJARS = \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		gr/gr.jar \
+		rtos/rtos.jar
 
 # Experimental domains 
 PTAUXALLJAR =	experimentalDomains.jar
