@@ -1957,6 +1957,48 @@ if test -d "$MESCAL_USER_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       PSDF is the Parameterized Synchronous Data Flow domain
+#--------------------------------------------------------------------
+
+# PTPSDF_DIR is set to PSDF and used in
+# $PTII/ptolemy/domains/makefile if synthesis.jar was found.
+PTPSDF_DIR=
+
+# Directory that contains the synthesis.jar file
+PSDF_DIR='${PTII}/lib'
+
+# We only need to look for on if $PTII/ptolemy/domains/psdf exists
+PSDF_USER_DIR="$PTII/ptolemy/domains/psdf"
+if test ! -d "$PSDF_USER_DIR"; then
+    AC_MSG_RESULT([$PSDF_USER_DIR is not present,
+	so we need not find the synthesis.jar.])
+else
+    AC_MSG_CHECKING([for synthesis.jar, used by the PSDF domain])
+    AC_ARG_WITH(PSDF_DIR, [  --with-synthesis=DIR       use synthesis.jar from DIR,
+                          defaults to \$PTII/lib],
+	PSDF_DIR=$withval,
+	PSDF_DIR=$PTII/lib)
+
+    if test -f "$PSDF_DIR/synthesis.jar"; then
+	AC_MSG_RESULT([$PSDF_DIR])
+	PTPSDF_DIR=psdf
+    else  
+        AC_MSG_WARN([Failed to find PTII/lib/synthesis.jar
+    If it is not present, you will not be able to use the 
+    Parameterized Synchronous Data Flow domain.])
+	# Note that we don't substitute in the ${PTII} here
+	PSDF_DIR='${PTII}/lib/'
+    fi
+fi
+
+if test -z "$PTPSDF_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PSDF_DIR/synthesis.jar\"/> "
+fi 
+
+#--------------------------------------------------------------------
 #	Test for quicktime
 #--------------------------------------------------------------------
 # PTQUICKTIME_DIR is set to quicktime and used in
@@ -2502,6 +2544,10 @@ AC_SUBST(MATLAB_DIR)
 # Set the location of Matlab's engine libraries
 AC_SUBST(MATLAB_LIBDIR)
 
+# Set to $PTII/lib if $PTII/lib/synthesis.jar was found and used
+# in $PTII/bin/ptinvoke.in
+AC_SUBST(PSDF_DIR)
+
 # Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp (mescal)
 AC_SUBST(PTBOOST_INCLUDE)
@@ -2620,6 +2666,10 @@ AC_SUBST(PTMATLAB_DIR)
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
 AC_SUBST(PTMESCAL_DIR)
+
+# Set to psdf and used in $PTII/ptolemy/domains/makefile if
+# $PTII/lib/synthesis.jar was found
+AC_SUBST(PTPSDF_DIR)
 
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
