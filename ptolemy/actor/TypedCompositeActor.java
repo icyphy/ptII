@@ -283,8 +283,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     }
                 }
             }
-
-               if (conflicts.size() > 0) {
+            if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
                         + " on the following inequalities:");
@@ -293,7 +292,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // This should not happen. The exception means that
             // _checkDeclaredType or typeConstraintList is called on a
             // transparent actor.
-            throw new InternalErrorException(topLevel, ex, null);
+            throw new InternalErrorException(topLevel, ex, 
+                    "Type resolution failed because of an error " +
+                    "during type inference");
         }
     }
 
