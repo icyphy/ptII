@@ -119,8 +119,8 @@ public class TimedSource extends Source implements TimedActor {
         if (attribute == stopTime) {
             double newStopTimeValue = 
                 ((DoubleToken)stopTime.getToken()).doubleValue();
-            Time newStopTime = new Time(this, newStopTimeValue);
             if (_executing) {
+                Time newStopTime = new Time(this, newStopTimeValue);
                 Director director = getDirector();
                 if (director != null) {
                     Time currentTime = director.getCurrentTime();
@@ -132,8 +132,8 @@ public class TimedSource extends Source implements TimedActor {
                             "is earlier than the current time.");
                     }
                 }
+                _stopTime = newStopTime;
             }
-            _stopTime = newStopTime;
         } else {
             super.attributeChanged(attribute);
         }
