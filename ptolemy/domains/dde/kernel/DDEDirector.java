@@ -451,20 +451,11 @@ public class DDEDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  package friendly methods                 ////
-
-    /** Increment the count of actors blocked on an external read.
-    synchronized void _addExternalReadBlock() {
-        _externalReadBlocks++;
-	if( _isDeadlocked() ) {
-	    notifyAll();
-	}
-    }
-     */
+    ////                        protected methods                  ////
 
     /** Increment the count of actors blocked on an internal read.
      */
-    synchronized void _informOfReadBlock(DDEReceiver rcvr, boolean internal) {
+    protected synchronized void _actorReadBlocked(boolean internal) {
         if( internal ) {
             _internalReadBlocks++;
         } else {
@@ -475,34 +466,9 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
-    /** Increment the count of actors blocked on a write.
-     * @param rcvr The DDEReceiver that has a write block.
-     */
-    synchronized void _informOfWriteBlock(DDEReceiver rcvr) {
-        _writeBlocks++;
-	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
-	}
-	_writeBlockedQs.addFirst(rcvr);
-	// _writeBlockedQs.insertFirst(rcvr);
-	if( _isDeadlocked() ) {
-	    notifyAll();
-	}
-    }
-
-    /** Return the initial time table of this director.
-     * @return The initial time table of this actor.
-     */
-    Hashtable _getInitialTimeTable() {
-	if( _initialTimeTable == null ) {
-	    _initialTimeTable = new Hashtable();
-	}
-	return _initialTimeTable;
-    }
-
     /** Decrement the count of actors externally blocked on a read.
      */
-    synchronized void _informOfReadUnBlock(DDEReceiver rcvr, boolean internal) {
+    protected synchronized void _actorReadUnBlocked(boolean internal) {
         if( internal ) {
             if( _internalReadBlocks > 0 ) {
                 _internalReadBlocks--;
@@ -514,6 +480,62 @@ public class DDEDirector extends ProcessDirector {
         }
     }
 
+    /** Increment the count of actors blocked on a write.
+     * @param rcvr The DDEReceiver that has a write block.
+     */
+    protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	}
+	_writeBlockedQs.addFirst(rcvr);
+        _actorWriteBlocked();
+    }
+
+    /** Increment the count of actors blocked on a write.
+     */
+    protected synchronized void _actorWriteBlocked() {
+        _writeBlocks++;
+        if( _isDeadlocked() ) {
+            notifyAll();
+        }
+    }
+
+    /** Decrement the count of actors blocked on a write.
+     *  @param rcvr The DDEReceiver that is no longer
+     *   write blocked.
+     */
+    synchronized void _actorWriteUnBlocked(DDEReceiver rcvr) {
+        if( _writeBlocks > 0 ) {
+            _writeBlocks--;
+        }
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	}
+	_writeBlockedQs.remove(rcvr);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  package friendly methods                 ////
+
+    /** Increment the count of actors blocked on an external read.
+    synchronized void _addExternalReadBlock() {
+        _externalReadBlocks++;
+	if( _isDeadlocked() ) {
+	    notifyAll();
+	}
+    }
+     */
+
+    /** Return the initial time table of this director.
+     * @return The initial time table of this actor.
+     */
+    Hashtable _getInitialTimeTable() {
+	if( _initialTimeTable == null ) {
+	    _initialTimeTable = new Hashtable();
+	}
+	return _initialTimeTable;
+    }
+
     /** Decrement the count of actors internally blocked on a read.
     synchronized void _removeInternalReadBlock() {
         if( _internalReadBlocks > 0 ) {
@@ -521,21 +543,6 @@ public class DDEDirector extends ProcessDirector {
         }
     }
      */
-
-    /** Decrement the count of actors blocked on a write.
-     *  @param rcvr The DDEReceiver that is no longer
-     *   write blocked.
-     */
-    synchronized void _informOfWriteUnBlock(DDEReceiver rcvr) {
-        if( _writeBlocks > 0 ) {
-            _writeBlocks--;
-        }
-	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
-	}
-        _writeBlockedQs.remove(rcvr);
-        // _writeBlockedQs.removeOneOf(rcvr);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -603,7 +610,7 @@ public class DDEDirector extends ProcessDirector {
             int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
-        _informOfWriteUnBlock( smallestQueue );
+        _actorWriteUnBlocked( smallestQueue );
         synchronized( smallestQueue ) {
             smallestQueue.notifyAll();
         }

@@ -514,31 +514,27 @@ public class BasePNDirector extends ProcessDirector {
      *  to write.
      */
     protected synchronized void _actorWriteBlocked(PNQueueReceiver receiver) {
-	_writeBlockCount++;
-        // FIXME: is add correct or should it have been addFirst
-        // used to be insertFirst
 	_writeblockedQueues.add(receiver);
-        /*
-        //Inform the listeners
-        if (!_processlisteners.isEmpty()) {
-            Actor actor = receiver.getWriteBlockedActor();
-            PNProcessEvent event = new PNProcessEvent(actor,
-                    PNProcessEvent.PROCESS_BLOCKED,
-                    PNProcessEvent.BLOCKED_ON_WRITE);
-            Iterator enum = _processlisteners.iterator();
-            while (enum.hasNext()) {
-                PNProcessListener lis = (PNProcessListener)enum.next();
-                lis.processStateChanged(event);
-            }
-        }
-        */
+        _actorWriteBlocked();
+	return;
+    }
+
+    /** Increment by 1 the count of processes blocked while writing to a
+     *  receiver and inform all the process listeners that the relevant process
+     *  has blocked on a write. Also check for a resultant deadlock or a
+     *  pausing of the
+     *  execution. If either of them is detected, then notify the directing
+     *  thread of the same.
+     *  @param receiver The receiver to which the blocking process was trying
+     *  to write.
+     */
+    protected synchronized void _actorWriteBlocked() {
+	_writeBlockCount++;
 	if (_isDeadlocked() || _isPaused()) {
 	    notifyAll();
 	}
 	return;
     }
-
-
 
     /** Decrease by 1 the count of processes blocked on a write to a receiver.
      *  Inform all the process listeners that the relevant process has resumed

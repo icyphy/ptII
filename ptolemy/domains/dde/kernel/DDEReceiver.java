@@ -157,7 +157,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
 	    Token token = super.get();
 	    if( _writePending ) {
-                director._informOfWriteUnBlock( this );
+                director._actorWriteUnBlocked( this );
 		_writePending = false;
 		notifyAll();
 	    }
@@ -256,7 +256,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ////////////////////////
 	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
 	        _readPending = true;
-                director._informOfReadBlock(this, true);
+                director._actorReadBlocked(true);
 	        while( _readPending && !_terminate ) {
 		    workspace.wait( this );
 	        }
@@ -268,7 +268,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    if( _terminate ) {
 	        if( _readPending ) {
 		    _readPending = false;
-		    director._informOfReadBlock(this, true);
+		    director._actorReadBlocked(true);
 	        }
                 throw new TerminateProcessException("");
 	    }
@@ -338,7 +338,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readPending ) {
-		    director._informOfReadUnBlock(this, true);
+		    director._actorReadUnBlocked(true);
 		    _readPending = false;
 		    notifyAll();
 		}
@@ -347,7 +347,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
             if ( !super.hasRoom() && !_terminate ) {
 		_writePending = true;
-                director._informOfWriteBlock(this);
+                director._actorWriteBlocked(this);
 		while( _writePending && !_terminate ) {
 		    workspace.wait( this );
 		}
@@ -356,7 +356,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( _terminate ) {
 		if( _writePending ) {
 		    _writePending = false;
-                    director._informOfWriteBlock( this );
+                    director._actorWriteBlocked( this );
 		}
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
