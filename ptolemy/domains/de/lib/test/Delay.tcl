@@ -83,7 +83,8 @@ test Delay-3.2 {test with negative delay} {
     $delayAmount setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.delay: Cannot have negative delay.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.delay:
+Cannot have negative delay.}}
 
 test Delay-4.1 {test a self loop with the zero delay} {
     set e0 [deModel 3.0]
@@ -99,7 +100,8 @@ test Delay-4.1 {test a self loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Zero delay self-loop on actor: .top.add}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+Zero delay self-loop on actor: .top.add}}
 
 test Delay-5.1 {test a more complex loop with the zero delay} {
     set e0 [deModel 3.0]
@@ -120,7 +122,8 @@ test Delay-5.1 {test a more complex loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Found zero delay loop including: .top.add, .top.gain}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+Found zero delay loop including: .top.add, .top.gain}}
 
 test Delay-5.2 {fix the zero delay with a non-zero delay} {
     set delay [java::new ptolemy.domains.de.lib.Delay $e0 delay]

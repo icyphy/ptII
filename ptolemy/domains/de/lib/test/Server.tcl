@@ -80,7 +80,8 @@ test Server-3.2 {test with negative service time} {
     $serviceTime setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.server: Cannot have negative service time.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.server:
+Cannot have negative service time.}}
 
 test Server-4.0 {Test with service time input} {
     set clock2 [java::new ptolemy.actor.lib.Clock $e0 clock2]
