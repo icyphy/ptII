@@ -54,21 +54,19 @@ JSRCS = \
 	GenericPort.java \
 	GenericPortForTcl.java \
 	GraphElement.java \
+	HasValue.java \
 	IntervalTag.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
-	NonPrimitiveValue.java \
 	NoTag.java \
 	NoTagDoubleParticle.java \
-	NoTagNonPrimitive.java \
-	NoTagPrimitive.java \
+	NoTagHasValue.java \
 	NoValue.java \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
 	Particle.java \
-	PrimitiveValue.java \
 	POElement.java \
 	Port.java \
 	Relation.java \
@@ -84,8 +82,8 @@ JSRCS = \
 	TagInterface.java \
 	Target.java \
 	TimedTag.java \
-	TimedPrimitive.java \
-	TimedNonPrimitive.java \
+	TimedHasValue.java \
+	TimedNoValue.java \
 	ThreadedEntity.java \
 	Universe.java \
 	Value.java \
