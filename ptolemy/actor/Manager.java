@@ -283,7 +283,6 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
         System.out.println(timeAndMemory(startTime));
-
     }
 
     /** If the state is not IDLE, set a flag to request that
@@ -302,6 +301,9 @@ public class Manager extends NamedObj implements Runnable {
      *  resume from running.
      */
     public void finish() {
+
+        (new IllegalActionException(this)).printStackTrace();
+
         // Set this regardless of whether the model is running to
         // avoid race conditions.  The model may not have gotten around
         // to starting when finish is requested.
@@ -450,18 +452,12 @@ public class Manager extends NamedObj implements Runnable {
                 }
                 _actorsToInitialize.clear();
             }
-            // Set the appropriate write access, because we're about to
-            // go into an iteration.
-            if (!_needWriteAccess()) {
-                _workspace.setReadOnly(true);
-            }
             if (_container.prefire()) {
                 // Invoke initialize on actors that have been added.
                 _container.fire();
                 result = _container.postfire();
             }
         } finally {
-            _workspace.setReadOnly(false);
             _workspace.doneReading();
         }
         return result;

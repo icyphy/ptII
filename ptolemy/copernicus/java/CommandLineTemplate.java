@@ -271,7 +271,6 @@ public class CommandLineTemplate {
                 model.setManager(new Manager(model.workspace(), "manager"));
                 manager = model.getManager();
             }
-            model.workspace().setReadOnly(true);
             long startTime = System.currentTimeMillis();
             manager.startRun();
             System.out.println("Execution stats:");
