@@ -104,7 +104,7 @@ test TypedIOPort-3.2 {set resolved types} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set tDouble [java::new ptolemy.data.DoubleToken]
-    $p1 set [$tDouble getClass]
+    $p1 setValue [$tDouble getClass]
 
     set rt1 [[[$p1 resolvedType] getClass] getName]
 

@@ -133,6 +133,35 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
+    /** Returns the resolved type of this term.
+     *  This method is read-synchronized on the workspace.
+     *  @return a token whose type is the resolved type.
+     */
+    public Object getValue() {
+	try {
+	    workspace().getReadAccess();
+	    return _resolvedType.getClass();
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
+    /** Checks if the type of this port is undeclared.  If this call
+     *  returns true, set() can be used to set the resolved type.
+     *  This is a method in the InequalityTerm interface.
+     *  This method is read-synchronized on the workspace.
+     *  @return true if the type of this port is undeclared; false
+     *   otherwise.
+     */
+    public boolean isSettable() {
+	try {
+	    workspace().getReadAccess();
+	    return _declaredType==null;
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
     /** Returns the resolved type of this object.  The type is represented
      *  by an instance of a token of the correct type.
      *  NOTE: The reason that the resolved type is represented by an
@@ -220,43 +249,6 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
         }
     }
 
-    /** Sets the resolved type.
-     *  This is a method in the InequalityTerm interface.
-     *  This method is write-synchronized on the workspace.
-     *  @param e resolved type.
-     *  @exception IllegalActionException this port has a non-null
-     *   declared type, so the resolved type cannot be set here.
-     *  @exception IllegalArgumentException the parameter e is not an
-     *   instance of a Token.
-     */
-    public void set(Object e)
-	    throws IllegalActionException {
-	try {
-	    workspace().getWriteAccess();
-	    if (_declaredType != null) {
-	        throw new IllegalActionException("TypedIOPort.set: The port " +
-			"has a non-null declared type.");
-	    }
-
-	    if ( !(e instanceof Class)) {
-	        throw new IllegalArgumentException("TypedIOPort.set: " +
-			"the parameter is not an instance of Class.");
-	    }
-
-	    try {
-	        _resolvedType = (Token)(((Class)e).newInstance());
-	    } catch (InstantiationException instan) {
-	        throw new InternalErrorException("TypedIOPort.set: Can't " +
-			"instantiate a token class. " + instan.getMessage());
-	    } catch (IllegalAccessException illegal) {
-	        throw new InternalErrorException("TypedIOPort.set: Internal " +
-			"error: " + illegal.getMessage());
-	    }
-        } finally {
-	    workspace().doneWriting();
-	}
-    }
-
     /** Override the base class to ensure that the proposed container
      *  implements the TypedActor interface (the base class ensures that
      *  the container implements the Actor interface) or null. A null
@@ -301,32 +293,40 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
-    /** Checks if the type of this port is undeclared.  If this call
-     *  returns true, set() can be used to set the resolved type.
+    /** Sets the resolved type.
      *  This is a method in the InequalityTerm interface.
-     *  This method is read-synchronized on the workspace.
-     *  @return true if the type of this port is undeclared; false
-     *   otherwise.
+     *  This method is write-synchronized on the workspace.
+     *  @param e resolved type.
+     *  @exception IllegalActionException this port has a non-null
+     *   declared type, so the resolved type cannot be set here.
+     *  @exception IllegalArgumentException the parameter e is not an
+     *   instance of a Token.
      */
-    public boolean settable() {
+    public void setValue(Object e)
+	    throws IllegalActionException {
 	try {
-	    workspace().getReadAccess();
-	    return _declaredType==null;
-	} finally {
-	    workspace().doneReading();
-	}
-    }
+	    workspace().getWriteAccess();
+	    if (_declaredType != null) {
+	        throw new IllegalActionException("TypedIOPort.set: The port " +
+			"has a non-null declared type.");
+	    }
 
-    /** Returns the resolved type of this term.
-     *  This method is read-synchronized on the workspace.
-     *  @return a token whose type is the resolved type.
-     */
-    public Object value() {
-	try {
-	    workspace().getReadAccess();
-	    return _resolvedType.getClass();
-	} finally {
-	    workspace().doneReading();
+	    if ( !(e instanceof Class)) {
+	        throw new IllegalArgumentException("TypedIOPort.set: " +
+			"the parameter is not an instance of Class.");
+	    }
+
+	    try {
+	        _resolvedType = (Token)(((Class)e).newInstance());
+	    } catch (InstantiationException instan) {
+	        throw new InternalErrorException("TypedIOPort.set: Can't " +
+			"instantiate a token class. " + instan.getMessage());
+	    } catch (IllegalAccessException illegal) {
+	        throw new InternalErrorException("TypedIOPort.set: Internal " +
+			"error: " + illegal.getMessage());
+	    }
+        } finally {
+	    workspace().doneWriting();
 	}
     }
 
