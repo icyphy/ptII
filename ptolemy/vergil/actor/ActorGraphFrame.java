@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
-import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -474,7 +473,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             Query query = new Query();
             query.setTextWidth(60);
             query.addLine("class", "Class name", _lastClassName);
-            ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this, "Open URL", query);
+            ComponentDialog dialog = new ComponentDialog(
+                    ActorGraphFrame.this, "Instantiate Entity", query);
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller =
