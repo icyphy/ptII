@@ -1036,10 +1036,18 @@ public class Plot extends PlotBox {
                 // a disconnected point
                 connected = false;
 		// deal with 'move: 1 2' and 'move:2 2'
-		line = line.substring(5,line.length()).trim();
+		line = line.substring(5, line.length()).trim();
+            } else if (line.startsWith("move")) {
+                // a disconnected point
+                connected = false;
+		// deal with 'move 1 2' and 'move2 2'
+		line = line.substring(4, line.length()).trim();
             } else if (line.startsWith("draw:")) {
                 // a connected point, if connect is enabled.
-		line = line.substring(5,line.length()).trim();
+		line = line.substring(5, line.length()).trim();
+            } else if (line.startsWith("draw")) {
+                // a connected point, if connect is enabled.
+		line = line.substring(4, line.length()).trim();
             }
             // See if an x,y or x<Space>y x<Taby> point is given
 	        line = line.trim();
