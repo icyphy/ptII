@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Thu Nov 20 10:25:51 2003 by cxh]-
+# -[Fri Nov 21 07:26:07 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -204,7 +204,7 @@ awk ' BEGIN {
     }
     END {
         print "</menu>" 
-    }' date=`date` /tmp/coveragerating.out >/tmp/coveragerating.toc
+    }' date="`date`" /tmp/coveragerating.out >/tmp/coveragerating.toc
 
 cp $summaryfile $summaryfile.bak
 cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
