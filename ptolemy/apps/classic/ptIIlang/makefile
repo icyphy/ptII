@@ -75,6 +75,7 @@ OPTIONAL_FILES = \
 KRUFT = 
 
 all: ptIIlang
+	ptIIlang /users/ptolemy/src/domains/cgc/stars/CGCDeMux.pl
 
 jclass: $(PTLIB)
 

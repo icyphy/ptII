@@ -26,7 +26,7 @@ fi
 
 
 # Stars from Ptolemy Classic CGC.  Include only stars and dsp
-stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis" | head -10`
+stars=`find $cgc -name "*.pl" | egrep -v "targets|tcltk|contrib|vis"`
 #stars="/users/ptolemy/src/domains/cgc/stars/CGCAdd.pl /users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
 
 for star in $stars

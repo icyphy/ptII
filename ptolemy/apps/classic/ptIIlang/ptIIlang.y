@@ -2159,7 +2159,7 @@ void genDef ()
 		fprintf (fp, "\n    public String %s = \n        ",
 			codeBlockNames[i]);
 		genCodeBlock( fp, codeBlocks[i], 0);
-		fprintf (fp, ";\n");
+	        fprintf (fp, ";\n");
 	    } else {
                 strcpy (str1, codeBlockArgs[i]);
 		convertConstCharToString(str1);
@@ -2167,7 +2167,7 @@ void genDef ()
 			codeBlockNames[i], str1);
 		fprintf (fp, "        return\n        ");
 		genCodeBlock( fp, codeBlocks[i], 1);
-		genCodeBlock( fp, "\n");
+	        fprintf (fp, ";\n    }\n");
 	    }
 	}
 

@@ -1,7 +1,8 @@
 PTIILANG=../../ptIIlang
 
-$(PTIILANG):
+CGCAdd.java: $(PTIILANG)
+	$(PTIILANG) CGCAdd.pl
+
+$(PTIILANG): ../../ptIIlang.y
 	cd ../..; $(MAKE)
 
-CGCAdd.java: $(PTIILANG)
-	$(PTIILANG) CGCAdd.java
