@@ -2603,9 +2603,7 @@ test MoMLParser-13.3 {test with weird configure text} {
     set toplevel [$parser parse {
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-<configure><?svg
-<!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
-  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+<configure>
 <svg>
   <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
   <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
@@ -2613,7 +2611,7 @@ test MoMLParser-13.3 {test with weird configure text} {
   <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
   <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
   <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> ?>
+</svg>
 </configure>
     </property>
 </entity>
@@ -2624,8 +2622,7 @@ test MoMLParser-13.3 {test with weird configure text} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-        <configure><?svg <!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
-  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+        <configure>
 <svg>
   <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
   <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
@@ -2633,11 +2630,49 @@ test MoMLParser-13.3 {test with weird configure text} {
   <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
   <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
   <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> ?>
+</svg> 
 </configure>
     </property>
 </entity>
 }
+
+test MoMLParser-13.4 {test with weird configure text containing escaped tags with no processing instruction} {
+    # Uses 13.1 setup
+    $parser reset
+    set toplevel [$parser parse {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+      <configure>       
+          <group>
+    <!-- Blank composite actor. -->
+    <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
+      <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;"/>
+    </entity>
+          </group>
+      </configure>
+    </class>
+</entity>
+}]
+    set attrib [$toplevel getAttribute "utilities.actor.ParamWithEscapedValue"]
+    list [$toplevel exportMoML] [$attrib toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+        <configure><?moml
+            <group>
+                <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
+                    <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
+                    </property>
+                </entity>
+            </group>
+        ?></configure>
+    </class>
+</entity>
+} {ptolemy.data.expr.Parameter {.top.utilities.actor.ParamWithEscapedValue} "hello"}}
 
 ######################################################################
 ####
