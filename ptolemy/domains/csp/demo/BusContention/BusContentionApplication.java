@@ -471,7 +471,7 @@ public class BusContentionApplication implements ActionListener {
 
         /** Create a listener on the given graph pane
          */
-        public StateListener (GraphPane pane) {
+        public StateListener(GraphPane pane) {
             _graphPane = pane;
         }
 
