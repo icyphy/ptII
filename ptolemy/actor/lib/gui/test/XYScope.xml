@@ -62,9 +62,8 @@
     </entity>
     <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" value="sin">
-        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
