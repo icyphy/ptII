@@ -218,10 +218,6 @@ public class ClassChanges implements MoMLFilter {
 //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
 //            "ptolemy.domains.de.kernel.DEEDirector");
 
-        // FIXME: In case someone used DEEDirector already.
-        _classChanges.put("ptolemy.domains.de.kernel.DEEDirector",
-                "ptolemy.domains.de.kernel.DEDirector");
-
     }
     
     // Set of class names that are obsolete and should be simply
