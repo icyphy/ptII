@@ -65,7 +65,6 @@ public final class ImageDisplay extends SDFAtomicActor {
     }
 
     public void wrapup() throws IllegalActionException {
-        //      _frame.setVisible(false);
         _frame.dispose();
     }
 
@@ -80,18 +79,11 @@ public final class ImageDisplay extends SDFAtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            /*            _imagesource = new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize);
-            _imagesource.setAnimated(true);
-            */
             if(_frame != null) {
                 _frame.dispose();
             }
-            _frame = new _InputFrame("ImageDisplay", xsize, ysize);   
-            _frame._panel.setImage(_RGBbuffer);
-            /*
-              _image = _frame._panel.createImage(_imagesource);
-            */
-            
+            _frame = new _PictureFrame("ImageDisplay", xsize, ysize);   
+            _frame._picture.setImage(_RGBbuffer);
 
             System.out.println("new buffer");
         }     
@@ -109,67 +101,26 @@ public final class ImageDisplay extends SDFAtomicActor {
                     (frame[j][i] & 255);
              }  
 
-        //        Image img = _frame._panel.createImage(
-         //       new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize));
-        //        if(s == null) 
-        
-        _frame._panel.displayImage();
-        // _imagesource.newPixels();
-        //        _frame._panel.BLTImage(_image);
-        
-        //      System.out.println("image drawn");
+        _frame._picture.displayImage();
     }
 
-    private class _InputFrame extends Frame {
-        public _InputFrame(String title, int xsize, int ysize) {
+    private class _PictureFrame extends Frame {
+        public _PictureFrame(String title, int xsize, int ysize) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            _panel = new Picture(xsize, ysize);
+            _picture = new Picture(xsize, ysize);
             this.setVisible(true);
-            add("Center",_panel);
+            add("Center",_picture);
             this.pack();
 
         }
-        private Picture _panel;        
+        private Picture _picture;        
      
     }
-    /*
 
-    private class _VideoPanel extends Canvas {
-        public _VideoPanel(int width, int height) {
-            super(); 
-            _buffer = createImage(width, height);
-            this.setSize(width, height);
-            this.validate();
-            
-        }
-        
-        public void paint(Graphics graphics) {
-            if(_buffer == null) return;
-            graphics.drawImage(_buffer, 0, 0, null);
-        }
-
-        public void update(Graphics g) {
-            paint(g);
-        }
-
-        public void BLTImage(Image im) {
-            _buffer = im;
-            prepareImage(im,null);
-            Graphics g = getGraphics();
-            paint(g);
-            g.dispose();
-
-        }
-        
-        private Image _buffer;
-    }
-    */
-    private _InputFrame _frame;
+    private _PictureFrame _frame;
     private IOPort _port_image;
     private int _oldxsize, _oldysize;
-    //  private Image _image;
-    // private MemoryImageSource _imagesource;
     private int _RGBbuffer[] = null;
 
 }
