@@ -72,20 +72,21 @@ test Variable-1.0 {Check constructors} {
 #################################
 #### scope
 #
-test Variable-2.0 {Check addition of variables to the scope} {
-    set e [java::new {ptolemy.kernel.Entity String} parent]
-    set tok1 [java::new  {ptolemy.data.IntToken int} 1]
-    set tok2 [java::new  {ptolemy.data.IntToken int} 2]
-    set param [java::new ptolemy.data.expr.Parameter $e param $tok1]
-    set var1 [java::new ptolemy.data.expr.Variable $e var1 $tok2]
-    set var2 [java::new ptolemy.data.expr.Variable $e var2]
-    $var2 setExpression "param+var1"
-    set list [java::new ptolemy.kernel.util.NamedList]
-    $list prepend $var1
-    $var2 {addToScope java.util.Enumeration} [$list elements]
-    set tok [$var2 getToken]
-    $tok toString
-} {3}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-2.0 {Check addition of variables to the scope} {
+#     set e [java::new {ptolemy.kernel.Entity String} parent]
+#     set tok1 [java::new  {ptolemy.data.IntToken int} 1]
+#     set tok2 [java::new  {ptolemy.data.IntToken int} 2]
+#     set param [java::new ptolemy.data.expr.Parameter $e param $tok1]
+#     set var1 [java::new ptolemy.data.expr.Variable $e var1 $tok2]
+#     set var2 [java::new ptolemy.data.expr.Variable $e var2]
+#     $var2 setExpression "param+var1"
+#     set list [java::new ptolemy.kernel.util.NamedList]
+#     $list prepend $var1
+#     $var2 {addToScope java.util.Enumeration} [$list elements]
+#     set tok [$var2 getToken]
+#     $tok toString
+# } {3}
 
 test Variable-2.1 {Check scope with sets of params} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -258,96 +259,101 @@ test Variable-5.4 {Check setting expression to null} {
 
 #################################
 ####
-test Variable-6.0 {Check addToScope} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression {"a"}
-    set p2 [java::new ptolemy.data.expr.Variable $e P2]
-    $p2 setExpression {"b"}
-    set v1 [java::new ptolemy.data.expr.Variable]
-    $v1 setName "V1"
-    $v1 setExpression {"c"}
-    set v2 [java::new ptolemy.data.expr.Variable]
-    $v2 setName "V2"
-    $v2 setExpression "P1+P2+V1"
-    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
-    $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    [$v2 getToken] toString
-} {"abc"}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.0 {Check addToScope} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression {"a"}
+#     set p2 [java::new ptolemy.data.expr.Variable $e P2]
+#     $p2 setExpression {"b"}
+#     set v1 [java::new ptolemy.data.expr.Variable]
+#     $v1 setName "V1"
+#     $v1 setExpression {"c"}
+#     set v2 [java::new ptolemy.data.expr.Variable]
+#     $v2 setName "V2"
+#     $v2 setExpression "P1+P2+V1"
+#     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+#     $v2 {addToScope ptolemy.data.expr.Variable} $v1
+#     [$v2 getToken] toString
+# } {"abc"}
 
-test Variable-6.1 {Check shadowing} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression {"a"}
-    set p2 [java::new ptolemy.data.expr.Variable $e P2]
-    $p2 setExpression {"b"}
-    set v1 [java::new ptolemy.data.expr.Variable]
-    $v1 setName "P1"
-    $v1 setExpression {"c"}
-    set v2 [java::new ptolemy.data.expr.Variable]
-    $v2 setName "V2"
-    $v2 setExpression "P1+P2"
-    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
-    $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    [$v2 getToken] toString
-} {"cb"}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.1 {Check shadowing} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression {"a"}
+#     set p2 [java::new ptolemy.data.expr.Variable $e P2]
+#     $p2 setExpression {"b"}
+#     set v1 [java::new ptolemy.data.expr.Variable]
+#     $v1 setName "P1"
+#     $v1 setExpression {"c"}
+#     set v2 [java::new ptolemy.data.expr.Variable]
+#     $v2 setName "V2"
+#     $v2 setExpression "P1+P2"
+#     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+#     $v2 {addToScope ptolemy.data.expr.Variable} $v1
+#     [$v2 getToken] toString
+# } {"cb"}
 
-test Variable-6.2 {Check shadowing} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression {"a"}
-    set p2 [java::new ptolemy.data.expr.Variable $e P2]
-    $p2 setExpression {"b"}
-    set v1 [java::new ptolemy.data.expr.Variable]
-    $v1 setName "P1"
-    $v1 setExpression {"c"}
-    set v2 [java::new ptolemy.data.expr.Variable]
-    $v2 setName "V2"
-    $v2 setExpression "P1+P2"
-    $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
-    [$v2 getToken] toString
-} {"ab"}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.2 {Check shadowing} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression {"a"}
+#     set p2 [java::new ptolemy.data.expr.Variable $e P2]
+#     $p2 setExpression {"b"}
+#     set v1 [java::new ptolemy.data.expr.Variable]
+#     $v1 setName "P1"
+#     $v1 setExpression {"c"}
+#     set v2 [java::new ptolemy.data.expr.Variable]
+#     $v2 setName "V2"
+#     $v2 setExpression "P1+P2"
+#     $v2 {addToScope ptolemy.data.expr.Variable} $v1
+#     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+#     [$v2 getToken] toString
+# } {"ab"}
 
 test Variable-6.3 {check getScope} {
     set namelist [$v2 getScope]
     enumToFullNames [$namelist elements]
 } {.E.P2 .E.P1}
 
-test Variable-6.4 {Check removeFromScope} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression {"a"}
-    set p2 [java::new ptolemy.data.expr.Variable $e P2]
-    $p2 setExpression {"b"}
-    set v1 [java::new ptolemy.data.expr.Variable]
-    $v1 setName "P1"
-    $v1 setExpression {"c"}
-    set v2 [java::new ptolemy.data.expr.Variable]
-    $v2 setName "V2"
-    $v2 setExpression "P1+P2"
-    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
-    $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    set r1 [[$v2 getToken] toString]
-    $v2 {removeFromScope ptolemy.data.expr.Variable} $v1
-    catch {[[$v2 getToken] toString]} r2
-    list $r1 $r2
-} {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
-Error evaluating expression: "P1+P2"
-In variable: .V2
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.}}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.4 {Check removeFromScope} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression {"a"}
+#     set p2 [java::new ptolemy.data.expr.Variable $e P2]
+#     $p2 setExpression {"b"}
+#     set v1 [java::new ptolemy.data.expr.Variable]
+#     $v1 setName "P1"
+#     $v1 setExpression {"c"}
+#     set v2 [java::new ptolemy.data.expr.Variable]
+#     $v2 setName "V2"
+#     $v2 setExpression "P1+P2"
+#     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+#     $v2 {addToScope ptolemy.data.expr.Variable} $v1
+#     set r1 [[$v2 getToken] toString]
+#     $v2 {removeFromScope ptolemy.data.expr.Variable} $v1
+#     catch {[[$v2 getToken] toString]} r2
+#     list $r1 $r2
+# } {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
+# Error evaluating expression: "P1+P2"
+# In variable: .V2
+# Caused by:
+#  ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.}}
 
-test Variable-6.5 {Check that removeFromScope does not remove container's variables} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression {"a"}
-    set p2 [java::new ptolemy.data.expr.Variable $e P2]
-    $p2 setExpression {P1}
-    $p2 getToken
-    $p2 {removeFromScope java.util.Enumeration} [$e getAttributes]
-    [$p2 getToken] toString
-} {"a"}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-6.5 {Check that removeFromScope does not remove container's variables} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression {"a"}
+#     set p2 [java::new ptolemy.data.expr.Variable $e P2]
+#     $p2 setExpression {P1}
+#     $p2 getToken
+#     $p2 {removeFromScope java.util.Enumeration} [$e getAttributes]
+#     [$p2 getToken] toString
+# } {"a"}
 
 #################################
 ####
@@ -361,18 +367,19 @@ test Variable-7.0 {Check clone} {
     list $r1 [string compare $r2 [java::null]]
 } {{"1.0"} 0}
 
-test Variable-7.1 {Check clone} {
-    set e [java::new {ptolemy.kernel.Entity String} E]
-    set p1 [java::new ptolemy.data.expr.Variable $e P1]
-    $p1 setExpression P3
-    set p3 [java::new ptolemy.data.expr.Variable $e P3]
-    $p3 setExpression 3.0
-    set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
-    $p2 {addToScope ptolemy.data.expr.Variable} $p3
-    set r1 [[$p2 getToken] toString]
-    set r2 [$p2 getContainer]
-    list $r1 [string compare $r2 [java::null]]
-} {3.0 0}
+# NOTE: Cannot add individual variables to scope anymore.
+# test Variable-7.1 {Check clone} {
+#     set e [java::new {ptolemy.kernel.Entity String} E]
+#     set p1 [java::new ptolemy.data.expr.Variable $e P1]
+#     $p1 setExpression P3
+#     set p3 [java::new ptolemy.data.expr.Variable $e P3]
+#     $p3 setExpression 3.0
+#     set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
+#     $p2 {addToScope ptolemy.data.expr.Variable} $p3
+#     set r1 [[$p2 getToken] toString]
+#     set r2 [$p2 getContainer]
+#     list $r1 [string compare $r2 [java::null]]
+# } {3.0 0}
 
 #################################
 ####
