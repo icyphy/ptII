@@ -40,7 +40,6 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.actor.lib.gui.SketchedSource;
 import ptolemy.actor.util.*;
-import ptolemy.domains.sdf.gui.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 
