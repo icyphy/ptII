@@ -51,7 +51,7 @@ proc autoShallowCG {autoDirectory} {
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
 	    set elapsedTime [time {sootCodeGeneration $file}]
-	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
+	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds for $file"
 	    list {}
 	} {{}}
 	java::call System gc
