@@ -34,8 +34,7 @@ import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
-/** 
-/* A Relation serves as a connection class between Entities in a 
+/** A Relation serves as a connection class between Entities in a 
 hierarchical graph. A Relation connects n links such that each link has 
 access to the other n-1 links. In our case, a "link" is a Port. We say 
 that a Relation is <\EM> dangling </EM> if it has only one Port connected 
@@ -108,7 +107,7 @@ public class Relation extends GraphElement {
 
     /** Initialize this Relation.
      */
-    public void init() {}
+    public void systemInit() {}
 
     /** Determine if the Relation is dangling? By dangling, we mean that the
      *  Relation has exactly one Port connection.
