@@ -376,12 +376,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         }
     }
 
-    /** Create and register all of the change listeners for this graph, and
-     *  initialize the change counter of the graph.
+    /** Initialize the list of analyses that are associated with this graph,
+     *  and initialize the change counter of the graph. 
+     *  @see ptolemy.graph.analysis.Analysis.
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
-        _transitiveClosureListener = new Analysis(this);
+        _transitiveClosureAnalysis = new Analysis(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -407,7 +408,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
-        if (!_transitiveClosureListener.obsolete()) {
+        if (!_transitiveClosureAnalysis.obsolete()) {
             _closure = _transitiveClosure;
             return;
         }
@@ -446,7 +447,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
         _closure = _transitiveClosure;
         _tranClosureTranspose = null;
-        _transitiveClosureListener.registerComputation();
+        _transitiveClosureAnalysis.registerComputation();
     }
 
     // compute the transposition of transitive closure and point _closure
@@ -719,8 +720,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private boolean[][] _closure = null;
     private boolean[][] _tranClosureTranspose = null;
 
-    // The graph listener for computation of the transitive closure.
-    private Analysis _transitiveClosureListener;
+    // The graph analysis for computation of the transitive closure.
+    private Analysis _transitiveClosureAnalysis;
 
     private Object _bottom = null;
     private Object _top = null;

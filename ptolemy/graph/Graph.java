@@ -91,8 +91,6 @@ Shahrooz Shahparnia
 */
 public class Graph implements Cloneable {
 
-    // FIXME: Use the term "analysis" consistently in place of "listener"
-
     /** Construct an empty graph.
      */
     public Graph() {
@@ -226,22 +224,23 @@ public class Graph implements Cloneable {
         }
     }
 
-    /** Add a listener to the set of listeners that this graph broadcasts to.
-     *  @param listener The listener.
+    /** Add an analysis to the list of analyses that this graph is associated
+     *  with.
+     *  @param analysis The analysis.
      *  @exception IllegalArgumentException If the graph associated with the
-     *  listener is not equal to this graph, or if the graph already contains
-     *  the listener in its list of listeners.
+     *  analysis is not equal to this graph, or if the graph already contains
+     *  the analysis in its list of analyses.
      */
-    public void addListener(Analysis listener) {
-        if (listener.graph() != this) {
+    public void addAnalysis(Analysis analysis) {
+        if (analysis.graph() != this) {
             throw new IllegalArgumentException("Invalid associated graph.\n" +
-                    "The listener:\n" + listener + "\n");
+                    "The analysis:\n" + analysis + "\n");
         }
-        if (_analysisList.contains(listener)) {
+        if (_analysisList.contains(analysis)) {
             throw new IllegalArgumentException("Attempt to add " +
-                    "duplicate listener.\nThe listener:\n" + listener);
+                    "duplicate analysis.\nThe analysis:\n" + analysis);
         }
-        _analysisList.add(listener);
+        _analysisList.add(analysis);
     }
 
     /** Add an unweighted node to this graph.
@@ -302,7 +301,7 @@ public class Graph implements Cloneable {
      *  of changes to the graph.
      *  This counter is monitored by {@link Analysis}s to determine
      *  if associated computations are obsolete. Upon overflow, the counter
-     *  resets to zero, broadcasts a change to all graph listeners, and
+     *  resets to zero, broadcasts a change to all graph analyses, and
      *  begins counting again.
      *  @return The present value of the counter.
      */
@@ -1163,9 +1162,9 @@ public class Graph implements Cloneable {
         return graph;
     }
 
-    /** Create and register all of the change listeners for this graph, and
-     *  initialize the change counter of the graph.
-     *  @see Analysis.
+    /** Initialize the list of analyses that are associated with this graph,
+     *  and initialize the change counter of the graph. 
+     *  @see ptolemy.graph.analysis.Analysis.
      */
     protected void _initializeAnalyses() {
         _analysisList = new ArrayList();
@@ -1176,15 +1175,15 @@ public class Graph implements Cloneable {
     /** Register a change to the graph by updating the change counter.
      *  This method must be called after any change to the graph
      *  that may affect (invalidate) any of the computations associated with
-     *  the change listeners in the graph.
+     *  analyses that this graph is associated with.
      *  @see Analysis.
      */
     protected void _registerChange() {
         if (_changeCount == Long.MAX_VALUE) {
-            // Invalidate all of the change listeners.
-            Iterator listeners = _analysisList.iterator();
-            while (listeners.hasNext()) {
-                ((Analysis)(listeners.next())).reset();
+            // Invalidate all of the associated analyses.
+            Iterator analyses = _analysisList.iterator();
+            while (analyses.hasNext()) {
+                ((Analysis)(analyses.next())).reset();
             }
             _changeCount = 0;
         } else {
@@ -1411,7 +1410,4 @@ public class Graph implements Cloneable {
     // The analysis for computation of self loop edges.
     private SelfLoopAnalysis _selfLoopAnalysis;
 
-    // The set of self-loop edges in this graph. Recomputation requirements
-    // of this data structure are tracked by _selfLoopListener.
-    private ArrayList _selfLoopEdges;
 }

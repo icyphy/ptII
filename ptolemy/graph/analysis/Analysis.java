@@ -42,7 +42,7 @@ public class Analysis {
      */
     public Analysis(Graph graph) {
         _graph = graph;
-        _graph.addListener(this);
+        _graph.addAnalysis(this);
         reset();
     }
 
@@ -78,7 +78,7 @@ public class Analysis {
                     + "given graph. The offending analysis: " + toString());
         }
         clone._graph = graph;
-        graph.addListener(clone);
+        graph.addAnalysis(clone);
         clone.reset();
         return clone;
     }

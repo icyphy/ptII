@@ -623,7 +623,7 @@ public class DirectedGraph extends Graph {
      *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
-        if (_sinkNodeListener.obsolete()) {
+        if (_sinkNodeAnalysis.obsolete()) {
             _sinkNodes = new ArrayList();
             Iterator nodes = nodes().iterator();
             while (nodes.hasNext()) {
@@ -632,7 +632,7 @@ public class DirectedGraph extends Graph {
                     _sinkNodes.add(node);
                 }
             }
-            _sinkNodeListener.registerComputation();
+            _sinkNodeAnalysis.registerComputation();
         }
         return Collections.unmodifiableList(_sinkNodes);
     }
@@ -652,7 +652,7 @@ public class DirectedGraph extends Graph {
      *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
-        if (_sourceNodeListener.obsolete()) {
+        if (_sourceNodeAnalysis.obsolete()) {
             _sourceNodes = new ArrayList();
             Iterator nodes = nodes().iterator();
             while (nodes.hasNext()) {
@@ -661,7 +661,7 @@ public class DirectedGraph extends Graph {
                     _sourceNodes.add(node);
                 }
             }
-            _sourceNodeListener.registerComputation();
+            _sourceNodeAnalysis.registerComputation();
         }
         return Collections.unmodifiableList(_sourceNodes);
     }
@@ -800,13 +800,14 @@ public class DirectedGraph extends Graph {
         _removeIfPresent(_outputEdgeList(node), edge);
     }
 
-    /** Create and register all of the change listeners for this graph, and
-     *  initialize the change counter of the graph.
+    /** Initialize the list of analyses that are associated with this graph,
+     *  and initialize the change counter of the graph. 
+     *  @see ptolemy.graph.analysis.Analysis.
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
-        _sinkNodeListener = new Analysis(this);
-        _sourceNodeListener = new Analysis(this);
+        _sinkNodeAnalysis = new Analysis(this);
+        _sourceNodeAnalysis = new Analysis(this);
     }
 
     /** Register a new edge in the graph.
@@ -880,17 +881,17 @@ public class DirectedGraph extends Graph {
     // A flag that indicates whether or not this graph is acyclic.
     private boolean _isAcyclic;
 
-    // The graph listener for computation of sink nodes.
-    private Analysis _sinkNodeListener;
+    // The graph analysis for computation of sink nodes.
+    private Analysis _sinkNodeAnalysis;
 
     // The set of sink nodes in this graph. Recomputation requirements
-    // of this data structure are tracked by _sinkNodeListener.
+    // of this data structure are tracked by _sinkNodeAnalysis.
     private ArrayList _sinkNodes;
 
-    // The graph listener for computation of source nodes.
-    private Analysis _sourceNodeListener;
+    // The graph analysis for computation of source nodes.
+    private Analysis _sourceNodeAnalysis;
 
     // The set of source nodes in this graph. Recomputation requirements
-    // of this data structure are tracked by _sourceNodeListener.
+    // of this data structure are tracked by _sourceNodeAnalysis.
     private ArrayList _sourceNodes;
 }
