@@ -34,16 +34,14 @@ package pt.kernel.demo;
 ExapmleApplet is an frame contains the ExampleApplet.
 It's for the conversion of an applet to an application.
 @author Jie Liu
-@version @(#)ExampleFrame.java	1.1    01/27/98
+@version $Id$
 @see java.lang.applet
 @see ExampleFrame
 */
 public class ExampleFrame extends java.awt.Frame
 {
-    /** Constructor
-     */	
-    public ExampleFrame()
-    {
+    /** Constructor  */	
+    public ExampleFrame() {
         super();
     }
     
@@ -53,8 +51,7 @@ public class ExampleFrame extends java.awt.Frame
     /** Event handling method for the frame. The WINDOW_DESTROY event is
      *  handled. All the other events are passed to the applet inside.
      */	
-    public boolean handleEvent(java.awt.Event event)
-    {
+    public boolean handleEvent(java.awt.Event event) {
         Object pEvtSource = event.target;
         if( pEvtSource == this && event.id == java.awt.Event.WINDOW_DESTROY ) {
             hide();
