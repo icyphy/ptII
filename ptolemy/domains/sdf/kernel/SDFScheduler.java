@@ -743,7 +743,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
     }
 
-    // Populate the given set with the dynamic rate variables in the model.
+    /** Populate the given set with the dynamic rate variables in the model.
+     *  @param model The model.
+     *  @param rateVariables A list of rate variables.  Each element
+     *  is a Variable.
+     */
     protected void _checkDynamicRateVariables(CompositeActor model,
             List rateVariables) throws IllegalActionException {
         // Check for rate parameters which are dynamic.
