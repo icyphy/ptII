@@ -34,6 +34,7 @@ package ptolemy.data.expr;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -101,6 +102,30 @@ public class UtilityFunctions {
         double raw = _random.nextGaussian();
         double result = (raw*standardDeviation) + mean;
         return new DoubleToken(result);
+    }
+
+    /** Return an array of Gaussian random numbers.
+     *  @param mean The mean.
+     *  @param standardDeviation The standard deviation.
+     *  @param length The length of the array.
+     *  @return An array of doubles with IID Gaussian random variables.
+     */
+    public static ArrayToken gaussian(
+            double mean, double standardDeviation, int length) {
+        if (_random == null) _random = new Random();
+        DoubleToken[] result = new DoubleToken[length];
+        for (int i = 0; i < length; i++) {
+            double raw = _random.nextGaussian();
+            result[i] = new DoubleToken((raw*standardDeviation) + mean);
+        }
+	try {
+            return new ArrayToken(result);
+	} catch (IllegalActionException illegalAction) {
+	    // This should not happen since result should not be null.
+	    throw new InternalErrorException("UtilityFunction.gaussian: "
+		    + "Cannot create the array that contains "
+		    + "Gaussian random numbers.");
+	}
     }
 
     /** Return a matrix of Gaussian random numbers.
@@ -307,6 +332,80 @@ public class UtilityFunctions {
         }
     }
 
+    /** Return the maximum of two unsigned bytes.
+     *  @param x An unsigned byte.
+     *  @param y An unsigned byte.
+     *  @return The maximum of x and y.
+     */
+    public static UnsignedByteToken max(
+            UnsignedByteToken x, UnsignedByteToken y) {
+        if (x.intValue() > y.intValue()) {
+            return x;
+        } else {
+            return y;
+        }
+    }
+
+    /** Return the maximum of the contents of the array.
+     *  @param array An array of scalar tokens.
+     *  @return The largest element of the array.
+     *  @exception IllegalActionException If the array is empty or
+     *   it contains tokens that are not scalar or it contains complex tokens.
+     */
+    public static ScalarToken max(ArrayToken array)
+            throws IllegalActionException {
+        if (array.length() == 0
+                || !BaseType.SCALAR.isCompatible(array.getElementType())) {
+            throw new IllegalActionException(
+                    "max function can only be applied to arrays of scalars.");
+        }
+        ScalarToken result = (ScalarToken)array.getElement(0);
+        for (int i = 1; i < array.length(); i++) {
+            ScalarToken element = (ScalarToken)array.getElement(i);
+            if ((element.isGreaterThan(result)).booleanValue()) {
+                result = element;
+            }
+        }
+        return result;
+    }
+
+    /** Return the minimum of two unsigned bytes.
+     *  @param x An unsigned byte.
+     *  @param y An unsigned byte.
+     *  @return The minimum of x and y.
+     */
+    public static UnsignedByteToken min(
+            UnsignedByteToken x, UnsignedByteToken y) {
+        if (x.intValue() < y.intValue()) {
+            return x;
+        } else {
+            return y;
+        }
+    }
+
+    /** Return the minimum of the contents of the array.
+     *  @param array An array of scalar tokens.
+     *  @return The largest element of the array.
+     *  @exception IllegalActionException If the array is empty or
+     *   it contains tokens that are not scalar or it contains complex tokens.
+     */
+    public static ScalarToken min(ArrayToken array)
+            throws IllegalActionException {
+        if (array.length() == 0
+                || !BaseType.SCALAR.isCompatible(array.getElementType())) {
+            throw new IllegalActionException(
+                    "min function can only be applied to arrays of scalars.");
+        }
+        ScalarToken result = (ScalarToken)array.getElement(0);
+        for (int i = 1; i < array.length(); i++) {
+            ScalarToken element = (ScalarToken)array.getElement(i);
+            if ((element.isLessThan(result)).booleanValue()) {
+                result = element;
+            }
+        }
+        return result;
+    }
+
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
@@ -337,6 +436,49 @@ public class UtilityFunctions {
      */
     public static StringToken property(String propertyName) {
         return new StringToken(StringUtilities.getProperty(propertyName));
+    }
+
+    /** Return an array of IID random numbers with value greater than
+     *  or equal to 0.0 and less than 1.0.
+     *  @param length The length of the array.
+     *  @return An array of doubles with IID random variables.
+     */
+    public static ArrayToken random(int length) {
+        DoubleToken[] result = new DoubleToken[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = new DoubleToken(Math.random());
+        }
+	try {
+            return new ArrayToken(result);
+	} catch (IllegalActionException illegalAction) {
+	    // This should not happen since result should not be null.
+	    throw new InternalErrorException("UtilityFunction.random: "
+		    + "Cannot create the array that contains "
+		    + "random numbers.");
+	}
+    }
+
+    /** Return a matrix of IID random numbers with value greater than
+     *  or equal to 0.0 and less than 1.0.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @return A matrix of IID random variables.
+     */
+    public static DoubleMatrixToken random(int rows, int columns) {
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result[i][j] = Math.random();
+            }
+        }
+	try {
+            return new DoubleMatrixToken(result);
+	} catch (IllegalActionException illegalAction) {
+	    // This should not happen since result should not be null.
+	    throw new InternalErrorException("UtilityFunction.random: "
+		    + "Cannot create the DoubleMatrixToken that contains "
+		    + "random numbers.");
+	}
     }
 
     /** Get the string text contained in the specified file. The argument

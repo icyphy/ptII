@@ -287,7 +287,7 @@ test Function-abs-3 {Test abs on matrices} {
 ####################################################################
 # ceil
 
-test Function-ceil {Test ceil on scalars} {
+test Function-ceil {Test ceil} {
     list [theTest {ceil(-1.1)}] \
          [theTest {ceil(-1)}] \
          [theTest {ceil(1ub)}] \
@@ -313,13 +313,32 @@ test Function-ceil {Test ceil on scalars} {
     list [theTest {conjugate(1+i)}] \
          [theTest {conjugate({1+i, 1-i})}] \
          [theTest {conjugate([1+i, 1-i])}] \
- } {{1.0 - 1.0i} {{1.0 - 1.0i, 1.0 + 1.0i}} {[1.0 - 1.0i, 1.0 + 1.0i]}}
+         [theTestPtClose {conjugate(1.0)} {1.0 + 0.0i}] \
+         [theTestPtClose {conjugate(1)} {1.0 + 0.0i}] \
+         [theTestPtClose {conjugate(1ub)} {1.0 + 0.0i}] \
+ } {{1.0 - 1.0i} {{1.0 - 1.0i, 1.0 + 1.0i}} {[1.0 - 1.0i, 1.0 + 1.0i]} 1 1 1}
 
 ####################################################################
 # exp
 
+test Function-exp {Test exp} {
+    list [theTestPtClose {exp(0.0)} 1.0] \
+         [theTestPtClose {exp(-1.0)} 0.3678794411714] \
+         [theTestPtClose {exp(0)} 1.0] \
+         [theTestPtClose {exp(0ub)} 1.0] \
+         [theTestPtClose {exp(0.0+0.0i)} {1.0 + 0.0i}] \
+     } {1 1 1 1 1}
+
 ####################################################################
 # floor
+
+test Function-floor {Test floor} {
+    list [theTest {floor(-1.1)}] \
+         [theTest {floor(-1)}] \
+         [theTest {floor(1ub)}] \
+         [theTest {floor({1.1, 2.1})}] \
+         [theTest {floor([1.1, 2.1])}] \
+     } {-2.0 -1.0 1.0 {{1.0, 2.0}} {[1.0, 2.0]}}
 
 ####################################################################
 # imag
@@ -328,22 +347,72 @@ test Function-ceil {Test ceil on scalars} {
     list [theTest {imag(1+i)}] \
          [theTest {imag({1+i, 1-i})}] \
          [theTest {imag([1+i, 1-i])}] \
-     } {1.0 {{1.0, -1.0}} {[1.0, -1.0]}}
+         [theTest {imag(1.0)}] \
+         [theTest {imag(1)}] \
+         [theTest {imag(1ub)}] \
+     } {1.0 {{1.0, -1.0}} {[1.0, -1.0]} 0.0 0.0 0.0}
 
 ####################################################################
 # log
 
+test Function-log {Test log} {
+    list [theTestPtClose {log(e)} 1.0] \
+         [theTest {log(0.0)}] \
+         [theTest {log(1)}] \
+         [theTest {log(1ub)}] \
+         [theTestPtClose {log(1.0+0.0i)} {0.0 + 0.0i}] \
+     } {1 -Infinity 0.0 0.0 1}
+
 ####################################################################
 # log10
+
+test Function-log10 {Test log10} {
+    list [theTestPtClose {log10(10.0)} 1.0] \
+         [theTest {log10(0.0)}] \
+         [theTest {log10(1)}] \
+         [theTest {log10(1ub)}] \
+     } {1 -Infinity 0.0 0.0}
 
 ####################################################################
 # log2
 
+test Function-log2 {Test log2} {
+    list [theTestPtClose {log2(2.0)} 1.0] \
+         [theTest {log2(0.0)}] \
+         [theTest {log2(1)}] \
+         [theTest {log2(1ub)}] \
+     } {1 -Infinity 0.0 0.0}
+
 ####################################################################
 # max
 
+test Function-max {Test max} {
+    list [theTest {max(1.0, 2.0)}] \
+         [theTest {max(0.0, -1.0)}] \
+         [theTest {max(1, -1)}] \
+         [theTest {max(1ub, 2ub)}] \
+         [theTest {max(1L, -1L)}] \
+         [theTest {max({1.0, 2.0})}] \
+         [theTest {max({1, 2})}] \
+         [theTest {max({1L, 2L})}] \
+         [theTest {max({1ub, 2ub})}] \
+     } {2.0 0.0 1 2ub 1L 2.0 2 2L 2ub}
+
+
 ####################################################################
 # min
+
+test Function-min {Test min} {
+    list [theTest {min(1.0, 2.0)}] \
+         [theTest {min(0.0, -1.0)}] \
+         [theTest {min(1, -1)}] \
+         [theTest {min(1ub, 2ub)}] \
+         [theTest {min(1L, -1L)}] \
+         [theTest {min({1.0, 2.0})}] \
+         [theTest {min({1, 2})}] \
+         [theTest {min({1L, 2L})}] \
+         [theTest {min({1ub, 2ub})}] \
+     } {1.0 -1.0 -1 1ub -1L 1.0 1 1L 1ub}
 
 ####################################################################
 # pow
@@ -360,7 +429,10 @@ test Function-ceil {Test ceil on scalars} {
     list [theTest {real(1+i)}] \
          [theTest {real({1+i, 1-i})}] \
          [theTest {real([1+i, 1-i])}] \
-     } {1.0 {{1.0, 1.0}} {[1.0, 1.0]}}
+         [theTest {real(1.0)}] \
+         [theTest {real(1)}] \
+         [theTest {real(1ub)}] \
+     } {1.0 {{1.0, 1.0}} {[1.0, 1.0]} 1.0 1.0 1.0}
 
 ####################################################################
 # remainder
