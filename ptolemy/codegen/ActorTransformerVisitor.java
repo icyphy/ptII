@@ -48,6 +48,17 @@ import ptolemy.math.FixPoint;
  *  for standalone execution (without dependancies on the ptolemy.actor
  *  and ptolemy.data packages)
  *
+ *  To handle side effects and replacement/removal of expressions and
+ *  statements, an expression node may return an expression, statement,
+ *  NullValue.instance, or a list of such objects. Such objects are
+ *  converted into statements by ExprStmtNode.
+ *
+ *  A statement may return NullValue.instance to indicate that it should 
+ *  be removed.
+ *
+ *  A member of a class may return NullValue.instance to indicate that
+ *  it should be removed.
+ *
  *  @author Jeff Tsay
  */
 public class ActorTransformerVisitor extends ReplacementJavaVisitor
@@ -339,6 +350,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitTryNode(TryNode node, LinkedList args) {
+
+        // CHECK ME : are we handling the finally clause correctly here?
 
         Iterator catchNodeItr =
          TNLManip.traverseList(this, node, args, node.getCatches()).iterator();
@@ -1294,6 +1307,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
          new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }
 
+    /** Convert the argument object, which may be a list, expression, 
+     *  statement, or NullValue.instance to a statement.
+     */
     protected StatementNode _makeStmt(Object obj) {
         if (obj instanceof List) {
            List listObj = (List) obj;
@@ -1321,6 +1337,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }
     }
 
+
+    /** Expand the list of objects into a list of statements by using
+     *  _makeStmt() on each member of the list.
+     */
     protected List _makeStmtList(List retvalList) {
         LinkedList newStmtList = new LinkedList();
 
