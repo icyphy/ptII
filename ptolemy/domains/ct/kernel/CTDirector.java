@@ -216,6 +216,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _currentTime;
     }
 
+    /** Return the fire begin time, which is the value set by 
+     *  setFireBeginTime().
+     *  @return Fire begin time.
+     */
+    public double getFireBeginTime() {
+        return _fireBeginTime;
+    }
+
     /** Return the initial step size.
      *  @return the initial step size.
      */
@@ -241,6 +249,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _maxIterations;
     }
 
+    /** Return the maximum step size used in variable step size
+     *  ODE solvers.
+     *  @return The maximum step size.
+     */
+    public final double getMaxStepSize() {
+        return _maxStepSize;
+    } 
+
     /** Return the minimum step size used in variable step size
      *  ODE solvers.
      *  @return The minimum step size.
@@ -248,6 +264,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public final double getMinStepSize() {
         return _minStepSize;
     } 
+
+    /** Return the current step size plus the current time.
+     *  @return The current time plus the current step size.
+     */
+    public final double getNextIterationTime() {
+        return getFireBeginTime() + getCurrentStepSize();
+    }
 
     /** Return the start time.
      *  @return the start time.
@@ -412,7 +435,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
             }
             _minStepSize =
             ((DoubleToken)param.getToken()).doubleValue();
-        }  else if(param == _paramValueResolution) {
+        } else if(param == _paramMaxStepSize) {
+            if(VERBOSE) {
+                System.out.println("maxstep updating.");
+            }
+            _maxStepSize =
+            ((DoubleToken)param.getToken()).doubleValue();
+        } else if(param == _paramValueResolution) {
             _valueResolution =
             ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramTimeResolution) {
@@ -484,7 +513,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @param nextstep The suggested next step size.
      */
     public void setSuggestedNextStepSize(double nextstep) {
-        _suggestedNextStepSize = nextstep;
+        if(nextstep >getMaxStepSize()) {
+            _suggestedNextStepSize = getMaxStepSize();
+        } else {
+            _suggestedNextStepSize = nextstep;
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -564,6 +597,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _stopTime = 1.0;
             _initStepSize = 0.1;
             _minStepSize = 1e-5;
+            _maxStepSize = 1.0;
             _maxIterations = 20;
             _lteTolerance = 1e-4;
             _valueResolution = 1e-6;
@@ -578,6 +612,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 this, "InitialStepSize", new DoubleToken(_initStepSize));
             _paramMinStepSize = new CTParameter(
                 this, "MinimumStepSize", new DoubleToken(_minStepSize));
+             _paramMaxStepSize = new CTParameter(
+                this, "MaximumStepSize", new DoubleToken(_maxStepSize));
             _paramMaxIterations = new CTParameter(
                 this, "MaximumIterationsPerStep", 
                 new IntToken(_maxIterations));
@@ -599,6 +635,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
     }
 
+    /** Set the fire begin time.
+     *  @param fbt Fire begin time.
+     */
+    protected void _setFireBeginTime(double fbt) {
+        _fireBeginTime = fbt;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
@@ -610,6 +653,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private CTParameter _paramStopTime;
     private CTParameter _paramInitStepSize;
     private CTParameter _paramMinStepSize;
+    private CTParameter _paramMaxStepSize;    
     private CTParameter _paramMaxIterations;
     private CTParameter _paramLTETolerance;
     private CTParameter _paramValueResolution;
@@ -621,6 +665,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private double _stopTime;
     private double _initStepSize;
     private double _minStepSize;
+    private double _maxStepSize;    
     private int _maxIterations;
     private double _lteTolerance;
     private double _valueResolution;
@@ -639,4 +684,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     //A table for wave form break points.
     private TotallyOrderedSet _breakPoints;
+
+    // the start time of a iteration. This value is remembered so that
+    // we don't need to resolve it from the end time and step size.
+    private double _fireBeginTime;
 }
