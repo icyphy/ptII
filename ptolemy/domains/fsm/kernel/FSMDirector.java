@@ -388,9 +388,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     }
 
 
-    /** Handle a model error by checking if there is any enabled non-preemptive
-     *  transtions. If there is some one, the model error is ignored. Otherwise,
-     *  the model error (exception) will be passed to higher level in hierarchy.
+    /** Handle a model error by checking if there is any enabled
+     *  non-preemptive transitions. If there is some one, the model
+     *  error is ignored. Otherwise, the model error (exception) will
+     *  be passed to higher level in hierarchy.
+     *
      *  @param context The context where the model error happens.
      *  @param exception An exception that represents the model error.
      *  @return True if the error has been handled, or nothing if the model error
