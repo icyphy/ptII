@@ -17,6 +17,7 @@
 
             <input source="ptolemy/apps/charon/charon.xml"/>
             <input source="ptolemy/apps/softwalls/softwalls.xml"/>
+            <input source="ptolemy/apps/wireless/lib/wirelessappslib.xml" />
 
       </group>
     ?>
