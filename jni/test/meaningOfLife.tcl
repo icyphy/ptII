@@ -49,7 +49,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 proc testJNI {modelbase} {
     puts "Generating JNI for $modelbase" 
-    set parser [java::new ptolemy.moml.MoMLParser]
+
     # Read in the model
     set parser [java::new ptolemy.moml.MoMLParser]
 
