@@ -30,13 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gui;
 
+import java.awt.Panel;
+import java.io.InputStream;
+import java.net.URL;
+
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
-import java.awt.Panel;
+import ptolemy.plot.plotml.PlotBoxMLParser;
 
 /** Base class for plotters.  This class contains an instance of the
  *  Plot class from the Ptolemy plot package as a public member.
@@ -51,7 +55,8 @@ import java.awt.Panel;
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class Plotter extends TypedAtomicActor implements Placeable {
+public class Plotter extends TypedAtomicActor
+         implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -119,6 +124,25 @@ public class Plotter extends TypedAtomicActor implements Placeable {
         newobj.startingDataset
                 = (Parameter)newobj.getAttribute("startingDataset");
         return newobj;
+    }
+
+    /** Configure the plot with data from the specified input stream,
+     *  which is assumed to be in PlotML format.  This should be called
+     *  after setPanel(), if setPanel() is going to be called at all.
+     *  @param base The base relative to which references within the input
+     *   stream are found, or null if this is not known.
+     *  @param in InputStream
+     *  @exception Exception If the stream cannot be read or its syntax
+     *   is incorrect.
+     */
+    public void configure(URL base, InputStream in) throws Exception {
+        if (plot == null) {
+            setPanel(_panel);
+        }
+
+        // FIXME: This should be PlotMLParser, when that exists.
+        PlotBoxMLParser parser = new PlotBoxMLParser(plot);
+        parser.parse(base, in);
     }
 
     /** If the plot has not already been created, create it.
