@@ -237,15 +237,6 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append a listener to the current set of debug listeners.
-     *  If the listener is already in the set, do not add it again.
-     *  @param listener The listener to which to send debug messages.
-     */
-    public void addDebugListener(DebugListener listener) {
-        _eventQueue.addDebugListener(listener);
-        super.addDebugListener(listener);
-    }
-
     /** Update the director parameters when the attributes are changed.
      *  Only the stopWhenQueueIsEmpty parameter is effective at run time.
      *  @param attr The changed parameter.
@@ -329,15 +320,15 @@ public class DEDirector extends Director {
         boolean _timeHasNotAdvanced = true;
         while (true) {
             Actor actorToFire = _dequeueEvents();
-            if (_debugging) {
-                _debug("Found actor to fire: "
-                + ((NamedObj)actorToFire).getFullName());
-            }
             if (actorToFire == null) {
                 // There is nothing more to do.
                 if (_debugging) _debug("No more events on the event queue.");
                 _noMoreActorsToFire = true;
                 return;
+            }
+            if (_debugging) {
+                _debug("Found actor to fire: "
+                + ((NamedObj)actorToFire).getFullName());
             }
             // It is possible that the next event to be processed is on
             // an inside receiver of an output port of an opaque composite
@@ -486,8 +477,6 @@ public class DEDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Uncomment to have a debug listener.
-        // addDebugListener(new StreamListener());
         super.initialize();
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
@@ -552,6 +541,13 @@ public class DEDirector extends Director {
                 ((IntToken)minBinCount.getToken()).intValue(),
                 ((IntToken)binCountFactor.getToken()).intValue(),
                 ((BooleanToken)isCQAdaptive.getToken()).booleanValue());
+
+        // Add debug listeners.
+        Iterator listeners = _debugListeners.iterator();
+        while (listeners.hasNext()) {
+            DebugListener listener = (DebugListener)listeners.next();
+            _eventQueue.addDebugListener(listener);
+        }
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
@@ -571,7 +567,9 @@ public class DEDirector extends Director {
      *   to which debug messages are sent.
      */
     public void removeDebugListener(DebugListener listener) {
-        _eventQueue.removeDebugListener(listener);
+        if (_eventQueue != null) {
+            _eventQueue.removeDebugListener(listener);
+        }
         super.removeDebugListener(listener);
     }
 
