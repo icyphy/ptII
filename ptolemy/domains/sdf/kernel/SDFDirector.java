@@ -298,18 +298,17 @@ public class SDFDirector extends StaticSchedulingDirector {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
             }
-	    Receiver receivers[][] = inputPort.getReceivers();
 
-	    int channel;
-	    for (channel = 0; channel < inputPort.getWidth(); channel++) {
+            // This used to bypass the port and go directly to the
+            // receivers. Why?  EAL 7/25/02.
+	    for (int channel = 0; channel < inputPort.getWidth(); channel++) {
 		if (threshold > 0
-                        && !receivers[channel][0].hasToken(threshold)) {
+                        && !inputPort.hasToken(channel, threshold)) {
 		    if (_debugging) {
-                        _debug("Channel "
-                                + channel
-                                + " does not have enough tokens."
-                                + " Prefire returns false on "
-                                + container.getFullName());
+                        _debug("Port " + inputPort.getFullName()
+                                + " does not have enough tokens: "
+                                + threshold
+                                + " Prefire returns false.");
                     }
                     return false;
 		}
