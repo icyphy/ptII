@@ -190,7 +190,7 @@
                 </port>
             </entity>
             <relation name="tr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
