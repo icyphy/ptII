@@ -50,16 +50,14 @@ SHELL_FILES = \
 	ptjaclapp \
 	ptplot \
 	ptolemy \
-	pxgraph \
-	vergil 
+	pxgraph
 
 # DOS batch files
 BAT_FILES = \
 	histogram.bat \
 	ptplot.bat \
 	ptolemy.bat \
-	pxgraph.bat \
-	vergil.bat 
+	pxgraph.bat
 
 EXTRA_SRCS = \
 	ptinvoke.in \
@@ -89,8 +87,6 @@ all: ptinvoke
 	ln -s ptinvoke ptplot
 	rm -f pxgraph
 	ln -s ptinvoke pxgraph
-	rm -f vergil
-	ln -s ptinvoke vergil
 
 install: all
 	-chmod a+x $(SHELL_FILES) $(BAT_FILES)
