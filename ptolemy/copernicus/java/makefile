@@ -152,11 +152,11 @@ compileDemo: $(JCLASS)
 		-compile	 true \
 		-iterations      '"$(ITERATIONS)"' \
 		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
-		-java            '"$(JAVA)"' \
+		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
 		-jvmSize         '"$(JVMSIZE)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-root            '"$(PTII)"' \
+		-ptIIUserDirectory  `echo '"$(PTII)"' | sed 's@\\\@/@g'` \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"' \
 		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
