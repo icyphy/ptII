@@ -1,6 +1,7 @@
-/* An attribute for specifying that a parameter is edited with a TextArea (multi-line).
+/* An attribute for specifying that a parameter is edited with a
+TextArea (multi-line).
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Red (zkemenczy@rim.net)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
@@ -40,9 +41,9 @@ import ptolemy.kernel.util.Settable;
 //////////////////////////////////////////////////////////////////////////
 //// TextStyle
 /**
-This attribute annotates user settable attributes to specify
-an arbitrary multi-line text area style for configuring the containing attribute.
-This style can be used with any Settable attribute.
+This attribute annotates user settable attributes to specify an
+arbitrary multi-line text area style for configuring the containing
+attribute.  This style can be used with any Settable attribute.
 
 @see ptolemy.actor.gui.EditorPaneFactory
 @see ParameterEditorStyle
