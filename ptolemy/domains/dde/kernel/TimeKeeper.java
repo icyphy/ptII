@@ -219,16 +219,12 @@ public class TimeKeeper {
      */
     public synchronized void sendOutNullTokens() {
 	Enumeration ports = actor.outputPorts();
+        double time = getCurrentTime();
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
-	    if( rcvrs == null ) {
-	        return;
-	    }
-	    /*
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
-                    double time = getCurrentTime();
                     if( time >
 			    ((DDEReceiver)rcvrs[i][j]).getRcvrTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
@@ -236,7 +232,6 @@ public class TimeKeeper {
                     }
 		}
             }
-	    */
         }
     }
 
