@@ -1,11 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
-    <doc>CT model for the leading car, with discrete output.</doc>
+<model name="followingcar" class="ptolemy.actor.TypedCompositeActor">
+    <doc>CT model for the following car, with a controller.</doc>
     <property name="SamplingPeriod" value="1.0" 
-        class="ptolemy.data.expr.Parameter"></property>
-    <property name="Malfunctioning" value="false"
         class="ptolemy.data.expr.Parameter"></property>
     <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
@@ -13,32 +11,15 @@
     </director>
     
     <!-- Define the actors -->
-    <entity name="time" class="ptolemy.actor.lib.CurrentTime">
-      	<port name="output"></port>
-    </entity>
-    <entity name="forceV" class="ptolemy.actor.lib.Sine">
-	<property name="omega" value="0.05*PI"></property>
-	<property name="amplitude" value="1.0"></property>
-      	<port name="input"></port>
-      	<port name="output"></port>
-    </entity>
-    <entity name="forceC" class="ptolemy.actor.lib.Const">
-	<property name="value" value="1.0"></property>
-      	<port name="output"></port>
-    </entity>
-    <entity name="add0" class="ptolemy.actor.lib.AddSubtract">
-	<port name="plus"></port>
-	<port name="minus"></port>
-      	<port name="output"></port>
-    </entity>
-    <entity name="fsamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" value="SamplingPeriod"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity>
-    <entity name="fhold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-	<port name="input"></port>
-        <port name="output"></port>
+    <!-- replace this actor with the controller -->
+    <entity name="controller" 
+        class="ptolemy.domains.ct.demo.CarTracking.CarInformationSubscriber">
+	<property name="entryName" value="&quot;LeadingCar&quot;">
+        </property>
+	<port name="correct"></port>
+	<port name="force"></port>
+        <port name="velocity"></port>
+	<port name="position"></port>
     </entity>
     <!-- REPLACE THE FOLLOWING WITH carmodel.xml, WHEN the IOPort is fixed.-->
     <doc>
@@ -94,19 +75,10 @@
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
-    <entity name="toEventChannel" 
-    class="ptolemy.domains.ct.demo.CarTracking.CarInformationPublisher">
-        <property name="samplingPeriod" value="SamplingPeriod"></property>
-	<property name="entryName" value="&quot;LeadingCar&quot;"></property>
-	<property name="malfunctioning" value="Malfunctioning"></property>
-	<port name="force"></port>
-        <port name="velocity"></port>
-	<port name="position"></port>
-    </entity>
     <entity name="toMonitor" 
         class="ptolemy.domains.ct.demo.CarTracking.RealTimePublisher">
 	<property name="entryName" 
-	    value="&quot;LeadingCarPosition&quot;"></property>
+	    value="&quot;FollowingCarPosition&quot;"></property>
 	<port name="input"></port>
     </entity>
 
@@ -124,34 +96,16 @@
     	]]></configure>
     </entity>
     <!-- Make the connections -->
-    <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="time.output" relation="r0"/>
-  	<link port="forceV.input" relation="r0"/>
-    <relation name="r0_1" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="forceV.output" relation="r0_1"/>
-  	<link port="add0.plus" relation="r0_1"/>
-    <relation name="r0_2" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="forceC.output" relation="r0_2"/>
-  	<link port="add0.plus" relation="r0_2"/>
-    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="add0.output" relation="r1"/>
-  	<link port="fsamp.input" relation="r1"/>
-    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="fsamp.output" relation="r2"/>
-  	<link port="fhold.input" relation="r2"/>
+    
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="fhold.output" relation="r3"/>
-	<link port="toEventChannel.force" relation="r3"/>
-   
+  	<link port="controller.force" relation="r3"/>   
     <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
-	<link port="toEventChannel.position" relation="r8"/>
 	<link port="ssamp.input" relation="r8"/>
     <relation name="r9" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="ssamp.output" relation="r9"/>
 	<link port="toMonitor.input" relation="r9"/>
     <!-- REMOVE WHEN USING carmodel -->
          <link port="add1.plus" relation="r3"/>
-	 <link port="toEventChannel.velocity" relation="r66"/>
 	 <link port="position.output" relation="r8"/>
     <!-- END OF REMOVE -->
     <doc>

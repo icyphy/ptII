@@ -77,7 +77,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	jspaceName = new Parameter(this, "jspaceName", 
-                new StringToken("JaveSpaces"));
+                new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
@@ -167,7 +167,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
         _entryName = ((StringToken)entryName.getToken()).toString();
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).toString());
-
+        System.out.println("Found Space.");
         // export this object so that the space can call back
         try {
             UnicastRemoteObject.exportObject(this);
@@ -299,7 +299,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
     private boolean _correct;
 
     // The lock that the access of local variables are synchronized on.
-    private Object _lock;
+    private Object _lock = new Object();
   
     // Last set of data.
     private ArrayToken _lastData;

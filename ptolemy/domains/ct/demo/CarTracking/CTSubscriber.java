@@ -79,7 +79,7 @@ public class CTSubscriber extends Source
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	jspaceName = new Parameter(this, "jspaceName", 
-                new StringToken("JaveSpaces"));
+                new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
         entryName = new Parameter(this, "entryName", 

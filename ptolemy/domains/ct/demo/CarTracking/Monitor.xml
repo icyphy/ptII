@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="Monitor" class="ptolemy.actor.TypedCompositeActor">
+    <doc>Discrete Event Monitor of the two cars.</doc>
+    <director class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" value="false">
+	</property>
+    </director>
+    
+    <!-- Define the actors -->
+    <entity name="leadingCar" 
+        class="ptolemy.domains.ct.demo.CarTracking.DERealTimeSubscriber">
+	<property name="entryName" value="&quot;LeadingCarPosition&quot;">
+	</property>
+      	<port name="output"></port>
+    </entity>
+    <entity name="followingCar" 
+        class="ptolemy.domains.ct.demo.CarTracking.DERealTimeSubscriber">
+	<property name="entryName" value="&quot;FollowingCarPosition&quot;">
+	</property>
+      	<port name="output"></port>
+    </entity>
+    <entity name="display" class="ptolemy.actor.gui.TimedPlotter">
+    	<port name="input"></port>
+    	<!-- Configure provided in both a referenced file and local data -->
+    	<configure source="DEplotConfigure.xml"><![CDATA[
+      	<?xml version="1.0" standalone="no"?>
+      	<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+           "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+      	<plot>
+        <size width="450" height="300"/>
+        <title>Relative Positions</title>
+      	</plot>
+    	]]></configure>
+    </entity>
+    <!-- Make the connections -->
+    <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="leadingCar.output" relation="r0"/>
+  	<link port="display.input" relation="r0"/>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="followingCar.output" relation="r1"/>
+  	<link port="display.input" relation="r1"/>
+</model>

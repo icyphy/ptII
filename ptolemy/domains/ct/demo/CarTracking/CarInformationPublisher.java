@@ -257,7 +257,7 @@ public class CarInformationPublisher extends TypedAtomicActor
                 }
                 ArrayToken array = new ArrayToken(tokens);
                 TokenEntry template = new TokenEntry(name, null, null);
-                _space.takeIfExists(template, null, 100);
+                _space.takeIfExists(template, null, 1000);
                 TokenEntry entry = new TokenEntry(name,
                         new Long(0), array);
                 _space.write(entry, null, Lease.FOREVER);

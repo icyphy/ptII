@@ -78,12 +78,14 @@ public class DERealTimeSubscriber extends Source
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	jspaceName = new Parameter(this, "jspaceName", 
-                new StringToken("JaveSpaces"));
+                new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
+
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,7 +135,7 @@ public class DERealTimeSubscriber extends Source
         _entryName = ((StringToken)entryName.getToken()).toString();
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).toString());
-
+        _tokenList = new LinkedList();
         // export this object so that the space can call back
         try {
             UnicastRemoteObject.exportObject(this);
@@ -193,11 +195,8 @@ public class DERealTimeSubscriber extends Source
     
     // Indicating whether there's new data came in.
     private boolean _hasNewToken;
-
-    // The lock that the access of local variables are synchronized on.
-    private Object _lock;
-  
-    // Last set of data.
+ 
+    // Last set of data. Also serves as the synchronization lock.
     private ArrayToken _lastToken;
 
     // Current set of data.
@@ -237,8 +236,8 @@ public class DERealTimeSubscriber extends Source
                             null, null);
                     TokenEntry entry;
                     try {
-                        entry = (TokenEntry)_space.readIfExists(
-                                entryTemplate, null, 100);
+                        entry = (TokenEntry)_space.takeIfExists(
+                                entryTemplate, null, java.lang.Long.MAX_VALUE);
                     } catch (Exception e) {
                         throw new InvalidStateException(_container,
                                 "error reading from space." +
@@ -247,15 +246,17 @@ public class DERealTimeSubscriber extends Source
                     if(entry == null) {
                         System.out.println(getName() + 
                                 " read null from space");
-                    }
-                    _tokenList.addLast(entry.token);
-                    try {
-                        _container.getDirector().fireAt(_container, 
-                                entry.serialNumber.doubleValue());
-                    } catch (IllegalActionException ex) {
-                        throw new InvalidStateException(_container,
-                                "can't register fireAt with the director." +
-                                ex.getMessage());
+                    } else {
+                        _tokenList.addLast(entry.token);
+                        try {
+                            _container.getDirector().fireAt(_container, 
+                                    (double)System.currentTimeMillis());
+                            //    entry.serialNumber.doubleValue());
+                        } catch (IllegalActionException ex) {
+                            throw new InvalidStateException(_container,
+                                    "can't register fireAt with the director."
+                                    + ex.getMessage());
+                        }
                     }
                 }
             }
