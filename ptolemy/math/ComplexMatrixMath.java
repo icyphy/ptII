@@ -863,7 +863,7 @@ public class ComplexMatrixMath {
         Complex sum = Complex.ZERO;
 
         for (int i = 0; i < dim; i++) {
-            sum.add(matrix[i][i]);
+            sum = sum.add(matrix[i][i]);
         }
         return sum;
     }
