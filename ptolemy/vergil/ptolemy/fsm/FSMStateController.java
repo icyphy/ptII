@@ -113,7 +113,7 @@ public class FSMStateController extends AttributeController {
                 try {
                     TypedActor[] refinements = ((State)target).getRefinement();
                     if (refinements != null && refinements.length > 0) {
-                        for (int i=0; i < refinements.length; i++) {
+                        for (int i = 0; i < refinements.length; i++) {
                             // Open each refinement.
                             _configuration.openModel((NamedObj)refinements[i]);
                         }
