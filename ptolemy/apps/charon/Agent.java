@@ -691,22 +691,24 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 	    State state = _getState(controller, transition.getState());
 	    State nextState = _getState(controller, transition.getNextState());
 
-	    if (state.getRefinement() == null) {
-	      Refinement refinement = new Refinement(_container, transition.getState());
-	    }
-
-	    if (nextState.getRefinement() == null) {
-	      Refinement refinement = new Refinement(_container, transition.getNextState());
-	    }
-
-	    state.refinementName.setExpression(transition.getState());
-	    nextState.refinementName.setExpression(transition.getNextState());
-
 	    // Add the parameters to the current state and refinement.
 	    Agent modeState = (Agent) _searchAgent(transition.getState() + "Mode", CharonProcessor.modesList);
 	    Agent referMode = (Agent) _searchAgent(transition.getState() + "Mode", _subModes);
-	    Refinement stateRefinement = (Refinement) state.getRefinement()[0];
 	    if (modeState != null && referMode != null) {
+
+	      if (state.getRefinement() == null) {
+		Refinement refinement = new Refinement(_container, transition.getState());
+	      }
+
+	      if (nextState.getRefinement() == null) {
+		Refinement refinement = new Refinement(_container, transition.getNextState());
+	      }
+
+	      state.refinementName.setExpression(transition.getState());
+	      nextState.refinementName.setExpression(transition.getNextState());
+
+	      Refinement stateRefinement = (Refinement) state.getRefinement()[0];
+
 	      ListIterator parameters = modeState.getParameters().listIterator();
 	      ListIterator referParas = referMode.getParameters().listIterator();
 	      while (parameters.hasNext()) {
@@ -728,7 +730,11 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 	    Transition fsmTransition = new Transition(controller, transition.getState() + "->" + transition.getNextState());
 	    fsmTransition.guardExpression.setExpression(transition.getCondition());
 	    fsmTransition.reset.setExpression("true");
-	    fsmTransition.setActions.setExpression(transition.getNextState() + ".integrator.initialState = " + getOutputs().get(0));
+
+	    if (modeState != null) {
+	    System.out.println("what are you doing? " + transition.getState());
+	      fsmTransition.setActions.setExpression(transition.getNextState() + ".integrator.initialState = " + getOutputs().get(0));
+	    }
 
 	    state.outgoingPort.link(fsmTransition);
 	    nextState.incomingPort.link(fsmTransition);
