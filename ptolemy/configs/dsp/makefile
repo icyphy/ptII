@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy runtime configs
+# Makefile for the Ptolemy DSP runtime configuration 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2002 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs
+ME =		ptolemy/configs/dsp
 
-DIRS =		doc dsp hybrid ptiny test
+# There is no demo directory, put demos in the corresponding domain
+# directory so that we can find them if we are looking at domains.
+# An alternative would be to split the demo subdirectory into
+# directories by domain
+DIRS =		#demo
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,52 +47,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	configs
+PTPACKAGE = 	dsp
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
-# These files go into PTCLASSALLJAR
-# ptIIplanet.gif should be in ../../doc/img, but Web Start
-#  has problems pulling in the gif if the gif is in a different jar
-#  so we include it in this jar
+# HTML Files that are derived from other HTML files.
+DERIVED_FILES =
+
 OTHER_FILES_TO_BE_JARED = \
-	annotation.xml \
-	automataActorLibrary.xml \
-	basicActorLibrary.xml \
-	basicDirectors.xml \
-	basicLibrary.xml \
-	basicUtilities.xml \
-	basicTableauFactories.xml \
-	defaultFullConfiguration.xml \
-	experimentalDirectors.xml \
-	extendedEffigyFactories.xml \
-	extendedTableauFactories.xml \
-	fsmEffigyFactories.xml \
-	fsmLibrary.xml \
-	fsmTableauFactory.xml \
-	graphEffigyFactory.xml \
-	graphTableauFactory.xml \
-	iaEffigyFactory.xml \
-	iaTableauFactory.xml \
-	intro.htm \
-	ptIIplanet.gif \
-	runConfiguration.xml \
-	runPanelConfiguration.xml \
-	runWelcomeWindow.xml \
-	utilitiesLibrary.xml \
-	vergilConfiguration.xml \
-	vergilWelcomeWindow.xml
-
-# Include these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		doc/doc.jar \
-		dsp/dsp.jar \
-		hybrid/hybrid.jar \
-		ptiny/ptiny.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+	$(DERIVED_FILES) \
+	configuration.xml \
+	intro.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -102,14 +73,11 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass $(DERIVED_FILES)
 	@echo "nothing need be done for make all in this directory"
 
-install: jclass jars
+install: all jars
 	@echo "nothing need be done for make install in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
