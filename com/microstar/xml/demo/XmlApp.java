@@ -1,4 +1,4 @@
-// XmlApp.java: base class for Ælfred demos.
+// XmlApp.java: base class for &AElig;fred demos.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
 // Modified 11/8/98 to add package statement.

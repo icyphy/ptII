@@ -1,4 +1,4 @@
-// EventDemo.java: demonstration application showing Ælfred's event stream.
+// EventDemo.java: demonstration application showing &AElig;fred's event stream.
 // NO WARRANTY! See README, and copyright below.
 // Modified 11/8/98 to add package statement.
 
@@ -6,7 +6,7 @@ package com.microstar.xml.demo;
 
 
 /**
-  * Demonstration application showing Ælfred's event stream.
+  * Demonstration application showing &AElig;fred's event stream.
   * <p>Usage: <code>java EventDemo &lt;url&gt;</code>
   * <p>Or, use it as an applet, supplying the URL as the <code>url</code>
   * parameter.

@@ -1,4 +1,4 @@
-// StreamDemo.java: demonstration application showing Ælfred's event stream.
+// StreamDemo.java: demonstration application showing &AElig;fred's event stream.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
 // Modified 11/8/98 to add package statement.
@@ -12,7 +12,7 @@ import com.microstar.xml.XmlParser;
 
 
 /**
-  * Demonstration application showing Ælfred's event stream from a stream.
+  * Demonstration application showing &AElig;fred's event stream from a stream.
   * <p>Usage: <code>java StreamDemo</code>
   * @author Copyright (c) 1998 by Microstar Software Ltd.;
   * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
