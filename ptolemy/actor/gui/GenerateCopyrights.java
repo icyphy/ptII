@@ -92,7 +92,9 @@ public class GenerateCopyrights {
         // that use that as a copyright.
         Map copyrightsMap = new HashMap();
 
-        // Alphabetical by className
+        // Add the classnames and copyrights.
+
+        // Alphabetical by className.
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/copyright.htm");
@@ -100,80 +102,13 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/copyright.htm");
-        return generateHTML(copyrightsMap);
-    }
 
 
-    /** Generate HTML about the copyrights for the Entities in a
-     *  configuration. 
-     *  @param configurationPath The configuration, for example
-     *  "ptolemy/configs/full/configuration.xml"
-     *  @return A String containing HTML that describes what
-     *  copyrights are used by Entities in the configuration
-     */
-    public static String generateHTML(String configurationPath)
-            throws Exception {
-        CompositeEntity configurationEntity =
-            _expandConfiguration(configurationPath);
-        
-        // A Map of copyrights, where the key is a URL naming
-        // the copyright and the value is a List of entities
-        // that use that as a copyright.
-        Map copyrightsMap = new HashMap();
+        // Now generate the HTML
 
-        List entityList = configurationEntity.deepEntityList();
-        Iterator entities = entityList.iterator();
-        while (entities.hasNext()) {
-            Object object = entities.next();
-
-            if (!(object instanceof NamedObj)) {
-                System.out.println("Not a NamedObj: " + object);
-                continue;
-            }
-            //System.out.println("Is a NamedObj: " + object);
-            NamedObj namedObj = (NamedObj)object; 
-            FileAttribute copyrightAttribute
-                = (FileAttribute) namedObj.getAttribute("_copyright");
-            if (copyrightAttribute != null) {
-                // Note that we don't get the value as a URL
-                // here because we do that later while generate the
-                // HTML in case we want to try to refer to the 
-                // website version
-                String copyrightURL = copyrightAttribute.getExpression();
-                Set entitiesSet = (Set) copyrightsMap.get(copyrightURL);
-                if (entitiesSet == null) {
-                    // This is the first time we've seen this copyright,
-                    // add a key/value pair to copyrights, where the key
-                    // is the URL of the copyright and the value is Set
-                    // of entities that correspond with that copyright.
-
-                    entitiesSet = new HashSet();
-
-                    entitiesSet.add(namedObj.getMoMLInfo().className);
-                    copyrightsMap.put(copyrightURL, entitiesSet);
-                } else {
-                    // Add the full name of the entity to the set of entities
-                    // that correspond with this copyright
-                    entitiesSet.add(namedObj.getFullName());
-                }
-            }
-        }
-        return generateHTML(copyrightsMap);
-    }
-
-
-    /** Generate HTML for the Entities in a copyrightMap.
-     *  @param copyrightsMap A Map of copyrights, where the key
-     *  is the URL naming the copyright and the value is a List
-     *  of entities that use that copyright.
-     *  @return A String containing HTML that describes what
-     *  copyrights are used by Entities in the configuration
-     */   
-    public static String generateHTML(Map copyrightsMap) {
         String ptIICopyright = _findURL("ptolemy/configs/doc/copyright.htm");
         String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
 
-        // Ok, now generate HTML
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
                 + "</head>\n<body>\n<dl>\n" 
@@ -226,25 +161,6 @@ public class GenerateCopyrights {
         return htmlBuffer.toString();
     }
 
-    /** Create a new instance of this application, passing it the
-     *  command-line arguments.
-     *  @param args The command-line arguments.
-     */
-    public static void main(String args[]) {
-        try {
-            String configurationPath
-                = "ptolemy/configs/full/configuration.xml";
-            if (args.length == 1) {
-                configurationPath = args[0];
-            }
-            System.out.println(GenerateCopyrights
-                    .generateHTML(configurationPath));
-        } catch (Exception ex) {
-            System.out.println("Command failed:" +  ex);
-            System.exit(0);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -276,42 +192,6 @@ public class GenerateCopyrights {
             // about the copyright.
             System.out.println("_addIfPresent: " + ex);
         }
-    }
-    /** Parse a configuration and return a CompositeEntity. 
-     *  @param configurationPath The configuration, for example
-     *  "ptolemy/configs/full/configuration.xml"
-     *  @return A CompositeEntity that contains the configuration.
-     */
-    private static CompositeEntity _expandConfiguration(String
-            configurationPath) throws Exception {
-        MoMLParser parser = new MoMLParser();
-        // FIXME: save old filters?
-        parser.setMoMLFilters(null);
-        parser.addMoMLFilters(BackwardCompatibility.allFilters());
-        List inputFileNamesToSkip = new LinkedList();
-        inputFileNamesToSkip.add("/apps/apps.xml");
-        inputFileNamesToSkip.add("/charon/charon.xml");
-        inputFileNamesToSkip.add("/experimentalDirectors.xml");
-        inputFileNamesToSkip.add("/io/comm/comm.xml");
-
-        inputFileNamesToSkip.add("/lib/interactive.xml");
-        inputFileNamesToSkip.add("/jai/jai.xml");
-        inputFileNamesToSkip.add("/jmf/jmf.xml");
-        inputFileNamesToSkip.add("/joystick/jstick.xml");
-        inputFileNamesToSkip.add("/jxta/jxta.xml");
-        inputFileNamesToSkip.add("/matlab.xml");
-        
-        RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-        filter.put("caltrop.ptolemy.actors.CalInterpreter", null);
-        parser.addMoMLFilter(filter);
-
-        // FIXME: save old value?
-        parser.inputFileNamesToSkip = inputFileNamesToSkip;
-
-        ClassLoader loader = parser.getClass().getClassLoader();
-        URL configurationURL = loader.getResource(configurationPath);
-        return
-            (CompositeEntity)parser.parse(configurationURL, configurationURL);
     }
 
     // Look for the localURL, and if we cannot find it, refer
