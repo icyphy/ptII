@@ -95,7 +95,7 @@ public class StringReplace extends TypedAtomicActor {
         replacement.setStringMode(true);
         replacement.setExpression("");
         new Attribute(replacement.getPort(), "_showName");
-        
+
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
@@ -118,7 +118,7 @@ public class StringReplace extends TypedAtomicActor {
      *  This has type string.
      */
     public TypedIOPort output;
-    
+
     /** The pattern used to pattern match and replace the stringToEdit
      *  string. It is an empty string by default.
      */
@@ -160,7 +160,7 @@ public class StringReplace extends TypedAtomicActor {
            }
         } else {
             super.attributeChanged(attribute);
-        } 
+        }
     }
 
     /** Perform pattern matching and substring replacement, and output
@@ -173,7 +173,7 @@ public class StringReplace extends TypedAtomicActor {
         replacement.update();
         stringToEdit.update();
         pattern.update();
-        
+
         String replacementValue
             = ((StringToken)replacement.getToken()).stringValue();
         String stringToEditValue

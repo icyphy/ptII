@@ -84,22 +84,22 @@ public class StringIndexOf extends TypedAtomicActor {
         inText.setStringMode(true);
         inText.setExpression("");
         new Attribute(inText.getPort(), "_showName");
-        
+
         ignoreCase = new Parameter(this, "ignoreCase");
         ignoreCase.setTypeEquals(BaseType.BOOLEAN);
         ignoreCase.setToken(new BooleanToken(false));
-        
+
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setTypeEquals(BaseType.INT);
         startIndex.setExpression("0");
         new Attribute(startIndex.getPort(), "_showName");
-        
+
         // Create new parameters and ports, then set default values and/or
         // types of parameters and ports.
         searchForwards = new Parameter(this, "searchForwards");
         searchForwards.setTypeEquals(BaseType.BOOLEAN);
         searchForwards.setExpression("true");
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
     }
@@ -121,13 +121,13 @@ public class StringIndexOf extends TypedAtomicActor {
      *  it is found, and -1 otherwise. This has type int.
      */
     public TypedIOPort output;
-    
+
     /** Port and parameter specifying a string to find in
      *  the <i>inText</i> string.  This has type string and
      *  defaults to an empty string.
      */
     public PortParameter searchFor;
-    
+
     /** Boolean parameter indicating the direction in which to search.
      *  This is true to find the first occurrence and false to find the last.
      *  The default value is true.
@@ -148,7 +148,7 @@ public class StringIndexOf extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         searchFor.update();
         inText.update();
         startIndex.update();

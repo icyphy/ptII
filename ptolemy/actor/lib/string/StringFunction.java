@@ -95,7 +95,7 @@ public class StringFunction extends Transformer {
         function.addChoice("toUpperCase");
         function.addChoice("trim");
         _function = _TRIM;
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"80\" height=\"30\" "

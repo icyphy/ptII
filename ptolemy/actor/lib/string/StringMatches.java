@@ -82,19 +82,19 @@ public class StringMatches extends TypedAtomicActor {
         pattern.setStringMode(true);
         pattern.setExpression("");
         new Attribute(pattern.getPort(), "_showName");
-                
+
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
         new Attribute(matchString.getPort(), "_showName");
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The string to be pattern matched to the regular expression.
      */
     public PortParameter matchString;
@@ -105,11 +105,11 @@ public class StringMatches extends TypedAtomicActor {
     public TypedIOPort output;
 
     /** The regular expression to be pattern matched with the
-     *  matchString string.  
+     *  matchString string.
      *  Its default parameter is an empty string that matches no strings.
      */
     public PortParameter pattern;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -119,7 +119,7 @@ public class StringMatches extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        
+
         if (attribute == pattern) {
             try {
                 String patternValue
@@ -152,10 +152,10 @@ public class StringMatches extends TypedAtomicActor {
         Matcher match = _pattern.matcher(matchStringValue);
         output.send(0, new BooleanToken(match.find()));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The pattern for the regular expression.
     private Pattern _pattern;
 }

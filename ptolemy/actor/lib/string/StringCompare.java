@@ -128,7 +128,7 @@ public class StringCompare extends TypedAtomicActor {
     /** The comparison function to be performed. The choices are:
      * <ul>
      * <li> <b>equals</b>: Compares firstString to another secondString
-     * (Default). 
+     * (Default).
      * <li> <b>startsWith</b>: Tests whether firstString starts with
      *  secondString.
      * <li> <b>endsWith</b>: Tests whether firstString ends with secondString.
@@ -140,7 +140,7 @@ public class StringCompare extends TypedAtomicActor {
     /** The input PortParameter for the first string of type string.
      */
     public PortParameter firstString;
-    
+
     /** The parameter to state whether to ignore case. This is a
      *  boolean that defaults to false.
      */
@@ -153,7 +153,7 @@ public class StringCompare extends TypedAtomicActor {
     /** The input PortParameter for the second string of type string.
      */
     public PortParameter secondString;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
