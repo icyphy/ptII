@@ -203,10 +203,10 @@ public class LocalZenoApplication implements ActionListener {
 	    Parameter clkStopTime = (Parameter)_clock.getAttribute("stopTime");
 	    clkStopTime.setToken( new DoubleToken(30.0) );
 
-	    _join1 = new ListenPipe( _topLevel, "join1" );
+	    _join1 = new ListenWire( _topLevel, "join1" );
 	    _fork1 = new ListenFork( _topLevel, "fork1" );
 	    _fBack1 = new ListenFBDelay( _topLevel, "fBack1" );
-	    _join2 = new ListenPipe( _topLevel, "join2" );
+	    _join2 = new ListenWire( _topLevel, "join2" );
 	    _fork2 = new ListenFork( _topLevel, "fork2" );
 	    _fBack2 = new ListenFBDelay( _topLevel, "fBack2" );
             
@@ -406,11 +406,11 @@ public class LocalZenoApplication implements ActionListener {
 
     // The Actors
     ListenClock _clock;
-    ListenPipe _join1;
+    ListenWire _join1;
     ListenFork _fork1;
     ListenFBDelay _fBack1;
     ListenSink _rcvr1;
-    ListenPipe _join2;
+    ListenWire _join2;
     ListenFork _fork2;
     ListenFBDelay _fBack2;
     ListenSink _rcvr2;
@@ -506,7 +506,7 @@ public class LocalZenoApplication implements ActionListener {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof ListenPipe
+                   actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink

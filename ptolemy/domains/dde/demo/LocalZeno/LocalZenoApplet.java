@@ -204,10 +204,10 @@ public class LocalZenoApplet extends DDEApplet {
 	    Parameter clkStopTime = (Parameter)_clock.getAttribute("stopTime");
 	    clkStopTime.setToken( new DoubleToken(90.0) );
 
-	    _join1 = new ListenPipe( _toplevel, "UpperJoin" );
+	    _join1 = new ListenWire( _toplevel, "UpperJoin" );
 	    _fork1 = new ListenFork( _toplevel, "UpperFork" );
 	    _fBack1 = new ListenFBDelay( _toplevel, "UpperFeedBack" );
-	    _join2 = new ListenPipe( _toplevel, "LowerJoin" );
+	    _join2 = new ListenWire( _toplevel, "LowerJoin" );
 	    _fork2 = new ListenFork( _toplevel, "LowerFork" );
 	    _fBack2 = new ListenFBDelay( _toplevel, "LowerFeedBack" );
             
@@ -313,11 +313,11 @@ public class LocalZenoApplet extends DDEApplet {
 
     // The Actors
     private ListenClock _clock;
-    private ListenPipe _join1;
+    private ListenWire _join1;
     private ListenFork _fork1;
     private ListenFBDelay _fBack1;
     private ListenSink _rcvr1;
-    private ListenPipe _join2;
+    private ListenWire _join2;
     private ListenFork _fork2;
     private ListenFBDelay _fBack2;
     private ListenSink _rcvr2;
@@ -429,7 +429,7 @@ public class LocalZenoApplet extends DDEApplet {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof ListenPipe
+                   actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink

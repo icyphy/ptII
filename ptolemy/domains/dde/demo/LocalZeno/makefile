@@ -52,8 +52,8 @@ JSRCS = \
 	ListenFBDelay.java \
 	ListenFork.java \
 	ListenGet.java \
-	ListenPipe.java \
 	ListenSink.java \
+	ListenWire.java \
 	LocalZenoApplet.java \
 	LocalZenoApplication.java 
 
