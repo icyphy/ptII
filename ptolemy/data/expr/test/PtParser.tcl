@@ -52,26 +52,26 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test PtParser-1.1 {Get information about an instance of PtParser} {
     # If anything changes, we want to know about it so we can write tests.
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     list [getJavaInfo $p]
 } {{
-  class:         pt.data.parser.PtParser
+  class:         pt.data.expr.PtParser
   fields:        lookingAhead nextToken token token_source
     
-  methods:       {ReInit java.io.InputStream} {ReInit pt.data.parser.PtP
-    arserTokenManager} bitwiseAnd bitwiseOr bitwiseXor disa
-    ble_tracing element enable_tracing {equals java.lang.Ob
-    ject} funcIf function generateParseException {generateP
-    arseTree java.lang.String} {generateParseTree java.lang
-    .String pt.kernel.NamedList} getClass getNextToken {get
-    Token int} hashCode logicalAnd logicalEquals logicalOr 
-    notify notifyAll relational start sum term toString una
-    ry wait {wait long} {wait long int}
+  methods:       {ReInit java.io.InputStream} {ReInit pt.data.expr.PtPar
+    serTokenManager} bitwiseAnd bitwiseOr bitwiseXor disabl
+    e_tracing element enable_tracing {equals java.lang.Obje
+    ct} funcIf function generateParseException {generatePar
+    seTree java.lang.String} {generateParseTree java.lang.S
+    tring pt.kernel.util.NamedList} getClass getNextToken {
+    getToken int} hashCode logicalAnd logicalEquals logical
+    Or notify notifyAll relational start sum term toString 
+    unary wait {wait long} {wait long int}
     
-  constructors:  pt.data.parser.PtParser {pt.data.parser.PtParser java.i
-    o.InputStream} {pt.data.parser.PtParser java.util.Obser
-    ver} {pt.data.parser.PtParser pt.data.parser.PtParserTo
-    kenManager}
+  constructors:  pt.data.expr.PtParser {pt.data.expr.PtParser java.io.In
+    putStream} {pt.data.expr.PtParser java.util.Observer} {
+    pt.data.expr.PtParser pt.data.expr.PtParserTokenManager
+    }
     
   properties:    class nextToken token
     
@@ -84,23 +84,23 @@ test PtParser-1.1 {Get information about an instance of PtParser} {
 ####
 # 
 test PtParser-2.1 {Construct Parse objects using different constructors} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
-    set p2 [java::new {pt.data.parser.PtParser java.util.Observer} $param1]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
+    set p2 [java::new {pt.data.expr.PtParser java.util.Observer} $param1]
 
     set c1 [$p1 getClass]
     set c2 [$p2 getClass]
 
     list [ $c1 getName ] [$c2 getName] 
-} {pt.data.parser.PtParser pt.data.parser.PtParser}
+} {pt.data.expr.PtParser pt.data.expr.PtParser}
 
 ######################################################################
 ####
 # 
 test PtParser-2.2 {Construct a Parser, try simple integer expressions} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "2 + 3 + 4"]
     set res  [ $root evaluateParseTree ]
 
@@ -123,7 +123,7 @@ test PtParser-2.2 {Construct a Parser, try simple integer expressions} {
 ####
 # 
 test PtParser-2.3 {Construct a Parser, try complex integer expressions} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "-(2 + (3) + 4*(3- 4 % 3)*(12/12))\n"]
     # Note that dividing an Int by an Int can give a Double, here I want 
     # all nodes the parse tree to have IntTokens
@@ -135,7 +135,7 @@ test PtParser-2.3 {Construct a Parser, try complex integer expressions} {
 ####
 # 
 test PtParser-2.4 {Construct a Parser, try simple double expressions} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "2.0 + 3.5 + 4.2"]
     set res  [ $root evaluateParseTree ]
 
@@ -157,7 +157,7 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
 ####
 # 
 test PtParser-2.5 {Construct a Parser, try complex double expressions} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2.2 + (3.7%1.5) + 4.0*(3.2- 4.2 % 3.0)*(12.0/2.4/2.5/2.0))" ]
     set res  [ $root evaluateParseTree ]
 
@@ -167,7 +167,7 @@ test PtParser-2.5 {Construct a Parser, try complex double expressions} {
 ####
 # 
 test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2*9.5 + (3.5/7) + 4/.5) +  \" hello \" + (3*5 -4)\n"]
     set res  [ $root evaluateParseTree ]
 
@@ -179,7 +179,7 @@ test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using
 ####
 # 
 test PtParser-4.0 {Construct a Parser, try basic relational operators} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "2<4"]
     set root2 [ $p {generateParseTree String} "4<=4"]
     set root3 [ $p {generateParseTree String} "4>=4"]
@@ -200,7 +200,7 @@ test PtParser-4.0 {Construct a Parser, try basic relational operators} {
 ####
 # 
 test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic operators} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "(2)<(4*5 -9)"]
     set root2 [ $p {generateParseTree String} "4<=4*7"]
     set root3 [ $p {generateParseTree String} "4-7>=4"]
@@ -215,7 +215,7 @@ test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic 
 ####
 # 
 test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "\"hello\" == \"hello\""]
     set root2 [ $p {generateParseTree String} "\"hello\" != \"hello\""]
 
@@ -228,7 +228,7 @@ test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} 
 ####
 # 
 test PtParser-5.0 {Construct a Parser, test use of logical operators} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "\"hello\" == \"hello\" && 5>=5"]
     set root2 [ $p {generateParseTree String} "\"hello\" != \"hello\" || 3<3"]
     set root3 [ $p {generateParseTree String} "(3<=5) && (56 == 56) || (\"foo\" != \"foo\")"]
@@ -242,7 +242,7 @@ test PtParser-5.0 {Construct a Parser, test use of logical operators} {
 ####
 # 
 test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
-    set p [java::new pt.data.parser.PtParser]
+    set p [java::new pt.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "!true"]
     set root2 [ $p {generateParseTree String} "-7"]
 
@@ -261,16 +261,16 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
     set tok3 [java::new  {pt.data.IntToken int} 9]
     set tok4 [java::new  {pt.data.StringToken String} { hello world}]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
-    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id2 $tok2]
-    set param3 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id3 $tok3]
-    set param4 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id4 $tok4]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id2 $tok2]
+    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id3 $tok3]
+    set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
 
-    set parser [java::new {pt.data.parser.PtParser java.util.Observer} $param1]
-    $e {addParam pt.data.Param} $param1
-    $e {addParam pt.data.Param} $param2
-    $e {addParam pt.data.Param} $param3
-    $e {addParam pt.data.Param} $param4
+    set parser [java::new {pt.data.expr.PtParser java.util.Observer} $param1]
+    $e {addParam pt.data.expr.Parameter} $param1
+    $e {addParam pt.data.expr.Parameter} $param2
+    $e {addParam pt.data.expr.Parameter} $param3
+    $e {addParam pt.data.expr.Parameter} $param4
 
     set nl [$param1 getScope]
 
@@ -289,17 +289,17 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
     set tok3 [java::new  {pt.data.IntToken int} 9]
     set tok4 [java::new  {pt.data.StringToken String} { hello world}]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
-    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id2 $tok2]
-    set param3 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id3 $tok3]
-    set param4 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id4 $tok4]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id2 $tok2]
+    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id3 $tok3]
+    set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
 
-    $e {addParam pt.data.Param} $param1
-    $e {addParam pt.data.Param} $param2
-    $e {addParam pt.data.Param} $param3
-    $e {addParam pt.data.Param} $param4
+    $e {addParam pt.data.expr.Parameter} $param1
+    $e {addParam pt.data.expr.Parameter} $param2
+    $e {addParam pt.data.expr.Parameter} $param3
+    $e {addParam pt.data.expr.Parameter} $param4
 
-    set parser [java::new pt.data.parser.PtParser]
+    set parser [java::new pt.data.expr.PtParser]
 
     set nl [$param1 getScope]
 
@@ -315,7 +315,7 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
 ####
 # 
 test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true)?(7):(6)\n"]
     set res  [ $root evaluateParseTree ]
 
@@ -326,7 +326,7 @@ test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
 ####
 # 
 test PtParser-7.1 {Construct a Parser, try harder if then else} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(false) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
@@ -336,7 +336,7 @@ test PtParser-7.1 {Construct a Parser, try harder if then else} {
 ####
 # 
 test PtParser-7.2 {Test complicated expression within boolean test condition} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
@@ -346,7 +346,7 @@ test PtParser-7.2 {Test complicated expression within boolean test condition} {
 ####
 # 
 test PtParser-7.3 {Test nested if then elses} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
@@ -356,7 +356,7 @@ test PtParser-7.3 {Test nested if then elses} {
 ####
 # 
 test PtParser-7.4 {Test many levels of parenthesis nesting} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (((((3/.5*4))))) : ((((((\"hello\"))))))"]
     set res  [ $root evaluateParseTree ]
 
@@ -366,7 +366,7 @@ test PtParser-7.4 {Test many levels of parenthesis nesting} {
 ####
 # 
 test PtParser-8.0 {Test method calls on PtTokens} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "(4.0).add(3.0)"]
     set res1  [ $root1 evaluateParseTree ]
 
@@ -376,7 +376,7 @@ test PtParser-8.0 {Test method calls on PtTokens} {
 ####
 # 
 test PtParser-8.1 {Test bitwise operators} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "5 & 2"]
     set root2 [ $p1 {generateParseTree String} "5 | 2"]
     set root3 [ $p1 {generateParseTree String} "5 ^ 4"]
@@ -393,7 +393,7 @@ test PtParser-8.1 {Test bitwise operators} {
 ####
 # 
 test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on booleans} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "~(5 & 2 | 4)"]
     set root2 [ $p1 {generateParseTree String} "(5>4) & (2==2)"]
     set root3 [ $p1 {generateParseTree String} "(false) | (2!=2)"]
@@ -409,7 +409,7 @@ test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on 
 ####
 # Need to test that the tree can be reevaluated an arbitrary number of times
 test PtParser-9.0 {Check that evaluation of the parse tree does not change the parse tree} {
-    set p1 [java::new pt.data.parser.PtParser]
+    set p1 [java::new pt.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "2+3"]
     set root2 [ $p1 {generateParseTree String} "2-3"]
     set root3 [ $p1 {generateParseTree String} "2*3"]

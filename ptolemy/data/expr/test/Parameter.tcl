@@ -1,4 +1,4 @@
-# Tests for the Param class
+# Tests for the Parameter class
 #
 # @Author: Neil Smyth
 #
@@ -54,29 +54,32 @@ test Param-1.1 {Get information about the class} {
     # If anything changes, we want to know about it so we can write tests.
     set e [java::new {pt.kernel.Entity String} parent]
     set tok [java::new  {pt.data.DoubleToken double} 4.5]
-    set param [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok]
+    set param [java::new \
+	    {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} \
+	    $e id1 $tok]
 
     list [getJavaInfo $param]
 } {{
-  class:         pt.data.Param
+  class:         pt.data.expr.Parameter
   fields:        
-  methods:       {addParam pt.data.Param} {description int} {equals java
-    .lang.Object} getClass getContainer getFullName getName
-     {getParam java.lang.String} getParams getScope getToke
-    n hashCode notify notifyAll {removeParam java.lang.Stri
-    ng} reset {setName java.lang.String} {setToken pt.data.
-    Token} {setTokenFromExpr java.lang.String} toString {up
-    date java.util.Observable java.lang.Object} wait {wait 
-    long} {wait long int} workspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} {description int} {equals java.l
+    ang.Object} getClass getContainer getFullName getName {
+    getParameter java.lang.String} getParameters getScope g
+    etToken hashCode notify notifyAll {removeParameter java
+    .lang.String} reset {setName java.lang.String} {setToke
+    n pt.data.Token} {setTokenFromExpr java.lang.String} to
+    String {update java.util.Observable java.lang.Object} w
+    ait {wait long} {wait long int} workspace
     
-  constructors:  {pt.data.Param pt.kernel.NamedObj java.lang.String java
-    .lang.String} {pt.data.Param pt.kernel.NamedObj java.la
-    ng.String pt.data.Token}
+  constructors:  {pt.data.expr.Parameter pt.kernel.util.NamedObj java.la
+    ng.String java.lang.String} {pt.data.expr.Parameter pt.
+    kernel.util.NamedObj java.lang.String pt.data.Token}
     
-  properties:    class container fullName name params scope token tokenF
-    romExpr
+  properties:    class container fullName name parameters scope token to
+    kenFromExpr
     
-  superclass:    pt.kernel.NamedObj
+  superclass:    pt.kernel.util.NamedObj
     
 }}
 
@@ -87,9 +90,9 @@ test Param-2.1 {Check constructors} {
     set e [java::new {pt.kernel.Entity String} parent]
     set tok [java::new  {pt.data.DoubleToken double} 4.5]
 
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok]
     
-    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id2 1.5]
+    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id2 1.5]
     
     set name1 [$param1 getFullName]
     set name2 [$param2 getFullName]
@@ -105,7 +108,7 @@ test Param-3.0 {Check setting the contained Token with another Token} {
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
 
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
@@ -124,7 +127,7 @@ test Param-3.0 {Check setting the contained Token with another Token} {
 #
 test Param-4.0 {Check setting the contained Token from a String or aother Token} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id1 "1.6 + 8.3"]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 "1.6 + 8.3"]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
@@ -150,7 +153,7 @@ test Param-4.0 {Check setting the contained Token from a String or aother Token}
 #
 test Param-5.0 {Check reseting the Param to its original String} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id1 "1.6 + 8.3"]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 "1.6 + 8.3"]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
@@ -180,7 +183,7 @@ test Param-5.0 {Check reseting the Param to its original String} {
 test Param-5.1 {Check reseting the Param to its original Token} {
     set e [java::new {pt.kernel.Entity String} parent]
     set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String pt.data.Token} $e id1 $tok1]
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
 
@@ -209,15 +212,15 @@ test Param-5.1 {Check reseting the Param to its original Token} {
 #
 test Param-6.0 {Check updating of Params that refer to other Params} {
     set e [java::new {pt.kernel.Entity String} parent]
-    set param1 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id1 1.1]
-    $e {addParam pt.data.Param} $param1
+    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 1.1]
+    $e {addParam pt.data.expr.Parameter} $param1
 
     set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
-    set param2 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id2 9.9]
-    $e {addParam pt.data.Param} $param2
+    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id2 9.9]
+    $e {addParam pt.data.expr.Parameter} $param2
 
-    set param3 [java::new {pt.data.Param pt.kernel.NamedObj String String} $e id3 "id1 + id2"]
-    $e {addParam pt.data.Param} $param3
+    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id3 "id1 + id2"]
+    $e {addParam pt.data.expr.Parameter} $param3
  
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
