@@ -493,15 +493,22 @@ public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Characters that end a comment.
+    private static final String _commentEnd = "*/";
+
+    // Characters that start a comment.
+    private static final String _commentStart = "/*";
+
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-            "***********************************/\n";
+            "**********************************" + _commentEnd + "\n";
 
+    // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment =
-            "/***********************************\n";
+            _commentStart + "**********************************\n";
 
     // Mapping from classes into lists of superclasses as computed by
     // {@link #_getSuperClasses(SootClass)}.
