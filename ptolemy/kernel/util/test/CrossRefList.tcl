@@ -64,7 +64,7 @@ test CrossRefList-1.1 {Get information about an instance of CrossRefList} {
 } {{
   class:         pt.kernel.CrossRefList
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {associate pt.kernel.CrossRefList} dissociate {dissociate java.lang.Object} {isMember java.lang.Object} isEmpty elements size {copyList pt.kernel.CrossRefList}
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {associate pt.kernel.CrossRefList} dissociate {dissociate java.lang.Object} {isMember java.lang.Object} isEmpty elements size {duplicate pt.kernel.CrossRefList}
   constructors:  {pt.kernel.CrossRefList java.lang.Object} {pt.kernel.CrossRefList java.lang.Object pt.kernel.CrossRefList}
   properties:    empty class
   superclass:    java.lang.Object
@@ -235,7 +235,7 @@ dissociate 1->2 4 times = $result3\n\
 ######################################################################
 ####
 # 
-test CrossRefList-5.1 {associate CrossRefLists, then call copyList} {
+test CrossRefList-5.1 {associate CrossRefLists, then call duplicate} {
     set ownerone [java::new pt.kernel.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.CrossRefList $ownerone]
     set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
@@ -251,7 +251,7 @@ test CrossRefList-5.1 {associate CrossRefLists, then call copyList} {
     $crlone associate $crlthree
     set result1 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
  
-    $crlfour copyList $crlone
+    $crlfour duplicate $crlone
     set result2 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
 
     $crlone dissociate
