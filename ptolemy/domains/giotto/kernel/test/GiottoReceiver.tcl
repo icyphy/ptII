@@ -83,14 +83,15 @@ test GiottoReceiver-1.5 {Get the token} {
 test GiottoReceiver-1.6 {Get the token from an empty receiver} {
     catch {$r2 get} msg
     list $msg
-} {{ptolemy.actor.NoTokenException: Object name: .<Unnamed Object>:
-Attempt to get data from an empty receiver.}}
+} {{ptolemy.actor.NoTokenException: Attempt to get data from an empty receiver.
+  in .<Unnamed Object>}}
 
 test GiottoReceiver-1.7 {Get the token from a receiver not updated} {
     $r2 put $t1
     catch {$r2 get} msg
     list $msg
-} {{ptolemy.actor.NoTokenException: Object name: .<Unnamed Object>:
-Attempt to get data from an empty receiver.}}
+} {{ptolemy.actor.NoTokenException: Attempt to get data from an empty receiver.
+  in .<Unnamed Object>}}
+
 
 
