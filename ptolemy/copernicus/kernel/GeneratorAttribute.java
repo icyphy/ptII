@@ -44,8 +44,8 @@ import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.FilterOutGraphicalClasses;
-import ptolemy.moml.FilterBackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
@@ -443,10 +443,10 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	// Parse the model and get the name of the model.
 	try {
             // Handle Backward Compatibility.
-            parser.addMoMLFilter(new FilterBackwardCompatibility());
+            parser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes
-            parser.addMoMLFilter(new FilterOutGraphicalClasses());
+            parser.addMoMLFilter(new RemoveGraphicalClasses());
 
 	    NamedObj toplevel = null;
 	    try {

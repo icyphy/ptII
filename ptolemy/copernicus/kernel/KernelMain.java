@@ -45,8 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.FilterOutGraphicalClasses;
-import ptolemy.moml.FilterBackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 
 import com.microstar.xml.XmlException;
 
@@ -104,10 +104,7 @@ public class KernelMain {
         _parser = new MoMLParser();
 
 	// Handle Backward Compatibility.
-	_parser.addMoMLFilter(new FilterBackwardCompatibility());
-
-	// Add any _icons.
-	//_parser.addMoMLFilter(new FilterAddIcons());
+	_parser.addMoMLFilters(BackwardCompatibility.allFilters());
         
 	// Filter out any graphical classes and the GeneratorAttribute
 	// itself.  If we don't filter out GeneratorAttribute, then
@@ -117,11 +114,11 @@ public class KernelMain {
 	// in the case of the applet generator, the parameters depend
 	// on the value of Java system properties like ptolemy.ptII.directory
 	// which is not accessible because of security concerns.
-	FilterOutGraphicalClasses filterOutGraphicalClasses =
-	    new FilterOutGraphicalClasses();
-	filterOutGraphicalClasses
+	RemoveGraphicalClasses removeGraphicalClasses =
+	    new RemoveGraphicalClasses();
+	removeGraphicalClasses
 	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
-	_parser.addMoMLFilter(filterOutGraphicalClasses);
+	_parser.addMoMLFilter(removeGraphicalClasses);
     }
 
     ///////////////////////////////////////////////////////////////////
