@@ -215,10 +215,46 @@ public class IconLibrary extends XMLElement{
         return sublibraries.keys();
     }
 
-    // These are package-private because the parser will set them
-    XMLElement description;
-    XMLElement header;
-    HashedMap sublibraries;
-    HashedMap icons;
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * By default an arbitrary XMLElement has no semantic meaning for its
+     * child elements, so this just returns.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        if(e instanceof Icon) {
+            // if it's an Icon, then just add it to the list of icons.
+            icons.putAt(
+                    ((Icon) e).getName(), e);
+        } else if(e.getElementType().equals("sublibrary")) {
+            // if it's a sublibrary, then add it to the list of sublibraries.
+            String filename = e.getPCData();
+            sublibraries.putAt(filename,e);
+        } else if(e.getElementType().equals("header")) {
+            // if it's a header, then get the old description element and
+            // swap it over.   Also remove the old header.   This makes sure
+            // we always have a description, even if no description gets parsed
+            removeChildElement(header);
+            header.removeChildElement(description);
+            header = e;
+            header.addChildElement(description);
+            /* what to do about the sublibraries?  
+               there shouldn't be any but..*/
+        } else if(e.getElementType().equals("description")) {
+            // if it's a description, then replace the old description that
+            // was in the header. Remember that the description is not
+            // a child element of this object, but we have to applySemantics
+            // to it because header doesn't have it's own object.
+            header.removeChildElement(description);
+            description = e;
+        }    
+    }
+
+    private XMLElement description;
+    private XMLElement header;
+    private HashedMap sublibraries;
+    private HashedMap icons;
 }
 
