@@ -32,6 +32,8 @@ package ptolemy.vergil.debugger;
 
 import diva.gui.toolbox.JContextMenu;
 
+import ptolemy.actor.Actor;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphController;
@@ -79,8 +81,12 @@ public class BreakpointDialogFactory implements MenuItemFactory {
         String name = "Set Breakpoints";
         final NamedObj target = object;
 
-        // Ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity)) {
+        // Ensure that if we have a ComponentEntity, it is opaque.
+        // Also ensure that it is an actor and that it has a director.
+        if (!(target instanceof ComponentEntity)
+                || !(((ComponentEntity)target).isOpaque())
+                || !(target instanceof Actor)
+                || (((Actor)target).getExecutiveDirector() == null)) {
             return null;
         }
 

@@ -66,11 +66,6 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
         super(owner,
                 "Configure breakpoints for " + target.getName(),
                 new BreakpointConfigurer(target, graphController));
-
-        // Once we get to here, the dialog has already been dismissed.
-        _owner = owner;
-        _target = target;
-        _graphController = graphController;
     }
 
 
@@ -86,16 +81,4 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
             ((BreakpointConfigurer)contents).apply();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The owner window.
-    private Frame _owner;
-
-    // The target object whose ports are being configured.
-    private Entity _target;
-
-    // The GraphController associated with the target.
-    private BasicGraphController _graphController;
 }

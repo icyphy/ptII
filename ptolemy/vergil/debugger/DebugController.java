@@ -13,8 +13,8 @@
  DOCUMENTATION, EVEN IF SUPELEC OR THE UNIVERSITY OF CALIFORNIA HAVE
  BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND SUPELEC SPECIFICALLY DISCLAIM ANY
- WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIM ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA AND SUPELEC HAVE NO OBLIGATION TO PROVIDE MAINTENANCE,
@@ -31,6 +31,7 @@ package ptolemy.vergil.debugger;
 
 import diva.canvas.Figure;
 
+import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
@@ -45,6 +46,7 @@ import ptolemy.vergil.kernel.DebugRenderer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Hashtable;
 
 ////////////////////////////////////////////////////////////////////////
 //// DebugController
@@ -57,26 +59,14 @@ An execution listener that suspends execution based on breakpoints.
 public class DebugController extends TransientSingletonConfigurableAttribute
     implements DebugListener {
 
-    /** Construct a new debug controller.
-     *  @param object The object that the listener should break on.
-     *  @param graphController The graph controller of the object.
-     *  FIXME: What exactly is the graph controller???
-     */
-    public DebugController(NamedObj object,
-            BasicGraphController graphController)
-            throws NameDuplicationException, IllegalActionException {
-        super(object, "DebugController");
-        _object = object;
-        _graphController = graphController;
+    public DebugController(NamedObj container, String name)
+             throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+        _toDebug = new Hashtable();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Ignore string messages.
-     */
-    public void message(String string) {
-    }
 
     /** Respond to debug events of type FiringEvent by highlighting
      *  the actor that we are breaking on.
@@ -84,25 +74,27 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      *  @see ptolemy.vergil.actor.ActorViewerGraphController#event
      */
     public void event(DebugEvent debugEvent) {
+        // FIXME: this method is called every time the director gets a
+        // firing event for any actor...is this ok?
+        
         // Ignore debug events that aren't firing events.
         if (debugEvent instanceof FiringEvent) {
             FiringEvent event = (FiringEvent) debugEvent;
-
-            if (event.getActor() == _object) {
-                // Highlight the actor that we are breaking on.
-                NamedObj objToHighlight = _object;
+            
+            NamedObj objToHighlight = (NamedObj)event.getActor();
+            if (_toDebug.containsKey(objToHighlight)) {
+                // The actor associated with this firing event is in
+                // the set of actors to be debugged.
 
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
                 // that is.
-                // FIXME: Not sure if this implementation is right...
+                DebugProfile debugProfile = getDebug((Executable)objToHighlight);
+                BasicGraphController graphController = debugProfile.getGraphController();
                 AbstractBasicGraphModel graphModel =
-                    (AbstractBasicGraphModel)_graphController.getGraphModel();
+                    (AbstractBasicGraphModel)graphController.getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
-                //NamedObj toplevel = _object.toplevel();
 
-                // FIXME: why is this null check needed?
-                // FIXME: why do we need to compare against toplevel?
                 while (objToHighlight != null
                         && objToHighlight.getContainer() != toplevel) {
                     objToHighlight = (NamedObj)objToHighlight.getContainer();
@@ -112,38 +104,16 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 }
                 Object location = objToHighlight.getAttribute("_location");
                 if (location != null) {
-                    Figure figure = _graphController.getFigure(location);
+                    Figure figure = graphController.getFigure(location);
                     if (figure != null) {
                         // If the user has chosen to break on one of
                         // the firing events, highlight the actor and
                         // wait for keyboard input.
-                        if (event.getType() == FiringEvent.BEFORE_PREFIRE &&
-                                objToHighlight.getAttribute("BEFORE_PREFIRE")
-                                != null) {
+                        if (debugProfile.isListening(event.getType())) {
+                            System.out.println("DebugController: "
+                                + event.getActor().toString()
+                                + event.getType().getName());
                             render(figure);
-                            System.out.println("DebugController: prefire " +
-                                    event.getActor().toString());
-
-                        } else if (event.getType() == FiringEvent.BEFORE_FIRE
-                                && objToHighlight.getAttribute("BEFORE_FIRE")
-                                != null) {
-                            render(figure);
-                            System.out.println("DebugController: fire " +
-                                    event.getActor().toString());
-                        } else if (event.getType()
-                                == FiringEvent.BEFORE_POSTFIRE
-                                && objToHighlight.getAttribute(
-                                        "BEFORE_POSTFIRE") != null) {
-                            render(figure);
-                            System.out.println("DebugController: postfire " +
-                                    event.getActor().toString());
-                        } else if (event.getType()
-                                == FiringEvent.AFTER_POSTFIRE
-                                && objToHighlight.getAttribute(
-                                        "AFTER_POSTFIRE") != null) {
-                            render(figure);
-                            System.out.println("DebugController: postpostfire "
-                                    + event.getActor().toString());
                         }
                     }
                 }
@@ -151,6 +121,55 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         }
     }
 
+    /** Ignore string messages.
+     */
+    public void message(String string) {
+    }
+
+    /** Add an actor to the set of actors that are being debugged.
+     *  @param actor The actor to debug.
+     *  @param profile The breakpoint configuration for this actor.
+     */
+    public void setDebug(Executable actor, DebugProfile profile) {
+        _toDebug.put(actor, profile);
+    }
+
+    /** Remove an actor from the set of actors that are being debugged.
+     *  @param actor The actor to remove.
+     */
+    public void unsetDebug(Executable actor) {
+        // delete the debug profile from the hashtable
+        _toDebug.remove(actor);
+    }
+
+    /** Get the profile for an actor that is being debugged.
+     *  @param actor The actor for which to retrieve the profile.
+     *  @return The profile for the actor.
+     */
+    public DebugProfile getDebug(Executable actor) {
+        return (DebugProfile)_toDebug.get(actor);
+    }
+
+    /** Clear the set of actors that are being debugged.
+     */
+    public void clear() {
+        _toDebug.clear();
+    }
+    
+    /** Enable/disable debugging on the set of actors.
+     *  @param enabled True if debugging should be enabled.
+     */
+    public void setEnabled(boolean enabled) {
+        // FIXME: not implemented yet
+    }
+
+    /** Determine whether debugging is enabled on the set of actors.
+     *  @return True if debugging is enabled.
+     */
+    public boolean getEnabled() {
+        // FIXME: not implemented yet
+        return false;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -160,12 +179,13 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      *  @see ptolemy.vergil.kernel.DebugRenderer
      */
     private void render(Figure figure) {
+        // FIXME: is this still correct? do we need to save _debugRenderer
         if (_debugRenderer == null) {
             _debugRenderer = new DebugRenderer();
         }
 
         _debugRenderer.renderSelected(figure);
-        _debugRendered = figure;
+        Figure debugRendered = figure;
 
         // Wait for user keyboard input.
         // FIXME: this should actually be the "resume" button.
@@ -173,28 +193,24 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 new InputStreamReader(System.in));
         try {
             console.readLine();
-            if (_debugRendered != null) {
+            if (debugRendered != null) {
                 // Unhighlight the actor after receiving keyboard input.
-                _debugRenderer.renderDeselected(_debugRendered);
+                _debugRenderer.renderDeselected(debugRendered);
             }
         } catch (IOException e) {
             //do nothing
         }
+
+        // FIXME: for some reason the small view in Vergil still shows
+        // the rendering when done.  Disappears when you move peephole.
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Listen to this object.
-    private NamedObj _object;
-
     // The _debugRenderer for _object.
     private DebugRenderer _debugRenderer = null;
 
-    // The Figure associated with _object.
-    private Figure _debugRendered = null;
-
-    // The GraphController associate with _object.
-    private BasicGraphController _graphController = null;
-
+    // The set of actors that are being debugged.
+    private Hashtable _toDebug = null;
 }

@@ -32,21 +32,15 @@ package ptolemy.vergil.debugger;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.FiringEvent.FiringEventType;
 import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.basic.BasicGraphController;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.StringTokenizer;
 import javax.swing.BoxLayout;
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,7 +57,7 @@ postfire, iterate.
 @version $Id$
 */
 
-public class BreakpointConfigurer extends Query implements QueryListener {
+public class BreakpointConfigurer extends Query {
 
     /** Construct a breakpoint configurer for the specified entity.
      *  @param object The entity to configure.
@@ -72,164 +66,156 @@ public class BreakpointConfigurer extends Query implements QueryListener {
     public BreakpointConfigurer(Entity object,
             BasicGraphController graphController) {
         super();
-        this.addQueryListener(this);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setTextWidth(15);
 
-        _object = object;
+        // Make sure the object we are trying to set a breakpoint on
+        // is an Actor.
+        if (object instanceof Actor) {
+            _actor = (Actor)object;
+        } else {
+            // This should not be thrown because the context menu
+            // (BreakpointDialogFactory) would not have allowed the
+            // breakpoint option for non-Actor objects.
+            throw new InternalErrorException(
+                    "Object selected is not an actor.");
+        }
+
+        // Save the GraphController associated with _actor.
         _graphController = graphController;
 
-        // Temporary variable for holding which (before and/or after)
-        // firing event breakpoint options have already been selected.
-        Set selectedValues;
+        // Get the director associated with _actor.
+        Director director = ((Actor)_actor).getExecutiveDirector();
+        if (director == null) {
+            // This should not be thrown because the context menu
+            // (BreakpointDialogFactory) would not have allowed the
+            // breakpoint option for actors without a director.
+            throw new InternalErrorException(
+                    "No director associated with this actor.");
+        } else {
+            // See if the director already has a DebugController.
+            DebugController debugController =
+                (DebugController) director.getAttribute(_DEBUGCONTROLLER);
 
-        // prefire
-        selectedValues = new HashSet();
-        if ((NamedObj)object.getAttribute("BEFORE_PREFIRE") != null) {
-            selectedValues.add("before");
-        }
-        if ((NamedObj)object.getAttribute("AFTER_PREFIRE") != null)
-            selectedValues.add("after");
-        addSelectButtons("prefire", "prefire", _optionsArray, selectedValues);
+            // See if the DebugController has a DebugProfile for this
+            // actor.  Make a new DebugProfile if one does not already
+            // exist.
+            _actorProfile = null;
+            if (debugController != null) {
+                _actorProfile = debugController.getDebug(_actor);
+            }
+            if (_actorProfile == null) {
+                _actorProfile = new DebugProfile(_graphController);
+            }
 
-        // fire
-        selectedValues = new HashSet();
-        if ((NamedObj)object.getAttribute("BEFORE_FIRE") != null) {
-            selectedValues.add("before");
-        }
-        if ((NamedObj)object.getAttribute("AFTER_FIRE") != null)
-            selectedValues.add("after");
-        addSelectButtons("fire", "fire", _optionsArray, selectedValues);
+            // FIXME: change Query so that booleanValue becomes getBooleanValue, String, Double...
 
-        // postfire
-        selectedValues = new HashSet();
-        if ((NamedObj)object.getAttribute("BEFORE_POSTFIRE") != null) {
-            selectedValues.add("before");
+            // Generate checkbox entries in dialog box.
+            for (int i = 0; i < _firingEventTypes.length; i++) {
+                if (_actorProfile.isListening(_firingEventTypes[i])) {
+                    addCheckBox(_firingEventTypeLabels[i],
+                            _firingEventTypeLabels[i], true);
+                } else {
+                    addCheckBox(_firingEventTypeLabels[i],
+                            _firingEventTypeLabels[i], false);
+                }
+            }
         }
-        if ((NamedObj)object.getAttribute("AFTER_POSTFIRE") != null)
-            selectedValues.add("after");
-        addSelectButtons("postfire", "postfire", _optionsArray, selectedValues);
-
-        // iterate
-        selectedValues = new HashSet();
-        if ((NamedObj)object.getAttribute("BEFORE_ITERATE") != null) {
-            selectedValues.add("before");
-        }
-        if ((NamedObj)object.getAttribute("AFTER_ITERATE") != null)
-            selectedValues.add("after");
-        addSelectButtons("iterate", "iterate", _optionsArray, selectedValues);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Apply the changes by configuring the breakpoints that have changed.
-     *
-     *  FIXME: how to deal with NameDuplicationException,
-     *  IllegalActionException?
+    /** Set up and save the new breakpoint configuration for this actor.
      */
     public void apply() {
-        Iterator items = _changed.iterator();
-        boolean noneSelected = true;
-        try {
-            // For each firing event breakpoint that has changed,
-            // process new selection.
-            while (items.hasNext()) {
-                String item = (String)items.next();
-                String value = stringValue(item);
+        boolean breakpointsSelected = false;
 
-                // First, parse the value, which may be a comma-separated list.
-                Set selectedValues = new HashSet();
-                StringTokenizer tokenizer = new StringTokenizer(value, ",");
-                while (tokenizer.hasMoreTokens()) {
-                    selectedValues.add(tokenizer.nextToken().trim());
-                }
-
-                // selectedValues now contains either nothing, or
-                // "before" and/or "after".
-                if (selectedValues.contains("before")) {
-                    noneSelected = false;
-                    TransientSingletonConfigurableAttribute attribute =
-                        new TransientSingletonConfigurableAttribute(_object,
-                                new String("BEFORE_" + item.toUpperCase()));
-                } else {
-                    Attribute oldAttribute = _object.getAttribute(
-                            new String("BEFORE_" + item.toUpperCase()));
-                    if (oldAttribute != null) {
-                        // remove the attribute
-                        oldAttribute.setContainer(null);
-                    }
-                }
-                if (selectedValues.contains("after")) {
-                    noneSelected = false;
-                    TransientSingletonConfigurableAttribute attribute =
-                        new TransientSingletonConfigurableAttribute(_object,
-                                new String("AFTER_" + item.toUpperCase()));
-                } else {
-                    Attribute oldAttribute = _object.getAttribute(
-                            new String("AFTER_" + item.toUpperCase()));
-                    if (oldAttribute != null) {
-                        // remove the attribute
-                        oldAttribute.setContainer(null);
-                    }
-                }
-            }
-
-            // Check if there is already a DebugListener for this _object.
-            DebugListener listener = (DebugListener) _object.getAttribute(
-                    "DebugController");
-            Director director = ((Actor)_object).getExecutiveDirector();
-            if (listener == null) {
-                // Register a new DebugListener with the director.
-                DebugController debugController =
-                    new DebugController(_object, _graphController);
-
-                if (director != null) {
-                    director.addDebugListener(debugController);
-                }
+        // Make a new DebugProfile.
+        DebugProfile profile = new DebugProfile(_graphController);
+        for (int i = 0; i < _firingEventTypes.length; i++) {
+            // Configure the DebugProfile with the selected FiringEventTypes.
+            if (booleanValue(_firingEventTypeLabels[i])) {
+                profile.listenForEvent(_firingEventTypes[i]);
+                breakpointsSelected = true;
             } else {
-                // Remove debug listener if there are no longer any
-                // breakpoints for this _object
-                if (noneSelected) {
-                    if (director != null) {
-                        director.removeDebugListener(listener);
-                        ((Attribute)listener).setContainer(null);
-                    }
-                }
+                profile.unlistenForEvent(_firingEventTypes[i]);
             }
-
-        } catch (NameDuplicationException e1) {
-            // do nothing
-            // FIXME: should we do something here?
-        } catch (IllegalActionException e2) {
-            // do nothing
-            // FIXME: should we do something here?
         }
-    }
 
-    /** Called to notify that one of the entries has changed.
-     *  This simply sets a flag that enables application of the change
-     *  when the apply() method is called.
-     *  @param name The name of the entry that changed.
-     */
-    public void changed(String name) {
-        _changed.add(name);
+        Director director = ((Actor)_actor).getExecutiveDirector();
+        // The director should not be null because we already checked
+        // in the constructor.
+        DebugController debugController =
+            (DebugController) director.getAttribute(_DEBUGCONTROLLER);
+            
+        // If some breakpoints were selected
+        if (breakpointsSelected) {
+            // If the director does not already have a
+            // DebugController, create one.
+            if (debugController == null) {
+                try {
+                    debugController = new DebugController(director, _DEBUGCONTROLLER);
+                } catch (NameDuplicationException exception) {
+                    throw new RuntimeException(
+                            "Could not create debug controller.");
+                } catch (IllegalActionException exception) {
+                    throw new RuntimeException(
+                            "Could not create debug controller.");
+                }
+                // Register a new DebugController with the director.
+                director.addDebugListener(debugController);
+
+                // FIXME: when do we removeDebugListener?
+            } 
+            // Add this actor to the set of objects being debugged.
+            debugController.setDebug(_actor, profile);
+        } else {
+            // Remove profile if there are no longer any
+            // breakpoints for this _actor.
+            debugController.unsetDebug(_actor);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The set of names of breakpoint options (before/after firing
-    // event) that have changed.
-    private Set _changed = new HashSet();
-
+    // Name of the DebugController to attach to the director.
+    private static String _DEBUGCONTROLLER = "_DebugController";
+    
     // The object that this configurer configures.
-    private Entity _object;
+    private Actor _actor;
 
-    // The possible configurations for a firing event breakpoint.
-    private String[] _optionsArray = {"before", "after"};
+    // DebugProfile associated with _actor.
+    private DebugProfile _actorProfile;
+    
+    // To add firing events for debugging, you must make changes in 2
+    // places in this file: _firingEventTypeLabels, _firingEventTypes
+    // Labels of FiringEventTypes to show in the dialog box.
+    protected static String[] _firingEventTypeLabels = {
+        "before prefire",
+        "after prefire",
+        "before fire",
+        "after fire",
+        "before postfire",
+        "after postfire",
+        "before iterate",
+        "after iterate"
+    };
 
-    // The GraphController associated with _object.
+    // FiringEventTypes that the user can set breakpoints on.
+    protected static FiringEventType[] _firingEventTypes = {
+        FiringEvent.BEFORE_PREFIRE,
+        FiringEvent.AFTER_PREFIRE,
+        FiringEvent.BEFORE_FIRE,
+        FiringEvent.AFTER_FIRE,
+        FiringEvent.BEFORE_POSTFIRE,
+        FiringEvent.AFTER_POSTFIRE,
+        FiringEvent.BEFORE_ITERATE,
+        FiringEvent.AFTER_ITERATE
+    };
+
+    // The GraphController associated with _actor.
     private BasicGraphController _graphController;
 }
