@@ -135,8 +135,6 @@ public class ArrayIndex {
     /** Retrieve a value from the associate array using the supplied key.
         @param aKey the key.
         @return the stored value.
-        @throws Exception if value stored in the associative array does not
-        exits.
     */
     public double retrieve(String aKey ) {
 	Double value = (Double) _map.get( aKey );
