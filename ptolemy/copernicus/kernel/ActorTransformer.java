@@ -133,7 +133,7 @@ public class ActorTransformer extends SceneTransformer {
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             entityClass.setLibraryClass();
 
-            String newClassName = getInstanceClassName(entity,options);
+            String newClassName = getInstanceClassName(entity, options);
 
             SootClass newClass =
                 SootUtilities.copyClass(entityClass, newClassName);

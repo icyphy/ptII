@@ -94,19 +94,19 @@ public class KernelMain {
      *  @param args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options.
-     *  <br>The most common option is <code>-d ../../..</code>, which
+     *  <p>The most common option is <code>-d ../../..</code>, which
      *  will store the generated files in ../../..
-     *  Another common option is
+     *  <p>Another common option is
      *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
      *  which will set the run time option <i>key</i> to <i>value</i> for
      *  <i>phase-name</i> (default for <i>value</i> is true)
-     *  An example is:<br>
+     *  <p>An example is:<br>
      *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
-     *  <br>For a complete list of Soot Options, pass in "-h", or run
+     *  <p>For a complete list of Soot Options, pass in "-h", or run
      *  <code>$PTII/bin/soot -h<code>, or see
      *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
      *
-     *  @exception IllegalActionException if the model cannot be parsed.
+     *  @exception IllegalActionException If the model cannot be parsed.
      */
     public static void main(String[] args) throws IllegalActionException {
 	KernelMain kernelMain = new KernelMain(args[0]);
@@ -157,7 +157,7 @@ public class KernelMain {
      *  <li>If the parse fails, then the name is tried as a
      *  relative MoML file name and passed to MoMLParser.parseFile().
      *  </ol>
-     *  @exception IllegalActionException if the model cannot be parsed.
+     *  @exception IllegalActionException If the model cannot be parsed.
      */
     protected void _initialize()
             throws IllegalActionException {
@@ -175,11 +175,11 @@ public class KernelMain {
 	    try {
 		// Then try it as an xml file
 		_toplevel = (CompositeActor)parser.parseFile(_momlClassName);
-	    } catch (Exception exception2) {
+	    } catch (Exception exceptionTwo) {
 		throw new
 		    IllegalActionException("Failed to parse '"
                             + _momlClassName
-                            + "': " + exception);
+                            + "': " + exceptionTwo);
 	    }
         }
 
