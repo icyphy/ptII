@@ -657,13 +657,17 @@ public class Graph implements Cloneable {
     /** Return all the edges in this graph whose weights are contained
      *  in a specified collection.
      *  The edges are returned in the form of a collection.
-     *  Duplicate weights in the specified collection result
-     *  in duplicate edges in the returned collection.
      *  Each element in the returned collection is an instance of
-     *  {@link Edge}.
+     *  {@link Edge}. A null element in the argument collection is interpreted
+     *  to mean that all unweighted edges are to be included in the result.
+     *  Duplicate weights or null elements in the specified collection result
+     *  in duplicate edges in the returned collection.
+     *  Non-null elements in the argument collection that are not edge weights 
+     *  are ignored.
      *  @param collection The specified collection of weights.
      *  @return The edges in this graph whose weights are contained
      *  in the specified collection.
+     *  @see #edges(Object).
      */
     public Collection edges(Collection collection) {
         ArrayList edges = new ArrayList();
@@ -671,7 +675,7 @@ public class Graph implements Cloneable {
         while (weights.hasNext()) {
             edges.addAll(edges(weights.next()));
         }
-        return edges;
+        return Collections.unmodifiableCollection(edges);
     }
 
     /** Test if a graph is equal to this one. It is equal
@@ -1103,8 +1107,13 @@ public class Graph implements Cloneable {
     /** Return the collection of nodes in this graph whose weights are contained
      *  in a specified collection.
      *  Each element in the returned collection is an instance of
-     *  {@link Node}. Duplicate weights in the specified collection result
+     *  {@link Node}. 
+     *  A null element in the argument collection is interpreted
+     *  to mean that all unweighted nodes are to be included in the result.
+     *  Duplicate weights or null elements in the specified collection result
      *  in duplicate nodes in the returned collection.
+     *  Non-null elements in the argument collection that are not node weights 
+     *  are ignored.
      *  @param collection The specified collection of weights.
      *  @return The nodes in this graph whose weights are contained
      *  in a specified collection.
@@ -1117,7 +1126,7 @@ public class Graph implements Cloneable {
         while (weights.hasNext()) {
             nodes.addAll(nodes(weights.next()));
         }
-        return nodes;
+        return Collections.unmodifiableCollection(nodes);
     }
 
     /** Remove an edge from this graph if it exists in the graph.
