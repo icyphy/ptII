@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =		OrderedMerge QR
+DIRS =		QR
 
 # Root of the Java directory
 ROOT =		../../../..
