@@ -110,21 +110,11 @@ public class ProcessDirector extends Director {
 	_checkForDeadlock();
 	//System.out.println("decreased active count");
         //If pause requested, then check if paused
-        if (_pause) {
+        if (_pauseRequested) {
             _checkForPause();
         }
     }
-    
-    /** This handles deadlocks in PN. It is responsible for doing mutations, 
-     *  and increasing queue capacities in PNQueueReceivers if required.
-     * @exception IllegalActionException It should not be thrown.
-     */
-    public void fire()
-	    throws IllegalActionException {
-        while (!_handleDeadlock());
-        //System.out.println("Done firing");
-    }
-
+ 
     /** This invokes the initialize() methods of all its deeply contained 
      *  actors. It also creates receivers for all the ports and increases the
      *  number of active threads for each actor being initialized.
@@ -152,8 +142,10 @@ public class ProcessDirector extends Director {
                 increaseActiveCount();
                 actor.createReceivers();
                 actor.initialize();
-                ProcessThread pnt = new ProcessThread(actor, this);
+                String name = ((Nameable)actor).getName();
+                ProcessThread pnt = new ProcessThread(actor, this, name);
                 _threadList.insertFirst(pnt);
+                // FIXME: perhaps we want ot destroy the threadlist?
             }
         }
     }
@@ -191,7 +183,7 @@ public class ProcessDirector extends Director {
             ProcessThread pnt = (ProcessThread)threads.nextElement();
             pnt.start();        
         }
-        //_threadList.clear();
+        //_threadList.clear(); // see comment in initilaize
         return true;
     }
 
@@ -207,7 +199,7 @@ public class ProcessDirector extends Director {
      */
     public void processTopologyRequests() {
 	try {
-	    setPause();
+	    setPauseRequested();
 	    synchronized(this) {
 		_urgentMutations = true;
 		notifyAll();
@@ -225,13 +217,13 @@ public class ProcessDirector extends Director {
      *  FIXME: why is this read locked?
      *  @exception IllegalActionException FIXME: is this called?
      */
-    public void setPause() throws IllegalActionException {        
+    public void setPauseRequested() throws IllegalActionException {        
         synchronized(this) {
             // If already paused do nothing.
-            if (_pause) {
+            if (_pauseRequested) {
                 return;
             }
-            _pause = true;
+            _pauseRequested = true;
         }
 	workspace().getReadAccess();
 	try {
@@ -255,12 +247,9 @@ public class ProcessDirector extends Director {
                     for (int i=0; i<receivers.length; i++) {
                         for (int j=0; j<receivers[i].length; j++) {
                             nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.setSimulationPaused(true);
+                            nextRec.setPause(true);
                             _pausedReceivers.insertFirst(receivers[i][j]);
-                            synchronized(nextRec) {
-                                nextRec.notifyAll();
-                            }
-                        }
+                       }
 		    }
 		}
 	    }
@@ -268,6 +257,7 @@ public class ProcessDirector extends Director {
             // If this director is controlling a CompositeActor with 
             // output ports, need to set the simulationFinished flag 
             // there as well. 
+            // FIXME: is this the best way to set these flags.
             actorPorts  = cont.outputPorts();
             while (actorPorts.hasMoreElements()) {
                 IOPort port = (IOPort)actorPorts.nextElement();
@@ -276,15 +266,24 @@ public class ProcessDirector extends Director {
                 for (int i=0; i<receivers.length; i++) {
                     for (int j=0; j<receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.setSimulationPaused(true);
+                        nextRec.setPause(true);
                         _pausedReceivers.insertFirst(receivers[i][j]);
-                        synchronized(nextRec) {
-                            nextRec.notifyAll();
-                        }
                     }
                 }
             }
-
+            
+            // Now wake up all the receivers.
+            try {
+                NotifyThread obj = new NotifyThread(_pausedReceivers);
+                synchronized(obj) {
+                    (new Thread(obj)).start();
+                    obj.wait();
+                }
+            } catch (InterruptedException ex) {
+                System.out.println("ProcessDirector: unable to pause all " +
+                        "paused receivers due to interruption.");
+            }
+            
             // A linked list of pausedreceivers is returned as it might not be 
             // possible to resume these receivers otherwise if they have been
             // removed from the hierarchy. They still need to be awakened so 
@@ -297,22 +296,35 @@ public class ProcessDirector extends Director {
 
     /** Resumes the simulation. If the simulation is not paused do nothing.
      */
-    public void setResume() {
+    public void setResumeRequested() {
         synchronized(this) {
-            if (!_pause) {
+            if (!_pauseRequested) {
                 return;
             }
         }
 	Enumeration receivers = _pausedReceivers.elements();
 	while (receivers.hasMoreElements()) {
 	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
-            rec.setSimulationPaused(false);
+            rec.setPause(false);
 	}
+
+        // Now wake up all the receivers.
+        try {
+            NotifyThread obj = new NotifyThread(_pausedReceivers);
+            synchronized(obj) {
+                (new Thread(obj)).start();
+                obj.wait();
+            }
+        } catch (InterruptedException ex) {
+            System.out.println("ProcessDirector: unable to resume all " +
+                    "paused receivers due to interruption.");
+        }
         synchronized (this) {
             _pausedReceivers.clear();
             _actorsPaused= 0;
-            _pause = false;
+            _pauseRequested = false;
         }
+        // FIXME: notify receivers.
     }
 
     /** Terminate all threads under control of this director immediately.
@@ -354,6 +366,8 @@ public class ProcessDirector extends Director {
         
         Enumeration actorPorts;
         ProcessReceiver nextRec;
+        
+        LinkedList recs = new LinkedList();
 
         while (allMyActors.hasMoreElements()) {
             try {
@@ -366,38 +380,40 @@ public class ProcessDirector extends Director {
                     for (int i=0; i<receivers.length; i++) {
                         for (int j=0; j<receivers[i].length; j++) {
                             nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.setSimulationFinished();
-                            synchronized(nextRec) {
-                                nextRec.notifyAll();
-                            }
+                            nextRec.setFinish();
+                            recs.insertFirst(nextRec);
                         }
                     }
                 }
-            } catch (Exception ex) {
+            
+                // If this director is controlling a CompositeActor with 
+                // output ports, need to set the simulationFinished flag 
+                // there as well. 
+                actorPorts  = cont.outputPorts();
+                while (actorPorts.hasMoreElements()) {
+                    IOPort port = (IOPort)actorPorts.nextElement();
+                    // Terminating the ports and hence the star
+                    Receiver[][] receivers = port.getReceivers();
+                    for (int i=0; i<receivers.length; i++) {
+                        for (int j=0; j<receivers[i].length; j++) {
+                            nextRec = (ProcessReceiver)receivers[i][j];
+                            nextRec.setFinish();
+                            recs.insertFirst(nextRec);
+                        }
+                    }
+                }
+
+                // Now wake up all the receivers.
+                NotifyThread obj = new NotifyThread(recs);
+                synchronized(obj) {
+                    (new Thread(obj)).start();
+                    obj.wait();
+                }
+            } catch (InterruptedException ex) {
                 // FIXME: should not catch general exception
                 System.out.println("ProcessDirector: unable to terminate " +
                         "all actors because: " + ex.getClass().getName() +
                         ", message: " + ex.getMessage());
-            }
-
-        }
-        
-        // If this director is controlling a CompositeActor with 
-        // output ports, need to set the simulationFinished flag 
-        // there as well. 
-        actorPorts  = cont.outputPorts();
-        while (actorPorts.hasMoreElements()) {
-            IOPort port = (IOPort)actorPorts.nextElement();
-            // Terminating the ports and hence the star
-            Receiver[][] receivers = port.getReceivers();
-            for (int i=0; i<receivers.length; i++) {
-                for (int j=0; j<receivers[i].length; j++) {
-                    nextRec = (ProcessReceiver)receivers[i][j];
-                    nextRec.setSimulationFinished();
-                    synchronized(nextRec) {
-                        nextRec.notifyAll();
-                    }
-                }
             }
         }
         return;
@@ -428,7 +444,7 @@ public class ProcessDirector extends Director {
     }
 
 
-    /* Handles deadlock, both real and artificial
+    /** Handles deadlock, both real and artificial
      * Returns false only if it detects a mutation.
      * Returns true for termination.
      * This is not synchronized and should be synchronized in the 
@@ -442,19 +458,23 @@ public class ProcessDirector extends Director {
     }
   
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
     
     protected long _actorsActive = 0;
     protected long _actorsPaused = 0;
 
+    protected boolean _pauseRequested = false;
+
+    // FIXME: this should not be here?
+    protected boolean _urgentMutations = false;
+
+    protected LinkedList _pausedReceivers = new LinkedList();
+  
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+ 
     // The threads under started by this director.
     private LinkedList _threadList = new LinkedList();
-
-    private boolean _pause = false;
-    private boolean _simulationFinished = true;
-    private boolean _urgentMutations = false;
-
-    private LinkedList _pausedReceivers = new LinkedList();
 }
 
 
