@@ -122,6 +122,7 @@ public final class CrossRefList implements Serializable  {
      *  Instantiate a new CrossRef in the specified (far) list and link
      *  that to the the new one here.  Redundant links are allowed.
      *  Time complexity: O(1).
+     *  @exception IllegalActionException Proposed link is back this link.
      */
     public synchronized void link(CrossRefList farList) 
             throws IllegalActionException {
