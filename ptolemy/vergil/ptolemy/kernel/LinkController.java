@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -138,13 +139,27 @@ public class LinkController extends BasicEdgeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Set the configuration.  This is may be used by derived controllers
+     *  to open files or URLs.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        _configuration = configuration;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     protected members                     ////
 
-    /** The factory belonging to the menu creator. */
-    protected PtolemyMenuFactory _menuFactory;
+    /** The configuration. */
+    protected Configuration _configuration;
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
+
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

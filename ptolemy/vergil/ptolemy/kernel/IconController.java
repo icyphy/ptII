@@ -1,4 +1,4 @@
-/* The node controller for icons of attributes
+/* The node controller for objects with icons.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,34 +30,65 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.XMLIcon;
+import ptolemy.moml.Location;
 
+import diva.canvas.Figure;
 import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
 
 //////////////////////////////////////////////////////////////////////////
-//// AttributeController
+//// IconController
 /**
 This class provides interaction with nodes that represent Ptolemy II
-attributes.  It provides a double click binding to edit the parameters
+objects that are represented on screen as icons, such as attributes
+and entities.   It provides a double click binding to edit the parameters
 of the node, and a context menu containing a command to edit parameters
-("Configure"), a command to rename, and a command to get documentation.
+("Configure").
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class AttributeController extends IconController {
+public class IconController extends ParameterizedNodeController {
 
-    /** Create an attribute controller associated with the specified graph
+    /** Create a controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */
-    public AttributeController(GraphController controller) {
+    public IconController(GraphController controller) {
 	super(controller);
+	setNodeRenderer(new IconRenderer());
+    }
 
-        // Add to the context menu.
-        _menuFactory.addMenuItemFactory(
-                 new RenameDialogFactory());
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new GetDocumentationAction()));
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner classes                         ////
+
+    /** An icon renderer. */
+    public static class IconRenderer implements NodeRenderer {
+	public Figure render(Object n) {
+	    Location location = (Location)n;
+	    NamedObj object = (NamedObj) location.getContainer();
+
+	    // FIXME: this code is the same as in PtolemyTreeCellRenderer
+	    EditorIcon icon;
+            try {
+                icon = (EditorIcon)object.getAttribute("_icon");
+		if(icon == null) {
+		    icon = new XMLIcon(object, "_icon");
+		}
+	    } catch (KernelException ex) {
+		throw new InternalErrorException("could not create icon " +
+                        "in " + object + " even " +
+                        "though one did not exist");
+	    }
+
+	    Figure figure = icon.createFigure();
+            figure.setToolTipText(object.getClass().getName());
+	    return figure;
+	}
     }
 }

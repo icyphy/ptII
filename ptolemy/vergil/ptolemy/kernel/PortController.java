@@ -145,9 +145,6 @@ public class PortController extends AttributeController {
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
 
-                PtolemyGraphModel model =
-                    (PtolemyGraphModel)getController().getGraphModel();
-
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
 		} else {

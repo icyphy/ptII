@@ -244,7 +244,7 @@ public class ViewerGraphController extends AbstractGraphController {
         _portController.setConfiguration(configuration);
         _entityPortController.setConfiguration(configuration);
         _relationController.setConfiguration(configuration);
-        // FIXME: do this for all the linkcontroller
+        _linkController.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
