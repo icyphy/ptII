@@ -1554,7 +1554,7 @@ protected void yyerror(String msg)
   if (_lexer != null) {
      errMsg += " on line " + _lexer.lineNumber();
   }
-  ApplicationUtility.error(errMsg);
+  System.out.println(errMsg);
 }
 
 protected String _filename = null;
