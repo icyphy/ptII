@@ -453,7 +453,7 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
 
        
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                  ////
+    ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
