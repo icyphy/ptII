@@ -59,7 +59,7 @@ JSRCS = DoubleMatrixToJAI.java \
 	JAIConstant.java \
 	JAIConvolve.java \
 	JAICrop.java \
-	JAIDataCaster.java \
+	JAIDataConvert.java \
 	JAIDCT.java \
 	JAIDFT.java \
 	JAIEdgeDetection.java \

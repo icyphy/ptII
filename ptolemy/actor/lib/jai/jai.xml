@@ -84,7 +84,7 @@
 	</entity>
 	<entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
 	</entity>	
-	<entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
+	<entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
 	  <property name="dataFormat">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
 	          <property name="byte" value="byte"

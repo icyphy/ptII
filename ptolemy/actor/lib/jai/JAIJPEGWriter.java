@@ -97,41 +97,41 @@ public class JAIJPEGWriter extends Sink {
         writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
         writeJFIFHeader.setToken(BooleanToken.TRUE);
 
-        writeImageDataOnly = new Parameter(this, "writeImageDataOnly");
-        writeImageDataOnly.setTypeEquals(BaseType.BOOLEAN);
-        writeImageDataOnly.setToken(BooleanToken.FALSE);
+//          writeImageDataOnly = new Parameter(this, "writeImageDataOnly");
+//          writeImageDataOnly.setTypeEquals(BaseType.BOOLEAN);
+//          writeImageDataOnly.setToken(BooleanToken.FALSE);
 
-        writeTableDataOnly = new Parameter(this, "writeTableDataOnly");
-        writeTableDataOnly.setTypeEquals(BaseType.BOOLEAN);
-        writeTableDataOnly.setToken(BooleanToken.FALSE);
+//          writeTableDataOnly = new Parameter(this, "writeTableDataOnly");
+//          writeTableDataOnly.setTypeEquals(BaseType.BOOLEAN);
+//          writeTableDataOnly.setToken(BooleanToken.FALSE);
 
         quality = new IntRangeParameter(this, "quality");
 
-        useDefaultLuminanceTable
-            = new Parameter(this, "useDefaultLuminanceTable");
-        useDefaultLuminanceTable.setTypeEquals(BaseType.BOOLEAN);
-        useDefaultLuminanceTable.setToken(BooleanToken.TRUE);
+//          useDefaultLuminanceTable
+//              = new Parameter(this, "useDefaultLuminanceTable");
+//          useDefaultLuminanceTable.setTypeEquals(BaseType.BOOLEAN);
+//          useDefaultLuminanceTable.setToken(BooleanToken.TRUE);
 
-        userSpecifiedLuminanceTable
-            = new Parameter(this, "userSpecifiedLuminanceTable",
-                    new ArrayToken(_defaultSpecifiedTable));
+//          userSpecifiedLuminanceTable
+//              = new Parameter(this, "userSpecifiedLuminanceTable",
+//                      new ArrayToken(_defaultSpecifiedTable));
 
-        useDefaultChrominanceTable =
-            new Parameter(this, "useDefaultChrominanceTable");
-        useDefaultChrominanceTable.setTypeEquals(BaseType.BOOLEAN);
-        useDefaultChrominanceTable.setToken(BooleanToken.TRUE);
+//          useDefaultChrominanceTable =
+//              new Parameter(this, "useDefaultChrominanceTable");
+//          useDefaultChrominanceTable.setTypeEquals(BaseType.BOOLEAN);
+//          useDefaultChrominanceTable.setToken(BooleanToken.TRUE);
 
-        userSpecifiedChrominanceTable
-            = new Parameter(this, "userSpecifiedChrominanceTable",
-                    new ArrayToken(_defaultSpecifiedTable));
+//          userSpecifiedChrominanceTable
+//              = new Parameter(this, "userSpecifiedChrominanceTable",
+//                      new ArrayToken(_defaultSpecifiedTable));
 
-        horizontalSubsampling
-            = new Parameter(this, "horizontalSubsampling",
-                    new ArrayToken(_defaultSubsampling));
+//          horizontalSubsampling
+//              = new Parameter(this, "horizontalSubsampling",
+//                      new ArrayToken(_defaultSubsampling));
 
-        verticalSubsampling
-            = new Parameter(this, "verticalSubsampling",
-                    new ArrayToken(_defaultSubsampling));
+//          verticalSubsampling
+//              = new Parameter(this, "verticalSubsampling",
+//                      new ArrayToken(_defaultSubsampling));
 
         restartInterval
             = new Parameter(this, "restartInterval",
@@ -166,7 +166,7 @@ public class JAIJPEGWriter extends Sink {
      *  because the human visual system has a lower sensitivity to
      *  errors in these two bands compared to the luminance band.
      */
-    public Parameter horizontalSubsampling;
+    //public Parameter horizontalSubsampling;
 
     /** The quality of the file written.  The quality ranges from 0
      *  which is a high amount of compression, small file size, and
@@ -190,7 +190,7 @@ public class JAIJPEGWriter extends Sink {
      *  luminance table.  The Quality parameter is ignored in the
      *  creation of the chrominance table.
      */
-    public Parameter useDefaultChrominanceTable;
+    //public Parameter useDefaultChrominanceTable;
 
     /** If <i>true</i> (the default), then the encoder will use the
      *  default luminance quantization table.  The default table
@@ -199,21 +199,21 @@ public class JAIJPEGWriter extends Sink {
      *  luminance table.  The Quality parameter is ignored in the
      *  creation of the luminance table.
      */
-    public Parameter useDefaultLuminanceTable;
+    //public Parameter useDefaultLuminanceTable;
 
     /** If the user decides not to use the default chrominance
      *  quantization table then the user must specify a table to use
      *  in zig-zag order.  The table must be 8x8, hence then array
      *  must have 64 values.
      */
-    public Parameter userSpecifiedChrominanceTable;
+    //public Parameter userSpecifiedChrominanceTable;
 
     /** If the user decides not to use the default luminance
      *  quantization table then the user must specify a table to use
      *  in zig-zag order.  The table must be 8x8, hence then array
      *  must have 64 values.
      */
-    public Parameter userSpecifiedLuminanceTable;
+    //public Parameter userSpecifiedLuminanceTable;
 
     /** The subsampling scheme in the vertical direction.  This
      *  parameter consists of three integers.  If there is only one
@@ -223,7 +223,7 @@ public class JAIJPEGWriter extends Sink {
      *  because the human visual system has a lower sensitivity to
      *  errors in these two bands compared to the luminance band.
      */
-    public Parameter verticalSubsampling;
+    //public Parameter verticalSubsampling;
 
     /** If <i>true</i>, the encoder will only write the image data
      *  to the file.  If <i>false</i> (the default) and if
@@ -231,7 +231,7 @@ public class JAIJPEGWriter extends Sink {
      *  with both table and image data.  If both are true, an
      *  exception will be thrown.
      */
-    public Parameter writeImageDataOnly;
+    //public Parameter writeImageDataOnly;
 
     /** If <i>true</i> (the default), the encoder will write a JFIF
      *  header, using a marker.The marker includes data such as
@@ -246,7 +246,7 @@ public class JAIJPEGWriter extends Sink {
      *  with both table and image data.  If both are true, an
      *  exception will be thrown.
      */
-    public Parameter writeTableDataOnly;
+    //public Parameter writeTableDataOnly;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -264,44 +264,44 @@ public class JAIJPEGWriter extends Sink {
         _jpegEncodeParameters = new JPEGEncodeParam();
         _jpegEncodeParameters.setWriteJFIFHeader(
                 ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
-        boolean writeImageDataOnlyValue =
-            ((BooleanToken)writeImageDataOnly.getToken()).booleanValue();
-        boolean writeTableDataOnlyValue =
-            ((BooleanToken)writeTableDataOnly.getToken()).booleanValue();
-        if (writeImageDataOnlyValue && writeTableDataOnlyValue) {
-            throw new IllegalActionException("Both Parameters cannot be true");
-        } else {
-            _jpegEncodeParameters.setWriteTablesOnly(writeTableDataOnlyValue);
-            _jpegEncodeParameters.setWriteImageOnly(writeImageDataOnlyValue);
-        }
+//          boolean writeImageDataOnlyValue =
+//              ((BooleanToken)writeImageDataOnly.getToken()).booleanValue();
+//          boolean writeTableDataOnlyValue =
+//              ((BooleanToken)writeTableDataOnly.getToken()).booleanValue();
+//          if (writeImageDataOnlyValue && writeTableDataOnlyValue) {
+//              throw new IllegalActionException("Both Parameters cannot be true");
+//          } else {
+//              _jpegEncodeParameters.setWriteTablesOnly(writeTableDataOnlyValue);
+//              _jpegEncodeParameters.setWriteImageOnly(writeImageDataOnlyValue);
+//          }
         _jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
-        if (!((BooleanToken)useDefaultLuminanceTable
-                .getToken()).booleanValue()) {
+//          if (!((BooleanToken)useDefaultLuminanceTable
+//                  .getToken()).booleanValue()) {
 
-            // make a private method to do all this, one that returns
-            // an int array
+//              // make a private method to do all this, one that returns
+//              // an int array
 
-            _jpegEncodeParameters.setLumaQTable(
-                    _tableFiller((ArrayToken)userSpecifiedLuminanceTable
-                            .getToken()));
-        }
-        if (!((BooleanToken)useDefaultChrominanceTable
-                .getToken()).booleanValue()) {
-            _jpegEncodeParameters.setChromaQTable(
-                    _tableFiller((ArrayToken)userSpecifiedChrominanceTable
-                            .getToken()));
-        }
+//              _jpegEncodeParameters.setLumaQTable(
+//                      _tableFiller((ArrayToken)userSpecifiedLuminanceTable
+//                              .getToken()));
+//          }
+//          if (!((BooleanToken)useDefaultChrominanceTable
+//                  .getToken()).booleanValue()) {
+//              _jpegEncodeParameters.setChromaQTable(
+//                      _tableFiller((ArrayToken)userSpecifiedChrominanceTable
+//                              .getToken()));
+//          }
 
-        Token horizontalSubsamplingData[]
-            = ((ArrayToken)horizontalSubsampling.getToken()).arrayValue();
-        Token verticalSubsamplingData[]
-            = ((ArrayToken)verticalSubsampling.getToken()).arrayValue();
-        for (int i = 0; i < 3; i = i + 1) {
-            _jpegEncodeParameters.setHorizontalSubsampling(i,
-                    ((IntToken)horizontalSubsamplingData[i]).intValue());
-            _jpegEncodeParameters.setVerticalSubsampling(i,
-                    ((IntToken)verticalSubsamplingData[i]).intValue());
-        }
+//          Token horizontalSubsamplingData[]
+//              = ((ArrayToken)horizontalSubsampling.getToken()).arrayValue();
+//          Token verticalSubsamplingData[]
+//              = ((ArrayToken)verticalSubsampling.getToken()).arrayValue();
+        //for (int i = 0; i < 3; i = i + 1) {
+        //    _jpegEncodeParameters.setHorizontalSubsampling(i,
+        //            ((IntToken)horizontalSubsamplingData[i]).intValue());
+        //    _jpegEncodeParameters.setVerticalSubsampling(i,
+        //            ((IntToken)verticalSubsamplingData[i]).intValue());
+        //}
         _jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
                 .getToken()).intValue());
 
