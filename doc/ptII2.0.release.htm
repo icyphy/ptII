@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0beta Release Notes</title>
+<title>Ptolemy II 2.0-beta Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 2.0beta Release Notes</h1>
+<h1>Ptolemy II 2.0-beta Release Notes</h1>
 
 Ptolemy II is a set of Java packages supporting heterogeneous,
 concurrent modeling and design.  Its <code>kernel</code> package
@@ -20,27 +20,26 @@ models of computation include discrete-event systems, dataflow,
 process networks, synchronous/reactive systems, and communicating
 sequential processes.
 
- <br>Ptolemy II includes a number of support packages, such as 
-<code>graph</code>, providing graph-theoretic manipulations,
+ <p>Ptolemy II includes a number of support packages, such as 
 
-<code>math</code>, providing matrix and vector math and signal
-processing functions,
+ <br><code>data</code>, providing a type system, data encapsulation and an
+ expression parser,
 
-<code>plot</code>, providing visual display of data,
+ <br><code>plot</code>, providing visual display of data,
 
-<code>data</code>, providing a type system, data encapsulation and an
-expression parser, etc.
+ <br><code>math</code>, providing matrix and vector math and signal
+processing functions, and
+
+ <br><code>graph</code>, providing graph-theoretic manipulations.
 
 
-Ptolemy II 2.0beta is a release of the Ptolemy II 
-java classes and the Ptolemy II design document
-
- <p>The design document describes the Ptolemy II design and the implementation
-of the Java classes.  The design document is not included
-with Ptolemy II 2.0beta, but will be shipped with the Ptolemy II 2.0
-production release.   In the interim, please see the "Using Vergil"
-chapter (<a href="design/usingVergil/usingVergil.pdf">PDF</a> - 
-<a href="design/usingVergil/index.htm">HTML</a>)
+ <p>The Ptolemy II design document describes the Ptolemy II design and
+the implementation of the Java classes.  The design document is not
+included with Ptolemy II 2.0-beta, but will be shipped with the
+Ptolemy II 2.0 production release.  In the interim, please see the
+"Using Vergil" chapter (
+<a href="design/usingVergil/usingVergil.pdf">PDF</a>
+ - <a href="design/usingVergil/index.htm">HTML</a>)
 
 
 <h2>Complete List of Domains in Ptolemy II</h2>
@@ -59,7 +58,7 @@ to the newsgroups etc.  See also main.htm
 <li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
 	discrete time,
 <li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
-b	 finite state machines,
+	finite state machines,
 <li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
 	periodic time-driven (experimental),
 <li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
@@ -112,6 +111,10 @@ one can easily build hybrid systems.
 (Primary Author: Stephen Neuendorffer, Contributor: Christopher Hylands)
 This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models
+
+ <br>Note that the code generator will not work in an applet, but will
+work with Web Start, the Windows installer and the standard configure
+and build
 
 <li> <a href="codeDoc/ptolemy/data/unit/package-summary.html">ptolemy.data.unit</a> -
 <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units Demo</a>
@@ -181,7 +184,7 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 
 
 <li> Ptolemy II Matlab interface
-(Zoltan Kemenczy, Research In Motion, Ltd.) -
+(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.) -
 The Matlab Expression actor uses JNI to invoke the Matlab engine, 
 evaluate Matlab expressions and return the results to Ptolemy II.
 The Matlab Expression actor works only under Windows, and requires
@@ -195,7 +198,12 @@ that Matlab be installed on your local machine.
  </menu>
 
 <li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
-(Zoltan Kemenczy, Research In Motion, Ltd.)
+(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.)
+Functions with scalar arguments applied to arrays and matrices
+element-by-element (recursive argument dimension reduction); widened search
+for static function (and method) signatures that includes most ptolemy.math
+classes; peformance improvements by caching search results; widened token to
+java-type conversions for function arguments and results.
 
 <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
@@ -322,7 +330,7 @@ An actor that wraps (an instance of) a Java class.
 <dd> (Xiaojun Liu)
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Counter.html"><code>Counter</code></a> 
-A constant source.
+An up-down counter.
 <dd> (Steve Neuendorffer)
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Differential.html"><code>Differential</code></a> 
@@ -390,7 +398,7 @@ An actor that converts a boolean token into any other data type.
 An actor that converts input tokens to specified units.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/conversions/IntArrayToString.html"><code>IntArrayToString</code></a> 
-<dd> (Michael Leung, Edward A. Lee, and Paul Whitaker)
+<dd> (Winthrop Williams)
 An actor that converts an array of integers into a string.
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/conversions/LongToDouble.html"><code>LongToDouble</code></a> 
@@ -404,7 +412,7 @@ An actor that converts a string to an array of integers.
 </dl>
 
 
-<li> <a href="codeDoc/ptolemy/actor/lib/gui/package-summary.html">ptolemy.actor.lib/gui</a>:
+<li> <a href="codeDoc/ptolemy/actor/lib/gui/package-summary.html">ptolemy.actor.lib.gui</a>:
 
 <dl>
 <dt> <a href="codeDoc/ptolemy/actor/lib/gui/MatrixVisualizer.html"><code>MatrixVisualizer</code></a> 
@@ -475,7 +483,7 @@ An actor that produces a copy of the most recent input each time
 
 <dt> <a href="codeDoc/ptolemy/domains/de/lib/PreemptableTask.html"><code>PreemptableTask</code></a> 
 <dd> (Elaine Cheong, Yang Zhao, Xiaojun Liu)
-An actor that implements as preemptable task
+An actor that simulates a preemptable task.
 
 <dt> <a href="codeDoc/ptolemy/domains/de/lib/Previous.html"><code>Previous</code></a> 
 <dd> (Edward A. Lee)
@@ -670,12 +678,21 @@ in:
 
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
 
+
+<li> Instructions for adding an actor may be found at
+<a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
+
 <li> The Using Vergil html file has some bogus characters in it.
 
 <li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
 
 <li> The documentation for custom actors used in demonstrations is not
 included in the release.
+
+
+<li> Ptolemy II will not configure and build properly if the pathname leading 
+up to the Ptolemy II directory contains a space. 
+
 
 <li> Dragging the UnitConversion icon into a blank canvas will
 throw an exception because UnitConversion requires data
@@ -770,9 +787,12 @@ in floating point numbers.
 <li> The readFile() parameter function does not work with applets.
 
 <!-- If you change the next paragraph update install.htm -->
+
 <li>The Matlab interface works only under Windows and it requires that
-Matlab be installed on the local machine.  The Matlab interface has
-been tested with Matlab 6.1, which corresponds with R12.1.
+Matlab be installed on the local machine. 
+The Matlab interface should work with version of Matlab from
+R11 (5.3) and up to and including R12.1 (6.1)
+
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
