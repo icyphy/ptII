@@ -54,7 +54,6 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	ODFActor.tcl \
 	ODFReceiver.tcl \
 	ODFThread.tcl \
 	TimeKeeper.tcl \
