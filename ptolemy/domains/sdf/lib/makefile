@@ -67,7 +67,7 @@ JSRCS = \
 	FIR.java \
 	FFT.java \
 	IFFT.java \
-	IntToBits.java\
+	IntToBits.java \
 	LineCoder.java \
 	LMSAdaptive.java \
 	RaisedCosine.java \
