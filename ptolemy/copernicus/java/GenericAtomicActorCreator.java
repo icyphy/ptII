@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -233,10 +234,15 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             Entity entity, SootClass entityClass, Map options) {
         // Loop over all the attributes of the actor
         for(Iterator attributes = 
-                entity.attributeList(StringAttribute.class).iterator();
+                entity.attributeList(Attribute.class).iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
-            
+
+            // PortParameters are handled specially.
+            if(attribute instanceof PortParameter) {
+                continue;
+            }
+
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileAttribute, and FileParameter)

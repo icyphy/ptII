@@ -538,6 +538,28 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                                         tokenField),
                                                 tokenLocal));
                                 doneSomething = true;
+                            } else if (r.getMethod().getName().equals("update")) {
+                                // FIXME: for PortParameters.
+                                body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getName().equals("addChoice")) {
+                                // Removing...  does it matter?
+                                body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getName().equals("setStringMode")) {
+                                // Ignoring...  does it matter?
+                                body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getName().equals("setPersistent")) {
+                                // Ignoring...  does it matter?
+                                body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getName().equals("setVisibility")) {
+                                // Ignoring...  does it matter?
+                                body.getUnits().remove(stmt);
+                            } else {
+                                if (!r.getMethod().getDeclaringClass().isApplicationClass()) {
+                                    throw new RuntimeException("Found unknown " +
+                                            "variable method invocation of method "
+                                            + r.getMethod() 
+                                            + " that cannot be removed!");
+                                }
                             }
                         } else {// if(false) { //FIXME
                                 // It's just settable, so handle get/setExpression
@@ -566,9 +588,13 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                                         attributeToValueFieldMap.get(attribute)),
                                                 r.getArg(0)));
                                 doneSomething = true;
+                            } else {
+                                throw new RuntimeException("Found unknown " +
+                                        "settable method invocation of method "
+                                        + r.getMethod() 
+                                        + " that cannot be removed!");
                             }
                         }
-
 
                         /*
                           // FIXME what about all the other methods???
