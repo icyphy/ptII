@@ -31,7 +31,7 @@
 
 ME =		ptolemy/copernicus/interpreted
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -75,8 +75,6 @@ all: jclass
 
 install: jclass $(PTCLASSJAR)
 
-demo: compileDemo runDemo
-
 # OrthogonalCom
 MODEL =			OrthogonalCom
 MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
@@ -99,7 +97,7 @@ WATCHDOGTIMEOUT =     600000
 ITERATIONS =		1000
 ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
-compileDemo: $(JCLASS)
+demo: $(JCLASS)
 	@echo "generate interpreted code for $(MODELPATH)"
 	$(PTII)/bin/copernicus \
 		-verbose \
@@ -109,12 +107,12 @@ compileDemo: $(JCLASS)
 		-iterationsParameter "$(ITERATIONSPARAMETER)" \
 		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-jvmSize         "$(JVMSIZE)" \
-		-modelPath       "$(MODELPATH)" \
-		-run		 false \
+		-run		 true \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
 		-targetPath      "$(TARGETPATH)" \
-		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)" \
+		$(MODELPATH)
 
 #       -compileOptions  "$(COMPILEOPTIONS)"
 
@@ -123,7 +121,7 @@ compileDemo: $(JCLASS)
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
 # Use MoMLSimpleApplication here so that the demo can run without a head.
-runDemo:
+runModel:
 	@echo "Run the interpreted model"
 	"$(JAVA)" \
 		-Xfuture -classpath "$(CLASSPATH)" \
