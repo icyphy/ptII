@@ -39,6 +39,8 @@ package ptolemy.actor;
 
 //import ptolemy.kernel.*;
 import ptolemy.actor.IODependence.IOInformation;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -53,9 +55,11 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 
 
@@ -1133,106 +1137,139 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    // Construct a directed graph with the nodes representing actors and
+    // directed edges representing dependencies.  The directed graph
+    // is returned.
+    private DirectedGraph _constructDirectedGraph()
+            throws IllegalActionException {
+        // Clear the graph
+        DirectedGraph dg = new DirectedGraph();
+
+        // First, include all the ports as nodes in the graph.
+        // The ports may belong to the composite actor, or the
+        // actors it contains.
+        
+        // get all the inputs and outputs of the composite actor
+        Iterator inputs = inputPortList().listIterator();
+        while (inputs.hasNext()) {
+            // 'add' replaced with 'addNodeWeight' since the former
+            // has been deprecated.  The change here should have no
+            // effect since .add had already been defined as a call
+            // to .addNodeWeight -winthrop
+            dg.addNodeWeight(inputs.next());
+        }
+        Iterator outputs = outputPortList().listIterator();
+        while (outputs.hasNext()) {
+            dg.addNodeWeight(outputs.next());
+        }
+        
+        // get all the contained actors
+        // and add their ports to directed graph.
+        Iterator actors = deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            Iterator inputsInside = actor.inputPortList().listIterator();
+            while (inputsInside.hasNext()) {
+                dg.addNodeWeight(inputsInside.next());
+            }
+            Iterator outputsInside = actor.outputPortList().listIterator();
+            while (outputsInside.hasNext()) {
+                dg.addNodeWeight(outputsInside.next());
+            }
+        }
+
+        // Next, create the directed edges by iterating again.
+        actors = deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            IODependence ioDependence = actor.getIODependence();
+            // get all the input ports in that actor
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
+                // get the dependent output ports on the current input port
+                if (ioDependence != null) {
+                    // Use IODependence information
+                    IOInformation ioInfo = ioDependence.getInputPort(inputPort);
+                    Iterator dependentOutputPorts = 
+                        ioInfo.getDirectFeedthroughPorts().iterator();
+                    // add directed edges between dependent input and outputs
+                    while (dependentOutputPorts.hasNext()) {
+                        dg.addEdge(inputPort, dependentOutputPorts.next());
+                    }
+                } else {
+                    // FIXME:
+                    // If the IODependence is null, if the container is an atomic
+                    // actor, we assume the inputs and outputs are direct 
+                    // feedthrough dependent; if the container is a composite 
+                    // actor, inputs and outputs are not dependent.
+                    if (actor instanceof AtomicActor) {
+                        Iterator dependentOutputPorts =  
+                            actor.outputPortList().iterator();
+                        // add directed edges between dependent input and outputs
+                        while (dependentOutputPorts.hasNext()) {
+                            dg.addEdge(inputPort, dependentOutputPorts.next());
+                        }
+                    }                   
+                }
+            }
+
+            // Find the successor of the output ports of current actor.
+            Iterator triggers = actor.outputPortList().iterator();
+            while (triggers.hasNext()) {
+                IOPort outPort = (IOPort) triggers.next();
+                // find the inside ports connected to outPort
+                Iterator inPortIterator =
+                    outPort.sinkPortList().iterator();
+                while (inPortIterator.hasNext()) {
+                    // connected them
+                    dg.addEdge(outPort, inPortIterator.next());
+                }
+            }
+        }
+        
+        // Last, connect the composite actor inputs to the inside
+        // ports receiving token from these inputs.
+        inputs = inputPortList().listIterator();
+        while (inputs.hasNext()) {
+            IOPort inputPort = (IOPort) inputs.next();
+            // find the inside ports connected to this input port
+            Iterator inPortIterator =
+                inputPort.insideSinkPortList().iterator();
+            while (inPortIterator.hasNext()) {
+                // connected them
+                dg.addEdge(inputPort, inPortIterator.next());
+            }
+        }
+        
+        return dg;
+    }
+
     private void _resolveIODependence() throws IllegalActionException {
         // If there is no _IODependence, do nothing.
         // This situation happens when the composite actor 
         // is at top level.
         if (_IODependence == null) return;
         Iterator inputs = inputPortList().listIterator();
+        Iterator outputs = outputPortList().listIterator();
+        
+        // construct a directed graph
+        DirectedGraph dg = _constructDirectedGraph();
+        
         // Iterate the input ports of the composite actor
         while (inputs.hasNext()) {
             IOPort input = (IOPort) inputs.next();
             IOInformation inputInfo = _IODependence.addInputPort(input);
-            _resolveIODependence(inputInfo, input.insideSinkPortList(), false);
+            Collection dependentOutputs = dg.reachableNodes(dg.node(input));
+            while (outputs.hasNext()) {
+                IOPort output = (IOPort) outputs.next();
+                if (dependentOutputs.contains(dg.node(output))) {
+                    inputInfo.addToDirectFeedthroughPorts(output);
+                } else {
+                    inputInfo.addToDelayToPorts(output);
+                }
+            }
         }            
-    }
-
-    /*  Resolve the IODependence for each input port. The parameter
-     *  inputInfo is an IOInformation element for an input port and
-     *  will be referred when the IO relation to any output ports is 
-     *  resolved.
-     */
-    private void _resolveIODependence (IOInformation inputInfo, 
-        List ports, boolean delayed) throws IllegalActionException {
-        Iterator insidePorts = ports.listIterator();
-        // Iterate the inside inputs 
-        while (insidePorts.hasNext()) {
-            IOPort insidePort = (IOPort) insidePorts.next();
-            // Get the container of the inside input
-            Actor container = (Actor) insidePort.getContainer();
-            // If the container is just this composite actor,
-            // the insideInput is actually an output port of the 
-            // composite actor connected inside. At this point,
-            // we resolved the relation between the output port
-            // and the given input port (referred by inputInfo).
-            if (container.equals(this)) {
-                if (delayed) {
-                    inputInfo.addToDelayToPorts(insidePort);
-                } else {
-                    inputInfo.addToDirectFeedthroughPorts(insidePort);
-                }
-                continue;
-            }
-            
-            IODependence containerIODependence = container.getIODependence();
-            IOInformation inputIOInfo;                
-            Iterator insideDelayedOutputs;
-            Iterator insideDirectFeedthroughOutputs;
-            
-            // FIXME:
-            // If the IODependence is null, if the container is an atomic
-            // actor, we assume the inputs and outputs are direct feedthrough
-            // dependent; if the container is a composite actor, we assume 
-            // the dependence between inputs and outputs are not important. 
-            if (containerIODependence == null) {
-                if (container instanceof AtomicActor) {
-                    List insideOutputs = 
-                        ((AtomicActor) container).outputPortList();
-                    if (insideOutputs.size() != 0) {
-                        insideDirectFeedthroughOutputs = 
-                            insideOutputs.listIterator();
-                        insideDelayedOutputs = 
-                            (new LinkedList()).listIterator();
-                    } else {
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
-            } else {
-                // From the IODependence attribute of the container,
-                // we get the lists of the delayed and direct feedthrough
-                // outputs.
-                inputIOInfo = 
-                    containerIODependence.getInputPort(insidePort);
-                insideDelayedOutputs = 
-                    inputIOInfo.getDelayToPorts().listIterator();
-                insideDirectFeedthroughOutputs =
-                    inputIOInfo.getDirectFeedthroughPorts().listIterator();
-            }
-            // Iterate the delayed output ports
-            while (insideDelayedOutputs.hasNext()) {
-                IOPort insideOutput = (IOPort)insideDelayedOutputs.next();
-                List connectedInsideInputs = insideOutput.sinkPortList();
-                // IODependence only handles the one way relation from input to
-                // output. It does not handle the direct feed back loop but 
-                // leaves it to the scheduler to handle this because different 
-                // domains assign direct feed back loops different semantics.  
-                connectedInsideInputs.remove(insidePort);
-                _resolveIODependence(inputInfo, connectedInsideInputs, true);    
-            }
-            // Iterate the direct feedthrough output ports
-            while (insideDirectFeedthroughOutputs.hasNext()) {
-                IOPort insideOutput = (IOPort)insideDirectFeedthroughOutputs.next();
-                List connectedInsideInputs = insideOutput.sinkPortList();
-                // IODependence only handles the one way relation from input to
-                // output. It does not handle the direct feed back loop but 
-                // leaves it to the scheduler to handle this because different 
-                // domains assign direct feed back loops different semantics.  
-                connectedInsideInputs.remove(insidePort);
-                _resolveIODependence(inputInfo, connectedInsideInputs, delayed);    
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
