@@ -376,8 +376,8 @@ public class DirectedGraph extends Graph {
      *  @param n1 The node n1.
      *  @param n2 The node n2.
      *  @return The collection of edges that make n2 a predecessor of n1.
-     *  @see {@link DirectedGraph.#successorEdges(Node, Node)}.
-     *  @see {@link Graph.#neighborEdges(Node, Node)}.
+     *  @see DirectedGraph#successorEdges(Node, Node)
+     *  @see Graph#neighborEdges(Node, Node)
      */
     public Collection predecessorEdges(Node n1, Node n2) {
         Collection edgeCollection = this.outputEdges(n2);
@@ -655,8 +655,8 @@ public class DirectedGraph extends Graph {
      *  @param n1 The node n1.
      *  @param n2 The node n2.
      *  @return The collection of edges that make n2 a successor of n1.
-     *  @see {@link DirectedGraph.#predecessorEdges(Node, Node)}.
-     *  @see {@link Graph.#neighborEdges(Node, Node)}.
+     *  @see DirectedGraph#predecessorEdges(Node, Node)
+     *  @see Graph#neighborEdges(Node, Node)
      */
     public Collection successorEdges(Node n1, Node n2) {
         return predecessorEdges(n2, n1);

@@ -42,9 +42,6 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Flags to pass to javadoc. (Override value in ptII.mk)
-JDOCFLAGS = 	-author -version -public
-
 # Used to build jar files
 PTPACKAGE = 	graph
 PTDIST =	$(PTPACKAGE)$(PTVERSION)

@@ -620,8 +620,8 @@ public class Graph {
      *  @param n1 The node n1.
      *  @param n2 The node n2.
      *  @return The collection of edges that make n2 a neighbor of n1.
-     *  @see {@link DirectedGraph.#predecessorEdges(Node, Node)}.
-     *  @see {@link DirectedGraph.#successorEdges(Node, Node)}.
+     *  @see DirectedGraph#predecessorEdges(Node, Node)
+     *  @see DirectedGraph#successorEdges(Node, Node)
      */
     public Collection neighborEdges(Node n1, Node n2) {
         Collection edgeCollection = this.incidentEdges(n1);
@@ -901,7 +901,7 @@ public class Graph {
     /** Return the subgraph induced by a collection of nodes.
      *  Node and edge weights are preserved. In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  @link{_emptyGraph()}.
+     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The collection of nodes; each element is a {@link Node}.
      *  @return The induced subgraph.
      */
@@ -931,7 +931,7 @@ public class Graph {
      *  Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  {@link #_emptyGraph()}.
+     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The array of nodes.
      *  @return The induced subgraph.
      *  @deprecated Use {@link #subgraph(Collection)} instead.
@@ -944,7 +944,7 @@ public class Graph {
      *  edges. Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  @link{_emptyGraph()}.
+     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The subset of nodes; each element is an instance
      *  of {@link Node}.
      *  @param edges The subset of edges. Each element is an instance
