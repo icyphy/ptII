@@ -7,7 +7,7 @@ rem @copyright: Copyright (c) 1997- The Regents of the University of California.
 rem All rights reserved.
 
 rem Check the TYCHO variable.
-if not "%tycho%" == "" set TYCHO=c:\tycho0.2.1devel
+if not "%tycho%" == "" set TYCHO=c:\tycho0.2.1
 
 rem Make sure that we can find the parts of Tycho we need
 if exist %tycho%\java\ptplot\pxgraph.bat goto tychoexists
