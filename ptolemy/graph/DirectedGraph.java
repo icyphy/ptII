@@ -109,10 +109,10 @@ public class DirectedGraph extends Graph {
 
     /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
-     *  graph, if it is not already computed after the last graph
-     *  mutation.  So the first call to this method after graph
-     *  mutation may be slow, but all the subsequent calls returns
-     *  in constant time.
+     *  graph, if it is not already computed after the last change to
+     *  this graph.  So the first call to this method after graph change
+     *  may be slow, but all the subsequent calls returns in constant
+     *  time.
      *  @return <code>true</code> if the the graph is acyclic, or
      *   empty; <code>false</code> otherwise.
      *  @exception InvalidStateException the graph is empty.
@@ -128,8 +128,8 @@ public class DirectedGraph extends Graph {
      *  there is a loop from the specified node back to itself.
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
-     *  mutation.  So the first call to this method after graph
-     *  mutation may be slow, but all the subsequent calls returns
+     *  change.  So the first call to this method after graph
+     *  change may be slow, but all the subsequent calls returns
      *  in constant time.
      *  @param o an Object representing a node in this graph.
      *  @return an array of Objects representing nodes reachable from
@@ -226,7 +226,7 @@ public class DirectedGraph extends Graph {
      *  The entry (i, j) is <code>true</code> if and only if there
      *  exists a path from the node with ID i to the node with ID j.
      *  This array is computed by <code>_computeTransitiveClosure</code>.
-     *  After each graph mutation, that method should be called before
+     *  After each graph change, that method should be called before
      *  this array is used. Otherwise, this array is not valid.
      */
     protected boolean[][] _transitiveClosure = null;
