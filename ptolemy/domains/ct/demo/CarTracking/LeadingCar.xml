@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
+    <doc>CT model for the leading car, with discrete output.</doc>
+    <director class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="stopTime" value="100">
+        </property>
+    </director>
+    <!-- Define the actors -->
+    <entity name="time" class="ptolemy.actor.lib.CurrentTime">
+      	<port name="output"></port>
+    </entity>
+    <entity name="force" class="ptolemy.actor.lib.Sine">
+	<property name="omega" value="0.05*PI"></property>
+	<property name="amplitude" value="1.0"></property>
+      	<port name="input"></port>
+      	<port name="output"></port>
+    </entity>
+    <entity name="fsamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" value="1.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="fhold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
+	<port name="plus"></port>
+	<port name="minus"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="scaleM" class="ptolemy.actor.lib.Scale">
+	<property name="factor" value="1.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="scaleN" class="ptolemy.actor.lib.Scale">
+	<property name="factor" value="0.5"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity> 
+    <entity name="velocity" class="ptolemy.domains.ct.lib.Integrator">
+	<property name="initialState" value="0.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="position" class="ptolemy.domains.ct.lib.Integrator">
+	<property name="initialState" value="0.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="vssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" value="1.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" value="1.0"></property>
+	<port name="input"></port>
+        <port name="output"></port>
+    </entity>
+    <entity name="ctdisp" class="ptolemy.actor.gui.TimedPlotter">
+    	<port name="input"></port>
+    	<!-- Configure provided in both a referenced file and local data -->
+    	<configure source="plotConfigure.xml"><![CDATA[
+      	<?xml version="1.0" standalone="no"?>
+      	<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+           "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+      	<plot>
+        <size width="450" height="300"/>
+        <title>Force, Position and Speed</title>
+      	</plot>
+    	]]></configure>
+    </entity>
+    <!-- Make the connections -->
+    <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="time.output" relation="r0"/>
+  	<link port="force.input" relation="r0"/>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="force.output" relation="r1"/>
+  	<link port="fsamp.input" relation="r1"/>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="fsamp.output" relation="r2"/>
+  	<link port="fhold.input" relation="r2"/>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="fhold.output" relation="r3"/>
+  	<link port="add1.plus" relation="r3"/>
+    <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="add1.output" relation="r4"/>
+  	<link port="scaleM.input" relation="r4"/>
+    <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="scaleM.output" relation="r5"/>
+  	<link port="velocity.input" relation="r5"/>
+    <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="velocity.output" relation="r6"/>
+  	<link port="position.input" relation="r6"/>
+	<link port="scaleN.input" relation="r6"/>
+  	<link port="vssamp.input" relation="r6"/>
+    <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="scaleN.output" relation="r7"/>
+  	<link port="add1.minus" relation="r7"/>
+    <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="position.output" relation="r8"/>
+  	<link port="vssamp.input" relation="r8"/>
+	<link port="ssamp.input" relation="r8"/>
+    <!--link plot -->
+    <link port="ctdisp.input" relation="r2"/>
+    <link port="ctdisp.input" relation="r6"/>
+    <link port="ctdisp.input" relation="r7"/>
+</model>
