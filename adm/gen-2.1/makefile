@@ -501,6 +501,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/util \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/corba/util \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
@@ -516,7 +517,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
+i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
