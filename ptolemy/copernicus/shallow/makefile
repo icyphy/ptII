@@ -93,7 +93,7 @@ JVM_SIZE = -Xmx256m
 SOOT_USER_ARGS =
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT = 300000
+WATCH_DOG_TIMEOUT = 100000
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
@@ -101,6 +101,8 @@ compileShallowDemo: $(JCLASS)
 	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.writeJimple1 outDir:$(TARGETPACKAGE)/jimple1 \
+		-p wjtp.writeJimple2 outDir:$(TARGETPACKAGE)/jimple2 \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
