@@ -67,6 +67,11 @@ MISC_FILES =	$(DIRS) doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'MathWizard$$1.class' \
+	'MathWizard$$2.class' \
+	'MathWizard$$3.class' \
+	'MathWizard$$ComplexOp.class' \
+	'MathWizard$$DoubleOp.class' \
 	$(JARFILE)	
 
 JCLASS = $(JSRCS:%.java=%.class)
