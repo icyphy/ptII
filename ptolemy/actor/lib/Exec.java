@@ -91,7 +91,7 @@ public class Exec extends TypedAtomicActor {
 
         blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
-        blocking.setToken(BooleanToken.FALSE);
+        blocking.setToken(BooleanToken.TRUE);
 
         command = new PortParameter(this, "command", new StringToken("echo 'Hello, world.'"));
         // Make command be a StringParameter (no surrounding double quotes).
@@ -124,7 +124,8 @@ public class Exec extends TypedAtomicActor {
 
 
     /** Indicator of whether fire method blocks on the process.
-     *  The type is boolean with default false.
+     *  If true, fire() waits until there is output from the subprocess.
+     *  The type is boolean with default true.
      */
     public Parameter blocking;
 
@@ -188,6 +189,7 @@ public class Exec extends TypedAtomicActor {
                 // FIXME: What if the portParameter command changes?
                 _exec();
             }
+            // FIXME: What if there is no input?
             if (input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
                 if ((line = ((StringToken)input.get(0)).stringValue())
@@ -196,16 +198,20 @@ public class Exec extends TypedAtomicActor {
                         _debug("Exec: Input: '" + line + "'");
                     }
                     if (_inputBufferedWriter != null) { 
-                            _inputBufferedWriter.write(line);
+                        _inputBufferedWriter.write(line);
+                        _inputBufferedWriter.flush();
                     }
                 }
             }
 
-            //if (!_blocking) {
-            // FIXME: Do we need to get the value and if and only if
-            // we have string call send?  What if there is no input?
-            String errorString = _errorGobbler.getAndReset();
-            String outputString = _outputGobbler.getAndReset();
+            String errorString;
+            String outputString;
+            if (_blocking) {
+                outputString = _outputGobbler.blockingGetAndReset();
+            } else {
+                outputString = _outputGobbler.nonblockingGetAndReset();
+            }
+            errorString = _errorGobbler.nonblockingGetAndReset();
             if (_debugging) {
                 _debug("Exec: Error: '" + errorString + "'");
                 _debug("Exec: Output: '" + outputString + "'");
@@ -213,7 +219,7 @@ public class Exec extends TypedAtomicActor {
 
             error.send(0, new StringToken(errorString));
             output.send(0, new StringToken(outputString));
-                //}
+
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem reading or writing '" + line + "'");
@@ -227,6 +233,33 @@ public class Exec extends TypedAtomicActor {
         super.initialize();
         // FIXME: What if the portParameter command changes?
         _exec();
+    }
+
+    /** Override the base class to stop waiting for input data.
+     */
+    public /*synchronized*/ void stop() {
+        super.stop();
+        //notifyAll();
+        if (_outputGobbler != null) {
+                System.out.println("stop(): About to call _outputGobbler.myNotifyAll()");
+            _outputGobbler.myNotifyAll();
+                System.out.println("stop():  Done calling _outputGobbler.myNotifyAll()");
+
+        }
+    }
+
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stopFire() {
+        super.stopFire();
+        _stopFireRequested = true;
+        notifyAll();
+        if (_outputGobbler != null) {
+                System.out.println("stopFire(): About to call _outputGobbler.myNotifyAll()");
+            _outputGobbler.myNotifyAll();
+                System.out.println("stopFire():  Done calling _outputGobbler.myNotifyAll()");
+
+        }
     }
 
     /** Terminate the subprocess.
@@ -273,6 +306,8 @@ public class Exec extends TypedAtomicActor {
     // and set up _errorGobbler and _outputGobbler
     private void _exec() throws IllegalActionException {
        try {
+            _stopFireRequested = false;
+
             if (_process != null) {
                 _process.destroy();
             }
@@ -324,21 +359,21 @@ public class Exec extends TypedAtomicActor {
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
 
-            _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
-                    "ERROR");
+            _errorGobbler =
+                new _StreamReaderThread(_process.getErrorStream(),
+                        "Exec Stderr Gobbler");
 
-            _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
-                    "OUTPUT");
+            _outputGobbler =
+                new _StreamReaderThread(_process.getInputStream(),
+                        "Exec Stdout Gobbler");
 
             _errorGobbler.start();
             _outputGobbler.start();
-
             
             OutputStreamWriter inputStreamWriter =
                 new OutputStreamWriter(_process.getOutputStream());
             _inputBufferedWriter =
                 new BufferedWriter(inputStreamWriter);
-            _inputBufferedWriter.write("foo");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem setting up command '" + command + "'");
@@ -353,20 +388,45 @@ public class Exec extends TypedAtomicActor {
     // stringBuffer
     private class _StreamReaderThread extends Thread {
 
-        _StreamReaderThread(InputStream inputStream, String streamType) {
+        _StreamReaderThread(InputStream inputStream, String name) {
+            super(name);
             _inputStream = inputStream;
-            _streamType = streamType;
-            _stringBuffer = new StringBuffer();
+            _lockingStringBuffer = new LockingStringBuffer();
         }
 
-        public String getAndReset() {
-            String returnValue = _stringBuffer.toString();
-            _stringBuffer = new StringBuffer();
-            return returnValue;
+        public String blockingGetAndReset() throws IllegalActionException {
+            return _lockingStringBuffer.blockingGetAndReset();
         }
 
-        // Read lines from the _inputStream and output them to the
-        // JTextArea.
+//         public synchronized String waitGetAndReset() 
+//                 throws IllegalActionException {
+//             while (_stringBuffer.length() == 0) {
+//                 try {
+//                     wait();
+//                 } catch (InterruptedException ex) {                
+//                     throw new IllegalActionException(null, ex, 
+//                             "Thread interrupted waiting for exec() data.");
+//                 }
+//             }
+//             String returnValue = _stringBuffer.toString();
+//             _stringBuffer = new StringBuffer();
+//             notifyAll();
+//             return returnValue;
+//         }
+
+        public void myNotifyAll() {
+            _lockingStringBuffer.myNotifyAll();
+        }
+        /** Get the current value of the stringBuffer and empty
+         *  the contents of the stringBuffer.
+         */   
+        public String nonblockingGetAndReset() {
+            return _lockingStringBuffer.nonblockingGetAndReset();
+        }
+
+        /** Read lines from the inputStream and append them to the 
+         *  stringBuffer.
+         */
         public void run() {
             try {
                 InputStreamReader inputStreamReader =
@@ -374,23 +434,86 @@ public class Exec extends TypedAtomicActor {
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
-                while ( (line = bufferedReader.readLine()) != null)
-                    _stringBuffer.append(/*_streamType + ">" +*/ line);
+                // FIXME: Sometimes readLine() throws a NullPointerException
+                // because inputStreamReader is null? 
+//                 java.lang.NullPointerException
+// 	at java.io.BufferedInputStream.read(BufferedInputStream.java:279)
+// 	at sun.nio.cs.StreamDecoder$CharsetSD.readBytes(StreamDecoder.java:408)
+// 	at sun.nio.cs.StreamDecoder$CharsetSD.implRead(StreamDecoder.java:450)
+// 	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:182)
+// 	at java.io.InputStreamReader.read(InputStreamReader.java:167)
+// 	at java.io.BufferedReader.fill(BufferedReader.java:136)
+// 	at java.io.BufferedReader.readLine(BufferedReader.java:299)
+// 	at java.io.BufferedReader.readLine(BufferedReader.java:362)
+// 	at ptolemy.actor.lib.Exec$_StreamReaderThread.run(Exec.java:416)
+                while ( (line = bufferedReader.readLine()) != null) {
+                    if (_debugging) {
+                        _debug("Gobbler: " + line);
+                    }
+                    _lockingStringBuffer.append(line);
+                    // Perhaps the fire() is waiting to see if data
+                    // is available by calling available().
+                    //notifyAll();
+                }
             } catch (IOException ioe) {
-                _stringBuffer.append("IOException: " + ioe);
+                _lockingStringBuffer.append("IOException: " + ioe);
             }
         }
 
+
+        private LockingStringBuffer _lockingStringBuffer;
         // StringBuffer to update
         private StringBuffer _stringBuffer;
 
         // Stream to read from.
         private InputStream _inputStream;
-        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-        private String _streamType;
 
     }
 
+
+    private class LockingStringBuffer {
+        public LockingStringBuffer() {
+            _stringBuffer = new StringBuffer();
+        }
+
+        public synchronized void myNotifyAll() {
+            notifyAll();
+        }
+
+        public synchronized void append(String value) {
+            _stringBuffer.append(value);
+            notifyAll();
+        }
+
+
+        public synchronized String blockingGetAndReset()
+                throws IllegalActionException {
+            while (_stringBuffer.length() == 0
+                    && !_stopRequested
+                    && !_stopFireRequested) {
+                try {
+                    wait(100);
+                } catch (InterruptedException ex) {                
+                    // FIXME: Pass in a Nameable for this exception
+                    throw new IllegalActionException(null, ex, 
+                            "Thread interrupted waiting for exec() data.");
+                }
+            }
+            String returnValue = _stringBuffer.toString();
+            _stringBuffer = new StringBuffer();
+            notifyAll();
+            return returnValue;
+        }
+
+        public synchronized String nonblockingGetAndReset() {
+            String returnValue = _stringBuffer.toString();
+            _stringBuffer = new StringBuffer();
+            notifyAll();
+            return returnValue;
+        }
+
+        private StringBuffer _stringBuffer;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -407,4 +530,8 @@ public class Exec extends TypedAtomicActor {
 
     // The Process that we are running.
     private Process _process;
+
+    // Indicator that stopFire() has been called.
+    private boolean _stopFireRequested = false;
+
 }
