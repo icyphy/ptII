@@ -45,9 +45,25 @@ import collections.LinkedList;
 /**
 Base class of directors for the process orientated domains. It provides
 default implementations for methods that are common across such domains.
-
+<p>
+In the process orientated domains, the director controllong a model 
+needs to keep track of the state of the model. In particular it needs 
+to maintain an accurate count of the number of active processes under 
+its control, any processes that are blocked for whatever reason (trying 
+to read from an empty channel) and the number of processes have been 
+paused. These counts, and perhaps other counts, are needed by the 
+director to control and respond when deadlock is detected (no processes 
+can make progress), or to respond to requests from higher in the hierarchy.
+<p>
+The methods that control how the director detects and responds to deadlocks
+are _checkForDeadlock() and _handleDeadlock(). These methods should be
+overridden in derived classes to get domain specific behaviour. The 
+implementations given here are trivial and suffice only to illustrate 
+the approach that should be followed.
+<p>
 @author Mudit Goel, Neil Smyth
 @version $Id$
+@see Director
 */
 public class ProcessDirector extends Director {
 
@@ -74,6 +90,7 @@ public class ProcessDirector extends Director {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
+     * 
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      */
@@ -88,9 +105,9 @@ public class ProcessDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no mutation listeners.
+     *  and no mutation listeners. The count of active proceses is zero 
+     *  and it is not paused.
      *
-     *  FIXME: not finished.
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
@@ -100,22 +117,20 @@ public class ProcessDirector extends Director {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
         newobj._pausedReceivers = new LinkedList();
+        newobj._pauseRequested = false;
+        newobj._threadList = new LinkedList();
         return newobj;
     }
 
-    /** This decreases the number of active threads in the
-     *  compositeActor by 1.
-     *  It also checks if the simulation has paused if a pause was
-     *  requested.
+    /** Decrease the number of active processes under the control of 
+     *  this director by 1. Also checks if the model is now paused
+     *  if a pause was requested.
      *  This method should be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
      */
-    // FIXME: If _threadList is not being destroyed then remove current thread
-    // from it.
     public synchronized void decreaseActiveCount() {
 	_actorsActive--;
 	_checkForDeadlock();
-	//System.out.println("decreased active count");
         //If pause requested, then check if paused
         if (_pauseRequested) {
             _checkForPause();
@@ -162,15 +177,14 @@ public class ProcessDirector extends Director {
                 String name = ((Nameable)actor).getName();
                 ProcessThread pnt = new ProcessThread(actor, this, name);
                 _threadList.insertFirst(pnt);
-                // FIXME: perhaps we want ot destroy the threadlist?
             }
             setCurrentTime(0.0);
         }
     }
 
     /** This method should be called when a new thread corresponding
-     *  to an actor is started in a simulation. This method is
-     *  required for detection of deadlocks.
+     *  to an actor is started in the model under the control of this
+     *  director. This method is required for detection of deadlocks.
      *  The corresponding method decreaseActiveCount should be called
      *  when the thread is terminated.
      */
@@ -179,7 +193,7 @@ public class ProcessDirector extends Director {
     }
 
     /** This method increases the number of paused threads and checks if the
-     *  entire simulation is paused.
+     *  entire model has sucessfuly paused.
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
@@ -212,7 +226,6 @@ public class ProcessDirector extends Director {
             ProcessThread pnt = (ProcessThread)threads.nextElement();
             pnt.start();
         }
-        //_threadList.clear(); // Should it be cleared or given to manager?
         return true;
     }
 
@@ -396,9 +409,9 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    // Checks for deadlock.
-    // In the base class implementation it returns true only if there are
-    // no active processes.
+    /** Checks for deadlock. In the base class implementation it 
+     *  returns true only if there are no active processes.
+     */
     protected synchronized void _checkForDeadlock() {
         if (_actorsActive == 0) {
             _deadlock = true;
@@ -408,7 +421,9 @@ public class ProcessDirector extends Director {
 
     }
 
-    // Check if all threads are either blocked or paused.
+    /** Checks if all active processes are either blocked or paused.
+     *  Should be overridden in derived classes.
+     */
     protected synchronized void _checkForPause() {
 	System.out.println("_checkForPause: No default implementation, " +
                 "should be overridden in derived classes.");
@@ -416,10 +431,12 @@ public class ProcessDirector extends Director {
     }
 
 
-    // Handle deadlock. In the base class implementation this returns true
-    // on detection of a deadlock.
-    // @return true for termination.
-    // @exception IllegalActionException If a derived class throws it.
+    /** Handles and responds to deadlocks. In this base class it 
+     *  returns true when deadlock has been detected. Override this 
+     *  method to obtain domain specific handling of deadlocks.
+     *  @return true for termination.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
         Workspace worksp = workspace();
@@ -435,15 +452,24 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    // Count of the number of processes that were started by this 
+    // director but have not yet finished.    
     protected long _actorsActive = 0;
+
+    // Count of the number of processes that have been paused 
+    // following a request for a pause.
     protected long _actorsPaused = 0;
 
+    // Flag indicating wheter or not a pause has been requested.
     protected boolean _pauseRequested = false;
+
+    // Flag indicating if the model has been sucessfully paused.
     protected boolean _paused = false;
 
+    // The receivers that were paused when a pause was repuested.
     protected LinkedList _pausedReceivers = new LinkedList();
 
-    // The threads under started by this director.
+    // The threads started by this director.
     protected LinkedList _threadList = new LinkedList();
 
 
