@@ -182,19 +182,39 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if(DEBUG) {
                 System.out.println("Outside Time =" + _outsideTime);
             }
+            double timeAcc = getTimeAccuracy();
+            double nextIterTime = exe.getNextIterationTime();
+            double runlength = nextIterTime - _outsideTime;
+            if((runlength != 0.0)&& (runlength < timeAcc)) {
+                exe.fireAfterDelay(ca, runlength);
+                if(DEBUG) {
+                    System.out.println("Next iteration is too near" +
+                        " (but not sync). Request a refire at:"+nextIterTime);
+                }
+                return false;
+            }
+            if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
+                if(DEBUG) {
+                    System.out.println("Round up current time " + 
+                        getCurrentTime() + " to outside time " +_outsideTime);
+                }
+                setCurrentTime(_outsideTime);
+            }
+            
+            // check for roll back.
             if (_outsideTime < getCurrentTime()) {
                 if(DEBUG) {
                     System.out.println(getName() + " rollback from: " +
-                        getCurrentTime() + " to: " +_outsideTime);
+                        getCurrentTime() + " to: " +_knownGoodTime +
+                        "due to outside time " +_outsideTime );
                 }    
                 if(STAT) {
                     NROLL ++;
                 }
                 rollback();
             }
-            //FIXME: change max to min when getNextIterationTime is in DE.
-            double runlength = Math.max(
-                exe.getNextIterationTime(), _runAheadLength);
+            
+            runlength = Math.min(runlength, _runAheadLength);
             setFireEndTime(_outsideTime + runlength);
             fireAfterDelay(null,_outsideTime - getCurrentTime());
             fireAfterDelay(null,getFireEndTime()-getCurrentTime());
@@ -284,6 +304,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 if(Math.abs(bp-tnow) < timeAcc) {
                     // break point now!
                     breakPoints.removeFirst();  
+                    setCurrentTime(bp);
                     setCurrentODESolver(_getBreakpointSolver());
                     setCurrentStepSize(getMinStepSize());
                     if(DEBUG) {
@@ -295,11 +316,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 while(!breakPoints.isEmpty()) {
                     bp = ((Double)breakPoints.first()).doubleValue();
                     if(Math.abs(bp-tnow) < timeAcc) {
+                        setCurrentTime(bp);
                         breakPoints.removeFirst();  
                     } else {
                         double iterEndTime = tnow+getCurrentStepSize();
                         if (iterEndTime > bp) {
-                            setCurrentStepSize(bp-tnow-timeAcc/2.0);
+                            setCurrentStepSize(bp-tnow);
                         }
                         break;
                     }
