@@ -326,6 +326,55 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
+#	For more information, see http://lejos.sourceforge.net
+#	See if there was a command-line option for commapi is
+#       If not, check to see if $PTII/vendors/lejos/lejos/lejosBeta3
+#--------------------------------------------------------------------
+
+# We only need to look for commapi if $PTII/ptolemy/apps/lejos
+LEJOS_USER_DIR="$PTII/ptolemy/apps/lejos"
+LEJOS_PRESENT=no
+# PTLEJOS_DIR is set to lejos
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+PTLEJOS_DIR=
+if test ! -d "$LEJOS_USER_DIR"; then
+    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
+find lejos])
+    # Use curly brackets around PTII so that if lejos is not present
+    # then ${PTII} will appear in ptinvoke.
+    LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
+else
+    if test "$COMMAPI_PRESENT" = "no"; then
+        AC_MSG_WARN(['Lejos requires commapi, which was not found'])
+    else 
+	AC_MSG_CHECKING([for lejos directory])
+	AC_ARG_WITH(LEJOS, [  --with-lejos=DIR       use Java lejos from DIR,
+                          defaults to \$PTII/vendors/lejos/lejosBeta3],
+		LEJOS_DIR=$withval,
+		LEJOS_DIR=$PTII/vendors/lejos/lejosBeta3)
+
+	if test -d "$LEJOS_DIR/classes/josx"; then
+	    AC_MSG_RESULT([$LEJOS_DIR])
+	    # Subdirectory that contains Java Communications API specific code
+	    PTLEJOS_DIR=lejos
+	    LEJOS_PRESENT=yes
+	else
+	    AC_MSG_WARN(['Failed to find $LEJOS_DIR/classes/josx/'])
+	    LEJOS_DIR='${PTII}/vendors/lejos'
+	fi
+    fi	
+    if test "$LEJOS_PRESENT" = "no"; then
+	AC_MSG_WARN(['Perhaps Lejos is not installed?
+	You need not download Lejos unless you plan on use the Lego Mindstorm
+	demos in \$PTII/ptolemy/apps/lejos. Lejos can be downloaded from
+	http://lejos.sourceforge.net
+	and placed  in \$PTII/vendors/lejos/lejosBeta3'])
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #	See if there was a command-line option for where javacc is;  if
 #	not, check to see if $PTII/vendors/sun/JavaCC exists
 #       if it is does not, look for javacc on the path.
@@ -810,6 +859,10 @@ AC_SUBST(KVM_CLASSES)
 # Directory that contains the kvm used by PalmOS
 AC_SUBST(KVM_DIR)
 
+# Set to the location of the lejos installation, usually in
+# $PTII/vendors/lejos
+AC_SUBST(LEJOS_DIR)
+
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)
 
@@ -838,6 +891,11 @@ AC_SUBST(PTKVM_DIR)
 # Set to lego and used in
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 AC_SUBST(PTLEGO_DIR)
+
+# Set to lejos and used in
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+# and Legos was found
+AC_SUBST(PTLEJOS_DIR)
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
