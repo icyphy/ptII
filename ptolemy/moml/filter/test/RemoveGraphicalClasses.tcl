@@ -318,3 +318,4 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
         </group>
     </configure>
 </entity>
+}
