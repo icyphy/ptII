@@ -99,7 +99,16 @@ JSRCS = \
 	Tableau.java \
 	TableauFactory.java
 
-EXTRA_SRCS =	$(JSRCS)
+# Files to be included in the jar file
+OTHER_FILES_TO_BE_JARED = \
+	PtolemyIISmallIcon.gif
+
+# Note that PtolemyIISmallIcon.gif is also in doc/img.
+# We place a duplicate copy here to make it easy to ship
+# jar files that contain all the appropriate images.
+EXTRA_SRCS = \
+	$(JSRCS) \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
