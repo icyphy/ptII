@@ -369,7 +369,7 @@ public class VergilApplication extends MoMLApplication {
 	    // We use a URI here so that we cause call File(URI).
             URI configurationURI =
                 new URI(specToURL("ptolemy/configs").toExternalForm());
-            File configurationDirectory = new File(configurationURL);
+            File configurationDirectory = new File(configurationURI);
             ConfigurationFilenameFilter filter =
                 new ConfigurationFilenameFilter();
             File [] configurationDirectories =
