@@ -137,9 +137,10 @@ public class Copernicus {
         _parseArgs(args);
         
         if(_modelPath == null) {
-            System.out.println(_usage());
+            System.out.println("Model not found, perhaps the command line "
+                    + "arguments did not include a model?\n" +  _usage());
             // NOTE: This means the test suites cannot test this.
-            System.exit(0);
+            System.exit(-1);
         }
 
         // Parse the model.
@@ -391,7 +392,7 @@ public class Copernicus {
             new Copernicus(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(0);
+            System.exit(1);
         }
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
