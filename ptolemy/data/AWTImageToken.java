@@ -54,6 +54,10 @@ public class AWTImageToken extends ImageToken {
     public Image asAWTImage() {
         return _value;
     }
+
+    public Type getType() {
+        return BaseType.OBJECT;
+    }
     
     /** Return the java.awt.Image
      */
