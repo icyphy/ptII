@@ -54,6 +54,10 @@ PTAUXALLJARS = \
 
 PTAUXALLJAR =	$(PTPACKAGE).jar
 
+OTHER_FILES_TO_BE_JARED = \
+	dll.gif \
+	jni.xml
+
 # Keep this list alphabetized.
 JSRCS = \
 	Argument.java \
@@ -66,13 +70,19 @@ JSRCS = \
 	ThalesGraphTableau.java \
 	VergilApplication.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = doc test
 
-OPTIONAL_FILES = demo
+OPTIONAL_FILES = demo \
+	'ArgumentDialogFactory$$1.class' \
+	'ThalesGraphFrame$$DebugMenuListener.class' \
+	'ThalesGraphFrame$$JNIMenuListener.class' \
+	'ThalesGraphTableau$$Factory.class' \
+	'VergilApplication$$1.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
