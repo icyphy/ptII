@@ -36,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 
@@ -72,10 +73,10 @@ public class TimeAdvance extends DDEActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        output.setTypeEquals(DoubleToken.class);
+        output.setTypeEquals(BaseType.DOUBLE);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
 
         outputValue = new
             Parameter(this, "outputValue", new DoubleToken(0.0));

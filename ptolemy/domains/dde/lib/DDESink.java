@@ -35,6 +35,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 
@@ -65,7 +66,7 @@ public class DDESink extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(Token.class);
+        input.setTypeEquals(BaseType.GENERAL);
 
         numTokens =
             new Parameter(this, "numTokens", new IntToken(-1));
