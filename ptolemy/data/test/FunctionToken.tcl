@@ -103,12 +103,7 @@ test FunctionToken-10.0 {test equals} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
     
     list [$r1 equals $r1] [$r1 equals $r2] [$r1 equals $r3]
-} {1 0 0} {Equals is not implemented properly.  It should be equal under renaming.}
-
-test FunctionToken-10.1 {test hashCode} {
-    # use t1, t2, t3 above
-    list [$r1 hashCode] [$r2 hashCode] [$r3 hashCode]
-} {8 8 14} {Hashcode is not implemented properly}
+} {1 0 0}
 
 ######################################################################
 ####

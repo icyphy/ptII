@@ -145,37 +145,11 @@ public class Token implements Serializable {
                 notSupportedMessage("divideReverse", this, leftArgument));
     }
 
-    /** Override the base class method to check whether the value of this
-     *  token is equal to that of the argument.
-     *  Since this base token class does not have any state, this method
-     *  returns true if the argument is an instance of Token, but not an
-     *  instance of a subclass of Token or any other classes.
-     *  @param object An instance of Object.
-     *  @return True if the argument is an instance of Token, but not an
-     *   instance of a subclass of Token or any other classes.
-     */
-    public boolean equals(Object object) {
-        if (object.getClass() == Token.class) {
-            return true;
-        }
-        return false;
-    }
-
     /** Return the type of this token.
      *  @return BaseType.GENERAL
      */
     public Type getType() {
         return BaseType.GENERAL;
-    }
-
-    /** Return a hash code value for this token. Since the equals() method
-     *  in this base Token class returns true for all instances of Token,
-     *  all instances of Token must have the same hash code. To achieve this,
-     *  this method simply returns the value 0.
-     *  @return The integer 0.
-     */
-    public int hashCode() {
-        return 0;
     }
 
     /** Test that the value of this Token is close to the argument

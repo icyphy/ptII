@@ -103,15 +103,7 @@ test Token-2.4 {Test equals} {
     set p2 [java::new ptolemy.data.Token]
     set p3 [java::new ptolemy.data.IntToken]
     list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
-} {1 1 0}
-
-######################################################################
-####
-# 
-test Token-2.5 {Test hashCode} {
-    set p1 [java::new ptolemy.data.Token]
-    $p1 hashCode
-} {0}
+} {1 0 0}
 
 ######################################################################
 ####

@@ -118,7 +118,9 @@ public class FunctionType extends StructuredType {
                     Token.notSupportedConversionMessage(
                             token, this.toString()));
         }
-        // FIXME: This should actually return a new Function that includes the appropriate argument and return value conversions.
+        // FIXME: This should actually return a new Function that
+        // includes the appropriate argument and return value
+        // conversions.
         
         return token;
         //   if(false) {
@@ -271,18 +273,18 @@ public class FunctionType extends StructuredType {
         }
 
         FunctionType argumentFunctionType = (FunctionType)type;
+        
+        // The given type cannot be losslessly converted to this type
+        // if it does not contain the same number of arguments.
+        if(argumentFunctionType.getArgCount() != getArgCount()) {
+            return false;
+        }
 
         // Loop through all of the fields of this type...
         for(int i = 0; i < getArgCount(); i++) {
-            // The given type cannot be losslessly converted to this type
-            // if it does not contain the same number of arguments.
             Type argumentFieldTypeTerm = 
                 argumentFunctionType.getArgType(i);
-            if (argumentFieldTypeTerm == null) {
-                // argument token does not contain this label
-                return false;
-            }
-
+          
             // The given function type cannot be losslessly converted
             // to this type if the individual arguments are not
             // compatible.
@@ -332,18 +334,25 @@ public class FunctionType extends StructuredType {
 
     /** Test if the specified type is a substitution instance of this
      *  type.  One function is a substitution instance of another if they
-     *  have fields with the same names and each field of the given type is
+     *  have arguments with the same types and each field of the given type is
      *  a substitution instance of the corresponding field in this type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
      */
     public boolean isSubstitutionInstance(Type type) {
-        if ( !(type instanceof FunctionType)) {
+        if (!(type instanceof FunctionType)) {
             return false;
         }
 
         FunctionType functionType = (FunctionType)type;
+
+        // Check that the argument counts are the same
+        int argCount = getArgCount();
+      
+        if (functionType.getArgCount() != argCount ) {
+            return false;
+        }
 
         // Loop through all of the fields of this type...
         for(int i = 0; i < getArgCount(); i++) {
@@ -353,13 +362,14 @@ public class FunctionType extends StructuredType {
                 return false;
             }
         }
+
+        // FIXME: Check return type?
         return true;
     }
 
     /** Return the string representation of this type. The format is
-     *  (<type>, <type>, ...) -> <type>.
-     *  The function fields are listed in the lexicographical order of the
-     *  labels determined by the java.lang.String.compareTo() method.
+     *  function(a0:<type>, a1:<type>, ...) <type>.  Note that the
+     *  function argument names are not semantically significant.
      *  @return A String.
      */
     public String toString() {
