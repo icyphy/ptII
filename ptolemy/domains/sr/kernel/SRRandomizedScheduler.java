@@ -111,11 +111,22 @@ public class SRRandomizedScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
+
         StaticSchedulingDirector director =
             (StaticSchedulingDirector) getContainer();
 
+        if (director == null) {
+            throw new NotSchedulableException(this, "SROptimizedScheduler "
+                    + "cannot schedule graph with no director.");
+        }
+
         CompositeActor compositeActor =
 	    (CompositeActor) (director.getContainer());
+
+        if (compositeActor == null) {
+            throw new NotSchedulableException(this, "SROptimizedScheduler "
+                    + "cannot schedule graph with no container.");
+        }
 
         List actorList = compositeActor.deepEntityList();
 
