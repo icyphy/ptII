@@ -142,6 +142,7 @@ case "`basename $0`" in
 	# Ptolemy II Application
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
+	jarfile=$PTII/lib/diva.jar
 	;;
     ptplot)
 	# Signal Plotter
