@@ -202,7 +202,6 @@ public class MoMLApplication {
                 return file.getCanonicalFile().toURL();
             } catch (MalformedURLException ex2) {
                 try {
-		    System.err.println("MoMLApplication.specToURL():2 "+ spec);
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
 		    // we can't use this.getClass().getClassLoader()
