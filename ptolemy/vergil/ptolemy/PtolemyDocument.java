@@ -224,11 +224,10 @@ public class PtolemyDocument extends AbstractDocument
             throw new IllegalStateException(
 	        "PtolemyDocument " + getTitle() + " has no current file");
         }
-        String filename = getFile().getAbsolutePath();
-	URL schematicURL = new URL("file", null, filename);
-	MoMLParser parser = new MoMLParser(new Workspace());
+	MoMLParser parser = new MoMLParser(new Workspace(), null, 
+	    ((VergilApplication)getApplication()).classLoadingService.getClassLoader());
 	CompositeEntity toplevel =
-	    (CompositeEntity) parser.parse(schematicURL,
+	    (CompositeEntity) parser.parse(getFile().toURL(),
                     new FileInputStream(getFile()));
 	setModel(toplevel);
     }
