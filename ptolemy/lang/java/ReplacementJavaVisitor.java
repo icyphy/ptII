@@ -1,7 +1,7 @@
 /*
 A base class for visitors that do replacement of child nodes.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -155,4 +155,3 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
 
         return node;
     }   
-}

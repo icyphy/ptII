@@ -1,6 +1,6 @@
 /* A CompositeEntity is a cluster in a clustered graph.
 
- Copyright (c) 1997-1999 The Regents of the University of California.
+ Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -235,15 +235,15 @@ public class CompositeEntity extends ComponentEntity {
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
                 ComponentRelation newrel =
-                        newentity.getRelation(relation.getName());
+                    newentity.getRelation(relation.getName());
                 Port newport =
-                        newentity.getPort(port.getName());
+                    newentity.getPort(port.getName());
                 try {
                     newport.link(newrel);
                 } catch (IllegalActionException ex) {
                     throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        ex.getMessage());
+                            "Failed to clone a CompositeEntity: " +
+                            ex.getMessage());
                 }
             }
         }
@@ -492,7 +492,7 @@ public class CompositeEntity extends ComponentEntity {
                 return super.getPort(name);
             } else {
                 ComponentEntity match =
-                        (ComponentEntity)_containedEntities.get(subnames[0]);
+                    (ComponentEntity)_containedEntities.get(subnames[0]);
                 if (match == null) {
                     return null;
                 } else {
@@ -524,7 +524,7 @@ public class CompositeEntity extends ComponentEntity {
                 } else {
                     if (match instanceof CompositeEntity) {
                         return ((CompositeEntity)match)
-                                .getRelation(subnames[1]);
+                            .getRelation(subnames[1]);
                     } else {
                         return null;
                     }
@@ -671,7 +671,7 @@ public class CompositeEntity extends ComponentEntity {
 
             while (relations.hasNext()) {
                 ComponentRelation relation =
-                        (ComponentRelation)relations.next();
+                    (ComponentRelation)relations.next();
                 try {
                     relation.setContainer(null);
                 } catch (KernelException ex) {
@@ -779,7 +779,7 @@ public class CompositeEntity extends ComponentEntity {
                 Iterator entities = entityList().iterator();
                 while (entities.hasNext()) {
                     ComponentEntity entity =
-                            (ComponentEntity)entities.next();
+                        (ComponentEntity)entities.next();
                     result +=
                         entity._description(detail, indent+1, 2) + "\n";
                 }
@@ -821,7 +821,7 @@ public class CompositeEntity extends ComponentEntity {
         Iterator relations = relationList().iterator();
         while (relations.hasNext()) {
             ComponentRelation relation
-                    = (ComponentRelation)relations.next();
+                = (ComponentRelation)relations.next();
             relation.exportMoML(output, depth);
         }
         // Next write the links.  To get the ordering right,
@@ -834,7 +834,7 @@ public class CompositeEntity extends ComponentEntity {
             relations = port.insideRelationList().iterator();
             while (relations.hasNext()) {
                 ComponentRelation relation
-                         = (ComponentRelation)relations.next();
+                    = (ComponentRelation)relations.next();
                 // In order to support level-crossing links, consider the
                 // possibility that the relation is not contained by this.
                 String relationName;
@@ -844,11 +844,11 @@ public class CompositeEntity extends ComponentEntity {
                     relationName = relation.getFullName();
                 }
                 output.write(_getIndentPrefix(depth)
-                + "<link port=\""
-                + port.getName()
-                + "\" relation=\""
-                + relationName
-                + "\"/>\n");
+                        + "<link port=\""
+                        + port.getName()
+                        + "\" relation=\""
+                        + relationName
+                        + "\"/>\n");
             }
         }
 
@@ -862,7 +862,7 @@ public class CompositeEntity extends ComponentEntity {
                 relations = port.linkedRelationList().iterator();
                 while (relations.hasNext()) {
                     ComponentRelation relation
-                            = (ComponentRelation)relations.next();
+                        = (ComponentRelation)relations.next();
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
                     String relationName;
@@ -872,13 +872,13 @@ public class CompositeEntity extends ComponentEntity {
                         relationName = relation.getFullName();
                     }
                     output.write(_getIndentPrefix(depth)
-                    + "<link port=\""
-                    + entity.getName()
-                    + "."
-                    + port.getName()
-                    + "\" relation=\""
-                    + relationName
-                    + "\"/>\n");
+                            + "<link port=\""
+                            + entity.getName()
+                            + "."
+                            + port.getName()
+                            + "\" relation=\""
+                            + relationName
+                            + "\"/>\n");
                 }
             }
         }

@@ -1,6 +1,6 @@
 /* A FIFO queue receiver with variable capacity and optional history.
 
- Copyright (c) 1997-1999 The Regents of the University of California.
+ Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

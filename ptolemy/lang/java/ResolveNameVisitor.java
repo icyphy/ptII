@@ -3,7 +3,7 @@ Resolve names of local variables, formal parameters, field accesses,
 method calls, and statement labels. Code adopted from st-name.cc from
 the Titanium project.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -474,4 +474,3 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
 
     /** The package this compile unit is in. */
     protected PackageDecl _currentPackage = null;
-}

@@ -2,7 +2,7 @@
 An interface specifying how to represent matrices and vectors as
 Strings.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

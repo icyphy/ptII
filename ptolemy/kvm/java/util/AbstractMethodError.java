@@ -1,7 +1,7 @@
 /*
  * @(#)AbstractMethodError.java	1.13 98/09/21
  *
- * Copyright 1994-1998 by Sun Microsystems, Inc.,
+ * Copyright 1994-2000 by Sun Microsystems, Inc.,
  * 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
  * All rights reserved.
  * 

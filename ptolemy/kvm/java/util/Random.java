@@ -1,7 +1,7 @@
 /*
  * @(#)Random.java	1.27 99/04/22
  *
- * Copyright 1995-1999 by Sun Microsystems, Inc.,
+ * Copyright 1995-2000 by Sun Microsystems, Inc.,
  * 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
  * All rights reserved.
  * 

@@ -2,7 +2,7 @@
 An environment for declarations, which may be contained in another
 environment. Code converted from Environ in Titanium.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* TimeAdvance is a DDE actor that produces DoubleTokens on the output.
 
- Copyright (c) 1998-1999 The Regents of the University of California.
+ Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

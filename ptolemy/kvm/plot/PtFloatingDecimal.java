@@ -1,7 +1,7 @@
 /*
  * @(#)FloatingDecimal.java	1.14 98/07/07
  *
- * Copyright 1996-1998 by Sun Microsystems, Inc.,
+ * Copyright 1996-2000 by Sun Microsystems, Inc.,
  * 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
  * All rights reserved.
  *

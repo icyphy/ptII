@@ -1,7 +1,7 @@
 /*
  * @(#)ArrayList.java	1.19 99/04/22
  *
- * Copyright 1997-1999 by Sun Microsystems, Inc.,
+ * Copyright 1997-2000 by Sun Microsystems, Inc.,
  * 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
  * All rights reserved.
  * 

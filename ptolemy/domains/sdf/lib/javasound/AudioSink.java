@@ -1,7 +1,7 @@
 /* An actor that writes input audio data to a sound file and/or plays
 the audio data.
 
-@Copyright (c) 1998-1999 The Regents of the University of California.
+@Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

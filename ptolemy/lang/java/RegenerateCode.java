@@ -2,7 +2,7 @@
 An application that parses a Java program, then reconstructs the source
 program using the AST. This is used for testing purposes.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -79,4 +79,3 @@ public class RegenerateCode {
         System.out.println(codeString);
     }
   }
-}

@@ -3,7 +3,7 @@ A JavaVisitor that adds the names of the types defined in the CompileUnitNode
 to the file environment, creates the environments for all nodes,
 then resolves names of the imports with a ResolveImportsVisitor.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
