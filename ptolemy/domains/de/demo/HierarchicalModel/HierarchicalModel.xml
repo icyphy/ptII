@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 472]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.5, 236.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 236.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has a feedback loop, which contains two modal models, A and B. &#10;A and B have the same set of two states and refinements. One of the &#10;refinements introduces a timed delay between the input and output ports, &#10;while the other one does not. The settings of the initialial states and &#10;transitions of A and B ensure that A and B always stay in different states&#10;and there is always a timed delay inside the feedback loop. &#10;&#10;This model shows that the DEE director can find a correct schedule for &#10;execution based on the function dependencies analysis.">
@@ -87,9 +87,9 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -294,9 +294,9 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>

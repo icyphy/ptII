@@ -237,9 +237,9 @@ GraphicalLocator)</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 620.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 329.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.5}">
     </property>
     <property name="annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Matlab in a trivial&#10;fashion to show how Matlab can be integrated&#10;into a model.&#10;Right Click on the Triangulator icon and&#10;select &quot;Look Inside&quot; to see the Matlab &#10;Expression actor.">
@@ -688,9 +688,9 @@ location can be found, then plot that location.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 80.0">
             </property>
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>

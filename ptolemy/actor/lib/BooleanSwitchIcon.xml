@@ -101,9 +101,9 @@
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="4.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{28.5151515151515, -18.8181818181818}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{28.5151515151515, -18.8181818181818}">
             </property>
             <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">

@@ -170,9 +170,9 @@ stopping the execution.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 110.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{404.5, 270.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.5, 270.5}">
     </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 282.5">

@@ -42,9 +42,9 @@ http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -84,9 +84,9 @@ to all instances.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {30, 138, 921, 600}, maximized = false}">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{353.0, 245.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.0, 245.5}">
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model describes how a sequence of bytes are converted to a string, &#10;one byte at a time.  Each byte is padded to two hex digits.  Note that &#10;the title bar of the model indicates that this is the convertToStringClass &#10;model, regardless of whether this window was opened by looking inside the &#10;icon representing the class itself, or by looking inside one of the &#10;instances of the class.  &#10;&#10;Note that any changes to this class will be reflected in the behavior of all &#10;instances, although individual instances may override particular parameter values.">
@@ -306,9 +306,9 @@ internal models.
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {4, 0, 996, 676}, maximized = false}">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{391.2143308080808, 175.3252840909092}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.2143308080808, 175.3252840909092}">
         </property>
         <port name="text" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -439,9 +439,9 @@ internal models.
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 83, 1025, 673}, maximized = false}">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{366.625, 309.0037878787879}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.625, 309.0037878787879}">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -804,9 +804,9 @@ the 128 bit user key as a seed.</text></svg></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {58, 90, 894, 511}, maximized = false}">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{354.6414141414142, 308.2588383838384}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{354.6414141414142, 308.2588383838384}">
             </property>
             <port name="round key" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -875,9 +875,9 @@ the 128 bit user key as a seed.</text></svg></configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 661, 459}, maximized = false}">
                 </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{223.0, 175.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{223.0, 175.0}">
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1039,9 +1039,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {136, 154, 751, 459}, maximized = false}">
                     </property>
-                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{330.7335069444445, 154.7196180555556}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.7335069444445, 154.7196180555556}">
                     </property>
                     <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                         <property name="input"/>
@@ -1132,9 +1132,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {50, 147, 849, 459}, maximized = false}">
                     </property>
-                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{317.0, 175.0}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{317.0, 175.0}">
                     </property>
                     <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                         <property name="input"/>
@@ -1287,9 +1287,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 582, 459}, maximized = false}">
                     </property>
-                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{183.5, 175.0}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{183.5, 175.0}">
                     </property>
                     <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                         <property name="input"/>
@@ -1423,9 +1423,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {149, 154, 725, 459}, maximized = false}">
                 </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{255.0, 175.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.0, 175.0}">
                 </property>
                 <port name="text" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -1574,9 +1574,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {74, 154, 882, 459}, maximized = false}">
                 </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{333.5, 175.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5, 175.0}">
                 </property>
                 <port name="text" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -1730,9 +1730,9 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {71, 154, 909, 496}, maximized = false}">
                 </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{348.2859848484848, 201.2679924242424}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.2859848484848, 201.2679924242424}">
                 </property>
                 <port name="text" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -1874,9 +1874,9 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {78, 155, 763, 459}, maximized = false}">
                 </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{274.0, 175.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.0, 175.0}">
                 </property>
                 <port name="text" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>

@@ -28,9 +28,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 65.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.5, 201.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 201.0}">
     </property>
     <entity name="0_0" class="ptolemy.domains.fsm.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 195.0">

@@ -168,9 +168,9 @@ actor.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 330.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Bouncer" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[250.0, locationY]">

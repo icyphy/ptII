@@ -46,9 +46,9 @@ as recursion and mutually recursive functions.
         <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 275.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{341.5, 265.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.5, 265.5}">
     </property>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">

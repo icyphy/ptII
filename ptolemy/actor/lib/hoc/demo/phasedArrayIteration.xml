@@ -14,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 620]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="0.8444676409186">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8444676409186">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{329.0, 374.2201792336219}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.0, 374.2201792336219}">
     </property>
     <property name="numberOfSensors" class="ptolemy.data.expr.Parameter" value="8">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -231,9 +231,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <port name="input1" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
@@ -406,9 +406,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <port name="input1" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
@@ -467,9 +467,9 @@
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 314.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
             </property>
             <property name="offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

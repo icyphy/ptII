@@ -120,9 +120,9 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 250.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 330.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 330.0}">
     </property>
     <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=200}">
@@ -440,9 +440,9 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 460.0">
             </property>
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="0.5062055879335">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5062055879335">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{341.9843749999999, 419.1746672276621}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.9843749999999, 419.1746672276621}">
         </property>
         <port name="port" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>

@@ -84,9 +84,9 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 10.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0506730874466">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0506730874466">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{325.53125, 201.28625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.53125, 201.28625}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1ub">
@@ -165,9 +165,9 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="arraySize" class="ptolemy.data.expr.Parameter" value="arraySize">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

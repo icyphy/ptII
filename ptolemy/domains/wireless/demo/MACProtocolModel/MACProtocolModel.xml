@@ -177,9 +177,9 @@ sensor nets. Please look inside "node" to see the protocol. Note that the DataCo
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 115.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{389.5, 284.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{389.5, 284.0}">
     </property>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Range}">

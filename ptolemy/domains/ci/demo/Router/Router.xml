@@ -319,9 +319,9 @@ help it make decisions.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 20.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{359.0, 285.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 285.0}">
     </property>
     <entity name="channel1" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 200.0">

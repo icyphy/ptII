@@ -186,9 +186,9 @@ detectors.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 25.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{356.5, 255.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.5, 255.5}">
     </property>
     <entity name="Signals" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">

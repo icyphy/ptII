@@ -91,9 +91,9 @@ to the DE semantics.
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {23, 19, 868, 538}, maximized = false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{326.5, 214.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.5, 214.5}">
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 205.0">

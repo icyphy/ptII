@@ -122,9 +122,9 @@ expression random(100).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 435.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{382.0, 243.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.0, 243.5}">
     </property>
     <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 80.0">

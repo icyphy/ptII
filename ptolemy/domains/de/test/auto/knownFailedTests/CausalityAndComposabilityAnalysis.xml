@@ -14,9 +14,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 65.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{269.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.5, 175.0}">
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>
@@ -38,9 +38,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 130.0">
             </property>
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{316.233278508772, 194.0065789473684}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.233278508772, 194.0065789473684}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -42,9 +42,9 @@ as input.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 230.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{346.5, 222.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.5, 222.5}">
     </property>
     <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">

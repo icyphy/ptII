@@ -42,9 +42,9 @@ RunCompositeActor3.xml</text></svg></configure>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{320.4038825757576, 174.6377840909091}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.4038825757576, 174.6377840909091}">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="${TMPDIR}RunCompositeActor.txt">

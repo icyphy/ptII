@@ -77,9 +77,9 @@ Receiver.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 590.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{341.0, 322.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.0, 322.5}">
     </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, power=Infinity, duration=1.0}">

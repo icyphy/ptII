@@ -54,9 +54,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{366.5, 327.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.5, 327.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of static unit system.&#10;  This is a model of the growth process in a fermenter. There are three&#10;submodels; 1) growth models the number of cells being produced as a&#10;function of the current number of cells and the vat temperature,&#10;2) HeatProduction models the amount of heat produced (in calories) as&#10;a function of the amount of work done (in joules), and 3) HeatExchanger&#10;models the removal of heat from the vat as a function of the rate at&#10;which water flows through the cooling jacket around the vat.&#10;  Some of the units constraints in the model are inconsistent. See the&#10;red notes. The UnitsConstraint Solver can be used to discover, and&#10;analyse these inconsistencies. (Right mouse-click and select&#10;UnitsConstraint Solver).">

@@ -40,9 +40,9 @@ from a library and testing against matlab...</text></svg></configure>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {106, -4, 812, 776}, maximized = false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{298.5, 333.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.5, 333.5}">
     </property>
     <entity name="DoubleMatrixMatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.data.expr.StringParameter" value="output=input.*input;">

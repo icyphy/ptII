@@ -139,9 +139,9 @@ delays.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 445.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.0, 279.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.0, 279.0}">
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>

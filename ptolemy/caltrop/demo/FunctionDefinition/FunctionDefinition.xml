@@ -37,9 +37,9 @@ and factorial functions, respectively.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 290.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{326.5, 218.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.5, 218.0}">
     </property>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">

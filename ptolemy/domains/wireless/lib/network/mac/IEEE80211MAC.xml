@@ -10,9 +10,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 691]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{373.5, 252.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.5, 252.5}">
     </property>
     <property name="sAckCtsLng" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -309,9 +309,9 @@
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="channelStatus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -417,9 +417,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 493]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{-452.5050675675675, -268.0122466216217}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-452.5050675675675, -268.0122466216217}">
         </property>
         <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="block Transmission:&#10;This block does octet-level transfers of MPDUs from the MAC to the PHY transmitter,&#10;generating FCS fields and inserting timestamp values where necessary. Process&#10;DataPump begins transmitting when TxRequest arrives. The sender of TxRequest is&#10;assumed to have done the appropriate actions prior to transmitting onto the WM.&#10;If these actions include performing random backoff or invoking the &quot;backoff&#10;procedure&quot;, a backoff signal is sent to process Backoff. At the completion of&#10;each backoff, a BkDone signal is returned to the sender of the Backoff signal&#10;at the correct time to send a TxRequest. The medium state updates (busy, idle,&#10;slot) from ChannelState are forwarded to BackoffProcedure via DataPump to prevent&#10;decrementing the backoff count while transmitting Cts or Ack frames.">
@@ -626,9 +626,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{152.7152777777777, 47.244476010101}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{152.7152777777777, 47.244476010101}">
         </property>
         <port name="TXTXRequest" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

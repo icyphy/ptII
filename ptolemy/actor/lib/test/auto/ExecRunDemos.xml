@@ -14,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 396]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0027740676051">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0027740676051">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{311.15625, 234.5772540983606}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.15625, 234.5772540983606}">
     </property>
     <property name="numberOfModelsToRun" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

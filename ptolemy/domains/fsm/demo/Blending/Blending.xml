@@ -48,9 +48,9 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, 21, 971, 570}, maximized = false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{378.0, 230.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 230.5}">
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 315.0">

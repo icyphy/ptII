@@ -148,9 +148,9 @@ time (CT).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[426.5, 47.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{344.0, 239.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 239.5}">
     </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">

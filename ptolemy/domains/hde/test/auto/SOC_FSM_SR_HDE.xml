@@ -117,9 +117,9 @@ And Control Network Data Transfer</text></svg></configure>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -5, 1032, 772}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{478.8181818181818, 98.3565340909091}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{478.8181818181818, 98.3565340909091}">
     </property>
     <entity name="cluster1_Clock" class="ptolemy.actor.TypedCompositeActor">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">

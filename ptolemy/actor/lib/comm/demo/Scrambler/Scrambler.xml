@@ -78,9 +78,9 @@ measured. It should be close to 0.5.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 300.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.5, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.5, 200.0}">
     </property>
     <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="06161">

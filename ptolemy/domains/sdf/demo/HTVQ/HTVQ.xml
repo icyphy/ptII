@@ -93,9 +93,9 @@ integer matrices</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 280.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{311.0, 183.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.0, 183.5}">
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">

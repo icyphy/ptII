@@ -118,9 +118,9 @@ require physical connectivity.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 15.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.0, 320.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.0, 320.5}">
     </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[387.4666766435696, 250.0]">
