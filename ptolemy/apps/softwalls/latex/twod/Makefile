@@ -1,19 +1,14 @@
 NAME = twod
-DIR = d:/ptII/ptolemy/apps/softwalls/latex/twod
 TEX = $(NAME).tex
 DVI = $(NAME).dvi
-PS = $(NAME).ps
 PDF = $(NAME).pdf
 AUX = $(NAME).aux
 LOG = $(NAME).log
 TOC = $(NAME).toc
 OUT = $(NAME).out
 
-$(PDF) : $(PS)
-	acrodist -n -q $(DIR)/$(PS)
-
-$(PS) : $(DVI)
-	dvips $(DVI)
+$(PDF) : $(DVI)
+	dvipdfm $(DVI)
 
 $(DVI) : $(TEX)
 	latex $(TEX)
@@ -25,7 +20,6 @@ clean :
 	rm $(OUT)
 	#rm $(TOC)
 	rm $(DVI)
-	rm $(PS)
 	rm $(PDF)
 
 cleanmess :
@@ -34,7 +28,6 @@ cleanmess :
 	rm $(OUT)
 	#rm $(TOC)
 	rm $(DVI)
-	rm $(PS)
 
 cleanpdf :
 	rm $(PDF)
