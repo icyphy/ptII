@@ -119,10 +119,27 @@ OPTIONAL_FILES = \
 	'BaseType$$StringType.class' \
 	'BaseType$$UnknownType.class' \
 	'BaseType$$ConvertOperator.class' \
+	'BaseType$$EventType.class' \
+	'BaseType$$UnsignedByteType.class' \
+	'BaseType$$XmlTokenType.class' \
+	'FunctionType$$1.class' \
+	'FunctionType$$FieldTypeTerm.class' \
+	'SizedMatrixType$$BooleanMatrixType.class' \
+	'SizedMatrixType$$ComplexMatrixType.class' \
+	'SizedMatrixType$$DoubleMatrixType.class' \
+	'SizedMatrixType$$FixMatrixType.class' \
+	'SizedMatrixType$$IntMatrixType.class' \
+	'SizedMatrixType$$LongMatrixType.class' \
 	'RecordType$$1.class' \
 	'RecordType$$FieldType.class' \
 	'TypeLattice$$1.class' \
-	'TypeLattice$$TheTypeLattice.class'
+	'TypeLattice$$TheTypeLattice.class' \
+	'UnsizedMatrixType$$BooleanMatrixType.class' \
+	'UnsizedMatrixType$$ComplexMatrixType.class' \
+	'UnsizedMatrixType$$DoubleMatrixType.class' \
+	'UnsizedMatrixType$$FixMatrixType.class' \
+	'UnsizedMatrixType$$IntMatrixType.class' \
+	'UnsizedMatrixType$$LongMatrixType.class' \
 
 JCLASS= $(JSRCS:%.java=%.class)
 

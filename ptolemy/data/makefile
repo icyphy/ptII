@@ -98,7 +98,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'FunctionToken$$Function.class'
+	'FunctionToken$$Function.class' \
+	'ActorToken$$ActorType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

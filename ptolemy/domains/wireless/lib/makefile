@@ -83,7 +83,13 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'CollisionDetector$$1.class' \
+	'CollisionDetector$$Reception.class' \
+	'DelayChannel$$1.class' \
+	'DelayChannel$$Reception.class' \
+	'NodeRandomizer$$1.class' \
+	'TerrainProperty$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -54,8 +54,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	NetworkActorBase.java \
-      PHY.java
-OTHER_FILES_TO_BE_JARED =
+	PHY.java
+OTHER_FILES_TO_BE_JARED = \
+	IEEE80211PHY.xml \
+	PoissonNetwork.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -66,7 +68,9 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'NetworkActorBase$$Timer.class' \
+	'PHY$$ExtendedTimer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
