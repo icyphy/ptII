@@ -411,7 +411,8 @@ For more help, choose Help from the upper menu bar.</text>
         <xsl:element name="property">
             <xsl:attribute name="name">setActions</xsl:attribute>
             <xsl:attribute name="class">ptolemy.domains.fsm.kernel.CommitActionsAttribute</xsl:attribute>
-            <xsl:attribute name="value">
+
+            <xsl:variable name="setActionString">
                 <xsl:variable name="srcState" select="key('nid', $stateID)/@name"/>
                 <xsl:variable name="dstState" select="key('nid', $nextStateID)/@name"/>
 
@@ -431,7 +432,12 @@ For more help, choose Help from the upper menu bar.</text>
                     <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:apply-templates>
 
-            </xsl:attribute>
+            </xsl:variable>
+            
+            <xsl:variable name="stringLength" select="string-length($setActionString) - 1"/>
+
+            <xsl:attribute name="value"><xsl:value-of select="substring($setActionString, 1, $stringLength)"/></xsl:attribute>
+
         </xsl:element>
         <xsl:element name="property">
             <xsl:attribute name="name">reset</xsl:attribute>
