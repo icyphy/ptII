@@ -67,10 +67,10 @@ import ptolemy.kernel.util.Workspace;
 //// HDFFSMDirector
 
 /**
-   This director extends FSMDirector by supporting production and
-   consumption of multiple tokens on a port in a firing and by
-   restricting the
-
+   This director extends MultirateFSMDirector by supporting production and
+   consumption of multiple tokens on a port in a firing and by restricting
+   that state transitions could only occur on each global iteration.
+   
    FIXME: Refactor into two directors, with the base class
    MultirateFSMDirector supporting multirate.
 
@@ -181,7 +181,31 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME: comment is wrong.
+    /** Choose the next non-transient state given the current state.
+     * @param currentState The current state.
+     * @throws IllegalActionException If a transient state is reached
+     *  but no further transition is enabled.
+     */
+     public void chooseNonTransientTransition(State currentState) 
+             throws IllegalActionException {
+         State state = chooseTransition(currentState);
+         Actor[] actors = state.getRefinement();
+         Transition transition;
+         while (actors == null) {
+             super.postfire();
+             state = chooseTransition(state);
+             transition = _getLastChosenTransition();
+             if (transition == null) {
+                 throw new IllegalActionException(this,
+                        "Reached a state without a refinement: "
+                         + state.getName());
+             }
+             actors = (transition.destinationState()).getRefinement();
+         }
+     }
+    
+    
+    /** FIXME: comment is wrong.  
      *  Examine the transitions from the given state.
      *  If there is more than one transition enabled, an exception is
      *  thrown. If there is exactly one non-preemptive transition
@@ -191,7 +215,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @return The destination state, or the current state if no
      *   transition is enabled.
      */
-    public State chooseStateTransition(State state)
+    public State chooseTransition(State state)
             throws IllegalActionException {
         FSMActor controller = getController();
         State destinationState;
@@ -241,31 +265,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return destinationState;
     }
 
-    /** Choose the next non-transient state given the current state.
-     * @param currentState The current state.
-     * @exception IllegalActionException If a transient state is reached
-     *  but no further transition is enabled.
-     */
-    public void chooseTransitions(State currentState)
-            throws IllegalActionException {
-        State state = chooseStateTransition(currentState);
-        Actor[] actors = state.getRefinement();
-        Transition transition;
-
-        while (actors == null) {
-            super.postfire();
-            state = chooseStateTransition(state);
-            transition = _getLastChosenTransition();
-
-            if (transition == null) {
-                throw new IllegalActionException(this,
-                        "Reached a state without a refinement: " + state.getName());
-            }
-
-            actors = (transition.destinationState()).getRefinement();
-        }
-    }
-
     /** Set the values of input variables in the mode controller.
      *  If the refinement of the current state of the mode controller
      *  is ready to fire, then fire the current refinement.
@@ -306,7 +305,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         _readOutputsFromRefinement();
 
         if (!_embeddedInHDF) {
-            chooseTransitions(currentState);
+            chooseNonTransientTransition(currentState);
         } else if (_sendRequest) {
             ChangeRequest request = new ChangeRequest(this,
                     "choose a transition") {
@@ -314,7 +313,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                             throws KernelException, IllegalActionException {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
-                        chooseTransitions(currentState);
+                        chooseNonTransientTransition(currentState);
                     }
                 };
 
@@ -345,6 +344,36 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             return (Entity) toplevel();
         }
     }
+    
+    /** Get the current state. If it does not have any refinement,
+     *  consider it as a transient state and make a state transition
+     *  until a state with a refinement is
+     *  found. Set that non-transient state to be the current state
+     *  and return it.
+     * @throws IllegalActionException If a transient state is reached
+     *  while no further transition is enabled.
+     * @return The intransient state.
+     */
+    public State getNonTransientState()
+                throws IllegalActionException {
+        
+        FSMActor controller = getController();
+        State currentState = controller.currentState();
+        TypedActor[] currentRefinements = currentState.getRefinement();
+        while (currentRefinements == null) {
+            chooseTransition(currentState);
+            super.postfire();
+            currentState = controller.currentState();
+            Transition lastChosenTransition = _getLastChosenTransition();
+            if (lastChosenTransition == null) {
+                throw new IllegalActionException(this,
+                    "Reached a transient state " +
+                    "without an enabled transition.");
+            }
+            currentRefinements = currentState.getRefinement();
+        }
+        return currentState;       
+    }
 
     /** If this method is called immediately after preinitialize(),
      *  initialize the mode controller and all the refinements.
@@ -367,13 +396,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if (!_reinitialize) {
             super.initialize();
             _reinitialize = true;
-
-            if (initialState != _nextIntransientState) {
+            if (initialState != currentState) {
                 // Initial state is a transient (null) state.
                 // Set the next intransient state as the current state.
-                _setCurrentState(_nextIntransientState);
+                _setCurrentState(currentState);
                 _setCurrentConnectionMap();
-                _currentLocalReceiverMap = (Map) _localReceiverMaps.get(_nextIntransientState);
+                _currentLocalReceiverMap = (Map) _localReceiverMaps.get(currentState);
             }
         } else {
             // This is a sub-layer HDFFSMDirector.
@@ -386,8 +414,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             // NOTE: The following will throw an exception if
             // the state does not have a refinement, so after
             // this call, we can assume the state has a refinement.
-            currentState = transientStateTransition();
-
+            currentState = getNonTransientState();
             TypedActor[] curRefinements = currentState.getRefinement();
 
             if ((curRefinements == null) || (curRefinements.length != 1)) {
@@ -503,16 +530,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         FSMActor controller = getController();
         CompositeActor container = (CompositeActor) getContainer();
 
-        /*TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
-
-        if (currentRefinement == null || currentRefinement.length != 1) {
-        throw new IllegalActionException(this,
-        "Current state is required to have exactly one refinement: "
-        + _lastIntransientState.getName());
-        }
-
-        boolean postfireReturn = currentRefinement[0].postfire();
-        */
         if (_sendRequest && _embeddedInHDF) {
             _sendRequest = false;
 
@@ -564,12 +581,10 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // NOTE: The following will throw an exception if
         // the state does not have a refinement, so after
         // this call, we can assume the state has a refinement.
-        _nextIntransientState = transientStateTransition();
+        State currentState = getNonTransientState();
         super.preinitialize();
-        _setCurrentState(_nextIntransientState);
-
-        TypedActor[] currentRefinements = _nextIntransientState.getRefinement();
-
+        _setCurrentState(currentState);
+        TypedActor[] currentRefinements = currentState.getRefinement();
         if ((currentRefinements == null) || (currentRefinements.length != 1)) {
             throw new IllegalActionException(this,
                     "Current state is required to have exactly one refinement: "
@@ -613,39 +628,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 }
             }
         }
-    }
-
-    /** Get the current state. If it does not have any refinement,
-     *  consider it as a transient state and make a state transition
-     *  until a state with a refinement is
-     *  found. Set that non-transient state to be the current state
-     *  and return it.
-     * @exception IllegalActionException If a transient state is reached
-     *  while no further transition is enabled.
-     * @return The intransient state.
-     */
-    public State transientStateTransition() throws IllegalActionException {
-        FSMActor controller = getController();
-        State currentState = controller.currentState();
-        TypedActor[] currentRefinements = currentState.getRefinement();
-
-        while (currentRefinements == null) {
-            chooseStateTransition(currentState);
-            super.postfire();
-            currentState = controller.currentState();
-
-            Transition lastChosenTransition = _getLastChosenTransition();
-
-            if (lastChosenTransition == null) {
-                throw new IllegalActionException(this,
-                        "Reached a transient state "
-                        + "without an enabled transition.");
-            } else {
-                currentRefinements = currentState.getRefinement();
-            }
-        }
-
-        return currentState;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -802,12 +784,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             // Get all of the input ports this port is linked to on
             // the outside (should only consist of 1 port).
-            // Iterator inPorts = inputPortList().iterator();
-            // while (inPorts.hasNext()) {
-            //     IOPort inPort = (IOPort)inPorts.next();
             Iterator inPortsOutside = refineInPort.deepConnectedInPortList()
                 .iterator();
-
             if (!inPortsOutside.hasNext()) {
                 throw new IllegalActionException("Current "
                         + "state's refining actor has an input port not"
@@ -821,12 +799,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 // container of the current refinement.
                 ComponentEntity thisPortContainer = (ComponentEntity) inputPortOutside
                     .getContainer();
-                String temp = refineInPortContainer.getFullName()
-                    + "._Controller";
 
-                if ((thisPortContainer.getFullName() == refineInPortContainer
-                            .getFullName())
-                        || temp.equals(thisPortContainer.getFullName())) {
+                if (thisPortContainer.getFullName() == refineInPortContainer
+                        .getFullName()) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
                     int portRateToSet = DFUtilities.getTokenConsumptionRate(refineInPort);
@@ -855,7 +830,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                                         int portRateToSet = DFUtilities
                                             .getTokenConsumptionRate(refineInPort);
                                         int transitionPortRate = DFUtilities
-                                            .getTokenConsumptionRate(inputPortOutside);
+                                        	.getTokenConsumptionRate(inputPortOutside);
 
                                         if (portRateToSet != transitionPortRate) {
                                             throw new IllegalActionException(this,
@@ -895,19 +870,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         while (refineOutPorts.hasNext()) {
             IOPort refineOutPort = (IOPort) refineOutPorts.next();
-
-            // Get all of the output ports this port is
-            // linked to on the outside (should only consist
-            // of 1 port).
+            
             Iterator outPortsOutside = refineOutPort.deepConnectedOutPortList()
                 .iterator();
-
-            //if (!outPortsOutside.hasNext()) {
-            //throw new IllegalActionException("Current " +
-            //          "state's refining actor has an output " +
-            //          "port not connected to an output port " +
-            //          "of its container.");
-            //}
             while (outPortsOutside.hasNext()) {
                 IOPort outputPortOutside = (IOPort) outPortsOutside.next();
 
@@ -915,9 +880,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 // container of the current refinment.
                 ComponentEntity thisPortContainer = (ComponentEntity) outputPortOutside
                     .getContainer();
-                String temp = refineOutPortContainer.getFullName()
-                    + "._Controller";
-
                 if (thisPortContainer.getFullName() == refineOutPortContainer
                         .getFullName()) {
                     // set the outside port rate equal to the port rate
@@ -925,15 +887,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     int portRateToSet = DFUtilities.getTokenProductionRate(refineOutPort);
                     int portInitRateToSet = DFUtilities.getTokenInitProduction(refineOutPort);
                     DFUtilities.setTokenProductionRate(outputPortOutside,
-                            portRateToSet);
+                    		portRateToSet);
                     DFUtilities.setTokenInitProduction(outputPortOutside,
-                            portInitRateToSet);
-                } else if (temp.equals(thisPortContainer.getFullName())) {
-                    // set the outside port rate equal to the port rate of
-                    // the refinement.
-                    int portRateToSet = DFUtilities.getTokenProductionRate(refineOutPort);
-                    DFUtilities.setTokenConsumptionRate(outputPortOutside,
-                            portRateToSet);
+                    		portInitRateToSet);
                 }
             }
         }
@@ -942,7 +898,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // A flag indicating whether the FSM can send a change request.
-    // An FSM in HDF can only send one request per global iteration.
+    // The controller in HDFFSMDirector can only send one request per 
+    // global iteration.
     private boolean _sendRequest;
 
     /** A flag indicating whether this FSM is embedded in HDF.
@@ -955,13 +912,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;
-
-    // The next intransient state found after making transition
-    // from transient states.
-    private State _nextIntransientState;
-
-    // The last intransient state reached. This referes to the
-    // current state if it is intransient.
-    //private State _lastIntransientState;
+    
+    // Return value of the postfire() method of the currentRefinement.
     private boolean _refinementPostfire;
 }
