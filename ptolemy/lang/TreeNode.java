@@ -37,6 +37,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ The base type for nodes in an abstract syntax tree.  Note that the
 AST can have as nodes just about anything.  If a node is a List, then
 it will be interpreted as a hierarchical object.  An instance of this
 class is also a hierarchical object.
-@author Jeff Tsay and Shuvra S. Bhattacharyya 
+@author Jeff Tsay, Shuvra S. Bhattacharyya and Steve Neuendorffer
 @version $Id$
 */
 public abstract class TreeNode extends TrackedPropertyMap
@@ -439,66 +440,79 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  @param visitor The visitor to accept.
      *  @param args The arguments to pass to the visitor.
      */
-    protected Object _acceptHere(IVisitor visitor, LinkedList visitArgs) {
-        if (_myClass == null) {
-            _myClass = getClass();
+    protected Object _acceptHere(IVisitor visitor, List visitArgs) {
+        Class myClass = getClass();
 
-            String myClassName = StringManip.unqualifiedPart(
-                    _myClass.getName());
-            _visitMethodName = "visit" + myClassName;
-
-            _visitParamTypes[0] = _myClass;
-            _visitParamTypes[1] = _linkedListClass;
-
-            _visitArgs[0] = this;
-        }
-
-        Method method;
-        Class visitorClass = visitor.getClass();
-
+        StringBuffer visitMethodName = new StringBuffer("visit");
+        String myClassName = StringManip.unqualifiedPart(
+                myClass.getName());
+        visitMethodName.append(myClassName);
+        
         try {
-            method = visitorClass.getMethod(_visitMethodName,
-                    _visitParamTypes);
+            return reflectAndInvokeMethod((Object)visitor, 
+                    visitMethodName.toString(), this, visitArgs,
+                    myClass, _linkedListClass);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.toString());
-        }
-
-        _visitArgs[1] = (Object) visitArgs;
-
-        try {
-            return method.invoke(visitor, _visitArgs);
         } catch (IllegalAccessException illegalAccessException) {
             throw new RuntimeException("Illegal access exception " +
-                    "invoking method " + _visitMethodName);
+                    "invoking method " + visitMethodName);
         } catch (InvocationTargetException invocationTargetException) {
+            invocationTargetException.printStackTrace();
             throw new RuntimeException(
                     "Invocation target exception invoking method "
-                    + _visitMethodName + " : target = " +
+                    + visitMethodName + " : target = " +
                     invocationTargetException.getTargetException().toString());
         }
-        // return null;
     }
 
     /** Return a String of spaces, the number of which is specified by the
      *  argument.  This is used to construct indentations in toString().
-     *  @param spaces The number of spaces to return.
+     *  @param level The number of spaces to return.
      *  @return A string of spaces.
      */
-    protected static String _makeSpaceString(int spaces) {
-        StringBuffer stringBuffer = new StringBuffer();
-
-        for (int i = 0; i < spaces; i++) {
-            stringBuffer.append(' ');
+    protected static String _makeSpaceString(int level) {
+        if(level < 0) 
+            return _makeSpaceString(0);
+        synchronized(_prefixes) {
+            if(_prefixes.length <= level) {
+                // Expand the cache
+                String[] temp = new String[2 * level];
+                System.arraycopy(_prefixes, 0, temp, 0, _prefixes.length);
+                _prefixes = temp;
+            }
+            if(_prefixes[level] == null) {
+                // update the cache
+                _prefixes[level] = _makeSpaceString(level - 1) + " ";
+            }
+            // return the value from the cache
+            return _prefixes[level];
         }
-
-        return stringBuffer.toString();
     }
 
+    /** Reflect the given methodName in the given object and invoke it
+     *  with the given args.
+     */
+    protected static synchronized Object reflectAndInvokeMethod(Object object, 
+            String methodName, Object arg1, Object arg2, 
+            Class class1, Class class2)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {          
+        _reflectParamTypes[0] = class1;
+        _reflectParamTypes[1] = class2;            
 
+        Method method;
+        Class objectClass = object.getClass();
 
+        method = objectClass.getMethod(methodName,
+                _reflectParamTypes);
 
-    /** The class of this object, cached locally. */
-    protected Class _myClass = null;
+        _reflectArgs[0] = arg1;
+        _reflectArgs[1] = arg2;
+
+        return method.invoke(object, _reflectArgs);
+    }
+
 
     /** The list of children. */
     protected ChildList _childList = null;
@@ -509,14 +523,17 @@ public abstract class TreeNode extends TrackedPropertyMap
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Cached data used in _acceptHere().
-    private String _visitMethodName = null;
-    private final Class[] _visitParamTypes = new Class[2];
-    private final Object[] _visitArgs = new Object[2];
-    private static final Class _linkedListClass = (new LinkedList()).getClass();
-
     // Static null list.
     private static LinkedList nullList = new LinkedList();
+ 
+    // An array of indenting spaces, indexed by the number indents.
+    // Tese are cached to speed up the indenting code.
+    private static String[] _prefixes = {"", " "};
+
+    // Things that are reused for reflection.
+    private static final Class[] _reflectParamTypes = new Class[2];
+    private static final Object[] _reflectArgs = new Object[2];
+    private static final Class _linkedListClass = nullList.getClass();
 
     // A flag that is used to disable traversal of children under
     // self-first traversal mode.
