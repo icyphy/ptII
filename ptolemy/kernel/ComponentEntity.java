@@ -30,7 +30,10 @@
 
 package ptolemy.kernel;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 import java.io.Writer;
 import java.io.IOException;
