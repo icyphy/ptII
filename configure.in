@@ -2168,7 +2168,15 @@ else
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
-		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
+
+		    MATLAB_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
+
+		    # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+		    # Remove /cygdrive so we can compile with MSVC
+		    MATLAB_DIR=`echo "$MATLAB_DIR_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
