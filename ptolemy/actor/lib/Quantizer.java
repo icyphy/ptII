@@ -136,24 +136,6 @@ public class Quantizer extends Transformer {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        Quantizer newObject = (Quantizer)super.clone(workspace);
-        try {
-            newObject.attributeChanged(newObject.levels);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
-        return newObject;
-    }
-
     /** Output the quantization of the input.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
