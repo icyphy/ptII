@@ -92,13 +92,7 @@ public class Accumulator extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
 
-<<<<<<< Accumulator.java
-    //protected String _initBlock = 
-    //      "int sum = 0;\n";
-=======
     protected String _codeBlock;
 
-    protected String _initBlock =
-    "int sum = 0;\n";
->>>>>>> 1.6
+    protected String _initBlock = "int sum = 0;\n";
 }
