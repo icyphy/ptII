@@ -9,15 +9,12 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="95.0, 51.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="519.0, 31.0">
+        </property>
     </property>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="252.0, 132.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="203.0, 86.0">
+        </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -33,11 +30,9 @@
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="128.0, 125.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="83.0, 86.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -49,11 +44,9 @@
     <entity name="Delay10" class="ptolemy.domains.sdf.lib.Delay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="417.0, 277.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="379.0, 222.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -68,10 +61,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="431.0, 131.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="442.99998474121094, 86.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -80,8 +71,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="346.0, 137.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="314.0, 91.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
