@@ -258,7 +258,7 @@ public class CTSingleSolverDirector extends CTDirector {
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
-                        "does not have a Scheuler.");
+                        "does not have a Scheduler.");
             }
             scheduler.schedule();
             setScheduleValid(true);
