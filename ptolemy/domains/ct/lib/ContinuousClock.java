@@ -353,8 +353,15 @@ public class ContinuousClock extends TimedSource {
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        output.send(0, _tentativeCurrentValue);
-        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+
+	// At t_minus of _tentativeStartTime, the clock doesn't produce output.
+	// Note that the variables _tPlus and _tMinus indicate the next break
+	// point phase. So, if _tPlus is true, we are in _tMinus break point 
+	// phase.
+	if (!(_cycleCount == 1 && _tentativePhase == 0 && _tPlus)) {
+	    output.send(0, _tentativeCurrentValue);
+	    if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+	}  
     }
 
     /** Schedule the first firing and initialize local variables.
