@@ -1,4 +1,4 @@
-/* A token that contains a 2-D double array.
+/* A token that contains a 2-D double matrix.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -41,40 +41,40 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
 /**
-A token that contains a 2-D double array.
+A token that contains a 2-D double matrix.
 
 @author Yuhong Xiong, Jeff Tsay
 @version $Id$
 */
 public class DoubleMatrixToken extends MatrixToken {
 
-    /** Construct an DoubleMatrixToken with a one by one array. The
-     *  only element in the array has value 0.0
+    /** Construct an DoubleMatrixToken with a one by one matrix. The
+     *  only element in the matrix has value 0.0
      */
     public DoubleMatrixToken() {
         this(new double[1][1], DO_NOT_COPY);
     }
 
-    /** Construct a DoubleMatrixToken with the specified 2-D array.
-     *  Make a copy of the array and store the copy,
-     *  so that changes on the specified array after this token is
+    /** Construct a DoubleMatrixToken with the specified 2-D matrix.
+     *  Make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     public DoubleMatrixToken(final double[][] value) {
         this(value, DO_COPY);
     }
 
-    /** Construct a DoubleMatrixToken with the specified 2-D array.
-     *  If copy is DO_COPY, make a copy of the array and store the copy,
-     *  so that changes on the specified array after this token is
+    /** Construct a DoubleMatrixToken with the specified 2-D matrix.
+     *  If copy is DO_COPY, make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  If copy is DO_NOT_COPY, just reference the array (do not copy
+     *  If copy is DO_NOT_COPY, just reference the matrix (do not copy
      *  its contents). This saves some time and memory.
-     *  The argument array should NOT be modified after this constructor
+     *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     protected DoubleMatrixToken(final double[][] value, final int copy) {
@@ -164,7 +164,7 @@ public class DoubleMatrixToken extends MatrixToken {
         return add(token);
     }
 
-    /** Return the content of this token as a 2-D Complex array.
+    /** Return the content of this token as a 2-D Complex matrix.
      *  @return A 2-D Complex matrix
      */
     public final Complex[][] complexMatrix() {
@@ -223,10 +223,10 @@ public class DoubleMatrixToken extends MatrixToken {
                 "DoubleMatrixToken.");
     }
 
-    /** Return the content in the token as a 2-D double array.
-     *  The returned array is a copy so the caller is free to
+    /** Return the content in the token as a 2-D double matrix.
+     *  The returned matrix is a copy so the caller is free to
      *  modify it.
-     *  @return A 2-D double array.
+     *  @return A 2-D double matrix.
      */
     public final double[][] doubleMatrix() {
         return DoubleMatrixMath.allocCopy(_value);
@@ -242,7 +242,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal, and lossless
+     *  corresponding elements of the matrices are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
@@ -288,11 +288,11 @@ public class DoubleMatrixToken extends MatrixToken {
         return new DoubleToken(_value[row][column]);
     }
 
-    /** Return the element of the contained array at the specified
+    /** Return the element of the contained matrix at the specified
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The double at the specified array entry.
+     *  @return The double at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
@@ -511,10 +511,10 @@ public class DoubleMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Return a reference to the internal 2-D array of doubles that represents
-     *  this Token. Because no copying is done, the contents must NOT be
-     *  modified to preserve the immutability of Token.
-     *  @return A 2-D double array.
+    /** Return a reference to the internal 2-D matrix of doubles that
+     *  represents this Token. Because no copying is done, the contents
+     *  must NOT be modified to preserve the immutability of Token.
+     *  @return A 2-D double matrix.
      */
     protected double[][] _getInternalDoubleMatrix() {
         return _value;

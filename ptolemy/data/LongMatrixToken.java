@@ -1,4 +1,4 @@
-/* A token that contains a 2-D long array.
+/* A token that contains a 2-D long matrix.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -38,19 +38,15 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken
 /**
-A token that contains a 2-D long array.
-
-FIXME: Except add() and addReverse(), other arithmetics operations are
-not implemented yet. Those methods will be added after the corresponding
-operations are added to the math package.
+A token that contains a 2-D long matrix.
 
 @author Yuhong Xiong
 @version $Id$
 */
 public class LongMatrixToken extends MatrixToken {
 
-    /** Construct an LongMatrixToken with a one by one array. The
-     *  only element in the array has value 0
+    /** Construct an LongMatrixToken with a one by one matrix. The
+     *  only element in the matrix has value 0
      */
     public LongMatrixToken() {
 	_rowCount = 1;
@@ -59,11 +55,11 @@ public class LongMatrixToken extends MatrixToken {
 	_value[0][0] = 0;
     }
 
-    /** Construct a LongMatrixToken with the specified 2-D array.
-     *  This method makes a copy of the array and stores the copy,
-     *  so changes on the specified array after this token is
+    /** Construct a LongMatrixToken with the specified 2-D matrix.
+     *  This method makes a copy of the matrix and stores the copy,
+     *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     public LongMatrixToken(long[][] value) {
@@ -224,7 +220,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal, and lossless
+     *  corresponding elements of the matrices are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
@@ -251,11 +247,11 @@ public class LongMatrixToken extends MatrixToken {
 	} else {
 	    // type of specified token <= LongMatrixToken
 	    LongMatrixToken tem = (LongMatrixToken)convert(token);
-	    long[][] array = tem.longMatrix();
+	    long[][] matrix = tem.longMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i][j] != array[i][j]) {
+		    if (_value[i][j] != matrix[i][j]) {
 			return new BooleanToken(false);
 		    }
 		}
@@ -277,11 +273,11 @@ public class LongMatrixToken extends MatrixToken {
 	return new LongToken(_value[row][column]);
     }
 
-    /** Return the element of the contained array at the specified
+    /** Return the element of the contained matrix at the specified
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The long at the specified array entry.
+     *  @return The long at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
@@ -303,19 +299,19 @@ public class LongMatrixToken extends MatrixToken {
 	return _rowCount;
     }
 
-    /** Return the content in the token as a 2-D long array.
-     *  The returned array is a copy so the caller is free to
+    /** Return the content in the token as a 2-D long matrix.
+     *  The returned matrix is a copy so the caller is free to
      *  modify it.
-     *  @return A 2-D long array.
+     *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-	long[][] array = new long[_rowCount][_columnCount];
+	long[][] matrix = new long[_rowCount][_columnCount];
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
-	 	array[i][j] = _value[i][j];
+	 	matrix[i][j] = _value[i][j];
 	    }
 	}
-	return array;
+	return matrix;
     }
 
     /** Return a new Token representing the left multiplicative

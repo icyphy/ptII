@@ -517,7 +517,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a reference to the internal 2-D matrix of complex numbers that
      *  represents this Token. Because no copying is done, the contents must
      *  NOT be modified to preserve the immutability of Token.
-     *  @return A 2-D complex Java array.
+     *  @return A 2-D complex Java matrix.
      */
     protected Complex[][] _getInternalComplexMatrix() {
         return _value;

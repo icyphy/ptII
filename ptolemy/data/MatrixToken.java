@@ -1,4 +1,4 @@
-/* Abstract base class for tokens that contain a 2-D array.
+/* Abstract base class for tokens that contain a 2-D matrix.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
 /**
-Abstract base class for tokens that contain a 2-D array.
+Abstract base class for tokens that contain a 2-D matrix.
 This class defines methods for type conversion among different matrix
 tokens. The implementation in this base class just throws an exception.
 Derived classes should override those methods where the corresponding
@@ -52,10 +52,9 @@ public abstract class MatrixToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** In derived classes that support conversion to a 2-D complex array,
-     *  return a copy of the content of this token as a 2-D Complex array.
+    /** Return a copy of the content of this token as a 2-D Complex matrix.
      *  In this base class, just throw an exception.
-     *  @return A 2-D Complex array.
+     *  @return A 2-D Complex matrix.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
      */
@@ -80,10 +79,9 @@ public abstract class MatrixToken extends Token {
                 " cannot convert to a MatrixToken.");
     }
 
-    /** In derived classes that can be represented as a 2-D double array,
-     *  return a representation of their contents as a such an array.
+    /** Return the content of this token as a 2-D double matrix.
      *  In this base class, just throw an exception.
-     *  @return A 2-D double array.
+     *  @return A 2-D double matrix.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
      */
@@ -92,14 +90,9 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to a double matrix.");
     }
 
-    // Return the content in the token as a 2-D Fix array.
-    // FIXME: uncomment this method after the Fix class is implemented.
-    // public Fix[][] fixMatrix();
-
-    /** In derived classes that can be represented as a 2-D integer array,
-     *  return a representation of their contents as a such an array.
+    /** Return the content of this token as a 2-D integer matrix.
      *  In this base class, just throw an exception.
-     *  @return A 2-D integer array.
+     *  @return A 2-D integer matrix.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
      */
@@ -108,10 +101,9 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to an integer matrix.");
     }
 
-    /** In derived classes that can be represented as a 2-D long array,
-     *  return a representation of their contents as a such an array.
+    /** Return the content of this matrix as a 2-D long matrix.
      *  In this base class, just throw an exception.
-     *  @return A 2-D long array.
+     *  @return A 2-D long matrix.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
      */
@@ -132,7 +124,7 @@ public abstract class MatrixToken extends Token {
      *  @return A token containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   of the index of the contained matrix.
      */
     public abstract Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException;
@@ -164,7 +156,7 @@ public abstract class MatrixToken extends Token {
      *  matrix token.  The type of the tokens in the array is consistent
      *  with the type of this token.
      *  
-     *  @return A ArrayToken containing the elements of this matrix in 
+     *  @return An ArrayToken containing the elements of this matrix in 
      *  row-scanned order.
      */
     public ArrayToken toArray() {
@@ -215,15 +207,15 @@ public abstract class MatrixToken extends Token {
     }
 
     /** A constant indicating to constructors that contents of an argument 2-D
-     *  array should be copied. The contents of the input 2-D array may be
+     *  matrix should be copied. The contents of the input 2-D matrix may be
      *  modified after construction without violating the immutibility of
      *  MatrixTokens.
      */
     protected static final int DO_COPY = 0;
 
     /** A constant indicating to constructors not to copy the contents
-     *  of an argument 2-D array, but instead to just copy the
-     *  pointer to the matrix. The contents of the input 2-D array
+     *  of an argument 2-D matrix, but instead to just copy the
+     *  pointer to the matrix. The contents of the input 2-D matrix
      *  should NOT be modified after construction of an
      *  instance of MatrixToken, if the property of immutability is
      *  to be preserved.

@@ -1,4 +1,4 @@
-/* A token that contains a 2-D FixPoint array.
+/* A token that contains a 2-D FixPoint matrix.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -41,11 +41,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// FixMatrixToken
 /**
-A token that contains a 2-D FixToken array.
-
-FIXME: Except add() and addReverse(), other arithmetics operations are
-not implemented yet. Those methods will be added after the corresponding
-operations are added to the math package.
+A token that contains a 2-D FixToken matrix.
 
 @author Bart Kienhuis
 @version $Id$
@@ -54,8 +50,8 @@ operations are added to the math package.
 
 public class FixMatrixToken extends MatrixToken {
 
-    /** Construct a FixMatrixToken with a one by one array. The only
-     *  element present in the array has value 0.0 and a precision of
+    /** Construct a FixMatrixToken with a one by one matrix. The only
+     *  element present in the matrix has value 0.0 and a precision of
      *  (32.0) which means 32 bits of which 0 bits are used for the
      *  fractional part.
      */
@@ -67,14 +63,14 @@ public class FixMatrixToken extends MatrixToken {
 	_value[0][0] = Quantizer.round( 0.0, _precision );
     }
 
-    /** Construct a FixMatrixToken with the specified 2-D array.
-     *  This method makes a copy of the array and stores the copy,
-     *  so changes on the specified array after this token is
+    /** Construct a FixMatrixToken with the specified 2-D matrix.
+     *  This method makes a copy of the matrix and stores the copy,
+     *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @param value the 2D array of FixPoint values.
+     *  @param value the 2D matrix of FixPoint values.
      *  @exception IllegalActionException If the precisions of the
-     *   entries in the array are not all identical.
-     *  @exception NullPointerException If the specified array
+     *   entries in the matrix are not all identical.
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
@@ -174,18 +170,18 @@ public class FixMatrixToken extends MatrixToken {
 	return add(token);
     }
 
-    /** Return the content of this token as a new 2-D FixPoint array.
+    /** Return the content of this token as a new 2-D FixPoint matrix.
      *  @return A 2-D FixPoint matrix
      */
     public FixPoint[][] fixMatrix() {
-	FixPoint[][] array = new FixPoint[_rowCount][_columnCount];
+	FixPoint[][] matrix = new FixPoint[_rowCount][_columnCount];
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
                 // FixPoint is immutable, so no need to copy.
-		array[i][j] = _value[i][j];
+		matrix[i][j] = _value[i][j];
 	    }
 	}
-	return array;
+	return matrix;
     }
 
     /** Convert the specified token into an instance of FixMatrixToken.
@@ -242,7 +238,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal, and lossless
+     *  corresponding elements of the matrices are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
@@ -270,11 +266,11 @@ public class FixMatrixToken extends MatrixToken {
 	} else {
 	    // type of specified token <= FixMatrixToken
 	    FixMatrixToken tem = (FixMatrixToken)convert(token);
-	    FixPoint[][] array = tem.fixMatrix();
+	    FixPoint[][] matrix = tem.fixMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (!_value[i][j].equals(array[i][j])) {
+		    if (!_value[i][j].equals(matrix[i][j])) {
 			return new BooleanToken(false);
 		    }
 		}
@@ -296,11 +292,11 @@ public class FixMatrixToken extends MatrixToken {
 	return new FixToken(_value[row][column]);
     }
 
-    /** Return the element of the contained array at the specified
+    /** Return the element of the contained matrix at the specified
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The FixPoint at the specified array entry.
+     *  @return The FixPoint at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
@@ -419,15 +415,15 @@ public class FixMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The 2D array of FixPoints */
+    // The 2D matrix of FixPoints.
     private FixPoint[][] _value = null;
 
-    /** The precision of all entries in the FixPoint array. */
+    // The precision of all entries in the FixPoint matrix.
     private Precision _precision = null;
 
-    /** The number of rows of the matrix. */
+    // The number of rows of the matrix.
     private int _rowCount = 0;
 
-    /** The number of column of the matrix. */
+    // The number of column of the matrix.
     private int _columnCount = 0;
 }
