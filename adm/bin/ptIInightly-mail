@@ -84,7 +84,8 @@ $AWK ' $0 ~ /Entering directory/ { indir=$0 }
 			}
 		      }' $ptbuildlog | head -100 >> $mailmsg
 
-echo "javadoc had the following `grep 'javadoc: warning' $ptbuildlog | wc -l` warnings" >> $mailmsg
+# Note that in JDK1.4, the warning message format from javadoc changed
+echo "javadoc had the following `grep ': warning -' $ptbuildlog | wc -l` warnings" >> $mailmsg
 
 $AWK ' $0 ~ /^Generating/ { indir=$0 }
       { if ($0 ~ /javadoc: warning/) {
