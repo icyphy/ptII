@@ -653,3 +653,27 @@ test PtParser-14.0 {Test constant expressions.} {
 
     list $va $vb $vc $vd $ve $vf
 } {1 true 0 true 0 true}
+
+
+######################################################################
+####
+test PtParser-15.0 {Test env} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "env(\"file.separator\")"]
+    set res  [ $root evaluateParseTree ]
+    set fileSeparator [$res toString]
+    set results "not ok"
+    if { "$fileSeparator" == "/" || "$fileSeparator" == "\\"} {
+	set results "ok"
+    }
+    list $results
+} {ok}
+
+######################################################################
+####
+test PtParser-15.1 {Test env on a parameter that does not exist} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "env(\"not a parameter\")"]
+    set res  [ $root evaluateParseTree ]
+    $res toString
+} {}
