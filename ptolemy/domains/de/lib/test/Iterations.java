@@ -39,7 +39,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.data.Token;
 
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Iterations
@@ -78,12 +78,11 @@ public class Iterations {
 
     public String getResult() {
         StringBuffer result = new StringBuffer();
-        for (ListIterator i = _recorder.getHistory(0).listIterator();
-             i.hasNext(); ) {
-            Token token = (Token)i.next();
+        Iterator tokens = _recorder.getHistory(0).iterator();
+        while(tokens.hasNext()) {
+            Token token = (Token)tokens.next();
             if (result.length() > 0) result.append(", ");
             result.append(token.toString());
-
         }
         return result.toString();
     }
