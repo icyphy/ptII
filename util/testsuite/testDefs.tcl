@@ -243,6 +243,7 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 	if {$testtype == "NORMAL"} {
 	    # See if the results are different only in version number
 	    if {[ptFilterOutVersion $answer $passing_results] == 0} then {
+	    incr PASSED
 		if $VERBOSE then {
 		    print_verbose $test_name $test_description \
 			    $contents_of_test $code $answer
