@@ -1,6 +1,6 @@
 /* Interface for objects that can be inherited.
 
-Copyright (c) 2003-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -34,21 +34,54 @@ import java.util.List;
 //// Derivable
 /**
    This interface is for objects that can be derived.  A derived object
-   is "inherited" via the class mechanism in Ptolemy II.
-   It is a created in its container as a side effect of the
-   creation of another instance of Derivable in some other container.
+   is "inherited" via the class mechanism in Ptolemy II and tracks the
+   object from which it is derived. That object is its "proptotype."
+   The derived object is usually created in its container as a side effect
+   of the creation of the proptotype.  The method propagateExistence()
+   is the mechanism by which derived objects are created.
    <p>
-   After being created, a derived object, which is called "heritage,"
-   might be modified in some (visible) way. For example, it might have parameter
-   values that are changed and hence need to be explicitly recorded if
-   the object is exported, say, to a persistent file format.
-   Such a changed object is said to "override" its inherited value.
+   The prototype and its derived objects are instances of the same Java
+   class, and by default, if they have a "value," then they have the
+   same value. The derived object may, however, "override" its value.
+   Propagation of changes in the value from the prototype to the
+   derived objects that do not override the value is handled by the
+   propagateValue() method.  It is up to that method to properly
+   handle shadowing that might occur if a derived object that is
+   overridden is also a prototype for other derived objects.
+   <p>
+   A derived object arises from a parent-child relationship, which
+   is supported by the subinterface Instantiable. Every object that
+   is (deeply) contained by a parent has a corresponding derived object
+   that is (deeply) contained by the child. Thus, the existence of the
+   derived object is "implied" by the parent-child relationship.
+   The depth of a derived object relative to this parent-child
+   relationship is returned by the getDerivedLevel() method.
+   For example, if the container of a derived object is the
+   child of the container of its prototype, then getDerivedLevel()
+   will return 1.
+   <p>
+   The derived level returned by getDerivedLevel() affects whether
+   a derived object is explicitly mentioned when a model is exported
+   to MoML. Normally, a derived object is not mentioned in the MoML
+   since its existence is "implied" by the existence of the prototype
+   and the parent-child relationship. However, since it is possible
+   to export MoML for any object in a hierarchical model, the exported
+   MoML may not include the parent-child relationship, since it might
+   be below it in the hierarchy.  In this case, the derived object
+   will be described in the exported MoML, since it is not implied
+   in the exported MoML.
+   <p>
+   The getDerivedList() method returns a list of all the objects that
+   are derived from a prototype. The getPrototypeList() method returns
+   a list of all prototypes from which this object is derived.
 
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @see Instantiable
+   @see NamedObj
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
 */
 
 public interface Derivable extends Nameable {
@@ -56,32 +89,25 @@ public interface Derivable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the level above this object in the hierarchy where a
-     *  parent-child relationship defines the existence of this object.
-     *  A negative value (-1) is used to indicate that this object is
-     *  not a derived object. A value of 0 indicates that the object
-     *  is a child itself. A value of 1 indicates that the container
+    /** Get the minimum level above this object in the hierarchy where a
+     *  parent-child relationship implies the existence of this object.
+     *  A value Integer.MAX_VALUE is used to indicate that this object is
+     *  not a derived object. A value of 1 indicates that the container
      *  of the object is a child, and that the this object is derived
-     *  from a like object in the parent of the container. Etc.
-     *  If an object is derived, then normally has no persistent
-     *  representation when it is exported to MoML (unless it
-     *  is overridden), and normally it cannot have its name or
-     *  container changed.  An exception, however, is that the object
-     *  may appear in the MoML if the exported MoML does not include
-     *  the level of the hierarchy above this with the parent-child
-     *  relationship.
+     *  from a prototype in the parent of the container. Etc.
      *  @return The level above this object in the containment
-     *   hierarchy where a parent-child relationship defines this object.
-     *  @see Instantiable
-     *  @see #setDerivedLevel(int)
+     *   hierarchy where a parent-child relationship implies this object.
      */
     public int getDerivedLevel();
 
     /** Return a list of objects derived from this one.
      *  This is the list of objects that are "inherited" by their
-     *  containers from a container of this object).
-     *  Implementors may return an empty
-     *  list, but should not return null. This method should return a
+     *  containers from a container of this object. The existence of
+     *  these derived objects is "implied" by a parent-child relationship
+     *  somewhere above this object in the containment hierarchy.
+     *  <p>
+     *  Implementors of this method may return an empty list,
+     *  but should not return null. This method should return a
      *  complete list, including objects that have been overridden.
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
@@ -91,7 +117,31 @@ public interface Derivable extends Nameable {
      */
     public List getDerivedList();
     
-    /** Propagate the value (if any) held by an implementor of this
+    /** Return a list of prototypes for this object. The list is ordered
+     *  so that more local prototypes are listed before more remote
+     *  prototypes. A prototype is more local if the parent-child
+     *  relationship is deeper in the containment hierarchy.
+     *  @return A list of prototypes for this object, each of which is
+     *   assured of being an instance of the same (Java) class as this
+     *   object, or an empty list if there are no prototypes.
+     *  @exception IllegalActionException If a prototype with the right
+     *   name but the wrong class is found.
+     */
+    public List getPrototypeList() throws IllegalActionException;
+    
+    /** Propagate the existence of this object.
+     *  If this object has a container, then ensure that all
+     *  objects derived from the container contain an object
+     *  with the same class and name as this object. Create that
+     *  object when needed. Return the list of objects that are created.
+     *  @return A list of derived objects of the same class
+     *   as this implementor that are created, or an empty list
+     *   if none are created.
+     *  @exception IllegalActionException If the object cannot be created.
+     */
+    public List propagateExistence() throws IllegalActionException;
+
+    /** Propagate the value (if any) held by this
      *  object to derived objects that have not been overridden.
      *  Implementors are required to leave all derived objects
      *  unchanged if any single derived object throws an exception
@@ -100,24 +150,4 @@ public interface Derivable extends Nameable {
      *  @throws IllegalActionException If propagation is not possible.
      */
     public List propagateValue() throws IllegalActionException;
-
-    /** Set the level above this object in the hierarchy where a
-     *  parent-child relationship defines the existence of this object.
-     *  A negative value (-1) is used to indicate that this object is
-     *  not a derived object. A value of 0 indicates that the object
-     *  is a child itself. A value of 1 indicates that the container
-     *  of the object is a child, and that the this object is derived
-     *  from a like object in the parent of the container. Etc.
-     *  If an object is derived, then normally has no persistent
-     *  representation when it is exported to MoML (unless it
-     *  is overridden), and normally it cannot have its name or
-     *  container changed.  An exception, however, is that the object
-     *  may appear in the MoML if the exported MoML does not include
-     *  the level of the hierarchy above this with the parent-child
-     *  relationship.
-     *  @param level The level above this object in the containment
-     *   hierarchy where a parent-child relationship defines this object.
-     *  @see #getDerivedLevel()
-     */
-    public void setDerivedLevel(int level);
 }

@@ -61,7 +61,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -1865,8 +1865,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         null);
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
-                // Prototype.
-                if (_deleteRequests != null && _current instanceof Prototype) {
+                // InstantiableNamedObj.
+                if (_deleteRequests != null && _current instanceof InstantiableNamedObj) {
                     _deleteRequests.add(request);
                 } else {
                     // Very likely, the context is null, in which
@@ -1897,8 +1897,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         entityName);
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
-                // Prototype.
-                if (_deleteRequests != null && _current instanceof Prototype) {
+                // InstantiableNamedObj.
+                if (_deleteRequests != null && _current instanceof InstantiableNamedObj) {
                     _deleteRequests.add(request);
                 } else {
                     // Very likely, the context is null, in which
@@ -1927,8 +1927,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         null);
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
-                // Prototype.
-                if (_deleteRequests != null && _current instanceof Prototype) {
+                // InstantiableNamedObj.
+                if (_deleteRequests != null && _current instanceof InstantiableNamedObj) {
                     _deleteRequests.add(request);
                 } else {
                     // Very likely, the context is null, in which
@@ -1957,8 +1957,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         null);
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
-                // Prototype.
-                if (_deleteRequests != null && _current instanceof Prototype) {
+                // InstantiableNamedObj.
+                if (_deleteRequests != null && _current instanceof InstantiableNamedObj) {
                     _deleteRequests.add(request);
                 } else {
                     // Very likely, the context is null, in which
@@ -2330,8 +2330,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // cannot be changed.
                         if (alreadyExisted
                                 &&  ioport.getDerivedLevel()
-                                < Integer.MAX_VALUE
-                                && !_propagating) {
+                                < Integer.MAX_VALUE) {
                             if (ioport.isInput() != isInput
                                     || ioport.isOutput() != isOutput) {
                                 throw new IllegalActionException(ioport,
@@ -2471,8 +2470,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     // Ensure that derived objects aren't changed.
                     if (!oldName.equals(newName)
-                            && _current.getDerivedLevel() < Integer.MAX_VALUE
-                            && !_propagating) {
+                            && _current.getDerivedLevel()
+                            < Integer.MAX_VALUE) {
                         throw new IllegalActionException(_current,
                                 "Cannot change the name to "
                                 + newName
@@ -2588,7 +2587,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             while (deferrers.hasNext()) {
                                 WeakReference reference
                                     = (WeakReference)deferrers.next();
-                                Prototype deferrer = (Prototype)reference.get();
+                                InstantiableNamedObj deferrer = (InstantiableNamedObj)reference.get();
                                 if (deferrer != null) {
                                     // Got a live one.
                                     // Need to determine whether the name is
@@ -2843,17 +2842,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     protected String _currentExternalEntity() {
         return (String)_externalEntities.peek();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                package friendly methods                   ////
-    
-    /** Set a flag indicating that we are propagating (if the argument
-     *  is true). This disables checks for disallowed actions on
-     *  derived objects.
-     */
-    void _setPropagating(boolean propagating) {
-        _propagating = propagating;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -3279,10 +3267,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _markParametersToParse(newEntity);
 
             // Set the class name as specified in this method call.
-            // This overrides what Prototype does.  The reason we want to
-            // do that is that Prototype uses the name of the object
-            // that we cloned as the classname.  But this may not provide
-            // enough information to instantiate the class.
+            // This overrides what InstantiableNamedObj does.  The reason
+            // we want to do that is that InstantiableNamedObj uses the
+            // name of the object that we cloned as the classname.
+            //  But this may not provide enough information to
+            // instantiate the class.
             newEntity.setClassName(className);
             
             // Propagate.
@@ -3383,7 +3372,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         // Ensure that derived objects aren't changed.
-        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE && !_propagating) {
+        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
         }
@@ -3479,7 +3468,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         // Ensure that derived objects aren't changed.
-        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE && !_propagating) {
+        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
         }
@@ -3560,7 +3549,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         }
         // Ensure that derived objects aren't changed.
-        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE && !_propagating) {
+        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
         }
@@ -3622,7 +3611,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         }
 
-        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE && !_propagating) {
+        if (toDelete.getDerivedLevel() < Integer.MAX_VALUE) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This relation is part of the class definition.");
         }
@@ -4001,8 +3990,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if (_current.getDerivedLevel() < Integer.MAX_VALUE
-                    && ((IOPort)_current).isMultiport() != newValue
-                    && !_propagating) {
+                    && ((IOPort)_current).isMultiport() != newValue) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "a multiport. That property is fixed by " +
@@ -4054,8 +4042,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if (_current.getDerivedLevel() < Integer.MAX_VALUE
-                    && ((IOPort)_current).isOutput() != newValue
-                    && !_propagating) {
+                    && ((IOPort)_current).isOutput() != newValue) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "an output. That property is fixed by " +
@@ -4109,8 +4096,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if (_current.getDerivedLevel() < Integer.MAX_VALUE
-                    && ((IOPort)_current).isInput() != newValue
-                    && !_propagating) {
+                    && ((IOPort)_current).isInput() != newValue) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "an input. That property is fixed by " +
@@ -4657,7 +4643,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // We have to prohit adding links between class
         // elements because this operation cannot be undone, and
         // it will not be persistent.
-        if (_isLinkInClass(context, port, relation) && !_propagating) {
+        if (_isLinkInClass(context, port, relation)) {
             throw new IllegalActionException(port,
                     "Cannot link a port to a relation when both" +
                     " are part of the class definition.");
@@ -4824,7 +4810,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             ComponentRelation relation = (ComponentRelation)tmpRelation;
 
             // Ensure that derived objects aren't changed.
-            if (_isLinkInClass(context, port, relation) && !_propagating) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4879,7 +4865,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // expensive.
             List relationList = port.linkedRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (_isLinkInClass(context, port, relation) && !_propagating) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4923,7 +4909,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // expensive.
             List relationList = port.insideRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (_isLinkInClass(context, port, relation) && !_propagating) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -5348,11 +5334,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Status of the deferral of the top-level.
     private boolean _previousDeferStatus = false;
-    
-    // Flag indicating that we are in a propagation
-    // and therefore the parser should not disallow changes because
-    // the objects are derived.
-    private boolean _propagating = false;
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;

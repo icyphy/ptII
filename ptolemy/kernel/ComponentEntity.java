@@ -120,7 +120,7 @@ public class ComponentEntity extends Entity {
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
-     *  @return A new Prototype.
+     *  @return A new instance of ComponentEntity.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
@@ -137,15 +137,22 @@ public class ComponentEntity extends Entity {
         return _container;
     }
 
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent.
-     *  Specifically, the
-     *  clone defers its definition to this prototype, which is its
-     *  "parent." It inherits all the objects contained by this prototype.
+    /** Create an instance by cloning this object and then adjusting
+     *  the parent-child relationships between the clone and its parent.
+     *  Specifically, the clone defers its definition to this object,
+     *  which becomes its "parent." It inherits all the objects contained
+     *  by this object. If this object is a composite, then this method
+     *  adjusts any deferral relationships that are entirely contained
+     *  within the clone. That is, for any parent-child relationship that
+     *  is entirely contained within this object (i.e., both the parent
+     *  and the child are deeply contained by this object), a corresponding
+     *  parent-child relationship is created within the clone such that
+     *  both the parent and the child are entirely contained within
+     *  the clone.
      *  <p>
-     *  The new object is not a class definition (it is by default an "instance"
-     *  rather than a "class").  To make it a class definition (a "subclass"),
-     *  call setClassDefinition(true).
+     *  The new object is not a class definition (it is by default an
+     *  "instance" rather than a "class").  To make it a class
+     *  definition (a "subclass"), call setClassDefinition(true).
      *  <p>
      *  This method overrides the base class to use setContainer() to
      *  specify the container.
@@ -153,9 +160,9 @@ public class ComponentEntity extends Entity {
      *  @param container The container for the instance, or null
      *   to instantiate it at the top level.
      *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
+     *  @return A new instance that is a clone of this object
      *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
+     *  @exception CloneNotSupportedException If this object
      *   cannot be cloned.
      *  @exception IllegalActionException If this object is not a
      *   class definition
@@ -294,7 +301,6 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      *  @see #getContainer()
-     *  @see #_checkContainer(Prototype)
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -462,7 +468,7 @@ public class ComponentEntity extends Entity {
      *   null and there are other objects that defer their definitions
      *   to this one.
      */
-    protected void _checkContainer(Prototype container)
+    protected void _checkContainer(InstantiableNamedObj container)
             throws IllegalActionException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,

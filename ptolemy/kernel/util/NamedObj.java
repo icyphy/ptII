@@ -51,60 +51,59 @@ import ptolemy.util.StringUtilities;
 //// NamedObj
 /**
    This is a base class for almost all Ptolemy II objects.
-
    <p>
    This class supports a naming scheme, change requests, a persistent
    file format (MoML), a mutual exclusion mechanism for models (the
-   workspace), and a hierarchical class mechanism with inheritance.
-   Instances of this class can also be parameterized by making this
-   instance the container of instances of the Attribute class.
-
+   workspace), an error handler, and a hierarchical class mechanism
+   with inheritance.
    <p>
-   A simple name is an arbitrary string with no periods.  If no simple
+   An instance of this class can also be parameterized by attaching
+   instances of the Attribute class.
+   Instances of Attribute can be attached by calling their setContainer()
+   method and passing this object as an argument. Those instances will
+   then be reported by the {@link #getAttribute(String)},
+   {@link #getAttribute(String, Class)}, {@link #attributeList()}
+   and {@link #attributeList(Class)} methods.
+   Classes derived from NamedObj may constrain attributes to be a
+   subclass of Attribute.  To do that, they should override the protected
+   {@link #_addAttribute(Attribute)} method to throw an exception if
+   the object provided is not of the right class.
+   <p>
+   An instance of this class has a name.
+   A name is an arbitrary string with no periods.  If no
    name is provided, the name is taken to be an empty string (not a null
    reference). An instance also has a full name, which is a concatenation
    of the container's full name and the simple name, separated by a
    period. If there is no container, then the full name begins with a
    period. The full name is used for error reporting throughout Ptolemy
    II.
-
    <p>
    Instances of this class are associated with a workspace, specified as
-   a constructor argument.  The workspace is immutable.  It cannot be
-   changed during the lifetime of the object.  It is used for
+   a constructor argument.  The reference to the workspace is immutable.
+   It cannot be changed during the lifetime of this object.  It is used for
    synchronization of methods that depend on or modify the state of
    objects within it. If no workspace is specified, then the default
    workspace is used.  Note that the workspace should not be confused
    with the container.  The workspace never serves as a container.
-
    <p>
    In this base class, the container is null by default, and no
    method is provided to change it. Derived classes that support
    hierarchy provide one or more methods that set the container.
-
-   <p> By convention, if the container of an instance of NamedObj is set,
+   By convention, if the container is set,
    then the instance should be removed from the workspace directory, if
    it is present.  The workspace directory is expected to list only
    top-level objects in a hierarchy.  The NamedObj can still use the
    workspace for synchronization.  Any object contained by another uses
    the workspace of its container as its own workspace by default.
-
-   <p>
-   Instances of Attribute can be attached by calling their setContainer()
-   method and passing this object as an argument. These instances will
-   then be reported by the getAttribute() and attributeList() methods.
-   Classes derived from NamedObj may constrain attributes to be a
-   subclass of Attribute.  To do that, they should override the protected
-   _addAttribute() method to throw an exception if the object provided is
-   not of the right class.
-
    <p>
    This class supports <i>change requests</i> or <i>mutations</i>,
    which are changes to a model that are performed in a disciplined
    fashion.  In particular, a mutation can be requested via the
-   requestChange() method.  Derived classes will ensure that the mutation
-   is executed at a time when it is safe to execute mutations.
-
+   {@link #requestChange(ChangeRequest)} method. By default, when
+   a change is requested, the change is executed immediately.
+   However, by calling {@link #setDeferringChangeRequests(boolean)},
+   you can ensure that change requests are queued to be executed
+   only when it is safe to execute them.
    <p>
    This class supports the notion of a <i>model error</i>, which is
    an exception that is handled by a registered model error handler, or
@@ -112,7 +111,6 @@ import ptolemy.util.StringUtilities;
    error handler.  This mechanism complements the exception mechanism in
    Java. Instead of unraveling the calling stack to handle exceptions,
    this mechanism passes control up the Ptolemy II hierarchy.
-
    <p>
    Derived classes should override the _description() method to
    append new fields if there is new information that should be included
@@ -122,13 +120,14 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.AcceptedRating Green (neuendor)
    @see Attribute
    @see Workspace
 */
 public class NamedObj implements
                           Changeable, Cloneable, Debuggable,
-                          DebugListener, Derivable, Serializable {
+                          DebugListener, Derivable,
+                          ModelErrorHandler, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -249,6 +248,7 @@ public class NamedObj implements
      *  @param listener The listener to add.
      *  @see #removeChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
+     *  @see Changeable
      */
     public void addChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
@@ -412,13 +412,7 @@ public class NamedObj implements
             // the value of this private variable will no longer
             // have any effect.
             newObject._deferChangeRequests = true;
-            
-            // Occasionally, a derived object needs to know what
-            // it is being cloned from to manage the adjustments
-            // made.  This can be accomplished by overriding the
-            // protected method called here.
-            newObject._clonedFrom(this);
-            
+                        
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
@@ -486,7 +480,8 @@ public class NamedObj implements
 
     /** Return an iterator over contained objects. In this base class,
      *  this is simply an iterator over attributes.  In derived classes,
-     *  the iterator will also traverse ports, entities, and relations.
+     *  the iterator will also traverse ports, entities, classes,
+     *  and relations.
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
@@ -574,15 +569,15 @@ public class NamedObj implements
         }
     }
 
-    /** Execute requested changes. If there is a container, then
-     *  delegate the request to the container.  Otherwise,
-     *  this method will execute all
-     *  pending changes (even if setDeferringChangeRequests() has been
-     *  called with a true argument).  Listeners will be notified
-     *  of success or failure.
+    /** Execute previously requested changes. If there is a container, then
+     *  delegate the request to the container.  Otherwise, this method will
+     *  execute all pending changes (even if
+     *  {@link #isDeferringChangeRequests()} returns true. 
+     *  Listeners will be notified of success or failure.
      *  @see #addChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
-     *  @see #setDeferringChangeRequests(boolean)
+     *  @see #isDeferringChangeRequests()
+     *  @see Changeable
      */
     public void executeChangeRequests() {
         NamedObj container = (NamedObj) getContainer();
@@ -590,63 +585,67 @@ public class NamedObj implements
             container.executeChangeRequests();
             return;
         }
+        List copy = null;
         synchronized(_changeLock) {
             if (_changeRequests != null && _changeRequests.size() > 0) {
                 // Copy the change requests lists because it may
                 // be modified during execution.
-                LinkedList copy = new LinkedList(_changeRequests);
+                copy = new LinkedList(_changeRequests);
 
                 // Remove the changes to be executed.
                 // We remove them even if there is a failure because
                 // otherwise we could get stuck making changes that
                 // will continue to fail.
                 _changeRequests.clear();
-
-                Iterator requests = copy.iterator();
-                boolean previousDeferStatus = isDeferringChangeRequests();
-                try {
-                    // Get write access once on the outside, to make
-                    // getting write access on each individual
-                    // modification faster.
-                    // NOTE: This optimization, it turns out,
-                    // drastically slows down execution of models
-                    // that do graphical animation or that change
-                    // parameter values during execution. Changing
-                    // parameter values does not require write
-                    // access to the workspace.
-                    // _workspace.getWriteAccess();
-
-                    // Defer change requests so that if changes are
-                    // requested during execution, they get queued.
-                    setDeferringChangeRequests(true);
-                    while (requests.hasNext()) {
-                        ChangeRequest change = (ChangeRequest)requests.next();
-                        // The following is a bad idea because there may be
-                        // many fine-grain change requests in the list, and
-                        // notification triggers expensive operations such
-                        // as rapairing the graph model in diva and repainting.
-                        // Hence, we do the notification once after all the
-                        // change requests have executed.  Note that this may
-                        // make it harder to optimize Vergil so that it
-                        // repaints only damaged regions of the screen.
-                        change.setListeners(_changeListeners);
-                        if (_debugging) {
-                            _debug("-- Executing change request "
-                                    + "with description: "
-                                    + change.getDescription());
-                        }
-                        change.execute();
-                    }
-                } finally {
-                    // NOTE: See note above.
-                    // _workspace.doneWriting();
-                    setDeferringChangeRequests(previousDeferStatus);
-                }
-
-                // Change requests may have been queued during the execute.
-                // Execute those by a recursive call.
-                executeChangeRequests();
             }
+        }
+        // NOTE: Have released the change lock, which makes it
+        // safe to obtain other locks below.
+        if (copy != null) {
+            Iterator requests = copy.iterator();
+            boolean previousDeferStatus = isDeferringChangeRequests();
+            try {
+                // Get write access once on the outside, to make
+                // getting write access on each individual
+                // modification faster.
+                // NOTE: This optimization, it turns out,
+                // drastically slows down execution of models
+                // that do graphical animation or that change
+                // parameter values during execution. Changing
+                // parameter values does not require write
+                // access to the workspace.
+                // _workspace.getWriteAccess();
+
+                // Defer change requests so that if changes are
+                // requested during execution, they get queued.
+                setDeferringChangeRequests(true);
+                while (requests.hasNext()) {
+                    ChangeRequest change = (ChangeRequest)requests.next();
+                    // The following is a bad idea because there may be
+                    // many fine-grain change requests in the list, and
+                    // notification triggers expensive operations such
+                    // as rapairing the graph model in diva and repainting.
+                    // Hence, we do the notification once after all the
+                    // change requests have executed.  Note that this may
+                    // make it harder to optimize Vergil so that it
+                    // repaints only damaged regions of the screen.
+                    change.setListeners(_changeListeners);
+                    if (_debugging) {
+                        _debug("-- Executing change request "
+                                + "with description: "
+                                + change.getDescription());
+                    }
+                    change.execute();
+                }
+            } finally {
+                // NOTE: See note above.
+                // _workspace.doneWriting();
+                setDeferringChangeRequests(previousDeferStatus);
+            }
+
+            // Change requests may have been queued during the execute.
+            // Execute those by a recursive call.
+            executeChangeRequests();
         }
     }
 
@@ -657,6 +656,7 @@ public class NamedObj implements
      *  derived classes only need to override that method to change
      *  the MoML description.
      *  @return A MoML description, or an empty string if there is none.
+     *  @see MoMLExportable
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
@@ -681,6 +681,7 @@ public class NamedObj implements
      *  the MoML description.
      *  @param name The name of we use when exporting the description.
      *  @return A MoML description, or the empty string if there is none.
+     *  @see MoMLExportable
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
@@ -709,6 +710,7 @@ public class NamedObj implements
      *  the MoML description.
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
+     *  @see MoMLExportable
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
@@ -728,6 +730,7 @@ public class NamedObj implements
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
+     *  @see MoMLExportable
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
@@ -774,6 +777,7 @@ public class NamedObj implements
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
+     *  @see MoMLExportable
      *  @see #clone(Workspace)
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
@@ -914,6 +918,7 @@ public class NamedObj implements
      *  By default, it will be the Java class name of this object.
      *  This method never returns null.
      *  @return The MoML class name.
+     *  @see MoMLExportable
      *  @see #setClassName(String)
      */
     public String getClassName() {
@@ -933,22 +938,14 @@ public class NamedObj implements
     }
 
     /** Get the minimum level above this object in the hierarchy where a
-     *  parent-child relationship defines the existence of this object.
+     *  parent-child relationship implies the existence of this object.
      *  A value Integer.MAX_VALUE is used to indicate that this object is
      *  not a derived object. A value of 1 indicates that the container
      *  of the object is a child, and that the this object is derived
-     *  from a like object in the parent of the container. Etc.
-     *  If an object is derived, then normally has no persistent
-     *  representation when it is exported to MoML (unless it
-     *  is overridden), and normally it cannot have its name or
-     *  container changed.  An exception, however, is that the object
-     *  may appear in the MoML if the exported MoML does not include
-     *  the level of the hierarchy above this with the parent-child
-     *  relationship.
+     *  from a prototype in the parent of the container. Etc.
      *  @return The level above this object in the containment
-     *   hierarchy where a parent-child relationship defines this object.
-     *  @see Instantiable
-     *  @see #setDerivedLevel(int)
+     *   hierarchy where a parent-child relationship implies this object.
+     *  @see Derivable
      */
     public int getDerivedLevel() {
         return _derivedLevel;
@@ -956,10 +953,14 @@ public class NamedObj implements
 
     /** Return a list of objects derived from this one.
      *  This is the list of objects that are "inherited" by their
-     *  containers from a container of this object.
-     *  All objects in the returned list are of the same
-     *  class as this object.
-     *  @return A list of derived objects of the same class as this object.
+     *  containers from a container of this object. The existence of
+     *  these derived objects is "implied" by a parent-child relationship
+     *  somewhere above this object in the containment hierarchy.
+     *  This method returns a complete list, including objects that
+     *  have been overridden.
+     *  @return A list of objects of the same class as the object on
+     *   which this is called, or an empty list if there are none.
+     *  @see Derivable
      */
     public List getDerivedList() {
         try {
@@ -972,6 +973,7 @@ public class NamedObj implements
     /** Get the MoML element name. This defaults to "entity"
      *  but can be set to something else by subclasses.
      *  @return The MoML element name for this object.
+     *  @see MoMLExportable
      */
     public String getElementName() {
         return _elementName;
@@ -1105,12 +1107,51 @@ public class NamedObj implements
         }
     }
 
+    /** Return a list of prototypes for this object. The list is ordered
+     *  so that more local prototypes are listed before more remote
+     *  prototypes. Specifically, if the container has a parent, and
+     *  that parent contains an object whose name matches the name
+     *  of this object, then that object is the first prototype listed.
+     *  If the container of the container has a parent, and that parent
+     *  (deeply) contains a prototype, then that prototype is listed next.
+     *  And so on up the hierarchy.
+     *  @return A list of prototypes for this object, each of which is
+     *   assured of being an instance of the same (Java) class as this
+     *   object, or an empty list if there are no prototypes.
+     *  @exception IllegalActionException If a prototype with the right
+     *   name but the wrong class is found.
+     *  @see Derivable
+     */
+    public List getPrototypeList()
+            throws IllegalActionException {
+        List result = new LinkedList();
+        NamedObj container = getContainer();
+        String relativeName = getName();
+        while (container != null) {
+            if (container instanceof Instantiable) {
+                Instantiable parent = ((Instantiable)container).getParent();
+                if (parent != null) {
+                    // Check whether the parent has it...
+                    NamedObj prototype = _getContainedObject(
+                            (NamedObj)parent, relativeName);
+                    if (prototype != null) {
+                        result.add(prototype);
+                    }
+                }
+            }
+            relativeName = container.getName() + "." + relativeName;
+            container = container.getContainer();
+        }
+        return result;
+    }
+
     /** Get the source, which gives an external URL
      *  associated with an entity (presumably from which the entity
      *  was defined).  This becomes the value in the "source"
      *  attribute of exported MoML.
      *  @return The source, or null if there is none.
      *  @see #setSource(String)
+     *  @see MoMLExportable
      */
     public String getSource() {
         return _source;
@@ -1162,11 +1203,12 @@ public class NamedObj implements
         return false;
     }
 
-    /** Return true if setDeferringChangeRequests() has been called
+    /** Return true if setDeferringChangeRequests(true) has been called
      *  to specify that change requests should be deferred. If there
      *  is a container, this delegates to the container.
      *  @return True if change requests are being deferred.
      *  @see #setDeferringChangeRequests(boolean)
+     *  @see Changeable
      */
     public boolean isDeferringChangeRequests() {
         NamedObj container = (NamedObj) getContainer();
@@ -1182,6 +1224,7 @@ public class NamedObj implements
      *  object has an empty MoML description.
      *  @return True if the object is persistent.
      *  @see #setPersistent(boolean)
+     *  @see MoMLExportable
      */
     public boolean isPersistent() {
         return (_isPersistent == null || _isPersistent.booleanValue());
@@ -1231,7 +1274,8 @@ public class NamedObj implements
      *  @return A list of derived objects of the same class
      *   as this object that are created.
      *  @exception IllegalActionException If the object does
-     *   not exists and cannot be created.
+     *   not exist and cannot be created.
+     *  @see Derivable
      *  @see #setDerivedLevel(int)
      */
     public List propagateExistence() throws IllegalActionException {
@@ -1246,6 +1290,7 @@ public class NamedObj implements
      *  This also marks this object as overridden.
      *  @return The list of objects to which this propagated.
      *  @throws IllegalActionException If propagation fails.
+     *  @see Derivable
      *  @see #isOverridden()
      */
     public List propagateValue() throws IllegalActionException {
@@ -1285,6 +1330,8 @@ public class NamedObj implements
      *  on the list of listeners, do nothing.
      *  @param listener The listener to remove.
      *  @see #addChangeListener(ChangeListener)
+     *  @see #setClassDefinition(boolean)
+     *  @see Changeable
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
@@ -1328,10 +1375,10 @@ public class NamedObj implements
         }
     }
 
-    /** Request that given change be executed.   In this base class,
+    /** Request that the given change be executed.   In this base class,
      *  delegate the change request to the container, if there is one.
      *  If there is no container, then execute the request immediately,
-     *  unless setDeferChangeRequests() has been called. If
+     *  unless this object is deferring change requests. If
      *  setDeferChangeRequests() has been called with a true argument,
      *  then simply queue the request until either setDeferChangeRequests()
      *  is called with a false argument or executeChangeRequests() is called.
@@ -1342,6 +1389,7 @@ public class NamedObj implements
      *  @param change The requested change.
      *  @see #executeChangeRequests()
      *  @see #setDeferringChangeRequests(boolean)
+     *  @see Changeable
      */
     public void requestChange(ChangeRequest change) {
         NamedObj container = (NamedObj) getContainer();
@@ -1391,6 +1439,7 @@ public class NamedObj implements
      *  @see #executeChangeRequests()
      *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
+     *  @see Changeable
      */
     public void setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = (NamedObj) getContainer();
@@ -1431,10 +1480,16 @@ public class NamedObj implements
      *  object is first being constructed.  It also cancels any
      *  previous calls to setPersistent() where a true argument was
      *  given.
+     *  <p>
+     *  NOTE: This method is tricky to use correctly. It is public because
+     *  the MoML parser needs access to it. It should not be considered part
+     *  of the public interface, however, in that only very sophisticated
+     *  users should use it.
      *  @param level The minimum level above this object in the containment
      *   hierarchy where a parent-child relationship implies this object.
      *  @see #getDerivedLevel()
      *  @see #setPersistent(boolean)
+     *  @see Derivable
      */
     public final void setDerivedLevel(int level) {
         if (level < _derivedLevel) {
@@ -1522,6 +1577,7 @@ public class NamedObj implements
      *  this with <i>true</i> overrides values given by the class.
      *  @param persistent False to make this object non-persistent.
      *  @see #isPersistent()
+     *  @see MoMLExportable
      */
     public void setPersistent(boolean persistent) {
         if (persistent) {
@@ -1538,6 +1594,7 @@ public class NamedObj implements
      *  any source attribute from being generated.
      *  @param source The source, or null if there is none.
      *  @see #getSource()
+     *  @see MoMLExportable
      */
     public void setSource(String source) {
         _source = source;
@@ -1736,15 +1793,6 @@ public class NamedObj implements
                     + getFullName());
         }
     }
-    
-    /** In this base class, do nothing. This method is called
-     *  on a cloned object just after the built-in Java cloning
-     *  mechanism has been invoked, but before any adjustments
-     *  are made to parameters, etc. Derived classes can use this
-     *  to affect how they make the adjustments.
-     *  @param source The object from which this was cloned.
-     */
-    protected void _clonedFrom(NamedObj source) {}
 
     /** Fix the fields of the given object which point to Attributes.
      *  The object is assumed to be a clone of this one.  The fields
@@ -1970,8 +2018,9 @@ public class NamedObj implements
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class. Not thrown in this base class.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container) throws IllegalActionException {
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
+            throws IllegalActionException {
         return null;
     }
 
@@ -1984,54 +2033,77 @@ public class NamedObj implements
         return StringUtilities.getIndentPrefix(level);
     }
 
-    /** Search for an object from which the specified object is derived,
-     *  and if one is found, return it. This search is conducted breadth
-     *  first; specifically, if the specified container has a parent,
-     *  and that parent contains an object of the same class as this
-     *  object with the specified relative name, then that object is
-     *  returned. If there is no such object, then container of the
-     *  specified container is similarly examined.  If this reaches the
-     *  top of the hierarchy without finding a prototype, then we assume
-     *  no prototype exists and return null. This breadth-first search
-     *  ensures that the most local prototype is returned if there is
-     *  more than one prototype.
-     *  In a typical usage, this method would be called as follows:
-     *  <pre>
-     *    NamedObj prototype = _getPrototype(getName(), getContainer());
-     *  </pre>
-     *  The returned object is assured of being an instance of the
-     *  same class as this object.
-     *  @param relativeName The name of the object to look for, relative
-     *   to the specified container.
-     *  @param container The container in which to look for a parent.
-     *  @return The prototype from which the specified object is derived,
-     *   or null if none is found.
-     *  @exception IllegalActionException If the object exists
-     *   and has the wrong class. Not thrown in this base class.
+    /** Return true if describing this class in MoML is redundant.
+     *  This will return true if setPersistent() has been called
+     *  with argument false, irrespective of other conditions.
+     *  If setPersistent() has not been called, or has been called
+     *  with argument true, then things are more complicated.
+     *  If the <i>depth</i> argument is 0 or if this object is
+     *  not derived, then this method returns false, indicating
+     *  that MoML should be exported. Otherwise, whether to export
+     *  MoML depends on whether the MoML specifies information
+     *  that should be created by propagation rather than explicitly
+     *  represented in MoML.  If this is a derived object, then whether
+     *  its information can be created by propagation depends on whether
+     *  the object from which that propagation would occur is included
+     *  in the MoML, which depends on the <i>depth</i> argument.
+     *  This method uses the <i>depth</i> argument to determine whether
+     *  the exported MoML both contains an object that implies the
+     *  existence of this object and contains an object that implies
+     *  the value of this object.  If both conditions are satisfied,
+     *  then it returns false.  Finally, if we haven't already
+     *  returned false, then check all the contained objects, and
+     *  if any of them requires a MoML description, then return false.
+     *  Otherwise, return true.
+     *  @param depth The depth of the requested MoML.
+     *  @return Return true to suppress MoML export.
      */
-    protected NamedObj _getPrototype(
-            String relativeName, NamedObj container)
-            throws IllegalActionException {
-        if (container == null) {
-            return null;
+    protected boolean _isMoMLSuppressed(int depth) {
+        
+        // Check whether suppression of MoML has been explicitly
+        // requested.
+        if (_isPersistent != null) {
+            return !_isPersistent.booleanValue();
         }
-        if (container instanceof Instantiable) {
-            Instantiable parent = ((Instantiable)container).getParent();
-            if (parent != null) {
-                // Check whether the parent has it...
-                NamedObj prototype = _getContainedObject(
-                        relativeName, ((NamedObj)parent));
-                if (prototype != null) {
-                    return prototype;
-                }
+        // Object is persistent, but export may still not
+        // be required since the structure and values might
+        // be implied by inheritance. However, if that
+        // inheritance occurs above the level of the hierarchy
+        // where we are doing the export, then we need to
+        // give structure and values anyway. Otherwise, for
+        // example, copy and paste won't work properly.        
+        if (_derivedLevel > depth) {
+            // Object is either not derived or the derivation occurs
+            // above in the hierarchy where we are exporting.
+            return false;
+        }
+        // At this point, we know the object is implied.
+        // However, we may need to export anyway because it
+        // may have an overridden value.
+        
+        // Export MoML if the value of the object is
+        // propagated in but from outside the scope
+        // of the export.
+        if (_override != null && _override.size() > depth + 1) {
+            return false;
+        }
+        
+        // If any contained object wishes to have
+        // MoML exported, then this object will export MoML.
+        Iterator objects = containedObjectsIterator();
+        while (objects.hasNext()) {
+            NamedObj object = (NamedObj)objects.next();
+            if (!object._isMoMLSuppressed(depth + 1)) {
+                return false;
             }
         }
-        // If we get here, then either the container has no
-        // parent or the parent does not contain a prototype for
-        // this object.  Search up the hierarchy.
-        return _getPrototype(
-                container.getName() + "." + relativeName,
-                container.getContainer());
+
+        // If we get here, then this object is a derived object
+        // whose value is defined somewhere within the scope
+        // of the export, and all its contained
+        // objects do not need to export MoML. In this case,
+        // it is OK to suppress MoML.
+        return true;
     }
 
     /** Mark the contents of this object as being derived objects.
@@ -2173,81 +2245,11 @@ public class NamedObj implements
         }
     }
 
-    /** Return true if describing this class in MoML is redundant.
-     *  This will return true if setPersistent() has been called
-     *  with argument false, irrespective of other conditions.
-     *  If setPersistent() has not been called, or has been called
-     *  with argument true, then things are more complicated.
-     *  If the <i>depth</i> argument is 0 or if this object is
-     *  not derived, then this method returns false, indicating
-     *  that MoML should be exported. Otherwise, whether to export
-     *  MoML depends on whether the MoML specifies information
-     *  that should be created by propagation rather than explicitly
-     *  represented in MoML.  If this is a derived object, then whether
-     *  its information can be created by propagation depends on whether
-     *  the object from which that propagation would occur is included
-     *  in the MoML, which depends on the <i>depth</i> argument.
-     *  This method uses the <i>depth</i> argument to determine whether
-     *  the exported MoML both contains an object that implies the
-     *  existence of this object and contains an object that implies
-     *  the value of this object.  If both conditions are satisfied,
-     *  then it returns false.  Finally, if we haven't already
-     *  returned false, then check all the contained objects, and
-     *  if any of them requires a MoML description, then return false.
-     *  Otherwise, return true.
-     *  @param depth The depth of the requested MoML.
-     *  @return Return true to suppress MoML export.
-     */
-    protected boolean _isMoMLSuppressed(int depth) {
-        
-        // Check whether suppression of MoML has been explicitly
-        // requested.
-        if (_isPersistent != null) {
-            return !_isPersistent.booleanValue();
-        }
-        // Object is persistent, but export may still not
-        // be required since the structure and values might
-        // be implied by inheritance. However, if that
-        // inheritance occurs above the level of the hierarchy
-        // where we are doing the export, then we need to
-        // give structure and values anyway. Otherwise, for
-        // example, copy and paste won't work properly.        
-        if (_derivedLevel > depth) {
-            // Object is either not derived or the derivation occurs
-            // above in the hierarchy where we are exporting.
-            return false;
-        }
-        // At this point, we know the object is implied.
-        // However, we may need to export anyway because it
-        // may have an overridden value.
-        
-        // Export MoML if the value of the object is
-        // propagated in but from outside the scope
-        // of the export.
-        if (_override != null && _override.size() > depth + 1) {
-            return false;
-        }
-        
-        // If any contained object wishes to have
-        // MoML exported, then this object will export MoML.
-        Iterator objects = containedObjectsIterator();
-        while (objects.hasNext()) {
-            NamedObj object = (NamedObj)objects.next();
-            if (!object._isMoMLSuppressed(depth + 1)) {
-                return false;
-            }
-        }
-
-        // If we get here, then this object is a derived object
-        // whose value is defined somewhere within the scope
-        // of the export, and all its contained
-        // objects do not need to export MoML. In this case,
-        // it is OK to suppress MoML.
-        return true;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** A list of weak references to change listeners. */
+    protected List _changeListeners;
 
     /** Object for locking accesses to change request list and status.
      *  NOTE: We could have used _changeRequests or _changeListeners,
@@ -2259,9 +2261,6 @@ public class NamedObj implements
 
     /** A list of pending change requests. */
     protected List _changeRequests;
-
-    /** A list of weak references to change listeners. */
-    protected List _changeListeners;
 
     /** Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
@@ -2415,7 +2414,7 @@ public class NamedObj implements
                         // Look for an object with the relative name.
                         NamedObj candidate = other;
                         if (relativeName != null) {
-                            candidate = _getContainedObject(relativeName, other);
+                            candidate = _getContainedObject(other, relativeName);
                         }
                         if (candidate == null) {
                             if (force) {
@@ -2430,7 +2429,7 @@ public class NamedObj implements
                                             0, lastPeriod); 
                                     remoteContainer = getContainer()
                                             ._getContainedObject(
-                                            containerName, other);                                 
+                                            other, containerName);                                 
                                 }
                                 candidate = _propagateExistence(remoteContainer);
                                 // Indicate that the existence of the candidate

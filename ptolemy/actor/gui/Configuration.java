@@ -37,7 +37,7 @@ import java.util.List;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -443,11 +443,11 @@ public class Configuration extends CompositeEntity {
         // is opened is the class definition, not the instance, unless
         // the instance contains a TableauFactory, in which case, we defer
         // to that TableauFactory.
-        Prototype deferredTo = null;
+        InstantiableNamedObj deferredTo = null;
         boolean isClass = false;
-        if (entity instanceof Prototype) {
-            deferredTo = (Prototype)((Prototype)entity).getParent();
-            isClass = ((Prototype)entity).isClassDefinition();
+        if (entity instanceof InstantiableNamedObj) {
+            deferredTo = (InstantiableNamedObj)((InstantiableNamedObj)entity).getParent();
+            isClass = ((InstantiableNamedObj)entity).isClassDefinition();
         }
         String elementName = entity.getElementName();
         List factoryList = entity.attributeList(TableauFactory.class);
@@ -464,7 +464,7 @@ public class Configuration extends CompositeEntity {
      *  @param container The proposed container.
      *  @exception IllegalActionException If the argument is not null.
      */
-    public void setContainer(Prototype container)
+    public void setContainer(InstantiableNamedObj container)
             throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(

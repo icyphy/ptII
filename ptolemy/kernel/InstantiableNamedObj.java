@@ -1,4 +1,4 @@
-/* An Prototype is a named object that can be either a class or an instance.
+/* A named object that can be either a class or an instance.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
@@ -44,33 +44,34 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// Prototype
+//// InstantiableNamedObj
 /**
-   An Prototype is a named object that can be either a class definition
-   or not.  If it is a class definition, then "instances" of that class
-   definition can be created by the instantiate() method.
-   It supports a deferral and propagation mechanism. That is, changes
-   to the prototype propagate automatically to "instances" that
-   were created from the prototype.
+   An InstantiableNamedObj is a named object that can be either a class
+   definition or an instance.  If it is a class definition, then "instances" of
+   that class definition can be created by the instantiate() method. Those
+   instances are called the "children" of this "parent." Changes
+   to the parent propagate automatically to the children as described
+   in the {@link Instantiable} interface.
 
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @see Instantiable
    @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
-public class Prototype extends NamedObj implements Instantiable {
+public class InstantiableNamedObj extends NamedObj implements Instantiable {
 
-    /** Construct a prototype in the default workspace with an empty string
+    /** Construct an object in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      */
-    public Prototype() {
+    public InstantiableNamedObj() {
         super();
     }
 
-    /** Construct a prototype in the default workspace with the given name.
+    /** Construct an object in the default workspace with the given name.
      *  If the name argument
      *  is null, then the name is set to the empty string.
      *  The object is added to the workspace directory.
@@ -78,22 +79,22 @@ public class Prototype extends NamedObj implements Instantiable {
      *  @param name The name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
-    public Prototype(String name) throws IllegalActionException {
+    public InstantiableNamedObj(String name) throws IllegalActionException {
         super(name);
     }
 
-    /** Construct a prototype in the given workspace with an empty string
+    /** Construct an object in the given workspace with an empty string
      *  as a name.
      *  If the workspace argument is null, use the default workspace.
      *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
      *  @param workspace The workspace for synchronization and version tracking.
      */
-    public Prototype(Workspace workspace) {
+    public InstantiableNamedObj(Workspace workspace) {
         super(workspace);
     }
 
-    /** Construct a prototype in the given workspace with the given name.
+    /** Construct an object in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  If the name argument
      *  is null, then the name is set to the empty string.
@@ -103,7 +104,7 @@ public class Prototype extends NamedObj implements Instantiable {
      *  @param name The name of this object.
      *  @exception IllegalActionException If the name has a period.
      */
-    public Prototype(Workspace workspace, String name)
+    public InstantiableNamedObj(Workspace workspace, String name)
             throws IllegalActionException {
         super(workspace, name);
     }
@@ -113,17 +114,17 @@ public class Prototype extends NamedObj implements Instantiable {
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new prototype that defers its definition to the
-     *  same object as this one (or to none).
+     *  yourself if you want it there). The result is a new instance of
+     *  InstantiableNamedObj that is a child of the parent of this object,
+     *  if this object has a parent. The new instance has no children.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
-     *  @return A new Prototype.
+     *  @return A new instance of InstantiableNamedObj.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Prototype newObject = (Prototype)super.clone(workspace);
+        InstantiableNamedObj newObject = (InstantiableNamedObj)super.clone(workspace);
         // The new object does not have any other objects deferring
         // their MoML definitions to it, so we have to reset this.
         newObject._children = null;
@@ -179,6 +180,7 @@ public class Prototype extends NamedObj implements Instantiable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
+     *  @see MoMLExportable
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -220,10 +222,15 @@ public class Prototype extends NamedObj implements Instantiable {
         output.write(_getIndentPrefix(depth) + "</class>\n");
     }
 
-    /** Get a list of weak references to instance of Instantiable
-     *  that defer to this object.
-     *  @return An unmodifiable list of weak references to
-     *   instances of Instantiable or null if no object defers to this one.
+    /** Get a list of weak references to instances of Instantiable
+     *  that are children of this object.  This method
+     *  may return null or an empty list to indicate that there are
+     *  no children.
+     *  @return An unmodifiable list of instances of
+     *   java.lang.ref.WeakReference that refer to
+     *   instances of Instantiable or null if this object
+     *   has no children.
+     *  @see Instantiable
      */
     public List getChildren() {
         if (_children == null) {
@@ -235,6 +242,7 @@ public class Prototype extends NamedObj implements Instantiable {
     /** Get the MoML element name. If this is a class definition, then
      *  return "class". Otherwise, defer to the base class.
      *  @return The MoML element name for this object.
+     *  @see MoMLExportable
      */
     public String getElementName() {
         if (isClassDefinition()) {
@@ -244,45 +252,83 @@ public class Prototype extends NamedObj implements Instantiable {
         }
     }
 
-    /** Get the prototype to which this object defers its definition.
-     *  @return A prototype or null to indicate that this object does
-     *   not defer its definition.
+    /** Return the parent of this object, or null if there is none.
+     *  @return The parent of this object, or null if there is none.
      *  @see #setParent(Instantiable)
+     *  @see Instantiable
      */
     public Instantiable getParent() {
         return _parent;
     }
+    
+    /** Return a list of prototypes for this object. The list is ordered
+     *  so that more local prototypes are listed before more remote
+     *  prototypes. Specifically, if this object has a parent, then the
+     *  parent is listed first. If the container has a parent, and
+     *  that parent contains an object whose name matches the name
+     *  of this object, then that object is listed next.
+     *  If the container of the container has a parent, and that parent
+     *  (deeply) contains a prototype, then that prototype is listed next.
+     *  And so on up the hierarchy.
+     *  @return A list of prototypes for this object, each of which is
+     *   assured of being an instance of the same (Java) class as this
+     *   object, or an empty list if there are no prototypes.
+     *  @exception IllegalActionException If a prototype with the right
+     *   name but the wrong class is found.
+     *  @see Derivable
+     */
+    public List getPrototypeList()
+            throws IllegalActionException {
+        List result = super.getPrototypeList();
+        if (getParent() != null) {
+            result.add(0, getParent());
+        }
+        return result;
+    }
 
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationships between the clone and its parent.
-     *  Specifically, the clone defers its definition to this prototype,
-     *  which is its "parent." It inherits all the objects contained
-     *  by this prototype. If this prototype is a composite, then
-     *  then adjust any deferral relationships that are entirely contained
-     *  within the clone. That is, for any deferral relationship that
-     *  is entirely contained within the parent, a corresponding
-     *  deferral relationship is created within the clone.
+    /** Create an instance by (deeply) cloning this object and then adjusting
+     *  the parent-child relationships between the clone and its parent.
+     *  Specifically, the clone defers its definition to this object,
+     *  which becomes its "parent." The "child" inherits all the objects
+     *  contained by this object. If this object is a composite, then this
+     *  method adjusts any parent-child relationships that are entirely
+     *  contained within the child. That is, for any parent-child relationship
+     *  that is entirely contained within this object (i.e., both the parent
+     *  and the child are deeply contained by this object), a corresponding
+     *  parent-child relationship is created within the clone such that
+     *  both the parent and the child are entirely contained within
+     *  the clone.
      *  <p>
-     *  The new object is not a class definition (it is by default an
+     *  The new object is not a class definition by default (it is an
      *  "instance" rather than a "class").  To make it a class
-     *  definition (a "subclass"), call setClassDefinition(true).
+     *  definition (a "subclass"), call {@link setClassDefinition(boolean)}
+     *  with a <i>true</i> argument.
      *  <p>
      *  In this base class, the container argument is ignored except that
-     *  it provides the workspace into which to clone this prototype. Derived
-     *  classes with setContainer() methods are responsible for overriding this
-     *  and calling setContainer().
-     *  @see #setClassDefinition(boolean)
+     *  it provides the workspace into which to clone this object. Derived
+     *  classes with setContainer() methods are responsible for overriding
+     *  this and calling setContainer().
+     *  <p>
+     *  Note that the workspace for the instantiated object can be different
+     *  from the workspace for this object. This means that propagation of
+     *  changes from a parent to a child may not be able to be safely
+     *  performed in the child even when they are safely performed in the
+     *  parent. Subclasses that restrict when changes are performed are
+     *  therefore required to check whether the workspaces are the same
+     *  before propagating changes.
      *  @param container The container for the instance, or null
      *   to instantiate it at the top level.
-     *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
+     *  @param name The name for the instance.
+     *  @return A new instance that is a clone of this object
      *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
+     *  @exception CloneNotSupportedException If this object
      *   cannot be cloned.
      *  @exception IllegalActionException If this object is not a
      *   class definition or the proposed container is not acceptable.
      *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.
+     *  @see #setClassDefinition(boolean)
+     *  @see Instantiable
      */
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException,
@@ -298,7 +344,7 @@ public class Prototype extends NamedObj implements Instantiable {
         if (container != null) {
             workspace = container.workspace();
         }
-        Prototype clone = (Prototype)clone(workspace);
+        InstantiableNamedObj clone = (InstantiableNamedObj)clone(workspace);
         
         // The cloning process results an object that defers change
         // requests.  By default, we do not want to defer change
@@ -324,75 +370,62 @@ public class Prototype extends NamedObj implements Instantiable {
      *  it can be instantiated.
      *  @return True if this object is a class definition.
      *  @see #setClassDefinition(boolean)
+     *  @see Instantiable
      */
     public final boolean isClassDefinition() {
         return _isClassDefinition;
     }
-
-    /** Return the maximum deferral depth of this object.
-     *  Going up the hierarchy, each time a container is encountered
-     *  that defers its definition to a parent, increment the parent
-     *  depth by one. Return the largest such
-     *  incremented depths, or zero if no container defers its
-     *  definition.
-     *  @return The maximum deferral depth.
-     */
-    public int maximumParentDepth() {
-        Prototype context = this;
-        int result = 0;
-        while (context != null) {
-            Instantiable parent = context.getParent();
-            if (parent != null) {
-                int newDepth = 1 + parent.maximumParentDepth();
-                if (newDepth > result) {
-                    result = newDepth;
-                }
-            }
-            // Subclasses ensure that the container
-            // is an instance of Prototype.
-            context = (Prototype)context.getContainer();
-        }
-        // No deferrals encountered while moving up the hierarchy.
-        return result;
-    }
     
     /** Specify whether this object is a class definition.
      *  This method is write synchronized on the workspace.
-     *  @param isClass True to make this object a class definition.
-     *  @exception IllegalActionException If setting the class definition
-     *   is not allowed.
+     *  @param isClass True to make this object a class definition, false
+     *   to make it an instance.
+     *  @exception IllegalActionException If there are subclasses and/or
+     *   instances and the argument is false.
+     *  @see #isClassDefinition()
+     *  @see Instantiable
      */
     public void setClassDefinition(boolean isClass)
             throws IllegalActionException {
-        // No need for a try-catch, since it's an atomic set.
         workspace().getWriteAccess();
-        _isClassDefinition = isClass;
-        workspace().doneWriting();
+        try {
+            if (!isClass && _isClassDefinition && getChildren().size() > 0) {
+                throw new IllegalActionException(this,
+                "Cannot change from a class to an instance because" +
+                " there are subclasses and/or instances.");
+            }
+            _isClassDefinition = isClass;
+        } finally {
+            workspace().doneWriting();
+        }
     }
 
-    /** Specify that this object defers its definition to another
-     *  object.  This should be called to make this object either an
-     *  an instance or a subclass of the other object. When generating
+    /** Specify the parent for this object.  This should be called
+     *  to make this object either an an instance or a subclass of
+     *  the other object. When generating
      *  a MoML description of this object, instead of giving a detailed
      *  description, this object will henceforth refer to the
      *  specified other object.  The name of that other object goes
      *  into the "class" or "extends" attribute of the MoML element
      *  defining this object (depending on whether this is an instance
      *  or a subclass).  This method is called when this object
-     *  is constructed by cloning another object that identifies itself
-     *  as a MoML "class". This method is write synchronized on
+     *  is constructed using the {@link #instantiate()} method.
+     *  This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
-     *  @param parent The object to defer to, or null to defer to none.
-     *  @see #exportMoML(Writer, int)
+     *  @param parent The parent, or null to specify that there is
+     *   no parent.
      *  @exception IllegalActionException If the parent is not an
-     *   instance of Prototype.
+     *   instance of InstantiableNamedObj.
+     *  @see #exportMoML(Writer, int)
      *  @see #getParent()
+     *  @see Instantiable
      */
     public void setParent(Instantiable parent) throws IllegalActionException {
-        if (parent != null && !(parent instanceof Prototype)) {
+        if (parent != null && !(parent instanceof InstantiableNamedObj)) {
             throw new IllegalActionException(this,
-                    "Parent of a Prototype must also be a Prototype.");
+                    "Parent of an InstantiableNamedObj must also " +
+                    "be an InstantiableNamedObj.");
         }
         try {
             _workspace.getWriteAccess();
@@ -414,13 +447,13 @@ public class Prototype extends NamedObj implements Instantiable {
                     }
                 }
             }
-            _parent = (Prototype)parent;
+            _parent = (InstantiableNamedObj)parent;
             if (parent != null) {
-                if (((Prototype)parent)._children == null) {
-                    ((Prototype)parent)._children = new LinkedList();
+                if (((InstantiableNamedObj)parent)._children == null) {
+                    ((InstantiableNamedObj)parent)._children = new LinkedList();
                 }
                 // NOTE: These need to be weak references.
-                ((Prototype)parent)._children.add(new WeakReference(this));
+                ((InstantiableNamedObj)parent)._children.add(new WeakReference(this));
             }
         } finally {
             _workspace.doneWriting();
@@ -430,13 +463,15 @@ public class Prototype extends NamedObj implements Instantiable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** List of prototypes that defer their definition to this object. */
+    /** List of weak references to children for which this object
+     *  is the parent.
+     */
     private List _children;
 
-    /** Prototype to which this object defers its definition to, or
-     *  null if none.
+    /** Parent to which this object defers its definition to, or
+     *  null if there is none.
      */
-    private Prototype _parent;
+    private InstantiableNamedObj _parent;
 
     /** Indicator of whether this is a class definition. */
     private boolean _isClassDefinition;

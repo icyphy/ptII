@@ -1099,9 +1099,21 @@ public class CompositeEntity extends ComponentEntity {
         }
         prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
-        int depth = maximumParentDepth();
-        if (depth > 0) {
-            prefix = prefix + "_" + depth + "_";
+        // NOTE: The list returned by getPrototypeList() has
+        // length equal to the number of containers of this object
+        // that return non-null to getParent(). That number is
+        // assured to be at least one greater than the corresponding
+        // number for any of the parents returned by getParent().
+        // Hence, we can use that number to minimize the likelyhood
+        // of inadvertent capture.
+        try {
+            int depth = getPrototypeList().size();
+            if (depth > 0) {
+                prefix = prefix + "_" + depth + "_";
+            }
+        } catch (IllegalActionException e) {
+            // Derivation invariant is not satisified.
+            throw new InternalErrorException(e);
         }
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null

@@ -1039,6 +1039,58 @@ test MoMLChangeRequest-9.1.7 {test derivedLevel values} {
 	[[$toplevel getEntity {iD}] getDerivedLevel] \
 } {2147483647 2147483647 2147483647 2147483647}
 
+test MoMLChangeRequest-9.1.8 {test getPrototypeList} {
+	list \
+	[listToFullNames [[$toplevel getAttribute {cA.cAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cA.cAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cA.iAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cA.iAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cD.cAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cD.cAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cD.iAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {cD.iAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iA.cAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iA.cAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iA.iAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iA.iAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iD.cAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iD.cAB.iABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iD.iAB.cABC.p}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getAttribute {iD.iAB.iABC.p}] getPrototypeList]] \
+} {{} .top.cA.cAB.cABC.p .top.cA.cAB.cABC.p {.top.cA.iAB.cABC.p .top.cA.cAB.iABC.p} .top.cA.cAB.cABC.p {.top.cD.cAB.cABC.p .top.cA.cAB.iABC.p} {.top.cD.cAB.cABC.p .top.cA.iAB.cABC.p} {.top.cD.iAB.cABC.p .top.cD.cAB.iABC.p .top.cA.iAB.iABC.p} .top.cA.cAB.cABC.p {.top.iA.cAB.cABC.p .top.cA.cAB.iABC.p} {.top.iA.cAB.cABC.p .top.cA.iAB.cABC.p} {.top.iA.iAB.cABC.p .top.iA.cAB.iABC.p .top.cA.iAB.iABC.p} .top.cD.cAB.cABC.p {.top.iD.cAB.cABC.p .top.cD.cAB.iABC.p} {.top.iD.cAB.cABC.p .top.cD.iAB.cABC.p} {.top.iD.iAB.cABC.p .top.iD.cAB.iABC.p .top.cD.iAB.iABC.p}}
+
+test MoMLChangeRequest-9.1.9 {test getPrototypeList} {
+	list \
+	[listToFullNames [[$toplevel getEntity {cA.cAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cA.cAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cA.iAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cA.iAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.cAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.cAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.iAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.iAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.cAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.cAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.iAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.iAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.cAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.cAB.iABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.iAB.cABC}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.iAB.iABC}] getPrototypeList]] \
+} {{} .top.cA.cAB.cABC .top.cA.cAB.cABC {.top.cA.iAB.cABC .top.cA.cAB.iABC} .top.cA.cAB.cABC {.top.cD.cAB.cABC .top.cA.cAB.iABC} {.top.cD.cAB.cABC .top.cA.iAB.cABC} {.top.cD.iAB.cABC .top.cD.cAB.iABC .top.cA.iAB.iABC} .top.cA.cAB.cABC {.top.iA.cAB.cABC .top.cA.cAB.iABC} {.top.iA.cAB.cABC .top.cA.iAB.cABC} {.top.iA.iAB.cABC .top.iA.cAB.iABC .top.cA.iAB.iABC} .top.cD.cAB.cABC {.top.iD.cAB.cABC .top.cD.cAB.iABC} {.top.iD.cAB.cABC .top.cD.iAB.cABC} {.top.iD.iAB.cABC .top.iD.cAB.iABC .top.cD.iAB.iABC}}
+
+test MoMLChangeRequest-9.1.10 {test getPrototypeList} {
+	list \
+	[listToFullNames [[$toplevel getEntity {cA.cAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cA.iAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.cAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {cD.iAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.cAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iA.iAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.cAB}] getPrototypeList]] \
+	[listToFullNames [[$toplevel getEntity {iD.iAB}] getPrototypeList]] \
+} {{} .top.cA.cAB .top.cA.cAB {.top.cD.cAB .top.cA.iAB} .top.cA.cAB {.top.iA.cAB .top.cA.iAB} .top.cD.cAB {.top.iD.cAB .top.cD.iAB}}
+
 test MoMLChangeRequest-9.2 {test propagation of change from master class} {
     set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
     set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]

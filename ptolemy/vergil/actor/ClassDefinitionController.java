@@ -40,7 +40,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
@@ -202,8 +202,8 @@ public class ClassDefinitionController extends ActorController {
         // FIXME: Can we adjust the location here?
         // NOTE: This controller is expected to be used
         // only for class definitions, which must be instances
-        // of Prototype, so this cast should be safe.b
-        if (((Prototype)object).isClassDefinition()) {
+        // of InstantiableNamedObj, so this cast should be safe.b
+        if (((InstantiableNamedObj)object).isClassDefinition()) {
             if (subclass) {
                 moml.append("<class name=\""
                         + "SubclassOf"
@@ -260,7 +260,7 @@ public class ClassDefinitionController extends ActorController {
 
             // NOTE: This cast should be safe because this controller is
             // used for actors.
-            Prototype object = (Prototype)getTarget();
+            InstantiableNamedObj object = (InstantiableNamedObj)getTarget();
             NamedObj container = (NamedObj)object.getContainer();
             // Assumes MoML parser will convert to instance.
             if (!object.isClassDefinition()) {

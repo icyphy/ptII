@@ -176,9 +176,9 @@ public class ConfigurableAttribute
      */
     public String getDefaultExpression() {
         try {
-            NamedObj prototype = _getPrototype(getName(), getContainer());
-            if (prototype != null) {
-                return ((Settable)prototype).getExpression();
+            List prototypeList = getPrototypeList();
+            if (prototypeList.size() > 0) {
+                return ((Settable)prototypeList.get(0)).getExpression();
             }
         } catch (IllegalActionException e) {
             // This should not occur.

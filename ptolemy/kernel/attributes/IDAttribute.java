@@ -32,7 +32,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -89,8 +89,8 @@ public class IDAttribute extends SingletonAttribute {
         // How to do that?
 
         boolean isClass = false;
-        if (container instanceof Prototype) {
-            isClass = ((Prototype)container).isClassDefinition();
+        if (container instanceof InstantiableNamedObj) {
+            isClass = ((InstantiableNamedObj)container).isClassDefinition();
         }
 
         String className = container.getClassName();

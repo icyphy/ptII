@@ -1,4 +1,4 @@
-# Tests for the Prototype class
+# Tests for the InstantiableNamedObj class
 #
 # @Author: Christopher Hylands, Edward A. Lee
 #
@@ -51,33 +51,33 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Prototype-1.0 {Constructor tests} {
+test InstantiableNamedObj-1.0 {Constructor tests} {
     set w [java::new ptolemy.kernel.util.Workspace]
-    set e1 [java::new ptolemy.kernel.Prototype]
-    set e2 [java::new ptolemy.kernel.Prototype "e2"]
-    set e3 [java::new ptolemy.kernel.Prototype $w]
-    set e4 [java::new ptolemy.kernel.Prototype $w "e4"]
+    set e1 [java::new ptolemy.kernel.InstantiableNamedObj]
+    set e2 [java::new ptolemy.kernel.InstantiableNamedObj "e2"]
+    set e3 [java::new ptolemy.kernel.InstantiableNamedObj $w]
+    set e4 [java::new ptolemy.kernel.InstantiableNamedObj $w "e4"]
     list [$e1 getName] [$e2 getName] [$e3 getName] [$e4 getName]
 } {{} e2 {} e4}
 
 ######################################################################
 ####
 #
-test Prototype-1.1 {exportMoML} {
-    set e1 [java::new ptolemy.kernel.Prototype "e1"]
+test InstantiableNamedObj-1.1 {exportMoML} {
+    set e1 [java::new ptolemy.kernel.InstantiableNamedObj "e1"]
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="e1" class="ptolemy.kernel.Prototype">
+<entity name="e1" class="ptolemy.kernel.InstantiableNamedObj">
 </entity>
 }
 
 ######################################################################
 ####
 #
-test Prototype-1.2 {instantiate} {
-    set e1 [java::new ptolemy.kernel.Prototype "e1"]
+test InstantiableNamedObj-1.2 {instantiate} {
+    set e1 [java::new ptolemy.kernel.InstantiableNamedObj "e1"]
     catch {set e2 [$e1 instantiate [java::null] {e2}]} msg
     string range $msg 0 52
 } {ptolemy.kernel.util.IllegalActionException: Cannot in}
@@ -85,9 +85,9 @@ test Prototype-1.2 {instantiate} {
 ######################################################################
 ####
 #
-test Prototype-1.3 {instantiate} {
+test InstantiableNamedObj-1.3 {instantiate} {
     $e1 setClassDefinition true
-    set e2 [java::cast ptolemy.kernel.Prototype [$e1 instantiate [java::null] {e2}]]
+    set e2 [java::cast ptolemy.kernel.InstantiableNamedObj [$e1 instantiate [java::null] {e2}]]
     $e2 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -99,7 +99,7 @@ test Prototype-1.3 {instantiate} {
 ######################################################################
 ####
 #
-test Prototype-1.4 {maximumParentDepth} {
+test InstantiableNamedObj-1.4 {maximumParentDepth} {
     $e2 maximumParentDepth
 } {1}
 

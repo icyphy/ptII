@@ -64,7 +64,6 @@ JSRCS = \
 	Debuggable.java \
 	DebugListener.java \
 	Derivable.java \
-	Exportable.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \
@@ -74,6 +73,7 @@ JSRCS = \
 	Locatable.java \
 	Location.java \
 	ModelErrorHandler.java \
+	MoMLExportable.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \

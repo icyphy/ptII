@@ -57,7 +57,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -1687,9 +1687,9 @@ public class ModelTransformer extends SceneTransformer
         //  System.out.println("findDeferred =" + object.getFullName());
         NamedObj deferredObject = null;
         boolean isClass = false;
-        if (object instanceof Prototype) {
-            deferredObject = (Prototype)((Prototype)object).getParent();
-            isClass = ((Prototype)object).isClassDefinition();
+        if (object instanceof InstantiableNamedObj) {
+            deferredObject = (InstantiableNamedObj)((InstantiableNamedObj)object).getParent();
+            isClass = ((InstantiableNamedObj)object).isClassDefinition();
         }
         if (deferredObject == null && object.getClassName() != null) {
             try {

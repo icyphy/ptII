@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.kernel.Port
    @see ptolemy.kernel.Relation
 */
-public class Entity extends Prototype {
+public class Entity extends InstantiableNamedObj {
 
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
