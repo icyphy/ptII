@@ -34,9 +34,16 @@ package pt.kernel.util;
 //// Nameable
 /**
 This is an interface for objects with a name and a container. A simple
-name is an arbitrary string. In addition, the interface supports a
+name is an arbitrary string that identifies the object in the context of
+its container. In addition, the interface supports a
 "full name" which in implementation should identify both the container
-and the individual object.
+and the individual object. The implementations in the kernel package
+define the full name of an object to be the full name of its container
+followed by a period followed by the simple name of the object.
+Given the implementations of this interface in the kernel
+package, it is not a good idea to have periods or braces in the name,
+although this is not enforced.  Braces will make it difficult to parse
+the descriptions returned by the description() method.
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
