@@ -315,7 +315,7 @@ public class PNDirector extends CompositeProcessDirector {
             capacity = 1;
         } else {
             int maximumCapacity
-                    = ((IntToken)maximumQueueCapacity.getToken()).intValue();
+                = ((IntToken)maximumQueueCapacity.getToken()).intValue();
             if (maximumCapacity > 0 && capacity*2 > maximumCapacity) {
                 throw new IllegalActionException(this,
                         "Capacity of a queue exceeds maximum capacity. "
@@ -429,7 +429,7 @@ public class PNDirector extends CompositeProcessDirector {
     ////                         private methods                   ////
 
     private void _init()
-           throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);

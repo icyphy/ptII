@@ -93,7 +93,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
                 ((IntToken)(director.iterations.getToken())).intValue();
 
             _sketchedSource = (SketchedSource)
-                    toplevel.getEntity("SketchedSource");
+                toplevel.getEntity("SketchedSource");
 
             // Note: The order of the following is important.
             // First, specify how long the sketched plot should be.
