@@ -43,6 +43,9 @@ import ptolemy.plot.plotml.HistogramMLParser;
 // Java imports.
 import java.awt.Container;
 import java.io.InputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -106,30 +109,56 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         return newobj;
     }
 
-    /** Configure the histogram with data from the specified input stream,
-     *  which is assumed to be in PlotML format.  If this is called before
-     *  the plotter has been created (by calling place() or initialize()),
-     *  then reading of the input stream is deferred until the plotter is
-     *  created.
+    /** Configure the histogram with data from the specified input source
+     *  (a URL) and/or textual data, assumed to be in PlotML format.
+     *  If this is called before the histogram has been created
+     *  (by calling place() or initialize()), then reading of the input
+     *  stream is deferred until the histogram is created.
      *  @param base The base relative to which references within the input
      *   stream are found, or null if this is not known.
-     *  @param in InputStream
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
+     *  @param source The input source, which specifies a URL.
+     *  @param text Configuration information given as text.
+     *  @exception Exception If the configuration source cannot be read
+     *   or if the configuration information is incorrect.
      */
-    public void configure(URL base, InputStream in) throws Exception {
+    public void configure(URL base, String source, String text)
+            throws Exception {
         if (histogram != null) {
             HistogramMLParser parser = new HistogramMLParser(histogram);
-            parser.parse(base, in);
-            in.close();
+            if (source != null && !source.equals("")) {
+                URL xmlFile = new URL(base, source);
+                InputStream stream = xmlFile.openStream();
+                parser.parse(base, stream);
+                stream.close();
+            }
+            if (text != null && !text.equals("")) {
+                // NOTE: Regrettably, the XML parser we are using cannot
+                // deal with having a single processing instruction at the
+                // outer level.  Thus, we have to strip it.
+                String trimmed = text.trim();
+                if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                    trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+                    if (trimmed.startsWith("plotml")) {
+                        trimmed = trimmed.substring(6).trim();
+                        parser.parse(base, trimmed);
+                    }
+                    // If it's not a plotml processing instruction, ignore.
+                } else {
+                    // Data is not enclosed in a processing instruction.
+                    // Must have been given in a CDATA section.
+                    parser.parse(base, text);
+                }
+            }
         } else {
             // Defer until histogram has been placed.
             if (_configureBases == null) {
                 _configureBases = new LinkedList();
-                _configureInputs = new LinkedList();
+                _configureSources = new LinkedList();
+                _configureTexts = new LinkedList();
             }
             _configureBases.add(base);
-            _configureInputs.add(in);
+            _configureSources.add(source);
+            _configureTexts.add(text);
         }
     }
 
@@ -183,19 +212,22 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             }
         }
         // If configurations have been deferred, implement them now.
-        if (_configureInputs != null) {
-            Iterator inputs = _configureInputs.iterator();
+        if (_configureSources != null) {
+            Iterator sources = _configureSources.iterator();
+            Iterator texts = _configureTexts.iterator();
             Iterator bases = _configureBases.iterator();
-            while(inputs.hasNext()) {
-                InputStream in = (InputStream)inputs.next();
+            while(sources.hasNext()) {
                 URL base = (URL)bases.next();
+                String source = (String)sources.next();
+                String text = (String)texts.next();
                 try {
-                    configure(base, in);
+                    configure(base, source, text);
                 } catch (Exception ex) {
                     getManager().notifyListenersOfException(ex);
                 }
             }
-            _configureInputs = null;
+            _configureSources = null;
+            _configureTexts = null;
             _configureBases = null;
         }
     }
@@ -230,6 +262,34 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this class is the configuration information. This method is called
+     *  by exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        super._exportMoMLContents(output, depth);
+        // NOTE: Cannot include xml spec in the header because processing
+        // instructions cannot be nested in XML (lame, isn't it?).
+        String header
+                = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
+                + header + "\n<plot>\n");
+        PrintWriter print = new PrintWriter(output);
+        // The second (null) argument indicates that PlotML PUBLIC DTD
+        // should be referenced.
+        histogram.writeFormat(print);
+        output.write("</plot>?>\n"
+               + _getIndentPrefix(depth) + "</configure>\n");
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     /** Container into which this histogram should be placed */
@@ -237,5 +297,6 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
 
     // The bases and input streams given to the configure() method.
     private List _configureBases = null;
-    private List _configureInputs = null;
+    private List _configureSources = null;
+    private List _configureTexts = null;
 }
