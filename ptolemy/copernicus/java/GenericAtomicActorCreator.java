@@ -268,7 +268,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 SootUtilities.changeTypesInMethods(entityClass, 
                         attributeClass, newClass);
               
-                // Fold the copied class up to StringAttribute.
+                // Fold the copied class up to StringAttribute, or parameter
                 SootClass superClass = newClass.getSuperclass();
                 while (superClass != PtolemyUtilities.objectClass &&
                         superClass != PtolemyUtilities.stringAttributeClass &&

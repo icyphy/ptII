@@ -239,18 +239,18 @@ treeShakeSnapshots:
 		echo "Treeshake $$snapshot"; \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 			"$(JAVA)" -Xfuture -classpath \
-	"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
-				$(TARGETPACKAGE).Main | tail -1 ; \
+		"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+					$(TARGETPACKAGE).Main | tail -1 ; \
 		ls -l $(TREESHAKE_PREFIX)_$${snapshot}.jar; \
-	done
+	done	
 
 runTreeShakeSnapshots:
 	@echo "Treeshake $(MODEL) snapshots"
 	for snapshot in $(SNAPSHOTS); \
 	do \
-		@echo "Run the code from $(TARGETPATH)/$${snapshot}"; \
+		echo "Run the code from $(TARGETPATH)/$${snapshot}"; \
 		"$(JAVA)" -classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
-			$(TARGETPACKAGE).Main \
+			$(TARGETPACKAGE).Main; \
 	done
 
 profileTreeShakeSnapshots:

@@ -330,11 +330,19 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         body, className,
                         namedObjLocal, attribute.getName());
                 // System.out.println("created local");
-                Attribute classAttribute =
-                    (Attribute)_findDeferredInstance(attribute);
-                updateCreatedSet(namedObj.getFullName() + "."
-                        + attribute.getName(),
-                        classAttribute, classAttribute, createdSet);
+                
+                // NOTE: Assume that attributes that contain other
+                // attributes must implement a workspace constructor
+                try {
+                    Attribute classAttribute =
+                        (Attribute)_findDeferredInstance(attribute);
+                    updateCreatedSet(namedObj.getFullName() + "."
+                            + attribute.getName(),
+                            classAttribute, classAttribute, createdSet);
+                } catch (Exception ex) {
+                    createdSet.add(namedObj.getFullName() + "."
+                            + attribute.getName());
+                }
             }
 
             // System.out.println("creating new field");
@@ -382,7 +390,9 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             //   System.out.println("ModelTransformer: port: " + port);
             // Ignore PortParameters...
             if(port instanceof ParameterPort) {
-                continue;
+                updateCreatedSet(entity.getFullName() + "."
+                        + port.getName(),
+                        port, port, createdSet);
             }
                    
             String className = port.getClass().getName();
@@ -417,9 +427,16 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
-                updateCreatedSet(entity.getFullName() + "."
-                        + port.getName(),
-                        port, port, createdSet);
+                // Record the name of the created port.
+                // NOTE: we assume that this is only a TypedIOPort, which
+                // contains no other objects!
+             //    Port classPort =
+//                     (Port)_findDeferredInstance(port);
+           //      updateCreatedSet(entity.getFullName() + "."
+//                         + port.getName(),
+//                         classPort, classPort, createdSet);
+                createdSet.add(entity.getFullName() + "."
+                        + port.getName());
                 // Then assign to portLocal.
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(portLocal,
@@ -473,6 +490,8 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         portLocal, theClass, RefType.v(className),
                         fieldName);
             }
+            createAttributes(body, context, contextLocal,
+                    port, portLocal, theClass, createdSet);
         }
     }
 
@@ -497,11 +516,10 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             NamedObj namedObj, Local namedObjLocal,
             SootClass theClass) {
 
-        //   System.out.println("initializing attributes in " + namedObj);
+        System.out.println("initializing attributes in " + namedObj);
 
         // Check to see if we have anything to do.
         if (namedObj.attributeList().size() == 0) return;
-
 
         Type variableType = RefType.v(PtolemyUtilities.variableClass);
 
@@ -617,7 +635,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                         PtolemyUtilities.validateMethod)),
                         insertPoint);
             }
-
+           
             // recurse so that we get all parameters deeply.
             initializeAttributesBefore(body, insertPoint,
                     context, contextLocal,
@@ -634,6 +652,29 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                     validateLocal,
                                     PtolemyUtilities.validateMethod)),
                     insertPoint);
+        }
+       
+        if(namedObj instanceof Entity) {
+            Entity entity = (Entity)namedObj;
+            for (Iterator ports = entity.portList().iterator();
+                 ports.hasNext();) {
+                Port port = (Port)ports.next();
+                Local portLocal = Jimple.v().newLocal("port",
+                        RefType.v(PtolemyUtilities.portClass));
+                body.getLocals().add(portLocal);
+                String portName = port.getName(context);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                portLocal,
+                                Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                        PtolemyUtilities.getPortMethod,
+                                        StringConstant.v(portName))),
+                        insertPoint);
+                // recurse so that we get all parameters deeply.
+                initializeAttributesBefore(body, insertPoint,
+                        context, contextLocal,
+                        port, portLocal, theClass);
+            }
         }
     }
 
@@ -1007,11 +1048,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     public static void updateCreatedSet(String prefix,
             NamedObj context, NamedObj object, HashSet set) {
         if (object == context) {
-            //  System.out.println("creating " + prefix);
+            System.out.println("creating " + prefix);
             set.add(prefix);
         } else {
             String name = prefix + "." + object.getName(context);
-            //  System.out.println("creating " + name);
+            System.out.println("creating " + name);
             set.add(name);
         }
         if (object instanceof CompositeActor) {
@@ -1161,6 +1202,10 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         body, className,
                         thisLocal, entity.getName());
 
+                Entity classEntity =
+                    (Entity)_findDeferredInstance(entity);
+                // This class assumes that any entity that is created creates
+                // all stuff inside it.
                 updateCreatedSet(
                         composite.getFullName() + "." + entity.getName(),
                         entity, entity, createdSet);
@@ -1231,9 +1276,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
-                updateCreatedSet(entity.getFullName() + "."
-                        + port.getName(),
-                        port, port, createdSet);
+                createdSet.add(entity.getFullName() + "."
+                        + port.getName());
+//                 updateCreatedSet(entity.getFullName() + "."
+//                         + port.getName(),
+//                         port, port, createdSet);
                 if (port instanceof TypedIOPort) {
                     TypedIOPort ioport = (TypedIOPort)port;
                     if (ioport.isInput()) {
@@ -1676,22 +1723,6 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         }
 
         implementExecutableInterface(entityInstanceClass);
-
-        {
-            // Add code to the beginning of the preinitialize method that
-            // initializes the attributes.
-
-            SootMethod method =
-                entityInstanceClass.getMethodByName("preinitialize");
-            JimpleBody body = (JimpleBody)method.getActiveBody();
-            Stmt insertPoint = body.getFirstNonIdentityStmt();
-            initializeAttributesBefore(body, insertPoint,
-                    entity, body.getThisLocal(),
-                    entity, body.getThisLocal(),
-                    entityInstanceClass);
-            LocalNameStandardizer.v().transform(body, "at.lns");
-            LocalSplitter.v().transform(body, "at.ls");
-        }
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());

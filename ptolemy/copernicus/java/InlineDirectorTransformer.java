@@ -655,6 +655,13 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             thisLocal),
                     insertPoint);
             
+            // Add code to the beginning of the preinitialize method that
+            // initializes the attributes.
+            ModelTransformer.initializeAttributesBefore(body, insertPoint,
+                    model, body.getThisLocal(),
+                    model, body.getThisLocal(),
+                    modelClass);
+                    
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -1103,6 +1110,13 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
+            // Add code to the beginning of the preinitialize method that
+            // initializes the attributes.
+            ModelTransformer.initializeAttributesBefore(body, insertPoint,
+                    model, body.getThisLocal(),
+                    model, body.getThisLocal(),
+                    modelClass);
+            
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -1529,10 +1543,18 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     IntConstant.v(1)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(
-                    Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
+                    Jimple.v().newInstanceFieldRef(
+                            thisLocal, postfireReturnsField),
                     postfireReturnsLocal),
                     insertPoint);
-
+            
+            // Add code to the beginning of the preinitialize method that
+            // initializes the attributes.
+            ModelTransformer.initializeAttributesBefore(body, insertPoint,
+                    model, body.getThisLocal(),
+                    model, body.getThisLocal(),
+                    modelClass);
+     
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();

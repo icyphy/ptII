@@ -59,6 +59,8 @@ import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.toolkits.scalar.UnusedLocalEliminator;
 
+import java.util.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
@@ -531,26 +533,19 @@ public class Main extends KernelMain {
      *  to the given pack.
      */
     private static void _addStandardOptimizations(Pack pack, int time) {
-        addTransform(pack, "wjtp.SOcse" + time,
-                new TransformerAdapter(CommonSubexpressionEliminator.v()));
-        addTransform(pack, "wjtp.SOcp" + time,
-                new TransformerAdapter(CopyPropagator.v()));
-        addTransform(pack, "wjtp.SOcpf" + time,
-                new TransformerAdapter(ConstantPropagatorAndFolder.v()));
-        addTransform(pack, "wjtp.SOcbf" + time,
-                new TransformerAdapter(ConditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOdae" + time,
-                new TransformerAdapter(DeadAssignmentEliminator.v()));
-        addTransform(pack, "wjtp.SOuce1" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack, "wjtp.SOubf1" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOuce2" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack, "wjtp.SOubf2" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOule" + time,
-                new TransformerAdapter(UnusedLocalEliminator.v()));
+        List standardList = new LinkedList();
+        standardList.add(CommonSubexpressionEliminator.v());
+        standardList.add(CopyPropagator.v());
+        standardList.add(ConstantPropagatorAndFolder.v());
+        standardList.add(ConditionalBranchFolder.v());
+        standardList.add(DeadAssignmentEliminator.v());
+        standardList.add(UnreachableCodeEliminator.v());
+        standardList.add(UnconditionalBranchFolder.v());
+        standardList.add(UnreachableCodeEliminator.v());
+        standardList.add(UnconditionalBranchFolder.v());
+        standardList.add(UnusedLocalEliminator.v());
+        addTransform(pack, "wjtp.StandardOptimizations" + time,
+                new TransformerAdapter(standardList));
     }
    
     private static String _generatorAttributeFileName = "unsetParameter";
