@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =
+DIRS = Prime Interleave RunLength TicTacToe 
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -69,6 +69,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass pndemo.jar
 
 install: jclass pndemo.jar 
+demo: subdemo
 docs: javadocs
 
 
