@@ -75,8 +75,12 @@ remain synchronized with the state of a mutating model.
 @author Steve Neuendorffer
 @version $Id$
 */
-public abstract class PtolemyGraphModel extends ModularGraphModel {
+public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 
+    public AbstractPtolemyGraphModel(Object root) {
+	super(root);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -183,7 +187,7 @@ public abstract class PtolemyGraphModel extends ModularGraphModel {
 	    // Ignore anything that comes from this graph model.  
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-	    if(change.getOriginator() == PtolemyGraphModel.this) {
+	    if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
                 return;
             }
 	    // This has to happen in the swing thread, because Diva assumes
@@ -197,7 +201,7 @@ public abstract class PtolemyGraphModel extends ModularGraphModel {
 		    // that the graph might have
 		    // completely changed.
 		    dispatchGraphEvent(new GraphEvent(
-			PtolemyGraphModel.this, 
+			AbstractPtolemyGraphModel.this, 
 			GraphEvent.STRUCTURE_CHANGED, getRoot()));
 //		}
 //	    });
