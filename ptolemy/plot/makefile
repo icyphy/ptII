@@ -58,8 +58,8 @@ JSRCS1_0 = \
 	PlotFourierSeries.java \
 	PlotLive.java \
 	PlotLive.java \
-	PlotLiveApplet.java \
 	PlotLiveDemo.java \
+	PlotLiveDemoApplet.java \
 	PlotPoint.java \
 	PlayingWave.java
 
