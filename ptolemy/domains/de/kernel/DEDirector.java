@@ -733,30 +733,30 @@ public class DEDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-            ////                         private methods                        ////
+    ////                         private methods                   ////
 
-            // Dequeue the next event from the event queue, advance time to its
-            // time stamp, and mark the destination actor for firing.
-            // If there are multiple events on the queue with the same time
-            // stamp that are destined for the same actor, dequeue all of them,
-            // making them available in the input ports of the destination actor.
-            // The firing actor may be fired repeatedly until all its
-            // receivers that don't tolerate pending tokens are empty.
-            // If the time stamp is greater than the stop time then return false.
-            // If there are no events on the event queue, and _stopWhenQueueIsEmpty
-            // flag is true (which is set to true by default) then return false,
-            // which will have the effect of stopping the simulation.
+    // Dequeue the next event from the event queue, advance time to its
+    // time stamp, and mark the destination actor for firing.
+    // If there are multiple events on the queue with the same time
+    // stamp that are destined for the same actor, dequeue all of them,
+    // making them available in the input ports of the destination actor.
+    // The firing actor may be fired repeatedly until all its
+    // receivers that don't tolerate pending tokens are empty.
+    // If the time stamp is greater than the stop time then return false.
+    // If there are no events on the event queue, and _stopWhenQueueIsEmpty
+    // flag is true (which is set to true by default) then return false,
+    // which will have the effect of stopping the simulation.
+    
+    // FIXME: This should return the actor, not use a private variable.
+    // Lukito: Good idea! Also, maybe change the method name to
+    // _obtainActorToFire or _getActorToFire
+    private boolean _prepareActorToFire() {
+        // During prefire, new actor will be chosen to fire
+        // therefore, initialize _actorToFire field to null.
 
-            // FIXME: This should return the actor, not use a private variable.
-            // Lukito: Good idea! Also, maybe change the method name to
-            // _obtainActorToFire or _getActorToFire
-            private boolean _prepareActorToFire() {
-                // During prefire, new actor will be chosen to fire
-                // therefore, initialize _actorToFire field to null.
-
-                _actorToFire = null;
-                // Initialize the _filledReceivers field.
-                _filledReceivers.clear();
+        _actorToFire = null;
+        // Initialize the _filledReceivers field.
+        _filledReceivers.clear();
 
                 DEEvent currentEvent = null;
                 // Keep taking events out until there are no more simultaneous
