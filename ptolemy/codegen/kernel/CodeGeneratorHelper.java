@@ -35,6 +35,8 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
@@ -80,10 +82,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  code to the given string buffer.
      * @param stream The given string buffer.
      */
-    public void generateInitializeCode(StringBuffer stream)
+    public String generateInitializeCode()
             throws IllegalActionException {
         _firingCount = 0;
         _firingsPerIteration = 1;
+        return "";
     }
 
     /** Reset the _firingCount and _firingPerIteration to their default
@@ -163,86 +166,84 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String getReference(String name) throws IllegalActionException {
         
         StringBuffer result = new StringBuffer();
-        if (_component instanceof Actor) {
-            Actor actor = (Actor) _component;
-            StringTokenizer tokenizer = new StringTokenizer(name, "#%", true);
-            if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
-                    && tokenizer.countTokens() != 5) {
-                throw new IllegalActionException(_component,
+        Actor actor = (Actor) _component;
+        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
+        if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
+                && tokenizer.countTokens() != 5) {
+            throw new IllegalActionException(_component,
                         "Reference not found: " + name);
-            }
+        }
             
-            // Get the port name.
-            String portName = tokenizer.nextToken().trim();
+        // Get the referenced name.
+        String refName = tokenizer.nextToken().trim();
             
-            Iterator inputPorts = actor.inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                IOPort port = (IOPort) inputPorts.next();
-                // The channel is specified as $ref(port#channelNumber).
-                if (port.getName().equals(portName)) {
-                    result.append(port.getFullName().replace('.', '_'));
-                    int[] channelAndOffset = _getChannelAndOffset(name);
-                    if (channelAndOffset[0] >= 0) {
-                        // Channel number specified. This must be a multiport.
-                        result.append("[" + channelAndOffset[0] + "]");
-                    }
-                    if (channelAndOffset[1] >= 0) {
-                        int offset = channelAndOffset[1] + 
-                            _firingCount * port.getReceivers()[0].length;
-                        result.append("[" + channelAndOffset[1] + "]");
-                    } else if (_firingsPerIteration > 1) {
-                        // Did not specify offset, so the receiver length is 1.
-                        // This is multiple firing.
-                        result.append("[" + _firingCount + "]");
-                    }
-                    return result.toString();
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            // The channel is specified as $ref(port#channelNumber).
+            if (port.getName().equals(refName)) {
+                result.append(port.getFullName().replace('.', '_'));
+                int[] channelAndOffset = _getChannelAndOffset(name);
+                if (channelAndOffset[0] >= 0) {
+                    // Channel number specified. This must be a multiport.
+                    result.append("[" + channelAndOffset[0] + "]");
                 }
-            }
-            
-            Iterator outputPorts = actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                if (port.getName().equals(portName)) {
-                    Receiver[][] remoteReceivers 
-                        = (port.getRemoteReceivers());
-                    if (remoteReceivers.length == 0) {
-                        // This channel of this output port doesn't have any sink.
-                        result.append(_component.getFullName().replace('.', '_'));
-                        result.append("_");
-                        result.append(port.getName());
-                        return result.toString();
-                    }
-                    
-                    int[] channelAndOffset = _getChannelAndOffset(name);
-                    if (channelAndOffset[0] < 0) {
-                        result.append(getSinkChannels(port, 0));
-                    } else {
-                        result.append(getSinkChannels(port,
-                                channelAndOffset[0]));
-                    }
-                    if (channelAndOffset[1] >= 0) {
-                        result.append("[" + channelAndOffset[1] + "]");
-                    } else if (_firingsPerIteration > 1) {
-                        // Did not specify offset, so the receiver length is 1.
-                        // This is multiple firing.
-                        result.append("[" + _firingCount + "]");
-                    }
-                    return result.toString();
+                if (channelAndOffset[1] >= 0) {
+                    int offset = channelAndOffset[1] + 
+                        _firingCount * port.getReceivers()[0].length;
+                    result.append("[" + channelAndOffset[1] + "]");
+                } else if (_firingsPerIteration > 1) {
+                    // Did not specify offset, so the receiver length is 1.
+                    // This is multiple firing.
+                    result.append("[" + _firingCount + "]");
                 }
+                return result.toString();
             }
         }
+            
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort) outputPorts.next();
+            if (port.getName().equals(refName)) {
+                Receiver[][] remoteReceivers 
+                    = (port.getRemoteReceivers());
+                if (remoteReceivers.length == 0) {
+                    // This channel of this output port doesn't have any sink.
+                    result.append(_component.getFullName().replace('.', '_'));
+                    result.append("_");
+                    result.append(port.getName());
+                    return result.toString();
+                }
+                    
+                int[] channelAndOffset = _getChannelAndOffset(name);
+                if (channelAndOffset[0] < 0) {
+                    result.append(getSinkChannels(port, 0));
+                } else {
+                    result.append(getSinkChannels(port, channelAndOffset[0]));
+                }
+                if (channelAndOffset[1] >= 0) {
+                    result.append("[" + channelAndOffset[1] + "]");
+                } else if (_firingsPerIteration > 1) {
+                    // Did not specify offset, so the receiver length is 1.
+                    // This is multiple firing.
+                    result.append("[" + _firingCount + "]");
+                }
+                return result.toString();
+            }
+        }
+            
         // Try if the name is a parameter.
-        Attribute attribute = _component.getAttribute(name);
-        
+        Attribute attribute = _component.getAttribute(refName);
         if (attribute != null) {
             if (attribute instanceof Parameter) {
                 _referencedParameters.add(attribute);
             }
             result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
-            result.append(name);
+            result.append(refName);
             return result.toString();
         }
+        
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
     }
@@ -306,6 +307,46 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
         return result.toString();
+    }
+    
+    /** Get the size of a parameter or port.
+     * @param name
+     * @return
+     * @throws IllegalActionException
+     */
+    public int getSize(String name)
+            throws IllegalActionException {
+        int size = 1;
+        // Try if the name is a parameter.
+        Attribute attribute = _component.getAttribute(name);
+        if (attribute != null) {
+            // FIXME:  Could it be something other than variable?
+            if (attribute instanceof Variable) {
+                Token token = ((Variable)attribute).getToken();
+                if (token instanceof ArrayToken) {
+                    return ((ArrayToken)token).length();
+                }
+                return 1;
+            } 
+        }
+        // try if the name is a port.
+        Actor actor = (Actor)_component;
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            if (port.getName().equals(name)) {
+                return port.getReceivers()[0].length;
+            }
+        }
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port  = (IOPort) inputPorts.next();
+            if (port.getName().equals(name)) {
+                return port.getRemoteReceivers()[0].length;
+            }
+        }
+        throw new IllegalActionException(_component,
+                "Attribute not found: " + name);
     }
     
     /** Process the specified code, replacing macros with their values.
@@ -395,8 +436,34 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             }
                         }
                     }
+                } else if (token.equals("size") && tokenizer.hasMoreTokens()) {
+                    String openParen = tokenizer.nextToken();
+                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
+                        String macroName = tokenizer.nextToken();
+                        if (macroName.equals("(") || macroName.equals(")")) {
+                            throw new IllegalActionException(_component,
+                                    "Illegal expression: " + subcode);
+                        }
+                        if (tokenizer.hasMoreTokens()) {
+                            String closeParen = tokenizer.nextToken();
+                            if (closeParen.equals(")")) {
+                                if (macroName.trim().equals("")) {
+                                    throw new IllegalActionException(
+                                            _component, "Illega expression: "
+                                            + "size(" + macroName + ")");
+                                }
+                            }
+                            foundIt = true;
+                            macroName = macroName.trim();
+                            result.append(getSize(macroName));
+                            while (tokenizer.hasMoreTokens()) {
+                                result.append(tokenizer.nextToken());
+                            }
+                        }
+                        
+                    }
                 }
-            }
+             }
             if (!foundIt) {
                 result.append("$");
                 result.append(subcode);
@@ -441,7 +508,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     private int[] _getChannelAndOffset(String name)
             throws IllegalActionException {
         int[] result = {-1, -1};
-        StringTokenizer tokenizer = new StringTokenizer(name, "#%", true);
+        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
         if (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
@@ -454,7 +521,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
                 result[0] = channel;
                 if (tokenizer.hasMoreTokens()) {
-                    if (tokenizer.nextToken().equals("%")) {
+                    if (tokenizer.nextToken().equals(",")) {
                         int offset = new Integer(tokenizer.nextToken().trim())
                                 .intValue();
                         if (offset < 0) {
@@ -464,7 +531,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         result[1] = offset;
                     }
                 }
-            } else if (token.equals("%")) {
+            } else if (token.equals(",")) {
                 int offset = new Integer(tokenizer.nextToken().trim())
                         .intValue();
                 if (offset < 0 || tokenizer.hasMoreTokens()) {

@@ -84,10 +84,8 @@ public class StaticSchedulingCodeGenerator
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("main() {\n");
         code.append(comment("SDF schedule:"));
         generateFireCode(code);
-        code.append("}\n");
         return code.toString();
     }
 

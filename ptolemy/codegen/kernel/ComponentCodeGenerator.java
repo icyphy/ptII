@@ -56,7 +56,7 @@ public interface ComponentCodeGenerator {
      *  @param code The code stream into which to generate the code.
      *  @throws IllegalActionException If something goes wrong.
      */
-    public void generateInitializeCode(StringBuffer code)
+    public String generateInitializeCode()
             throws IllegalActionException; 
 
     /** Generate into the specified code stream the code associated

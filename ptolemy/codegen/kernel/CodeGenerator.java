@@ -130,7 +130,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * @return The empty string.
      */
     public String generateBodyCode() throws IllegalActionException {
-        return "main() {\n}";
+        return "";
     }
 
     /** Generate code and append it to the given string buffer.
@@ -141,11 +141,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
-        generateInitializeCode(code);
+        String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
+        code.append("main() {\n");
+        code.append(initializeCode);
         code.append(bodyCode);
         generateWrapupCode(code);
+        code.append("}\n");
         
         // Write the code to the file specified by codeDirectory.
         try {
@@ -172,8 +175,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  contained by the container of this attribute (inarbitrary order).
      *  @param code The given string buffer.
      */
-    public void generateInitializeCode(StringBuffer code) 
+    public String generateInitializeCode() 
             throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         code.append(comment(
                 "Initialize " + getContainer().getFullName()));
         Iterator actors = ((CompositeActor)getContainer())
@@ -181,8 +185,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
-            helperObject.generateInitializeCode(code);
+            code.append(helperObject.generateInitializeCode());
         }
+        return code.toString();
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
