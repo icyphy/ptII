@@ -894,7 +894,7 @@ $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	 tar -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
 
-INSTALLSHIELD_RUNTIME_DOMAINS=ct csp de fsm pn sdf
+INSTALLSHIELD_RUNTIME_DOMAINS=ct de fsm pn sdf
 $(INSTALLSHIELD_RUNTIME): bar
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/codeDoc/ptolemy/actor
