@@ -128,6 +128,11 @@ public class DataMapEnvironment implements Environment {
                 + "DataMapEnvironment.");
     }
 
+    public Environment newFrame(Environment parent) {
+        throw new InterpreterException("Cannot make a new frame in "
+                + "DataMapEnvironment.");
+    }
+
     public void freezeLocal() {
         throw new InterpreterException("Cannot freezeLocal() in "
                 + "DataMapEnvironment.");
