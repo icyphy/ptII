@@ -59,14 +59,14 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.moml.Location" value="47.0, 318.0">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="n_in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.moml.Location" value="43.0, 388.0">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="source_address" class="ptolemy.actor.TypedIOPort">
@@ -80,14 +80,14 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="532.5, 137.0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="sink_data" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="526.5, 204.0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="inptr" class="ptolemy.actor.TypedIOPort">
@@ -101,14 +101,14 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="529.5, 342.0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="n" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="529.5, 423.0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <port name="Pa_in" class="ptolemy.actor.TypedIOPort">
@@ -1683,7 +1683,7 @@
         <link port="State3.Pa" relation="relation3"/>
     </entity>
     <entity name="AudioReadBuffer" class="ptolemy.actor.lib.javasound.AudioReadBuffer">
-        <property name="sourceURL" class="ptolemy.kernel.util.StringAttribute" value="file:./ptolemy2.wav">
+        <property name="sourceURL" class="ptolemy.kernel.util.StringAttribute" value="http://ptolemy.eecs.berkeley.edu/~vogel/sounds/pitchshift/ptolemy2.wav">
         </property>
         <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="51648">
         </property>
