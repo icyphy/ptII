@@ -1,3 +1,12 @@
+<!-- Questions: Global variables + Observable variables
+                Deterministic semantics
+                Channel implementations
+                update actions entry/exit actions update the inputs or outputs
+                events triggers?
+     Export to HSIF
+-->
+
+
 <xsl:transform
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  version="1.0"
@@ -58,7 +67,7 @@
         <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>
-                <xsl:with-param name="InController" select = "'false'"/>
+                <xsl:with-param name="environment" select = "'DNHA'"/>
             </xsl:call-template>
         </xsl:for-each>
 
@@ -77,7 +86,6 @@
         <!-- Make the relations based on I/O ports block diagram of network of Hybrid Automata-->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
-            <!--xsl:for-each select="IntegerVariable[@kind='Input']|RealVariable[@kind='Input']|BooleanVariable[@kind='Input']"-->
             <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
                 <xsl:element name="relation">
                     <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
@@ -138,7 +146,7 @@
         <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
-                <xsl:with-param name="InController" select = "'false'"/>
+                <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
         </xsl:for-each>
 
@@ -147,7 +155,6 @@
             <!-- attributes of entity -->
             <xsl:attribute name="name">_Controller</xsl:attribute>
             <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalController</xsl:attribute>
-            
             <xsl:call-template name="_Controller">
             </xsl:call-template>
          </xsl:element>
@@ -259,7 +266,7 @@
     <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
         <xsl:call-template name="variable">
             <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
-            <xsl:with-param name="InController" select = "'true'"/>
+            <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
     </xsl:for-each>
 
@@ -319,7 +326,7 @@
             <xsl:attribute name="name">setActions</xsl:attribute>
             <xsl:attribute name="class">ptolemy.domains.fsm.kernel.CommitActionsAttribute</xsl:attribute>
             <xsl:attribute name="value">
-                <xsl:for-each select="UpdateAction"><xsl:call-template name="updateAction"/></xsl:for-each>
+                <xsl:apply-templates select="UpdateAction"/>
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="property">
@@ -386,7 +393,7 @@
         <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
-                <xsl:with-param name="InController" select = "'false'"/>
+                <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
         </xsl:for-each>
 
@@ -418,10 +425,14 @@
                 <xsl:if test="$temp=''">invariant</xsl:if>
             </xsl:variable>
             <xsl:for-each select="descendant::Var">
-                <xsl:element name="link">
-                    <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', @name)"/></xsl:attribute>
-                    <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
-                </xsl:element>              
+                <xsl:variable name="varName" select="@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="link">
+                        <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', $varName)"/></xsl:attribute>
+                        <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+                    </xsl:element>              
+                </xsl:if>
             </xsl:for-each>
         </xsl:for-each>
 
@@ -429,10 +440,14 @@
         <xsl:for-each select="DiffEquation">
             <xsl:variable name="prefix"><xsl:value-of select="Var/@name"/></xsl:variable>
             <xsl:for-each select="RExpr/descendant::Var">
-                <xsl:element name="link">
-                    <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', @name)"/></xsl:attribute>
-                    <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
-                </xsl:element>              
+                <xsl:variable name="varName" select="@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="link">
+                        <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', @name)"/></xsl:attribute>
+                        <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
+                    </xsl:element>              
+                </xsl:if>
             </xsl:for-each>
         </xsl:for-each>
 
@@ -491,13 +506,14 @@
 <!-- ========================================================== -->
 <xsl:template name="variable">
     <xsl:param name="portType" select="'Default PortType'"/>
-    <xsl:param name="InController" select = "'Default InController'"/>
+    <xsl:param name="environment" select = "'Default Environment'"/>
     <xsl:choose>
-        <xsl:when test="@kind='Controlled'">
+        <!--xsl:when test="@kind='Controlled'"-->
+        <xsl:when test="@kind='Output'">
             <xsl:element name="port">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
-                <xsl:if test="$InController='true'">
+                <xsl:if test="$environment='controller'">
                     <xsl:element name="property">    
                         <xsl:attribute name="name">input</xsl:attribute>
                     </xsl:element>
@@ -509,32 +525,6 @@
             </xsl:element>
         </xsl:when>
         <xsl:when test="@kind='Input'">
-            <xsl:element name="port">
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
-                <xsl:element name="property">    
-                    <xsl:attribute name="name">input</xsl:attribute>
-                </xsl:element>
-                <xsl:call-template name="value"/>
-            </xsl:element>
-        </xsl:when>
-        <xsl:when test="@kind='Observable'">
-            <!--FIXME: The Observable variables need more consideration -->
-            <!--
-            <xsl:element name="port">
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
-                <xsl:if test="$InController='true'">
-                    <xsl:element name="property">    
-                        <xsl:attribute name="name">input</xsl:attribute>
-                    </xsl:element>
-                </xsl:if>
-                <xsl:element name="property">    
-                    <xsl:attribute name="name">output</xsl:attribute>
-                </xsl:element>
-                <xsl:call-template name="value"/>
-            </xsl:element>
-            -->
             <xsl:element name="port">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
@@ -623,6 +613,9 @@
         <xsl:choose>
             <xsl:when test="$temp='and'"><xsl:text>&amp;</xsl:text></xsl:when>
             <xsl:when test="$temp='or'">||</xsl:when>
+            <xsl:when test="$temp=' and '"><xsl:text>&amp;</xsl:text></xsl:when>
+            <xsl:when test="$temp=' or '">||</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$temp"/></xsl:otherwise>
         </xsl:choose>
         <xsl:text> </xsl:text>
     </xsl:for-each>
@@ -685,7 +678,23 @@
             <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
             <xsl:attribute name="value"><xsl:apply-templates select="." mode="expr"/></xsl:attribute>
         </xsl:element>
+
         <xsl:for-each select="descendant::Var">
+            <xsl:variable name="varName" select="@name"/>
+            <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+
+            <xsl:if test="$counts!=0">
+                <xsl:element name="port">
+                    <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
+                    <xsl:element name="property">
+                        <xsl:attribute name="name">input</xsl:attribute>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:if>
+        </xsl:for-each>
+
+        <!--xsl:for-each select="../../IntegerVariable|../../RealVariable|../../BooleanVariable">
             <xsl:element name="port">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
@@ -693,34 +702,25 @@
                     <xsl:attribute name="name">input</xsl:attribute>
                 </xsl:element>
             </xsl:element>
-        </xsl:for-each>
+        </xsl:for-each-->
+
     </xsl:element>
 </xsl:template>
 
 <!-- UpdateActions -->
-<xsl:template name="updateAction">
+<xsl:template match="UpdateAction">
     <xsl:for-each select="Var">
-    <xsl:sort select="@ix" order="ascending"/>
+        <xsl:variable name="index" select="position()"/>
         <xsl:for-each select="@unOp|@name">
             <xsl:variable name="temp"><xsl:value-of select="."/></xsl:variable>
             <xsl:choose>
                 <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
             </xsl:choose>
         </xsl:for-each>
+        <xsl:value-of select="'='"/>
+        <xsl:apply-templates select="../Expr[$index]" mode="expr"/>
+        <xsl:value-of select="';'"/>
     </xsl:for-each>
-    <xsl:text>=</xsl:text>
-    <xsl:for-each select="Expr">
-        <xsl:for-each select="descendant::Par|descendant::Var|descendant::Const|descendant::LOp|descendant::ROp|descendant::AOp|descendant::MOp">
-        <xsl:sort select="@ix" order="ascending"/>
-            <xsl:for-each select="@unOp|@value|@logicOp|@relOp|@addOp|@mulOp|@name">
-                <xsl:variable name="temp"><xsl:value-of select="."/></xsl:variable>
-                <xsl:choose>
-                    <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
-                </xsl:choose>
-            </xsl:for-each>
-        </xsl:for-each>
-    </xsl:for-each>
-    <xsl:text>;</xsl:text>
 </xsl:template>
 
 <!-- DiffEquation -->
@@ -765,15 +765,21 @@
                     <xsl:attribute name="name">output</xsl:attribute>
                 </xsl:element>
             </xsl:element>
+    
             <xsl:for-each select="descendant::Var">
-                <xsl:element name="port">
-                    <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                    <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
-                    <xsl:element name="property">
-                        <xsl:attribute name="name">input</xsl:attribute>
+                <xsl:variable name="varName" select="@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="port">
+                        <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                        <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
+                        <xsl:element name="property">
+                            <xsl:attribute name="name">input</xsl:attribute>
+                        </xsl:element>
                     </xsl:element>
-                </xsl:element>
+                </xsl:if>
             </xsl:for-each>
+
         </xsl:element>
     </xsl:for-each>
 

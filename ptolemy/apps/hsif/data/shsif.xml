@@ -1,95 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE DNHA SYSTEM "HSIF.dtd">
 
 <DNHA name="SwimmingPool">
-	<HybridAutomaton name="switch">
-		<DiscreteState _id="id3" dst="id4 ide" src="id4 ide" name="empty" initialState="false"/>
-		<BooleanVariable kind="Controlled" name="toggle" defaultValue="false"/>
-	    <RealVariable kind="Input" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<Transition _id="id4" dst_end_="id3" src_end_="id3">
-			<UpdateAction>
-				<Var ix="1" name="toggle" unOp="NOP"/>
+	<HybridAutomaton name="pump">
+		<DiscreteState _id="id7" dst="id8" src="id6" name="turnOff" initialState="false">
+			<UpdateAction __child_as="entryAction">
+				<Var ix="1" name="rate" unOp="NOP"/>
 				<Expr>
 					<LExpr ix="3">
 						<RExpr ix="4">
 							<AExpr ix="5">
 								<MExpr ix="6">
-									<Const ix="7" unOp="NOP" value="0"/>
-								</MExpr>
-							</AExpr>
-						</RExpr>
-					</LExpr>
-				</Expr>
-			</UpdateAction>
-			<SendAction _id="id76" dst="id75"/>
-			<Expr>
-				<LExpr ix="13">
-					<RExpr ix="14">
-						<AExpr ix="21">
-							<MExpr ix="22">
-								<Var ix="23" name="level" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<RExpr ix="15">
-						<AExpr ix="16">
-							<MExpr ix="17">
-								<Par ix="18" name="switchThreshold" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<ROp ix="26" relOp=" > "/>
-				</LExpr>
-			</Expr>
-		</Transition>
-		<Transition _id="ide" dst_end_="id3" src_end_="id3">
-			<UpdateAction>
-				<Var ix="28" name="toggle" unOp="NOP"/>
-				<Expr>
-					<LExpr ix="30">
-						<RExpr ix="31">
-							<AExpr ix="32">
-								<MExpr ix="33">
-									<Const ix="34" unOp="NOP" value="1"/>
-								</MExpr>
-							</AExpr>
-						</RExpr>
-					</LExpr>
-				</Expr>
-			</UpdateAction>
-			<SendAction _id="id77" dst="id75"/>
-			<Expr>
-				<LExpr ix="40">
-					<RExpr ix="41">
-						<AExpr ix="48">
-							<MExpr ix="49">
-								<Var ix="50" name="level" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<RExpr ix="42">
-						<AExpr ix="43">
-							<MExpr ix="44">
-								<Par ix="45" name="switchThreshold" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<ROp ix="53" relOp=" &lt; "/>
-				</LExpr>
-			</Expr>
-		</Transition>
-	</HybridAutomaton>
-	<HybridAutomaton name="pump">
-	    <RealVariable kind="Controlled" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<DiscreteState _id="id3d" dst="id4f id6b" src="id3c id59" name="steadyMode" initialState="true">
-			<UpdateAction __child_as="exitAction">
-				<Var ix="55" name="timer" unOp="NOP"/>
-				<Expr>
-					<LExpr ix="57">
-						<RExpr ix="58">
-							<AExpr ix="59">
-								<MExpr ix="60">
-									<Const ix="61" unOp="NOP" value="0"/>
+									<Const ix="7" unOp="NOP" value="1"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -97,226 +18,395 @@
 				</Expr>
 			</UpdateAction>
 			<DiffEquation>
-				<Var ix="67" name="level" unOp="NOP"/>
-				<RExpr ix="68">
-					<AExpr ix="69">
-						<MExpr ix="70">
-							<Var ix="71" name="rate" unOp="NOP"/>
+				<Var ix="9" name="level" unOp="NOP"/>
+				<RExpr ix="10">
+					<AExpr ix="11">
+						<MExpr ix="12">
+							<Var ix="29" name="rate" unOp="NOP"/>
 						</MExpr>
-					</AExpr>
-				</RExpr>
-			</DiffEquation>
-			<DiffEquation>
-				<Var ix="75" name="timer" unOp="NOP"/>
-				<RExpr ix="76">
-					<AExpr ix="77">
-						<MExpr ix="78">
-							<Const ix="79" unOp="NOP" value="1"/>
-						</MExpr>
-					</AExpr>
-				</RExpr>
-			</DiffEquation>
-			<Expr>
-				<LExpr ix="83">
-					<RExpr ix="108">
-						<AExpr ix="109">
-							<MExpr ix="110">
-								<ExprCall ix="111" unOp="NOP">
-									<Expr>
-										<LExpr ix="113">
-											<RExpr ix="114">
-												<AExpr ix="121">
-													<MExpr ix="122">
-														<Var ix="123" name="level" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<RExpr ix="115">
-												<AExpr ix="116">
-													<MExpr ix="117">
-														<Var ix="118" name="low" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<ROp ix="126" relOp=" >= "/>
-										</LExpr>
-									</Expr>
-								</ExprCall>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-				</LExpr>
-				<LExpr ix="84">
-					<RExpr ix="85">
-						<AExpr ix="86">
-							<MExpr ix="87">
-								<ExprCall ix="88" unOp="NOP">
-									<Expr>
-										<LExpr ix="90">
-											<RExpr ix="91">
-												<AExpr ix="98">
-													<MExpr ix="99">
-														<Var ix="100" name="level" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<RExpr ix="92">
-												<AExpr ix="93">
-													<MExpr ix="94">
-														<Var ix="95" name="high" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<ROp ix="103" relOp=" &lt;= "/>
-										</LExpr>
-									</Expr>
-								</ExprCall>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-				</LExpr>
-				<LExpr ix="84">
-					<RExpr ix="85">
-						<AExpr ix="86">
-							<MExpr ix="87">
-								<ExprCall ix="88" unOp="NOP">
-									<Expr>
-										<LExpr ix="90">
-											<RExpr ix="91">
-												<AExpr ix="98">
-													<MExpr ix="99">
-														<Var ix="100" name="level" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<RExpr ix="92">
-												<AExpr ix="93">
-													<MExpr ix="94">
-														<Var ix="95" name="high" unOp="NOP"/>
-													</MExpr>
-												</AExpr>
-											</RExpr>
-											<ROp ix="103" relOp=" &lt;= "/>
-										</LExpr>
-									</Expr>
-								</ExprCall>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-				</LExpr>
-				<LOp ix="131" logicOp=" and "/>
-				<LOp ix="131" logicOp=" and "/>
-			</Expr>
-		</DiscreteState>
-		<DiscreteState _id="id3b" dst="id3c id59" src="id4f id6b" name="transientMode" initialState="false">
-			<SendAction _id="id78" dst="id75" __child_as="entryAction"/>
-			<DiffEquation>
-				<Var ix="133" name="level" unOp="NOP"/>
-				<RExpr ix="134">
-					<AExpr ix="135">
-						<MExpr ix="136">
-							<Var ix="155" name="rate" unOp="NOP"/>
-						</MExpr>
-						<MExpr ix="137">
-							<ExprCall ix="138" unOp="NOP">
+						<MExpr ix="13">
+							<ExprCall ix="14" unOp="NOP">
 								<Expr>
-									<LExpr ix="140">
-										<RExpr ix="141">
-											<AExpr ix="142">
-												<MExpr ix="149">
-													<Const ix="150" unOp="NOP" value="1"/>
+									<LExpr ix="16">
+										<RExpr ix="17">
+											<AExpr ix="18">
+												<MExpr ix="26">
+													<Const ix="27" unOp="NOP" value="1"/>
 												</MExpr>
 											</AExpr>
-											<AExpr ix="143">
-												<MExpr ix="144">
-													<Var ix="147" name="timer" unOp="NOP"/>
+											<AExpr ix="19">
+												<MExpr ix="20">
+													<Var ix="24" name="timer" unOp="NOP"/>
 												</MExpr>
-												<MExpr ix="145">
-													<Const ix="146" unOp="NOP" value="2"/>
+												<MExpr ix="21">
+													<Const ix="22" unOp="NOP" value="2"/>
 												</MExpr>
-												<MOp ix="148" mulOp=" / "/>
+												<MOp ix="23" mulOp=" / "/>
 											</AExpr>
-											<AOp ix="152" addOp=" - "/>
+											<AOp ix="25" addOp=" - "/>
 										</RExpr>
 									</LExpr>
 								</Expr>
 							</ExprCall>
 						</MExpr>
-						<MOp ix="156" mulOp=" * "/>
+						<MOp ix="28" mulOp=" * "/>
 					</AExpr>
 				</RExpr>
 			</DiffEquation>
 			<DiffEquation>
-				<Var ix="159" name="timer" unOp="NOP"/>
-				<RExpr ix="160">
-					<AExpr ix="161">
-						<MExpr ix="162">
-							<Const ix="163" unOp="NOP" value="1"/>
+				<Var ix="31" name="timer" unOp="NOP"/>
+				<RExpr ix="32">
+					<AExpr ix="33">
+						<MExpr ix="34">
+							<Const ix="35" unOp="NOP" value="1"/>
 						</MExpr>
 					</AExpr>
 				</RExpr>
 			</DiffEquation>
 			<Expr>
-				<LExpr ix="167">
-					<RExpr ix="168">
-						<AExpr ix="175">
-							<MExpr ix="176">
-								<Var ix="177" name="timer" unOp="NOP"/>
+				<LExpr ix="37">
+					<RExpr ix="38">
+						<AExpr ix="44">
+							<MExpr ix="45">
+								<Var ix="46" name="timer" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<RExpr ix="169">
-						<AExpr ix="170">
-							<MExpr ix="171">
-								<Const ix="172" unOp="NOP" value="2"/>
+					<RExpr ix="39">
+						<AExpr ix="40">
+							<MExpr ix="41">
+								<Const ix="42" unOp="NOP" value="2"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<ROp ix="180" relOp=" &lt;= "/>
+					<ROp ix="43" relOp=" &lt;= "/>
 				</LExpr>
 			</Expr>
 		</DiscreteState>
-		<IntegerVariable kind="Input" name="rate" maxValue="0" minValue="0" initialMaxValue="0" initialMinValue="0"/>
-		<RealVariable kind="Controlled" name="timer" maxValue="10.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<IntegerVariable kind="Input" name="high" maxValue="10000000" minValue="0" initialMaxValue="0" initialMinValue="0"/>
-		<IntegerVariable kind="Input" name="low" maxValue="10" minValue="0" initialMaxValue="0" initialMinValue="0"/>
-		<Transition _id="id3c" dst_end_="id3d" src_end_="id3b">
-			<UpdateAction>
-				<Var ix="182" name="rate" unOp="NOP"/>
+		<DiscreteState _id="id5" dst="id6" src="id4 idb" name="onSteady" initialState="false">
+			<UpdateAction __child_as="entryAction">
+				<Var ix="47" name="rate" unOp="NOP"/>
 				<Expr>
-					<LExpr ix="184">
-						<RExpr ix="185">
-							<AExpr ix="186">
-								<MExpr ix="187">
-									<Const ix="188" unOp=" -" value="2"/>
+					<LExpr ix="49">
+						<RExpr ix="50">
+							<AExpr ix="51">
+								<MExpr ix="52">
+									<Const ix="53" unOp="NOP" value="1"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
 					</LExpr>
 				</Expr>
 			</UpdateAction>
-			<UpdateAction>
-				<Var ix="193" name="low" unOp="NOP"/>
+			<DiffEquation>
+				<Var ix="55" name="level" unOp="NOP"/>
+				<RExpr ix="56">
+					<AExpr ix="57">
+						<MExpr ix="58">
+							<Var ix="59" name="rate" unOp="NOP"/>
+						</MExpr>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<DiffEquation>
+				<Var ix="61" name="timer" unOp="NOP"/>
+				<RExpr ix="62">
+					<AExpr ix="63">
+						<MExpr ix="64">
+							<Const ix="65" unOp="NOP" value="1"/>
+						</MExpr>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<Expr>
+				<LExpr ix="67">
+					<RExpr ix="85">
+						<AExpr ix="86">
+							<MExpr ix="87">
+								<ExprCall ix="88" unOp="NOP">
+									<Expr>
+										<LExpr ix="90">
+											<RExpr ix="91">
+												<AExpr ix="97">
+													<MExpr ix="98">
+														<Var ix="99" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="92">
+												<AExpr ix="93">
+													<MExpr ix="94">
+														<Var ix="95" name="onLow" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="96" relOp=" >= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+				<LExpr ix="68">
+					<RExpr ix="69">
+						<AExpr ix="70">
+							<MExpr ix="71">
+								<ExprCall ix="72" unOp="NOP">
+									<Expr>
+										<LExpr ix="74">
+											<RExpr ix="75">
+												<AExpr ix="81">
+													<MExpr ix="82">
+														<Var ix="83" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="76">
+												<AExpr ix="77">
+													<MExpr ix="78">
+														<Var ix="79" name="onHigh" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="80" relOp=" &lt;= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+				<LOp ix="84" logicOp=" and "/>
+			</Expr>
+		</DiscreteState>
+		<DiscreteState _id="ida" dst="idb" name="default" initialState="true"/>
+		<DiscreteState _id="id3" dst="id4" src="idc" name="turnOn" initialState="false">
+			<UpdateAction __child_as="entryAction">
+				<Var ix="100" name="rate" unOp="NOP"/>
 				<Expr>
-					<LExpr ix="195">
-						<RExpr ix="196">
-							<AExpr ix="197">
-								<MExpr ix="198">
-									<Par ix="199" name="pumpLow" unOp="NOP"/>
+					<LExpr ix="102">
+						<RExpr ix="103">
+							<AExpr ix="104">
+								<MExpr ix="105">
+									<Const ix="106" unOp=" -" value="2"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
 					</LExpr>
 				</Expr>
 			</UpdateAction>
-			<UpdateAction>
-				<Var ix="204" name="high" unOp="NOP"/>
+			<DiffEquation>
+				<Var ix="108" name="level" unOp="NOP"/>
+				<RExpr ix="109">
+					<AExpr ix="110">
+						<MExpr ix="111">
+							<Var ix="128" name="rate" unOp="NOP"/>
+						</MExpr>
+						<MExpr ix="112">
+							<ExprCall ix="113" unOp="NOP">
+								<Expr>
+									<LExpr ix="115">
+										<RExpr ix="116">
+											<AExpr ix="117">
+												<MExpr ix="125">
+													<Const ix="126" unOp="NOP" value="1"/>
+												</MExpr>
+											</AExpr>
+											<AExpr ix="118">
+												<MExpr ix="119">
+													<Var ix="123" name="timer" unOp="NOP"/>
+												</MExpr>
+												<MExpr ix="120">
+													<Const ix="121" unOp="NOP" value="2"/>
+												</MExpr>
+												<MOp ix="122" mulOp=" / "/>
+											</AExpr>
+											<AOp ix="124" addOp=" - "/>
+										</RExpr>
+									</LExpr>
+								</Expr>
+							</ExprCall>
+						</MExpr>
+						<MOp ix="127" mulOp=" * "/>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<DiffEquation>
+				<Var ix="130" name="timer" unOp="NOP"/>
+				<RExpr ix="131">
+					<AExpr ix="132">
+						<MExpr ix="133">
+							<Const ix="134" unOp="NOP" value="1"/>
+						</MExpr>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<Expr>
+				<LExpr ix="136">
+					<RExpr ix="137">
+						<AExpr ix="143">
+							<MExpr ix="144">
+								<Var ix="145" name="timer" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+					<RExpr ix="138">
+						<AExpr ix="139">
+							<MExpr ix="140">
+								<Const ix="141" unOp="NOP" value="2"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+					<ROp ix="142" relOp=" &lt;= "/>
+				</LExpr>
+			</Expr>
+		</DiscreteState>
+		<DiscreteState _id="id9" dst="idc" src="id8" name="offSteady" initialState="false">
+			<UpdateAction __child_as="entryAction">
+				<Var ix="146" name="rate" unOp="NOP"/>
 				<Expr>
-					<LExpr ix="206">
-						<RExpr ix="207">
-							<AExpr ix="208">
-								<MExpr ix="209">
-									<Par ix="210" name="INF" unOp="NOP"/>
+					<LExpr ix="148">
+						<RExpr ix="149">
+							<AExpr ix="150">
+								<MExpr ix="151">
+									<Const ix="152" unOp=" -" value="2"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<DiffEquation>
+				<Var ix="154" name="level" unOp="NOP"/>
+				<RExpr ix="155">
+					<AExpr ix="156">
+						<MExpr ix="157">
+							<Var ix="158" name="rate" unOp="NOP"/>
+						</MExpr>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<DiffEquation>
+				<Var ix="160" name="timer" unOp="NOP"/>
+				<RExpr ix="161">
+					<AExpr ix="162">
+						<MExpr ix="163">
+							<Const ix="164" unOp="NOP" value="1"/>
+						</MExpr>
+					</AExpr>
+				</RExpr>
+			</DiffEquation>
+			<Expr>
+				<LExpr ix="166">
+					<RExpr ix="184">
+						<AExpr ix="185">
+							<MExpr ix="186">
+								<ExprCall ix="187" unOp="NOP">
+									<Expr>
+										<LExpr ix="189">
+											<RExpr ix="190">
+												<AExpr ix="196">
+													<MExpr ix="197">
+														<Var ix="198" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="191">
+												<AExpr ix="192">
+													<MExpr ix="193">
+														<Var ix="194" name="offLow" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="195" relOp=" >= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+				<LExpr ix="167">
+					<RExpr ix="168">
+						<AExpr ix="169">
+							<MExpr ix="170">
+								<ExprCall ix="171" unOp="NOP">
+									<Expr>
+										<LExpr ix="173">
+											<RExpr ix="174">
+												<AExpr ix="180">
+													<MExpr ix="181">
+														<Var ix="182" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="175">
+												<AExpr ix="176">
+													<MExpr ix="177">
+														<Var ix="178" name="offHigh" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="179" relOp=" &lt;= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+				<LOp ix="183" logicOp=" and "/>
+			</Expr>
+		</DiscreteState>
+		<RealVariable kind="Observable" name="timer" maxValue="1000000.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
+		<IntegerVariable kind="Observable" name="offLow" maxValue="1000" minValue="0" initialMaxValue="0" initialMinValue="0"/>
+		<IntegerVariable kind="Controlled" name="rate" maxValue="0" minValue="0" initialMaxValue="0" initialMinValue="0"/>
+		<IntegerVariable kind="Observable" name="offHigh" maxValue="1000" minValue="0" initialMaxValue="0" initialMinValue="0"/>
+		<IntegerVariable kind="Observable" name="onHigh" maxValue="1000" minValue="0" initialMaxValue="0" initialMinValue="0"/>
+		<IntegerVariable kind="Observable" name="onLow" maxValue="10000" minValue="0" initialMaxValue="0" initialMinValue="0"/>
+		<Transition _id="id4" dst_end_="id5" src_end_="id3">
+			<Expr>
+				<LExpr ix="200">
+					<RExpr ix="201">
+						<AExpr ix="202">
+							<MExpr ix="203">
+								<ExprCall ix="204" unOp="NOP">
+									<Expr>
+										<LExpr ix="206">
+											<RExpr ix="207">
+												<AExpr ix="213">
+													<MExpr ix="214">
+														<Var ix="215" name="timer" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="208">
+												<AExpr ix="209">
+													<MExpr ix="210">
+														<Const ix="211" unOp="NOP" value="1.900000"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="212" relOp=" >= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id6" trigger="id13" dst_end_="id7" src_end_="id5">
+			<UpdateAction>
+				<Var ix="216" name="timer" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="218">
+						<RExpr ix="219">
+							<AExpr ix="220">
+								<MExpr ix="221">
+									<Const ix="222" unOp="NOP" value="0"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -324,69 +414,74 @@
 				</Expr>
 			</UpdateAction>
 			<Expr>
-				<LExpr ix="216">
-					<RExpr ix="217">
-						<AExpr ix="224">
-							<MExpr ix="225">
-								<Var ix="226" name="timer" unOp="NOP"/>
+				<LExpr ix="224">
+					<RExpr ix="225">
+						<AExpr ix="241">
+							<MExpr ix="242">
+								<Var ix="243" name="level" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<RExpr ix="218">
-						<AExpr ix="219">
-							<MExpr ix="220">
-								<Const ix="221" unOp="NOP" value="2"/>
+					<RExpr ix="226">
+						<AExpr ix="227">
+							<MExpr ix="228">
+								<ExprCall ix="229" unOp="NOP">
+									<Expr>
+										<LExpr ix="231">
+											<RExpr ix="232">
+												<AExpr ix="233">
+													<MExpr ix="238">
+														<Par ix="239" name="pumpHigh" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+												<AExpr ix="234">
+													<MExpr ix="235">
+														<Const ix="236" unOp="NOP" value="0.100000"/>
+													</MExpr>
+												</AExpr>
+												<AOp ix="237" addOp=" - "/>
+											</RExpr>
+										</LExpr>
+									</Expr>
+								</ExprCall>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<ROp ix="229" relOp=" >= "/>
+					<ROp ix="240" relOp=" >= "/>
 				</LExpr>
 			</Expr>
+			<SendAction _id="id14" dst="id13"/>
 		</Transition>
-		<Transition _id="id4f" dst_end_="id3b" src_end_="id3d">
-			<UpdateAction>
-				<Var ix="231" name="rate" unOp="NOP"/>
-				<Expr>
-					<LExpr ix="233">
-						<RExpr ix="234">
-							<AExpr ix="235">
-								<MExpr ix="236">
-									<Const ix="237" unOp="NOP" value="1"/>
-								</MExpr>
-							</AExpr>
-						</RExpr>
-					</LExpr>
-				</Expr>
-			</UpdateAction>
+		<Transition _id="id8" dst_end_="id9" src_end_="id7">
 			<Expr>
-				<LExpr ix="243">
-					<RExpr ix="244">
-						<AExpr ix="251">
-							<MExpr ix="252">
-								<Var ix="253" name="level" unOp="NOP"/>
+				<LExpr ix="245">
+					<RExpr ix="246">
+						<AExpr ix="252">
+							<MExpr ix="253">
+								<Var ix="254" name="timer" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<RExpr ix="245">
-						<AExpr ix="246">
-							<MExpr ix="247">
-								<Var ix="248" name="high" unOp="NOP"/>
+					<RExpr ix="247">
+						<AExpr ix="248">
+							<MExpr ix="249">
+								<Const ix="250" unOp="NOP" value="1.900000"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<ROp ix="256" relOp=" >= "/>
+					<ROp ix="251" relOp=" >= "/>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id59" dst_end_="id3d" src_end_="id3b">
+		<Transition _id="idb" dst_end_="id5" src_end_="ida">
 			<UpdateAction>
-				<Var ix="258" name="rate" unOp="NOP"/>
+				<Var ix="255" name="onLow" unOp="NOP"/>
 				<Expr>
-					<LExpr ix="260">
-						<RExpr ix="261">
-							<AExpr ix="262">
-								<MExpr ix="263">
-									<Const ix="264" unOp="NOP" value="1"/>
+					<LExpr ix="257">
+						<RExpr ix="258">
+							<AExpr ix="259">
+								<MExpr ix="260">
+									<Const ix="261" unOp="NOP" value="0"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -394,13 +489,27 @@
 				</Expr>
 			</UpdateAction>
 			<UpdateAction>
-				<Var ix="269" name="low" unOp="NOP"/>
+				<Var ix="262" name="onHigh" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="264">
+						<RExpr ix="265">
+							<AExpr ix="266">
+								<MExpr ix="267">
+									<Par ix="268" name="pumpHigh" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<UpdateAction>
+				<Var ix="269" name="offLow" unOp="NOP"/>
 				<Expr>
 					<LExpr ix="271">
 						<RExpr ix="272">
 							<AExpr ix="273">
 								<MExpr ix="274">
-									<Const ix="275" unOp="NOP" value="0"/>
+									<Par ix="275" name="pumpLow" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -408,13 +517,27 @@
 				</Expr>
 			</UpdateAction>
 			<UpdateAction>
-				<Var ix="280" name="high" unOp="NOP"/>
+				<Var ix="276" name="offHigh" unOp="NOP"/>
 				<Expr>
-					<LExpr ix="282">
-						<RExpr ix="283">
-							<AExpr ix="284">
-								<MExpr ix="285">
-									<Par ix="286" name="pumpHigh" unOp="NOP"/>
+					<LExpr ix="278">
+						<RExpr ix="279">
+							<AExpr ix="280">
+								<MExpr ix="281">
+									<Par ix="282" name="INF" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<UpdateAction>
+				<Var ix="283" name="timer" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="285">
+						<RExpr ix="286">
+							<AExpr ix="287">
+								<MExpr ix="288">
+									<Const ix="289" unOp="NOP" value="0"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -422,34 +545,46 @@
 				</Expr>
 			</UpdateAction>
 			<Expr>
-				<LExpr ix="292">
-					<RExpr ix="293">
-						<AExpr ix="300">
-							<MExpr ix="301">
-								<Var ix="302" name="timer" unOp="NOP"/>
+				<LExpr ix="291">
+					<RExpr ix="292">
+						<AExpr ix="293">
+							<MExpr ix="294">
+								<ExprCall ix="295" unOp="NOP">
+									<Expr>
+										<LExpr ix="297">
+											<RExpr ix="298">
+												<AExpr ix="304">
+													<MExpr ix="305">
+														<Const ix="306" unOp="NOP" value="0"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="299">
+												<AExpr ix="300">
+													<MExpr ix="301">
+														<Const ix="302" unOp="NOP" value="1"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="303" relOp=" &lt; "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<RExpr ix="294">
-						<AExpr ix="295">
-							<MExpr ix="296">
-								<Const ix="297" unOp="NOP" value="2"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<ROp ix="305" relOp=" >= "/>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id6b" dst_end_="id3b" src_end_="id3d">
+		<Transition _id="idc" trigger="id13" dst_end_="id3" src_end_="id9">
 			<UpdateAction>
-				<Var ix="307" name="rate" unOp="NOP"/>
+				<Var ix="307" name="timer" unOp="NOP"/>
 				<Expr>
 					<LExpr ix="309">
 						<RExpr ix="310">
 							<AExpr ix="311">
 								<MExpr ix="312">
-									<Const ix="313" unOp=" -" value="2"/>
+									<Const ix="313" unOp="NOP" value="0"/>
 								</MExpr>
 							</AExpr>
 						</RExpr>
@@ -457,32 +592,188 @@
 				</Expr>
 			</UpdateAction>
 			<Expr>
-				<LExpr ix="319">
-					<RExpr ix="320">
-						<AExpr ix="327">
-							<MExpr ix="328">
-								<Var ix="329" name="level" unOp="NOP"/>
+				<LExpr ix="315">
+					<RExpr ix="316">
+						<AExpr ix="317">
+							<MExpr ix="318">
+								<ExprCall ix="319" unOp="NOP">
+									<Expr>
+										<LExpr ix="321">
+											<RExpr ix="322">
+												<AExpr ix="338">
+													<MExpr ix="339">
+														<Var ix="340" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="323">
+												<AExpr ix="324">
+													<MExpr ix="325">
+														<ExprCall ix="326" unOp="NOP">
+															<Expr>
+																<LExpr ix="328">
+																	<RExpr ix="329">
+																		<AExpr ix="330">
+																			<MExpr ix="335">
+																				<Par ix="336" name="pumpLow" unOp="NOP"/>
+																			</MExpr>
+																		</AExpr>
+																		<AExpr ix="331">
+																			<MExpr ix="332">
+																				<Const ix="333" unOp="NOP" value="0.100000"/>
+																			</MExpr>
+																		</AExpr>
+																		<AOp ix="334" addOp=" + "/>
+																	</RExpr>
+																</LExpr>
+															</Expr>
+														</ExprCall>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="337" relOp=" &lt;= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<RExpr ix="321">
-						<AExpr ix="322">
-							<MExpr ix="323">
-								<Var ix="324" name="low" unOp="NOP"/>
+				</LExpr>
+			</Expr>
+			<SendAction _id="id15" dst="id13"/>
+		</Transition>
+	</HybridAutomaton>
+	<HybridAutomaton name="switch">
+		<DiscreteState _id="id10" dst="id11" name="default" initialState="true"/>
+		<DiscreteState _id="idd" dst="ide" src="id11 id12" name="on" initialState="false"/>
+		<DiscreteState _id="idf" dst="id12" src="ide" name="off" initialState="false"/>
+		<Transition _id="ide" dst_end_="idf" src_end_="idd">
+			<UpdateAction>
+				<Var ix="341" name="swim" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="343">
+						<RExpr ix="344">
+							<AExpr ix="345">
+								<MExpr ix="346">
+									<Const ix="347" unOp="NOP" value="0"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<SendAction _id="id16" dst="id13"/>
+			<Expr>
+				<LExpr ix="349">
+					<RExpr ix="350">
+						<AExpr ix="356">
+							<MExpr ix="357">
+								<Var ix="358" name="level" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
-					<ROp ix="332" relOp=" &lt;= "/>
+					<RExpr ix="351">
+						<AExpr ix="352">
+							<MExpr ix="353">
+								<Par ix="354" name="switchThreshold" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+					<ROp ix="355" relOp=" &lt; "/>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id11" dst_end_="idd" src_end_="id10">
+			<UpdateAction>
+				<Var ix="359" name="swim" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="361">
+						<RExpr ix="362">
+							<AExpr ix="363">
+								<MExpr ix="364">
+									<Const ix="365" unOp="NOP" value="1"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<Expr>
+				<LExpr ix="367">
+					<RExpr ix="368">
+						<AExpr ix="369">
+							<MExpr ix="370">
+								<ExprCall ix="371" unOp="NOP">
+									<Expr>
+										<LExpr ix="373">
+											<RExpr ix="374">
+												<AExpr ix="380">
+													<MExpr ix="381">
+														<Const ix="382" unOp="NOP" value="1"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="375">
+												<AExpr ix="376">
+													<MExpr ix="377">
+														<Const ix="378" unOp="NOP" value="0"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="379" relOp=" > "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id12" dst_end_="idd" src_end_="idf">
+			<UpdateAction>
+				<Var ix="383" name="swim" unOp="NOP"/>
+				<Expr>
+					<LExpr ix="385">
+						<RExpr ix="386">
+							<AExpr ix="387">
+								<MExpr ix="388">
+									<Const ix="389" unOp="NOP" value="1"/>
+								</MExpr>
+							</AExpr>
+						</RExpr>
+					</LExpr>
+				</Expr>
+			</UpdateAction>
+			<SendAction _id="id17" dst="id13"/>
+			<Expr>
+				<LExpr ix="391">
+					<RExpr ix="392">
+						<AExpr ix="398">
+							<MExpr ix="399">
+								<Var ix="400" name="level" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+					<RExpr ix="393">
+						<AExpr ix="394">
+							<MExpr ix="395">
+								<Par ix="396" name="switchThreshold" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+					<ROp ix="397" relOp=" > "/>
 				</LExpr>
 			</Expr>
 		</Transition>
 	</HybridAutomaton>
-	<Channel _id="id75" src="id76 id77 id78" name="toggleSwitch"/>
+	<Channel _id="id13" src="id14 id15 id16 id17" name="toggleSwitch" Transition="id6 idc"/>
 	<BooleanVariable kind="Controlled" name="swim" defaultValue="false"/>
+	<RealVariable kind="Observable" name="level" maxValue="10000.000000" minValue="0.000000" initialMaxValue="1.000000" initialMinValue="1.000000"/>
+	<IntegerParameter name="switchThreshold" value="7"/>
+	<IntegerParameter name="pumpHigh" value="10"/>
 	<IntegerParameter name="pumpLow" value="5"/>
 	<IntegerParameter name="INF" value="10000000"/>
-	<IntegerParameter name="pumpHigh" value="10"/>
-	<IntegerParameter name="switchThreshold" value="7"/>
 </DNHA>
 
 
