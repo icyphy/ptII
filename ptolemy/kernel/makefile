@@ -69,6 +69,7 @@ JSRCS = \
 	POElement.java \
 	Port.java \
 	Relation.java \
+	Sample.java \
 	SampleTarget.java \
 	SampleSDFExecutive.java \
 	SDFPort.java \
@@ -101,7 +102,6 @@ OPTIONAL_FILES =	codeDoc
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
 install: jclass javadocs
 docs: javadocs
 
