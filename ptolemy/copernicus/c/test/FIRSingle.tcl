@@ -65,7 +65,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
         in singlclass mode and compile into an exe} {
     
-    set outputDir testOutput/FirSingle.out
+    set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
     
     # Check if the FIRSingle.out directory exists.
@@ -117,13 +117,16 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     exec gcc -c    $runtimeDir/pccg_runtime.c
 
     # Link the .o files into the executable.
-    eval exec gcc -o firSingle [glob *.o]
+    set exeFile FIRSingle.exe
+    eval exec gcc -o $exeFile [glob *.o]
 
     # Run the executible.
-    set output [exec firSingle]
-    puts "output = $output"
+    set exeFile "./$exeFile"
+    set results [exec $exeFile]
+
+    puts "results: $results"
     # Check if the output is correct.
     set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"
-    string first $template $output
+    string first $template $results
 } {0}
 
