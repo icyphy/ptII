@@ -51,9 +51,9 @@ It maintains a break point table to record all the break points.
 public abstract class CTDirector extends StaticSchedulingDirector 
         implements ParameterListener{
 
-    public static final boolean VERBOSE = false;
-    public static final boolean DEBUG = false;
-    public static final boolean STAT = false;
+    public static final boolean VERBOSE = true;
+    public static final boolean DEBUG = true;
+    public static final boolean STAT = true;
     public int NSTEP = 0;
     public int NFUNC = 0;
     public int NFAIL = 0;
@@ -65,6 +65,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */	
     public CTDirector () {
         super();
+        _initParameters();
         try {
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
@@ -85,6 +86,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public CTDirector (String name) {
         super(name);
+        _initParameters();
         try {
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
@@ -107,6 +109,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public CTDirector (Workspace workspace, String name) {
         super(workspace, name);
+        _initParameters();
         try {
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
@@ -260,18 +263,30 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If throw by creation of some
      *       parameters.
      */
-    public abstract void updateParameters() throws IllegalActionException ;
-
+    public void updateParameters() throws IllegalActionException {
+        LinkedList pEvents = _getParameterEvents();
+        if((pEvents != null )&& (!pEvents.isEmpty())) {
+            if(DEBUG) {
+                System.out.println(" # of events = "+pEvents.size());
+            }            
+            Enumeration pes = pEvents.elements();
+            while(pes.hasMoreElements()) {
+                ParameterEvent event = (ParameterEvent) pes.nextElement();
+                 Parameter param = event.getParameter();
+                 updateParameter(param);
+             }
+             pEvents.clear();
+         }
+     }
     /** Update paramters.
      */
-    public void updateParameter(ParameterEvent pevent)
+    public void updateParameter(Parameter param)
             throws IllegalActionException {
-        Parameter param = pevent.getParameter();
         if(param == _paramStopTime) {
             if(VERBOSE) {
                 System.out.println("StopTime updating.");
             }
-            _stopTime = ((DoubleToken)param.getToken()).doubleValue();
+            setStopTime(((DoubleToken)param.getToken()).doubleValue());
         } else if(param == _paramInitStepSize) {
             if(VERBOSE) {
                 System.out.println("initStepSize updating.");
@@ -304,7 +319,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _maxIterations = 
             ((IntToken)param.getToken()).intValue();
         } else {
-            System.out.println("Unknowparameter"+param.getName());
+            if (VERBOSE) {
+                System.out.println("Unknowparameter: "+param.getName());
+            }
+            throw new IllegalActionException(this, param,
+                " Unknown parameter.");
         }
     }
 
@@ -332,6 +351,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _currentTime = tnow;
     }
 
+    /** Set stopTime. The stop time will be registered as a break point.
+     */
+    public void setStopTime(double tstop) {
+        _stopTime = tstop;
+    }
+
+    /** Set startTime. The start time will NOT be registered as a
+     *  break point so the user should do it explicitly if needed.
+     */
+    public void setStartTime(double tstart) {
+        _stopTime = tstart;
+    }
+
     /** Set the suggested next step size.
      *  @param nextstep The suggested next step size.
      */
@@ -350,7 +382,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Add all the parameters.
      */
-    protected void _initParameters() {
+    private void _initParameters() {
         try {
             _startTime = 0.0;
             _stopTime = 1.0;

@@ -71,7 +71,7 @@ from the ODE solver.
 @see CTDiretor
 */
 public class CTBaseIntegrator extends CTActor 
-        implements CTErrorControlActor, CTDynamicActor {
+        implements CTErrorControlActor, CTDynamicActor, CTMemarisActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
      *  The object is added to the workspace directory.
@@ -166,6 +166,39 @@ public class CTBaseIntegrator extends CTActor
         solver.integratorFire(this);
     }
 
+    /** Return the _auxVariabless in a double array. This method get the 
+     *  _auxVariabless stored in the integrator. Return null if the 
+     *  _auxVariables has never been created.
+     *
+     *  @return The _auxVariabless in a double array.
+     */
+    public double[] getAuxVariables() {
+        return _auxVariables;
+    }
+
+    /** Return the history information of the last index-th step.
+     *  The history array has langth 2, where<Br>
+     *  history[0] is the state at the last index-th step;<Br>
+     *  history[1] is its derivative.<Br>
+     *  @param index The index
+     *  @return The history array at that index point.
+     *  @exception IllegalActionException If the index is out of bound.
+     */
+    public double[] getHistory(int index) throws IllegalActionException {
+        if( index != 0) {
+            throw new IllegalActionException(this,
+                " history request out of range.");
+        }
+        return _history;
+    }
+
+    /** Return the history capacity.
+     *  FIXME: In this implementation, it always returns 1.
+     */
+    public final int getHistoryCapacity() {
+        return 1;
+    }
+
     /** Returns the initial state.
      *
      *  @return the initial state.
@@ -191,16 +224,6 @@ public class CTBaseIntegrator extends CTActor
         return _state;
     }
 
-    /** Return the _auxVariabless in a double array. This method get the 
-     *  _auxVariabless stored in the integrator. Return null if the 
-     *  _auxVariables has never been created.
-     *
-     *  @return The _auxVariabless in a double array.
-     */
-    public double[] getAuxVariables() {
-        return _auxVariables;
-    }
-
     /** Update initial state parameter.
      *
      *  @exception IllegalActionException If there's no director or
@@ -218,6 +241,13 @@ public class CTBaseIntegrator extends CTActor
         output.broadcast(new DoubleToken(_potentialState));
     }
 
+    /** Return true if current step is successful.
+     */	
+    public boolean isSuccessful() {
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        return solver.integratorIsSuccess(this);
+    }
+
     /** Postfire method in the execution sequence. It in turn calls
      *  the integratorPostfire() of ODE solver of the director.
      *
@@ -227,6 +257,7 @@ public class CTBaseIntegrator extends CTActor
      */
     public boolean postfire() throws IllegalActionException {
         _state = _potentialState;
+        _pushHistory(_potentialState, _potentialDerivative);
         return true;
     }
 
@@ -259,35 +290,18 @@ public class CTBaseIntegrator extends CTActor
     /** Backup the saved state to current state. This method may be used
      *  for backup the simulation from a previous time point.
      */
-    public void rollback(int count) {
+    public void restoreStates() {
         setState(_storedState);
+        setPotentialState(_storedState);
     }
 
     /** Remember the current state. This remembered state can be
      *  retrieved by the restoreState() method. The remembered state
      *  may be used for back up simulation from past.
      */
-    public void saveState() {
+    public void saveStates() {
         _storedState = getState();
     }
-    
-    /** Set the potential state. Potential state is the state that
-     *  the ODE solver think to be the fixed point. This may not
-     *  be the final state due to the event detection.
-     */
-     public void setPotentialState(double value) {
-         _potentialState = value;
-     }
-
-
-    /** Set the state of the integrator.
-     *  NOTE: Should only be called by Directors.
-     *
-     *  @param value The value to be set to the state.
-     */
-    public void setState(double value) {
-        _state = value;
-    }   
 
     /** Set the value of a temporary state. The number of temporary states
      *  is set by newAuxVariables, which in turn calls the 
@@ -311,6 +325,46 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
+    /** Set history capacity.
+     *  FIXME: In the current implementation, it does nothing.
+     *  
+     */
+    public final void setHistoryCapacity(int cap) {
+    }
+    
+    /** Set the potential state. Potential state is the state that
+     *  the ODE solver think to be the fixed point. This may not
+     *  be the final state due to the event detection.
+     */
+     public final void setPotentialState(double value) {
+         _potentialState = value;
+     }
+
+    /** Set the potential derivative dx/dt. Potential derivative
+     *  is the derivative of the state that
+     *  the ODE solver think to be at the fixed point. This may not
+     *  be the final state due to the event detection.
+     */
+    public final void setPotentialDerivative(double value) {
+         _potentialDerivative = value;
+     }
+
+    /** Set the state of the integrator.
+     *  NOTE: Should only be called by Directors.
+     *
+     *  @param value The value to be set to the state.
+     */
+    public final void setState(double value) {
+        _state = value;
+    }   
+
+    /** Return the suggested next step size.
+     */
+    public double suggestedNextStepSize() {
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        return solver.integratorSuggestedNextStepSize(this);
+    }
+
     /** Wrapup method in the execution sequence. It in turn calls
      *  the integratorWrapup() of the ODE solver of the director.
      *
@@ -326,20 +380,6 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
-    /** Return true if current step is successful.
-     */	
-    public boolean isSuccessful() {
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        return solver.integratorIsSuccess(this);
-    }
-
-    /** Return the suggested next step size.
-     */
-    public double suggestedNextStepSize() {
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        return solver.integratorSuggestedNextStepSize(this);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
     /** Input port. Finals means they are not changeable once created.
@@ -349,6 +389,20 @@ public class CTBaseIntegrator extends CTActor
     /** Input port. Finals means they are not changeable once created.
      */
     public final IOPort output;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    /** Push the state and derivative into the history storage.
+     *  If the history capacity is full, then the oldest history
+     *  will be lost. The contents of the history storage can be
+     *  retrieved by getHistory() method.
+     *  FIXME: In this implementaion, the history storage has 
+     *        capacity 1.
+     */
+    protected void _pushHistory(double state, double derivative) {
+        _history[0] = state;
+        _history[1] = derivative;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -363,8 +417,19 @@ public class CTBaseIntegrator extends CTActor
     private double _state;
     // potential state;
     private double _potentialState;
+    // Potential derivative;
+    private double _potentialDerivative;
     
     // The state stored, may be used for back up simulation
     private double _storedState;
+
+    // The history states and its derivative.
+    // This variable is needed by Linear Multistep (LMS) methods, 
+    // like Tropezoidal rule.
+    // FIXME: In the current implememtaion, the highest LMS method is of
+    // order 2. So only the information of the last step is needed. But
+    // the interface is provided to have multiple histories and retrive
+    // them by index.
+    private double[] _history = new double[2];
 }
 

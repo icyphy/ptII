@@ -53,7 +53,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */	
     public CTSingleSolverDirector () {
         super();
-        _initParameters();
+        this._initParameters();
     }
 
     /** Construct a CTDirector in the default workspace with the given name.
@@ -67,7 +67,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public CTSingleSolverDirector (String name) {
         super(name);
-        _initParameters();
+        this._initParameters();
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -83,7 +83,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public CTSingleSolverDirector (Workspace workspace, String name) {
         super(workspace, name);
-        _initParameters();
+        this._initParameters();
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -252,6 +252,9 @@ public class CTSingleSolverDirector extends CTDirector {
      *        thrown by the solver.
      */
     public boolean postfire() throws IllegalActionException {
+        if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
+            fireAfterDelay(null, getStopTime()-getCurrentTime());
+        }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {    
             return false;
         }
@@ -315,40 +318,28 @@ public class CTSingleSolverDirector extends CTDirector {
     
     /** Update paramters.
      */
-    public void updateParameters() throws IllegalActionException {
-        LinkedList pEvents = _getParameterEvents();
-        if((pEvents != null )&& (!pEvents.isEmpty())) {
-            if(DEBUG) {
-                System.out.println(" # of events = "+pEvents.size());
-            }            
-            Enumeration pes = pEvents.elements();
-            while(pes.hasMoreElements()) {
-                ParameterEvent event = (ParameterEvent) pes.nextElement();
-                Parameter param = event.getParameter();
-                if(param == _paramODESolver) {
-                    if(VERBOSE) {
-                        System.out.println("solver updating.");
-                    }
-                    _solverclass =
-                        ((StringToken)param.getToken()).stringValue();
-                    _defaultSolver = _instantiateODESolver(_solverclass);
-                } else {
-                    super.updateParameter(event);
-                }
+    public void updateParameter(Parameter param)
+            throws IllegalActionException {
+        if(param == _paramODESolver) {
+            if(VERBOSE) {
+                System.out.println("solver updating.");
             }
-            pEvents.clear();
+            _solverclass =
+            ((StringToken)param.getToken()).stringValue();
+            _defaultSolver = _instantiateODESolver(_solverclass);
+        } else {
+            super.updateParameter(param);
         }
     }
                 
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-    protected void _initParameters() {
+    private void _initParameters() {
         try {
             _solverclass= "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             _paramODESolver = new CTParameter(
                 this, "ODESolver", new StringToken(_solverclass));
-            super._initParameters();
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");

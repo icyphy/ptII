@@ -177,7 +177,7 @@ public class CTScheduler extends Scheduler{
      *  the new version.
      *  This method read-synchronize on the workspace.
      */
-    public Enumeration eventDetectors() {
+    public Enumeration eventGenerateActors() {
         try {
 	    workspace().getReadAccess();
             if(_dynamicversion != workspace().getVersion()) {
@@ -190,6 +190,26 @@ public class CTScheduler extends Scheduler{
         }
     }
 
+    /** Return an enumeration of Memaris actors
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  the new version.
+     *  This method read-synchronize on the workspace.
+     */
+    public Enumeration memarisActors() {
+        try {
+	    workspace().getReadAccess();
+            if(_dynamicversion != workspace().getVersion()) {
+                _classifyActors();
+                _dynamicversion = workspace().getVersion();
+            }
+            return _memaris.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
     /** Return an enumeration of sinks. This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -270,14 +290,17 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    public Enumeration EventDetectionSchedule() 
+    /** Return the actors in the event detection path in the 
+     *  topological order.
+     */
+    public Enumeration eventGenerationSchedule() 
             throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
             if(!valid()) {
                 if(DEBUG) {
                     System.out.println("The schedule is not valid" + 
-                        " when calling eventDetectionSchedule().");
+                        " when calling eventGenerationSchedule().");
                 }
                 schedule();
             }
@@ -331,12 +354,14 @@ public class CTScheduler extends Scheduler{
             _arith = new LinkedList();
             _ectrl = new LinkedList();
             _evdct = new LinkedList();
+            _memaris = new LinkedList();
         }else {
             _sink.clear();
             _dynam.clear();
             _arith.clear();
             _ectrl.clear();
             _evdct.clear();
+            _memaris.clear();
         }
         
         CompositeActor ca = (CompositeActor) getContainer().getContainer();
@@ -346,8 +371,11 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTErrorControlActor) {
                 _ectrl.insertLast(a);
             }
-            if (a instanceof CTEventDetector) {
+            if (a instanceof CTEventGenerateActor) {
                 _evdct.insertLast(a);
+            }
+            if (a instanceof CTMemarisActor) {
+                _memaris.insertLast(a);
             }
             if (!((a.outputPorts()).hasMoreElements())) {
                 _sink.insertLast(a);
@@ -463,14 +491,14 @@ public class CTScheduler extends Scheduler{
             System.out.println("Number of Event Detector:"+numofevdct);
         }
         if(numofevdct > 0) {
-            Object[] eventdetectors = new Object[numofevdct];
+            Object[] eventgeneraters = new Object[numofevdct];
             Enumeration enumevdct = _evdct.elements();
             int count = 0;
             while(enumevdct.hasMoreElements()) {
-                eventdetectors[count++] = enumevdct.nextElement();
+                eventgeneraters[count++] = enumevdct.nextElement();
             }
             // Event detection map.
-            Object[] hx = g.backwardReachableNodes(eventdetectors);
+            Object[] hx = g.backwardReachableNodes(eventgeneraters);
             Object[] hxsort = g.topologicalSort(hx);
             for(int i=0; i < hxsort.length; i++) {
                 _eventschedule.insertLast(hxsort[i]);
@@ -613,6 +641,9 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _ectrl;
     // A linkedList of event detector.
     private transient LinkedList _evdct;
+    // A linkedLost of memaris actors.
+    private transient LinkedList _memaris;
+    
     // Version of the lists.
     private transient long _dynamicversion = -1;
 }

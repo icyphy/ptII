@@ -109,7 +109,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public void initialize() throws IllegalActionException {
         if (VERBOSE||DEBUG) {
-            System.out.println("Director initialize.");
+            System.out.println("MultiSolverDirector initialize.");
         }
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
@@ -166,7 +166,6 @@ public class CTMultiSolverDirector extends CTDirector {
             bps.clear();
         }
         fireAfterDelay(null, 0.0);
-        fireAfterDelay(null, getStopTime()-getStartTime());
         sch.setValid(false);
         _first = true;
         if (VERBOSE) {
@@ -276,8 +275,15 @@ public class CTMultiSolverDirector extends CTDirector {
      *        thrown by the solver.
      */
     public boolean postfire() throws IllegalActionException {
+        if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
+            fireAfterDelay(null, getStopTime()-getCurrentTime());
+        }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {    
             return false;
+        }
+        if(getStopTime() < getCurrentTime()) {
+            throw new InvalidStateException(this,
+            " stop time is less than the current time.");
         }
         return true;
     }
@@ -337,46 +343,33 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-
-
     /** Update paramters.
      */
-    public void updateParameters() throws IllegalActionException {
-        LinkedList pEvents = _getParameterEvents();
-        if((pEvents != null )&& (!pEvents.isEmpty())) {
-            if(DEBUG) {
-                System.out.println(" # of events = "+pEvents.size());
-            }            
-            Enumeration pes = pEvents.elements();
-            while(pes.hasMoreElements()) {
-                ParameterEvent event = (ParameterEvent) pes.nextElement();
-                Parameter param = event.getParameter();
-                if(param == _paramDefaultODESolver) {
-                    if(VERBOSE) {
-                        System.out.println("default solver updating.");
-                    }
-                    _defaultsolverclass =
-                        ((StringToken)param.getToken()).stringValue();
-                    _defaultSolver = _instantiateODESolver(_defaultsolverclass);
-                } else if (param == _paramBreakpointODESolver) {
-                    if(VERBOSE) {
-                        System.out.println("breakpoint solver updating.");
-                    }
-                    _breakpointsolverclass =
-                        ((StringToken)param.getToken()).stringValue();
-                    _breakpointSolver =
-                        _instantiateODESolver(_breakpointsolverclass);
-                } else {
-                    super.updateParameter(event);
-                }
+    public void updateParameter(Parameter param) 
+            throws IllegalActionException {
+        if(param == _paramDefaultODESolver) {
+            if(VERBOSE) {
+                System.out.println("default solver updating.");
             }
-            pEvents.clear();
+            _defaultsolverclass =
+            ((StringToken)param.getToken()).stringValue();
+            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
+        } else if (param == _paramBreakpointODESolver) {
+            if(VERBOSE) {
+                System.out.println("breakpoint solver updating.");
+            }
+            _breakpointsolverclass =
+            ((StringToken)param.getToken()).stringValue();
+            _breakpointSolver =
+            _instantiateODESolver(_breakpointsolverclass);
+        } else {
+            super.updateParameter(param);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-    protected void _initParameters() {
+    private void _initParameters() {
         try {
             _defaultsolverclass=
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
@@ -387,8 +380,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _paramBreakpointODESolver = new CTParameter(
                 this, "BreakpointODESolver", 
                 new StringToken(_breakpointsolverclass));
-
-            super._initParameters();
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -398,20 +389,16 @@ public class CTMultiSolverDirector extends CTDirector {
         
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    /** Return the default solver.
+     */
+    public ODESolver _getDefaultSolver() {
+        return _defaultSolver;
+    }
 
-    /** Description */
-    protected int _aprotectedvariable;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Private methods should not have doc comments, they should
-    // have regular C++ comments.
-    private int _APrivateMethod() {
-        return 1;
+    /** Return the break point solver.
+     */
+    public ODESolver _getBreakpointSolver() {
+        return _breakpointSolver;
     }
 
 
