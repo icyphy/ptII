@@ -133,7 +133,7 @@ Try changing the parameters in the run window.</text>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
@@ -175,7 +175,7 @@ Try changing the parameters in the run window.</text>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>

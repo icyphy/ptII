@@ -70,7 +70,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
@@ -368,25 +368,25 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Ball Model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+    <entity name="Ball Model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="60.5, 134.5">
         </property>
-        <port name="position" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+        <port name="position" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="bump" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+        <port name="bump" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="velocity" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+        <port name="velocity" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -399,17 +399,17 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
-            <port name="position" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="40.5, 149.0">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="34.0, 94.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.moml.Location" value="40.0, 39.0">
                 </property>
@@ -419,7 +419,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="520.0, 155.0">
                 </property>
@@ -433,7 +433,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="185.0, 175.0">
                 </property>
@@ -447,7 +447,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="175.0, 50.0">
                 </property>
@@ -511,7 +511,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <link port="free.outgoingPort" relation="relation3"/>
             <link port="stop.incomingPort" relation="relation"/>
         </entity>
-        <entity name="free" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement">
+        <entity name="free" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[50, 232]">
@@ -578,26 +578,26 @@ falling in a gravitational field.</text></svg></configure>
       </svg>
     </configure>
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="126.5, 231.0">
                 </property>
             </property>
-            <port name="position" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="413.5, 204.0">
                 </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="447.0, 134.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="243.0, 64.0">
                 </property>

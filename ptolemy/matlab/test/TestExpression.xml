@@ -24,7 +24,7 @@ Similar to TestEngine. It could be made more interesting
 by using more complex matrix functions from a library and
 testing against matlab...</text></svg></configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>

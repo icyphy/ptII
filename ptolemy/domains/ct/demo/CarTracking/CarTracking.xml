@@ -80,7 +80,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
@@ -760,43 +760,43 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <link port="3:SampleDelay.input" relation="relation8"/>
             <link port="3:SampleDelay.output" relation="relation2"/>
         </entity>
-        <entity name="modal controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+        <entity name="modal controller" class="ptolemy.vergil.fsm.modal.ModalModel">
             <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                 </property>
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel$ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="217.0, 181.5">
             </property>
-            <port name="faulty" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+            <port name="faulty" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
             </port>
-            <port name="subscribe" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+            <port name="subscribe" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
             </port>
-            <port name="acceleration" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+            <port name="acceleration" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
             </port>
-            <port name="tooClose" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+            <port name="tooClose" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
             </port>
-            <port name="tooFar" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
+            <port name="tooFar" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
             </port>
-            <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="regular">
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -818,17 +818,17 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
                 </property>
-                <port name="faulty" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="faulty" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="80.0, 124.0">
                     </property>
                 </port>
-                <port name="subscribe" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="subscribe" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="90.5, 325.0">
                     </property>
                 </port>
-                <port name="acceleration" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="acceleration" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.moml.Location" value="496.0, 206.66666666666666">
@@ -836,12 +836,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
                     </property>
                 </port>
-                <port name="tooClose" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooClose" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="89.0, 195.0">
                     </property>
                 </port>
-                <port name="tooFar" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooFar" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="83.0, 260.0">
                     </property>
@@ -851,7 +851,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="165.0, 225.0">
                     </property>
@@ -865,7 +865,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="390.0, 225.0">
                     </property>
@@ -911,7 +911,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <link port="faulty.incomingPort" relation="relation2"/>
                 <link port="faulty.outgoingPort" relation="relation3"/>
             </entity>
-            <entity name="regular" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement">
+            <entity name="regular" class="ptolemy.vergil.fsm.modal.Refinement">
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -934,27 +934,27 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.moml.Location" value="170.0, 35.0">
                     </property>
                 </property>
-                <port name="faulty" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="faulty" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="95.0, 94.0">
                     </property>
                 </port>
-                <port name="subscribe" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="subscribe" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="110.5, 235.0">
                     </property>
                 </port>
-                <port name="acceleration" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="acceleration" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.moml.Location" value="556.0, 245.0">
                     </property>
                 </port>
-                <port name="tooClose" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooClose" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="104.0, 160.0">
                     </property>
                 </port>
-                <port name="tooFar" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooFar" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="103.0, 305.0">
                     </property>
@@ -987,7 +987,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <link port="1:RecordDisassembler.input" relation="relation"/>
                 <link port="1:RecordDisassembler.acceleration" relation="relation2"/>
             </entity>
-            <entity name="faulty" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+            <entity name="faulty" class="ptolemy.vergil.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -996,29 +996,29 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
                 </property>
-                <port name="faulty" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="faulty" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="45.0, 299.0">
                     </property>
                 </port>
-                <port name="subscribe" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="subscribe" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="50.5, 50.0">
                     </property>
                 </port>
-                <port name="acceleration" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="acceleration" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.moml.Location" value="521.0, 175.0">
                     </property>
                     <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
                     </property>
                 </port>
-                <port name="tooClose" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooClose" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="54.0, 210.0">
                     </property>
                 </port>
-                <port name="tooFar" class="ptolemy.vergil.ptolemy.fsm.modal.RefinementPort">
+                <port name="tooFar" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.moml.Location" value="48.0, 120.0">
                     </property>

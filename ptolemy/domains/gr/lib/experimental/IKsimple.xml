@@ -7,7 +7,7 @@
         </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+        <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <location value="36.0, 25.25"/>
         </rendition>
     </property>
@@ -155,11 +155,11 @@
             </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="15.0, -2.75"/>
             </rendition>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+        <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <location value="251.00000095367432, 188.75"/>
         </rendition>
         <port name="out" class="ptolemy.actor.TypedIOPort">
@@ -245,10 +245,10 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="100.0, 165.0"/>
             </rendition>
             <port name="port10" class="ptolemy.actor.TypedIOPort">
@@ -977,10 +977,10 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="100.0, 238.0"/>
             </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
@@ -1893,10 +1893,10 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="97.0, 308.0"/>
             </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
@@ -2641,10 +2641,10 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="105.0, 385.0"/>
             </rendition>
             <port name="port1" class="ptolemy.actor.TypedIOPort">
@@ -3498,10 +3498,10 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="94.0, 42.0"/>
             </rendition>
             <port name="port7" class="ptolemy.actor.TypedIOPort">
@@ -3747,11 +3747,11 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                     <location value="12.0, 5.25"/>
                 </rendition>
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="106.0, 97.0"/>
             </rendition>
             <port name="port0" class="ptolemy.actor.TypedIOPort">
@@ -4229,11 +4229,11 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="535.0, 33.75"/>
             </rendition>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+        <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <location value="124.0, 192.0"/>
         </rendition>
         <port name="theta1" class="ptolemy.actor.TypedIOPort">
@@ -4261,7 +4261,7 @@
             </property>
         </port>
         <class name="theta20" extends="ptolemy.actor.TypedCompositeActor">
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="316.0, 131.0"/>
             </rendition>
             <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
@@ -4271,7 +4271,7 @@
                 </property>
                 <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                     <location value="538.0, 38.0"/>
                 </rendition>
             </property>
@@ -4565,7 +4565,7 @@
             <link port="AddSubtract7.output" relation="relation17"/>
         </class>
         <class name="theta11" extends="ptolemy.actor.TypedCompositeActor">
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <location value="413.0, 206.0"/>
             </rendition>
             <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
@@ -4575,7 +4575,7 @@
                 </property>
                 <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                <rendition name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                     <location value="465.0, 42.0"/>
                 </rendition>
             </property>

@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="diagrams" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+<entity name="diagrams" class="ptolemy.vergil.fsm.modal.ModalModel">
     <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
         <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
         </property>
     </property>
-    <property name="_tableauFactory" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel$ModalTableauFactory">
+    <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
     </property>
-    <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+    <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -39,7 +39,7 @@
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
@@ -53,7 +53,7 @@
             </property>
             <property name="_centerName" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="310.0, 205.0">
             </property>
@@ -67,7 +67,7 @@
             </property>
             <property name="_centerName" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="475.0, 175.0">
             </property>
@@ -81,7 +81,7 @@
             </property>
             <property name="_centerName" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="100.0, 130.0">
             </property>
@@ -145,7 +145,7 @@
         <link port="init.outgoingPort" relation="relation"/>
         <link port="stop.incomingPort" relation="relation4"/>
     </entity>
-    <entity name="mode1" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement">
+    <entity name="mode1" class="ptolemy.vergil.fsm.modal.Refinement">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -193,7 +193,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
@@ -231,7 +231,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
