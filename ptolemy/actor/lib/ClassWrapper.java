@@ -290,7 +290,7 @@ public class ClassWrapper extends TypedAtomicActor {
 		    + "complex, fixpoint, double, int, long  and String, "
 		    + "or a Token.");
 	}
-	
+
 	if (outPort != null) {
 	    outPort.send(0, resultToken);
 	}
