@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	Commutator.tcl \
 	Const.tcl \
 	Distributor.tcl \
+	dB.tcl \
 	Expression.tcl \
 	Gaussian.tcl \
 	Interpolator.tcl \
