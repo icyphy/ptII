@@ -1,5 +1,6 @@
 package ptolemy.domains.gr.kernel;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
@@ -12,7 +13,7 @@ import javax.vecmath.*;
 
 public class GRActor extends TypedAtomicActor {
 
-    public GRActor(TypedCompositeActor container, String name)
+    public GRActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

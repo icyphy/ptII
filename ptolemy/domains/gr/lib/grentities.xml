@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GR" class="ptolemy.moml.TypedActorLibrary">
+<entity name="graphics actors" class="ptolemy.moml.EntityLibrary">
   <doc>3D Graphics actors</doc>
   <configure>
     <?moml

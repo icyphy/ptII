@@ -45,6 +45,7 @@ and <i>zScale<i/> parameters.
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -62,7 +63,7 @@ import java.awt.Font;
 
 public class TextString3D extends GRShadedShape {
 
-    public TextString3D(TypedCompositeActor container, String name)
+    public TextString3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

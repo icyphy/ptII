@@ -1,5 +1,6 @@
 package ptolemy.domains.gr.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -38,7 +39,7 @@ import com.sun.j3d.utils.behaviors.mouse.*;
 
 public class Loader3D extends GRShadedShape {
 
-    public Loader3D(TypedCompositeActor container, String name)
+    public Loader3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);

@@ -30,6 +30,7 @@
 
 package ptolemy.domains.gr.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -65,7 +66,7 @@ public class Scale3D extends GRTransform {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Scale3D(TypedCompositeActor container, String name)
+    public Scale3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));

@@ -29,6 +29,7 @@
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -62,7 +63,7 @@ import javax.vecmath.*;
 
 public class ViewScreen extends GRActor implements Placeable {
 
-    public ViewScreen(TypedCompositeActor container, String name)
+    public ViewScreen(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
        super(container, name);
        

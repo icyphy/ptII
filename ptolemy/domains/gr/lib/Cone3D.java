@@ -29,11 +29,11 @@
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.domains.gr.kernel.*;
 
@@ -61,7 +61,7 @@ public class Cone3D extends GRShadedShape {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Cone3D(TypedCompositeActor container, String name)
+    public Cone3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
