@@ -410,7 +410,8 @@ public class DDFDirector extends Director {
     
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.  If there are not enough tokens,
-     *  then throw an exception.
+     *  then throw an exception. It then updates enabling status for all 
+     *  inside opaque actors that receive data from this port.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if there are not enough input tokens available.
      *  @param port The port to transfer tokens from.
@@ -452,6 +453,16 @@ public class DDFDirector extends Director {
                 // this shouldn't happen.
                 throw new InternalErrorException(this, ex, null);
             }
+        }
+        
+        // Update enabling status for all inside opaque actors that receive
+        // data from this port.
+        Iterator insideSinkPorts = port.insideSinkPortList().iterator();
+        while (insideSinkPorts.hasNext()) {
+            IOPort insideSinkPort = (IOPort)insideSinkPorts.next();
+            Actor container = (Actor)insideSinkPort.getContainer();
+            int[] flags = (int[])_actorsFlags.get(container);
+            flags[_enablingStatus] = _actorStatus(container);
         }
         return wasTransferred;
     }
@@ -567,11 +578,15 @@ public class DDFDirector extends Director {
             while (deepConnectedPorts.hasNext()) {
                 Port deepConnectedPort = (Port)deepConnectedPorts.next();
                 Actor container = (Actor)deepConnectedPort.getContainer();
-                int[] containerFlags = (int[])_actorsFlags.get(container);
-                containerFlags[_enablingStatus] = _actorStatus(container);
+                // Skip it if the deepConnectedPort belongs to the actor which
+                // contains this director.
+                if (getContainer() != container) {
+                    int[] containerFlags = (int[])_actorsFlags.get(container);
+                    containerFlags[_enablingStatus] = _actorStatus(container);
+                }
             }
         }
-
+        
         // Update enabling status for this actor. 
         flags[_enablingStatus] = _actorStatus(actor);
 
