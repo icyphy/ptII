@@ -2,9 +2,9 @@
 #
 # @Author: Christopher Hylands
 #
-# @Version: @(#)testDefs.tcl	1.9 01/07/98
+# @Version: $Id$
 #
-# @Copyright (c) 1997 The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
