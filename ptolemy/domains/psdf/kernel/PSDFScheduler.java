@@ -420,7 +420,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             try {
                 IntToken token = (IntToken)
                     _evaluateExpressionInModelScope(_parseTree);
-                System.out._debug("firing " + getActor() + " " +
+                _debug("firing " + getActor() + " " +
                         token.intValue() + " times");
                 return token.intValue();
             } catch (Exception ex) {
@@ -608,7 +608,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             Variable result;
             if(name.indexOf("::") != -1) {
                 String insideName = name.replaceAll("::", ".");
-                System.out._debug("insideName = " + insideName);
+                _debug("insideName = " + insideName);
                 result = (Variable)reference.getAttribute(insideName);
             } else {
                 result = getScopedVariable(
