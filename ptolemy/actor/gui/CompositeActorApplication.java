@@ -474,6 +474,9 @@ public class CompositeActorApplication
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";
 
+    /** The list of all the models */
+    protected List _models = new LinkedList();
+
     /** The count of currently executing runs. */
     protected int _runningCount = 0;
 
@@ -485,9 +488,6 @@ public class CompositeActorApplication
 
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;
-
-    // The list of all the models
-    private List _models = new LinkedList();
 
     // List of parameter names seen on the command line.
     private List _parameterNames = new LinkedList();
