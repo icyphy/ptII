@@ -368,6 +368,7 @@ rm -f $relationsFile
 # Convert OutputPort and InputPort
 awk '
 $0 ~ /<entity/ {
+
        # Get the value of the name field
        name=""
        nf = split($0, f, "\"")   
@@ -445,8 +446,20 @@ $0 ~ /<entity/ {
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
        if ($1 ~ /<OutputPort/) {
+           if (name == "output") {
+               outputCount++  
+               if (outputCount > 2) {
+                   print indent "    <property name=\"multiport\"/>"
+               }
+          }
            print "<property name=\"output\"/>"
        } else if ($1 ~ /<InputPort/) {
+           if (name == "input") {
+               inputCount++  
+               if (inputCount > 2) {
+                   print indent "    <property name=\"multiport\"/>"
+               }
+           }
            print "<property name=\"input\"/>"
        }  
 
@@ -626,7 +639,7 @@ awk '{
            }
        }
 
-       if (class == "vendors.ecsl_dp.ptolemy.ECSLStep" || class = "ptolemy.actor.lib.Interper") {
+       if (class == "vendors.ecsl_dp.ptolemy.ECSLStep") {
            if (name == "After") {
                # FIXME: After must be a double so that 1/1000 = 0.001
                # instead of 0
