@@ -116,7 +116,7 @@ public class RemoteCompositeActor extends CompositeActor {
      * @exception NameDuplicationException If the name coincides with
      *  an actor already in the container.
      */
-    public RemoteCompositeActor(CompositeEntity container, String name)
+    public RemoteCompositeActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
