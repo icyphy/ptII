@@ -4,7 +4,7 @@
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {112, 91, 706, 572}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {23, 10, 706, 572}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 463]">
     </property>
@@ -247,7 +247,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -264,7 +264,7 @@ Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 35.0">
                 </property>
             </property>
-            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.2">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -424,7 +424,7 @@ from bad to normal as well</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 265.0">
                 </property>
             </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.8">
+            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.2">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -528,7 +528,7 @@ from bad to normal as well</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="errors,state">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 1, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {485, 369, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

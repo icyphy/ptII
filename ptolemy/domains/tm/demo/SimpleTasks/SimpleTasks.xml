@@ -4,7 +4,7 @@
 <entity name="SimpleTasks" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 327]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 25.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -49,14 +49,14 @@ preemptive parameter to true or false.
         </property>
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 275.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 99, 819, 563}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {47, 3, 883, 436}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{334.0, 163.5}">
     </property>
     <entity name="Clock: period = 1" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -66,7 +66,7 @@ preemptive parameter to true or false.
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 140.0">
         </property>
     </entity>
     <entity name="Clock: period = 4" class="ptolemy.actor.lib.Clock">
@@ -82,7 +82,7 @@ preemptive parameter to true or false.
     </entity>
     <entity name="Task1: (p = mid, t = 2/10)" class="ptolemy.actor.lib.Const">
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 95.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -99,7 +99,7 @@ preemptive parameter to true or false.
         <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 295.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -115,13 +115,13 @@ preemptive parameter to true or false.
     <entity name="TimedPlotter: (p = high, t = 0)" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {12, 377, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 230.0">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -139,11 +139,11 @@ preemptive parameter to true or false.
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="170.0, 140.0">
+        <vertex name="vertex1" value="160.0, 140.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="170.0, 205.0">
+        <vertex name="vertex1" value="120.0, 205.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

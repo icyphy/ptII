@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -35,7 +35,7 @@ uses the GR domain to render the results</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 20.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 239, 819, 466}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {158, 239, 819, 459}, maximized = false}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1529,7 +1529,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={431, 336, 505, 354}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {431, 336, 505, 347}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 299]">
         </property>
@@ -1545,7 +1545,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="2.5"/>
+<yRange min="-0.12156969194624583" max="2.818468232732702"/>
 </plot>?>
         </configure>
     </entity>
@@ -1882,13 +1882,13 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                     </property>
                 </property>
-                <property name="p1" class="ptolemy.data.expr.Parameter" value="1.9615009685826">
+                <property name="p1" class="ptolemy.data.expr.Parameter" value="1.7700059922851">
                 </property>
-                <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.074673820154">
+                <property name="v1" class="ptolemy.data.expr.Parameter" value="0.0991057571747">
                 </property>
-                <property name="p2" class="ptolemy.data.expr.Parameter" value="1.9615009685826">
+                <property name="p2" class="ptolemy.data.expr.Parameter" value="1.7700059922851">
                 </property>
-                <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.074673820154">
+                <property name="v2" class="ptolemy.data.expr.Parameter" value="0.0991057571747">
                 </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2085,9 +2085,9 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
                 </property>
-                <property name="p" class="ptolemy.data.expr.Parameter" value="1.4132925742893">
+                <property name="p" class="ptolemy.data.expr.Parameter" value="1.5359384885775">
                 </property>
-                <property name="v" class="ptolemy.data.expr.Parameter" value="0.1991813618693">
+                <property name="v" class="ptolemy.data.expr.Parameter" value="-0.0143428236936">
                 </property>
                 <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>

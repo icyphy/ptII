@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -89,7 +89,7 @@ to see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 285.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 172, 819, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {48, 27, 819, 459}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
@@ -98,7 +98,7 @@ to see the modal behavior.</text></svg></configure>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, -10, 508, 530}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {491, 234, 508, 523}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 475]">
         </property>
@@ -106,10 +106,6 @@ to see the modal behavior.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 265.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -118,16 +114,12 @@ to see the modal behavior.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
-<yRange min="-0.13535801264417258" max="3.0"/>
+<yRange min="-0.13865137749523862" max="3.0"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Sticky Mass model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 265.0">
@@ -391,13 +383,13 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                 </property>
             </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5936503408324">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.593576252993">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2534835100114">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2844299004447">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5936503408324">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.593576252993">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2534835100114">
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2844299004447">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -507,9 +499,6 @@ of the two masses.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="P1" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -517,17 +506,6 @@ of the two masses.</text></svg></configure>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 365.0">
                 </property>
-                <port name="plus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="minus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="V2 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
@@ -588,9 +566,6 @@ of the two masses.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="P2" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -666,9 +641,9 @@ of the two masses.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8488832907865">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8771643389718">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1498925148665">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.149908284649">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -815,9 +790,6 @@ stickiness.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="P1" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -849,9 +821,6 @@ stickiness.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="P1" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -881,12 +850,6 @@ stickiness.</text></svg></configure>
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                     </property>
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex0" value="100.0, 160.0">

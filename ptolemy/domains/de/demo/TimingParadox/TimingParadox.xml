@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 963, 674}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 2, 963, 667}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 558]">
     </property>
@@ -139,13 +139,11 @@ delays.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 445.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.0, 279.0}">
+    </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
         </property>
@@ -157,12 +155,6 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="107.5, 445.0">
         </property>
@@ -178,9 +170,9 @@ delays.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="0.0,.05,.1,.2,.3,.4">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 94, 1032, 661}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 728]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 613]">
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value=".01">
         </property>
@@ -195,16 +187,14 @@ delays.</text></svg></configure>
 <title>The Delay Paradox</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.015" max="1.4299999999999997"/>
-<yRange min="0.0" max="645.0"/>
+<xRange min="0.025" max="1.4299999999999997"/>
+<yRange min="0.0" max="618.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.0050"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
         </property>
@@ -266,8 +256,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 150.0">
             </property>
@@ -335,8 +323,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 435.0">
             </property>
@@ -404,8 +390,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 435.0">
             </property>
@@ -473,8 +457,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 435.0">
             </property>
@@ -542,8 +524,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 435.0">
             </property>
@@ -611,8 +591,6 @@ delays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 435.0">
             </property>

@@ -197,14 +197,14 @@ executed in a separate thread.</text>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 132.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 120.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="534.0, 140.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 140.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -215,7 +215,7 @@ executed in a separate thread.</text>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/64.0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 132.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 130.0">
             </property>
         </entity>
         <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
@@ -235,7 +235,7 @@ executed in a separate thread.</text>
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="262.0, 132.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 130.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -243,7 +243,7 @@ executed in a separate thread.</text>
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 140.0">
             </property>
         </entity>
         <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">

@@ -19,7 +19,11 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model is used as a test case for
-code generation.  To run the code generator,
+code generation.  It produces data
+on standard out, so nothing much happens
+when it is run in the standard interpreted
+mode.
+To run the code generator,
 select View -> Code Generator.
 See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </property>
@@ -34,7 +38,7 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 5.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -2, 1032, 772}, maximized = false}">
