@@ -1696,7 +1696,7 @@ public class SDFScheduler extends Scheduler {
 	    for (int channel = 0;
                  channel < inputPort.getWidth();
                  channel++) {
-		tokens[channel] -= tokenRate;
+		tokens[channel] -= (tokenRate * firingCount);
 
 		// keep track of whether or not this actor can fire again
 		// immediately
