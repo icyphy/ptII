@@ -38,6 +38,9 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.copernicus.c.Main;
+import ptolemy.copernicus.java.Main;
+import ptolemy.copernicus.jhdl.Main;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.JTextAreaExec;
@@ -261,61 +264,117 @@ public class GeneratorTableau extends Tableau {
 							       + directoryName
 							       );
                             }
-                            // Write the generated code.
+			    boolean run =
+				((BooleanToken)options.run.getToken())
+				.booleanValue();
+			    List execCommands = new LinkedList();
 
-			    // FIXME: Note that we use the statusBar of the
-			    // JTextAreaExec JPanel instead of report()
-			    // so that we can print messages as we 
-			    // are compiling.  Ideally, we would have
-			    // some sort of call back from JTextAreaExec
-			    // that would update the standard PtolemyFrame
-			    // status area.
-                            exec.updateStatusBar("Starting code generation.");
-			    File destination = new File(directoryName,
-						   model.getName() + ".java");
+			    if (((BooleanToken)options
+				 .sootShallow.getToken())
+				.booleanValue()) {
+				// FIXME: we should disable the compile
+				// button.
 
-			    FileWriter outFile = new FileWriter(destination);
-			    PrintWriter outPrinter = new PrintWriter(outFile);
-			    outPrinter.print((new SaveAsJava())
-					     .generate(model));
-			    outFile.close();
-                            exec.updateStatusBar("Code generation complete.");
+				// FIXME: Note that we use the statusBar
+				// of the JTextAreaExec JPanel instead
+				// of report() so that we can print
+				// messages as we are compiling.
+				// Ideally, we would have some sort of
+				// call back from JTextAreaExec 
+				// that would update the standard
+				// PtolemyFrame status area.
+				exec.updateStatusBar("Starting soot "
+						     + "code generation");
+				ptolemy.copernicus.java
+				    .Main.generate((CompositeActor)model,
+						   directoryName);
+				exec.updateStatusBar("Code generation "
+						     + "complete.");
 
-                            // Handle the show checkbox.
-                            boolean show =
-				((BooleanToken)options.show.getToken())
-                                .booleanValue();
-                            if (show) {
-                                URL codeFile = destination.toURL();
-                                Configuration config =
-				    (Configuration)toplevel();
+				// FIXME: we should run javap or jode if
+				// show is selected
+
+			    } else if (((BooleanToken)options
+				 .generateC.getToken())
+				.booleanValue()) {
+				// FIXME: we should disable the compile
+				// button.
+
+				exec.updateStatusBar("Starting c "
+						     + "code generation");
+				ptolemy.copernicus.c
+				    .Main.generate((CompositeActor)model,
+						   directoryName);
+				exec.updateStatusBar("Code generation "
+						     + "complete.");
+				// FIXME: we should run javap or jode if
+				// show is selected
+
+			    } else if (((BooleanToken)options
+				   .ssbShallow.getToken())
+				   .booleanValue()) {
+				exec.updateStatusBar("Starting ssb shallow"
+						     + " code generation");
+				File destination =
+				    new File(directoryName,
+					     model.getName() + ".java");
+
+				FileWriter outFile =
+				    new FileWriter(destination);
+				PrintWriter outPrinter =
+				    new PrintWriter(outFile);
+				outPrinter.print((new SaveAsJava())
+						 .generate(model));
+				outFile.close();
+				exec.updateStatusBar("Code generation "
+						     + "complete.");
+				// Handle the show checkbox.
+				boolean show =
+				    ((BooleanToken)options.show.getToken())
+				    .booleanValue();
+				if (show) {
+				    URL codeFile = destination.toURL();
+				    Configuration config =
+					(Configuration)toplevel();
                                 // FIXME: If we previously had this file open,
                                 // we need to refresh the tableau.
-                                config.openModel(null, codeFile,
-                                        codeFile.toExternalForm());
-                            }
+				    config.openModel(null, codeFile,
+						     codeFile.toExternalForm());
+				}
+				
+				// Handle the compile and run.
+				boolean compile = ((BooleanToken)options.compile
+						   .getToken()).booleanValue();
 
-                            // Handle the compile and run.
-                            boolean compile = ((BooleanToken)options.compile
-                                    .getToken()).booleanValue();
-                            boolean run =
-				((BooleanToken)options.run.getToken())
-                                .booleanValue();
+				if (compile) {
+				    String compileOptions = options
+					.compileOptions.getExpression();
+				    execCommands.add(
+						     "javac "
+						     + compileOptions
+						     + " "
+						     + directoryName
+						     + File.separatorChar
+						     + model.getName()
+						     + ".java");
+				}
+			    } else if (((BooleanToken)options
 
-                            List execCommands = new LinkedList();
+				   .jhdl.getToken())
+				       .booleanValue()) {
+				// FIXME: we should disable the compile
+				// button.
 
-                            if (compile) {
-                                String compileOptions = options
-                                    .compileOptions.getExpression();
-                                execCommands.add(
-                                        "javac "
-                                        + compileOptions
-                                        + " "
-                                        + directoryName
-                                        + File.separatorChar
-                                        + model.getName()
-                                        + ".java");
-                            }
+				exec.updateStatusBar("Starting jhdl "
+						     + "code generation");
+				ptolemy.copernicus.jhdl
+				    .Main.generate((CompositeActor)model,
+						   directoryName);
+				exec.updateStatusBar("Code generation "
+						     + "complete.");
+				// FIXME: we should run javap or jode if
+				// show is selected
+			    }
 
                             if (run) {
                                 String runOptions = options

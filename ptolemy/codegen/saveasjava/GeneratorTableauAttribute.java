@@ -69,10 +69,40 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
         // Create parameters, and populate them with style hints to
         // use a checkbox on screen.
+	
+	// Start of code generators.
+	// sootShallow first, then alphabetical
+	sootShallow = new Parameter(this, "sootShallow",
+			     new BooleanToken(true));
+	new CheckBoxStyle(sootShallow, "style");
+        Documentation doc = new Documentation(sootShallow, "tooltip");
+        doc.setValue("Shallow code generation using Soot");
+
+	generateC = new Parameter(this, "generateC",
+			     new BooleanToken(false));
+	new CheckBoxStyle(generateC, "style");
+        doc = new Documentation(generateC, "tooltip");
+        doc.setValue("Generate C");
+
+	jhdl = new Parameter(this, "jhdl",
+			     new BooleanToken(false));
+	new CheckBoxStyle(jhdl, "style");
+        doc = new Documentation(jhdl, "tooltip");
+        doc.setValue("Generate JHDL using Michael Wirthlin's code");
+
+	ssbShallow = new Parameter(this, "ssbShallow",
+			     new BooleanToken(false));
+	new CheckBoxStyle(ssbShallow, "style");
+        doc = new Documentation(ssbShallow, "tooltip");
+        doc.setValue("Shallow code generation using Shuvra S. Bhattacharyya's code");
+
+	// End of Code Generators.
+
+
         show = new Parameter(this, "show",
                 new BooleanToken(true));
         new CheckBoxStyle(show, "style");
-        Documentation doc = new Documentation(show, "tooltip");
+        doc = new Documentation(show, "tooltip");
         doc.setValue("Show generated code.");
 
         compile = new Parameter(this, "compile",
@@ -147,6 +177,16 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
     /** The directory into which to put the generated code.*/
     public StringAttribute directory;
 
+    /** If true, generate C code using Soot.
+     *  This has type boolean and defaults to false;
+     */
+    public Parameter generateC;
+
+    /** If true, generate Java code using Michael Wirthlin's code
+     *  This has type boolean and defaults to false;
+     */
+    public Parameter jhdl;
+
     /** Options issued to the java command to run the generated code.*/
     public StringAttribute packageName;
 
@@ -162,6 +202,16 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
      *  defaults to true.
      */
     public Parameter show;
+
+    /** If true, generate Java code using Soot. This has type boolean and
+     *  defaults to true.
+     */
+    public Parameter sootShallow;
+
+    /** If true, generate Java code using Shuvra S. Bhattacharyya's code.
+     *  This has type boolean and defaults to false;
+     */
+    public Parameter ssbShallow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -181,12 +231,17 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         GeneratorTableauAttribute newObject = (GeneratorTableauAttribute)
             super.clone(workspace);
 
+	// Alphabetical
         newObject.compile = (Parameter)
             newObject.getAttribute("compile");
         newObject.compileOptions = (StringAttribute)
             newObject.getAttribute("compileOptions");
         newObject.directory = (StringAttribute)
             newObject.getAttribute("directory");
+        newObject.ssbShallow = (Parameter)
+            newObject.getAttribute("generateC");
+        newObject.jhdl = (Parameter)
+            newObject.getAttribute("jhdl");
         newObject.packageName = (StringAttribute)
             newObject.getAttribute("packageName");
         newObject.run = (Parameter)
@@ -195,6 +250,11 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
             newObject.getAttribute("show");
+        newObject.sootShallow = (Parameter)
+            newObject.getAttribute("sootShallow");
+        newObject.ssbShallow = (Parameter)
+            newObject.getAttribute("ssbShallow");
+
         return newObject;
     }
 }
