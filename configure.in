@@ -860,7 +860,7 @@ else
     esac
     if test $PTCYGWIN = "yes"; then
        AC_MSG_CHECKING([for win32com.dll ])
-       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
+       if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
            AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
        else   
            AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
