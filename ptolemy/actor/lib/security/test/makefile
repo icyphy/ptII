@@ -52,7 +52,7 @@ JSRCS =
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	dummy.tcl
+	KeyToken.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -63,7 +63,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	Password.xml info.tcl \
-	#$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+	$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
