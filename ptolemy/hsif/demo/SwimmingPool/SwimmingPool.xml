@@ -1,54 +1,23 @@
 <!DOCTYPE DNHA SYSTEM "HSIF.dtd">
 
 <DNHA name="new_swimmingpool" parameterAccuracy="0.001000">
-	<RealVariable _id="id1a" ref="id1b id28 id3e id43 id4f id56 id5d id67 id70 id73 id75 id7d id85 id89 id8c id92 id9c" kind="Observable" name="level" maxValue="0.000000" minValue="0.000000" __child_as="signals" initialMaxValue="2.600000" initialMinValue="2.200000"/>
+	<RealVariable _id="id12" ref="id13 id28 id3c id54 id5d id65 id68 id6f id77 id7e id85 id8c id93 id9a ida1 ida8 idae idb7 idba idbc idc4 idcc idd0 idd3 idd9 ide3" kind="Observable" name="level" maxValue="0.000000" minValue="0.000000" __child_as="signals" initialMaxValue="2.600000" initialMinValue="2.200000"/>
 	<RealParameter name="level_max" value="2.600000"/>
 	<RealParameter name="level_min" value="2.200000"/>
 	<HybridAutomaton name="Theromostat">
-		<RealVariable _id="id3" ref="id4 id8 id10 id17 id1c id1f id25 id29 id2d id34 id3a id47 id4c id53 id5a id61 id65" kind="Observable" name="T" maxValue="0.000000" minValue="0.000000" initialMaxValue="32.000000" initialMinValue="27.000000"/>
-		<RealParameter _id="id14" ref="id15 id45 id4a id58 id63" name="T_max" value="32.000000"/>
-		<RealParameter _id="id22" ref="id23 id51 id5f" name="T_min" value="27.000000"/>
-		<RealParameter _id="id2f" ref="id30" name="inflow" value="0.010000"/>
-		<RealParameter _id="id2a" ref="id2b" name="T_inflow" value="15.000000"/>
-		<RealParameter _id="idd" ref="ide id1d id38" name="T_ambient" value="25.000000"/>
-		<RealParameter _id="id5" ref="id6 id32" name="T_heat" value="40.000000"/>
-		<RealParameter _id="id12" ref="id13 id21 id3c" name="ambient" value="0.005000"/>
-		<RealParameter _id="ida" ref="idb id36" name="heat" value="0.008333"/>
-		<Location _id="id3f" dst="id40 id48" src="id4d id54" name="HeatOn_PumpOff" initial="false">
+		<RealVariable _id="id3" ref="id4 id8 idf id14 id18 id1f id25 id29 id2d id34 id39 id3d id40 id46 id4c id51 id5a id62 id6c id73 id7b id82 id89 id90 id97 id9e ida5 idac" kind="Observable" name="T" maxValue="0.000000" minValue="0.000000" initialMaxValue="32.000000" initialMinValue="27.000000"/>
+		<RealParameter _id="id22" ref="id23 id4f id6a id71 id87 id8e id95 ida3" name="T_max" value="32.000000"/>
+		<RealParameter _id="idc" ref="idd id37 id58 id60 id79 id80 id9c idaa" name="T_min" value="27.000000"/>
+		<RealParameter _id="id2f" ref="id30 id42" name="inflow" value="0.010000"/>
+		<RealParameter _id="id2a" ref="id2b id3e" name="T_inflow" value="15.000000"/>
+		<RealParameter _id="id5" ref="id6 id1d id32 id4a" name="T_ambient" value="25.000000"/>
+		<RealParameter _id="id15" ref="id16 id44" name="T_heat" value="40.000000"/>
+		<RealParameter _id="ida" ref="idb id21 id36 id4e" name="ambient" value="0.005000"/>
+		<RealParameter _id="id1a" ref="id1b id48" name="heat" value="0.008333"/>
+		<Location _id="id55" dst="id56 id5e id74" src="id66 id6d id7c" name="HeatOff_PumpOff" initial="true">
 			<DiffEquation>
 				<VarRef _id="id4" var="id3" unOp="NOP"/>
 				<AExpr>
-					<AExprR addOp=" - ">
-						<AExpr>
-							<MExpr>
-								<MExprR mulOp=" * ">
-									<MExpr>
-										<ParExpr unOp="NOP">
-											<Expr>
-												<LExpr>
-													<RExpr>
-														<AExpr>
-															<AExprR addOp=" - ">
-																<AExpr>
-																	<MExpr>
-																		<ParRef _id="id6" par="id5" name="T_heat" unOp="NOP"/>
-																	</MExpr>
-																</AExpr>
-															</AExprR>
-															<MExpr>
-																<VarRef _id="id8" var="id3" unOp="NOP"/>
-															</MExpr>
-														</AExpr>
-													</RExpr>
-												</LExpr>
-											</Expr>
-										</ParExpr>
-									</MExpr>
-								</MExprR>
-								<ParRef _id="idb" par="ida" name="heat" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</AExprR>
 					<MExpr>
 						<MExprR mulOp=" * ">
 							<MExpr>
@@ -60,12 +29,12 @@
 													<AExprR addOp=" - ">
 														<AExpr>
 															<MExpr>
-																<ParRef _id="ide" par="idd" name="T_ambient" unOp="NOP"/>
+																<ParRef _id="id6" par="id5" name="T_ambient" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</AExprR>
 													<MExpr>
-														<VarRef _id="id10" var="id3" unOp="NOP"/>
+														<VarRef _id="id8" var="id3" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -74,7 +43,7 @@
 								</ParExpr>
 							</MExpr>
 						</MExprR>
-						<ParRef _id="id13" par="id12" name="ambient" unOp=" -"/>
+						<ParRef _id="idb" par="ida" name="ambient" unOp=" -"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
@@ -89,16 +58,16 @@
 											<Expr>
 												<LExpr>
 													<RExpr>
-														<RExprR relOp=" &lt;= ">
+														<RExprR relOp=" >= ">
 															<AExpr>
 																<MExpr>
-																	<ParRef _id="id15" par="id14" name="T_max" unOp="NOP"/>
+																	<ParRef _id="idd" par="idc" name="T_min" unOp="NOP"/>
 																</MExpr>
 															</AExpr>
 														</RExprR>
 														<AExpr>
 															<MExpr>
-																<VarRef _id="id17" var="id3" unOp="NOP"/>
+																<VarRef _id="idf" var="id3" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</RExpr>
@@ -126,7 +95,7 @@
 												</RExprR>
 												<AExpr>
 													<MExpr>
-														<VarRef _id="id1b" var="id1a" unOp="NOP"/>
+														<VarRef _id="id13" var="id12" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -139,10 +108,41 @@
 				</LExpr>
 			</Expr>
 		</Location>
-		<Location _id="id49" dst="id4d id5b" src="id48 id62" name="HeatOff" initial="true">
+		<Location _id="id5f" dst="id66 id8a id91" src="id5e id98 id9f" name="HeatOn_PumpOff" initial="false">
 			<DiffEquation>
-				<VarRef _id="id1c" var="id3" unOp="NOP"/>
+				<VarRef _id="id14" var="id3" unOp="NOP"/>
 				<AExpr>
+					<AExprR addOp=" - ">
+						<AExpr>
+							<MExpr>
+								<MExprR mulOp=" * ">
+									<MExpr>
+										<ParExpr unOp="NOP">
+											<Expr>
+												<LExpr>
+													<RExpr>
+														<AExpr>
+															<AExprR addOp=" - ">
+																<AExpr>
+																	<MExpr>
+																		<ParRef _id="id16" par="id15" name="T_heat" unOp="NOP"/>
+																	</MExpr>
+																</AExpr>
+															</AExprR>
+															<MExpr>
+																<VarRef _id="id18" var="id3" unOp="NOP"/>
+															</MExpr>
+														</AExpr>
+													</RExpr>
+												</LExpr>
+											</Expr>
+										</ParExpr>
+									</MExpr>
+								</MExprR>
+								<ParRef _id="id1b" par="id1a" name="heat" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</AExprR>
 					<MExpr>
 						<MExprR mulOp=" * ">
 							<MExpr>
@@ -154,7 +154,7 @@
 													<AExprR addOp=" - ">
 														<AExpr>
 															<MExpr>
-																<ParRef _id="id1d" par="idd" name="T_ambient" unOp="NOP"/>
+																<ParRef _id="id1d" par="id5" name="T_ambient" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</AExprR>
@@ -168,7 +168,7 @@
 								</ParExpr>
 							</MExpr>
 						</MExprR>
-						<ParRef _id="id21" par="id12" name="ambient" unOp=" -"/>
+						<ParRef _id="id21" par="ida" name="ambient" unOp=" -"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
@@ -183,10 +183,10 @@
 											<Expr>
 												<LExpr>
 													<RExpr>
-														<RExprR relOp=" >= ">
+														<RExprR relOp=" &lt;= ">
 															<AExpr>
 																<MExpr>
-																	<ParRef _id="id23" par="id22" name="T_min" unOp="NOP"/>
+																	<ParRef _id="id23" par="id22" name="T_max" unOp="NOP"/>
 																</MExpr>
 															</AExpr>
 														</RExprR>
@@ -220,7 +220,7 @@
 												</RExprR>
 												<AExpr>
 													<MExpr>
-														<VarRef _id="id28" var="id1a" unOp="NOP"/>
+														<VarRef _id="id28" var="id12" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -233,9 +233,134 @@
 				</LExpr>
 			</Expr>
 		</Location>
-		<Location _id="id41" dst="id54 id62" src="id40 id5b" name="HeatOn_PumpOn" initial="false">
+		<Location _id="id75" dst="id7c id98 ida6" src="id74 id83 id91" name="HeatOff_PumpOn" initial="false">
 			<DiffEquation>
 				<VarRef _id="id29" var="id3" unOp="NOP"/>
+				<AExpr>
+					<AExprR addOp=" - ">
+						<AExpr>
+							<MExpr>
+								<MExprR mulOp=" * ">
+									<MExpr>
+										<ParExpr unOp="NOP">
+											<Expr>
+												<LExpr>
+													<RExpr>
+														<AExpr>
+															<AExprR addOp=" - ">
+																<AExpr>
+																	<MExpr>
+																		<ParRef _id="id2b" par="id2a" name="T_inflow" unOp="NOP"/>
+																	</MExpr>
+																</AExpr>
+															</AExprR>
+															<MExpr>
+																<VarRef _id="id2d" var="id3" unOp="NOP"/>
+															</MExpr>
+														</AExpr>
+													</RExpr>
+												</LExpr>
+											</Expr>
+										</ParExpr>
+									</MExpr>
+								</MExprR>
+								<ParRef _id="id30" par="id2f" name="inflow" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</AExprR>
+					<MExpr>
+						<MExprR mulOp=" * ">
+							<MExpr>
+								<ParExpr unOp="NOP">
+									<Expr>
+										<LExpr>
+											<RExpr>
+												<AExpr>
+													<AExprR addOp=" - ">
+														<AExpr>
+															<MExpr>
+																<ParRef _id="id32" par="id5" name="T_ambient" unOp="NOP"/>
+															</MExpr>
+														</AExpr>
+													</AExprR>
+													<MExpr>
+														<VarRef _id="id34" var="id3" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+										</LExpr>
+									</Expr>
+								</ParExpr>
+							</MExpr>
+						</MExprR>
+						<ParRef _id="id36" par="ida" name="ambient" unOp=" -"/>
+					</MExpr>
+				</AExpr>
+			</DiffEquation>
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<AExpr>
+									<MExpr>
+										<ParExpr unOp="NOP">
+											<Expr>
+												<LExpr>
+													<RExpr>
+														<RExprR relOp=" >= ">
+															<AExpr>
+																<MExpr>
+																	<ParRef _id="id37" par="idc" name="T_min" unOp="NOP"/>
+																</MExpr>
+															</AExpr>
+														</RExprR>
+														<AExpr>
+															<MExpr>
+																<VarRef _id="id39" var="id3" unOp="NOP"/>
+															</MExpr>
+														</AExpr>
+													</RExpr>
+												</LExpr>
+											</Expr>
+										</ParExpr>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<AExpr>
+							<MExpr>
+								<ParExpr unOp="NOP">
+									<Expr>
+										<LExpr>
+											<RExpr>
+												<RExprR relOp=" &lt;= ">
+													<AExpr>
+														<MExpr>
+															<ParRef name="level_max" unOp="NOP"/>
+														</MExpr>
+													</AExpr>
+												</RExprR>
+												<AExpr>
+													<MExpr>
+														<VarRef _id="id3c" var="id12" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+										</LExpr>
+									</Expr>
+								</ParExpr>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Location>
+		<Location _id="id57" dst="id6d id83 id9f" src="id56 id8a ida6" name="HeatOn_PumpOn" initial="false">
+			<DiffEquation>
+				<VarRef _id="id3d" var="id3" unOp="NOP"/>
 				<AExpr>
 					<AExprR addOp=" - ">
 						<AExpr>
@@ -252,12 +377,12 @@
 																	<AExprR addOp=" - ">
 																		<AExpr>
 																			<MExpr>
-																				<ParRef _id="id2b" par="id2a" name="T_inflow" unOp="NOP"/>
+																				<ParRef _id="id3e" par="id2a" name="T_inflow" unOp="NOP"/>
 																			</MExpr>
 																		</AExpr>
 																	</AExprR>
 																	<MExpr>
-																		<VarRef _id="id2d" var="id3" unOp="NOP"/>
+																		<VarRef _id="id40" var="id3" unOp="NOP"/>
 																	</MExpr>
 																</AExpr>
 															</RExpr>
@@ -266,7 +391,7 @@
 												</ParExpr>
 											</MExpr>
 										</MExprR>
-										<ParRef _id="id30" par="id2f" name="inflow" unOp="NOP"/>
+										<ParRef _id="id42" par="id2f" name="inflow" unOp="NOP"/>
 									</MExpr>
 								</AExpr>
 							</AExprR>
@@ -281,12 +406,12 @@
 															<AExprR addOp=" - ">
 																<AExpr>
 																	<MExpr>
-																		<ParRef _id="id32" par="id5" name="T_heat" unOp="NOP"/>
+																		<ParRef _id="id44" par="id15" name="T_heat" unOp="NOP"/>
 																	</MExpr>
 																</AExpr>
 															</AExprR>
 															<MExpr>
-																<VarRef _id="id34" var="id3" unOp="NOP"/>
+																<VarRef _id="id46" var="id3" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</RExpr>
@@ -295,7 +420,7 @@
 										</ParExpr>
 									</MExpr>
 								</MExprR>
-								<ParRef _id="id36" par="ida" name="heat" unOp="NOP"/>
+								<ParRef _id="id48" par="id1a" name="heat" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</AExprR>
@@ -310,12 +435,12 @@
 													<AExprR addOp=" - ">
 														<AExpr>
 															<MExpr>
-																<ParRef _id="id38" par="idd" name="T_ambient" unOp="NOP"/>
+																<ParRef _id="id4a" par="id5" name="T_ambient" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</AExprR>
 													<MExpr>
-														<VarRef _id="id3a" var="id3" unOp="NOP"/>
+														<VarRef _id="id4c" var="id3" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -324,45 +449,87 @@
 								</ParExpr>
 							</MExpr>
 						</MExprR>
-						<ParRef _id="id3c" par="id12" name="ambient" unOp=" -"/>
+						<ParRef _id="id4e" par="ida" name="ambient" unOp=" -"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
 			<Expr>
 				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<AExpr>
+									<MExpr>
+										<ParExpr unOp="NOP">
+											<Expr>
+												<LExpr>
+													<RExpr>
+														<RExprR relOp=" &lt;= ">
+															<AExpr>
+																<MExpr>
+																	<ParRef _id="id4f" par="id22" name="T_max" unOp="NOP"/>
+																</MExpr>
+															</AExpr>
+														</RExprR>
+														<AExpr>
+															<MExpr>
+																<VarRef _id="id51" var="id3" unOp="NOP"/>
+															</MExpr>
+														</AExpr>
+													</RExpr>
+												</LExpr>
+											</Expr>
+										</ParExpr>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
 					<RExpr>
-						<RExprR relOp=" &lt;= ">
-							<AExpr>
-								<MExpr>
-									<ParRef name="level_max" unOp="NOP"/>
-								</MExpr>
-							</AExpr>
-						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id3e" var="id1a" unOp="NOP"/>
+								<ParExpr unOp="NOP">
+									<Expr>
+										<LExpr>
+											<RExpr>
+												<RExprR relOp=" &lt;= ">
+													<AExpr>
+														<MExpr>
+															<ParRef name="level_max" unOp="NOP"/>
+														</MExpr>
+													</AExpr>
+												</RExprR>
+												<AExpr>
+													<MExpr>
+														<VarRef _id="id54" var="id12" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+										</LExpr>
+									</Expr>
+								</ParExpr>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Location>
-		<Transition _id="id40" dst_end_="id41" src_end_="id3f">
+		<Transition _id="id56" dst_end_="id57" src_end_="id55">
 			<Expr>
 				<LExpr>
 					<LExprR logicOp=" and ">
 						<LExpr>
 							<RExpr>
-								<RExprR relOp=" &lt;= ">
+								<RExprR relOp=" &lt; ">
 									<AExpr>
 										<MExpr>
-											<ParRef name="level_min" unOp="NOP"/>
+											<ParRef _id="id58" par="idc" name="T_min" unOp="NOP"/>
 										</MExpr>
 									</AExpr>
 								</RExprR>
 								<AExpr>
 									<MExpr>
-										<VarRef _id="id43" var="id1a" unOp="NOP"/>
+										<VarRef _id="id5a" var="id3" unOp="NOP"/>
 									</MExpr>
 								</AExpr>
 							</RExpr>
@@ -372,46 +539,64 @@
 						<RExprR relOp=" &lt; ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id45" par="id14" name="T_max" unOp="NOP"/>
+									<ParRef name="level_min" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id47" var="id3" unOp="NOP"/>
+								<VarRef _id="id5d" var="id12" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id48" dst_end_="id49" src_end_="id3f">
-			<Expr>
-				<LExpr>
-					<RExpr>
-						<RExprR relOp=" >= ">
-							<AExpr>
-								<MExpr>
-									<ParRef _id="id4a" par="id14" name="T_max" unOp="NOP"/>
-								</MExpr>
-							</AExpr>
-						</RExprR>
-						<AExpr>
-							<MExpr>
-								<VarRef _id="id4c" var="id3" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-				</LExpr>
-			</Expr>
-		</Transition>
-		<Transition _id="id4d" dst_end_="id3f" src_end_="id49">
+		<Transition _id="id5e" dst_end_="id5f" src_end_="id55">
 			<Expr>
 				<LExpr>
 					<LExprR logicOp=" and ">
 						<LExpr>
 							<RExpr>
-								<RExprR relOp=" >= ">
+								<RExprR relOp=" &lt; ">
+									<AExpr>
+										<MExpr>
+											<ParRef _id="id60" par="idc" name="T_min" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id62" var="id3" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" > ">
+							<AExpr>
+								<MExpr>
+									<ParRef name="level_min" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id65" var="id12" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id66" dst_end_="id55" src_end_="id5f">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" > ">
 									<AExpr>
 										<MExpr>
 											<ParRef name="level_min" unOp="NOP"/>
@@ -420,36 +605,36 @@
 								</RExprR>
 								<AExpr>
 									<MExpr>
-										<VarRef _id="id4f" var="id1a" unOp="NOP"/>
+										<VarRef _id="id68" var="id12" unOp="NOP"/>
 									</MExpr>
 								</AExpr>
 							</RExpr>
 						</LExpr>
 					</LExprR>
 					<RExpr>
-						<RExprR relOp=" &lt;= ">
+						<RExprR relOp=" > ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id51" par="id22" name="T_min" unOp="NOP"/>
+									<ParRef _id="id6a" par="id22" name="T_max" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id53" var="id3" unOp="NOP"/>
+								<VarRef _id="id6c" var="id3" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id54" dst_end_="id3f" src_end_="id41">
+		<Transition _id="id6d" dst_end_="id55" src_end_="id57">
 			<Expr>
 				<LExpr>
 					<LExprR logicOp=" and ">
 						<LExpr>
 							<RExpr>
-								<RExprR relOp=" >= ">
+								<RExprR relOp=" > ">
 									<AExpr>
 										<MExpr>
 											<ParRef name="level_max" unOp="NOP"/>
@@ -458,30 +643,30 @@
 								</RExprR>
 								<AExpr>
 									<MExpr>
-										<VarRef _id="id56" var="id1a" unOp="NOP"/>
+										<VarRef _id="id6f" var="id12" unOp="NOP"/>
 									</MExpr>
 								</AExpr>
 							</RExpr>
 						</LExpr>
 					</LExprR>
 					<RExpr>
-						<RExprR relOp=" &lt; ">
+						<RExprR relOp=" > ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id58" par="id14" name="T_max" unOp="NOP"/>
+									<ParRef _id="id71" par="id22" name="T_max" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id5a" var="id3" unOp="NOP"/>
+								<VarRef _id="id73" var="id3" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id5b" dst_end_="id41" src_end_="id49">
+		<Transition _id="id74" dst_end_="id75" src_end_="id55">
 			<Expr>
 				<LExpr>
 					<LExprR logicOp=" and ">
@@ -496,7 +681,197 @@
 								</RExprR>
 								<AExpr>
 									<MExpr>
-										<VarRef _id="id5d" var="id1a" unOp="NOP"/>
+										<VarRef _id="id77" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" > ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="id79" par="idc" name="T_min" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id7b" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id7c" dst_end_="id55" src_end_="id75">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" >= ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_max" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id7e" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" > ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="id80" par="idc" name="T_min" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id82" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id83" dst_end_="id75" src_end_="id57">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" &lt; ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_max" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id85" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" >= ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="id87" par="id22" name="T_max" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id89" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id8a" dst_end_="id57" src_end_="id5f">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" &lt;= ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_min" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id8c" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" &lt; ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="id8e" par="id22" name="T_max" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id90" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id91" dst_end_="id75" src_end_="id5f">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" &lt; ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_min" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id93" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" >= ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="id95" par="id22" name="T_max" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="id97" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="id98" dst_end_="id5f" src_end_="id75">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" >= ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_max" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="id9a" var="id12" unOp="NOP"/>
 									</MExpr>
 								</AExpr>
 							</RExpr>
@@ -506,33 +881,89 @@
 						<RExprR relOp=" &lt;= ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id5f" par="id22" name="T_min" unOp="NOP"/>
+									<ParRef _id="id9c" par="idc" name="T_min" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id61" var="id3" unOp="NOP"/>
+								<VarRef _id="id9e" var="id3" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id62" dst_end_="id49" src_end_="id41">
+		<Transition _id="id9f" dst_end_="id5f" src_end_="id57">
 			<Expr>
 				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" >= ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_max" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="ida1" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
 					<RExpr>
-						<RExprR relOp=" >= ">
+						<RExprR relOp=" &lt; ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id63" par="id14" name="T_max" unOp="NOP"/>
+									<ParRef _id="ida3" par="id22" name="T_max" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id65" var="id3" unOp="NOP"/>
+								<VarRef _id="ida5" var="id3" unOp="NOP"/>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+			</Expr>
+		</Transition>
+		<Transition _id="ida6" dst_end_="id57" src_end_="id75">
+			<Expr>
+				<LExpr>
+					<LExprR logicOp=" and ">
+						<LExpr>
+							<RExpr>
+								<RExprR relOp=" &lt; ">
+									<AExpr>
+										<MExpr>
+											<ParRef name="level_max" unOp="NOP"/>
+										</MExpr>
+									</AExpr>
+								</RExprR>
+								<AExpr>
+									<MExpr>
+										<VarRef _id="ida8" var="id12" unOp="NOP"/>
+									</MExpr>
+								</AExpr>
+							</RExpr>
+						</LExpr>
+					</LExprR>
+					<RExpr>
+						<RExprR relOp=" &lt;= ">
+							<AExpr>
+								<MExpr>
+									<ParRef _id="idaa" par="idc" name="T_min" unOp="NOP"/>
+								</MExpr>
+							</AExpr>
+						</RExprR>
+						<AExpr>
+							<MExpr>
+								<VarRef _id="idac" var="id3" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
@@ -541,29 +972,29 @@
 		</Transition>
 	</HybridAutomaton>
 	<HybridAutomaton name="pump">
-		<RealVariable _id="id6d" ref="id6e id74 id7c id81 id84 id87 id90 id97 id9a ida0" kind="Observable" name="timer" maxValue="10.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<RealVariable _id="id66" kind="Observable" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<RealParameter _id="id68" ref="id69" name="f_leak" value="0.040000"/>
-		<RealParameter _id="id6b" ref="id6c id79 id80 id86" name="f_in" value="0.200000"/>
-		<RealParameter _id="id76" ref="id77 id7a id7e id82 id95 id9e" name="timeout" value="0.500000"/>
-		<Location _id="id8d" dst="id8e" src="id9d" name="steadyOn" initial="false">
+		<RealVariable _id="idb4" ref="idb5 idbb idc3 idc8 idcb idce idd7 idde ide1 ide7" kind="Observable" name="timer" maxValue="10.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
+		<RealVariable _id="idad" kind="Observable" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
+		<RealParameter _id="idaf" ref="idb0 idc0 idcd" name="f_leak" value="0.040000"/>
+		<RealParameter _id="idb2" ref="idb3 idc7" name="f_in" value="0.200000"/>
+		<RealParameter _id="idbd" ref="idbe idc1 idc5 idc9 iddc ide5" name="timeout" value="0.500000"/>
+		<Location _id="idd4" dst="idd5" src="ide4" name="steadyOn" initial="false">
 			<DiffEquation>
-				<VarRef _id="id67" var="id1a" unOp="NOP"/>
+				<VarRef _id="idae" var="id12" unOp="NOP"/>
 				<AExpr>
 					<AExprR addOp=" - ">
 						<AExpr>
 							<MExpr>
-								<ParRef _id="id69" par="id68" name="f_leak" unOp="NOP"/>
+								<ParRef _id="idb0" par="idaf" name="f_leak" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</AExprR>
 					<MExpr>
-						<ParRef _id="id6c" par="id6b" name="f_in" unOp="NOP"/>
+						<ParRef _id="idb3" par="idb2" name="f_in" unOp="NOP"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
 			<DiffEquation>
-				<VarRef _id="id6e" var="id6d" unOp="NOP"/>
+				<VarRef _id="idb5" var="idb4" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<Const unOp="NOP" value="0"/>
@@ -590,7 +1021,7 @@
 														</RExprR>
 														<AExpr>
 															<MExpr>
-																<VarRef _id="id70" var="id1a" unOp="NOP"/>
+																<VarRef _id="idb7" var="id12" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</RExpr>
@@ -618,7 +1049,7 @@
 												</RExprR>
 												<AExpr>
 													<MExpr>
-														<VarRef _id="id73" var="id1a" unOp="NOP"/>
+														<VarRef _id="idba" var="id12" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -631,9 +1062,9 @@
 				</LExpr>
 			</Expr>
 		</Location>
-		<Location _id="id8f" dst="id93" src="id8e" name="on_TurnOff" initial="false">
+		<Location _id="idd6" dst="idda" src="idd5" name="on_TurnOff" initial="false">
 			<DiffEquation>
-				<VarRef _id="id74" var="id6d" unOp="NOP"/>
+				<VarRef _id="idbb" var="idb4" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<Const unOp="NOP" value="1"/>
@@ -641,15 +1072,15 @@
 				</AExpr>
 			</DiffEquation>
 			<DiffEquation>
-				<VarRef _id="id75" var="id1a" unOp="NOP"/>
+				<VarRef _id="idbc" var="id12" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<MExprR mulOp=" / ">
 							<MExpr>
-								<ParRef _id="id77" par="id76" name="timeout" unOp="NOP"/>
+								<ParRef _id="idbe" par="idbd" name="timeout" unOp="NOP"/>
 							</MExpr>
 						</MExprR>
-						<ParRef _id="id79" par="id6b" name="f_in" unOp=" -"/>
+						<ParRef _id="idc0" par="idaf" name="f_leak" unOp=" -"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
@@ -659,35 +1090,35 @@
 						<RExprR relOp=" &lt;= ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id7a" par="id76" name="timeout" unOp="NOP"/>
+									<ParRef _id="idc1" par="idbd" name="timeout" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id7c" var="id6d" unOp="NOP"/>
+								<VarRef _id="idc3" var="idb4" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Location>
-		<Location _id="id99" dst="id9d" src="id98" name="off_TurnOn" initial="false">
+		<Location _id="ide0" dst="ide4" src="iddf" name="off_TurnOn" initial="false">
 			<DiffEquation>
-				<VarRef _id="id7d" var="id1a" unOp="NOP"/>
+				<VarRef _id="idc4" var="id12" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<MExprR mulOp=" / ">
 							<MExpr>
-								<ParRef _id="id7e" par="id76" name="timeout" unOp="NOP"/>
+								<ParRef _id="idc5" par="idbd" name="timeout" unOp="NOP"/>
 							</MExpr>
 						</MExprR>
-						<ParRef _id="id80" par="id6b" name="f_in" unOp="NOP"/>
+						<ParRef _id="idc7" par="idb2" name="f_in" unOp="NOP"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
 			<DiffEquation>
-				<VarRef _id="id81" var="id6d" unOp="NOP"/>
+				<VarRef _id="idc8" var="idb4" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<Const unOp="NOP" value="1"/>
@@ -700,30 +1131,30 @@
 						<RExprR relOp=" &lt;= ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id82" par="id76" name="timeout" unOp="NOP"/>
+									<ParRef _id="idc9" par="idbd" name="timeout" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id84" var="id6d" unOp="NOP"/>
+								<VarRef _id="idcb" var="idb4" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Location>
-		<Location _id="id94" dst="id98" src="id93" name="steadyOff" initial="true">
+		<Location _id="iddb" dst="iddf" src="idda" name="steadyOff" initial="true">
 			<DiffEquation>
-				<VarRef _id="id85" var="id1a" unOp="NOP"/>
+				<VarRef _id="idcc" var="id12" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
-						<ParRef _id="id86" par="id6b" name="f_in" unOp=" -"/>
+						<ParRef _id="idcd" par="idaf" name="f_leak" unOp=" -"/>
 					</MExpr>
 				</AExpr>
 			</DiffEquation>
 			<DiffEquation>
-				<VarRef _id="id87" var="id6d" unOp="NOP"/>
+				<VarRef _id="idce" var="idb4" unOp="NOP"/>
 				<AExpr>
 					<MExpr>
 						<Const unOp="NOP" value="0"/>
@@ -750,7 +1181,7 @@
 														</RExprR>
 														<AExpr>
 															<MExpr>
-																<VarRef _id="id89" var="id1a" unOp="NOP"/>
+																<VarRef _id="idd0" var="id12" unOp="NOP"/>
 															</MExpr>
 														</AExpr>
 													</RExpr>
@@ -778,7 +1209,7 @@
 												</RExprR>
 												<AExpr>
 													<MExpr>
-														<VarRef _id="id8c" var="id1a" unOp="NOP"/>
+														<VarRef _id="idd3" var="id12" unOp="NOP"/>
 													</MExpr>
 												</AExpr>
 											</RExpr>
@@ -791,9 +1222,9 @@
 				</LExpr>
 			</Expr>
 		</Location>
-		<Transition _id="id8e" dst_end_="id8f" src_end_="id8d">
+		<Transition _id="idd5" dst_end_="idd6" src_end_="idd4">
 			<Action>
-				<VarRef _id="id90" var="id6d" unOp="NOP"/>
+				<VarRef _id="idd7" var="idb4" unOp="NOP"/>
 				<Expr>
 					<LExpr>
 						<RExpr>
@@ -818,36 +1249,36 @@
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id92" var="id1a" unOp="NOP"/>
+								<VarRef _id="idd9" var="id12" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id93" dst_end_="id94" src_end_="id8f">
+		<Transition _id="idda" dst_end_="iddb" src_end_="idd6">
 			<Expr>
 				<LExpr>
 					<RExpr>
 						<RExprR relOp=" >= ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id95" par="id76" name="timeout" unOp="NOP"/>
+									<ParRef _id="iddc" par="idbd" name="timeout" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id97" var="id6d" unOp="NOP"/>
+								<VarRef _id="idde" var="idb4" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id98" dst_end_="id99" src_end_="id94">
+		<Transition _id="iddf" dst_end_="ide0" src_end_="iddb">
 			<Action>
-				<VarRef _id="id9a" var="id6d" unOp="NOP"/>
+				<VarRef _id="ide1" var="idb4" unOp="NOP"/>
 				<Expr>
 					<LExpr>
 						<RExpr>
@@ -872,27 +1303,27 @@
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="id9c" var="id1a" unOp="NOP"/>
+								<VarRef _id="ide3" var="id12" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
 				</LExpr>
 			</Expr>
 		</Transition>
-		<Transition _id="id9d" dst_end_="id8d" src_end_="id99">
+		<Transition _id="ide4" dst_end_="idd4" src_end_="ide0">
 			<Expr>
 				<LExpr>
 					<RExpr>
 						<RExprR relOp=" >= ">
 							<AExpr>
 								<MExpr>
-									<ParRef _id="id9e" par="id76" name="timeout" unOp="NOP"/>
+									<ParRef _id="ide5" par="idbd" name="timeout" unOp="NOP"/>
 								</MExpr>
 							</AExpr>
 						</RExprR>
 						<AExpr>
 							<MExpr>
-								<VarRef _id="ida0" var="id6d" unOp="NOP"/>
+								<VarRef _id="ide7" var="idb4" unOp="NOP"/>
 							</MExpr>
 						</AExpr>
 					</RExpr>
