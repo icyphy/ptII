@@ -578,57 +578,6 @@ test MoMLChangeRequest-5.1 {getDeferredToParent} {
 
 ######################################################################
 ####
-#
-set baseModel6 {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" value="2"/>
-    </property>
-</entity>
-}
-
-######################################################################
-####
-#
-test MoMLChangeRequest-6.1 {setReportErrorsToHandler} {
-    # Usually, reportToHandler is set to false
-
-    # Create a base model.
-    set parser [java::new ptolemy.moml.MoMLParser]
-    $parser reset
-    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler $recorderErrorHandler
-
-    set toplevel [java::cast ptolemy.actor.CompositeActor \
-            [$parser parse $baseModel6]]
-    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
-    $toplevel setManager $manager
-
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <entity name=".top">
-	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
-        </entity>
-    }]
-
-
-    set stream [java::new java.io.ByteArrayOutputStream]
-    set printStream [java::new \
-            {java.io.PrintStream java.io.OutputStream} $stream]
-    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
-	    $printStream]
-
-    $change addChangeListener $listener
-
-    # NOTE: Request is filled immediately because the model is not running.
-    $manager requestChange $change
-    $toplevel exportMoML
-    $recorderErrorHandler getMessages	
-} {}
-
-######################################################################
-####
 # Procedure used to test setReportErrorsToHandler
 proc testSetReportErrorsToHandler {reportErrorsToHandler} {
 
