@@ -114,6 +114,20 @@ test Commutator-4.1 {run with mutations} {
     list $results \
 	    [enumToTokenValues [$rec getRecord 0]]
 } {{StreamChangeRequest.changeExecuted(): <group>
+<entity name="commutator">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+<entity name="ramp1">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+<entity name="ramp2">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+<entity name="rec">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="2"/>
+</entity>
+</group> succeeded
+StreamChangeRequest.changeExecuted(): <group>
 <relation name="r1">
 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
 </relation>
@@ -126,6 +140,17 @@ test Commutator-4.1 {run with mutations} {
 </group> succeeded
 StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
 StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
+StreamChangeRequest.changeExecuted(): <group>
+<entity name="commutator">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+<entity name="ramp2">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+<entity name="rec">
+<property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
+</entity>
+</group> succeeded
 StreamChangeRequest.changeExecuted(): <group>
 <relation name="_R">
 <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
