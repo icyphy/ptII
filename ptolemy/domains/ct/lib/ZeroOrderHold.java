@@ -116,28 +116,6 @@ public class ZeroOrderHold extends Transformer
         return newObject;
     }
 
-    /** consume the input event if there is any. This event will be
-     *  hold for further firings until this method is called again.
-     *  If there is no input event, do nothing and
-     *  the old token will be held.
-     *
-     public void consumeCurrentEvents() throws IllegalActionException{
-     if (input.hasToken(0)) {
-     _lastToken = input.get(0);
-     CTDirector dir = (CTDirector) getDirector();
-     _debug(getFullName() + " receives an event at: " +
-     dir.getCurrentTime() +
-     " with token " + _lastToken.toString());
-     }
-     }*/
-
-    /** FIXME: This may not be the right way to use Waveform Generators.
-     *  This implements the emitTentativeOutput.
-     *
-     public void emitTentativeOutputs() throws IllegalActionException {
-     output.send(0, _lastToken);
-     }*/
-
     /** Output the latest token consumed from the consumeCurrentEvents()
      *  call.
      *  @exception IllegalActionException If the token cannot be sent.
