@@ -472,6 +472,9 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
