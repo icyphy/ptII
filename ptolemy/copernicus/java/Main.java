@@ -387,7 +387,10 @@ public class Main extends KernelMain {
                UnreachableMethodRemover.v());
        addTransform(pack, "wjtp.cp2",
                new TransformerAdapter(CopyPropagator.v()));
-              
+       addTransform(pack, "wjtp.ufr2",
+               UnusedFieldRemover.v());
+       addStandardOptimizations(pack, 10);   
+         
        // The library usage reporter also pulls in all depended
        // classes for analysis.       
        addTransform(pack, "wjtp.lur",
@@ -398,7 +401,7 @@ public class Main extends KernelMain {
        
 //        addTransform(pack, "wjtp.umr4", 
 //                UnreachableMethodRemover.v());
-//        addTransform(pack, "wjtp.ufr2",
+//        addTransform(pack, "wjtp.ufr3",
 //                UnusedFieldRemover.v());
 //        addStandardOptimizations(pack, 9);
 //        addTransform(pack, "wjtp.umr5", 
