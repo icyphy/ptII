@@ -278,16 +278,9 @@ public class MailboxBoundaryReceiver extends Mailbox
 	_boundaryDetector.reset();
     }
 
-    /** Set a local flag that requests that the simulation be paused
-     *  or resumed.
-     *  @param value The flag indicating a requested pause or resume.
-     */
-    public void requestPause(boolean value) {
-    }
-
     /** Set a local flag requesting that the simulation be finished.
      */
-    public void requestFinish() {
+    public synchronized void requestFinish() {
     	_terminate = true;
         notifyAll();
     }
