@@ -49,7 +49,7 @@ public class Test2 {
         return _t;
     }
     
-    public Test2 getT(Integer index) {
+    public Test2 getT(int index) {
         return _t[index];
     }
     
