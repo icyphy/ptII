@@ -308,6 +308,8 @@ public class Histogram extends PlotBox {
      *  @param offset The offset per data set.
      */
     public synchronized void setBars(double width, double offset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _barwidth = width;
         _baroffset = offset;
     }
@@ -324,6 +326,8 @@ public class Histogram extends PlotBox {
      *  @param offset The bin offset.
      */
     public synchronized void setBinOffset(double offset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _binOffset = offset;
     }
 
@@ -331,6 +335,8 @@ public class Histogram extends PlotBox {
      *  @param width The width of the bins.
      */
     public void setBinWidth(double width) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _binWidth = width;
     }
 
@@ -653,6 +659,9 @@ public class Histogram extends PlotBox {
      *  @param value The new value.
      */
     private void _addPoint(int dataset, double value) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
+
         _checkDatasetIndex(dataset);
 
         // Calculate the bin number.
@@ -705,6 +714,9 @@ public class Histogram extends PlotBox {
      *  @param format If true, clear the format controls as well.
      */
     private void _clear(boolean format) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
+
         super.clear(format);
         _currentdataset = -1;
         _points = new Vector();

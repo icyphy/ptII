@@ -569,6 +569,8 @@ public class Plot extends PlotBox {
      *  @param on If true, turn bars on.
      */
     public void setBars(boolean on) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _bars = on;
     }
 
@@ -580,6 +582,8 @@ public class Plot extends PlotBox {
      *  @param offset The offset per data set.
      */
     public synchronized void setBars(double width, double offset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         barWidth = width;
         _barOffset = offset;
         _bars = true;
@@ -595,6 +599,8 @@ public class Plot extends PlotBox {
      *  @see #setConnected(boolean, int)
      */
     public void setConnected(boolean on) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _connected = on;
     }
 
@@ -611,6 +617,8 @@ public class Plot extends PlotBox {
      *  @see #setConnected(boolean)
      */
     public synchronized void setConnected(boolean on, int dataset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         fmt.connected = on;
@@ -623,6 +631,8 @@ public class Plot extends PlotBox {
      *  @param on If true, draw a stem plot.
      */
     public synchronized void setImpulses(boolean on) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _impulses = on;
     }
 
@@ -634,6 +644,8 @@ public class Plot extends PlotBox {
      *  @param dataset The dataset to which this should apply.
      */
     public synchronized void setImpulses(boolean on, int dataset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         fmt.impulses = on;
@@ -647,6 +659,8 @@ public class Plot extends PlotBox {
      *  @param style A string specifying the style for points.
      */
     public synchronized void setMarksStyle(String style) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         if (style.equalsIgnoreCase("none")) {
             _marks = 0;
         } else if (style.equalsIgnoreCase("points")) {
@@ -668,6 +682,8 @@ public class Plot extends PlotBox {
      *  @param dataset The dataset to which this should apply.
      */
     public synchronized void setMarksStyle(String style, int dataset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         if (style.equalsIgnoreCase("none")) {
@@ -691,6 +707,8 @@ public class Plot extends PlotBox {
      *  @deprecated
      */
     public void setNumSets(int numSets) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         if (numSets < 1) {
             throw new IllegalArgumentException("Number of data sets ("+
                     numSets + ") must be greater than 0.");
@@ -726,6 +744,8 @@ public class Plot extends PlotBox {
      *  on the next call to addPoint().
      */
     public void setPointsPersistence(int persistence) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         // NOTE: No file format.  It's not clear it makes sense to have one.
         _pointsPersistence = persistence;
     }
@@ -736,6 +756,8 @@ public class Plot extends PlotBox {
      *  @see #getReuseDatasets()
      */
     public void setReuseDatasets(boolean on) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _reuseDatasets = on;
     }
 
@@ -758,6 +780,8 @@ public class Plot extends PlotBox {
      *  on the next call to addPoint().
      */
     public void setXPersistence(double persistence) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         // NOTE: No file format.  It's not clear it makes sense to have one.
         _xPersistence = persistence;
     }
@@ -1700,6 +1724,8 @@ public class Plot extends PlotBox {
     private void _addPoint(
             int dataset, double x, double y, double yLowEB, double yHighEB,
             boolean connected, boolean errorBar) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _checkDatasetIndex(dataset);
 
         if (_xlog) {
@@ -1874,6 +1900,8 @@ public class Plot extends PlotBox {
      * be called via deferIfNecessary().
      */
     private void _clear(boolean format) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         super.clear(format);
         _currentdataset = -1;
         int size = _points.size();
@@ -1910,6 +1938,8 @@ public class Plot extends PlotBox {
      * be called via deferIfNecessary().
      */
     private void _clear(int dataset) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         _checkDatasetIndex(dataset);
         _xyInvalid = true;
         Vector points = (Vector)_points.elementAt(dataset);
@@ -2007,6 +2037,9 @@ public class Plot extends PlotBox {
      * be called via deferIfNecessary().
      */
     private void _erasePoint(int dataset, int index) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
+
         _checkDatasetIndex(dataset);
         // Plot has probably been dismissed.  Return.
         Graphics graphics = getGraphics();

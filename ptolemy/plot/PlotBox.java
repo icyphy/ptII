@@ -271,6 +271,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param legend The label for the dataset.
      */
     public synchronized void addLegend(int dataset, String legend) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         if (legend == null || legend.equals("")) return;
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
@@ -285,6 +288,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param position The position on the X axis.
      */
     public synchronized void addXTick(String label, double position) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         if (_xticks == null) {
             _xticks = new Vector();
             _xticklabels = new Vector();
@@ -302,6 +308,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param position The position on the Y axis.
      */
     public synchronized void addYTick(String label, double position) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         if (_yticks == null) {
             _yticks = new Vector();
             _yticklabels = new Vector();
@@ -355,6 +364,9 @@ public class PlotBox extends JPanel implements Printable {
     /** Clear all legends.  This will show up on the next redraw.
      */
     public synchronized void clearLegends() {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _legendStrings = new Vector();
         _legendDatasets = new Vector();
     }
@@ -861,8 +873,22 @@ public class PlotBox extends JPanel implements Printable {
      *  @param graphics The graphics context.
      */
     public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
-        _drawPlot(graphics, true);
+   //      super.paintComponent(graphics);
+//         _drawPlot(graphics, true);
+       
+        if(_plotImage == null) {
+            Rectangle bounds = getBounds();
+            _plotImage = new BufferedImage(
+                    bounds.width, bounds.height,
+                    BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D offScreenGraphics = _plotImage.createGraphics();
+            super.paintComponent(offScreenGraphics);
+            _drawPlot(offScreenGraphics, true);
+        }
+        // Blit the offscreen image onto the screen.
+        graphics.drawImage(_plotImage, 0, 0, null);
+        
+
         // Acquire the focus so that key bindings work.
         // NOTE: no longer needed?
         // requestFocus();
@@ -1092,6 +1118,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param background The background color.
      */
     public void setBackground(Color background) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _background = background;
         super.setBackground(_background);
     }
@@ -1108,6 +1137,10 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
+        
+        // Resizing the component means we need to redraw the buffer.
+        _plotImage = null;
+
         super.setBounds(x, y, _width, _height);
     }
 
@@ -1122,6 +1155,8 @@ public class PlotBox extends JPanel implements Printable {
      *  thread, since it interacts with swing.
      */
     public synchronized void setButtons(boolean visible) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
 
         if (_printButton == null) {
             // Load the image by using the absolute path to the gif.
@@ -1235,6 +1270,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param useColor False to draw in back and white.
      */
     public void setColor(boolean useColor) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _usecolor = useColor;
     }
 
@@ -1245,6 +1283,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #getColors()
      */
     public void setColors(Color[] colors) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _colors = colors;
     }
 
@@ -1268,6 +1309,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param foreground The foreground color.
      */
     public void setForeground(Color foreground) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _foreground = foreground;
         super.setForeground(_foreground);
     }
@@ -1276,6 +1320,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param grid If true, a grid is drawn.
      */
     public void setGrid(boolean grid) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _grid = grid;
     }
 
@@ -1285,6 +1332,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param name A font name.
      */
     public void setLabelFont(String name) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _labelFont = Font.decode(name);
         _labelFontMetrics = getFontMetrics(_labelFont);
     }
@@ -1295,6 +1345,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #getPlotRectangle()
      */
     public void setPlotRectangle(Rectangle rectangle) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _specifiedPlotRectangle = rectangle;
     }
 
@@ -1310,6 +1363,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param height The height, in pixels.
      */
     public void setSize(int width, int height) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _width = width;
         _height = height;
         _preferredWidth = width;
@@ -1322,6 +1378,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param title The title.
      */
     public void setTitle(String title) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _title = title;
     }
 
@@ -1331,6 +1390,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param name A font name.
      */
     public void setTitleFont(String name) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _titleFont = Font.decode(name);
         _titleFontMetrics = getFontMetrics(_titleFont);
     }
@@ -1344,6 +1406,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param wrap If true, wrapping of the X axis is enabled.
      */
     public void setWrap(boolean wrap) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _wrap = wrap;
         if (!_xRangeGiven) {
             if (_xBottom > _xTop) {
@@ -1361,6 +1426,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param label The label.
      */
     public void setXLabel(String label) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _xlabel = label;
     }
 
@@ -1371,6 +1439,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param xlog If true, logarithmic axis is used.
      */
     public void setXLog(boolean xlog) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _xlog = xlog;
     }
 
@@ -1382,6 +1453,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param max The right extent of the range.
      */
     public synchronized void setXRange(double min, double max) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _xRangeGiven = true;
         _xlowgiven = min;
         _xhighgiven = max;
@@ -1392,6 +1466,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param label The label.
      */
     public void setYLabel(String label) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _ylabel = label;
     }
 
@@ -1402,6 +1479,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param ylog If true, logarithmic axis is used.
      */
     public void setYLog(boolean ylog) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _ylog = ylog;
     }
 
@@ -1413,6 +1493,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param max The top extent of the range.
      */
     public synchronized void setYRange(double min, double max) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _yRangeGiven = true;
         _ylowgiven = min;
         _yhighgiven = max;
@@ -2372,6 +2455,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @deprecated
      */
     protected void _setButtonsVisibility(boolean vis) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _printButton.setVisible(vis);
         _fillButton.setVisible(vis);
         _formatButton.setVisible(vis);
@@ -2386,6 +2472,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param padding The padding multiple.
      */
     protected void _setPadding(double padding) {
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _padding = padding;
     }
 
@@ -3056,6 +3145,9 @@ public class PlotBox extends JPanel implements Printable {
         // 4. Hit reset axes
         // 5. The bug is that the axes do not reset to the initial settings
 
+        // Changing the range means we have to replot.
+        _plotImage = null;
+
         if (!_originalXRangeGiven) {
             _originalXlow = min;
             _originalXhigh = max;
@@ -3102,6 +3194,10 @@ public class PlotBox extends JPanel implements Printable {
      */
     private void _setYRange(double min, double max) {
         // See comment in _setXRange() about why this is necessary.
+
+        // Changing the range means we have to replot.
+        _plotImage = null;
+
         if (!_originalYRangeGiven) {
             _originalYlow = min;
             _originalYhigh = max;
@@ -3425,6 +3521,9 @@ public class PlotBox extends JPanel implements Printable {
     // First values specified to setXRange() and setYRange().
     double _originalXlow = 0.0, _originalXhigh = 0.0,
         _originalYlow = 0.0, _originalYhigh = 0.0;
+
+    // An offscreen buffer for improving plot performance.
+    protected transient BufferedImage _plotImage = null;
 
     // A button for printing the plot
     private transient JButton _printButton = null;
