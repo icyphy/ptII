@@ -159,56 +159,112 @@ compileDemo: $(JCLASS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
+simpleRunDemo:
+	@echo "Run the deep model"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(TARGETPACKAGE).Main 
+
+
+TREESHAKE_PREFIX = $(ROOT)/$(TARGETPATH)/treeshake
+TREESHAKE=$(ROOT)/util/testsuite/treeshake
+treeShakeDemo:
+	@echo "Create the minimal jar file and run it" 
+	$(TREESHAKE) $(TREESHAKE_PREFIX).jar \
+		$(JAVA)	-Xfuture -classpath "$(CLASSPATH)" \
+		$(TARGETPACKAGE).Main 
+	ls -l $(TREESHAKE_PREFIX).jar
+
 # Directories that contain snapshots
 SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5
 
 STATSFILE=runSnapShot.stats
-# Run the simulation in each snapshot directory
-runSnapshots:
-	@echo "Run without codegen"
-	rm -f  $(STATSFILE)
-	for repeat in 1 2 3 4; \
-	do \
-		CLASSPATH="$(CLASSPATH)" \
+# $PTII/util/testsuite/codegen.tcl calls runDemoTest
+runDemoTest: treeShakeAll
+
+# Treeshake everything and run it
+treeShakeAll: treeShakeWithoutCodegen runTreeShakeWithoutCodegen \
+		treeShakeAndRunSnapshots \
+		treeShakeCodgen runTreeShakeCodgen \
+		compareTreeShakeJars
+
+treeShakeWithoutCodegen:
+	@echo "Treeshake $(MODEL) without codegen"
+	@CLASSPATH="$(CLASSPATH)" \
+		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX).jar \
 			$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+			-class $(SOURCECLASS) \
+			-iterations $(ITERATIONS) | tail -1
+	ls -l $(TREESHAKE_PREFIX).jar
+	@rm -f  $(STATSFILE)
+runTreeShakeWithoutCodegen:
+	@echo "Run without codegen with treeshake.jar"
+	@for repeat in 1 2 3 4; \
+	do \
+		$(JAVA) \
+			-classpath $(TREESHAKE_PREFIX).jar \
+			ptolemy.actor.gui.CompositeActorApplication \
 			-class $(SOURCECLASS) \
 			-iterations $(ITERATIONS) | tail -1 | \
 			tee -a $(STATSFILE); \
 	done
-	$(ROOT)/util/testsuite/memorystats "$(MODEL) interpreted" < $(STATSFILE); \
+	$(ROOT)/util/testsuite/memorystats "$(MODEL) interpreted" < $(STATSFILE)
 
-	@echo "Run the snapshots"
-	for snapshot in $(SNAPSHOTS); \
+treeShakeAndRunSnapshots:
+	@echo "Treeshake $(MODEL) and then run snapshots with treeshake.jar"
+	@for snapshot in $(SNAPSHOTS); \
 	do \
-		echo "Running the code from $(TARGETPATH)/$$snapshot"; \
+		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
+		echo "Treeshake $$snapshot"; \
+		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+			$(JAVA) \
+				-Xfuture -classpath \
+	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+				$(TARGETPACKAGE).Main| tail -1 ; \
+		ls -l $(TREESHAKE_PREFIX)_$${snapshot}.jar; \
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
 			$(JAVA) \
-				-Xfuture -classpath \
-	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+				-classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 				$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
 		done; \
 		$(ROOT)/util/testsuite/memorystats "$(MODEL) $$snapshot" < $(STATSFILE); \
 	done
-	@echo "Run the final version"
-	rm -f  $(STATSFILE)
-	for repeat in 1 2 3 4; \
+
+treeShakeCodgen:
+	@echo "Treeshake the final codegen version"
+	@$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX)_codegen.jar \
+		$(JAVA) \
+			-classpath "$(CLASSPATH)" \
+			$(TARGETPACKAGE).Main | tail -1
+	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
+
+runTreeShakeCodgen:
+	@echo "Run the final codegen version"
+	@rm -f  $(STATSFILE)
+	@for repeat in 1 2 3 4; \
 	do \
 		$(JAVA) \
-			-Xfuture -classpath "$(CLASSPATH)" \
+			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
 	done
-	$(ROOT)/util/testsuite/memorystats "$(MODEL) codegen" < $(STATSFILE); \
-	rm -f $(STATSFILE)
+	@$(ROOT)/util/testsuite/memorystats "$(MODEL) codegen" < $(STATSFILE);
+	@rm -f $(STATSFILE)
 
-runDemo:
-	@echo "Run the deep model"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).Main 
+compareTreeShakeJars:
+	@echo "The following .class files are present in the regular jar,"
+	@echo "but not in the codegen jar"
+	@jar -tvf ${TREESHAKE_PREFIX}.jar | \
+		awk '{print $$NF}' | sort > /tmp/treeshake_toc
+	@jar -tvf ${TREESHAKE_PREFIX}_codegen.jar | \
+		awk '{print $$NF}' | sort > /tmp/treeshake_codegen_toc
+	@comm -23 /tmp/treeshake_toc /tmp/treeshake_codegen_toc
+	@rm -f /tmp/treeshake_toc /tmp/treeshake_codegen_toc	
+	ls -l ${TREESHAKE_PREFIX}*
+
 
 timeOrthoCommDemo:
 	@echo "Time the model for $(ITERATIONS) iterations"
@@ -223,15 +279,6 @@ runStaticDemo:
 	$(TARGETPACKAGE).StaticMain 
 # -iterations 50
 
-
-TREESHAKE_JAR = treeshake.jar
-treeShakeDemo:
-	@echo "Create the minimal jar file and run it" 
-	sh -x $(ROOT)/util/testsuite/treeshake $(TREESHAKE_JAR) \
-		$(JAVA) -verbose \
-		-Xfuture -classpath "$(CLASSPATH)" \
-		$(TARGETPACKAGE).Main 
-	ls -l $(TREESHAKE_JAR)
 
 # Class to disassemble
 JADTARGETCLASS =		Main
