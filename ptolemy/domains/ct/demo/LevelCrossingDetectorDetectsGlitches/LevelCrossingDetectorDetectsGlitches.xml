@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetectorDetectsGlitches" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -173,7 +173,7 @@ from transient states.
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 296, 815, 450}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -479,8 +479,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 518}, maximized=false}">
             </property>
@@ -512,8 +510,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
             </property>
@@ -544,8 +540,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
@@ -633,7 +627,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 195.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -665,11 +659,13 @@ The final state (state4) simply connects the input to the output.</text></svg></
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
-<yRange min="0.0" max="1.50005"/>
+<yRange min="-1.0" max="2.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Detected Events" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 506, 432, 236}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[424, 181]">
