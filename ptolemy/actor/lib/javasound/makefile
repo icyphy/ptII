@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile for Ptolemy II Javasound actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,13 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
-
 ME =		ptolemy/actor/lib/javasound
 
-# $PTII/configure looks for Jini and sets PTJSPACES_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
-DIRS = 		conversions test logic $(PTJSPACES_DIR)
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -47,14 +43,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib/javasound
+PTPACKAGE = 	javasound
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	conversions/conversions.jar \
-	logic/logic.jar
+PTCLASSALLJARS =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -63,13 +57,7 @@ JSRCS = \
 	AudioSink.java \
 	AudioSource.java
 
-EXTRA_SRCS =	$(JSRCS) \
-#	genericentities.xml \
-#	genericicons.xml \
-#	modulation.xml \
-#	sinks.xml \
-#	sources.xml \
-#	transformers.xml
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
