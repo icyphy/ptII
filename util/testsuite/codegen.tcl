@@ -334,7 +334,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
       set args [java::new {String[]} 5 \
   	    [list \
   	    $modelPath \
-	    "-iterationsParameter" [list \"$iterationsParameter\"] \
+	    "-iterationsParameter" "\"$iterationsParameter\"" \
 	    "-codeGenerator" $codeGenerator] ]
 	
 	java::new ptolemy.copernicus.kernel.Copernicus $args
