@@ -109,6 +109,13 @@ public class NamedList implements Cloneable, Serializable {
         }
     }
 
+    /** Build an independent copy of the list.
+     *  The elements themselves are not cloned.
+     */
+    public Object clone() { 
+        return new NamedList(this); 
+    }
+
     /** Get the first element.
      *  @exception NoSuchElementException The list is empty.
      *  @return The specified element.
@@ -245,15 +252,6 @@ public class NamedList implements Cloneable, Serializable {
         return _namedlist.size();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Build an independent copy of the list.
-     *  The elements themselves are not cloned
-     */
-    protected Object clone() { 
-        return new NamedList(this); 
-    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
