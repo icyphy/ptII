@@ -133,7 +133,7 @@ public class PlotApplet extends Applet {
                 showStatus("Done");
             } catch (CmdLineArgException e) {
                 System.err.println("PlotApplet: failed to parse `"+pxgraphargs+
-                "': " +e);
+                        "': " +e);
             } catch (FileNotFoundException e) {
                 System.err.println("PlotApplet: file not found: " +e);
             } catch (IOException e) {

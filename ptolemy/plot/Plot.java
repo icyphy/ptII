@@ -657,27 +657,27 @@ public class Plot extends PlotBox {
                                 index = plusIndex;
                             }
                             _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        index)).intValue();
+                                    arg.indexOf('x')+1,
+                                    index)).intValue();
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
                                 _height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            plusIndex)).intValue();
+                                        arg.indexOf('x')+1,
+                                        plusIndex)).intValue();
                             } else {
                                 // =WxH-X-Y
                                 _height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            minusIndex)).intValue();
+                                        arg.indexOf('x')+1,
+                                        minusIndex)).intValue();
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
                             _height = Integer.valueOf(arg.substring(
-                                        arg.indexOf('x')+1,
-                                        arg.length())).intValue();
+                                    arg.indexOf('x')+1,
+                                    arg.length())).intValue();
                         }
                     }
                     // FIXME: it is unclear what X and Y in =WxH+X+Y mean
@@ -852,7 +852,7 @@ public class Plot extends PlotBox {
             _sawfirstdataset = false;
 
             DataInputStream in = new DataInputStream(
-                new BufferedInputStream(inputstream));
+                    new BufferedInputStream(inputstream));
             int c;
             float x = 0, y = 0, pointCount = 0;
             boolean byteSwapped = false;
@@ -862,21 +862,21 @@ public class Plot extends PlotBox {
             if (_connected) connected = true;
 
             switch (_endian) {
-                case _NATIVE_ENDIAN:
+            case _NATIVE_ENDIAN:
                 try {
                     if ( System.getProperty("os.arch").equals("x86")) {
                         byteSwapped = true;
                     }
                 } catch (SecurityException e) {}
                 break;
-                case _BIG_ENDIAN:
+            case _BIG_ENDIAN:
                 break;
-                case _LITTLE_ENDIAN:
+            case _LITTLE_ENDIAN:
                 byteSwapped = true;
                 break;
-                default:
+            default:
                 throw new IOException("Internal Error: Don't know about '"+
-                _endian + "' style of endian");
+                        _endian + "' style of endian");
             }
 
             try {
@@ -931,16 +931,16 @@ public class Plot extends PlotBox {
                             if (byteSwapped) {
                                 in.readFully(input);
                                 x = Float.intBitsToFloat(
-                                    (( input[3] & 0xFF ) << 24) |
-                                    (( input[2] & 0xFF ) << 16) |
-                                    (( input[1] & 0xFF ) << 8) |
-                                    ( input[0] & 0xFF ));
+                                        (( input[3] & 0xFF ) << 24) |
+                                        (( input[2] & 0xFF ) << 16) |
+                                        (( input[1] & 0xFF ) << 8) |
+                                        ( input[0] & 0xFF ));
                                 in.readFully(input);
                                 y = Float.intBitsToFloat(
-                                    (( input[3] & 0xFF ) << 24) |
-                                    (( input[2] & 0xFF ) << 16) |
-                                    (( input[1] & 0xFF ) << 8) |
-                                    ( input[0] & 0xFF ));
+                                        (( input[3] & 0xFF ) << 24) |
+                                        (( input[2] & 0xFF ) << 16) |
+                                        (( input[1] & 0xFF ) << 8) |
+                                        ( input[0] & 0xFF ));
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();
@@ -960,10 +960,10 @@ public class Plot extends PlotBox {
                             _sawfirstdataset = true;
                             _currentdataset++;
                             if (_currentdataset >= _MAX_MARKS)
-                            _currentdataset = 0;
+                                _currentdataset = 0;
                             // New set name, ends in \n.
                             while (c != '\n')
-                            datasetname.append(in.readChar());
+                                datasetname.append(in.readChar());
                             addLegend(_currentdataset, datasetname.toString());
                             setConnected(true);
                             break;
@@ -973,11 +973,11 @@ public class Plot extends PlotBox {
                             break;
                         default:
                             throw new IOException("Don't understand `" +
-                                (char)c + "' character " +
-                                "(decimal value = " + c +
-                                ") in binary file.  Last point was (" + x +
-                                "," + y + ").\nProcessed " + pointCount +
-                                " points successfully");
+                                    (char)c + "' character " +
+                                    "(decimal value = " + c +
+                                    ") in binary file.  Last point was (" + x +
+                                    "," + y + ").\nProcessed " + pointCount +
+                                    " points successfully");
                         }
                         c = in.readByte();
                     }
@@ -1119,7 +1119,7 @@ public class Plot extends PlotBox {
     protected void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
             throw new IllegalArgumentException("Plot._addPoint: Cannot give "
-            + "a negative number for the data set index.");
+                    + "a negative number for the data set index.");
         }
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
@@ -1999,31 +1999,31 @@ public class Plot extends PlotBox {
     // Set by _drawPlot(), and reset by clear()
     private boolean _showing = false;
 
-// NOTE: This strategy fails due to a bug in jdk 1.1
-//     // Support for Painter class which draws plot in the background.
-//     private Painter _painter;
-//     // FIXME: This has to be friendly or Netscape fails
-//     boolean _painting = false;
+    // NOTE: This strategy fails due to a bug in jdk 1.1
+    //     // Support for Painter class which draws plot in the background.
+    //     private Painter _painter;
+    //     // FIXME: This has to be friendly or Netscape fails
+    //     boolean _painting = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-// NOTE: This strategy fails due to a bug in jdk 1.1
-// Nothing drawn to the graphics object in this other thread ever appears.
-//     // This class spawns a thread to load the sound file in the background.
-//     // NOTE: This class has to be public or Netscape 4.0 fails.
-//     public class Painter extends Thread {
-//         public Painter(Graphics graphics) {
-//             _graphics = graphics;
-//         }
-//         public void run() {
-//             _painting = true;
-// // FIXME: Well, damn... Can't draw to the graphics object from another
-// // thread, apparently!!!  This never appears!!!!
-// _graphics.drawRect(10, 10, 100, 100);
-//             _drawPlot(_graphics, true);
-//             _painting = false;
-//         }
-//         private Graphics _graphics;
-//     }
+    // NOTE: This strategy fails due to a bug in jdk 1.1
+    // Nothing drawn to the graphics object in this other thread ever appears.
+    //     // This class spawns a thread to load the sound file in the background.
+    //     // NOTE: This class has to be public or Netscape 4.0 fails.
+    //     public class Painter extends Thread {
+    //         public Painter(Graphics graphics) {
+    //             _graphics = graphics;
+    //         }
+    //         public void run() {
+    //             _painting = true;
+    // // FIXME: Well, damn... Can't draw to the graphics object from another
+    // // thread, apparently!!!  This never appears!!!!
+    // _graphics.drawRect(10, 10, 100, 100);
+    //             _drawPlot(_graphics, true);
+    //             _painting = false;
+    //         }
+    //         private Graphics _graphics;
+    //     }
 }
