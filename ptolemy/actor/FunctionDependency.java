@@ -70,28 +70,12 @@ public abstract class FunctionDependency {
     /** Construct a FunctionDependency object for the given container.
      *  @param container The container has this FunctionDependency object.
      */
-    public FunctionDependency (Actor container) {
+    public FunctionDependency(Actor container) {
         _container = container;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** If there is a cycle loop in the ports graph of this FunctionDependency
-     *  object, return the nodes (ports) in the cycle loop. If there are
-     *  multiple cycles, all the nodes will be returned. If there is no
-     *  cycle, an empty array is returned. The type of the returned nodes is
-     *  IOPort.
-     *  <p>
-     *  The validity of the FunctionDependency object is checked at the
-     *  beginning of this method.
-     *  @return An array contains the IOPorts in the cycles.
-     *  @see #validate()
-     */
-    public Object[] getCycleNodes() {
-        validate();
-        return _directedGraph.cycleNodes();
-    }
 
     /** Return an abstract ports graph reflecting the function dependency
      *  information. The ports graph includes only the container ports but not
@@ -148,6 +132,42 @@ public abstract class FunctionDependency {
         return _abstractPortsGraph;
     }
 
+    /** If there is a cycle loop in the ports graph of this FunctionDependency
+     *  object, return the nodes (ports) in the cycle loop. If there are
+     *  multiple cycles, all the nodes will be returned. If there is no
+     *  cycle, an empty array is returned. The type of the returned nodes is
+     *  IOPort.
+     *  <p>
+     *  The validity of the FunctionDependency object is checked at the
+     *  beginning of this method.
+     *  @return An array contains the IOPorts in the cycles.
+     *  @see #validate()
+     */
+    public Object[] getCycleNodes() {
+        validate();
+        return _directedGraph.cycleNodes();
+    }
+
+    /** Get the input ports on which the given output port is dependent.
+     *  @param outputPort The given output port.
+     *  @return a set of input ports.
+     */
+    public Set getDependentInputPorts(IOPort outputPort) {
+        validate();
+        Set dependentInputs = new HashSet();
+        if (_abstractPortsGraph == null) {
+            // force to construct an abstractPotrsGraph
+            getAbstractPortsGraph();
+        }
+        Object[] backReachableInputs =
+            _abstractPortsGraph.backwardReachableNodes(outputPort);
+        int arrayLength = backReachableInputs.length;
+        for (int i = 0; i < arrayLength; i++) {
+            dependentInputs.add(backReachableInputs[i]);
+        }
+        return dependentInputs;
+    }
+
     /** Return a detailed ports graph reflecting the function dependency
      *  information. The ports graph includes both the container ports and
      *  those of contained actors (if any). This information is usually used
@@ -183,26 +203,6 @@ public abstract class FunctionDependency {
             }
         }
         return independentOutputPorts;
-    }
-
-    /** Get the input ports on which the given output port is dependent.
-     *  @param outputPort The given output port.
-     *  @return a set of input ports.
-     */
-    public Set getDependentInputPorts(IOPort outputPort) {
-        validate();
-        Set dependentInputs = new HashSet();
-        if (_abstractPortsGraph == null) {
-            // force to construct an abstractPotrsGraph
-            getAbstractPortsGraph();
-        }
-        Object[] backReachableInputs =
-            _abstractPortsGraph.backwardReachableNodes(outputPort);
-        int arrayLength = backReachableInputs.length;
-        for (int i = 0; i < arrayLength; i++) {
-            dependentInputs.add(backReachableInputs[i]);
-        }
-        return dependentInputs;
     }
 
     /** Make the FunctionDependency object invalid. Note that the
