@@ -55,7 +55,7 @@ JSIMPLE_TESTS = \
 	IOPort.tcl \
 	IORelation.tcl \
 	StaticSchedulingDirector.tcl \
-	TypedIOPort.tcl \
+	TypedIOPort.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
