@@ -62,6 +62,11 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS = \
+	test-consumer.xml \
+	test-dining.xml \
+	test1.xml \
+	test2.xml \
+	test6.xml \
 	test7.xml \
 	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
