@@ -31,7 +31,7 @@
 
 DIRS = kernel lib demo
 
-# Root of Tycho directory
+# Root of Ptolemy II directory
 ROOT =		../../..
 
 # True source directory
