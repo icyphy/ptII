@@ -181,12 +181,12 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      */
     public Enumeration deepConnectedPorts() {
-         try {
+        try {
             workspace().getReadAccess();
             return _deepConnectedPorts(null);
-         } finally {
-             workspace().doneReading();
-         }
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** If this port is transparent, then deeply enumerate the ports
@@ -454,7 +454,7 @@ public class ComponentPort extends Port {
         } else {
             if (path.firstIndexOf(this) >= 0) {
                 throw new InvalidStateException( path.elements(),
-                    "loop in topology!");
+                        "loop in topology!");
             }
         }  
         path.insertFirst(this);
@@ -466,10 +466,10 @@ public class ComponentPort extends Port {
                 (ComponentRelation)nearrelations.nextElement();
              
             Enumeration connectedports =
-                 relation.linkedPorts(this);
+                relation.linkedPorts(this);
             while (connectedports.hasMoreElements()) {
                 ComponentPort port =
-                     (ComponentPort)connectedports.nextElement();
+                    (ComponentPort)connectedports.nextElement();
                 // NOTE: If level-crossing transitions are not allowed,
                 // then a simpler test than that of the following
                 // would work.
@@ -480,7 +480,7 @@ public class ComponentPort extends Port {
                     } else {
                         // Port is transparent
                         result.appendElements(
-                            port._deepConnectedPorts(path));
+                                port._deepConnectedPorts(path));
                     }
                 } else {
                     // We are coming at the port from the outside.
@@ -489,7 +489,7 @@ public class ComponentPort extends Port {
                     } else {
                         // It is transparent.
                         result.appendElements(
-                            port._deepInsidePorts(path));
+                                port._deepInsidePorts(path));
                     }
                 }
             }
@@ -527,7 +527,7 @@ public class ComponentPort extends Port {
         } else {
             if (path.firstIndexOf(this) >= 0) {
                 throw new InvalidStateException( path.elements(),
-                    "loop in topology!");
+                        "loop in topology!");
             }
         }  
         path.insertFirst(this);
@@ -541,10 +541,10 @@ public class ComponentPort extends Port {
             while (relations.hasMoreElements()) {
                 Relation relation = (Relation)relations.nextElement();
                 Enumeration insideports =
-                relation.linkedPorts(this);
+                    relation.linkedPorts(this);
                 while (insideports.hasMoreElements()) {
                     ComponentPort downport =
-                    (ComponentPort)insideports.nextElement();
+                        (ComponentPort)insideports.nextElement();
                     // The inside port may not be actually inside,
                     // in which case we want to look through it
                     // from the inside (this supports transparent
@@ -556,12 +556,12 @@ public class ComponentPort extends Port {
                             result.insertLast(downport);
                         } else {
                             result.appendElements(
-                                downport._deepConnectedPorts(path));
+                                    downport._deepConnectedPorts(path));
                         }
                     } else {
                         // The inside port is truly inside.
                         result.appendElements(
-                            downport._deepInsidePorts(path));
+                                downport._deepInsidePorts(path));
                     }
                 }
             }
