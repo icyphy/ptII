@@ -3,11 +3,69 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
-<iconlibrary name="filters" version="1.0">
+<iconlibrary name="Filters" version="1.0">
 <header>
     <description>Generic filter icons</description>
 </header>
 
+
+<icon name="Integrator">
+    <entitytype name="Integrator" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
+         text 70 55 -text dx -fill yellow 
+    </tclscript>
+    </graphic>
+</icon>
+
+<icon name="LookupTable">
+    <entitytype name="LookupTable" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+         polygon  30 10 70 10 70 85 30 85 -fill lightsteelblue -outline black
+         line 30 25 70 25 -width 1 -fill black
+         line 30 40 70 40 -width 1 -fill black
+         line 30 55 70 55 -width 1 -fill black
+         line 30 70 70 70 -width 1 -fill black
+         line 50 10 50 85 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
 
 </iconlibrary>
 

@@ -3,42 +3,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
-<iconlibrary name="sinks" version="1.0">
+<iconlibrary name="Sinks" version="1.0">
 <header>
     <description>Generic sink icons</description>
 </header>
 
-<icon name="SaveImage">
-    <entitytype name="saveimage" ports="2"/>
-    <port name="filename" input="true" type="string">
-	<graphic format="tcl">
-	<tclscript>
-		-coords {100 50} -direction e
-                -style doublearrowout -fill blue
-                -tags output
-	</tclscript>
-	</graphic>
-    </port>
-
-    <port name="image" input="true" type="doubleArray"/>
-    <graphic format="xml">
-        <line style="dotted" width="5" points="0 0 10 10"/>
-        <rect color="blue" fill="hatch" points="0 0 10 10"/>
-
-        <!-- ovals are described in terms of a bounding box -->
-        <ellipse fill="blue" points="0 0 10 10"/>
-        <polygon points="0 0 10 10 15 10 15 0"/>
-        <textline font="helvetica" points="0 0">Hello!</textline>
-        <textbox alignX="center" alignY="top" points="0 0 100 100">
-            Hello! This is a nice big text box in a ptolemy icon.
-        </textbox>
-        <image format="gif" compression="zip" file="icon.gif" 
-             points="0 0 100 100"/>
-    </graphic>
-</icon>
-
-<icon name="Plotter">
-    <entitytype name="Plotter" ports="1"/>
+<icon name="Plot">
+    <entitytype name="Plot" ports="1"/>
     <port name="input" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
@@ -61,6 +32,68 @@
     </graphic>
 </icon>
 
+<icon name="Plot-2">
+    <entitytype name="Plot-2" ports="2"/>
+    <port name="input-1" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 33} -direction w
+                -style arrowtail -fill red
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="input-2" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 66} -direction w
+                -style arrowtail -fill red
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+        polygon 20 20 20 80 80 80 80 20 -fill gray -outline black
+        line 21 39 79 39 -fill green -stipple gray25
+        line 21 59 79 59 -fill green -stipple gray25
+        line 30 22 30 79 -fill green
+        line 50 22 50 79 -fill green 
+        line 70 23 70 79 -fill green
+	line 21 79 40 40 70 60 79 31 -smooth true -fill red
+    </tclscript>
+    </graphic>
+</icon>
+
+<icon name="XYPlot">
+    <entitytype name="XYPlot" ports="2"/>
+    <port name="inputX" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 33} -direction w
+                -style arrowtail -fill red
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="inputY" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 66} -direction w
+                -style arrowtail -fill green
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+        polygon 20 20 20 80 80 80 80 20 -fill gray -outline black
+        line 21 39 79 39 -fill green -stipple gray25
+        line 21 59 79 59 -fill green -stipple gray25
+        line 30 22 30 79 -fill green
+        line 50 22 50 79 -fill green 
+        line 70 23 70 79 -fill green
+	oval 1c 1c 2c 2c -outline red
+    </tclscript>
+    </graphic>
+</icon>
 
 </iconlibrary>
-

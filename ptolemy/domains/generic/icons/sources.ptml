@@ -3,25 +3,53 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
-<iconlibrary name="sources" version="1.0">
+<iconlibrary name="Sources" version="1.0">
 <header>
     <description>Generic source icons</description>
 </header>
 
-<icon name="LoadImage">
-    <description>Load an image from a file</description>
-    <entitytype name="loadimage" ports="2"/>
+<icon name="SquareWave">
+    <entitytype name="SquareWave" ports="1"/>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
 
     <graphic format="tcl">
-        <tclscript>
-        <!-- Some Tcl script -->
-       </tclscript>
+    <tclscript>
+        polygon 20 30 20 70 40 70 40 30 -fill orange -outline ""
+        polygon 60 30 60 70 80 70 80 30 -fill orange -outline ""
+        line 10 70 20 70 20 30 40 30 40 70 60 70 60 30 80 30 80 70 90 70 -width 1 -fill black
+    </tclscript>
     </graphic>
-
-    <parameter name="filename" type="string"/>
-    <port name="image" output="true" type="doubleArray"/>
 </icon>
 
+<icon name="Ramp">
+    <entitytype name="Ramp" ports="1"/>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+        polygon 20 80 80 80 80 20 -fill orange -outline ""
+        line 80 80 20 80 80 20 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
 
 </iconlibrary>
 
