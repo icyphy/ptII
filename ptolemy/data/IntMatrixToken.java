@@ -418,14 +418,7 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the left multiplicative identity.
      */
     public Token one() {
-        int[][] result = new int[_rowCount][_rowCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _rowCount; j++) {
-                result[i][j] = 0;
-            }
-            result[i][i] = 1;
-        }
-        return new IntMatrixToken(result);
+        return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount));
     }
 
     /** Return a new Token representing the right multiplicative
@@ -435,14 +428,7 @@ public final class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the right multiplicative identity.
      */
     public Token oneRight() {
-        int[][] result = new int[_columnCount][_columnCount];
-        for (int i = 0; i < _columnCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = 0;
-            }
-            result[i][i] = 1;
-        }
-        return new IntMatrixToken(result);
+        return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount));
     }
 
     /** Return a new Token whose value is the value of the argument Token
