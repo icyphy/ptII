@@ -220,10 +220,10 @@ public class ComponentRelation extends Relation {
     }
 
     /** Set the name of the ComponentRelation. If there is already 
-     *  a ComponentRelation of the container with the name, throw a 
-     *  NameDuplicationException. 
-     *  @exception NameDuplicationException If the name is used by
-     *      another ComponentRelation in the same container.
+     *  a ComponentRelation of the container with the same name, throw an
+     *  exception. 
+     *  @exception NameDuplicationException If there is already a relation
+     *   with the same name in the container.
      */
     public void setName(String name) throws NameDuplicationException {
         if (name == null) {

@@ -326,10 +326,10 @@ public class Port extends NamedObj {
     }
 
     /** Set the name of the port. If there is already an port
-     *  of the container entity with the name, then throw a 
-     *  NameDuplicationException. 
-     *  @exception NameDuplicationException If the name is used by
-     *      another Port in the same container.
+     *  of the container entity with the same name, then throw an
+     *  exception. 
+     *  @exception NameDuplicationException If there is already a port
+     *   with the same name in the container.
      */
     public void setName(String name) throws NameDuplicationException {
         if (name == null) {
