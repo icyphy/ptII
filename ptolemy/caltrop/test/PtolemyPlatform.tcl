@@ -49,8 +49,10 @@ proc testCalExpr {name docString expression expectedValue} {
 	set platform [java::new ptolemy.caltrop.PtolemyPlatform]
 	set context [$platform context]
 	set globalEnv [$platform createGlobalEnvironment]
-	set evaluator [java::new caltrop.interpreter.ExprEvaluator $context $globalEnv]
-	set expr [java::call caltrop.interpreter.util.SourceReader readExpr $expression] 
+	set evaluator [java::new caltrop.interpreter.ExprEvaluator \
+                                 $context $globalEnv]
+	set expr [java::call caltrop.interpreter.util.SourceReader \
+                             readExpr $expression] 
 	set value [$evaluator evaluate $expr]
 	$value toString
     } $expectedValue
@@ -63,6 +65,10 @@ proc testCalExpr {name docString expression expectedValue} {
 testCalExpr {PtolemyPlatform-1.1} {Simple expression.} {
     1 + 2
 } {3}
+
+testCalExpr {PtolemyPlatform-1.1.1} {Operator precedences.} {
+    [3 + 4 * 5, 4 * 5 + 3]
+} {object([23, 23])} 
 
 testCalExpr {PtolemyPlatform-1.2} {Applying a function.} {
     lambda (x) : x * x end (5)
@@ -92,8 +98,29 @@ testCalExpr {PtolemyPlatform-1.5} {Map domain.} {
     .equals({1, 3, 5, 7, 9, 11})
 } {true}
 
+testCalExpr {PtolemyPlatform-1.6} {Calling Java method.} {
+    ["abc", "def"] . size()
+} {2}
 
-#    map {a + 1 -> a * a : for a in Integers(0, 10), a mod 2 = 0} 
+testCalExpr {PtolemyPlatform-1.6} {Calling Java method.} {
+    let a = ["abc", "def"], b = a . add ("xyz") : 
+       // NOTE: observe wrapping problem in result string
+       a . size() 
+    end
+} {3}
+
+testCalExpr {PtolemyPlatform-1.7} {Variable declaration sorting.} {
+    let a = 11 :
+        let a = 6, b = a + 1 : a * b end
+        =
+        let b = a + 1, a = 6 : a * b end
+    end
+} {true}
+
+
+
+
+
 
 
 
