@@ -73,8 +73,9 @@ JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 # The 'javac' compiler.
 JAVAC = 	$(PTJAVA_DIR)/bin/javac
 
-# Flags to pass to javac.
-JFLAGS = 	-g -depend
+# Flags to pass to javac.  Usually something like '-g -depend'
+# This line gets substituted by configure
+JFLAGS = 	@JFLAGS@
 
 # The 'javadoc' program
 JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
