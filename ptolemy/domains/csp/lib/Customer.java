@@ -96,7 +96,7 @@ public class Customer extends CSPActor {
      */
     public Customer(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         this(cont, name, 1);
+        this(cont, name, 1);
     }
 
     /** Construct a Customer in the specified container with the specified
@@ -118,11 +118,11 @@ public class Customer extends CSPActor {
      */
     public Customer(TypedCompositeActor cont, String name, double rate)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
-         _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
-         _output = new TypedIOPort(this, "output", false, true);
+        super(cont, name);
+        _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
+        _output = new TypedIOPort(this, "output", false, true);
 
-	 _output.setTypeEquals(IntToken.class);
+        _output.setTypeEquals(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

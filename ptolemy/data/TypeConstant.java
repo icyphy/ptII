@@ -57,7 +57,7 @@ public class TypeConstant implements InequalityTerm {
     public TypeConstant(Class type) {
         if ( !TypeLattice.isAType(type)) {
             throw new IllegalArgumentException("TypeConstant: argument is "
-			+ "not an acceptable type.");
+                    + "not an acceptable type.");
         }
 	_type = type;
     }

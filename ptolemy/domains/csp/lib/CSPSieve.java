@@ -93,11 +93,11 @@ public class CSPSieve extends CSPActor {
 	    if (lastSeen % _prime != 0) {
 		// is it the next prime?
 		if (islargestprime) {
-		  // yes - make and queue the topologyChange
+                    // yes - make and queue the topologyChange
 		    /* JFIXME
-		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
-		    getDirector().queueTopologyChangeRequest(t);
-                    //System.out.println(getName() +":Queued TopologyChange");
+                       TopologyChangeRequest t = _makeChangeRequest(lastSeen);
+                       getDirector().queueTopologyChangeRequest(t);
+                       //System.out.println(getName() +":Queued TopologyChange");
 		    */
 		    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
@@ -111,49 +111,49 @@ public class CSPSieve extends CSPActor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+            ////                         private methods                        ////
 
-    /*  Create and return a new TopologyChangeRequest object that
-     *  adds a new sieve.
-     *  @param value The prime the new filter should sieve.
-     *  JFIXME
-    private TopologyChangeRequest _makeChangeRequest(final int value) {
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
+            /*  Create and return a new TopologyChangeRequest object that
+             *  adds a new sieve.
+             *  @param value The prime the new filter should sieve.
+             *  JFIXME
+             private TopologyChangeRequest _makeChangeRequest(final int value) {
+             TopologyChangeRequest request = new TopologyChangeRequest(this) {
 
-            public void constructEventQueue() {
-                System.out.println("TopologyRequest event q being constructed!");
-                TypedCompositeActor container =  
-		        (TypedCompositeActor)getContainer();
-                CSPSieve newSieve = null;
-                ComponentRelation newRel = null;
-                try {
-                    newSieve = new CSPSieve(container,value + "_sieve", value);
-                    // If we use a 1-1 relation this needs to change.
-                    newRel = new IORelation(container, "R" + value);
-                } catch (NameDuplicationException ex) {
-                    throw new InvalidStateException("11Cannot create " +
-                            "new sieve.");
-                } catch (IllegalActionException ex) {
-                    throw new InvalidStateException("Cannot create " +
-                            "new sieve.");
-                }
+             public void constructEventQueue() {
+             System.out.println("TopologyRequest event q being constructed!");
+             TypedCompositeActor container =  
+             (TypedCompositeActor)getContainer();
+             CSPSieve newSieve = null;
+             ComponentRelation newRel = null;
+             try {
+             newSieve = new CSPSieve(container,value + "_sieve", value);
+             // If we use a 1-1 relation this needs to change.
+             newRel = new IORelation(container, "R" + value);
+             } catch (NameDuplicationException ex) {
+             throw new InvalidStateException("11Cannot create " +
+             "new sieve.");
+             } catch (IllegalActionException ex) {
+             throw new InvalidStateException("Cannot create " +
+             "new sieve.");
+             }
 
-                queueEntityAddedEvent(container, newSieve);
-                queueRelationAddedEvent(container, newRel);
-                queuePortLinkedEvent(newRel, _output);
-                queuePortLinkedEvent(newRel, newSieve.getPort("input"));
-            }
-        };
-        return request;
-    }
-     */
+             queueEntityAddedEvent(container, newSieve);
+             queueRelationAddedEvent(container, newRel);
+             queuePortLinkedEvent(newRel, _output);
+             queuePortLinkedEvent(newRel, newSieve.getPort("input"));
+             }
+             };
+             return request;
+             }
+            */
 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+            ///////////////////////////////////////////////////////////////////
+            ////                         private variables                 ////
 
-    // The input port
-    private TypedIOPort _input;
+            // The input port
+            private TypedIOPort _input;
 
     // The output port
     private TypedIOPort _output;

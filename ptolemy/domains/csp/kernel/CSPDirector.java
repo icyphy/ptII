@@ -218,12 +218,12 @@ public class CSPDirector extends ProcessDirector {
      *  to the topology are made.
      *  @param req The topology change being queued.
      *  JFIXME
-    public synchronized void
-            queueTopologyChangeRequest(TopologyChangeRequest req) {
-        _topologyChangesPending = true;
-        super.queueTopologyChangeRequest(req);
-    }
-     */
+     public synchronized void
+     queueTopologyChangeRequest(TopologyChangeRequest req) {
+     _topologyChangesPending = true;
+     super.queueTopologyChangeRequest(req);
+     }
+    */
 
     /** Set the current model time. It is intended for use when composing
      *  CSP with other timed domains.
@@ -328,66 +328,66 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized boolean _handleDeadlock() {
         // JFIXME try {
-            if (_topologyChangesPending) {
-                /* JFIXME
-                _processTopologyRequests();
-                LinkedList newThreads = new LinkedList();
-                Enumeration newActors = _newActors();
-                while (newActors.hasMoreElements()) {
-                    Actor actor = (Actor)newActors.nextElement();
-                    actor.initialize();
-                    ProcessThread pnt = new ProcessThread(actor, this);
-                    newThreads.insertFirst(pnt);
-                }
-                // Note we only start the threads after they have
-                // all had the receivers created.
-                Enumeration allThreads = newThreads.elements();
-                while (allThreads.hasMoreElements()) {
-                    ProcessThread p = (ProcessThread)allThreads.nextElement();
-                    p.start();
-                    _addNewThread(p);
-                }
-                _topologyChangesPending = false;
-                JFIXME */
-
-            } else if (_actorsDelayed > 0) {
-                // Time deadlock.
-                double nextTime = _getNextTime();
-                _currentTime = nextTime;
-
-                // Now go through list of delayed actors
-                // and wake up those at this time
-                // Note that to deal with roundoff errors on doubles,
-                // any times within TOLERANCE are considered the same.
-                boolean done = false;
-                while (!done && _delayedActorList.size() > 0 ) {
-                    DelayListLink val =
-                        (DelayListLink)_delayedActorList.first();
-                    if (Math.abs(val._resumeTime - nextTime) < TOLERANCE) {
-                        _delayedActorList.removeFirst();
-                        val._actor._continue();
-                        _actorsDelayed--;
-                    } else {
-                        done = true;
-                    }
-                }
-            } else {
-                // Real deadlock. Return true so that the
-                // fire method can return.
-                return true;
-            }
-            // Return false for topology changes and time deadlock.
-            return false;
+        if (_topologyChangesPending) {
             /* JFIXME
-        } catch (TopologyChangeFailedException ex ) {
-            throw new InvalidStateException("CSPDirector: failed to " +
-                    "complete topology change requests.");
-        } catch (IllegalActionException ex ) {
-            throw new InvalidStateException("CSPDirector: failed to " +
-                    "create new receivers following a topology " +
-                    "change request.");
+               _processTopologyRequests();
+               LinkedList newThreads = new LinkedList();
+               Enumeration newActors = _newActors();
+               while (newActors.hasMoreElements()) {
+               Actor actor = (Actor)newActors.nextElement();
+               actor.initialize();
+               ProcessThread pnt = new ProcessThread(actor, this);
+               newThreads.insertFirst(pnt);
+               }
+               // Note we only start the threads after they have
+               // all had the receivers created.
+               Enumeration allThreads = newThreads.elements();
+               while (allThreads.hasMoreElements()) {
+               ProcessThread p = (ProcessThread)allThreads.nextElement();
+               p.start();
+               _addNewThread(p);
+               }
+               _topologyChangesPending = false;
+               JFIXME */
+
+        } else if (_actorsDelayed > 0) {
+            // Time deadlock.
+            double nextTime = _getNextTime();
+            _currentTime = nextTime;
+
+            // Now go through list of delayed actors
+            // and wake up those at this time
+            // Note that to deal with roundoff errors on doubles,
+            // any times within TOLERANCE are considered the same.
+            boolean done = false;
+            while (!done && _delayedActorList.size() > 0 ) {
+                DelayListLink val =
+                    (DelayListLink)_delayedActorList.first();
+                if (Math.abs(val._resumeTime - nextTime) < TOLERANCE) {
+                    _delayedActorList.removeFirst();
+                    val._actor._continue();
+                    _actorsDelayed--;
+                } else {
+                    done = true;
+                }
+            }
+        } else {
+            // Real deadlock. Return true so that the
+            // fire method can return.
+            return true;
         }
-            */
+        // Return false for topology changes and time deadlock.
+        return false;
+        /* JFIXME
+           } catch (TopologyChangeFailedException ex ) {
+           throw new InvalidStateException("CSPDirector: failed to " +
+           "complete topology change requests.");
+           } catch (IllegalActionException ex ) {
+           throw new InvalidStateException("CSPDirector: failed to " +
+           "create new receivers following a topology " +
+           "change request.");
+           }
+        */
     }
 
     /** Returns true if all active processes are either blocked or

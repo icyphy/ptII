@@ -54,7 +54,7 @@ Matlab like expressions.
 */
 public class ASTPtMatrixConstructNode extends ASTPtRootNode {
 
-// FIXME: the exception messages need more work.
+    // FIXME: the exception messages need more work.
 
     protected ptolemy.data.Token _resolveNode() {
         /* first find the type of the matrix token */
@@ -69,7 +69,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     for (i = 0; i < nChildren; ++i) {
                         tok = BooleanToken.convert(childTokens[i]);
                         val[i/_nColumns][i%_nColumns] = 
-                                ((BooleanToken)tok).booleanValue();
+                            ((BooleanToken)tok).booleanValue();
                     }
                     _ptToken = new BooleanMatrixToken(val);
                 } else if (mtype == IntToken.class) {
@@ -77,7 +77,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     for (i = 0; i < nChildren; ++i) {
                         tok = IntToken.convert(childTokens[i]);
                         val[i/_nColumns][i%_nColumns] = 
-                                ((IntToken)tok).intValue();
+                            ((IntToken)tok).intValue();
                     }
                     _ptToken = new IntMatrixToken(val);
                 } else if (mtype == LongToken.class) {
@@ -85,7 +85,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     for (i = 0; i < nChildren; ++i) {
                         tok = LongToken.convert(childTokens[i]);
                         val[i/_nColumns][i%_nColumns] = 
-                                ((LongToken)tok).longValue();
+                            ((LongToken)tok).longValue();
                     }
                     _ptToken = new LongMatrixToken(val);
                 } else if (mtype == DoubleToken.class) {
@@ -93,7 +93,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     for (i = 0; i < nChildren; ++i) {
                         tok = DoubleToken.convert(childTokens[i]);
                         val[i/_nColumns][i%_nColumns] = 
-                                ((DoubleToken)tok).doubleValue();
+                            ((DoubleToken)tok).doubleValue();
                     }
                     _ptToken = new DoubleMatrixToken(val);
                 } else if (mtype == ComplexToken.class) {
@@ -101,7 +101,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     for (i = 0; i < nChildren; ++i) {
                         tok = ComplexToken.convert(childTokens[i]);
                         val[i/_nColumns][i%_nColumns] = 
-                                ((ComplexToken)tok).complexValue();
+                            ((ComplexToken)tok).complexValue();
                     }
                     _ptToken = new ComplexMatrixToken(val);
                 } else {

@@ -54,11 +54,11 @@ public class CSPMultiSink extends CSPActor {
     }
 
     public CSPMultiSink  (TypedCompositeActor cont, String name)
-       throws IllegalActionException, NameDuplicationException {
-	 super(cont, name);
-	 input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+            throws IllegalActionException, NameDuplicationException {
+        super(cont, name);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ public class CSPMultiSink extends CSPActor {
             }
         } catch (IllegalActionException ex) {
             throw new TerminateProcessException(getName() + ": Error: " +
-			"could not create ConditionalReceive branch");
+                    "could not create ConditionalReceive branch");
         }
         return;
     }

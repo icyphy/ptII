@@ -97,7 +97,7 @@ public class CSPBuffer extends CSPActor {
      */
     public CSPBuffer(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         this(cont, name, 1);
+        this(cont, name, 1);
     }
 
     /** Construct a CSPBuffer in the specified container with the specified
@@ -191,10 +191,10 @@ public class CSPBuffer extends CSPActor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+            ////                         private variables                      ////
 
-    // The array storing the buffered Tokens.
-    private Token[] _buffer;
+            // The array storing the buffered Tokens.
+            private Token[] _buffer;
 
     // The Parameter storing the depth of the buffer.
     private Parameter _depth;

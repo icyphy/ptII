@@ -105,11 +105,11 @@ public class Chopstick extends CSPActor {
      */
     public Chopstick(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
-         leftOut = new TypedIOPort(this, "leftOut", false, true);
-         leftIn = new TypedIOPort(this, "leftIn", true, false);
-         rightOut = new TypedIOPort(this, "rightOut", false, true);
-         rightIn = new TypedIOPort(this, "rightIn", true, false);
+        super(cont, name);
+        leftOut = new TypedIOPort(this, "leftOut", false, true);
+        leftIn = new TypedIOPort(this, "leftIn", true, false);
+        rightOut = new TypedIOPort(this, "rightOut", false, true);
+        rightIn = new TypedIOPort(this, "rightIn", true, false);
 
 	leftIn.setTypeEquals(Token.class);
 	rightIn.setTypeEquals(Token.class);
@@ -167,9 +167,9 @@ public class Chopstick extends CSPActor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+            ////                         private variables                      ////
 
-    private TypedIOPort leftIn;
+            private TypedIOPort leftIn;
     private TypedIOPort leftOut;
     private TypedIOPort rightIn;
     private TypedIOPort rightOut;

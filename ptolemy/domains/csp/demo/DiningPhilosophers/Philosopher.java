@@ -90,7 +90,7 @@ public class Philosopher extends CSPActor {
      *   an entity already in the container.
      */
     public Philosopher(TypedCompositeActor cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
@@ -191,12 +191,12 @@ public class Philosopher extends CSPActor {
 
     /** Register a PhilosopherListener with this Philosopher.
      */
-     public void addPhilosopherListener(PhilosopherListener newListener) {
-         if (_listeners == null) {
-             _listeners = new LinkedList();
-         }
-         _listeners.insertLast(newListener);
-     }
+    public void addPhilosopherListener(PhilosopherListener newListener) {
+        if (_listeners == null) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(newListener);
+    }
 
     /*  Notify any PhilosopherListeners that have registered an
      *  interest/dependency in this Philosopher.

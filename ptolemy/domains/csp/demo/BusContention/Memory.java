@@ -54,18 +54,18 @@ public class Memory extends CSPActor {
      */
     public Memory(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         _input = new TypedIOPort(this, "input", true, false);
-         _output = new TypedIOPort(this, "output", false, true);
+        _input = new TypedIOPort(this, "input", true, false);
+        _output = new TypedIOPort(this, "output", false, true);
 
-         _input.setMultiport(true);
-         _output.setMultiport(true);
+        _input.setMultiport(true);
+        _output.setMultiport(true);
 
-         _input.setTypeEquals(StringToken.class);
-         _output.setTypeEquals(Token.class);
+        _input.setTypeEquals(StringToken.class);
+        _output.setTypeEquals(Token.class);
 
-         _strValue = "initialValue";
+        _strValue = "initialValue";
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -106,13 +106,13 @@ public class Memory extends CSPActor {
             // Receive Branches
             for( int i=0; i < _numInChannels; i++ ) {
                 branches[i] = new
-                        ConditionalReceive(true, _input, i, i);
+                    ConditionalReceive(true, _input, i, i);
             }
 
             // Send Branches
             for( int i=0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
-                        ConditionalSend(true, _output, i, i+_numInChannels, token);
+                    ConditionalSend(true, _output, i, i+_numInChannels, token);
             }
 
             int br = chooseBranch( branches );

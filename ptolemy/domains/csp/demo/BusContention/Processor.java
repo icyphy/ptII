@@ -61,19 +61,19 @@ public class Processor extends CSPActor {
      */
     public Processor(TypedCompositeActor cont, String name, int code)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         _requestOut = new TypedIOPort(this, "requestOut", false, true);
-         _requestIn = new TypedIOPort(this, "requestIn", true, false);
-         _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
-         _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
+        _requestOut = new TypedIOPort(this, "requestOut", false, true);
+        _requestIn = new TypedIOPort(this, "requestIn", true, false);
+        _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
+        _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
 
-         _requestOut.setTypeEquals(IntToken.class);
-         _requestIn.setTypeEquals(BooleanToken.class);
-         _memoryOut.setTypeEquals(StringToken.class);
-         _memoryIn.setTypeEquals(Token.class);
+        _requestOut.setTypeEquals(IntToken.class);
+        _requestIn.setTypeEquals(BooleanToken.class);
+        _memoryOut.setTypeEquals(StringToken.class);
+        _memoryIn.setTypeEquals(Token.class);
 
-         _code = code;
+        _code = code;
 
     }
 
@@ -191,7 +191,7 @@ public class Processor extends CSPActor {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

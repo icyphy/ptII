@@ -53,11 +53,11 @@ public class CSPCondGet extends CSPGet {
      */
     public CSPCondGet(TypedCompositeActor cont, String name, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
          
-	 _receiverCount = receiverCount;
-	 _truth = new boolean[receiverCount]; 
-	 _winningBranch = new boolean[receiverCount]; 
+        _receiverCount = receiverCount;
+        _truth = new boolean[receiverCount]; 
+        _winningBranch = new boolean[receiverCount]; 
 
 	for( int i = 0; i < receiverCount; i++ ) {
 	    _winningBranch[i] = false;

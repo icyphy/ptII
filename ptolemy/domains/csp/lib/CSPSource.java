@@ -56,15 +56,15 @@ public class CSPSource extends AtomicActor {
 
     public CSPSource(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         this(cont, name, -1, 0);
+        this(cont, name, -1, 0);
     }
 
     public CSPSource(CompositeActor cont, String name, int tokenCount, int
-           initValue) throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
-         _tokenLimit = tokenCount;
-         _value = initValue;
-         output = new IOPort(this, "output", false, true);
+            initValue) throws IllegalActionException, NameDuplicationException {
+        super(cont, name);
+        _tokenLimit = tokenCount;
+        _value = initValue;
+        output = new IOPort(this, "output", false, true);
     }
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////

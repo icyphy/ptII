@@ -60,20 +60,20 @@ public class Controller extends CSPActor {
      */
     public Controller(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         _requestOut = new TypedIOPort(this, "requestOut", false, true);
-         _requestIn = new TypedIOPort(this, "requestIn", true, false);
-         _contendOut = new TypedIOPort(this, "contendOut", false, true);
-         _contendIn = new TypedIOPort(this, "contendIn", true, false);
+        _requestOut = new TypedIOPort(this, "requestOut", false, true);
+        _requestIn = new TypedIOPort(this, "requestIn", true, false);
+        _contendOut = new TypedIOPort(this, "contendOut", false, true);
+        _contendIn = new TypedIOPort(this, "contendIn", true, false);
 
-         _requestOut.setMultiport(true);
-         _requestIn.setMultiport(true);
+        _requestOut.setMultiport(true);
+        _requestIn.setMultiport(true);
 
-         _requestOut.setTypeEquals(BooleanToken.class);
-         _requestIn.setTypeEquals(IntToken.class);
-         _contendOut.setTypeEquals(Token.class);
-         _contendIn.setTypeEquals(Token.class);
+        _requestOut.setTypeEquals(BooleanToken.class);
+        _requestIn.setTypeEquals(IntToken.class);
+        _contendOut.setTypeEquals(Token.class);
+        _contendIn.setTypeEquals(Token.class);
 
     }
 
@@ -116,10 +116,10 @@ public class Controller extends CSPActor {
             generateEvents( new ExecEvent( this, 1 ) );
 	    // System.out.println("\t\t\tSTATE 1: " +getName());
             ConditionalBranch[] requiredBranches =
-                    new ConditionalBranch[_numRequestInChannels];
+                new ConditionalBranch[_numRequestInChannels];
             for( int i=0; i<_numRequestInChannels; i++ ) {
                 requiredBranches[i] = new
-                        ConditionalReceive(true, _requestIn, i, i);
+                    ConditionalReceive(true, _requestIn, i, i);
             }
 
             br = chooseBranch(requiredBranches);
@@ -128,7 +128,7 @@ public class Controller extends CSPActor {
                 IntToken token = (IntToken)requiredBranches[br].getToken();
                 code = token.intValue();
                 _winningPortChannelCode =
-                        new PortChannelCode(_requestIn, br, code);
+                    new PortChannelCode(_requestIn, br, code);
             }
 
 
@@ -164,12 +164,12 @@ public class Controller extends CSPActor {
                     code = token.intValue();
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
-                                insertFirst(_winningPortChannelCode);
+                            insertFirst(_winningPortChannelCode);
                         _winningPortChannelCode =
-                                new PortChannelCode(_requestIn, br, code);
+                            new PortChannelCode(_requestIn, br, code);
                     } else {
                         _losingPortChannelCodes.insertFirst( new
-                            PortChannelCode(_requestIn, br, code) );
+                                PortChannelCode(_requestIn, br, code) );
                     }
 
                 } else if( br == _numRequestInChannels ) {
@@ -221,7 +221,7 @@ public class Controller extends CSPActor {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

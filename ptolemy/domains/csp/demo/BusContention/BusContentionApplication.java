@@ -124,7 +124,7 @@ public class BusContentionApplication implements ActionListener {
 	}
 
         BusContentionApplication app = 
-	        new BusContentionApplication( manager, topLevel );
+            new BusContentionApplication( manager, topLevel );
 
 	Panel nullAppletPanel = null;
 	app.initializeDemo(nullAppletPanel);
@@ -210,51 +210,51 @@ public class BusContentionApplication implements ActionListener {
 
 	    // Set up ports, relation 
 	    TypedIOPort reqOut = 
-		    (TypedIOPort)_contentionActor.getPort("requestOut"); 
+                (TypedIOPort)_contentionActor.getPort("requestOut"); 
 	    TypedIOPort reqIn = 
-		    (TypedIOPort)_contentionActor.getPort("requestIn"); 
+                (TypedIOPort)_contentionActor.getPort("requestIn"); 
 	    TypedIOPort contendOut = 
-		    (TypedIOPort)_contentionActor.getPort("contendOut"); 
+                (TypedIOPort)_contentionActor.getPort("contendOut"); 
 	    TypedIOPort contendIn = 
-		    (TypedIOPort)_contentionActor.getPort("contendIn"); 
+                (TypedIOPort)_contentionActor.getPort("contendIn"); 
 
 	    TypedIOPort _alarmOut = 
-		    (TypedIOPort)_alarmActor.getPort("output"); 
+                (TypedIOPort)_alarmActor.getPort("output"); 
 	    TypedIOPort _alarmIn = 
-		    (TypedIOPort)_alarmActor.getPort("input"); 
+                (TypedIOPort)_alarmActor.getPort("input"); 
 	    TypedIOPort memOut = 
-		    (TypedIOPort)_memoryActor.getPort("output"); 
+                (TypedIOPort)_memoryActor.getPort("output"); 
 	    TypedIOPort memIn = 
-		    (TypedIOPort)_memoryActor.getPort("input"); 
+                (TypedIOPort)_memoryActor.getPort("input"); 
 
 	    TypedIOPort p1_ReqOut = 
-		    (TypedIOPort)_processActor1.getPort("requestOut"); 
+                (TypedIOPort)_processActor1.getPort("requestOut"); 
 	    TypedIOPort p2_ReqOut = 
-		    (TypedIOPort)_processActor2.getPort("requestOut"); 
+                (TypedIOPort)_processActor2.getPort("requestOut"); 
 	    TypedIOPort p3_ReqOut = 
-		    (TypedIOPort)_processActor3.getPort("requestOut"); 
+                (TypedIOPort)_processActor3.getPort("requestOut"); 
 	    TypedIOPort p1_ReqIn = 
-		    (TypedIOPort)_processActor1.getPort("requestIn"); 
+                (TypedIOPort)_processActor1.getPort("requestIn"); 
 	    TypedIOPort p2_ReqIn = 
-		    (TypedIOPort)_processActor2.getPort("requestIn"); 
+                (TypedIOPort)_processActor2.getPort("requestIn"); 
 	    TypedIOPort p3_ReqIn = 
-		    (TypedIOPort)_processActor3.getPort("requestIn"); 
+                (TypedIOPort)_processActor3.getPort("requestIn"); 
 
 	    TypedIOPort p1_MemOut = 
-		    (TypedIOPort)_processActor1.getPort("memoryOut"); 
+                (TypedIOPort)_processActor1.getPort("memoryOut"); 
 	    TypedIOPort p2_MemOut = 
-		    (TypedIOPort)_processActor2.getPort("memoryOut"); 
+                (TypedIOPort)_processActor2.getPort("memoryOut"); 
 	    TypedIOPort p3_MemOut = 
-		    (TypedIOPort)_processActor3.getPort("memoryOut"); 
+                (TypedIOPort)_processActor3.getPort("memoryOut"); 
 	    TypedIOPort p1_MemIn = 
-		    (TypedIOPort)_processActor1.getPort("memoryIn"); 
+                (TypedIOPort)_processActor1.getPort("memoryIn"); 
 	    TypedIOPort p2_MemIn = 
-		    (TypedIOPort)_processActor2.getPort("memoryIn"); 
+                (TypedIOPort)_processActor2.getPort("memoryIn"); 
 	    TypedIOPort p3_MemIn = 
-		    (TypedIOPort)_processActor3.getPort("memoryIn"); 
+                (TypedIOPort)_processActor3.getPort("memoryIn"); 
 
 	    TypedIORelation inReqs, outReqs, 
-		    reads, writes, outContends, inContends;
+                reads, writes, outContends, inContends;
 
 	    // Set up connections 
 	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p1_ReqOut ); 
@@ -315,20 +315,20 @@ public class BusContentionApplication implements ActionListener {
 	_window.setLocation(100, 100); 
 	_window.setVisible(true);
 	/*
-	if( _appletPanel == null ) {
-            _window = new BasicWindow("Basic Window"); 
-	    _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
-	    _window.getContentPane().add(g, BorderLayout.CENTER); 
-	    _window.setSize(500, 600); 
-	    _window.setLocation(100, 100); 
-	    _window.setVisible(true);
-	} else {
-	    _appletPanel.add(controlPanel, BorderLayout.NORTH);
-	    _appletPanel.add(g, BorderLayout.CENTER);
-	    _appletPanel.setSize(500, 600); 
-	    _appletPanel.setLocation(100, 100); 
-	    _appletPanel.setVisible(true);
-	}
+          if( _appletPanel == null ) {
+          _window = new BasicWindow("Basic Window"); 
+          _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
+          _window.getContentPane().add(g, BorderLayout.CENTER); 
+          _window.setSize(500, 600); 
+          _window.setLocation(100, 100); 
+          _window.setVisible(true);
+          } else {
+          _appletPanel.add(controlPanel, BorderLayout.NORTH);
+          _appletPanel.add(g, BorderLayout.CENTER);
+          _appletPanel.setSize(500, 600); 
+          _appletPanel.setLocation(100, 100); 
+          _appletPanel.setVisible(true);
+          }
 	*/
 
         // Make sure we have the right renderers and then display the graph
@@ -372,7 +372,7 @@ public class BusContentionApplication implements ActionListener {
             System.exit(0);
         }
         StateListener listener = 
-	        new StateListener((GraphPane)_jgraph.getCanvasPane());
+            new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
 	_processActor3.addListeners(listener);
@@ -542,7 +542,7 @@ public class BusContentionApplication implements ActionListener {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof Controller 
+                actor instanceof Controller 
                 || actor instanceof Memory 
                 || actor instanceof ContentionAlarm;
 
@@ -570,26 +570,26 @@ public class BusContentionApplication implements ActionListener {
      * LocalEdgeRenderer draws arrowheads on both ends of the connector
      */
     public class LocalEdgeRenderer implements EdgeRenderer {
-      /**
-       * Render the edge
-       */
-      public Connector render (Edge edge, Site tailSite, Site headSite) {
-	StraightConnector c = new StraightConnector(tailSite, headSite);
+        /**
+         * Render the edge
+         */
+        public Connector render (Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
 
-	// Create an arrow at the head
-	Arrowhead headArrow = new Arrowhead(
-					    headSite.getX(), headSite.getY(),
-					    headSite.getNormal());
-	c.setHeadEnd(headArrow);
+            // Create an arrow at the head
+            Arrowhead headArrow = new Arrowhead(
+                    headSite.getX(), headSite.getY(),
+                    headSite.getNormal());
+            c.setHeadEnd(headArrow);
 
-	// Create an arrow at the tail
-	Arrowhead tailArrow = new Arrowhead(
-					    tailSite.getX(), tailSite.getY(),
-					    tailSite.getNormal());
-	c.setTailEnd(tailArrow);
+            // Create an arrow at the tail
+            Arrowhead tailArrow = new Arrowhead(
+                    tailSite.getX(), tailSite.getY(),
+                    tailSite.getNormal());
+            c.setTailEnd(tailArrow);
 
-	c.setUserObject(edge);
-	return c;
-      }
+            c.setUserObject(edge);
+            return c;
+        }
     }
 }

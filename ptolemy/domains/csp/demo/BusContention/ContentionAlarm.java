@@ -57,13 +57,13 @@ public class ContentionAlarm extends CSPActor {
      */
     public ContentionAlarm(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         _input = new TypedIOPort(this, "input", true, false);
-         _output = new TypedIOPort(this, "output", false, true);
+        _input = new TypedIOPort(this, "input", true, false);
+        _output = new TypedIOPort(this, "output", false, true);
 
-	 _input.setTypeEquals(Token.class);
-	 _output.setTypeEquals(Token.class);
+        _input.setTypeEquals(Token.class);
+        _output.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ public class ContentionAlarm extends CSPActor {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

@@ -218,42 +218,42 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     }
     
     ////////////////////////////////////////////////////////////////////////
-    ////                       protected methods                        ////
+            ////                       protected methods                        ////
 
-    /** Encounter a conditionalsend that is already waiting on this
-     *  conditionalreceive. Since this conditionalreceive arrived second, 
-     *  check if both branches are "first" and if so perform the data 
-     *  transfer and reset the state of the receiver. Since a 
-     *  conditionalsend can "disappear," then this method can return to
-     *  the top of the main loop in the run method that calls this method. 
-     *  Return true if this method should go to the top of the calling
-     *  loop; return false otherwise.
-     * @returns true if this method should continue at the beginning of
-     *  the loop that calls this method; otherwise return false.
-     * @param parent The csp actor that contains this conditional
-     *  receive.
-     * @param rcvr The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent) 
-            throws InterruptedException {
-        if (parent._isBranchFirst(getID())) {
-            // receive side ok, need to check that send 
-            // side also ok 
-            // CSPReceiver rec = getReceiver(); 
-            if (rcvr._getOtherParent()._isBranchFirst(getID())) {
-                setToken( rcvr.get() ); 
-                rcvr._setConditionalSend(false, null); 
-                parent._branchSucceeded(getID()); 
-                return false;
-            } else {
-                parent._releaseFirst(getID()); 
-                rcvr.notifyAll();
+            /** Encounter a conditionalsend that is already waiting on this
+             *  conditionalreceive. Since this conditionalreceive arrived second, 
+             *  check if both branches are "first" and if so perform the data 
+             *  transfer and reset the state of the receiver. Since a 
+             *  conditionalsend can "disappear," then this method can return to
+             *  the top of the main loop in the run method that calls this method. 
+             *  Return true if this method should go to the top of the calling
+             *  loop; return false otherwise.
+             * @returns true if this method should continue at the beginning of
+             *  the loop that calls this method; otherwise return false.
+             * @param parent The csp actor that contains this conditional
+             *  receive.
+             * @param rcvr The CSPReceiver through which a rendezvous attempt is
+             *  taking place.
+             */
+            protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent) 
+                    throws InterruptedException {
+                if (parent._isBranchFirst(getID())) {
+                    // receive side ok, need to check that send 
+                    // side also ok 
+                    // CSPReceiver rec = getReceiver(); 
+                    if (rcvr._getOtherParent()._isBranchFirst(getID())) {
+                        setToken( rcvr.get() ); 
+                        rcvr._setConditionalSend(false, null); 
+                        parent._branchSucceeded(getID()); 
+                        return false;
+                    } else {
+                        parent._releaseFirst(getID()); 
+                        rcvr.notifyAll();
+                    }
+                }
+                _registerBlockAndWait();
+                return true; 
             }
-        }
-        _registerBlockAndWait();
-        return true; 
-    }
     
     /** Encounter a non-conditional put that is already waiting on this 
      *  conditionalreceive. Since a non-conditional put can not disappear, 

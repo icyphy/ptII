@@ -326,7 +326,7 @@ public class Variable extends Attribute implements Typeable {
      *   be parsed or cannot be evaluated.  This is a runtime exception
      *   so it need not be declared explicitly.
      */
-// FIXME: This should not throw a runtime exception!
+    // FIXME: This should not throw a runtime exception!
     public ptolemy.data.Token getContainedToken()
             throws IllegalExpressionException {
         _evaluate();
@@ -439,7 +439,7 @@ public class Variable extends Attribute implements Typeable {
      *   be parsed or cannot be evaluated.  This is a runtime exception
      *   so it need not be declared explicitly.
      */
-// FIXME: This should not be a runtime exception.
+    // FIXME: This should not be a runtime exception.
     public ptolemy.data.Token getToken() throws IllegalExpressionException {
         _evaluate();
         if (_token == null) {
@@ -495,7 +495,7 @@ public class Variable extends Attribute implements Typeable {
      *   be parsed or cannot be evaluated.  This is a runtime exception
      *   so it need not be declared explicitly.
      */
-// FIXME: This should not be a runtime exception.
+    // FIXME: This should not be a runtime exception.
     public Class getType() throws IllegalExpressionException {
         _evaluate();
         return _varType;
@@ -682,7 +682,7 @@ public class Variable extends Attribute implements Typeable {
      */
     public void setTypeAtLeast(Typeable lesser) {
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
-					 this.getTypeTerm());
+                this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -711,7 +711,7 @@ public class Variable extends Attribute implements Typeable {
         }
 
         Inequality ineq = new Inequality(this.getTypeTerm(),
-					 new TypeConstant(type));
+                new TypeConstant(type));
 	_constraints.insertLast(ineq);
     }
 
@@ -759,10 +759,10 @@ public class Variable extends Attribute implements Typeable {
      */
     public void setTypeSameAs(Typeable equal) {
         Inequality ineq = new Inequality(this.getTypeTerm(),
-					 equal.getTypeTerm());
+                equal.getTypeTerm());
 	_constraints.insertLast(ineq);
 	ineq = new Inequality(equal.getTypeTerm(),
-			      this.getTypeTerm());
+                this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -804,7 +804,7 @@ public class Variable extends Attribute implements Typeable {
 	result.appendElements(_constraints.elements());
 
 	TypeConstant tokenType =
-                   	new TypeConstant(containedToken.getClass());
+            new TypeConstant(containedToken.getClass());
 	Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
 	result.insertLast(ineq);
 
@@ -1057,8 +1057,8 @@ public class Variable extends Attribute implements Typeable {
         if (newToken == null) {
             if (_valueDependents != null && !_valueDependents.isEmpty()) {
                 throw new IllegalActionException(this,
-                "Cannot set contents to null because there are variables " +
-                "that depend on its value.");
+                        "Cannot set contents to null because there are variables " +
+                        "that depend on its value.");
             }
             _token = null;
             _needsEvaluation = false;
@@ -1082,9 +1082,9 @@ public class Variable extends Attribute implements Typeable {
         if (_declaredType != null) {
             // Incompatible type!
             throw new IllegalActionException(this, "Cannot store a token of "
-            + "type "
-            + tokenType.getName() + ", which is incompatible with type "
-            + _varType.getName());
+                    + "type "
+                    + tokenType.getName() + ", which is incompatible with type "
+                    + _varType.getName());
         }
 
         _varType = tokenType;
@@ -1114,7 +1114,7 @@ public class Variable extends Attribute implements Typeable {
      *   to set to null a variable that has value dependents.
      */
     private void _setTokenAndNotify(Token newToken)
-             throws IllegalActionException {
+            throws IllegalActionException {
 
         Token oldToken = _token;
         Token oldCastToken = _castToken;
@@ -1298,7 +1298,7 @@ public class Variable extends Attribute implements Typeable {
 	    }
 
 	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-                + "the value of a type constant.");
+                    + "the value of a type constant.");
         }
 
         ///////////////////////////////////////////////////////////////

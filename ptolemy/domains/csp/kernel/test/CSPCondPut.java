@@ -54,11 +54,11 @@ public class CSPCondPut extends CSPPutToken {
     public CSPCondPut(TypedCompositeActor cont, String name,
             int numTokens, int receiverCount)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name, numTokens);
+        super(cont, name, numTokens);
          
-	 _receiverCount = receiverCount;
-	 _truth = new boolean[receiverCount]; 
-	 _winningBranch = new boolean[receiverCount]; 
+        _receiverCount = receiverCount;
+        _truth = new boolean[receiverCount]; 
+        _winningBranch = new boolean[receiverCount]; 
 
 	for( int i = 0; i < receiverCount; i++ ) {
 	    _winningBranch[i] = false;

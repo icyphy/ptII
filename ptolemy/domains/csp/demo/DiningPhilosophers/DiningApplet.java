@@ -69,170 +69,170 @@ public class DiningApplet extends Applet
      */
     public void init() {
 
-    // Process the background parameter.
-    Color background = Color.white;
-    try {
-        String colorspec = getParameter("background");
-        if (colorspec != null) {
-            background = Color.decode(colorspec);
-        }
-    } catch (Exception ex) {}
-    setBackground(background);
-
-
-    try {
-        univ = new TypedCompositeActor();
-        univ.setName("Top");
-
-        // Set up the directors
-        _localDirector = new CSPDirector(univ, "CSP Director");
-        _manager = new Manager("Manager");
-        univ.setManager(_manager);
-
-        Parameter eatingRate = new Parameter(univ, "eatingRate");
-        eatingRate.setExpression("1.0");
-        eatingRate.getToken();
-
-        Parameter thinkingRate = new Parameter(univ, "thinkingRate");
-        thinkingRate.setExpression("1.0");
-        thinkingRate.getToken();
-
-        // Set up the actors and connections
-        Philosopher p1 = new Philosopher(univ, "Aristotle");
-        Philosopher p2 = new Philosopher(univ, "Plato");
-        Philosopher p3 = new Philosopher(univ, "Sartre");
-        Philosopher p4 = new Philosopher(univ, "Descartes");
-        Philosopher p5 = new Philosopher(univ, "Socrates");
-
-        _philosophers[0] = p1;
-        _philosophers[1] = p2;
-        _philosophers[2] = p3;
-        _philosophers[3] = p4;
-        _philosophers[4] = p5;
-
-        Parameter p = null;
-        for (int i = 0; i< 5; i++) {
-            _philosophers[i].addPhilosopherListener(this);
-            p = (Parameter)_philosophers[i].getAttribute("eatingRate");
-            if (p != null) {
-                p.setExpression("eatingRate");
+        // Process the background parameter.
+        Color background = Color.white;
+        try {
+            String colorspec = getParameter("background");
+            if (colorspec != null) {
+                background = Color.decode(colorspec);
             }
-            p = (Parameter)_philosophers[i].getAttribute("thinkingRate");
-            if (p != null) {
-                p.setExpression("thinkingRate");
+        } catch (Exception ex) {}
+        setBackground(background);
+
+
+        try {
+            univ = new TypedCompositeActor();
+            univ.setName("Top");
+
+            // Set up the directors
+            _localDirector = new CSPDirector(univ, "CSP Director");
+            _manager = new Manager("Manager");
+            univ.setManager(_manager);
+
+            Parameter eatingRate = new Parameter(univ, "eatingRate");
+            eatingRate.setExpression("1.0");
+            eatingRate.getToken();
+
+            Parameter thinkingRate = new Parameter(univ, "thinkingRate");
+            thinkingRate.setExpression("1.0");
+            thinkingRate.getToken();
+
+            // Set up the actors and connections
+            Philosopher p1 = new Philosopher(univ, "Aristotle");
+            Philosopher p2 = new Philosopher(univ, "Plato");
+            Philosopher p3 = new Philosopher(univ, "Sartre");
+            Philosopher p4 = new Philosopher(univ, "Descartes");
+            Philosopher p5 = new Philosopher(univ, "Socrates");
+
+            _philosophers[0] = p1;
+            _philosophers[1] = p2;
+            _philosophers[2] = p3;
+            _philosophers[3] = p4;
+            _philosophers[4] = p5;
+
+            Parameter p = null;
+            for (int i = 0; i< 5; i++) {
+                _philosophers[i].addPhilosopherListener(this);
+                p = (Parameter)_philosophers[i].getAttribute("eatingRate");
+                if (p != null) {
+                    p.setExpression("eatingRate");
+                }
+                p = (Parameter)_philosophers[i].getAttribute("thinkingRate");
+                if (p != null) {
+                    p.setExpression("thinkingRate");
+                }
             }
+
+            Chopstick f1 = new Chopstick(univ, "Chopstick1");
+            Chopstick f2 = new Chopstick(univ, "Chopstick2");
+            Chopstick f3 = new Chopstick(univ, "Chopstick3");
+            Chopstick f4 = new Chopstick(univ, "Chopstick4");
+            Chopstick f5 = new Chopstick(univ, "Chopstick5");
+
+            // Now connect up the Actors
+            TypedIORelation r1 =
+                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftIn"),
+                        (TypedIOPort)f5.getPort("rightOut"));
+            TypedIORelation r2 =
+                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftOut"),
+                        (TypedIOPort)f5.getPort("rightIn"));
+            TypedIORelation r3 =
+                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightIn"),
+                        (TypedIOPort)f1.getPort("leftOut"));
+            TypedIORelation r4 =
+                (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightOut"),
+                        (TypedIOPort)f1.getPort("leftIn"));
+
+            TypedIORelation r5 =
+                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftIn"),
+                        (TypedIOPort)f1.getPort("rightOut"));
+            TypedIORelation r6 =
+                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftOut"),
+                        (TypedIOPort)f1.getPort("rightIn"));
+            TypedIORelation r7 =
+                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightIn"),
+                        (TypedIOPort)f2.getPort("leftOut"));
+            TypedIORelation r8 =
+                (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightOut"),
+                        (TypedIOPort)f2.getPort("leftIn"));
+
+            TypedIORelation r9  =
+                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftIn"),
+                        (TypedIOPort)f2.getPort("rightOut"));
+            TypedIORelation r10 =
+                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftOut"),
+                        (TypedIOPort)f2.getPort("rightIn"));
+            TypedIORelation r11 =
+                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightIn"),
+                        (TypedIOPort)f3.getPort("leftOut"));
+            TypedIORelation r12 =
+                (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightOut"),
+                        (TypedIOPort)f3.getPort("leftIn"));
+
+            TypedIORelation r13 =
+                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftIn"),
+                        (TypedIOPort)f3.getPort("rightOut"));
+            TypedIORelation r14 =
+                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftOut"),
+                        (TypedIOPort)f3.getPort("rightIn"));
+            TypedIORelation r15 =
+                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightIn"),
+                        (TypedIOPort)f4.getPort("leftOut"));
+            TypedIORelation r16 =
+                (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightOut"),
+                        (TypedIOPort)f4.getPort("leftIn"));
+
+            TypedIORelation r17 =
+                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftIn"),
+                        (TypedIOPort)f4.getPort("rightOut"));
+            TypedIORelation r18 =
+                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftOut"),
+                        (TypedIOPort)f4.getPort("rightIn"));
+            TypedIORelation r19 =
+                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightIn"),
+                        (TypedIOPort)f5.getPort("leftOut"));
+            TypedIORelation r20 =
+                (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightOut"),
+                        (TypedIOPort)f5.getPort("leftIn"));
+
+        } catch (Exception ex) {
+            System.err.println("Setup failed: " + ex.getMessage());
+            ex.printStackTrace();
         }
 
-        Chopstick f1 = new Chopstick(univ, "Chopstick1");
-        Chopstick f2 = new Chopstick(univ, "Chopstick2");
-        Chopstick f3 = new Chopstick(univ, "Chopstick3");
-        Chopstick f4 = new Chopstick(univ, "Chopstick4");
-        Chopstick f5 = new Chopstick(univ, "Chopstick5");
+        // The applet has two panels, stacked vertically
+        setLayout(new BorderLayout());
 
-        // Now connect up the Actors
-        TypedIORelation r1 =
-            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftIn"),
-                    (TypedIOPort)f5.getPort("rightOut"));
-        TypedIORelation r2 =
-            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftOut"),
-                    (TypedIOPort)f5.getPort("rightIn"));
-        TypedIORelation r3 =
-            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightIn"),
-                    (TypedIOPort)f1.getPort("leftOut"));
-        TypedIORelation r4 =
-            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightOut"),
-                    (TypedIOPort)f1.getPort("leftIn"));
+        _table = new TablePanel(_philosophers);
+        add(_table, "Center");
 
-        TypedIORelation r5 =
-            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftIn"),
-                    (TypedIOPort)f1.getPort("rightOut"));
-        TypedIORelation r6 =
-            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftOut"),
-                    (TypedIOPort)f1.getPort("rightIn"));
-        TypedIORelation r7 =
-            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightIn"),
-                    (TypedIOPort)f2.getPort("leftOut"));
-        TypedIORelation r8 =
-            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightOut"),
-                    (TypedIOPort)f2.getPort("leftIn"));
+        // Now create the panel that controls the applet
+        Panel controlPanel = new Panel();
+        add(controlPanel, "West");
 
-        TypedIORelation r9  =
-            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftIn"),
-                    (TypedIOPort)f2.getPort("rightOut"));
-        TypedIORelation r10 =
-            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftOut"),
-                    (TypedIOPort)f2.getPort("rightIn"));
-        TypedIORelation r11 =
-            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightIn"),
-                    (TypedIOPort)f3.getPort("leftOut"));
-        TypedIORelation r12 =
-            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightOut"),
-                    (TypedIOPort)f3.getPort("leftIn"));
+        // Add a time display and go/stop buttons to control panel
+        _currentTimeLabel = new Label("Current time = 0.0      ");
+        _goButton = new Button("Go");
+        _stopButton = new Button("Stop");
+        controlPanel.add(_currentTimeLabel, "North");
+        controlPanel.add(_goButton, "North");
+        controlPanel.add(_stopButton, "North");
 
-        TypedIORelation r13 =
-            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftIn"),
-                    (TypedIOPort)f3.getPort("rightOut"));
-        TypedIORelation r14 =
-            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftOut"),
-                    (TypedIOPort)f3.getPort("rightIn"));
-        TypedIORelation r15 =
-            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightIn"),
-                    (TypedIOPort)f4.getPort("leftOut"));
-        TypedIORelation r16 =
-            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightOut"),
-                    (TypedIOPort)f4.getPort("leftIn"));
+        // Add the listeners for the go and stop buttons
+        _goButton.addActionListener(new GoButtonListener());
+        _stopButton.addActionListener(new StopButtonListener());
 
-        TypedIORelation r17 =
-            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftIn"),
-                    (TypedIOPort)f4.getPort("rightOut"));
-        TypedIORelation r18 =
-            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftOut"),
-                    (TypedIOPort)f4.getPort("rightIn"));
-        TypedIORelation r19 =
-            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightIn"),
-                    (TypedIOPort)f5.getPort("leftOut"));
-        TypedIORelation r20 =
-            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightOut"),
-                    (TypedIOPort)f5.getPort("leftIn"));
+        // Add fields for editing the rate at which the
+        // philosophers think and eat.
+        _eatingRateBox = new TextField("1.0", 10);
+        _thinkingRateBox = new TextField("1.0", 10);
+        //controlPanel.add(_eatingRateBox, "South");
+        //controlPanel.add(_thinkingRateBox, "South");
 
-    } catch (Exception ex) {
-        System.err.println("Setup failed: " + ex.getMessage());
-        ex.printStackTrace();
+        // Add the listeners for the go and stop buttons
+        _eatingRateBox.addActionListener(new EatingRateListener());
+        _thinkingRateBox.addActionListener(new ThinkingRateListener());
     }
-
-    // The applet has two panels, stacked vertically
-    setLayout(new BorderLayout());
-
-    _table = new TablePanel(_philosophers);
-    add(_table, "Center");
-
-    // Now create the panel that controls the applet
-    Panel controlPanel = new Panel();
-    add(controlPanel, "West");
-
-    // Add a time display and go/stop buttons to control panel
-    _currentTimeLabel = new Label("Current time = 0.0      ");
-    _goButton = new Button("Go");
-    _stopButton = new Button("Stop");
-    controlPanel.add(_currentTimeLabel, "North");
-    controlPanel.add(_goButton, "North");
-    controlPanel.add(_stopButton, "North");
-
-    // Add the listeners for the go and stop buttons
-    _goButton.addActionListener(new GoButtonListener());
-    _stopButton.addActionListener(new StopButtonListener());
-
-    // Add fields for editing the rate at which the
-    // philosophers think and eat.
-    _eatingRateBox = new TextField("1.0", 10);
-    _thinkingRateBox = new TextField("1.0", 10);
-    //controlPanel.add(_eatingRateBox, "South");
-    //controlPanel.add(_thinkingRateBox, "South");
-
-    // Add the listeners for the go and stop buttons
-    _eatingRateBox.addActionListener(new EatingRateListener());
-    _thinkingRateBox.addActionListener(new ThinkingRateListener());
-}
 
     public synchronized void philosopherChanged() {
         if (simulationThread.isAlive()) {
