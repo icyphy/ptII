@@ -771,6 +771,19 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
+	/** Return the sum of the elements of a matrix.
+	 *  @return The sum of the elements of the matrix.
+	 */
+	public static final int sum(final int[][] matrix) {
+		int sum = 0;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				sum += matrix[i][j];
+			}
+		}
+		return sum;
+	}
+	
     /** Return a new matrix that is formed by converting the integers
      *  in the argument matrix to complex numbers. Each complex number
      *  has a real part equal to the value in the argument matrix and a

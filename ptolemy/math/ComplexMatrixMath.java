@@ -955,6 +955,19 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
+	/** Return the sum of the elements of a matrix.
+	 *  @return The sum of the elements of the matrix.
+	 */
+	public static final Complex sum(final Complex[][] matrix) {
+		Complex sum = Complex.ZERO;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				sum = sum.add(matrix[i][j]);
+			}
+		}
+		return sum;
+	}
+
     /** Return a new matrix of complex numbers that is initialized
      *  from a 1-D array.  The format of the array must be (0, 0), (0,
      *  1), ..., (0, n-1), (1, 0), (1, 1), ..., (m-1, n-1) where the

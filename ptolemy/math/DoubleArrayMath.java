@@ -351,8 +351,6 @@ public class DoubleArrayMath {
         return scale(array, 1.0 / l2norm(array));
     }
 
-
-
     /** Return a new array of doubles that is formed by padding the
      *  middle of the array with 0's. If either the length of the
      *  input array is odd, the sample with index ceil(L/2) will be

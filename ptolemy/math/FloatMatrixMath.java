@@ -800,6 +800,19 @@ public class FloatMatrixMath {
         return returnValue;
     }
 
+	/** Return the sum of the elements of a matrix.
+	 *  @return The sum of the elements of the matrix.
+	 */
+	public static final float sum(final float[][] matrix) {
+		float sum = 0.0f;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				sum += matrix[i][j];
+			}
+		}
+		return sum;
+	}
+	
     /** Return a new matrix that is formed by converting the floats
      *  in the argument matrix to complex numbers. Each complex number
      *  has a real part equal to the value in the argument matrix and a

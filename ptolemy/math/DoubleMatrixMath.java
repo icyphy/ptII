@@ -830,6 +830,19 @@ public class DoubleMatrixMath {
         }
         return returnValue;
     }
+    
+	/** Return the sum of the elements of a matrix.
+	 *  @return The sum of the elements of the matrix.
+	 */
+	public static final double sum(final double[][] matrix) {
+		double sum = 0.0;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				sum += matrix[i][j];
+			}
+		}
+		return sum;
+	}
 
     /** Return a new matrix that is formed by converting the doubles
      *  in the argument matrix to complex numbers. Each complex number
