@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
@@ -124,7 +125,7 @@ public class Documentation extends StringAttribute {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
                     + "<doc>"
-                    + getExpression()
+                    + StringUtilities.escapeForXML(getExpression())
                     + "</doc>\n");
         } else {
             // Name is not the default name.
@@ -132,7 +133,7 @@ public class Documentation extends StringAttribute {
                     + "<doc name=\""
                     + name
                     + "\">"
-                    + getExpression()
+                    + StringUtilities.escapeForXML(getExpression())
                     + "</doc>\n");
         }
     }

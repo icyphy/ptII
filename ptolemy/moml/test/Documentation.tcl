@@ -96,3 +96,56 @@ test Documentation-3.0 {call toString, getValue, setValue} {
 } {{(ptolemy.moml.Documentation, aaa doc)} {aaa doc} {new doc}}
 
 
+test Documentation-4.1 {setValue with a unescaped ampersand, as per Ned Stoffel} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set toplevel [$parser parse $moml_3_1]
+    set documentation [java::cast ptolemy.moml.Documentation \
+	    [$toplevel getAttribute "_doc"]]
+    set r1 [$documentation toString]
+    set r2 [$documentation getValue]
+    $documentation setValue \
+	{    
+	    if (Is_sin =1 & Is_noise=0) then \{
+                 CC output will be set to Sinusoidal;
+	     \} else if  (Is_sin=0 & Is_noise =1) then \{
+                 CC output will be set to Gaussian Noise;
+             \}
+        }
+
+    set moml_4_1 [$toplevel exportMoML]
+    list [$documentation getValue] \
+	[$documentation exportMoML]
+} {{    
+	    if (Is_sin =1 & Is_noise=0) then \{
+                 CC output will be set to Sinusoidal;
+	     \} else if  (Is_sin=0 & Is_noise =1) then \{
+                 CC output will be set to Gaussian Noise;
+             \}
+        } {<doc>    &#10;	    if (Is_sin =1 &amp; Is_noise=0) then \{&#10;                 CC output will be set to Sinusoidal;&#10;	     \} else if  (Is_sin=0 &amp; Is_noise =1) then \{&#10;                 CC output will be set to Gaussian Noise;&#10;             \}&#10;        </doc>
+}}
+
+test Documentation-4.2 {parse the moml from 4.1 above} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set toplevel_4_2 [$parser parse $moml_4_1]
+    set documentation [java::cast ptolemy.moml.Documentation \
+	    [$toplevel_4_2 getAttribute "_doc"]]
+    set r1 [$documentation toString]
+    set r2 [$documentation getValue]
+    set r3 [$documentation exportMoML]
+    list $r1 $r2 $r3
+} {{(ptolemy.moml.Documentation,     
+	    if (Is_sin =1 & Is_noise=0) then \{
+                 CC output will be set to Sinusoidal;
+	     \} else if  (Is_sin=0 & Is_noise =1) then \{
+                 CC output will be set to Gaussian Noise;
+             \}
+        )} {    
+	    if (Is_sin =1 & Is_noise=0) then \{
+                 CC output will be set to Sinusoidal;
+	     \} else if  (Is_sin=0 & Is_noise =1) then \{
+                 CC output will be set to Gaussian Noise;
+             \}
+        } {<doc>    &#10;	    if (Is_sin =1 &amp; Is_noise=0) then \{&#10;                 CC output will be set to Sinusoidal;&#10;	     \} else if  (Is_sin=0 &amp; Is_noise =1) then \{&#10;                 CC output will be set to Gaussian Noise;&#10;             \}&#10;        </doc>
+}}
