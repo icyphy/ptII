@@ -296,21 +296,6 @@ public class MoMLParser extends HandlerBase {
      *   parse.
      */
     public void endDocument() throws Exception {
-        // Force evaluation of parameters so that any listeners are notified.
-        // This will also force evaluation of any parameter that this variable
-        // depends on.
-        Iterator parameters = _paramsToParse.iterator();
-        while(parameters.hasNext()) {
-            Variable param = (Variable)parameters.next();
-            try {
-                param.propagate();
-            } catch (IllegalActionException ex) {
-                // NOTE: The following may throw a CancelException, which
-                // will have the effect of cancelling the entire parse.
-                MessageHandler.warning("Evaluating parameter "
-                        + param.getFullName() + " triggers exception.", ex);
-            }
-        }
         // If there were any unrecognized elements, warn the user.
         if (_unrecognized != null) {
             StringBuffer warning = new StringBuffer(
@@ -324,6 +309,18 @@ public class MoMLParser extends HandlerBase {
             } catch (CancelException ex) {
                 // Ignore, since this is a one-time notification.
             }
+        }
+        // Force evaluation of parameters so that any listeners are notified.
+        // This will also force evaluation of any parameter that this variable
+        // depends on.
+        Iterator parameters = _paramsToParse.iterator();
+        while(parameters.hasNext()) {
+            Variable param = (Variable)parameters.next();
+            // NOTE: We used to catch exceptions here and issue
+            // a warning only, but this has the side effect of blocking
+            // the mechanism in PtolemyQuery that carefully prompts
+            // the user for corrected parameter values.
+            param.propagate();
         }
     }
 
