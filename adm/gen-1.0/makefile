@@ -436,6 +436,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
+	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/lang \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen \
