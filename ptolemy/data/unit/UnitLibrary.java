@@ -34,8 +34,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 
 /** A Library containing definitions of commonly used units.
@@ -206,12 +206,10 @@ public class UnitLibrary {
                 momlParser.parseFile("../SI.xml");
             }
             us = (UnitSystem) (container.getAttribute("SI"));
-        } catch (Exception e) {
-            KernelException.stackTraceToString(e);
-        } catch (Throwable t) {
-            KernelException.stackTraceToString(t);
+        } catch (Throwable throwable) {
+            throw new InternalErrorException(null, throwable,
+                    "Failed to initialize statics in UnitLibrary");
         }
-
         // Initialize the Library.
         _unitsLibrary = new Vector();
         _numCats = UnitUtilities.getNumCategories();
