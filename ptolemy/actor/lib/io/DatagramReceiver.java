@@ -77,7 +77,7 @@ Bash command netstat -an is very useful in seeing current port allocations!
 
 Initially, the local port number is set to -1 to indicate no port at all.
 
-@author Winthrop Williams, Yorn, Xiojun, Edward Lee
+@author Winthrop Williams, Jorn, Xiojun, Edward Lee
 (Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
@@ -120,20 +120,20 @@ public class DatagramReceiver extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** If the parameter changed is <i>localPort</i>, then if the model
-     * is running (as evedenced by socket != null) then interrupt
-     * thread & close socket, and then and reopen with new port number
-     * & restart thread (even if same as old port number).  Thread is
-     * not reinstanciated, just restarted on the new socket.
-     * <p>
-     * If parameter is overwrite, simply copy boolean to _overwrite.
+    /** React to the change of the given acttribute.
+     *  If the parameter changed is <i>localPort</i> and the model is running
+     *  (i.e. socket != null), then replace the
+     *  current socket with a socket on the new port number.  This 
+     *  involves pausing the thread reading from the socket, creating a new
+     *  socket and restarting the thread.  This is done even if the
+     *  port number has not actually changed.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        // Cache the overwrite parameter so the reading thread can use it.
         if (attribute == overwrite) {
             _overwrite = ((BooleanToken)(overwrite.getToken())).booleanValue();
-        }
-        if (attribute == localPort) {
+        } else if (attribute == localPort) {
             if ( socket != null ) {
 
                 _listenerThread.interrupt();
@@ -163,9 +163,11 @@ public class DatagramReceiver extends TypedAtomicActor {
         }
     }
 
-    /** Uses the Ptolemy parser to interpret the datagram 
-     * received as a printable representation of some data.
-     * Broadcasts the resulting token.
+    /** Fire this actor.  Parse a received datagram and convert it
+     *  into a token that has the same type as the output port.  Broadcast the
+     *  converted token on the output port.
+     *  @exception IllegalActionException If the data cannot be converted into
+     *  a token.
      */
     public void fire() throws IllegalActionException {
         if(_debugging) _debug("Actor is fired");
@@ -187,63 +189,68 @@ public class DatagramReceiver extends TypedAtomicActor {
         output.broadcast(_evalVar.getToken());
     }
 
-    /** Preinitialize
+    /** Preinitialize this actor.  Create a new datagram socket and 
+     *  initialize the thread that reads from the socket.  The thread
+     *  will stay alive until the socket is closed.
+     *  @exception IllegalActionException If the <i>localPort</i> parameter
+     *  has a value of -1, or a socket could not be created.
+     *  @exception NameDuplicationException Should not be thrown.
      */
-    public void preinitialize() throws IllegalActionException {
+    public void preinitialize() throws IllegalActionException, 
+            NameDuplicationException {
         super.preinitialize();
 
         _overwrite = ((BooleanToken)(localPort.getToken())).booleanValue();
 
         Variable var = (Variable)getAttribute("_evalVar");
         if (var == null) {
-            try {
-                var = new Variable(this, "_evalVar");
-            } catch(NameDuplicationException ex) {
-                if(_debugging) _debug("Name _evalVar already taken");
-            }
+            var = new Variable(this, "_evalVar");
         }
         _evalVar = var;
 
-        System.out.println("Checkpoint  1");
-
-        int portNum = ((IntToken)(localPort.getToken())).intValue();
-        if (portNum == -1) {
+        // If the port number is -1, then the actor is assumed to be in the
+        // library.   If the actor is in the library then we do not want
+        // to open the socket or start a new thread.
+        int portNumber = ((IntToken)(localPort.getToken())).intValue();
+        if (portNumber == -1) {
             if(_debugging) _debug("Can't run with port=-1");
-            throw new IllegalActionException("Cannot run w/ port=-1");
-            // *** sysout (now _debug) works but IAE does nothing
-            // *** (in presence of wrapup exception anyway)
+            throw new IllegalActionException(this, "Cannot run w/ port=-1");
         }
 
-        System.out.println("Checkpoint  2");
-
+        // Allocate a new socket.
         try {
-            if(_debugging) _debug(
-                    "PI Try to create socket for Wport " + portNum);
+            if(_debugging) {
+                _debug("Trying to create a new socket on port " + portNum);
+            }
             socket = new DatagramSocket(portNum);
-            if(_debugging) _debug("PI socket created!!");
+            if(_debugging) {
+                _debug("Socket created successfully!");
+            }
         }
         catch (SocketException ex) {
-            /* ignore */
-            ex.printStackTrace();
-            throw new InternalErrorException("PI can't create socket");
+            throw new IllegalActionException(this, 
+                    "Failed to create a new socket:" + ex);
         }
 
-        System.out.println("Checkpoint  3");
-
+        // Allocate a thread to read from the socket.
         _listenerThread = new ListenerThread(this);
         _listenerThread.start();
-        if(_debugging) _debug("PI thread created & started");
+        if(_debugging) _debug("Socket-reading thread created & started.");
     }
 
 
-    /** Wrap up
+    /** Wrapup execution of this actor.  Interrupt the thread that was
+     *  created to read from the socket and close the socket.
+     *  @exception IllegalActionException If the thread or the socket 
+     *  was not created.
      */
     public void wrapup() throws IllegalActionException {
         if (_listenerThread != null) {
             _listenerThread.interrupt();
             _listenerThread = null;
         } else {
-            throw new IllegalActionException("listenerThread null at wrapup!?");
+            throw new IllegalActionException(
+                    "listenerThread null at wrapup!?");
         }
 
         if (socket != null) {
@@ -254,18 +261,15 @@ public class DatagramReceiver extends TypedAtomicActor {
         }
     }
 
-
-//       1         2         3         4         5         6         7         8
-//3456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Variables used
-    private DatagramPacket _receivePacket = new DatagramPacket(new byte[440],0,440);
+    private DatagramPacket _receivePacket =
+    new DatagramPacket(new byte[440],0,440);
     private DatagramPacket _broadcastPacket = 
     new DatagramPacket(new byte[440],0,440);
-    private int packetsAlreadyAwaitingFire;
+    private int packetsAlreadyAwaitingFire = 0;
     private boolean _overwrite;
     private DatagramSocket socket;
     private ListenerThread _listenerThread;
@@ -273,17 +277,18 @@ public class DatagramReceiver extends TypedAtomicActor {
     private String _dataStr;
     private int _length;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private inner class                ////
+
     private class ListenerThread extends Thread {
         /** Create a new thread to listen for packets at the socket
          * opened by the preinitialize method.
          */
-        public ListenerThread(Actor _thisThreadsActor) {
-            thisThreadsActor = _thisThreadsActor;
+        public ListenerThread() {     
         }
 
         public void run() {
             while (true) {
-
                 try {
                     if(_debugging) _debug("attempt socket.receive");
                     // NOTE: The following call may block.
@@ -291,12 +296,11 @@ public class DatagramReceiver extends TypedAtomicActor {
                     if(_debugging) _debug("receive unblocked!");
                 } catch (IOException ex) {
                     if(_debugging) _debug("receive IOException in thread.");
-                    throw new InternalErrorException(
-                            "socket.receive IO exception");
+                    return;
                 }
 
                 // NOTE: Avoid executing concurrently with actor's fire().
-                synchronized(thisThreadsActor) {
+                synchronized(DatagramReceiver.this) {
 
                     // There are 2 datagram packet buffers.
 
@@ -330,14 +334,10 @@ public class DatagramReceiver extends TypedAtomicActor {
                         // Increment count & call fireAt()
                         packetsAlreadyAwaitingFire++;
                         try {
-                            getDirector().fireAt(thisThreadsActor,
+                            getDirector().fireAt(DatagramReceiver.this,
                                     getDirector().getCurrentTime());
                         } catch (IllegalActionException ex) {
                             if(_debugging) _debug("IAE 0!!");
-                        } catch (NullPointerException ex) {
-                            if(_debugging) _debug("Null ptr 0!!");
-                            // Null ptr had been due to not 
-                            // copying in thisThreadsActor.
                         }
                     }
 
@@ -350,13 +350,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                         if(_debugging) _debug("Overwriting latest packet.");
                     }
                 }
-
             }
         }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-
-        private Actor thisThreadsActor;
     }
 }

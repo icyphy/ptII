@@ -167,12 +167,12 @@ public class DatagramSender extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == localPort) {
             synchronized(this) {
-                if ( _socket != null ) {
-
+                if (_socket != null) {
                     if (_debugging) _debug("Current socket port is "
                                        + _socket.getLocalPort());
 
-                    int portNum = ((IntToken)(localPort.getToken())).intValue();
+                    int portNum = 
+                        ((IntToken)(localPort.getToken())).intValue();
                     if (_debugging) _debug("Port number is " + portNum);
                     try {
                         if (_debugging) _debug("Try create socket for port "
@@ -200,10 +200,9 @@ public class DatagramSender extends TypedAtomicActor {
      *  goes.
      */
     public void fire() throws IllegalActionException {
-
         if (remoteAddress.getWidth() > 0 && remoteAddress.hasToken(0)) {
             String address =
-                    ((StringToken)(remoteAddress.get(0))).stringValue();
+                ((StringToken)(remoteAddress.get(0))).stringValue();
             try {
                 _address = InetAddress.getByName(address);
             }
@@ -316,3 +315,12 @@ public class DatagramSender extends TypedAtomicActor {
     // The socked from which to transmit datagram packets.
     private DatagramSocket _socket;
 }
+
+
+
+
+
+
+
+
+

@@ -107,7 +107,8 @@ public class SerialComm extends TypedAtomicActor
         dataReceived.setOutput(true);
         dataReceived.setTypeEquals(new ArrayType(BaseType.INT));
 
-        serialPortName = new Parameter(this, "serialPortName");
+        serialPortName = new Parameter(this, "serialPortName", 
+                new StringToken("<UNKNOWN>"));
         serialPortName.setTypeEquals(BaseType.STRING);
 
         baudRate = new Parameter(this, "baudRate");
@@ -115,36 +116,41 @@ public class SerialComm extends TypedAtomicActor
         baudRate.setToken(new IntToken(19200));
 
 
-	  Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
-	  while (allPorts.hasMoreElements()) {
+        Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
+        while(allPorts.hasMoreElements()) {
             CommPortIdentifier id = (CommPortIdentifier)allPorts.nextElement();
-            if (id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+            if(id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 serialPortName.setToken(new StringToken(id.getName()));
-                return;
+                break;
             }
         }
-        serialPortName.setToken(new StringToken("<UNKNOWN>"));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Data to be sent via the serial port.  One byte will be sent
-     *  per integer in the integer array.  Only the low order byte
-     *  of each integer is used.
+    /** The port that receives data to be sent via the serial port.  
+     *  This port has type integer array.  Each integer in the array is 
+     *  truncated to its least significant byte and output on the serial
+     *  port.
      */
     public TypedIOPort dataToSend;
 
-    /** The data bytes received via the serial port.
-     *  Data comes out one-byte-per-integer in an integer array.
+    /** The port that sends data that has been received via the serial port. 
+     *  This port has type integer array.  All data available on the serial
+     *  port is output in an integer array, one byte per integer.
      */
     public TypedIOPort dataReceived;
 
-    /** The name, such as "COM2", of the serial port used.
+    /** The name, such as "COM2", of the serial port used.  This
+     *  parameter has string type and by default contains the string
+     *  corresponding to the name of the first available serial port.
      */
     public Parameter serialPortName;
 
-    /** The baud rate, such as 115200, for the serial port.
+    /** The baud rate, such as 115200, for the serial port.  This has
+     *  type integer and must be one of the following values:
+     *  FIXME find the values.  The default is 19200.
      */
     public Parameter baudRate;
 
@@ -194,13 +200,13 @@ public class SerialComm extends TypedAtomicActor
 
         try {
 
-            InputStream in = serialPort.getInputStream();
-            int bytesAvail = in.available();
-            if (bytesAvail > 0) {
-                byte[] dataBytes = new byte[bytesAvail];
-                in.read(dataBytes, 0, bytesAvail);
-                Token[] dataIntTokens = new Token[bytesAvail];
-                for (int j = 0; j < bytesAvail; j++) {
+            InputStream in = _serialPort.getInputStream();
+            int bytesAvailable = in.available();
+            if (bytesAvailable > 0) {
+                byte[] dataBytes = new byte[bytesAvailable];
+                in.read(dataBytes, 0, bytesAvailable);
+                Token[] dataIntTokens = new Token[bytesAvailable];
+                for (int j = 0; j < bytesAvailable; j++) {
                     dataIntTokens[j] = new IntToken(dataBytes[j]);
                 }
                 dataReceived.broadcast(new ArrayToken(dataIntTokens));
@@ -208,7 +214,7 @@ public class SerialComm extends TypedAtomicActor
 
             if (dataToSend.getWidth() > 0 && dataToSend.hasToken(0)) {
                 ArrayToken dataIntArrayToken = (ArrayToken) dataToSend.get(0);
-                OutputStream out = serialPort.getOutputStream();
+                OutputStream out = _serialPort.getOutputStream();
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
                     IntToken dataIntOneToken =
                             (IntToken)dataIntArrayToken.getElement(j);
@@ -239,21 +245,21 @@ public class SerialComm extends TypedAtomicActor
         super.preinitialize();
 
         try {
-            String _serialPortName =
+            String serialPortNameValue =
                     ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID =
-                    CommPortIdentifier.getPortIdentifier(_serialPortName);
-            serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
+                    CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+            _serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
-            serialPort.setSerialPortParams(
+            _serialPort.setSerialPortParams(
                     bits_per_second,
                     SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1,
                     SerialPort.PARITY_NONE);
 
-            serialPort.addEventListener(this);
-            serialPort.notifyOnDataAvailable(true);
+            _serialPort.addEventListener(this);
+            _serialPort.notifyOnDataAvailable(true);
             // Directs serial events on this port to my serialEvent method.
         } catch (Exception ex) {
             if (_debugging) _debug("Win1 " + ex.getClass().getName()
@@ -282,9 +288,9 @@ public class SerialComm extends TypedAtomicActor
      *  @exception IllegalActionException Maybe thrown (?).
      */
     public void wrapup() throws IllegalActionException {
-        if (serialPort != null) {
-            serialPort.close();
-            serialPort = null;  //FIXME Is this necessary?
+        if (_serialPort != null) {
+            _serialPort.close();
+            _serialPort = null;  //FIXME Is this necessary?
         }
     }
 
@@ -292,17 +298,14 @@ public class SerialComm extends TypedAtomicActor
     ////                         private variables                 ////
 
     // pointer/handle thingy for the serial port.
-    private SerialPort serialPort;
-
+    private SerialPort _serialPort;
 
     // Weirdo thing required for accessing the serial port.
-    // The identifier 'weirdoDriver' is used here nowhere else.
     // Somehow the .initialize() call must do something crucial.
     // Removing this code block makes things fail.  Specifically,
     // it makes the 'try' block in fire() have an exception whose
     // message is the word "null".
     static {
-        CommDriver weirdoDriver = new com.sun.comm.Win32Driver();
-        weirdoDriver.initialize();
+        new com.sun.comm.Win32Driver().initialize();
     }
 }
