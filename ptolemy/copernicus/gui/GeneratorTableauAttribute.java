@@ -98,7 +98,6 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
                 Configuration configuration
                     = ((TableauFrame)parent).getConfiguration();
 
-                NamedObj _container = (NamedObj)object.getContainer();
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(
                         configuration.getDirectory(), toString());
                 codeEffigy.setModified(true);

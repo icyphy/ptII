@@ -576,11 +576,8 @@ public class CompositeProcessDirector extends ProcessDirector {
 
         int originalCount = blockedReceivers.size();
 
-            Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-        CompositeActor execContainer =
-                ((CompositeActor)getContainer().getContainer());
-
-            ((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
+        Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+        ((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
 
         while ( blockedReceivers.size() >= originalCount ) {
             try {

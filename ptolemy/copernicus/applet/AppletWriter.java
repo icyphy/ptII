@@ -155,12 +155,6 @@ public class AppletWriter extends SceneTransformer {
         // the we will do mkdir $PTII/foo/bar/Bif/
         _targetPackage = Options.getString(options, "targetPackage");
 
-        // Check to see if the _outputDirectory has the same root
-        // as the _ptIIDirectory.  _outputDirectory is not under
-        // _ptIIDirectory, then we will need to copy jar files around
-        boolean copyJarFiles = false;
-
-
         // Determine the value of _domainJar, which is the
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
 

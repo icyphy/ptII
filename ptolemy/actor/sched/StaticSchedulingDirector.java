@@ -138,8 +138,6 @@ public class StaticSchedulingDirector extends Director {
      *  container.
      */
     public void fire() throws IllegalActionException {
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-
         Scheduler scheduler = getScheduler();
         if (scheduler == null) {
             throw new IllegalActionException("Attempted to fire " +
