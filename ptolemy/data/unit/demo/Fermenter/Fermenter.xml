@@ -323,7 +323,7 @@
             <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
             </property>
         </port>
-        <port name="Calories_dot" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 155.0">
             </property>
@@ -405,7 +405,7 @@
         </relation>
         <link port="TempVessel" relation="relation2"/>
         <link port="TempCW" relation="relation3"/>
-        <link port="Calories_dot" relation="relation4"/>
+        <link port="output" relation="relation4"/>
         <link port="flow" relation="relation"/>
         <link port="HeatExchanger.output" relation="relation4"/>
         <link port="HeatExchanger.flow" relation="relation"/>
@@ -415,7 +415,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 175.0">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
+        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -514,7 +514,7 @@
     <link port="HeatProduction.heat" relation="relation"/>
     <link port="HeatExchanger.TempVessel" relation="relation4"/>
     <link port="HeatExchanger.TempCW" relation="relation6"/>
-    <link port="HeatExchanger.Calories_dot" relation="relation2"/>
+    <link port="HeatExchanger.output" relation="relation2"/>
     <link port="HeatExchanger.flow" relation="relation7"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation2"/>
