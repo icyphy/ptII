@@ -48,9 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Bouncer.xml \
-	Bouncer.htm \
-	BouncerVergil.htm
+	Bouncer.xml
+
+#	Bouncer.htm
+#	BouncerVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

@@ -48,9 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SliderParameter.xml \
-	SliderParameter.htm \
-	SliderParameterVergil.htm
+	SliderParameter.xml
+
+#	SliderParameter.htm \
+#	SliderParameterVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
