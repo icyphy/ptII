@@ -324,7 +324,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type owner = Type.getType(expression);
         TypeAndOwner typeAndOwner = _resolveName(name.getIdentifier(), owner);
 
-        Type.setOwner(node, typeAndOwner._getType());
+        Type.setOwner(node, typeAndOwner._getOwner());
         Type.setType(node, typeAndOwner._getType());
     }
 
@@ -1453,9 +1453,6 @@ public class TypeAnalyzer extends ASTVisitor {
      *   <tt>null</tt> is returned.
      */
     private TypeAndOwner _resolveName(String name, Type lastType) {
-        if (name.equals("ODESolver")) {
-            int i = 0;
-        }
         // Not in a class yet.
         if (_state.getCurrentClass() == null)
             return null;
