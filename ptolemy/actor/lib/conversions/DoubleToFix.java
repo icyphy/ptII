@@ -126,13 +126,16 @@ public class DoubleToFix extends Transformer {
     	    DoubleToken in = (DoubleToken)input.get(0);
             switch( _quantizer ) { 
             case 0:
-                result = new FixToken( Quantizer.round(in.doubleValue(), _precision) );
+                result = new FixToken(
+                        Quantizer.round(in.doubleValue(), _precision) );
                 break;
             case 1:
-                result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );
+                result = new FixToken(
+                        Quantizer.truncate(in.doubleValue(), _precision) );
                 break;
             default:
-                throw new IllegalActionException("Selected a unknonw quantizer mode for DoubleToFix");
+                throw new IllegalActionException(
+                        "Selected a unknown quantizer mode for DoubleToFix");
             }
             output.send(0, result);
         }
