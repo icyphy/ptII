@@ -114,7 +114,8 @@ public class Main extends KernelMain {
         InlineDirectorTransformer directorTransformer = null;
         if (_generateLoopedSchedule) {
             // directorTransformer = LoopedScheduleTransformer.v(_toplevel);
-            directorTransformer = InlineDirectorTransformer.v(_toplevel);
+            // FIXME: directorTransformer = 
+            // InlineDirectorTransformer.v(_toplevel);
         } else {
             directorTransformer = InlineDirectorTransformer.v(_toplevel);
         }
