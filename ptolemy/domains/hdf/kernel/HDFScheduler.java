@@ -93,11 +93,11 @@ public class HDFScheduler extends SDFScheduler {
     }
 
     /** Set the size of the schedule cache. The default value
-     *  is 100. An inifinite-size cache can be used by invoking
+     *  is 100. An infinite-size cache can be used by invoking
      *  this method with a <i>size</i> less than or equal to zero. 
      *  Note that the number of schedules in an HDF model can be 
      *  exponential in the number of actors. Setting the cache size to a
-     *  very large value is therefore not recomended if the
+     *  very large value is therefore not recommended if the
      *  model contains a large number of HDF actors.
      *
      *  @param size The cache size to use.
@@ -130,7 +130,7 @@ public class HDFScheduler extends SDFScheduler {
      *
      * @return A Schedule of the deeply contained opaque entities
      *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
+     * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {

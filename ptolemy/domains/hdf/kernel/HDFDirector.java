@@ -143,7 +143,7 @@ public class HDFDirector extends SDFDirector {
      *  <p>
      *  Note that the number of schedules in an HDF model can be 
      *  exponential in the number of actors. Setting the cache size to a
-     *  very large value is therefore not recomended if the
+     *  very large value is therefore not recommended if the
      *  model contains a large number of HDF actors.
      */
     public Parameter scheduleCacheSize;

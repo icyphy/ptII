@@ -78,22 +78,19 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMActor
 /**
-An HDFFSMActor can be used in a modal model to represent the mode control
-logic. A state can have a TypedCompositeActor refinement. This class
-must be used instead of FSMActor, if HDFFSMDirector is the local
-director.
-<p>
-An HDFFSMActor contains a set of states and transitions. A transition has
-a guard expression. A transition is enabled when its guard expression
-is true. A state transition can only occur immediatly following a
-"Type B firing" [1], which is the last firing of the HDF actor in the
-current iteration of the current HDF schedule.
-<p>
-When a type B firing occurs, the outgoing transitions of the current state
-are examined. An IllegalActionException is thrown if there is more than one
+An HDFFSMActor is used in a modal model to represent the mode control
+logic. An HDFFSMActor contains a set of states and transitions. Each 
+state must have a TypedCompositeActor refinement. The refinement 
+actor is set by the <i>refinementName</i> parameter of State. A 
+state transition may only occur immediately following a
+"Type B firing" [1], which is the last firing of an HDF actor in 
+the current iteration of the HDF schedule. A transition is 
+enabled when its guard expression is true. When a type B firing 
+occurs, the outgoing transitions of the current state
+are examined. An exception is thrown if there is more than one
 enabled transition. If there is exactly one enabled transition then
-the current state of the actor is set to the destination state of the
-transition.
+the current state of the actor is set to the destination state 
+of the enabled transition.
 <p>
 An HDFFSMActor enters its initial state during initialization. 
 The name of the initial state is specified by the 
@@ -101,11 +98,11 @@ The name of the initial state is specified by the
 <p>
 An HDFFSMActor contains a set of variables for the input ports that 
 can be referenced in the guard expression of a transition. If an 
-input port is a single port, one variable and one value array are 
+input port is a single port, one variable and one variable array are 
 created: an input value variable with the name <i>portName</i> and 
-a value array with the name <i>portName</i>. The input value 
+an array with the name <i>portName</i>. The input value 
 variable always
-contains the latest token received from the port. The input token 
+contains the latest token received from the port. The input variable 
 array contains all tokens read during the current iteration of the
  HDF schedule. If the HDF actor that this FSM refines has a port 
 rate of M, and a firing count of N, then the length of the token 
@@ -120,7 +117,8 @@ array are created for each channel. The value variable is named
 <p>
 <OL>
 <LI>
-A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+A. Girault, B. Lee, and E. A. Lee, 
+``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
 </ol>
@@ -170,62 +168,71 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the enabled transition among the given list of transitions
-     *  and execute the choice actions contained by the transition.
+    /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
      *  This method is called by HDFFSMDirector.
+     *
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled, or if thrown by any choice action contained
      *   by the enabled transition.
      */
-    protected Transition chooseTransition(List transitionList)
+    public Transition chooseTransition(List transitionList)
             throws IllegalActionException {
 	return _chooseTransition(transitionList);
     }
 
-   /** Get the current state of this actor.
-     *  @return The current state of this actor.
-     */
+   /** Return the current state of this actor.
+    *
+    *  @return The current state of this actor.
+    */
     public State getCurrentState() {
 	return _currentState;
     }
 
     /** Set the current state of this actor.
+     *
      *  @param state The state to set.
      */
     public void setCurrentState(State state) {
         _currentState = state;
     }
 
-    /*  Set the map from input ports to boolean flags indicating whether a
+    /** Set the map from input ports to boolean flags indicating whether a
      *  channel is connected to an output port of the refinement of the
      *  current state. This method is called by HDFFSMDirector.
+     *
      *  @exception IllegalActionException If the refinement specified
      *   for one of the states is not valid.
      */
-    protected void setCurrentConnectionMap() throws IllegalActionException {
+    public void setCurrentConnectionMap() throws IllegalActionException {
 	_setCurrentConnectionMap();
     }
 
     /** Set the input variables for channels that are connected to an
      *  output port of the refinement of current state. This method
      *  is called by HDFFSMDirector.
+     *
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
-    protected void setInputsFromRefinement()
+    public void setInputsFromRefinement()
             throws IllegalActionException {
 	_setInputsFromRefinement();
     }
 
     /** Set the input variables for all ports of this actor. This
      *  method is called by HDFFSMDirector.
+     *
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
     public void setInputVariables() throws IllegalActionException {
+	// FIXME: Only the most recently read token of each input
+	// port is available as a variable. This should be extended
+	// to construct arrays of variables corresponding to all tokens
+	// that are read in an iteration.
 	_setInputVariables();
     }
 
@@ -250,6 +257,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      */
     protected void _setInputVariables(TypedIOPort port, int channel)
             throws IllegalActionException {
+	// FIXME: This should set the variable arrays as well.
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
@@ -273,8 +281,6 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
         }
 	Token tok;
 	boolean t;
-	// FIXME: bkv: I changed the code here. This is probably
-	// backward compatable with existing stuff.
         while (t = port.hasToken(channel)) {
 	    if (_debugging) {
 		_debug(port.getName(), "has token: " + t);
@@ -303,7 +309,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Set to true to enable debuging.
+    // Set to true to enable debugging.
     private boolean _debug_info = false;
     //private boolean _debug_info = true;
 
