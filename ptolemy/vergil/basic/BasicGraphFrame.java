@@ -820,13 +820,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                             (NamedObj)graphModel.getSemanticObject(userObject);
                     if (actual != null) {
                         if (graphModel.isEdge(userObject)) {
-			    System.out.println("BasicGraphFrame: adding "
-					       + actual + " to EdgeSet");
                             namedObjEdgeSet.add(actual);
                         } else {
-			    System.out.println("BasicGraphFrame: adding "
-					       + actual + " to NodeSet");
-
                             namedObjNodeSet.add(actual);
                         }
                     }
@@ -864,9 +859,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             NamedObj element = (NamedObj)elements.next();
             String deleteElemName = "";
             if (element instanceof Relation) {
-		System.out.println("BasicGraphFrame: deleteRelation"
-				   + element.getName());
-
                 deleteElemName = "deleteRelation";
             }
             else if (element instanceof Entity) {
