@@ -57,8 +57,7 @@ state of any object within the workspace should call the
 incrVersion() method of the workspace.  If no workspace is
 specified, then the default workspace is used.  Note however that
 since all actions within a default workspace are synchronized,
-there will be very little opportunity to exploit concurrency if
-the default workspace is used exclusively.
+the use of the default workspace will limit parallelism.
 
 The container for instances of this class is always null, although
 derived classes that support hierarchy may report a non-null container.
@@ -143,7 +142,9 @@ public class NamedObj implements Nameable, Serializable {
         }
     }
 
-    /** Get the owner or container.  Always return null in this base class.
+    /** Get the container.  Always return null in this base class.
+     *  A null return value should be interpreted as indicating 
+     *  that there is no container.
      *  @return null.
      */
     public Nameable getContainer() {
@@ -189,7 +190,10 @@ public class NamedObj implements Nameable, Serializable {
         }
     }
 
-    /** Get the name.
+    /** Get the name. Note that the returned value will always be a 
+     *  non-null String object as guaranteed by the constructors and
+     *  setName() of this class. It is possible for the string to be 
+     *  the empty string; i.e., "".
      *  @return The name of the object. 
      */	
     public String getName() { 
