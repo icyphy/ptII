@@ -310,8 +310,6 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.ddf.kernel \
 			ptolemy.domains.ddf.lib \
-			ptolemy.domains.hde.kernel \
-			ptolemy.domains.hde.lib \
 			ptolemy.domains.giotto.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.kernel.event \
