@@ -533,6 +533,7 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
@@ -1138,7 +1139,9 @@ REMOTE6LOG = $(GENLOGDIR)/remote6.out
 # Create a separate tree and build on REMOTE6HOST
 remote6: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE6HOST) from dist tar file"
+	@echo "# Now building on $(REMOTE6HOST) from src tar file"
+	@echo "#  Similar to remote1, we only generate test case coverage"
+	@echo "#  from the /test/auto/*.xml tests"
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE6HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
