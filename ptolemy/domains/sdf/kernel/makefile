@@ -1,8 +1,8 @@
-# Makefile for the Communicating Sequential Processes domain kernel
+# Makefile for the SDF domain kernel
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Christopher Hylands Smyth
 #
-# @Version:@(#)makefile	1.7 08/31/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -53,6 +53,9 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	DataflowActor.java \
+	Debug.java \
+	DebugListener.java \
 	SDFScheduler.java \
 	SDFAtomicActor.java \
 	SDFCompositeActor.java \
@@ -62,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	 doc
+MISC_FILES =	 # doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
