@@ -144,7 +144,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
                 return node;
             } else {
-                throw new RuntimeException("found parameter field, but no associated token");
+                throw new RuntimeException("found parameter field, "
+                        + "but no associated token");
             }
         } else if (_typeID.isSupportedPortKind(kind)) {
             Object retval = _portFieldDeclNode(node, args);
@@ -158,7 +159,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
 
-    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node,
+            LinkedList args) {
+        if (_debug) {
+            System.out.println("ActorTransformerVisitor."
+                    + "visitLocalVarDeclNode(): " + node);
+        }
         TreeNode initExpr = (TreeNode) node.getInitExpr().accept(this, args);
         node.setInitExpr(initExpr);
 
@@ -167,16 +173,44 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         int kind = _typeID.kind(type);
 
         if (_typeID.isSupportedTokenKind(kind)) {
+            if (initExpr.classID() == ARRAYTYPENODE_ID) {
+                if (_debug) {
+                    System.out.println("ActorTransformerVisitor."
+                            + "visitLocalVarDeclNode(): "
+                            + "initExpr.classID() == ARRAYTYPENODE_ID");
+                }
+                return node;
+            } 
             if (initExpr.classID() == NULLPNTRNODE_ID) {
+                if (_debug) {
+                    System.out.println("ActorTransformerVisitor."
+                            + "visitLocalVarDeclNode(): "
+                            + "initExpr.classID() == NULLPNTRNODE_ID "
+                            + "Setting "
+                            + "initializer to _dummyValue(" + type + ")");
+                }                    
                 node.setInitExpr(_dummyValue(type));
             }
-        } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER ||
+        } else {
+            if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER ||
                    kind == PtolemyTypeIdentifier.TYPE_KIND_STRINGATTRIBUTE) {
-            return node; // leave everything alone
+                return node; // leave everything alone
+            } else {
+                System.out.println("ActorTransformerVisitor."
+                        + "visitLocalVarDeclNode(): "
+                        + "kind '" + kind + "' is not supported"
+                        + "TYPE_KIND_TOKEN=" + PtolemyTypeIdentifier.TYPE_KIND_TOKEN
+                        + "TYPE_KIND_INT_ARRAY_TOKEN="
+                        + PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN
+                                   );
+            }
         }
 
         node.setDefType((TypeNode) type.accept(this, args));
-
+        if (_debug) {
+            System.out.println("ActorTransformerVisitor."
+                    + "visitLocalVarDeclNode(): done! node:" + node);
+        }
         return node;
     }
 
@@ -391,7 +425,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return node;
     }
 
-    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
+    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node,
+            LinkedList args) {
+        if (_debug) {
+            System.out.println("ActorTransformerVistor." +
+                    " visitObjectFieldAccessNode(): " + node);
+        }
         return _defaultVisit(node, args);
     }
 
@@ -555,23 +594,61 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     // ArrayStringFormat.exprASFormat
 
                 case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
-                    System.err.println("Warning: toString() on double array "
-				       + "not supported yet");
-                    break;
-
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
-                    System.err.println("Warning: toString() on int array not"
-				       + " supported yet");
-                    break;
+                    {
+                        if (_debug) {
+                            System.out.println("ActorTransformerVistor."
+                                    + "visitMethodCallNode(): "
+                                    + "toString() array token" 
+                                    + node);
+                        }
+                        LinkedList toStringArgList =
+                            TNLManip.addFirst(accessedObj);
+                        toStringArgList.addLast(new TypeFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "javaASFormat"),
+                                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                        "ArrayStringFormat"))));
 
+                        String arrayMathClassName = null;
+
+                        switch (accessedObjKind) {
+                        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+                            arrayMathClassName = "IntegerArrayMath";
+                            break;
+
+                        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+                            arrayMathClassName = "DoubleArrayMath";
+                            break;
+
+                            /*    
+                        case PtolemyTypeIdentifier.TYPE_KIND_LONG_ARRAY_TOKEN:
+                            arrayClassName = "LongArrayMath";
+                            break;
+                        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY_TOKEN:
+                            arrayMathClassName = "ComplexArrayMath";
+                            break;
+                            */
+                        default:
+                            throw new RuntimeException("unknown kind to call " +
+                                    "toString() / stringValue()");
+                        }
+
+                        return new MethodCallNode(new TypeFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "toString"),
+                                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                        arrayMathClassName))),
+                                toStringArgList);
+                    }
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-                    System.err.println("Warning: toString() on boolean matrix not " +
-                            "supported yet");
+                    System.err.println("Warning: " 
+                            + "ActorTransformerVisitor.visitMethodCallNode():" 
+                            + "toString() on boolean matrix not "
+                            + "supported yet");
                     break;
 
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-                    throw new RuntimeException("toString() on fix matrix not " +
-                            "supported yet");
+                    throw new RuntimeException("toString() on fix matrix not"
+                            + "supported yet");
                     //break;
 
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
@@ -579,9 +656,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
                     {
-                        LinkedList toStringArgList = TNLManip.addFirst(accessedObj);
+                        LinkedList toStringArgList =
+                            TNLManip.addFirst(accessedObj);
                         toStringArgList.addLast(new TypeFieldAccessNode(
-                                new NameNode(AbsentTreeNode.instance, "exprASFormat"),
+                                new NameNode(AbsentTreeNode.instance,
+                                        "exprASFormat"),
                                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
                                         "ArrayStringFormat"))));
 
@@ -620,7 +699,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
             // method not supported, create a new Token, and call the method
             // with new (converted) args. This may be a problem.
-            System.err.println("Warning: found unsupported method: " + methodName +
+            System.err.println("Warning: "
+                    + "ActorTransformerVisitor.visitMethodCallNode():" 
+                    + " found unsupported method: " + methodName +
                     ", replacing with creation of token and method call");
 
             return new MethodCallNode(
@@ -936,10 +1017,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                             new NameNode(AbsentTreeNode.instance, "fixMatrix"), node),
                     new LinkedList());
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
-	    if (_debug)
-		System.out.println("ActorTransformerVisitor.visitAllocateNode(): "
-				   + "PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN");
-
+	    if (_debug) {
+		System.out.println("ActorTransformerVisitor."
+                        + "visitAllocateNode(): "
+                        + "PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN");
+            }
             // no support for constructor with no arguments
 
             if ((constructorTypes.length == 1) &&
@@ -957,9 +1039,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                             new NameNode(AbsentTreeNode.instance, "{int}"), node),
                     new LinkedList());
         case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
-	    if (_debug)
-		System.out.println("ActorTransformerVisitor.visitAllocateNode(): "
-			       + "PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN");
+	    if (_debug) {
+		System.out.println("ActorTransformerVisitor."
+                        + "visitAllocateNode(): "
+                        + "PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN");
+            }
             // no support for constructor with no arguments
 
             if ((constructorTypes.length == 1) &&
@@ -1052,11 +1136,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     /** Return a new ExprNode representing the value of the argument Token. */
     public ExprNode tokenToExprNode(Token token) {
-	if (_debug)
+	if (_debug) {
 	    System.out.println("ActorTransformerVisitor.tokenToExprNode(): "
                 + token + " getType: "
                 + token.getType()
                 + " _typeID: " + _typeID);
+        }
         switch (_typeID.kindOfTokenType(token.getType())) {
 
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
@@ -1111,10 +1196,16 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             }
 
         case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
-            throw new RuntimeException("tokenToExprNode not supported on int arrays yet:" + token);
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
-            throw new RuntimeException("tokenToExprNode not supported on double arrays yet:" + token);
+            {
+                ArrayToken arrayToken = (ArrayToken) token;
 
+                LinkedList rowList = new LinkedList();
+                for (int i = 0; i < arrayToken.length(); i++) {
+                        rowList.addLast(tokenToExprNode(arrayToken.getElement(i)));
+                }
+                return new ArrayInitNode(rowList);
+            }
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
@@ -1186,10 +1277,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 ) {
                 modifiedInterfaceList.add(interfaceTypeNode);
             } else {
-                System.err.println("Warning: Interface \"" +
-                        interfaceDecl.getName() +
-                        "\" removed from implements list of class \"" +
-                        node.getName().getIdent() + "\".");
+                    System.err.println("Warning: " 
+                            + "ActorTransformerVisitor._actorClassDeclNode():" 
+                            + " Interface \"" +
+                            interfaceDecl.getName() +
+                            "\" removed from implements list of class \"" +
+                            node.getName().getIdent() + "\".");
             }
         }
 
@@ -1667,11 +1760,15 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (_typeID.isSupportedTokenKind(leftKind)) {
 
-            System.err.println("Warning: comparison of Token found : " + leftExpr +
-                    " with " + rightExpr);
+            System.err.println("Warning: " 
+                    + "ActorTransformerVisitor.visitEqualityNode(): " 
+                    + "comparison of Token found : " + leftExpr
+                    + " with " + rightExpr);
 
             if (rightExpr.classID() == NULLPNTRNODE_ID) {
-                System.err.println("Warning: comparison with null replaced with dummy value");
+                System.err.println("Warning: "
+                        + "ActorTransformerVisitor.visitEqualityNode(): " 
+                        + "comparison with null replaced with dummy value");
 
                 node.setExpr2(_dummyValue(leftType));
 
@@ -1683,8 +1780,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (_typeID.isSupportedTokenKind(rightKind)) {
 
-            System.err.println("Warning: comparison of Token found : " + leftExpr +
-                    " with " + rightExpr + "(may be a duplicate message)");
+            System.err.println("Warning: comparison of Token found : "
+                    + leftExpr + " with " + rightExpr
+                    + "(may be a duplicate message)");
 
             if (leftExpr.classID() == NULLPNTRNODE_ID) {
                 System.err.println("Warning: comparison with null replaced with dummy value");
