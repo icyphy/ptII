@@ -31,7 +31,7 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <entity name="HSIF Opener" class="ptolemy.hsif.HSIFEffigyFactory">
     </entity>
-    <entity name="Standard Output" class="ptolemy.actor.gui.test.StandardOutEffigy$Factory">
+    <entity name="Standard Output" class="ptolemy.hsif.test.StandardOutEffigy$Factory">
     </entity>
   </entity>
 
@@ -41,7 +41,7 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <property name="Standard Output" class="ptolemy.actor.gui.test.StandardOutTableau$Factory">
+    <property name="Standard Output" class="ptolemy.hsif.test.StandardOutTableau$Factory">
     </property>
   </property>
 
