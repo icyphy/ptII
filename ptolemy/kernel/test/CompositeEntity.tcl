@@ -480,6 +480,8 @@ test CompositeEntity-10.4 {Create and then remove ports with given names} {
 test CompositeEntity-11.1 {Test deepGetLinkedEntities on component relations} {
     # This structure is the example in the kernel design document.
 
+    # See ExampleSystem.tcl for a standalone file containing these commands
+
     # Create composite entities
     set e0 [java::new pt.kernel.CompositeEntity]
     $e0 setName E0
