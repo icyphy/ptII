@@ -19,10 +19,6 @@
         </property>
         <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="116.0, 128.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -45,10 +41,6 @@
         </property>
         <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="326.0, 134.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

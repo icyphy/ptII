@@ -19,10 +19,6 @@
     <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;mode0&quot;">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="168.0, 178.0"/>
-            <configure>generic.state</configure>
-        </rendition>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -31,10 +27,6 @@
     <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;mode1&quot;">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="308.0, 179.0"/>
-            <configure>generic.state</configure>
-        </rendition>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">

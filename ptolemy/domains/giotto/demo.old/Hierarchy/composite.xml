@@ -13,9 +13,6 @@
     <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
     </property>
     <entity name="adder" class="ptolemy.actor.lib.AddSubtract">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <configure>generic.transformer</configure>
-        </rendition>
 	<property name="frequency" class="ptolemy.data.expr.Parameter" value="internalFrequency">
 	</property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">

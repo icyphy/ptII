@@ -10,15 +10,9 @@
   <entity name="ramp" class="ptolemy.actor.lib.Ramp">
     <property name="step" value="0.1"/>
     <port name="output"></port>
-    <rendition class="ptolemy.moml.Icon">
-      <location value="100, 100"/>
-    </rendition>
   </entity>
   <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
     <port name="input"></port>
-    <rendition class="ptolemy.moml.Icon">
-      <location value="200, 100"/>
-    </rendition>
   </entity>
 
   <!-- FIXME: Link parameters with on-screen controls here. -->

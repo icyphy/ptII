@@ -19,10 +19,6 @@
         </property>
         <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="348.0, 136.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -33,10 +29,6 @@
     <entity name="Const1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="165.0, 136.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>

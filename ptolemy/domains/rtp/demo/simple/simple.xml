@@ -15,10 +15,6 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[1,0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="59.0, 60.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a generalized square wave</doc>
         <property name="editorFactory1" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -35,10 +31,6 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="263.0, 154.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>

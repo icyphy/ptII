@@ -55,8 +55,6 @@ set header {<?xml version="1.0" standalone="no"?>
 #----------------------------------------------------------------------
 set moml_1 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.EditorIcon\">
-    </rendition>
 </class>
 "
 
@@ -74,9 +72,6 @@ test EditorIcon-1.2  {test getLocation when not parsed} {
 #----------------------------------------------------------------------
 set moml_2 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.EditorIcon\">
-        <location value=\"144.0, 93.0\"/>
-    </rendition>
 </class>
 "
 

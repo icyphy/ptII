@@ -72,9 +72,6 @@ set moml_lib "$header
 
 set moml_1 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.LibraryIcon\">
-        <configure>generic.transformer</configure>
-    </rendition>
 </class>
 "
 set parser [java::new ptolemy.moml.MoMLParser]
@@ -95,9 +92,6 @@ test LibraryIcon-1.2  {test getLocation when not parsed} {
 #----------------------------------------------------------------------
 set moml_2 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.LibraryIcon\">
-        <location value=\"144.0, 93.0\"/>
-    </rendition>
 </class>
 "
 

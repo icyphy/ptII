@@ -55,16 +55,6 @@ set header {<?xml version="1.0" standalone="no"?>
 #----------------------------------------------------------------------
 set moml_1 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.XMLIcon\">
-        <configure>
-        <!\[CDATA\[
-            <xmlgraphic>
-            <rectangle coords=\"0 0 60 40\" fill=\"white\"/>
-            <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/>
-            </xmlgraphic>
-        \]\]>
-        </configure>
-    </rendition>
 </class>
 "
 
@@ -82,17 +72,6 @@ test XMLIcon-1.2  {test getLocation when not parsed} {
 #----------------------------------------------------------------------
 set moml_2 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <rendition name=\"_icon\" class=\"ptolemy.vergil.toolbox.XMLIcon\">
-        <location value=\"144.0, 93.0\"/>
-        <configure>
-        <!\[CDATA\[
-            <xmlgraphic>
-            <rectangle coords=\"0 0 60 40\" fill=\"white\"/>
-            <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/>
-            </xmlgraphic>
-        \]\]>
-        </configure>
-    </rendition>
 </class>
 "
 

@@ -5,9 +5,6 @@
 <doc>RTP actors</doc>
 
 <entity name="PeriodicTrigger" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
 </entity>
 
 </class>

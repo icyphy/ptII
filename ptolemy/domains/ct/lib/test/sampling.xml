@@ -31,10 +31,6 @@
     <entity name="Integrator0" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="223.0, 77.0"/>
-            <configure>generic.integral</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -47,10 +43,6 @@
     <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="337.0, 77.0"/>
-            <configure>generic.integral</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -61,10 +53,6 @@
     <entity name="ZeroCrossingDetector14" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="394.0, 186.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -78,10 +66,6 @@
     <entity name="Const16" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="143.0, 180.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,10 +76,6 @@
         </port>
     </entity>
     <entity name="CTTriggeredSampler19" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="510.0, 249.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -111,10 +91,6 @@
     <entity name="Const23" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="143.0, 243.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
         <property name="editorFactory1" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -131,10 +107,6 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="630.0, 135.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -143,10 +115,6 @@
     <entity name="Scale29" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="102.0, 79.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

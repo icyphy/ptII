@@ -6,43 +6,19 @@
   </doc>
   <!-- Define the actors -->  
   <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalAnd" class="ptolemy.actor.lib.logic.LogicalAnd">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalNand" class="ptolemy.actor.lib.logic.LogicalNand">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalNor" class="ptolemy.actor.lib.logic.LogicalNor">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalOr" class="ptolemy.actor.lib.logic.LogicalOr">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalXnor" class="ptolemy.actor.lib.logic.LogicalXnor">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity>
   <entity name="LogicalXor" class="ptolemy.actor.lib.logic.LogicalXor">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
   </entity> 
 </class>

@@ -31,9 +31,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="146.0, 172.0"/>
-        </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -49,9 +46,6 @@
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="300.0, 225.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

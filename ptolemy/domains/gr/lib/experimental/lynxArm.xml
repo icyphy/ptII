@@ -7,13 +7,7 @@
         </property>
         <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="15.0, -2.75"/>
-        </rendition>
     </director>
-    <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        <location value="251.00000095367432, 188.75"/>
-    </rendition>
     <port name="out" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location0" class="ptolemy.moml.Location">
@@ -75,9 +69,6 @@
         </property>
         <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="417.0, 43.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -97,12 +88,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="100.0, 166.0"/>
-        </rendition>
         <port name="port10" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -128,9 +114,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="72.0, 33.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -148,9 +131,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="71.0, 87.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -164,9 +144,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="145.0, 89.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -191,9 +168,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="63.0, 135.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -207,9 +181,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="234.0, 100.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -236,9 +207,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="156.0, 147.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -269,9 +237,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="73.0, 191.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -289,9 +254,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="70.0, 245.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -309,9 +271,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.625">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="62.0, 298.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -325,9 +284,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="145.0, 253.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -348,9 +304,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.625">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="231.0, 266.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -377,9 +330,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="146.0, 309.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -406,9 +356,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="244.0, 192.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -439,9 +386,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="66.0, 347.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -459,9 +403,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="67.0, 396.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -479,9 +420,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="67.0, 446.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -499,9 +437,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="67.0, 499.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -515,9 +450,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="149.0, 358.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -544,9 +476,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="152.0, 408.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -573,9 +502,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.8">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="153.0, 459.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -602,9 +528,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.5">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="151.0, 512.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -631,9 +554,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="321.0, 36.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -654,9 +574,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="494.0, 61.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -783,9 +700,6 @@
         </property>
         <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="189.0, 178.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -812,9 +726,6 @@
         </property>
         <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.8, 0.0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="326.0, 166.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -834,12 +745,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="97.0, 239.0"/>
-        </rendition>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -865,9 +771,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="50.0, 32.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -883,9 +786,6 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="489.0, 97.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -910,9 +810,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.7">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="62.0, 91.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -926,9 +823,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="181.0, 106.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -959,9 +853,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="54.0, 178.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -979,9 +870,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="56.0, 208.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -995,9 +883,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="193.0, 192.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1024,9 +909,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="194.0, 231.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1053,9 +935,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="194.0, 247.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1086,9 +965,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="55.0, 236.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1106,9 +982,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="54.0, 263.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1126,9 +999,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="57.0, 339.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1142,9 +1012,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="197.0, 275.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1171,9 +1038,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="190.0, 353.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1200,9 +1064,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="185.0, 396.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1233,9 +1094,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="56.0, 383.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1253,9 +1111,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="55.0, 428.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1269,9 +1124,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="186.0, 441.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1298,9 +1150,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="184.0, 487.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1331,9 +1180,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="58.0, 474.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1351,9 +1197,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="368.0, 283.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1371,9 +1214,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="402.0, 449.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1387,9 +1227,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="499.0, 192.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1416,9 +1253,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="535.0, 431.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1447,9 +1281,6 @@
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="379.0, 351.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1463,9 +1294,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.65">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="536.0, 314.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1492,9 +1320,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="458.0, 356.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1624,9 +1449,6 @@
         </property>
         <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="199.0, 252.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1653,9 +1475,6 @@
         </property>
         <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 4.5, 0.0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="328.0, 250.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1676,9 +1495,6 @@
         </property>
         <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="352.0, 103.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1699,9 +1515,6 @@
         </property>
         <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="197.0, 319.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1728,9 +1541,6 @@
         </property>
         <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-4.0, 4.5, 0.0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="320.0, 326.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -1750,12 +1560,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="97.0, 308.0"/>
-        </rendition>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -1781,9 +1586,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="88.0, 82.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1799,9 +1601,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="71.0, 148.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1815,9 +1614,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="154.0, 155.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1838,9 +1634,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="235.0, 161.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1861,9 +1654,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="322.0, 176.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1890,9 +1680,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="206.0, 90.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1917,9 +1704,6 @@
             </property>
             <property name="slices" class="ptolemy.data.expr.Parameter" value="32">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="79.0, 230.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1933,9 +1717,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="169.0, 234.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1958,9 +1739,6 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="307.0, 246.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -1983,9 +1761,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="80.0, 293.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -1999,9 +1774,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="157.0, 302.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2022,9 +1794,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="234.0, 297.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2045,9 +1814,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.101">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="320.0, 312.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2074,9 +1840,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="425.0, 274.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2107,9 +1870,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="76.0, 358.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2127,9 +1887,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="79.0, 416.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2143,9 +1900,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.6">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="320.0, 373.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2172,9 +1926,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-1.35">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="320.0, 431.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2201,9 +1952,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="543.0, 424.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2230,9 +1978,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="417.0, 96.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2253,9 +1998,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="455.0, 411.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2278,9 +2020,6 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="528.0, 337.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2303,9 +2042,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="83.0, 472.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2319,9 +2055,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="168.0, 480.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2342,9 +2075,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="265.0, 487.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2365,9 +2095,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="351.0, 486.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2501,12 +2228,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="94.0, 387.0"/>
-        </rendition>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -2530,9 +2252,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="53.0, 139.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2548,9 +2267,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="54.0, 424.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2564,9 +2280,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="298.0, 434.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2593,9 +2306,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="213.0, 145.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2616,9 +2326,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="131.0, 429.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2639,9 +2346,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="213.0, 431.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2666,9 +2370,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="49.0, 29.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2682,9 +2383,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="133.0, 42.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2711,9 +2409,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="219.0, 45.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2738,9 +2433,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="50.0, 84.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2754,9 +2446,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="131.0, 98.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2787,9 +2476,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="50.0, 309.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2807,9 +2493,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="51.0, 360.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2823,9 +2506,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.085">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="131.0, 306.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2852,9 +2532,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="129.0, 372.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2881,9 +2558,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.3, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="210.0, 319.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2906,9 +2580,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="50.0, 193.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2922,9 +2593,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="135.0, 196.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2951,9 +2619,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="213.0, 202.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -2976,9 +2641,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="52.0, 242.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -2992,9 +2654,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.30">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="134.0, 250.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3023,9 +2682,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="62.0, 484.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3039,9 +2695,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="142.0, 486.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3068,9 +2721,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[-0.7, 0.15, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="233.0, 493.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3093,9 +2743,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="65.0, 547.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3109,9 +2756,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-0.3">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="150.0, 547.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3138,9 +2782,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="327.0, 294.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3167,9 +2808,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="414.0, 301.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3190,9 +2828,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="361.0, 217.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3333,9 +2968,6 @@
         </property>
         <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="193.0, 400.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -3361,12 +2993,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="95.0, 36.0"/>
-        </rendition>
         <port name="port7" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -3388,9 +3015,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="74.0, 99.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3406,9 +3030,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="68.0, 183.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3422,9 +3043,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-3.3">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="184.0, 199.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3455,9 +3073,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="3.5">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="55.0, 250.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3471,9 +3086,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="181.0, 264.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3500,9 +3112,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="293.0, 115.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3533,9 +3142,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.75">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="57.0, 350.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3549,9 +3155,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="180.0, 366.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3610,13 +3213,7 @@
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="12.0, 5.25"/>
-            </rendition>
         </director>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="106.0, 97.0"/>
-        </rendition>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location0" class="ptolemy.moml.Location">
@@ -3638,9 +3235,6 @@
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="0.125">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="68.0, 64.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3654,9 +3248,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="157.0, 80.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3683,9 +3274,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="149.0, 188.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3708,9 +3296,6 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="65.0, 182.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3731,9 +3316,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="239.0, 203.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3760,9 +3342,6 @@
             </property>
             <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="318.0, 209.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3785,9 +3364,6 @@
             </property>
             <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="462.0, 261.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3812,9 +3388,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="01.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="66.0, 274.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3832,9 +3405,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="66.0, 348.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3852,9 +3422,6 @@
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.25">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="63.0, 420.0"/>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -3868,9 +3435,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="-2.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="284.0, 289.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3897,9 +3461,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="192.0, 363.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -3926,9 +3487,6 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="189.0, 435.0"/>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>

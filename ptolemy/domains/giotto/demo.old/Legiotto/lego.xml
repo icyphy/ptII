@@ -48,9 +48,6 @@
             </property>
             <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.transformer</configure>
-            </rendition>
             <port name="bumped" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -60,9 +57,6 @@
             </property>
             <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.sink</configure>
-            </rendition>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -76,9 +70,6 @@
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.source</configure>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -92,9 +83,6 @@
             </property>
             <property name="step" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.source</configure>
-            </rendition>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -132,9 +120,6 @@
             </property>
             <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="IRPortName">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.transformer</configure>
-            </rendition>
             <port name="bumped" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -172,9 +157,6 @@
         <entity name="leading" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.state</configure>
-            </rendition>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -183,9 +165,6 @@
         <entity name="following" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;follow&quot;">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.state</configure>
-            </rendition>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -194,9 +173,6 @@
         <entity name="stopping" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.state</configure>
-            </rendition>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -205,9 +181,6 @@
         <entity name="evading" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.data.expr.Parameter" value="&quot;maneuver&quot;">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <configure>generic.state</configure>
-            </rendition>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">

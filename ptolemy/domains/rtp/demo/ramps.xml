@@ -9,10 +9,6 @@
     <entity name="PeriodicTrigger0" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="77.0, 99.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -26,17 +22,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="188.0, 97.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -49,10 +34,6 @@
     <entity name="PeriodicTrigger2" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="78.0, 203.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -66,17 +47,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="193.0, 208.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -87,10 +57,6 @@
         </port>
     </entity>
     <entity name="AddSubtract8" class="ptolemy.actor.lib.AddSubtract">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="307.0, 159.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -108,10 +74,6 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="409.0, 164.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>

@@ -16,8 +16,6 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
     </property>
     <import base="file:/C:/ptII/ptolemy/moml/demo/modulation.xml" source="sinewave.xml"/>
     <entity name="carrier" class=".sinewave">
@@ -36,8 +34,6 @@ by a higher frequency one (the carrier).</doc>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
     </entity>
     <entity name="signal" class=".sinewave">
         <doc>
@@ -55,12 +51,8 @@ by a higher frequency one (the carrier).</doc>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
     </entity>
     <entity name="mult" class="ptolemy.actor.lib.MultiplyDivide">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -82,8 +74,6 @@ by a higher frequency one (the carrier).</doc>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
