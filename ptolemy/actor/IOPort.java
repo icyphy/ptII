@@ -158,6 +158,8 @@ public class IOPort extends ComponentPort {
      *  then calling send on the appropriate channels.
      *  It would probably be faster to call put() directly on the receivers.
      *  If there are no destination receivers, then nothing is sent.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
      *  This method is read-synchronized on the workspace.
      *
      *  @param token The token to send
@@ -959,6 +961,8 @@ public class IOPort extends ComponentPort {
      *  is given a reference to the same token and no clones are made.
      *  If there are no receivers, then do nothing. The transfer is
      *  accomplished by calling the put() method of the remote receivers.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,

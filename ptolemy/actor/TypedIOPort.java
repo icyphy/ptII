@@ -203,6 +203,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  type of the input port. The conversion is done by calling the
      *  convert() method on an instance of a token with the type
      *  of the input port.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
