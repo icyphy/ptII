@@ -139,6 +139,7 @@ import java.net.*;
  * DataSet:
  * </pre>
  * In this case, no item will appear in the legend.
+ * New datasets are plotted <i>behind</i> the previous ones.
  * If the following directive occurs:
  * <pre>
  * ReuseDataSets: on
@@ -1150,8 +1151,7 @@ public class Plot extends PlotBox {
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
             int barlx = (int)(xpos - _barwidth * _xscale/2 +
-                    (_currentdataset - dataset - 1) *
-                    _baroffset * _xscale);
+                    dataset * _baroffset * _xscale);
             // right x position of bar
             int barrx = (int)(barlx + _barwidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
@@ -1334,8 +1334,9 @@ public class Plot extends PlotBox {
 
         _showing = true;
 
-        // Plot the points
-        for (int dataset = 0; dataset < _points.size(); dataset++) {
+        // Plot the points in reverse order so that the first colors
+        // appear on top.
+        for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
             Vector data = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < data.size(); pointnum++) {
                 _drawPlotPoint(graphics, dataset, pointnum);
