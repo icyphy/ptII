@@ -347,43 +347,6 @@ public class SDFScheduler extends Scheduler {
      *  schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-	// FIXME: This method just builds a Schedule
-	// object out of the Enumeration returned by _schedule().
-	// Should probably put the main scheduling code in this
-	// method.
-	Schedule schedule = new Schedule();
-	Enumeration enumSched = _schedule();
-	while (enumSched.hasMoreElements()) {
-	    Actor actor = (Actor)enumSched.nextElement();
-	    Firing firing = new Firing();
-	    firing.setActor(actor);
-	    schedule.add(firing);
-	}
-	return schedule;
-    }
-
-    /** Initialize the local data members of this object.  */
-    protected void _localMemberInitialize() {
-        _firingvector = new TreeMap(new NamedObjComparator());
-        _firingvectorvalid = true;
-    }
-
-    /** Return the scheduling sequence.  An exception will be thrown if the
-     *  graph is not schedulable.  This occurs in the following circumstances:
-     *  <ul>
-     *  <li>The graph is not a connected graph.
-     *  <li>No integer solution exists for the balance equations.
-     *  <li>The graph contains cycles without delays (deadlock).
-     *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge)
-     *  </ul>
-     *
-     * @return An Enumeration of the deeply contained opaque entities
-     *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
-     *  schedulable.
-     */
-    protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector dir =
             (StaticSchedulingDirector)getContainer();
         CompositeActor container = (CompositeActor)(dir.getContainer());
@@ -478,7 +441,7 @@ public class SDFScheduler extends Scheduler {
         }
 
         // Schedule all the actors using the calculated firings.
-        LinkedList result = _scheduleConnectedActors(AllActors);
+        Schedule result = _scheduleConnectedActors(AllActors);
 
         _setFiringVector(firings);
 
@@ -495,8 +458,40 @@ public class SDFScheduler extends Scheduler {
         }
 
         setValid(true);
+        return result;
+    }
 
-        return Collections.enumeration(result);
+    /** Initialize the local data members of this object.  */
+    protected void _localMemberInitialize() {
+        _firingvector = new TreeMap(new NamedObjComparator());
+        _firingvectorvalid = true;
+    }
+
+    /** Return the scheduling sequence.  An exception will be thrown if the
+     *  graph is not schedulable.  This occurs in the following circumstances:
+     *  <ul>
+     *  <li>The graph is not a connected graph.
+     *  <li>No integer solution exists for the balance equations.
+     *  <li>The graph contains cycles without delays (deadlock).
+     *  <li>Multiple output ports are connected to the same broadcast
+     *  relation. (equivalent to a non-deterministic merge)
+     *  </ul>
+     *
+     * @return An Enumeration of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotScheduleableException If the CompositeActor is not
+     *  schedulable.
+     */
+    protected Enumeration _schedule() throws NotSchedulableException {
+        final Iterator schedule = _getSchedule().actorIterator();
+        return new Enumeration() {
+            public boolean hasMoreElements() {
+                return schedule.hasNext();
+            } 
+            public Object nextElement() {
+                return schedule.next();
+            }
+        };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -876,23 +871,21 @@ public class SDFScheduler extends Scheduler {
      *  actor has sufficient tokens on its inputs to fire.   Note that no
      *  claim is made that this is an optimal solution in any other sense.
      *
-     *  @param UnscheduledActors The Actors that need to be scheduled.
+     *  @param actorList The Actors that need to be scheduled.
      *  @return A LinkedList of the Actors in the order they should fire.
      *  @exception NotSchedulableException If the algorithm encounters an SDF
      *  graph that is not consistent with the firing vector, or detects an
      *  inconsistent internal state, or detects a graph that cannot be
      *  scheduled.
      */
-    private LinkedList _scheduleConnectedActors(
+    private Schedule _scheduleConnectedActors(
             LinkedList actorList)
             throws NotSchedulableException {
-        // FIXME: This code ignores external ports, which might allow things
-        // to be connected that wouldn't be otherwise.
 
         // A linked list containing all the actors that have no inputs
         LinkedList readyToScheduleActorList = new LinkedList();
         // A linked list that will contain our new schedule.
-        LinkedList newSchedule = new LinkedList();
+        Schedule newSchedule = new Schedule();
 
         // An association between All the input ports in a simulation and an
 	// array of the number of tokens waiting on each relation of that port
@@ -1013,7 +1006,25 @@ public class SDFScheduler extends Scheduler {
 		_simulateInputConsumption(currentActor, waitingTokens);
 
 		// add it to the schedule
-		newSchedule.addLast(currentActor);
+                boolean incrementCount = false;
+                if(newSchedule.size() > 0) {
+                    Firing lastFiring = (Firing)
+                        newSchedule.get(newSchedule.size() - 1);
+                    if(lastFiring.getActor().equals(currentActor)) {
+                        incrementCount = true;
+                        lastFiring.setIterationCount(
+                                lastFiring.getIterationCount() + 1);
+                    }
+                }
+                
+                // If we weren't able to increment the count in the last
+                // firing, then create a new firing.
+                if(!incrementCount) {
+                    Firing firing = new Firing();
+                    firing.setActor((Actor)currentActor);
+                    newSchedule.add(firing);
+                }
+                // newSchedule.addLast(currentActor);
 
 		// Get all it's outputPorts.
 		Iterator aOutputPorts =
@@ -1099,7 +1110,7 @@ public class SDFScheduler extends Scheduler {
 			// at the END of readyToScheduleActorList.
 			if(inputCount < 1 &&
                                 unscheduledActorList.contains(currentActor))
-			    readyToScheduleActorList.addLast(currentActor);
+			    readyToScheduleActorList.addFirst(currentActor);
 		    }
 		}
 	    }
