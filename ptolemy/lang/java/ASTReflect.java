@@ -56,11 +56,11 @@ public class ASTReflect {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
-	// Get the classname, and strip off the package. 
+	// Get the classname, and strip off the package.
 	String fullClassName = myClass.getName();
 	NameNode className =
 	    new NameNode(AbsentTreeNode.instance,
-			 fullClassName.substring(1 + 
+			 fullClassName.substring(1 +
 						 fullClassName.lastIndexOf('.')));
 
 	// Unfortunately, we can't use Arrays.asList() here since
@@ -72,14 +72,14 @@ public class ASTReflect {
 	    int interfaceModifiers =
 		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
 
-	    //NameNode interfaceName = 
+	    //NameNode interfaceName =
 	    //	(NameNode) _makeNameNode(interfaceClasses[i].getName());
 
 	    String fullInterfaceName = interfaceClasses[i].getName();
 	    // FIXME: We should probably use the fully qualified name here?
 	    TypeNode interfaceDeclNode =
 		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-				 fullInterfaceName.substring(1 + 
+				 fullInterfaceName.substring(1 +
 							 fullInterfaceName.lastIndexOf('.')
 							 )));
 	    /* FIXME: The output of Skelton does not seem to use
@@ -112,7 +112,7 @@ public class ASTReflect {
 	TreeNode superClass =
 	    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
 
-	ClassDeclNode classDeclNode =  
+	ClassDeclNode classDeclNode =
 	    new ClassDeclNode(modifiers,
 			      className,
 			      interfaceList,
@@ -126,17 +126,22 @@ public class ASTReflect {
     /** Return a CompileUnitNode AST that contains the class, methods, fields
      *	constructors and inner classes.  This node includes information
      *  about the package.
-     */  
+     */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 	if (_debug) {
 	    System.out.println("// " + myClass.toString());
-	    System.out.println("package " +
+
+            if (myClass.getPackage() == null ) {
+                // JDK1.2.2 getPackage returns null
+                System.out.println("// package null;");
+            } else {
+                System.out.println("package " +
 			       myClass.getPackage().getName() + ";");
-	
+            }
 	    System.out.println(Modifier.toString(myClass.getModifiers()) +
 			       " " + myClass.toString());
 	    String superClass = myClass.getSuperclass().getName();
-	    if (superClass.length() > 0 ) { 
+	    if (superClass.length() > 0 ) {
 		System.out.println("extends " + superClass);
 	    }
 
@@ -148,16 +153,24 @@ public class ASTReflect {
 	}
 
 	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
-	NameNode packageName = 
-	    (NameNode) _makeNameNode(myClass.getPackage().getName());
+        NameNode packageName = null;
+        if (myClass.getPackage() == null ) {
+            // JDK1.2.2 getPackage returns null
+	    packageName = new NameNode(AbsentTreeNode.instance, "");
+        } else {
+            packageName =
+                (NameNode) _makeNameNode(myClass.getPackage().getName());
+        }
 
 	// FIXME: we are not trying to generate a list of imports here
 	// we could look at the return values and args and import
 	// anything outside of the package.
-	CompileUnitNode compileUnitNode =
-			      new CompileUnitNode(packageName,
-						  /*imports*/ new LinkedList(),
-						  TNLManip.cons(classDeclNode));
+
+        CompileUnitNode compileUnitNode =
+            new CompileUnitNode(packageName,
+                    /*imports*/ new LinkedList(),
+                    TNLManip.cons(classDeclNode));
+
 	if (_debug) {
 	    System.out.println("}");
 	}
@@ -167,7 +180,7 @@ public class ASTReflect {
 
     /** Return a list that contains an AST for the constructors. */
     public static List constructorsASTList(Class myClass){
-	List constructorList = new LinkedList(); 
+	List constructorList = new LinkedList();
         if (_debug) {
 	    System.out.println(_indent + "// Constructors");
 	}
@@ -185,7 +198,7 @@ public class ASTReflect {
 	    String fullConstructorName = constructor.getName();
 	    NameNode constructorName =
 		new NameNode(AbsentTreeNode.instance,
-			     fullConstructorName.substring(1 + 
+			     fullConstructorName.substring(1 +
 						     fullConstructorName.lastIndexOf('.')));
 
 	    List paramList = _paramList(constructor.getParameterTypes());
@@ -193,7 +206,7 @@ public class ASTReflect {
 	    // FIXME: call method.getExceptionTypes and convert it to a list.
 	    List throwsList = new LinkedList();
 
-	    ConstructorDeclNode constructorDeclNode = 
+	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
 					constructorName,
 					paramList,
@@ -212,7 +225,7 @@ public class ASTReflect {
      *	for myclass.
      */
     public static List fieldsASTList(Class myClass) {
-	List fieldList = new LinkedList(); 
+	List fieldList = new LinkedList();
 	if (_debug) {
 	    System.out.println(_indent + "// Fields");
 	}
@@ -227,7 +240,7 @@ public class ASTReflect {
 	    String fullFieldName = fields[i].toString();
 	    NameNode fieldName =
 		new NameNode(AbsentTreeNode.instance,
-			     fullFieldName.substring(1 + 
+			     fullFieldName.substring(1 +
 						     fullFieldName.lastIndexOf('.')));
 
 	    FieldDeclNode  fieldDeclNode =
@@ -245,7 +258,7 @@ public class ASTReflect {
      *	for myclass.
      */
     public static List innerClassesASTList(Class myClass) {
-	List innerClassList = new LinkedList(); 
+	List innerClassList = new LinkedList();
 	// Handle inner classes
 	Class classes[] = myClass.getClasses();
 	if (classes.length > 0 && _debug) {
@@ -261,7 +274,7 @@ public class ASTReflect {
      *	for myclass.
      */
     public static List methodsASTList(Class myClass) {
-	List methodList = new LinkedList(); 
+	List methodList = new LinkedList();
 	if (_debug)
 	    System.out.println(_indent + "// Methods");
 	Method methods[] = myClass.getDeclaredMethods();
@@ -272,11 +285,11 @@ public class ASTReflect {
 		// This method was declared in a parent class,
 		// so we skip it
 		continue;
-	    } 
+	    }
 	    if (_debug)
 		System.out.println(_indent + method + "{}");
 
-	    // FIXME, we need to map java.lang.reflect.Modifier to 
+	    // FIXME, we need to map java.lang.reflect.Modifier to
 	    // ptolemy.java.lang.Modifier.
 	    int modifiers =
 		Modifier.convertModifiers(method.getModifiers());
@@ -327,7 +340,7 @@ public class ASTReflect {
 	TypeNode defType = null;
 	String fullClassName = null;
 	if (myClass.isArray()) {
-	    // Handle arrays.  
+	    // Handle arrays.
 	    Class componentClass =
 		myClass.getComponentType();
 	    TypeNode baseType = null;
@@ -335,13 +348,13 @@ public class ASTReflect {
 		// Arrays of Arrays
 		baseType = _definedType(componentClass);
 	    } else {
-		if (componentClass.isPrimitive()) { 
+		if (componentClass.isPrimitive()) {
 		    baseType = _primitiveTypeNode(componentClass);
 		} else {
 		    fullClassName = componentClass.getName();
 		    NameNode className =
 			new NameNode(AbsentTreeNode.instance,
-				     fullClassName.substring(1 + 
+				     fullClassName.substring(1 +
 							     fullClassName.lastIndexOf('.')));
 		    baseType = new TypeNameNode(className);
 		}
@@ -349,13 +362,13 @@ public class ASTReflect {
 	    defType =
 		new ArrayTypeNode(baseType);
 	} else {
-	    if (myClass.isPrimitive()) { 
+	    if (myClass.isPrimitive()) {
 		return _primitiveTypeNode(myClass);
 	    } else {
 		fullClassName = myClass.getName();
 		defType =
 		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-				 fullClassName.substring(1 + 
+				 fullClassName.substring(1 +
 							 fullClassName.lastIndexOf('.')
 							 )));
 	    }
@@ -422,7 +435,7 @@ public class ASTReflect {
 	TypeNode defType = null;
 	// FIXME: I'll bet we could reorder these for better
 	// performance
-	if (!myClass.isPrimitive()) { 
+	if (!myClass.isPrimitive()) {
 	    throw new RuntimeException("Error: " + myClass +
 				   " is not a primitive type like int");
 	}
@@ -457,7 +470,3 @@ public class ASTReflect {
     // Set to true to turn on debugging messages
     private final static boolean _debug = false;
 }
-
-
-
-
