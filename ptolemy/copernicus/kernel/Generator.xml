@@ -16,6 +16,10 @@ $Id$
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;java&quot;">
                    </property>
+                   <property name="interpreted"
+		             class="ptolemy.kernel.util.StringAttribute"
+			     value="&quot;interpreted&quot;">
+                   </property>
                    <property name="applet"
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;applet&quot;">
