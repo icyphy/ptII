@@ -123,7 +123,7 @@ test Array-1.1 {Generate all required files for Array1.java} {
     regsub -all [java::call System getProperty "line.separator"] \
 	    $results "\n" results2
     list $results2
-} {0
+} {{0
 10
 20
 30
@@ -132,5 +132,5 @@ test Array-1.1 {Generate all required files for Array1.java} {
 60
 70
 80
-90}
+90}}
 
