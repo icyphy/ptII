@@ -37,10 +37,11 @@ import ptolemy.data.Token;
 import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
-import collections.LinkedList;
-
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.Writer;
@@ -114,7 +115,7 @@ A violation will cause an exception (either when setToken() is called
 or when the expression is evaluated).
 <p>
 The dynamic type constraints are not enforced in this class, but merely
-reported by the typeConstraints() method.  They must be enforced at a
+reported by the typeConstraintList() method.  They must be enforced at a
 higher level (by a type system) since they involve a network of variables
 and other typeable objects.  In fact, if the variable does not yet have
 a value, then a type system may use these constraints to infer what the
@@ -561,9 +562,9 @@ public class Variable extends Attribute implements Typeable {
             // This variable changed container, clear all dependencies
             // involving this variable.
             if (_scopeDependents != null) {
-                Enumeration vars = _scopeDependents.elements();
-                while (vars.hasMoreElements()) {
-                    Variable var = (Variable)vars.nextElement();
+                Iterator variables = _scopeDependents.iterator();
+                while (variables.hasNext()) {
+                    Variable var = (Variable)variables.next();
                     var.removeFromScope(this);
                 }
                 _scopeDependents.clear();
@@ -658,25 +659,25 @@ public class Variable extends Attribute implements Typeable {
     /** Constrain the type of this variable to be equal to or
      *  greater than the type of the specified object.
      *  This constraint is not enforced
-     *  here, but is returned by the typeConstraints() method for use
+     *  here, but is returned by the typeConstraintList() method for use
      *  by a type system.
      *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Constrain the type of this variable to be equal to or
      *  greater than the type represented by the specified InequalityTerm.
      *  This constraint is not enforced here, but is returned by the 
-     *  typeConstraints() method for use by a type system.
+     *  typeConstraintList() method for use by a type system.
      *  @param typeTerm An InequalityTerm object.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Set a type constraint that the type of this object be less than
@@ -689,7 +690,7 @@ public class Variable extends Attribute implements Typeable {
      *  constraint (not relative to another Typeable object), so it
      *  is checked every time the value of the variable is set by
      *  setToken() or by evaluating an expression.  This type constraint
-     *  is also returned by the typeConstraints() methods.
+     *  is also returned by the typeConstraintList() methods.
      *  To remove the type constraint, call this method will a BaseType.NAT
      *  argument.
      *  @exception IllegalActionException If the type of this object
@@ -827,17 +828,17 @@ public class Variable extends Attribute implements Typeable {
 
     /** Constrain the type of this variable to be the same as the
      *  type of the specified object.  This constraint is not enforced
-     *  here, but is returned by the typeConstraints() method for use
+     *  here, but is returned by the typeConstraintList() method for use
      *  by a type system.
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
         Inequality ineq = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
 	ineq = new Inequality(equal.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Return a string representing the (possibly unevaluated) value
@@ -890,11 +891,11 @@ public class Variable extends Attribute implements Typeable {
      *  The constraints include the ones explicitly set to this Variable,
      *  plus the constraint that the type of this Variable must be no less
      *  than its current type, if it has one.
-     *  The constraints are an enumeration of inequalities.
-     *  @return an enumeration of Inequality objects.
+     *  The constraints are a list of inequalities.
+     *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public Enumeration typeConstraints() {
+    public List typeConstraintList() {
 	// If this variable has a structured type, and the TypeTerm of this
 	// variable is unsettable, make the component of the structured type
 	// to be unsettable.
@@ -907,25 +908,38 @@ public class Variable extends Attribute implements Typeable {
 	}
 
         // Include all relative types that have been specified.
-	LinkedList result = new LinkedList();
-	result.appendElements(_constraints.elements());
+	List result = new LinkedList();
+	result.addAll(_constraints);
 
         // If the variable has a type, add a constraint.
         // Type currentType = getType();
         // if (currentType != BaseType.NAT) {
         //     TypeConstant current = new TypeConstant(currentType);
         //     Inequality ineq = new Inequality(current, getTypeTerm());
-        //     result.insertLast(ineq);
+        //     result.add(ineq);
         // }
 
         // If an upper bound has been specified, add a constraint.
         if (_typeAtMost != BaseType.NAT) {
             TypeConstant atMost = new TypeConstant(_typeAtMost);
             Inequality ineq = new Inequality(getTypeTerm(), atMost);
-            result.insertLast(ineq);
+            result.add(ineq);
         }            
 
-	return result.elements();
+	return result;
+    }
+
+    /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this Variable,
+     *  plus the constraint that the type of this Variable must be no less
+     *  than its current type, if it has one.
+     *  The constraints are an enumeration of inequalities.
+     *  @return an enumeration of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
+     */
+    public Enumeration typeConstraints() {
+	return Collections.enumeration(typeConstraintList());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -940,10 +954,10 @@ public class Variable extends Attribute implements Typeable {
         if (_scopeDependents == null) {
             _scopeDependents = new LinkedList();
         }
-        if (_scopeDependents.includes(var)) {
+        if (_scopeDependents.contains(var)) {
             return;
         }
-        _scopeDependents.insertFirst(var);
+        _scopeDependents.add(var);
     }
 
     /** Add the argument as a value dependent of this variable. This
@@ -955,10 +969,10 @@ public class Variable extends Attribute implements Typeable {
         if (_valueDependents == null) {
             _valueDependents = new LinkedList();
         }
-        if (_valueDependents.includes(var)) {
+        if (_valueDependents.contains(var)) {
             return;
         }
-        _valueDependents.insertFirst(var);
+        _valueDependents.add(var);
     }
 
     /** Return a description of this variable.  This returns the same
@@ -1063,9 +1077,9 @@ public class Variable extends Attribute implements Typeable {
      */
     protected void _notifyValueDependents() {
         if (_valueDependents != null) {
-            Enumeration vars = _valueDependents.elements();
-            while (vars.hasMoreElements()) {
-                Variable var = (Variable)vars.nextElement();
+            Iterator variables = _valueDependents.iterator();
+            while (variables.hasNext()) {
+                Variable var = (Variable)variables.next();
                 // Already marked?
                 if (!var._needsEvaluation) {
                     var._needsEvaluation = true;
@@ -1081,7 +1095,7 @@ public class Variable extends Attribute implements Typeable {
      *   variable.
      */
     protected void _removeScopeDependent(Variable var) {
-        _scopeDependents.exclude(var);
+        _scopeDependents.remove(var);
     }
 
     /** Remove the argument from the list of value dependents of this
@@ -1090,7 +1104,7 @@ public class Variable extends Attribute implements Typeable {
      *   variable.
      */
     protected void _removeValueDependent(Variable var) {
-        _valueDependents.exclude(var);
+        _valueDependents.remove(var);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1384,7 +1398,7 @@ public class Variable extends Attribute implements Typeable {
     private ptolemy.data.Token _token;
 
     // Type constraints.
-    private LinkedList _constraints = new LinkedList();
+    private List _constraints = new LinkedList();
 
     // The type set by setTypeEquals(). If _declaredType is not BaseType.NAT,
     // the type of this Variable is fixed to that type.

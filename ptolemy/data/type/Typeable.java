@@ -36,6 +36,7 @@ import ptolemy.graph.Inequality;	/* Needed for javadoc */
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.Type;
 import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Typeable
@@ -117,9 +118,17 @@ public interface Typeable
     public void setTypeSameAs(Typeable equal);
 
     /** Return the type constraints of this object.
+     *  The constraints are a list of inequalities.
+     *  @return a list of instances of Inequality.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList();
+
+    /** Return the type constraints of this object.
      *  The constraints are an enumeration of inequalities.
      *  @return an enumeration of instances of Inequality.
      *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead;
      */
     public Enumeration typeConstraints();
 }
