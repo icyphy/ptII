@@ -201,10 +201,13 @@ public class LineReader extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
 
     /** Cache of most recently read data. */
-    private String _currentLine;
+    protected String _currentLine;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     /** The current reader for the input file. */
     private BufferedReader _reader;

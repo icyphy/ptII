@@ -48,7 +48,9 @@ PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = LineReader.java
+JSRCS = ExpressionReader.java \
+	LineReader.java \
+	LineWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
 	io.xml

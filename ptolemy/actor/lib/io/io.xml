@@ -49,6 +49,10 @@
         <doc>Read in doubles from either stdin or a URL</doc>
       </entity>
 
+      <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+        <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+      </entity>
+
       <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
         <doc>Write out tokens to a file or stdout</doc>
       </entity>
@@ -59,6 +63,9 @@
 
       <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <doc>Read one line at a time from a text file and output as a string</doc>
+      </entity>
+      <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
       </entity>
 
       <entity name="SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
