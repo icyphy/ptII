@@ -1,6 +1,6 @@
 /* An actor that counts true inputs.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,7 +51,7 @@ Read the given number of input booleans and output the number that are true.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 0.3
+@since Ptolemy II 3.1
 */
 
 public class CountTrues extends SDFTransformer {
