@@ -42,7 +42,18 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Files that are not compiled, such as .tcl and .itcl files.
+# Used to build jar files
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	Eye/Eye.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Files that are not compiled, such as .htm files
 EXTRA_SRCS =	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't

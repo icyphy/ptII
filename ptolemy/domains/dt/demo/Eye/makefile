@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Communication Systems demo that uses an Eye plot
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -42,10 +42,14 @@ include $(CONFIG)
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Eye.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	Eye.htm \
-	Eye.xml \
-	EyeVergil.htm \
+	EyeVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
