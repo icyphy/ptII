@@ -269,7 +269,7 @@ public class SerialComm extends TypedAtomicActor
      *  The one and only method required to implement SerialPortEventListener
      *  <p>
      *  Call the directors fireAt() method when new data is available.
-     *  @exception IllegalActionException If try fails.
+     *  @exception InternalErrorException If try fails.
      */
     public void serialEvent(SerialPortEvent e) {
         try {
@@ -277,7 +277,11 @@ public class SerialComm extends TypedAtomicActor
                 getDirector().fireAt(this, getDirector().getCurrentTime());
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(this,
+            // This class implements javax.comm.SerialPortEventListener,
+            // which defines serialEvent() so we can't throw
+            // an IllegalActionException here so we throw a RuntimeException
+            // instead.
+            throw new KernelRuntimeException(this,
                     "serialEvent's call to fireAt() failed: "
                     + ex.toString());
         }
