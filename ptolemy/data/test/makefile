@@ -52,7 +52,8 @@ JSIMPLE_TESTS = \
 	IntToken.tcl \
 	LongToken.tcl \
 	ObjectToken.tcl \
-	StringToken.tcl
+	StringToken.tcl \
+	Token.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
