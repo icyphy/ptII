@@ -100,10 +100,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public synchronized void prepareToBlock(Branch branch) 
             throws TerminateBranchException {
         if( branch != null ) {
-            /*
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
-            */
         } else {
             BasePNDirector director = ((BasePNDirector)((Actor)
         	    (getContainer().getContainer())).getExecutiveDirector());
@@ -114,11 +112,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             
     /**
      */
-    public synchronized void prepareToWakeBlockedPartner() {
+    public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            /*
             _otherBranch.registerRcvrUnBlocked(this);
-            */
         } else {
             BasePNDirector director = ((BasePNDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
@@ -129,14 +125,26 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
     
     /**
+    public synchronized void prepareToWakeBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            BasePNDirector director = ((BasePNDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorUnBlocked(this);
+            
+        }
+        notifyAll();
+    }
      */
+    
+    /**
     public synchronized void waitForBranchPermission(Branch branch) 
     	    throws TerminateBranchException {
         if( branch == null ) {
             return;
         }
         
-        /*
         Workspace workspace = getContainer().workspace();
         while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
             branch.registerRcvrBlocked(this);
@@ -145,22 +153,20 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         branch.registerRcvrUnBlocked(this);
         
         checkIfBranchIterationIsOver(branch);
-        */
     }
+     */
             
     /**
-     */
     public synchronized void checkIfBranchIterationIsOver(Branch branch) 
     	    throws TerminateBranchException {
         if( branch != null ) {
-            /*
             if( branch.isIterationOver() ) {
                 throw new TerminateBranchException("The current "
                         + "iteration has ended.");
             }
-            */
         }
     }
+     */
     
     /**
      */
@@ -194,21 +200,23 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 prepareToBlock(branch);
                 // director._actorBlocked(this);
                 while (_readBlocked && !_terminate) {
-                    checkIfBranchIterationIsOver(branch);
+                    // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                 }
             }
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
+                /*
                 checkIfBranchIterationIsOver(branch);
                 waitForBranchPermission(branch);
+                */
                 
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writeBlocked) {
                     // director._actorUnBlocked(this);
-                    prepareToWakeBlockedPartner();
+                    wakeUpBlockedPartner();
                     _writeBlocked = false;
                     notifyAll(); // Wake up threads waiting on a write;
                 }
@@ -397,7 +405,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 while (_writeBlocked && !_terminate ) {
                     // while (!_terminate && !super.hasRoom()) {
                     // while(_writeBlocked) {
-                    checkIfBranchIterationIsOver(branch);
+                    // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                     // }
                 }
@@ -405,14 +413,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
+                /*
                 checkIfBranchIterationIsOver(branch);
                 waitForBranchPermission(branch);
+                */
                 
                 //token can be put in the queue;
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readBlocked) {
-                    prepareToWakeBlockedPartner();
+                    wakeUpBlockedPartner();
                     // director._actorUnBlocked(this);
                     _readBlocked = false;
                     notifyAll();
