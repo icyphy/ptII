@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.domains.giotto.kernel;
 
 // Ptolemy imports.
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,6 +59,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,15 +124,17 @@ public class GiottoCodeGeneratorUtilities {
             model.wrapup();
         } catch (Throwable throwable) {
             System.out.println(throwable.getMessage());
-            throw new IllegalActionException(model, 
-                    "Failed to generate Giotto code.", throwable);
+            throw new IllegalActionException(model, throwable,
+                    "Failed to generate Giotto code.");
 
         }
         return generatedCode;
     }
 
     /** Create an instance of a model and generate Giotto code for it
-     *  @param args The command-line arguments naming the .xml file to run
+     *  The Giotto code is printed on standard out.
+     *  @param args The command-line arguments naming the .xml or
+     *  .moml file to run
      */
     public static void main(String args[]) {
         try {
@@ -149,12 +155,16 @@ public class GiottoCodeGeneratorUtilities {
             // because parseFile() works best on relative pathnames and
             // has problems finding resources like files specified in
             // parameters if the xml file was specified as an absolute path.
-            CompositeActor toplevel = (CompositeActor) parser.parse(null,
-                    new File(xmlFileName).toURL());
+            TypedCompositeActor toplevel =
+                (TypedCompositeActor) parser.parse(null,
+                        new File(args[0]).toURL());
 
-            System.out.println(generateGiottoCode(toplevel);
+            System.out.println(generateGiottoCode(toplevel));
         } catch (Throwable ex) {
-            System.err.println("Command failed: " + ex);
+            System.err.println("Command failed: " + ex
+                    + "\n Usage: java -classpath $PTII "
+                    + "ptolemy.domains.giotto.kernel.GiottoCodeGeneratorUtilities"
+                    + " ptolemyModel.xml");
             ex.printStackTrace();
         }
     }
