@@ -45,6 +45,8 @@ This actor reads tokens from any number of input channels and writes
 their string values to the specified output file.  If no file name
 is given, then the values are written to the standard output.
 
+@deprecated This actor is deprecated. Use ExpressionWriter instead.
+
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
