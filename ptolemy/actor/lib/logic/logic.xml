@@ -22,6 +22,9 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
+    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="attributeName" value="comparison"/>
+    </property>
   </entity>
 
   <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
@@ -47,6 +50,9 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
+    <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
   </entity>
 
       </group>

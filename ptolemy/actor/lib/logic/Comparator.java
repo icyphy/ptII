@@ -103,6 +103,16 @@ public class Comparator extends TypedAtomicActor {
         left.setTypeEquals(BaseType.DOUBLE);
         right.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.BOOLEAN);
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"30\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"0,5, 20,5, 20,15\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<polyline points=\"0,25, 40,25, 40,15\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
