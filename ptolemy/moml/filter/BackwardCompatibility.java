@@ -39,7 +39,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// BackwardCompatibility
 /** Return a list where each element is a backward compatibility filter
-to be applied by the MoMLParser
+to be applied by the MoMLParser.
 
 <p>When this class is registered with
 <pre>
