@@ -70,6 +70,12 @@ public class ArrayToken extends Token {
     }
 
     /** Construct an ArrayToken from the specified string.
+     *  The format of the string is a list of comma separated
+     *  token values that begins with "{" and ends with "}".
+     *  For example
+     *  <code>
+     *  "{1, 2, 3}"
+     *  </code>
      *  @param init A string expression of an array.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable array.
