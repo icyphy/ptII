@@ -105,7 +105,6 @@ public class MaxIndex extends Transformer {
      *  or if conversion to DoubleToken is not supported by the input tokens.
      */
     public void fire() throws IllegalActionException {
-       IntToken t = null;
        double maxValue = Double.NEGATIVE_INFINITY;
        int maxIndex = -1;
        boolean foundFirst = false;
@@ -126,7 +125,7 @@ public class MaxIndex extends Transformer {
        }
 
        if (foundFirst) {
-           output.send(0, new IntToken(maxIndex));
+          output.send(0, new IntToken(maxIndex));       
        }
     }
 }
