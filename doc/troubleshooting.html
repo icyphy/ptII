@@ -47,18 +47,18 @@ message in your Java console window (which you can open under Netscape's
 To get JDK 1.1 to work with Netscape 4.03
 - 4.05, you need to download a patch. The patch can be found at <A HREF="http://developer.netscape.com/software/jdk/download.html">the <CODE>developer.netscape.com</CODE> download page</A>.
 
-<H3>Diagnosing problems</H3>
+<H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
 Under Netscape, under the Communicator menu, there is an item called "Java
 Console." Select that to read error messages that occur while an attempt
-is being made to run an applet. Unfortunately, Internet Explorer (version
-4.0) does not have a facility for looking at Java error messages, so if
-you are having trouble, we suggest using Netscape instead.
+is being made to run an applet.
+
+ <p>To turn on the console under Internet Explorer 4, go to View-&gt;Internet Options-&gt;Advanced, and then click <CODE>Java console enabled</CODE> and restart
 
 <P>Unfortunately, the Java virtual machine often produces some pretty useless
 error messages. For example, "class not found" could mean almost anything.
 It roughly translates as "something went wrong."
 
-<H3>CLASSPATH variable</H3>
+<H3><a name="CLASSPATH">CLASSPATH variable</a></H3>
 Java supports an environment variable called CLASSPATH that tells the Java
 virtual machine where to look for code. As a general rule, it is not a
 good idea to set this variable. It is extremely difficult to set it correctly,
@@ -71,6 +71,51 @@ Settings and then Control Panel. Open the System control panel, and click
 on the Environment tab. If the CLASSPATH variable is set, we suggest clearing
 it (you may want to save its value, since it may be needed by some other
 program). You then probably have to restart your browser.
+
+<h3>Applet Troubleshooting Checklist</h3>
+If you have problems with applets, follow the checklist below
+<ol>
+<li> Restart your browser.
+
+<li> Look for an error message in the Java console.
+See <a href="#Diagnosing problems">Diagnosing problems</a> above.
+
+<li> Verify that your <CODE>CLASSPATH</CODE> variable is not set.
+See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
+
+<li> Verify that you are running a recent version of the browser
+
+<li> Go to the
+<a href="http://www.javasoft.com/docs/books/tutorial/applet/index.html">JavaSoft Applet Tutorial</a> and verify that you can run those applets  
+
+<li> Try opening the applets on the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII">Ptolemy II Website</a>
+
+<li> Try a different browser
+
+<li> Try running the applets using the JDK <CODE>appletviewer</CODE>
+program.
+
+<li> If you are running under Microsoft Windows or NT, try rebooting.
+
+<li> Try running the applets from a different machine or as a different
+user.
+
+
+<li> If you are still having problems,
+send email to:
+<A HREF="mailto:ptII@eecs.berkeley.edu">ptII@eecs.berkeley.edu</A>
+with the following information:
+	<menu>
+	<li> The URL or file you were trying to run
+	<li> Your operating system and version
+	<li> The name and version of the browser you were running
+	under
+	<li> The contents of the Java console
+	</menu>
+
+</ol>
+
 
 <h3>Other Applet Resources</h3>
 
