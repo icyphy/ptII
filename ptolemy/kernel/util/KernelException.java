@@ -357,6 +357,10 @@ public class KernelException extends Exception {
             return "";
         } else {
             String name = getName(object);
+            if (name.equals("<Unnamed Object>")) {
+                return name;
+            }
+
             // First, check for recursive containment by calling getFullName().
             try {
                 object.getFullName();
@@ -367,10 +371,14 @@ public class KernelException extends Exception {
             }
             // Without recursive containment, we can elaborate the name.
             Nameable container = object.getContainer();
+            if (container == null) {
+                return "." + name;
+            }
             while (container != null) {
                 name = getName(container) + "." + name;
                 container = container.getContainer();
             }
+            name = "." + name;
             return name;
         }
     }
