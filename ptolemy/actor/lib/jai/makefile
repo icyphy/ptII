@@ -49,7 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = JAIImageReader.java \
-	JAIImageToken.java 
+	JAIImageToken.java \
+	JAIInterpolation.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml

@@ -8,6 +8,8 @@
         <doc>Java Advanced Imaging actors</doc>
 	<entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
 	</entity>
+	<entity name="JAIInterpolation" class="ptolemy.actor.lib.jai.JAIInterpolation">
+	</entity>
       </group>
     ?>
   </configure>
