@@ -59,9 +59,7 @@ JSRCS = \
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	QR.htm \
 	QRprocessnetwork.gif \
-	QRnetwork.gif \
 	QRvr.wmf \
-	dg.gif \
 	QR.xml
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -82,7 +80,7 @@ all: jclass $(PTCLASSJAR)
 install: all 
 
 demo: 
-	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.htm
+	CLASSPATH=$(CLASSPATH) appletviewer QR.htm
 
 docs: javadocs
 

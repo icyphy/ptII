@@ -36,7 +36,6 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.pn.panda.functions.*;
 
 
 //////////////////////////////////////////////////////////////////////////
