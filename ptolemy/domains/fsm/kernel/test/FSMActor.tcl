@@ -302,3 +302,145 @@ test FSMActor-8.1 {test newRelation} {
     catch {$fsm newRelation r0} msg
     list $re0 [$r0 getFullName] $msg
 } {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".", which already contains an object with that name.}}
+
+######################################################################
+####
+#
+test FSMActor-9.1 {test working with MoML} {
+# MoML description of an AMI (Alternating Mark 1) model
+    set model {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+    </director>
+    <entity name="fsm" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;plusOne&quot;">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="plusOne" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.data.expr.Parameter">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="minusOne" class="ptolemy.domains.fsm.kernel.State">
+            <property name="refinementName" class="ptolemy.data.expr.Parameter">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 1&quot;">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="act0" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;1&quot;">
+                </property>
+                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                </property>
+            </property>
+        </relation>
+        <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 0&quot;">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                </property>
+                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                </property>
+            </property>
+        </relation>
+        <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 1&quot;">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;-1&quot;">
+                </property>
+                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                </property>
+            </property>
+        </relation>
+        <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 0&quot;">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                </property>
+                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                </property>
+            </property>
+        </relation>
+        <link port="plusOne.incomingPort" relation="t2"/>
+        <link port="plusOne.incomingPort" relation="t3"/>
+        <link port="plusOne.outgoingPort" relation="t0"/>
+        <link port="plusOne.outgoingPort" relation="t3"/>
+        <link port="minusOne.incomingPort" relation="t0"/>
+        <link port="minusOne.incomingPort" relation="t1"/>
+        <link port="minusOne.outgoingPort" relation="t1"/>
+        <link port="minusOne.outgoingPort" relation="t2"/>
+    </entity>
+    <entity name="src" class="ptolemy.domains.fsm.kernel.test.ZeroOneSource">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="rec" class="ptolemy.actor.lib.Recorder">
+        <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="r0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="fsm.in" relation="r0"/>
+    <link port="fsm.out" relation="r1"/>
+    <link port="src.output" relation="r0"/>
+    <link port="rec.input" relation="r1"/>
+</model>}
+
+    set par [java::new ptolemy.moml.MoMLParser]
+    set top [java::cast ptolemy.actor.TypedCompositeActor [$par parse $model]]
+    set mag [java::new ptolemy.actor.Manager [$top workspace] mag]
+    $top setManager $mag
+    $mag execute
+    set rec [java::cast ptolemy.actor.lib.Recorder [$top getEntity rec]]
+    listToStrings [$rec getHistory 0]
+} {0 1 -1 1 0 -1 0 1 -1 0 1 -1 0 0}
+
