@@ -1,5 +1,5 @@
 #! /bin/sh
-# -[Wed Oct 29 17:00:06 2003 by cxh]-
+# -[Mon Feb 28 08:52:07 2005 by cxh]-
 # Indent Java code using emacs
 # Usage: jindent [-n] [-d]
 #    -n Print what would happen, but don't checkout or modify files
@@ -23,12 +23,12 @@ if [ "$1" = "-n" ]; then
 fi
 
 emacs=emacs
-if [ "$METRO" = "" ]; then
+if [ "$PTII" = "" ]; then
     echo "$0: \$METRO is not set, exiting"
     exit 4
 fi
 
-jindent_el=$METRO/util/lisp/jindent.el
+jindent_el=$PTII/util/lisp/jindent.el
 
 if [ ! -f "$jindent_el" ]; then
     echo "$0: '$jindent_el' not found, exiting"
