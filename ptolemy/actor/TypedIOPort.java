@@ -179,6 +179,12 @@ public class TypedIOPort extends IOPort implements Typeable {
             if (type != null) {
                 setTypeEquals(type);
             }
+        } else if (attribute instanceof PrototypeAttribute) {
+            ((PrototypeAttribute)attribute).validate();
+            Type type = ((PrototypeAttribute)attribute).getType();
+            if (type != null) {
+                setTypeEquals(type);
+            }
         } else {
             super.attributeChanged(attribute);
         }
