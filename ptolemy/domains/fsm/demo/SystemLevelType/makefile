@@ -57,6 +57,9 @@ DEMOS = \
 	DummyDirector1_SDFActor.xml \
 	DummyDirector2.xml \
 	DummyDirector2_SDFActor.xml \
+	InterruptableWaitingThreadA.xml \
+	Interrupter.xml \
+	Monitor.xml \
 	PNDomain.xml \
 	PNDomain_PolyActor.xml \
 	PNDomain_SDFActor.xml \
@@ -65,6 +68,11 @@ DEMOS = \
 	SDFDomain.xml \
 	SDFDomain_PolyActor.xml \
 	SDFDomain_SDFActor.xml \
+	ThreadA.xml \
+	ThreadA_Monitor_ThreadB.xml \
+	ThreadB.xml \
+	ThreadBNotifies.xml \
+	Trigger.xml \
 	UNKNOWN.xml
 
 OTHER_FILES_TO_BE_JARED = \
