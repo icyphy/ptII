@@ -107,9 +107,12 @@ public class IconEditorPane extends JCanvas {
         // with the mouse by dragging a rectangle box around the figures
         // the user wishes to be selected.
         _selectionDragger = new SelectionDragger(_pane);
-        _selectionDragger.addSelectionInteractor(_interactor1);
-        _selectionDragger.addSelectionInteractor(_interactor2);
-        _selectionDragger.addSelectionInteractor(_interactor3);
+        _selectionDragger.addSelectionModel(
+                _interactor1.getSelectionModel());
+        _selectionDragger.addSelectionModel(
+                _interactor2.getSelectionModel());
+        _selectionDragger.addSelectionModel(
+                _interactor3.getSelectionModel());
 
         // Begin with the elements specified in the icon passed into
         // the constructor.
