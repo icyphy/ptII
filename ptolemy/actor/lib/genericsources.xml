@@ -11,7 +11,7 @@
 <doc>Create a constant sequence</doc>
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
       <property name="attributeName" value="value"/>
-      <property name="displayWidth" value="40"/>
+      <property name="displayWidth" value="60"/>
    </property>
 </entity>
       </group>
