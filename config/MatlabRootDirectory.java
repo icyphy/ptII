@@ -65,7 +65,7 @@ public class MatlabRootDirectory {
     // Given the pathname to the matlab executable, return the path name
     // of the Matlab directory.
     private static String _getMatlabRootDirectory(String matlabExecutable)
-        throws Exception {
+            throws Exception {
         // Return the directory above the bin/ directory in
         // the path to the matlab executable
 
@@ -106,8 +106,8 @@ public class MatlabRootDirectory {
     private static void _checkForBin(String path) throws Exception {
 	if (path.indexOf("/bin/") == -1) {
 	    throw new Exception("Cannot determine Matlab directory: '"
-				+ path + "' does not contain "
-				+ "/bin/");
+                    + path + "' does not contain "
+                    + "/bin/");
 	}
     }
 }
