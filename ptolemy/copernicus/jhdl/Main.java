@@ -69,17 +69,6 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in a MoML model.
-     *  @param args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  command line options, see the superclass documentation for details.
-     *  @exception IllegalActionException If the model cannot be parsed.
-     */
-    public Main(String [] args) throws IllegalActionException {
-        // args[0] contains the MoML class name.
-        super(args[0]);
-    }
-
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
@@ -91,7 +80,7 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
-                "time:" + _watchDogTimer);
+                "time:" + _watchDogTimeout);
 
         // Create a class for the composite actor of the model, and for
         // all actors referenced by the model.
@@ -251,97 +240,29 @@ public class Main extends KernelMain {
 
     }
 
-    /** Read in a MoML model, generate .class files for use with JHDL.
-     *  @exception IllegalActionException If the model cannot be parsed.
-     *  @exception NameDuplicationException If the name of the
-     *  model cannot be changed to a Java identifier String.
-     */
-    public static void main(String[] args)
-            throws IllegalActionException, NameDuplicationException {
-        Main main = new Main(args);
-
-        // Parse the model.
-        CompositeActor toplevel = main.readInModel(args[0]);
-
-        // Create instance classes for the actors.
-        main.initialize(toplevel);
-
-        // Parse any copernicus args.
-        String[] sootArgs = _parseArgs(args);
- 
-        // Add Transforms to the Scene.
-        main.addTransforms();
-
-        // Generate Code
-        main.generateCode(sootArgs);
-    }
-
-    /** Parse any Copernicus arguments.
+    /** Parse any code generator specific arguments.
      */ 
-    protected static String[] _parseArgs(String args[]) {
-        // Ignore the first argument.
-        for(int i = 1; i < args.length; i++) {
-            if(args[i].equals("-snapshots")) {
-                _snapshots = true;
-            } if(args[i].equals("-targetPackage")) {
-                i++;
-                if(i < args.length) {
-                    _targetPackage = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -targetPackage");
-                }
-//             } else if(args[i].equals("-templateDirectory")) {
-//                 i++;
-//                 if(i < args.length) {
-//                     _templateDirectory = args[i];
-//                 } else {
-//                     throw new RuntimeException(
-//                             "Expected argument to -templateDirectory");
-//                 }
-            } else if(args[i].equals("-watchDogTimer")) {
-                i++;
-                if(i < args.length) {
-                    _watchDogTimer = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -watchDogTimer");
-                }
-            } else if(args[i].equals("-outputDirectory")) {
-                i++;
-                if(i < args.length) {
-                    _outputDirectory = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -outputDirectory");
-                }
-        //     } else if(args[i].equals("-generatorAttributeFileName")) {
-//                 i++;
-//                 if(i < args.length) {
-//                     _generatorAttributeFileName = args[i];
-//                 } else {
-//                     throw new RuntimeException(
-//                            "Expected argument to -generatorAttributeFileName");
-//                 }
-            } else if(args[i].equals("-sootArgs")) {
-                String[] sootArgs = new String[args.length - i];
-                i++;
-                sootArgs[0] = args[0];
-                for(int j = 1; j < sootArgs.length; j++) {
-                    sootArgs[j] = args[i++];
-                }
-                return sootArgs;
-            }
-        }   
+    protected String[] _parseArgs(GeneratorAttribute attribute) 
+            throws Exception {
+       //  String snapshots = attribute.getParameter("snapshots");
+//         if(snapshots.equals("true")) {
+//             _snapshots = true;
+//         } else {
+//             _snapshots = false;
+//         }
         
-        // Default args to soot, if no -sootArgs is found.
-        String[] sootArgs = new String[1];
-        sootArgs[0] = args[0];
-        return sootArgs;
+        _targetPackage = attribute.getParameter("targetPackage");
+        //        _templateDirectory = attribute.getParameter("templateDirectory");
+        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        _outputDirectory = attribute.getParameter("outputDirectory");
+//         _generatorAttributeFileName = 
+//             attribute.getParameter("generatorAttributeFileName");
+        //String sootArgs = attribute.getParameter("sootArgs");
+        return new String[1];
     }
 
     private static boolean _snapshots = false;
-    private static String _watchDogTimer = "unsetParameter";
+    private static String _watchDogTimeout = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
     private static String _outputDirectory = "unsetParameter";
     

@@ -99,9 +99,9 @@ public class GeneratorTableau extends Tableau {
         super(container, name);
         NamedObj model = container.getModel();
 
-        if (model instanceof CompositeEntity) {
+        if (model instanceof CompositeActor) {
             GeneratorFrame frame = new GeneratorFrame(
-                    (CompositeEntity)model, this);
+                    (CompositeActor)model, this);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         } else {
@@ -137,7 +137,7 @@ public class GeneratorTableau extends Tableau {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public GeneratorFrame(final CompositeEntity model, Tableau tableau)
+        public GeneratorFrame(final CompositeActor model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
 
@@ -301,54 +301,23 @@ public class GeneratorTableau extends Tableau {
                             // True if we should run jode, jad or javap.
                             boolean decompile = false;
                             boolean compile =
-                                ((StringParameter)options
-                                        .getAttribute("compile"))
-                                .getExpression().equals("true");
+                                options.getParameter("compile").equals("true");
                             boolean show =
-                                ((StringParameter)options
-                                        .getAttribute("show"))
-                                .getExpression().equals("true");
+                                options.getParameter("show").equals("true");
                             boolean run =
-                                ((StringParameter)options
-                                        .getAttribute("run"))
-                                .getExpression().equals("true");
-
-//                             boolean compile =
-//                                 ((BooleanToken)
-//                                         ((Parameter)options.getAttribute("compile"))
-//                                         .getToken())
-//                                 .booleanValue();
-//                             boolean show =
-//                                 ((BooleanToken)
-//                                         ((Parameter)options.getAttribute("show"))
-//                                         .getToken())
-//                                 .booleanValue();
-//                             boolean run =
-//                                 ((BooleanToken)
-//                                         ((Parameter)options.getAttribute("run"))
-//                                         .getToken())
-//                                .booleanValue();
+                                options.getParameter("run").equals("true");
 
                             // The code generator to run.  The value of this
                             // parameter should name a subdirectory of
                             // ptolemy/copernnicus such as "java" or "shallow".
                             String codeGenerator =
-                                getStringToken(options, "codeGenerator");
-
-                            // Convert "java" to java.
-                            //codeGenerator =
-                            //        codeGenerator.substring(1, codeGenerator
-                            //                                .length() - 1);
-
+                                options.getParameter("codeGenerator");
+                            
                             String targetPath =
-                                getStringToken(options, "targetPath");
+                                options.getParameter( "targetPath");
 
                             String ptIIUserDirectory =
-                                getStringToken(options, "ptIIUserDirectory");
-
-                            //targetPath =
-                                //targetPath.substring(1, targetPath
-                            // .length() - 1);
+                                options.getParameter( "ptIIUserDirectory");
 
                             // Check that we will be able to write
                             File directory = new File(ptIIUserDirectory, targetPath);
@@ -366,7 +335,15 @@ public class GeneratorTableau extends Tableau {
                                         "Can't write: "
                                         + ptIIUserDirectory + "/" + targetPath);
                             }
+                            
+                            exec.updateStatusBar("Starting " + codeGenerator
+                                    + " code generation.");
 
+                            Copernicus.compileAndRun(model, options);
+                                   
+                            exec.updateStatusBar("Code generation "
+                                        + "complete.");
+                             /*
                             // Commands that we will eventually execute,
                             // depending on compile, show and run.
                             List execCommands = new LinkedList();
@@ -490,14 +467,14 @@ public class GeneratorTableau extends Tableau {
                                         + codeGenerator + "'.  Try 'java'");
                             }
 
-
+                             
                             if (compile && commands != null) {
                                 execCommands.add(commands.get(0));
                             }
-
+                              
                             if (show && decompile) {
                                 String targetPackage =
-                                    getStringToken(options, "targetPackage");
+                                    options.getParameter( "targetPackage");
 
                                 //targetPackage =
                                 //    targetPackage.substring(1, targetPackage
@@ -517,10 +494,10 @@ public class GeneratorTableau extends Tableau {
                                 }
 
                                 String classPath =
-                                    getStringToken(options, "classPath");
+                                    options.getParameter( "classPath");
 
                                 String classPathSeparator =
-                                    getStringToken(options, "classPathSeparator");
+                                    options.getParameter( "classPathSeparator");
 
                                 execCommands.add("javap "
                                         + "-classpath \""
@@ -537,7 +514,7 @@ public class GeneratorTableau extends Tableau {
                             if (execCommands.size() > 0) {
                                 exec.setCommands(execCommands);
                                 exec.start();
-                            }
+                               }*/
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.",
                                     ex);
@@ -607,7 +584,7 @@ public class GeneratorTableau extends Tableau {
     // @param copernicusSubdirectory The directory that contains
     // the generator we are running.  Usually, something like
     // "applet" or "java" or "shallow".
-    private List _generateCodeGeneratorCommands(CompositeEntity model,
+    /*   private List _generateCodeGeneratorCommands(CompositeEntity model,
             GeneratorAttribute generatorAttribute,
             String copernicusSubdirectory)
             throws IllegalArgumentException, IllegalActionException,
@@ -653,26 +630,6 @@ public class GeneratorTableau extends Tableau {
         }
         return results;
     }
-
-    // Get a StringToken by name, throw IllegalActionException if
-    // a StringToken by that name cannot be found.
-    private String getStringToken(Attribute attribute, String tokenName)
-            throws IllegalActionException {
-        try {
-            // getToken() could throw ptolemy.data.expr.TokenMgrError,
-            // which is an Error, not an Exception.
-            return ((StringToken)
-                    ((Variable)attribute
-                            .getAttribute(tokenName))
-                    .getToken()).stringValue();
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(attribute, throwable,
-                    "Could not find an attribute "
-                    + "named '"
-                    + tokenName + "' in "
-                    + attribute);
-        }
-    }
-
+     */
 }
 

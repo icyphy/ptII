@@ -40,6 +40,12 @@ $Id$
 	       <doc>The code generator to run.</doc>
      </property>
 
+     <property name="codeGeneratorClassName" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="ptolemy.copernicus.$codeGenerator.Main"
+	       >
+	       <doc>The class that is instantiated to execute a particular code generator.  This class is expected to be a subclass of ptolemy.copernicus.kernel.KernelMain.</doc>
+     </property>
 
      <property name="compile" 
                class="ptolemy.data.expr.StringParameter"
@@ -101,6 +107,13 @@ $Id$
 	       <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
      </property>
 
+     <property name="outputDirectory" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptIIUserDirectory/$targetPath"
+	       >
+	       <doc>The directory that code will be generated in.</doc>
+     </property>
+    
      <property name="modelPath" 
                class="ptolemy.data.expr.StringParameter"
 	       value="$ptIIUserDirectory/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml"
@@ -128,13 +141,6 @@ $Id$
 	       value=",iterations:$iterations"
 	       >
 	       <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
-     </property>
-
-     <property name="compileCommandTemplateFile" 
-               class="ptolemy.data.expr.StringParameter"
-	       value="ptolemy/copernicus/$codeGenerator/compileCommandTemplate.txt"
-	       >
-	       <doc>The template file that contains the command to run that generates the code.</doc>
      </property>
 
      <property name="compileOptions" 
@@ -210,6 +216,13 @@ $Id$
 	       value="-Xmx256m"
 	       >
 	       <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
+     </property>
+
+     <property name="templateDirectory" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="ptolemy/copernicus/$codeGenerator"
+	       >
+	       <doc>The directory for finding template files.</doc>
      </property>
 
      <property name="runCommandTemplateFile" 

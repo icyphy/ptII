@@ -58,23 +58,23 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # First, do an SDF test just to be sure things are working
 test QuickSmoke-1.1 {Compile and run the SDF IIR test} {
-    set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 IIR.xml] "Deep" 1000 0 0 smokeTest]
+    set result [sootCodeGeneration $PTII \
+		[file join $relativePathToPTII ptolemy actor lib test auto \
+		     IIR.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}
 
 
 test QuickSmoke-1.2 {Compile and run the SDF OrthogonalCom test} {
-    set result [sootCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
-		 OrthogonalCom.xml] "Deep" 1000 0 0 smokeTest]
+    set result [sootCodeGeneration $PTII \
+		    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
+			 OrthogonalCom.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}
 
 test QuickSmoke-1.3 {Compile and run the ComplexDivide test} {
-    set result [sootCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 ComplexDivide.xml] "Deep" 1000 0 0 smokeTest]
+    set result [sootCodeGeneration $PTII \
+		    [file join $relativePathToPTII ptolemy actor lib test auto \
+			 ComplexDivide.xml] "Deep" 1000 0 0 smokeTest]
     list {}
 } {{}}

@@ -40,24 +40,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.net.*;
+import java.util.*;
 
+import ptolemy.actor.*;
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.*;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Copernicus
@@ -125,27 +126,81 @@ $PTII/bin/copernicus -codeGenerator "shallow" foo.xml
 @since Ptolemy II 2.0
 */
 public class Copernicus {
+
     /** Parse the specified command-line arguments and then execute
      *  any specified commands.
+     *  @param
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public Copernicus(String args[]) throws Exception {
-        NamedObj namedObj = new NamedObj();
-        _generatorAttribute =
-            new GeneratorAttribute(namedObj, GENERATOR_NAME);
-        _generatorAttribute.initialize();
-
-        // _parseArgs() will set the modelPath Parameter
+        // Parse the command-line arguments
         _parseArgs(args);
+        
+        if(_modelPath == null) {
+            System.out.println(_usage());
+            // NOTE: This means the test suites cannot test this.
+            System.exit(0);
+        }
+
+        // Parse the model.
+        CompositeActor toplevel = readInModel(_modelPath);
+        
+        _generatorAttribute = 
+            (GeneratorAttribute)toplevel.getAttribute(GENERATOR_NAME);
+        if(_generatorAttribute == null) {
+            _generatorAttribute =
+                new GeneratorAttribute(toplevel, GENERATOR_NAME);
+            _generatorAttribute.initialize();
+        }
+        System.out.println(_generatorAttribute.toString());
+  
+        // Savecommand-line parameters in the generator attribute.
+        _saveParsedArgs();
 
         // Parse the file named by the modelPath Parameter and update
-        // parameters
+        // parameters.  FIXME: Is this necessary?
         _generatorAttribute.sanityCheckAndUpdateParameters(null);
 
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());
         }
+
+        // Pass the model off to the real working function.
+        compileAndRun(toplevel, _generatorAttribute);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the command to run the generated code.
+     *  The <i>generatorAttribute</i> argument contains a
+     *  the <i>runCommandTemplateFile</i> parameter that refers
+     *  to a template file that contains the command to run the generated
+     *  code after the parameters from <i>generatorAttribute</i>
+     *  are substituted in.
+     *
+     *  @param generatorAttribute The GeneratorAttribute that contains
+     *  the Parameters that determine the command to run.
+     *  @return The command to run the generated code.
+     */
+    public static String commandToRun(GeneratorAttribute generatorAttribute)
+            throws Exception {
+        String runCommandTemplateFile = generatorAttribute
+            .getParameter("runCommandTemplateFile");
+        return substitute(runCommandTemplateFile, generatorAttribute);
+    }
+
+    /** Possibly create the generated code and run it.
+     *        What actually happens depends on the values of the <i>compile</i>
+     *  and <i>run</i> parameters in <i>generatorAttribute<i>
+     *  @param generatorAttribute The GeneratorAttribute that contains
+     *  the parameters that determine the commands to create and run
+     *  the generated code.
+     */
+    public static void compileAndRun(CompositeActor model,
+            GeneratorAttribute generatorAttribute)
+            throws Exception {
 
         // Save the _generatorAttribute in a temporary file and then
         // add an attribute to _generatorAttribute that lists the
@@ -161,92 +216,60 @@ public class Copernicus {
         // values of the command line arguments and other values, but
         // we never update the model with this data.
         String generatorAttributeFileName =
-            exportMoMLToTemporaryFile(_generatorAttribute);
+            exportMoMLToTemporaryFile(generatorAttribute);
         // We add the filename as an attribute so that we can use its
         // value to substitute.
         // We substitute forward slashes for backward slashes because
         // having backward slashes in attributes causes TokenMgrErrors
         // while reading in a model.
-        new Parameter(_generatorAttribute, "_generatorAttributeFileName",
+        new Parameter(generatorAttribute, "generatorAttributeFileName",
                 new StringToken(StringUtilities
                         .substitute(generatorAttributeFileName,
                                 "\\", "/")));
 
-        compileAndRun(_generatorAttribute);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return the command to compile the generated code.
-     *  The <i>generatorAttribute</i> argument contains a
-     *  the <i>compileCommandTemplateFile</i> parameter that refers
-     *  to a template file that contains the command to create the generated
-     *  code after the parameters from <i>generatorAttribute</i>
-     *  are substituted in.
-     *
-     *  @param generatorAttribute The GeneratorAttribute that contains
-     *  the parameters that determine the command to create the generated
-     *  code.
-     *  @return The command to create the generated code.
-     */
-    public static String commandToCompile(GeneratorAttribute
-            generatorAttribute)
-            throws Exception {
-        String compileCommandTemplateFile =
-            ((StringToken)
-                    ((StringParameter)generatorAttribute
-                            .getAttribute("compileCommandTemplateFile"))
-                    .getToken()).stringValue();
-        return substitute(compileCommandTemplateFile, generatorAttribute);
-    }
-
-    /** Return the command to run the generated code.
-     *  The <i>generatorAttribute</i> argument contains a
-     *  the <i>runCommandTemplateFile</i> parameter that refers
-     *  to a template file that contains the command to run the generated
-     *  code after the parameters from <i>generatorAttribute</i>
-     *  are substituted in.
-     *
-     *  @param generatorAttribute The GeneratorAttribute that contains
-     *  the Parameters that determine the command to run.
-     *  @return The command to run the generated code.
-     */
-    public static String commandToRun(GeneratorAttribute generatorAttribute)
-            throws Exception {
-        String runCommandTemplateFile =
-            ((StringToken)
-                    ((StringParameter)generatorAttribute
-                            .getAttribute("runCommandTemplateFile"))
-                    .getToken()).stringValue();
-        return substitute(runCommandTemplateFile, generatorAttribute);
-    }
-
-    /** Possibly create the generated code and run it.
-     *        What actually happens depends on the values of the <i>compile</i>
-     *  and <i>run</i> parameters in <i>generatorAttribute<i>
-     *  @param generatorAttribute The GeneratorAttribute that contains
-     *  the parameters that determine the commands to create and run
-     *  the generated code.
-     */
-    public static void compileAndRun(GeneratorAttribute generatorAttribute)
-            throws Exception {
         int exitValue = 1;
-        String compile = ((StringParameter)generatorAttribute
-                .getAttribute("compile")).getExpression();
+        String compile = generatorAttribute.getParameter("compile");
 
         if (compile.equals("true")) {
-            String command = commandToCompile(generatorAttribute);
-            exitValue = executeCommand(command);
-            if (exitValue != 0) {
-                throw new Exception("Problem executing command. "
-                        + "Return value was: " + exitValue
-                        + ". Command was:\n" + command);
-            }
+            // NOTE Is this still needed?
+            // Temporary hack because cloning doesn't properly clone
+            // type constraints.  In some ways, it would make sense to
+            // do this in readInModel(), where we already have a
+            // MoMLParser object, but we want to be sure the type
+            // constraints are cloned if we are passed in a model
+            // directly without running readInModel().
+           //  CompositeActor modelClass = null;
+//             try {
+//                 modelClass = (CompositeActor)
+//                     _parser.searchForClass(_momlClassName,
+//                             model.getMoMLInfo().source);
+//             } catch (XmlException xml) {
+//                 throw new
+//                     IllegalActionException("Failed to find class '"
+//                             + _momlClassName + "' in '"
+//                             + model.getMoMLInfo().source
+//                             + "': " + xml);
+//             }
+            
+           //  if (modelClass != null) {
+//                 model = modelClass;
+//             }
+
+            // Instantiate the right code generator.
+            String codeGeneratorClassName = generatorAttribute
+                .getParameter("codeGeneratorClassName");
+            Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
+            KernelMain codeGenerator = (KernelMain)
+                codeGeneratorClass.newInstance();
+     
+            // Compile the model.
+            codeGenerator.compile(
+                    model.getName(),
+                    model,
+                    generatorAttribute);
         }
 
-        String run = ((StringParameter)generatorAttribute
-                .getAttribute("run")).getExpression();
+        String run = generatorAttribute.getParameter("run");
 
         if (run.equals("true")) {
             String command = commandToRun(generatorAttribute);
@@ -380,6 +403,10 @@ public class Copernicus {
             }
             System.exit(0);
         }
+        // We need to call exit here if we are running codegen on
+        // a model that uses Swing.  Useful models that use the
+        // plotter fall in this category.
+        System.exit(0);
     }
 
     /** Given a NamedObj, generate a HashMap containing String key/value
@@ -445,6 +472,99 @@ public class Copernicus {
         return inputFile;
     }
 
+    /** Read in a MoML class, either as a top level model or
+     *  a file, initialize the model, then create instance classes for actors.
+     *  <p> The MoML class name is processed as follows:
+     *  <ol>
+     *  <li> The momlClassName argument is assumed to be a dot
+     *  separated top level model name such as
+     *  <code>ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom</code>
+     *  and inserted into a MoML fragment:
+     *  <p><code>
+     *  &lt;entity name="ToplevelModel" class=" + momlClassName + "/&gt;
+     *  </code>
+     *  and then passed to MoMLParser.parse().
+     *  <li>If the parse fails, then the name is tried as a
+     *  relative MoML file name and passed to MoMLParser.parseFile().
+     *  </ol>
+     *  @exception IllegalActionException If the model cannot be parsed.
+     */
+    public CompositeActor readInModel(String modelPathOrURL)
+            throws IllegalActionException, NameDuplicationException {
+        URL modelURL = null;
+        try {
+            modelURL = MoMLApplication.specToURL(modelPathOrURL);
+        } catch (IOException ex) {
+            try {
+                // We might have a JAR URL because we are inside webstart
+                modelURL = JNLPUtilities.jarURLEntryResource(modelPathOrURL);
+            } catch (IOException ex2) {
+            }
+            if (modelURL == null) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to parse '"
+                        + modelPathOrURL + "'");
+            }
+        }
+
+        // Create a parser.
+        _parser = new MoMLParser();
+
+        // Handle Backward Compatibility.
+        _parser.addMoMLFilters(BackwardCompatibility.allFilters());
+
+        // Filter out any graphical classes and the GeneratorAttribute
+        // itself.  If we don't filter out GeneratorAttribute, then
+        // we get quite a few attributes in the generated code, which
+        // causes problems at runtime because sometimes the parameters
+        // are out of order, so there are dependency issues, or,
+        // in the case of the applet generator, the parameters depend
+        // on the value of Java system properties like ptolemy.ptII.directory
+        // which is not accessible because of security concerns.
+        RemoveGraphicalClasses removeGraphicalClasses =
+            new RemoveGraphicalClasses();
+
+        // FIXME: Not sure why this is necessary, but it helps
+        // when generating an applet for moml/demo/spectrum.xml
+        removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
+
+        removeGraphicalClasses
+            .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
+        // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
+        removeGraphicalClasses
+            .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+        _parser.addMoMLFilter(removeGraphicalClasses);
+
+        // Parse the model.
+        CompositeActor toplevel = null;
+        try {
+            toplevel = (CompositeActor)_parser.parse(modelURL, modelURL);
+        } catch (Exception exception) {
+            StringBuffer errorMessage = new StringBuffer();
+            errorMessage.append("Failed to parse '" + modelPathOrURL
+                    + "' as a top level model in \n"
+                    + modelURL + "!");
+            throw new IllegalActionException(errorMessage.toString());
+        }
+        
+        // If the name of the toplevel is the empty string, change it to
+        // the basename of the file.
+        // FIXME: is this correct for filenames?
+        if (toplevel.getName().length() == 0) {
+            String baseName = (new File(modelPathOrURL)).getName();
+            if (baseName.lastIndexOf('.') != -1) {
+                baseName = baseName.substring(0,
+                        baseName.lastIndexOf('.'));
+            }
+            toplevel.setName(baseName);
+        }
+        
+        // Make the name follow Java initializer naming conventions.
+        toplevel.setName(StringUtilities.sanitizeName(toplevel.getName()));
+
+        return toplevel;
+    }
+
     /** Given a string and a Map containing String key/value pairs,
      *  substitute any keys found in the input with the corresponding
      *  values.
@@ -501,8 +621,7 @@ public class Copernicus {
             exception.initCause(ex);
             throw exception;
         }
-        URL inputFileURL =
-            Thread.currentThread().getContextClassLoader()
+        URL inputFileURL = Thread.currentThread().getContextClassLoader()
             .getResource(inputFileName);
         if (inputFileURL == null) {
             throw new FileNotFoundException("Failed to find '"
@@ -524,8 +643,8 @@ public class Copernicus {
     }
 
     /** Read in the contents of inputFile, and replace each matching
-     *        String key found in substituteMap with the corresponding String value
-     *  and write the results to outputFileName.
+     *  String key found in substituteMap with the corresponding
+     *  String value and write the results to outputFileName.
      *  @param inputFile A BufferedReader that refers to the file to be
      *  read in.
      *  @param substituteMap The Map of String keys like "@codeBase@"
@@ -538,7 +657,8 @@ public class Copernicus {
             String outputFileName)
             throws FileNotFoundException, IOException {
         PrintWriter outputFile =
-            new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
+            new PrintWriter(new BufferedWriter(
+                                    new FileWriter(outputFileName)));
         String inputLine;
         while ( (inputLine = inputFile.readLine()) != null) {
             outputFile.println(substitute(inputLine, substituteMap));
@@ -547,9 +667,10 @@ public class Copernicus {
         outputFile.close();
     }
 
-    /** Read in the contents of inputFileName, and replace each matching
-     *        String key found in substituteMap with the corresponding String value
-     *  and write the results to outputFileName.
+    /** Read in the contents of inputFileName, and replace each
+     *  matching String key found in substituteMap with the
+     *  corresponding String value and write the results to
+     *  outputFileName.
      *  @param inputFileName  The name of the file to read from.
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
@@ -597,7 +718,7 @@ public class Copernicus {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
             // Assume the argument is a file name or URL.
-            _generatorAttribute.updateModelAttributes(arg);
+            _modelPath = arg;
         } else {
             // Argument not recognized.
             return false;
@@ -630,6 +751,13 @@ public class Copernicus {
                 }
             }
         }
+    }
+
+    /** Save arguments that were parsed in the generatorAttribute of
+     * the model.
+     */
+    protected void _saveParsedArgs() throws Exception { 
+        _generatorAttribute.updateModelAttributes(_modelPath);
 
         // Check saved options to see whether any is setting an attribute.
         Iterator names = _parameterNames.iterator();
@@ -658,7 +786,7 @@ public class Copernicus {
             }
         }
     }
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -708,10 +836,10 @@ public class Copernicus {
 
     /** The command-line options that are either present or not. */
     protected String _commandFlags[] = {
-        "-help",
-        "-test",
-        "-verbose",
-        "-version",
+        "-help: Print this help information\n",
+        "-test: Smoke test the code generator by killing after 2 seconds.\n",
+        "-verbose: Show verbose execution information.\n",
+        "-version: Show version information.\n",
     };
 
     /** The command-line options that take arguments. */
@@ -721,20 +849,27 @@ public class Copernicus {
 
     /** The form of the command line. */
     protected String _commandTemplate =
-    "copernicus [options . . .] [relative xml filename]\n"
-    + "This command used to generate code from a model."
+    "\ncopernicus [options . . .] [relative xml filename]\n"
+    + "This command used to generate code from a model.\n"
     + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
     + "This command does command line argument substitution by reading\n"
     + "template files and then executes a subprocess that that does\n"
-    + "the code generation."
-    + "This command takes the usual Ptolemy II command line arguments\n"
-    + "and a number of command line arguments that are defined in the\n"
-    + "GeneratorAttribute of the model itself.\n"
-    + "Of these command line arguments, the most significant is the\n"
+    + "the code generation.\n"
+    + "This command parses the given model file (specified as a file name,\n"
+    + " a URL or a resource) and generates code for the model\n"
+    + "based on a large number of configuration parameters.\n"
+    + "If the model contains an instance of the GeneratorAttribute class\n"
+    + "then the configuration parameters are taken from that instance.\n"
+    + "If the model does not contain an instance of the GeneratorAttribute\n"
+    + "class, then default parameters are taken from the moml file in\n"
+    + "$PTII/ptolemy/copernicus/kernel/Generator.xml.\n"
+    + "In any case, those parameters may be overridden by command line\n"
+    + "options of the form: -<option> <value>.\n\n"
+    + "The most significant configuration option is the\n"
     + "-codeGenerator option which is used to select which code\n"
     + "generator is used.  The default value is 'java', which means\n"
-    + "that $PTII/ptolemy/copernicus/java/compileCommandTemplate.txt"
-    + "is used to invoke the code generator.\n"
+    + "that the code generator class at ptolemy.copernicus.java.Main.java\n"
+    + "is used to generate code.\n"
     + "-codeGenerator can have the following values:\n"
     + "   applet         Generate a html files containing an applet version.\n"
     + "   c              Generate C code version.\n"
@@ -744,7 +879,14 @@ public class Copernicus {
     + "                    few classes from Ptolemy.\n"
     + "   jhdl           Generate a JDHL version (requires JHDL).\n"
     + "   shallow        Generate a shallow Java version that uses many\n"
-    + "                   classes from Ptolemy.\n";
+    + "                   classes from Ptolemy.\n"
+    + "\nExample usage:\n"
+    + "    copernicus ~/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded relative to your home directory and the java deep code generator is used.)\n"
+    + "    copernicus -codeGenerator shallow ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded relative to the classpath and the shallow code generator is used.)\n"
+    + "    copernicus -codeGenerator c http://c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded from the given URL (which happens to refer to the local file system, and the c code generator is used.)\n";
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -806,5 +948,8 @@ public class Copernicus {
     // The value of the ptolemy.ptII.dir property.
     private String _ptIIDirectory;
 
+    private String _modelPath = null;
+    private static String _momlClassName;
 
+    private static MoMLParser _parser;
 }

@@ -51,6 +51,7 @@ import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
@@ -72,6 +73,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.Documentation;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
@@ -1780,9 +1782,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 attribute instanceof LibraryAttribute ||
                 attribute instanceof VersionAttribute ||
                 attribute instanceof TableauFactory ||
+                attribute instanceof Documentation ||
                 attribute instanceof EditorFactory ||
                 attribute instanceof Location ||
                 attribute instanceof WindowPropertiesAttribute ||
+                attribute instanceof GeneratorAttribute ||
                 attribute instanceof GeneratorTableauAttribute) {
             return true;
         }

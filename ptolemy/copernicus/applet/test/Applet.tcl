@@ -52,7 +52,9 @@ if {[info procs sootCodeGeneration] == "" } then {
 #
 
 test Applet-1.1 {Compile and run the SDF IIR test} {
-    set result [sootCodeGeneration   [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml] Applet] 
+    set result [sootCodeGeneration $PTII \
+		    [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml] \
+		    Applet] 
     puts $result
     list {}
 } {{}}

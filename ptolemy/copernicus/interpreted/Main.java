@@ -52,17 +52,6 @@ that will run the model as in standard interpreted mode.
 */
 public class Main extends KernelMain {
 
-    /** Read in a MoML model.
-     *  @params args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  command line options, see the superclass documentation for details.
-     *  @exception IllegalActionException If the model cannot be parsed.
-     */
-    public Main(String [] args) throws IllegalActionException {
-        // args[0] contains the MoML class name.
-        super(args[0]);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -70,8 +59,6 @@ public class Main extends KernelMain {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-        super.addTransforms();
-
         Pack pack = PackManager.v().getPack("wjtp");
 
         // Generate the makefile files in outDir
@@ -81,39 +68,6 @@ public class Main extends KernelMain {
         // Generate the interpreted files in outDir
         addTransform(pack, "wjtp.interpretedWriter",
                 InterpretedWriter.v(_toplevel));
-    }
-
-    /** Read in a MoML model, generate java files
-     *  @exception IllegalActionException If the model cannot be parsed.
-     *  @exception NameDuplicationException If the name of the
-     *  model cannot be changed to a Java identifier String.
-     */
-    public static void main(String[] args)
-            throws IllegalActionException, NameDuplicationException {
-
-        long startTime = System.currentTimeMillis();
-
-        Main main = new Main(args);
-
-        // Parse the model.
-        CompositeActor toplevel = main.readInModel(args[0]);
-
-        // Create instance classes for the actors.
-        main.initialize(toplevel);
-
-        // Add Transforms to the Scene.
-        main.addTransforms();
-
-        main.generateCode(args);
-
-        // Print out memory usage info
-        System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
-
-        //WatchDogTimer.v().cancel();
-
-        // For some reason, we need to call exit here, perhaps because
-        // the WatchDog timer thread is still running in the background?
-        System.exit(0);
     }
 }
 

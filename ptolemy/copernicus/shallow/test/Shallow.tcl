@@ -54,7 +54,7 @@ proc autoShallowCG {autoDirectory} {
 	puts "---- testing $file"
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
-	    set elapsedTime [time {set results [sootCodeGeneration $file]}]]
+	    set elapsedTime [time {set results [sootCodeGeneration $PTII $file]}]]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds for $file"
 	    puts "$results"
 	    #incr builtinPercentageSum [lindex $results 7]
@@ -92,7 +92,7 @@ proc autoShallowCG {autoDirectory} {
 
 # Do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
-    set result [sootCodeGeneration \
+    set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
     puts $result
@@ -101,7 +101,7 @@ test Shallow-1.2 {Compile and run the SDF IIR test} {
 
 
 test Shallow-1.3 {Compile and run the DE Counter test} {
-    set result [sootCodeGeneration \
+    set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
     puts $result
@@ -109,7 +109,7 @@ test Shallow-1.3 {Compile and run the DE Counter test} {
 } {{}}
  
 test Shallow-1.3 {Compile and run the MathFunction test, which tends to hang} {
-    set result [sootCodeGeneration \
+    set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    MathFunction.xml]]
     puts $result

@@ -30,19 +30,10 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
-import ptolemy.copernicus.kernel.ClassWriter;
-import ptolemy.copernicus.kernel.InvocationBinder;
-import ptolemy.copernicus.kernel.GrimpTransformer;
-import ptolemy.copernicus.kernel.JimpleWriter;
-import ptolemy.copernicus.kernel.KernelMain;
-import ptolemy.copernicus.kernel.LibraryUsageReporter;
-import ptolemy.copernicus.kernel.MakefileWriter;
-import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
-import ptolemy.copernicus.kernel.TransformerAdapter;
-import ptolemy.copernicus.kernel.UnusedFieldRemover;
-import ptolemy.copernicus.kernel.WatchDogTimer;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.copernicus.kernel.*;
+import ptolemy.kernel.util.*;
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
@@ -72,15 +63,6 @@ import java.util.*;
  */
 public class Main extends KernelMain {
 
-    /** Read in a MoML model.
-     *  @param momlClassName The MoML class name or file name.
-     *  @exception IllegalActionException If the model cannot be parsed.
-     */
-    public Main(String momlClassName) throws IllegalActionException {
-        // args[0] contains the MoML class name.
-        super(momlClassName);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -96,7 +78,7 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
-                "time:" + _watchDogTimer);
+                "time:" + _watchDogTimeout);
 
         // Create a class for the composite actor of the model, and
         // additional classes for all actors (both composite and
@@ -120,7 +102,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack, 1);
-        
+       
        if(_snapshots) {
            addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple1");
@@ -167,6 +149,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.lns",
                new TransformerAdapter(LocalNameStandardizer.v()));
+       
        addStandardOptimizations(pack, 3);
        
        addTransform(pack, "wjtp.ls3",
@@ -417,7 +400,7 @@ public class Main extends KernelMain {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-        super.addTransforms();
+        //      super.addTransforms();
         addStandardTransforms(_toplevel);
         
         Pack pack = PackManager.v().getPack("wjtp");
@@ -450,112 +433,31 @@ public class Main extends KernelMain {
                 WatchDogTimer.v(), "cancel:true");
     }
 
-    /** Read in a MoML model, generate java files.
-     */
-    public static void main(String[] args) {
-        String modelName = args[0];
-        try {
-            long startTime = System.currentTimeMillis();
 
-            Main main = new Main(modelName);
-
-            // Parse the model.
-            CompositeActor toplevel = main.readInModel(modelName);
-
-            // Create instance classes for the actors.
-            main.initialize(toplevel);
-
-            // Parse any copernicus args.
-            String[] sootArgs = _parseArgs(args);
-                         
-            // Add Transforms to the Scene.
-            main.addTransforms();
-
-            main.generateCode(sootArgs);
-
-            // Print out memory usage info
-            System.out.println(modelName + " "
-                    + ptolemy.actor.Manager.timeAndMemory(startTime));
-            // We need to call exit here if we are running codegen on
-            // a model that uses Swing.  Useful models that use the
-            // plotter fall in this category.
-            System.exit(0);
-        } catch (Exception ex) {
-            System.err.println("Code generation of '" + modelName
-                    + "' failed:");
-            ex.printStackTrace(System.err);
-            System.err.flush();
-            System.exit(2);
-        }
-    }
-
-    /** Parse any Copernicus arguments.
+    /** Parse any code generator specific arguments.
      */ 
-    protected static String[] _parseArgs(String args[]) {
-        // Ignore the first argument.
-        for(int i = 1; i < args.length; i++) {
-            if(args[i].equals("-snapshots")) {
-                _snapshots = true;
-            } if(args[i].equals("-targetPackage")) {
-                i++;
-                if(i < args.length) {
-                    _targetPackage = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -targetPackage");
-                }
-            } else if(args[i].equals("-templateDirectory")) {
-                i++;
-                if(i < args.length) {
-                    _templateDirectory = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -templateDirectory");
-                }
-            } else if(args[i].equals("-watchDogTimer")) {
-                i++;
-                if(i < args.length) {
-                    _watchDogTimer = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -watchDogTimer");
-                }
-            } else if(args[i].equals("-outputDirectory")) {
-                i++;
-                if(i < args.length) {
-                    _outputDirectory = args[i];
-                } else {
-                    throw new RuntimeException(
-                            "Expected argument to -outputDirectory");
-                }
-            } else if(args[i].equals("-generatorAttributeFileName")) {
-                i++;
-                if(i < args.length) {
-                    _generatorAttributeFileName = args[i];
-                } else {
-                    throw new RuntimeException(
-                           "Expected argument to -generatorAttributeFileName");
-                }
-            } else if(args[i].equals("-sootArgs")) {
-                String[] sootArgs = new String[args.length - i];
-                i++;
-                sootArgs[0] = args[0];
-                for(int j = 1; j < sootArgs.length; j++) {
-                    sootArgs[j] = args[i++];
-                }
-                return sootArgs;
-            }
-        }   
+    protected String[] _parseArgs(GeneratorAttribute attribute) 
+            throws Exception {
+       //  String snapshots = attribute.getParameter("snapshots");
+//         if(snapshots.equals("true")) {
+//             _snapshots = true;
+//         } else {
+//             _snapshots = false;
+//         }
         
-        // Default args to soot, if no -sootArgs is found.
-        String[] sootArgs = new String[1];
-        sootArgs[0] = args[0];
-        return sootArgs;
+        _targetPackage = attribute.getParameter("targetPackage");
+        _templateDirectory = attribute.getParameter("templateDirectory");
+        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        _outputDirectory = attribute.getParameter("outputDirectory");
+        _generatorAttributeFileName = 
+            attribute.getParameter("generatorAttributeFileName");
+        //String sootArgs = attribute.getParameter("sootArgs");
+        return new String[1];
     }
 
     private static boolean _snapshots = false;
     private static String _generatorAttributeFileName = "unsetParameter";
-    private static String _watchDogTimer = "unsetParameter";
+    private static String _watchDogTimeout = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
     private static String _templateDirectory = "ptolemy/copernicus/java";
     private static String _outputDirectory = "unsetParameter";

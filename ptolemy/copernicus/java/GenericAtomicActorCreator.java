@@ -237,7 +237,12 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 entity.attributeList(Attribute.class).iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
-
+            
+            // Ignore attributes that are ignorable.
+            if(ModelTransformer._isIgnorableAttribute(attribute)) {
+                continue;
+            }
+            
             // PortParameters are handled specially.
             if(attribute instanceof PortParameter) {
                 continue;

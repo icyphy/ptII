@@ -46,7 +46,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 
 test gui-1.1 {Compile and run the SDF IIR test that was saved from the gui} {
-    set result [sootCodeGeneration \
+    set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy copernicus shallow test \
 	    IIRGUI.xml]]
     list {}

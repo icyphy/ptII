@@ -51,6 +51,7 @@ if {![info exist PTII]} {
     set PTII [file join [pwd] $relativePathToPTII]
 }
 
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]

@@ -32,9 +32,9 @@ package ptolemy.copernicus.kernel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
@@ -70,76 +70,19 @@ import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main
-/** Abstract base class that provides common main() functionality
-to be used by various backends.
-
-The backends should extend this class and create a constructor that
-looks like:
-<pre>
-public class Main extends KernelMain {
-    public Main(String [] args) {
-        super(args[0]);
-    }
-
-    public static void main(String[] args)
-        throws IllegalActionException, NameDuplicationException {
-
-        Main main = new Main(args);
-
-        // Parse the model, initialize it and create instance classes
-        // for the actors.
-        main.initialize();
-
-        // Add Transforms to the Scene.
-        main.addTransforms();
-
-        main.generateCode(args);
-    }
-}
-</pre>
-
-Soot usually takes many command line arguments, see {@link Copernicus}
-for a more convenient driver
+/** 
+Base class that provides common functionality to be used by various
+code generators.  Particular code generators should extend this class
+and generally override the addTransforms method to instantiate the
+correct transforms and the _parseArgs method to extract arguments.
+These subclasses should be not be instantiated directly, but will
+instead be instantiated by the Copernicus class according to a
+selected code generator.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0 */
-public class KernelMain {
-
-    /** Set up code generation arguments.
-     *  @param momlClassName The name of the top level model or the
-     *  .xml file that we are to generate code for.  For example:
-     *  "ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom".
-     */
-    public KernelMain(String momlClassName) {
-        _momlClassName = momlClassName;
-        _parser = new MoMLParser();
-
-        // Handle Backward Compatibility.
-        _parser.addMoMLFilters(BackwardCompatibility.allFilters());
-
-        // Filter out any graphical classes and the GeneratorAttribute
-        // itself.  If we don't filter out GeneratorAttribute, then
-        // we get quite a few attributes in the generated code, which
-        // causes problems at runtime because sometimes the parameters
-        // are out of order, so there are dependency issues, or,
-        // in the case of the applet generator, the parameters depend
-        // on the value of Java system properties like ptolemy.ptII.directory
-        // which is not accessible because of security concerns.
-        RemoveGraphicalClasses removeGraphicalClasses =
-            new RemoveGraphicalClasses();
-
-        // FIXME: Not sure why this is necessary, but it helps
-        // when generating an applet for moml/demo/spectrum.xml
-        removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
-
-        removeGraphicalClasses
-            .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
-        // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
-        removeGraphicalClasses
-            .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
-        _parser.addMoMLFilter(removeGraphicalClasses);
-    }
+public abstract class KernelMain {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -147,7 +90,8 @@ public class KernelMain {
     /** Add a new transform to the given pack, dealing properly with
      *  options specified in the transformer.
      */
-    public static void addTransform(Pack pack, String name, Transformer transformer, String defaultOptions) {
+    public static void addTransform(Pack pack, String name,
+            Transformer transformer, String defaultOptions) {
         Transform t = new Transform(name, transformer);
         if(transformer instanceof HasPhaseOptions) {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
@@ -167,23 +111,48 @@ public class KernelMain {
     /** Add a new transform to the given pack, dealing properly with
      *  options specified in the transformer.
      */
-    public static void addTransform(Pack pack, String name, Transformer transformer) {
-      addTransform(pack, name, transformer, "");
+    public static void addTransform(Pack pack, String name,
+            Transformer transformer) {
+        addTransform(pack, name, transformer, "");
     }
 
     /** Add transforms to the Scene.  Derived classes should do most
      *  of their added functionality in this method.
      */
-    public void addTransforms() {
+    public abstract void addTransforms();
 
-        // A Hack to ignore the class we specify on the command
-        // line. This is a soot problem that requires this hack.
-        // We will provide soot with java.lang.Object as its
-        // only application class in Main. The first transformation
-        // will ignore all application classes (i.e. set them to
-        // library classes)
-        PackManager.v().getPack("wjtp").add(new Transform("wjtp.hack",
-                new _IgnoreAllApplicationClasses()));
+    /** Compile the given model with the given name.  This method
+     *  invokes other methods of this class to actually perform the
+     *  compilation.
+     */
+    public void compile(String modelName, CompositeActor toplevel,
+            GeneratorAttribute attribute) throws Exception {
+        //  try {
+            long startTime = System.currentTimeMillis();
+
+            // Create instance classes for the actors.
+            initialize(toplevel);
+
+            // Parse any copernicus args.
+            String[] sootArgs = _parseArgs(attribute);
+                
+            // Add Transforms to the Scene.
+            addTransforms();
+
+            // Execute the transforms.
+            generateCode(sootArgs);
+
+            // Print out memory usage info
+            System.out.println(modelName + " "
+                    + ptolemy.actor.Manager.timeAndMemory(startTime));
+            
+//         } catch (Exception ex) {
+//             System.err.println("Code generation of '" + modelName
+//                     + "' failed:");
+// //             ex.printStackTrace(System.err);
+// //             System.err.flush();
+// //             System.exit(2);
+//         }
     }
 
     /** Call soot.Main.main(), which does command line argument
@@ -193,18 +162,18 @@ public class KernelMain {
      *  @param args Soot command line arguments to be passed
      *  to soot.Main.main().
      */
-    public void generateCode(String [] args) {
-        // This is rather ugly.  The moml Class is not a Java class, so
-        // soot won't recognize it.  However, if we give soot nothing, then
-        // it won't run.  Note that later we will call setLibraryClass() on
-        // this class so that we don't actually generate code for it.
-        args[0] = "java.lang.Object";
+    public void generateCode(String[] args) {
+//         // This is rather ugly.  The moml Class is not a Java class, so
+//         // soot won't recognize it.  However, if we give soot nothing, then
+//         // it won't run.  Note that later we will call setLibraryClass() on
+//         // this class so that we don't actually generate code for it.
+//         args[0] = "java.lang.Object";
 
-        // As of soot 2.0.1, this is all that is required.
-        //        soot.Main.main(args);
-        if (!Options.v().parse(args))
-            throw new KernelRuntimeException(
-                    "Option parse error");
+//         // As of soot 2.0.1, this is all that is required.
+//         //        soot.Main.main(args);
+//         if (!Options.v().parse(args))
+//             throw new KernelRuntimeException(
+//                     "Option parse error");
       
         PackManager.v().getPack("wjtp").apply();
   
@@ -227,49 +196,6 @@ public class KernelMain {
             throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
 
-        // If the name of the model is the empty string, change it to
-        // the basename of the file.
-        if (_toplevel.getName().length() == 0) {
-            String baseName = (new File(_momlClassName)).getName();
-            if (baseName.lastIndexOf('.') != -1) {
-                baseName = baseName.substring(0,
-                        baseName.lastIndexOf('.'));
-            }
-            _toplevel.setName(baseName);
-        }
-
-        // Make the name follow Java initializer naming conventions.
-        _toplevel.setName(StringUtilities.sanitizeName(_toplevel.getName()));
-
-
-        // Temporary hack because cloning doesn't properly clone
-        // type constraints.  In some ways, it would make sense
-        // to do this in readInModel(), where we already have a MoMLParser
-        // object, but we want to be sure the type constraints are cloned
-        // if we are passed in a model directly without running readInModel().
-        CompositeActor modelClass = null;
-        try {
-            modelClass = (CompositeActor)
-                _parser.searchForClass(_momlClassName,
-                        _toplevel.getMoMLInfo().source);
-        } catch (XmlException xml) {
-            throw new
-                IllegalActionException("Failed to find class '"
-                        + _momlClassName + "' in '"
-                        + _toplevel.getMoMLInfo().source
-                        + "': " + xml);
-        }
-
-        if (modelClass != null) {
-            _toplevel = modelClass;
-        }
-
-        // FIXME: insert code to parse parameters like
-        // CompositeActorApplication does.  i.e. --iterations=50
-        // These should get parsed and affect the model that was loaded.
-        // They will be folded into the generated code during the code
-        // generation process.
-
         // Initialize the model to ensure type resolution and scheduling
         // are done.
         try {
@@ -282,146 +208,11 @@ public class KernelMain {
         }
     }
 
-
-    /** Generate a .class file associated with the top level Ptolemy II
-     *  object and all of its descendants in a specific directory.
-     *  @param toplevel The root object of the topology to be saved.
-     *  @param directoryName The name of the directory to where the .class
-     *  file will be created.
-     *  @return The generated java code.
-     */
-    public static void generate(CompositeActor toplevel, String directoryName)
-            throws IllegalActionException, NameDuplicationException {
-        // FIXME: This name is awfully close to generateCode(), yet
-        // this method is a superset of the generateCode functionality.
-        String [] args = {
-            toplevel.getName(),
-            "-d", directoryName,
-            "-p", "wjtp.at", "targetPackage:ptolemy.copernicus.java.test.cg",
-            "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg",
-            "-p" ,"wjtp.umr", "disabled"
-        };
-
-        KernelMain main = new KernelMain(args[0]);
-        main.initialize(toplevel);
-        main.addTransforms();
-        main.generateCode(args);
-    }
-
-    /** Sample main() method that parses a MoML class, initializes
-     *  the model and creates actor instances.  In this class,
-     *  this method does not do much, it is only a sample.
-     *
-     *  @param args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  command line options.
-     *  <p>The most common option is <code>-d ../../..</code>, which
-     *  will store the generated files in ../../..
-     *  <p>Another common option is
-     *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
-     *  which will set the run time option <i>key</i> to <i>value</i> for
-     *  <i>phase-name</i> (default for <i>value</i> is true)
-     *  <p>An example is:<br>
-     *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
-     *  <p>For a complete list of Soot Options, pass in "-h", or run
-     *  <code>$PTII/bin/soot -h<code>, or see
-     *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
-     *
-     *  @exception IllegalActionException If the model cannot be parsed.
-     *  @exception NameDuplicationException If the name of the
-     *  model cannot be changed to a Java identifier String.
-     */
-    public static void main(String[] args)
-            throws IllegalActionException, NameDuplicationException {
-        KernelMain kernelMain = new KernelMain(args[0]);
-        CompositeActor toplevel = kernelMain.readInModel(args[0]);
-        kernelMain.initialize(toplevel);
-        kernelMain.addTransforms();
-        kernelMain.generateCode(args);
-    }
-
-    /** Read in a MoML class, either as a top level model or
-     *  a file, initialize the model, then create instance classes for actors.
-     *  <p> The MoML class name is processed as follows:
-     *  <ol>
-     *  <li> The momlClassName argument is assumed to be a dot
-     *  separated top level model name such as
-     *  <code>ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom</code>
-     *  and inserted into a MoML fragment:
-     *  <p><code>
-     *  &lt;entity name="ToplevelModel" class=" + momlClassName + "/&gt;
-     *  </code>
-     *  and then passed to MoMLParser.parse().
-     *  <li>If the parse fails, then the name is tried as a
-     *  relative MoML file name and passed to MoMLParser.parseFile().
-     *  </ol>
-     *  @exception IllegalActionException If the model cannot be parsed.
-     */
-    public CompositeActor readInModel(String momlClassName)
-            throws IllegalActionException, NameDuplicationException {
-
-        // readInModel() is a separate method so that we can read
-        // in the model and then get its name so that we can
-        // determine the name of the class that will be generated.
-
-        // Call the MOML parser on the test file to generate a Ptolemy II
-        // model.
-        _momlClassName = momlClassName;
-        CompositeActor toplevel = null;
-        // First, try it as a top level model
-        String source = "<entity name=\"ToplevelModel\""
-            + " class=\"" + momlClassName + "\"/>\n";
-        try {
-            toplevel = (CompositeActor)_parser.parse(source);
-
-        } catch (Exception exception) {
-            StringBuffer errorMessage = new StringBuffer();
-            errorMessage.append("\n  1. Failed to parse '" + momlClassName
-                    + "' as a top level model in\n"
-                    + source + "\n  Exception was:\n-------\n  "
-                    + exception + "\n-------\n");
-            try {
-                // Then try it as an xml file
-                toplevel = (CompositeActor)_parser.parseFile(momlClassName);
-            } catch (Exception exceptionTwo) {
-                errorMessage.append("  2. Failed to parse '" + momlClassName
-                        + "' as an xml file:\n  "
-                        + exceptionTwo + "\n");
-                try {
-                    URL momlURL = new URL(momlClassName);
-                    try {
-                        // Then try it as a URL file
-                        toplevel = (CompositeActor)_parser.parse(null,
-                                momlURL);
-                    } catch (Exception exceptionThree) {
-                        errorMessage.append("  3. Failed to parse '"
-                                + momlClassName
-                                + "' as a URL '"
-                                + momlURL + "':\n  "
-                                + exceptionThree + "\n");
-                        throw new IllegalActionException(null, exceptionThree,
-                                errorMessage.toString());
-
-                    }
-                } catch (MalformedURLException malformed) {
-                    throw new IllegalActionException(errorMessage + ": "
-                            + malformed);
-                }
-            }
-            if (toplevel == null) {
-                throw new IllegalActionException(errorMessage.toString());
-            }
-        }
-        return toplevel;
-    }
-
-
     /** Return the model that we are generating code for.
      */
     public CompositeActor toplevel() {
         return _toplevel;
     }
-
 
     /** Add transforms corresponding to the standard soot optimizations
      *  to the given pack.
@@ -441,7 +232,20 @@ public class KernelMain {
         addTransform(pack, "wjtp.StandardOptimizations" + time,
                 new TransformerAdapter(standardList));
     }
-   
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+
+    /** Parse any code generator specific arguments.  Derived classes
+     * should override this method to extract any code
+     * generator-specific variables from the GeneratorAttribute.
+     */ 
+    protected String[] _parseArgs(GeneratorAttribute attribute)
+            throws Exception {
+        return new String[0];
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

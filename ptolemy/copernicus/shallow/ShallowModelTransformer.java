@@ -33,6 +33,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.EntitySootClass;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
@@ -128,7 +129,8 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             Attribute attribute = (Attribute)attributes.next();
 
             // Ignore things like Variable.
-            if (!attribute.isPersistent()) {
+            if (!attribute.isPersistent() || 
+                    attribute instanceof GeneratorAttribute) {
                 continue;
             }
 

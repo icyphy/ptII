@@ -58,7 +58,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # Run a long test that uses the obuscator
 test LongTest-1.1 {Compile and run the SDF Maximum test} {
-    set result [sootCodeGeneration \
+    set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 		 Maximum.xml] "Deep" 1000]
     list {}

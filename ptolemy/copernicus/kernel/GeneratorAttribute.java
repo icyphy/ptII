@@ -47,7 +47,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -141,6 +143,29 @@ public class GeneratorAttribute extends SingletonAttribute
     }
 
 
+    /** Get the string for the argument with the given name from this
+     * GeneratorAttribute.
+     */
+    public String getParameter(String name) throws IllegalActionException {
+        Attribute attribute = getAttribute(name);
+        if(attribute instanceof StringAttribute) {
+            StringAttribute stringAttribute = (StringAttribute)attribute;
+            return stringAttribute.getExpression();
+        } else if(attribute instanceof Parameter) {
+            Parameter parameter = (Parameter)attribute;
+            Token token = parameter.getToken();
+            if(token instanceof StringToken) {
+                return ((StringToken)token).stringValue();
+            } else {
+                throw new IllegalActionException("Parameter with name " + name 
+                        + " is not a String.");
+            }
+        } else {
+            throw new IllegalActionException("Parameter with name " + name
+                    + " is not set!");
+        }
+    }
+
     /** If this GeneratorAttribute has not yet been initialized, the
      *  initialized it by reading the moml file named by the
      *  initialParametersURL and creating Parameters and Variables
@@ -161,7 +186,7 @@ public class GeneratorAttribute extends SingletonAttribute
         URL initialParameters =
             getClass().getClassLoader()
             .getResource(initialParametersURL.getExpression());
-            //            .getResource(((StringToken)initialParametersURL.getToken())
+        //            .getResource(((StringToken)initialParametersURL.getToken())
             //                    .stringValue());
         if (initialParameters == null) {
             throw new IllegalActionException(this, "Failed to find the "
@@ -241,25 +266,13 @@ public class GeneratorAttribute extends SingletonAttribute
 
         if (modelPathOrURL == null)
             // Get the modelPath and update modelPath and model.
-            modelPathOrURL =
-                ((StringToken)
-                        ((StringParameter)getAttribute("modelPath"))
-                        .getToken()).stringValue();
+            modelPathOrURL = getParameter("modelPath");
 
         // Update the modelName and iterations Parameters.
         updateModelAttributes(modelPathOrURL);
 
-
-        String ptII =
-            ((StringToken)
-                    ((Parameter)getAttribute("ptII"))
-                    .getToken()).stringValue();
-
-        String ptIIUserDirectory =
-            ((StringToken)
-                    ((StringParameter)getAttribute("ptIIUserDirectory"))
-                    .getToken()).stringValue();
-
+        String ptII = getParameter("ptII");
+        String ptIIUserDirectory = getParameter("ptIIUserDirectory");
 
         // Check that we will be able to write to the value of
         // the ptIIUserDirectory Parameter, and that
@@ -326,9 +339,7 @@ public class GeneratorAttribute extends SingletonAttribute
         ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
             .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
         
-        String targetPath = ((StringToken)
-                ((StringParameter)getAttribute("targetPath"))
-                .getToken()).stringValue();
+        String targetPath = getParameter("targetPath");
 
         // Check that ptIIUserDirectory + targetPath is writable.
         // targetPath depends on ptIIUserDirectory, so we should mess
@@ -359,38 +370,23 @@ public class GeneratorAttribute extends SingletonAttribute
         Iterator attributes = attributeList().iterator();
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
-            if (attribute instanceof StringParameter) {
+            if (attribute instanceof Parameter) {
                 StringBuffer value = new StringBuffer("\n Value:         ");
                 try {
-                    value.append(((StringParameter)attribute).getToken());
+                    value.append(((Parameter)attribute).getToken());
                 } catch (Exception ex) {
                     value.append(ex);
                 }
-
-                results.append("StringParameter:      " + attribute.getName()
+                
+                String className = "Parameter";
+                if(attribute instanceof StringParameter) {
+                    className = "StringParameter";
+                }
+                results.append(className + ":      " + attribute.getName()
                         + "\n Expression:    "
-                        + ((StringParameter)attribute).getExpression()
+                        + ((Parameter)attribute).getExpression()
                         + value.toString()
                                );
-            } else if (attribute instanceof Parameter) {
-                StringBuffer value = new StringBuffer("\n Value:         ");
-                try {
-                    value.append(((StringParameter)attribute).getToken());
-                } catch (Exception ex) {
-                    value.append(ex);
-                }
-
-                try {
-                    results.append("Parameter:      " + attribute.getName()
-                            + "\n Expression:    "
-                            + ((Parameter)attribute).getExpression()
-                            + value.toString()
-                                   );
-                } catch (Exception ex) {
-                    throw new InternalErrorException(attribute, ex,
-                            "Failed to look up " + attribute);
-                }
-
             } else {
                 results.append("Attribute:      " + attribute.getName());
             }
