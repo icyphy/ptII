@@ -60,7 +60,7 @@ public class CSPMultiSource extends CSPActor {
 	 super(cont, name);
 	 output = new TypedIOPort(this, "output", false, true);
 	 output.setMultiport(true);
-	 output.setDeclaredType(IntToken.class);
+	 output.setTypeEquals(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

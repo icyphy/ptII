@@ -81,10 +81,10 @@ public class CSPChopstick extends CSPActor {
         rightOut = new TypedIOPort(this, "rightOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setDeclaredType(Token.class);
-	rightIn.setDeclaredType(Token.class);
-	leftOut.setDeclaredType(IntToken.class);
-	rightOut.setDeclaredType(IntToken.class);
+	leftIn.setTypeEquals(Token.class);
+	rightIn.setTypeEquals(Token.class);
+	leftOut.setTypeEquals(IntToken.class);
+	rightOut.setTypeEquals(IntToken.class);
     }
 
     /** Construct a CSPChopstick in the specified container with the specified
@@ -111,10 +111,10 @@ public class CSPChopstick extends CSPActor {
          rightOut = new TypedIOPort(this, "rightOut", false, true);
          rightIn = new TypedIOPort(this, "rightIn", true, false);
 
-	leftIn.setDeclaredType(Token.class);
-	rightIn.setDeclaredType(Token.class);
-	leftOut.setDeclaredType(IntToken.class);
-	rightOut.setDeclaredType(IntToken.class);
+	leftIn.setTypeEquals(Token.class);
+	rightIn.setTypeEquals(Token.class);
+	leftOut.setTypeEquals(IntToken.class);
+	rightOut.setTypeEquals(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

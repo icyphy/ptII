@@ -66,8 +66,8 @@ public class CSPSieve extends CSPActor {
         _input = new TypedIOPort(this, "input", true, false);
         _output = new TypedIOPort(this, "output", false, true);
 
-	_input.setDeclaredType(Token.class);
-	_output.setDeclaredType(Token.class);
+	_input.setTypeEquals(Token.class);
+	_output.setTypeEquals(Token.class);
     }
 
 

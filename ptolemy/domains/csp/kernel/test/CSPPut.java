@@ -57,7 +57,7 @@ public class CSPPut extends CSPActor {
 
          outputPort = new TypedIOPort(this, "output", false, true);
 	 outputPort.setMultiport(true);
-	 outputPort.setDeclaredType(Token.class);
+	 outputPort.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

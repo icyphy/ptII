@@ -97,10 +97,10 @@ public class CSPPhilosopher extends CSPActor {
         rightIn = new TypedIOPort(this, "rightIn", true, false);
         rightOut = new TypedIOPort(this, "rightOut", false, true);
 
-	leftIn.setDeclaredType(Token.class);
-	rightIn.setDeclaredType(Token.class);
-	leftOut.setDeclaredType(IntToken.class);
-	rightOut.setDeclaredType(IntToken.class);
+	leftIn.setTypeEquals(Token.class);
+	rightIn.setTypeEquals(Token.class);
+	leftOut.setTypeEquals(IntToken.class);
+	rightOut.setTypeEquals(IntToken.class);
 
         _eating = new Parameter(this, "eatingRate");
         _eating.setExpression("1.0");

@@ -67,10 +67,10 @@ public class CSPProcessor extends CSPActor {
          _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
          _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
 
-         _requestOut.setDeclaredType(IntToken.class);
-         _requestIn.setDeclaredType(BooleanToken.class);
-         _memoryOut.setDeclaredType(StringToken.class);
-         _memoryIn.setDeclaredType(Token.class);
+         _requestOut.setTypeEquals(IntToken.class);
+         _requestIn.setTypeEquals(BooleanToken.class);
+         _memoryOut.setTypeEquals(StringToken.class);
+         _memoryIn.setTypeEquals(Token.class);
 
          _code = code;
 

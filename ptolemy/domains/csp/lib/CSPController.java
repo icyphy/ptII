@@ -68,10 +68,10 @@ public class CSPController extends CSPActor {
          _requestOut.setMultiport(true);
          _requestIn.setMultiport(true);
 
-         _requestOut.setDeclaredType(BooleanToken.class);
-         _requestIn.setDeclaredType(IntToken.class);
-         _contendOut.setDeclaredType(Token.class);
-         _contendIn.setDeclaredType(Token.class);
+         _requestOut.setTypeEquals(BooleanToken.class);
+         _requestIn.setTypeEquals(IntToken.class);
+         _contendOut.setTypeEquals(Token.class);
+         _contendIn.setTypeEquals(Token.class);
 
     }
 

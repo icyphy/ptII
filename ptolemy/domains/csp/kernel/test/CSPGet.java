@@ -57,7 +57,7 @@ public class CSPGet extends CSPActor {
 
          inputPort = new TypedIOPort(this, "input", true, false);
 	 inputPort.setMultiport(true);
-	 inputPort.setDeclaredType(Token.class);
+	 inputPort.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

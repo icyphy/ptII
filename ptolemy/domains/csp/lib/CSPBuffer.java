@@ -75,8 +75,8 @@ public class CSPBuffer extends CSPActor {
         _output = new TypedIOPort(this, "output", false, true);
         _input = new TypedIOPort(this, "input", true, false);
 
-	_output.setDeclaredType(Token.class);
-        _input.setDeclaredType(Token.class);
+	_output.setTypeEquals(Token.class);
+        _input.setTypeEquals(Token.class);
     }
 
     /** Construct a CSPBuffer in the specified container with the specified
@@ -125,8 +125,8 @@ public class CSPBuffer extends CSPActor {
 	_output = new TypedIOPort(this, "output", false, true); 
 	_input = new TypedIOPort(this, "input", true, false);
 
-        _output.setDeclaredType(Token.class);
-        _input.setDeclaredType(Token.class);
+        _output.setTypeEquals(Token.class);
+        _input.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

@@ -61,8 +61,8 @@ public class CSPMemory extends CSPActor {
          _input.setMultiport(true);
          _output.setMultiport(true);
 
-         _input.setDeclaredType(StringToken.class);
-         _output.setDeclaredType(Token.class);
+         _input.setTypeEquals(StringToken.class);
+         _output.setTypeEquals(Token.class);
 
          _strValue = "initialValue";
     }
