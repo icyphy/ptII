@@ -46,7 +46,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="101.0, 49.0">
         </property>
     </property>
-    <entity name="ContinuousFransferFunction0" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+    <entity name="ContinuousTransferFunction0" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0}">
@@ -189,8 +189,8 @@
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ContinuousFransferFunction0.input" relation="relation3"/>
-    <link port="ContinuousFransferFunction0.output" relation="relation1"/>
+    <link port="ContinuousTransferFunction0.input" relation="relation3"/>
+    <link port="ContinuousTransferFunction0.output" relation="relation1"/>
     <link port="Clock1.output" relation="relation3"/>
     <link port="Test0.input" relation="relation1"/>
 </entity>
