@@ -83,9 +83,9 @@ public class Subscriber extends Source implements RemoteEventListener {
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        minSerialNumber = new Parameter(this, "minSerialNumber", 
+        numberOfHistory = new Parameter(this, "numberOfHistory", 
                 new LongToken(0));
-        minSerialNumber.setTypeEquals(BaseType.LONG);
+        numberOfHistory.setTypeEquals(BaseType.LONG);
         blocking = new Parameter(this, "blocking", 
                 new BooleanToken(false));
         blocking.setTypeEquals(BaseType.BOOLEAN);
@@ -107,15 +107,15 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public Parameter entryName;
 
-    /** The minimum serial number of the subsribed entry. All
-     *  entries retrieved by this actor will have serial numbers
-     *  no less than this number. The default value is 0 of 
-     *  type LongToken. The serial number is usually greater
-     *  than or equal to 0. If this number is negative, the 
-     *  subscriber always get the entry with the largest 
-     *  serial number (i.e. the latest entry).
+    /** The number of history entries this actor wants to retrieve
+     *  from the space. The default value is 0 of 
+     *  type LongToken, meaning that the actor does not retrieve
+     *  history entries.
+     *  If this number if greater than the number of entries in 
+     *  the space, then the sequence of entries this actor gets
+     *  will start from the oldest entry.
      */  
-    public Parameter minSerialNumber;
+    public Parameter numberOfHistory;
 
     /** Indicate whether the actor blocks when it can not read
      *  an entry from the space. The default value is false of
@@ -149,8 +149,8 @@ public class Subscriber extends Source implements RemoteEventListener {
 	    Subscriber newobj = (Subscriber)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.minSerialNumber = 
-                (Parameter)newobj.getAttribute("minSerialNumber");
+            newobj.numberOfHistory = 
+                (Parameter)newobj.getAttribute("numberOfHistory");
             newobj.blocking = (Parameter)newobj.getAttribute("blocking");
             newobj.defaultToken = 
                 (Parameter)newobj.getAttribute("defaultToken");
@@ -171,15 +171,14 @@ public class Subscriber extends Source implements RemoteEventListener {
         } 
     }
             
-
     /** Find the JavaSpaces and retrieve the first token. The type of
      *  the output is infered from the type of the token
      *  @exception IllegalActionException If the space cannot be found.
      */
     public void preinitialize() throws IllegalActionException {
         _entryName = ((StringToken)entryName.getToken()).toString();
-        long minserialnumber = 
-            ((LongToken)minSerialNumber.getToken()).longValue();
+        long numberofhistory = 
+            ((LongToken)numberOfHistory.getToken()).longValue();
 
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).toString());
@@ -191,7 +190,7 @@ public class Subscriber extends Source implements RemoteEventListener {
             //throw new IllegalActionException( this,
             //        "unable to export object. Please check if RMI is OK. " +
             //        e.getMessage());
-            System.out.println(e.getMessage());
+            System.err.println("Warning: " + e.getMessage());
         }
         _tokenList = new LinkedList();
         //FIXME: set type by the token read.
@@ -232,13 +231,13 @@ public class Subscriber extends Source implements RemoteEventListener {
             // The template does not consider the serial number.
             TokenEntry template = new TokenEntry(_entryName, null, null);
             
-            // depends on the where the minserialnumber is:
+            // depends on the where the numberOfHistory is:
             // _lastRead serves as a lock.
-            long lastread = minserialnumber -1 ;
-            if( minserialnumber <= minimum) {
+            long lastread = maximum-numberofhistory;
+            if( lastread < minimum) {
                 lastread = minimum -1;
             }
-            System.out.println("set initial reading # " + lastread);
+            System.out.println("set initial reading # to " + lastread);
             _lastRead = new LastRead(lastread);
             
             // request for notification
@@ -268,8 +267,8 @@ public class Subscriber extends Source implements RemoteEventListener {
                             finished = true;
                         } else {
                             _lastRead.increment();
-                            //System.out.println("PRE: insert token " +
-                            //        _lastRead.getSerialNumber());
+                            System.out.println("read history entry: " +
+                                    _lastRead.getSerialNumber());
                             Token token = entry.token;
                             _tokenList.addLast(token);
                         }
@@ -290,7 +289,6 @@ public class Subscriber extends Source implements RemoteEventListener {
         new Thread(nh).start();
     }
     
-    
     /** Produce the oldest received token. One for each firing.
      *  If there's no token available, then the bahavior depends
      *  on the "blocking" parameter. If blocking is true, the 
@@ -299,15 +297,15 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public void fire() throws IllegalActionException {
         // make sure no one is writing the token list.
-        System.out.println("fire subscriber");
+        System.out.println("Subscriber get fired");
         synchronized(_tokenList) {
             while(true) {
                 if (_tokenList.isEmpty()) {
                     if(_blocking) {
                         try {
-                            System.out.println("waiting");
+                            System.out.println(getName() + " is waiting.");
                             _tokenList.wait();
-                            System.out.println("get notified.");
+                            System.out.println(getName() + " wakes up.");
                         } catch (InterruptedException e) {
                             throw new IllegalActionException(this,
                                     "blocking interrupted." +
@@ -318,13 +316,12 @@ public class Subscriber extends Source implements RemoteEventListener {
                         break;
                     }
                 } else {
-                    System.out.println("FIRE: subscriber output token");
+                    System.out.println(getName() + " outputs a token.");
                     output.send(0, (Token)_tokenList.removeFirst());
                     return;
                 }
             }
         }
-        //Thread.currentThread().yield();
     }              
 
     ///////////////////////////////////////////////////////////////////
@@ -385,7 +382,8 @@ public class Subscriber extends Source implements RemoteEventListener {
                     // make sure the actor is not producing outputs.
                     synchronized(_tokenList) {
                         while(!finished) {
-                            System.out.println("Tend to read # " +
+                            System.out.println(getName() + 
+                                    " is trying to read entry: " +
                                    ( _lastRead.getSerialNumber()+1));
                             TokenEntry entrytemp = new TokenEntry(_entryName, 
                                 new Long(_lastRead.getSerialNumber()+1), null);
@@ -399,7 +397,8 @@ public class Subscriber extends Source implements RemoteEventListener {
                                         e.getMessage());
                             }
                             if(entry == null) {
-                                System.out.println("read null from space");
+                                System.out.println(getName() + 
+                                        " read null from space");
                                 /* check min indecies
                                 IndexEntry indexmin ;
                                 try {
@@ -420,9 +419,11 @@ public class Subscriber extends Source implements RemoteEventListener {
                                             }*/
                                 finished = true;
                             } else {
-                                System.out.println("Read succeeded.");
+                                System.out.println(getName() + 
+                                        " reads successfully.");
                                 _lastRead.increment();
-                                System.out.println("insert token... " +
+                                System.out.println(getName() + 
+                                        " locally stores entry: " +
                                         _lastRead.getSerialNumber());
                                 Token token = entry.token;
                                 _tokenList.addLast(token);

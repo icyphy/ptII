@@ -172,14 +172,6 @@ public class Publisher extends Sink {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
-        try {
-             System.out.println("Wait for 30 second.");
-            Thread.sleep(30*1000l);
-        } catch (Exception e) {
-            throw new IllegalActionException(this,
-                    "Interruptted" + e.getMessage());
-        }
-        
 	try {
 	    String name = ((StringToken)entryName.getToken()).toString();
 	    long time = ((LongToken)leaseTime.getToken()).longValue();
@@ -217,6 +209,14 @@ public class Publisher extends Sink {
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
         }
+        try {
+             System.out.println("Wait for 30 seconds.");
+            Thread.sleep(30*1000l);
+        } catch (Exception e) {
+            throw new IllegalActionException(this,
+                    "Interruptted" + e.getMessage());
+        }
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,8 +224,6 @@ public class Publisher extends Sink {
 
     private JavaSpace _space;
     private long _currentSerialNumber;
-
- 
         
 }
 
