@@ -222,12 +222,7 @@ public class IterateOverArray extends TypedCompositeActor {
         // but then we would also have to create the redo.
         // Use the container as a context so that redraw occurs after
         // the change request is executed.
-        NamedObj tmpContext = MoMLChangeRequest
-                .getDeferredToParent((NamedObj)getContainer());
-        if (tmpContext == null) {
-            tmpContext = ((NamedObj)getContainer());
-        }
-        final NamedObj context = tmpContext;
+        final NamedObj context = (NamedObj)getContainer();
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this,
                 context,
