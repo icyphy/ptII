@@ -56,8 +56,9 @@ public class ObjectToken extends Token {
     }
 
     /** Construct a token with a reference to the specified object.
-     *  @exception IllegalActionException Argument is not of the appropriate
-     *   type (may be thrown by derived classes, but is not thrown here).
+     *  @exception IllegalActionException If the argument is not of
+     *  the appropriate type
+     *  (may be thrown by derived classes, but is not thrown here).
      */
     public ObjectToken(Object value)
             throws IllegalActionException {
