@@ -88,6 +88,25 @@ public class JMFImageToken extends ImageToken {
         return _value;
     }
 
+    /** Return a description of the token.  
+     *  If possible, derived classes should override this method and
+     *  return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  Unfortunately, in this base class, we can only return the 
+     *  a partial description of the token.
+     *  @return A string representation of a record that partially 
+     *  describes the token.
+     */
+    public String toString() {
+        // FIXME: return a value that can be parsed by the expression language.
+        Image image = asAWTImage();
+        return "{type=\"" + getClass()
+            + "\" width=\"" + image.getWidth(null)
+            + "\" height=\"" + image.getHeight(null)
+            + "\" format=\"" + _videoFormat
+            + "\"}";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Buffer _value;
