@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/javasound/demo
 
-DIRS =		KarplusStrong
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -45,21 +45,22 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
+
+PTCLASSALLJAR =
 
 # Keep this list alphabetized.
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
-	index.htm
+	karplusStrong.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
-	index.htm
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -73,7 +74,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil karplusStrong.xml
 
 depend:
 	@echo "no dependencies in this directory"
