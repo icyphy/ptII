@@ -359,7 +359,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                     } else {
                                         if (accept(null, target)) {
                                             // Make sure directoryOrURL ends with a slash.
-                                            String base = directoryOrURL.getExpression();
+                                            String base = directoryOrURL.stringValue();
                                             if (!base.endsWith("/")) {
                                             	base = base + "/";
                                             }
