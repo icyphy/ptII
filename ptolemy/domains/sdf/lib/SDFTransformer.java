@@ -77,18 +77,21 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
         input_tokenConsumptionRate.setExpression("1");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setPersistent(false);
         
         output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("1");
         output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
+        output_tokenProductionRate.setPersistent(false);
         
         output_tokenInitProduction =
             new Parameter(output, "tokenInitProduction");
         output_tokenInitProduction.setExpression("0");
         output_tokenInitProduction.setVisibility(Settable.NOT_EDITABLE);
         output_tokenInitProduction.setTypeEquals(BaseType.INT);
+        output_tokenInitProduction.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
