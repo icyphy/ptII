@@ -291,6 +291,12 @@ public class Clock extends TimedSource {
                 // Schedule the first firing in the next period.
                 _tentativeCycleStartTime += prd;
             }
+            if(offsts[0][_tentativePhase] >= prd) {
+                throw new IllegalActionException(this,
+                "Offset number " + _tentativePhase + " with value "
+                + offsts[0][_tentativePhase] + " must be less than the "
+                + "period, which is " + prd);
+            }
             // Schedule the next firing in this period.
             _tentativeNextFiringTime
                 = _tentativeCycleStartTime + offsts[0][_tentativePhase];

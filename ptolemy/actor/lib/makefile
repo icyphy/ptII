@@ -83,7 +83,8 @@ JSRCS = \
 	Source.java \
 	TimedActor.java \
 	TimedSource.java \
-	Transformer.java
+	Transformer.java \
+	VariableClock.java
 
 EXTRA_SRCS =	$(JSRCS)
 

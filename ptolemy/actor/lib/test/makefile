@@ -65,7 +65,8 @@ JSIMPLE_TESTS = \
 	Pulse.tcl \
 	Ramp.tcl \
 	Scale.tcl \
-	Sine.tcl
+	Sine.tcl \
+	VariableClock.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
