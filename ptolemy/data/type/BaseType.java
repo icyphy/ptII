@@ -228,7 +228,7 @@ public class BaseType implements Type, Serializable {
     });
 
     /** The fix data type */
-    public static final BaseType FIXEDPOINT = new BaseType(FixToken.class,
+    public static final BaseType FIX = new BaseType(FixToken.class,
             "fixedpoint",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
@@ -237,7 +237,7 @@ public class BaseType implements Type, Serializable {
     });
 
     /** The fix matrix data type */
-    public static final BaseType FIXEDPOINT_MATRIX = new BaseType(
+    public static final BaseType FIX_MATRIX = new BaseType(
             FixMatrixToken.class,
             "[fixedpoint]",
             new ConvertOperator() {

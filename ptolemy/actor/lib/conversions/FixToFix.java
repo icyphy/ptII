@@ -90,8 +90,8 @@ public class FixToFix extends Transformer {
     public FixToFix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.FIXEDPOINT);
-	output.setTypeEquals(BaseType.FIXEDPOINT);
+        input.setTypeEquals(BaseType.FIX);
+	output.setTypeEquals(BaseType.FIX);
 
 	precision = new Parameter(this, "precision");
         precision.setTypeEquals(BaseType.INT_MATRIX);
