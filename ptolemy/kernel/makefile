@@ -64,8 +64,7 @@ JSRCS = \
 	CompositeEntity.java \
 	Entity.java \
 	Port.java \
-	Relation.java \
-	Workspace.java
+	Relation.java
 
 EXTRA_SRCS =	$(JSRCS)
 

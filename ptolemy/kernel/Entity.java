@@ -29,6 +29,8 @@
 
 package pt.kernel;
 
+import pt.kernel.util.*;
+
 import java.util.Enumeration;
 import java.lang.reflect.*;
 import collections.LinkedList;

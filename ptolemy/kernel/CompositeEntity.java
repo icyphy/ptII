@@ -30,6 +30,8 @@
 
 package pt.kernel;
 
+import pt.kernel.util.*;
+
 import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.LinkedList;
