@@ -47,7 +47,7 @@ import java.util.Iterator;
 Searching all the registered function classes for a method repetitively
 every time when a Parameter containing a function expression is evaluated
 became very expensive especially after introducing
-polymorphicGetMethod() to correct for Java's reflection weaknesses.
+_polymorphicGetMethod() to correct for Java's reflection weaknesses.
 This class provides a cache of function/method signatures already analyzed,
 so that next time when the same method with the same signature is invoked
 the search is replaced by fast hashed access to the cache.<p>
@@ -196,7 +196,7 @@ public class CachedMethod {
                     // We haven't found the correct function.
                     // Try matching on argument type sub-classes.
                     try {
-                        method = polymorphicGetMethod
+                        method = _polymorphicGetMethod
                             (argTypes[0], methodName, methodArgTypes);
                         if (method != null) {
                             result = method.invoke
@@ -212,7 +212,8 @@ public class CachedMethod {
                         // exception.getTargetException().printStackTrace();
                         throw new IllegalActionException
                             ("Error invoking function " + methodName + "\n" +
-                                    exception.getTargetException().getMessage());
+                                    exception.getTargetException()
+                                    .getMessage());
                     } catch (Exception exception)  {
                         throw new IllegalActionException
                             (null, exception, "Error invoking function " +
@@ -234,7 +235,8 @@ public class CachedMethod {
                 if (cachedMethod.getType() == REAL+FUNCTION) {
                     try {
                         method = cachedMethod.getMethod();
-                        result = method.invoke(method.getDeclaringClass(), argValues);
+                        result = method.invoke(method.getDeclaringClass(),
+                                argValues);
                     } catch (InvocationTargetException ex) {
                         // get the exception produced by the invoked function
                         ex.getTargetException().printStackTrace();
@@ -249,13 +251,15 @@ public class CachedMethod {
                     return null;
                 }
             } else {
-                // Not found as a method. Search the registered function classes
-                Iterator allClasses = PtParser.getRegisteredClasses().iterator();
+                // Not found as a method.
+                //Search the registered function classes
+                Iterator allClasses =
+                    PtParser.getRegisteredClasses().iterator();
                 while (allClasses.hasNext() && result == null) {
                     Class nextClass = (Class)allClasses.next();
                     //System.out.println("ASTPtFunctionNode: " + nextClass);
-                    // First we look for the method, and if we get an exception,
-                    // we ignore it and keep looking.
+                    // First we look for the method, and if we get an
+                    // exception, we ignore it and keep looking.
                     try {
                         method = nextClass.getMethod(methodName, argTypes);
                         result = method.invoke(nextClass, argValues);
@@ -263,7 +267,7 @@ public class CachedMethod {
                         // We haven't found the correct function.
                         // Try matching on argument type sub-classes.
                         try {
-                            method = polymorphicGetMethod
+                            method = _polymorphicGetMethod
                                 (nextClass, methodName, argTypes);
                             if (method != null) {
                                 result = method.invoke(nextClass, argValues);
@@ -274,22 +278,25 @@ public class CachedMethod {
                             // to invoke the non-existent quantize function on
                             // java.lang.Math.
                         } catch (InvocationTargetException exception) {
-                            // get the exception produced by the invoked function
+                            // get the exception produced by the
+                            // invoked function
                             exception.getTargetException().printStackTrace();
                             throw new IllegalActionException
-                                ("Error invoking function " + methodName + "\n" +
-                                        exception.getTargetException().getMessage());
+                                ("Error invoking function " + methodName
+                                        + "\n"
+                                        + exception.getTargetException()
+                                        .getMessage());
                         } catch (Exception exception)  {
                             throw new IllegalActionException
-                                (null, exception, "Error invoking function " +
-                                        methodName + " on " + nextClass);
+                                (null, exception, "Error invoking function "
+                                        + methodName + " on " + nextClass);
                         }
                     } catch (InvocationTargetException ex) {
                         // get the exception produced by the invoked function
                         ex.getTargetException().printStackTrace();
                         throw new IllegalActionException
-                            ("Error invoking function " + methodName + "\n" +
-                                    ex.getTargetException().getMessage());
+                            ("Error invoking function " + methodName + "\n"
+                                    + ex.getTargetException().getMessage());
                     } catch (Exception ex)  {
                         throw new IllegalActionException(ex.getMessage());
                     }
@@ -331,7 +338,7 @@ public class CachedMethod {
 	    for (int d = 0; resIsArray && d < dim; d++) {
 		for (int i = 0; i < argValues.length; i++) {
 		    if (argTypes[i].isArray()) {
-			nArgValues[i] = Array.get(argValues[i],d);
+			nArgValues[i] = Array.get(argValues[i], d);
                         Class c = nArgValues[i].getClass();
                         // We have to use getClass() here because the above
                         // getComponentType() on Token[] returned by
@@ -356,10 +363,10 @@ public class CachedMethod {
 		if (a instanceof Long) c = Long.TYPE;
                 if (result == null) {
                     result = Array.newInstance(c, dim);
-                    Array.set(result,0,a);
+                    Array.set(result, 0, a);
                 }
                 else
-                    Array.set(result,d,a);
+                    Array.set(result, d, a);
 	    }
             if (cachedMethod == null) {
                 if (result != null) {
@@ -401,13 +408,15 @@ public class CachedMethod {
     }
 
     /** Clear the cache - restarts the search of registered classes for methods
-        and the rebuilding of the cache. */
+     *  and the rebuilding of the cache.
+     */
     public static void clear() {
         _cachedMethods = new Hashtable();
     }
 
-    /** Return the CachedMethod that corresponds to methodName and argTypes if it
-        had been cached previously. */
+    /** Return the CachedMethod that corresponds to methodName and
+     *  argTypes if it had been cached previously.
+     */
     public static CachedMethod get(String methodName, Class[] argTypes,
             int type) {
         CachedMethod key = new CachedMethod(methodName, argTypes, null, type);
@@ -428,23 +437,30 @@ public class CachedMethod {
     // specific method that it finds, but it turns out that this is difficult
     // to define.  So it simply returns the first match.
     // It returns null if there is no match.
-    protected static Method polymorphicGetMethod
-    (Class library, String methodName, Class[] argTypes) {
-        // NOTE: The Java docs do not explain the difference between
-        // getMethods() and getDeclaredMethods(), so I'm guessing here...
-        Method[] methods = library.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(methodName)) {
-                Class[] arguments = methods[i].getParameterTypes();
-                if (arguments.length != argTypes.length) continue;
-                boolean match = true;
-                for (int j = 0; j < arguments.length; j++) {
-                    match = match && arguments[j].isAssignableFrom(argTypes[j]);
-                }
-                if (match) {
-                    return methods[i];
+    protected static Method _polymorphicGetMethod(Class library,
+            String methodName, Class[] argTypes) {
+        while (library != null) {
+            // We want to ascend the class hiearchy in a controlled way
+            // so we use getDeclaredMethods() and getSuperclass()
+            // instead of getMethods().  Note that this approach has the
+            // side effect that additional methods (not only public) are
+            // accessible.
+            Method[] methods = library.getDeclaredMethods();
+            for (int i = 0; i < methods.length; i++) {
+                if (methods[i].getName().equals(methodName)) {
+                    Class[] arguments = methods[i].getParameterTypes();
+                    if (arguments.length != argTypes.length) continue;
+                    boolean match = true;
+                    for (int j = 0; j < arguments.length; j++) {
+                        match = match &&
+                            arguments[j].isAssignableFrom(argTypes[j]);
+                    }
+                    if (match) {
+                        return methods[i];
+                    }
                 }
             }
+            library = library.getSuperclass();
         }
         return null;
     }
