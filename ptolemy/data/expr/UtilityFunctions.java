@@ -37,6 +37,7 @@ import ptolemy.data.StringToken;
 import ptolemy.gui.GUIStringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.data.*;
 
 import java.io.BufferedReader;
@@ -120,11 +121,12 @@ public class UtilityFunctions {
     }
 
     /** Find a file. Uses the supplied name and if it does not exist as is,
-     * searches the user directory followed by the current system
-     * java.class.path list and returns the first match or name unchanged.
-     * @param name Relative pathname of file/directory to find.
-     * @return Canonical absolute path if file/directory was found, otherwise
-     * returns unchanged name. */
+     *  searches the user directory followed by the current system
+     *  java.class.path list and returns the first match or name unchanged.
+     *  @param name Relative pathname of file/directory to find.
+     *  @return Canonical absolute path if file/directory was found, otherwise
+     *   returns unchanged name.
+     */
     public static String findFile(String name) {
         File file = new File(name);
         if (!file.exists()) {
@@ -161,7 +163,6 @@ public class UtilityFunctions {
     public static LongToken freeMemory() {
 	return new LongToken(Runtime.getRuntime().freeMemory());
     }
-
 
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist,

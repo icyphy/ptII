@@ -512,7 +512,11 @@ public class Variable extends Attribute
         _notifyValueListeners();
     }
 
-    /** Return whether the value of this variable is known.
+    /** Return <i>true</i> if the value of this variable is known, and
+     *  false otherwise.  In domains with fixed-point semantics, such
+     *  as SR, a variable that depends on a port value may be unknown
+     *  at various points during the execution.
+     *  @see #setUnknown()
      *  @return True if the value is known.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
@@ -867,10 +871,12 @@ public class Variable extends Attribute
         }
     }
 
-    /** Mark the contained token to be unknown if the specified value is
-     *  true, or mark the contained token to be known if the specified value
-     *  is false.
-     *  @param value A boolean value.
+    /** Mark the value of this variable to be unknown if the argument is
+     *  <i>true</i>, or known if the argument is <i>false</i>.  In domains
+     *  with fixed-point semantics, such as SR, a variable that depends on
+     *  a port value may be unknown at various points during the execution.
+     *  @see #isKnown()
+     *  @param value True to change mark this variable unknown.
      */
     public void setUnknown(boolean value) {
         if (_debugging) {
