@@ -101,6 +101,7 @@ PTII_TOPDIR=	.cshrc \
 		ptolemy \
 		util \
 		vergil.jnlp.in \
+		vergilHyVisual.jnlp.in \
 		vergilDSP.jnlp.in \
 		vergilPtiny.jnlp.in \
 		vergilPtinySandbox.jnlp.in
