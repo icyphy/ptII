@@ -90,7 +90,7 @@ public class HTMLAbout {
             + "Open up all the demonstrations (May fail in Ptiny, DSP or "
             + "Hyvisual configurations).\n"
             + "<li><a href=\"about:demos#ptolemy/configs/doc/completeDemosPtiny.htm\">"
-            + "<code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+            + "<code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
             + "\nOpen up the .xml files in\n"
             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
 //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
