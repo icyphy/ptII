@@ -75,7 +75,9 @@ public class DDENullFBDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super();
 	input = new TypedIOPort(this, "input", true, false);
-	output = new TypedIOPort(this, "output", false, true);
+	output = new DDEIOPort(this, "output", false, true);
+	input.setTypeEquals(Token.class);
+	output.setTypeEquals(Token.class);
     }
 
     /** Construct a DDENullFBDelay with the specified workspace and 
@@ -86,7 +88,9 @@ public class DDENullFBDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
 	input = new TypedIOPort(this, "input", true, false);
-	output = new TypedIOPort(this, "output", false, true);
+	output = new DDEIOPort(this, "output", false, true);
+	input.setTypeEquals(Token.class);
+	output.setTypeEquals(Token.class);
     }
 
     /** Construct a DDENullFBDelay with the specified container and 
@@ -102,14 +106,16 @@ public class DDENullFBDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	input = new TypedIOPort(this, "input", true, false);
-	output = new TypedIOPort(this, "output", false, true);
+	output = new DDEIOPort(this, "output", false, true);
+	input.setTypeEquals(Token.class);
+	output.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
 
     public TypedIOPort input = null;
-    public TypedIOPort output = null;
+    public DDEIOPort output = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -122,7 +128,9 @@ public class DDENullFBDelay extends DDEActor {
      *  sending the output token or setting the current time.
      */
     public void fire() throws IllegalActionException {
+	System.out.println("fire() of DDENullFBDelay");
 	Token token = _getNextInput();
+	System.out.println("fire() of DDENullFBDelay - _getNextInput()");
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper keeper = ((DDEThread)thread).getTimeKeeper();
@@ -131,6 +139,16 @@ public class DDENullFBDelay extends DDEActor {
 	    } 
 	}
 	output.send( 0, token );
+	System.out.println("end of fire() of DDENullFBDelay");
+    }
+
+    /**
+     */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+	System.out.println("Beginning initialize()");
+	output.send( 0, new Token(), TimedQueueReceiver.IGNORE );
+	System.out.println("Finished initialize()");
     }
 
     /** Continue execution of this actor by informing the DDEThread 
@@ -147,7 +165,7 @@ public class DDENullFBDelay extends DDEActor {
     ////                        private variables                  ////
 
     // FIXME: I need to use parameters here.
-    private double _delay = 0.1;
+    private double _delay = 1.0;
 
 }
 
