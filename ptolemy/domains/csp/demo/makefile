@@ -76,6 +76,8 @@ install: all
 
 demo:
 	CLASSPATH=$(CLASSPATH) appletviewer index.html
+	
+bus:	
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
 
 
