@@ -35,7 +35,8 @@ ME =		ptolemy/actor/lib/xslt/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# XSLTransformer requires saxon
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)/lib/saxon7.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
