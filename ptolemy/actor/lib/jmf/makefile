@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	VideoCamera.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml
