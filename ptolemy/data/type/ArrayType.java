@@ -33,7 +33,7 @@ package ptolemy.data.type;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.graph.*;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.data.Token;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.Variable;
@@ -44,7 +44,7 @@ import ptolemy.data.expr.Variable;
 A class representing the type of an ArrayToken.
 
 @author Steve Neuendorffer, Yuhong Xiong
-$Id$
+@version: $Id$
 */
 
 public class ArrayType extends StructuredType {
@@ -285,15 +285,6 @@ public class ArrayType extends StructuredType {
                     (StructuredType)newElemType);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    // FIXME: we are using this for codegen, see
-    // codegen/PtolemyTypeIdentifier.java
-    public static final ArrayType ARRAY_TYPE = new ArrayType(BaseType.UNKNOWN);
-    public static final ArrayType INT_ARRAY_TYPE = new ArrayType(BaseType.INT);
-    public static final ArrayType DOUBLE_ARRAY_TYPE = new ArrayType(BaseType.DOUBLE);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
