@@ -57,7 +57,7 @@ test FunctionType-1.0 {Create an empty instance} {
     set r [java::new {ptolemy.data.type.FunctionType} $t $vt]
     set empRT [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$empRT toString]
-} {{() -> unknown} {() -> unknown}}
+} {{function() unknown} {function() unknown}}
 
 ######################################################################
 ####
@@ -70,7 +70,7 @@ test FunctionType-1.1 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.type.FunctionType} $v $vt]
     set sdRT [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$sdRT toString]
-} {{(string, double) -> double} {(string, double) -> double}}
+} {{function(a0:string, a1:double) double} {function(a0:string, a1:double) double}}
 
 ######################################################################
 ####
@@ -83,7 +83,7 @@ test FunctionType-1.2 {Create an instance with an UNKNOWN field} {
     set r [java::new {ptolemy.data.type.FunctionType} $v $vt]
     set varRT [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$varRT toString]
-} {{(string, unknown) -> unknown} {(string, unknown) -> unknown}}
+} {{function(a0:string, a1:unknown) unknown} {function(a0:string, a1:unknown) unknown}}
 
 ######################################################################
 ####
@@ -93,7 +93,7 @@ test FunctionType-2.0 {Test convert} {
 
     list [[$empRT convert $r1] toString] [[$sdRT convert $r1] toString] \
          [[$varRT convert $r1] toString]
-} {{{2.5, name="foo", value=1}} {{2.5, name="foo", value=1.0}} {{2.5, name="foo", value=1}}}
+} {{(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))}}
 
 ######################################################################
 ####
@@ -214,7 +214,7 @@ test FunctionType-8.0 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $empRT initialize $unknown
     $empRT toString
-} {() -> unknown}
+} {function() unknown}
 
 ######################################################################
 ####
@@ -223,7 +223,7 @@ test FunctionType-8.1 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $sdRT initialize $unknown
     $sdRT toString
-} {(string, double) -> double}
+} {function(a0:string, a1:double) double}
 
 ######################################################################
 ####
@@ -232,7 +232,7 @@ test FunctionType-8.2 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $varRT initialize $unknown
     $varRT toString
-} {(string, unknown) -> unknown}
+} {function(a0:string, a1:unknown) unknown}
 
 ######################################################################
 ####
@@ -240,7 +240,7 @@ test FunctionType-8.2 {Test initialize} {
 test FunctionType-9.0 {Test updateType} {
     catch {$empRT updateType $sdRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: () -> unknown argument: (string, double) -> double}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: function() unknown argument: function(a0:string, a1:double) double}}
 
 ######################################################################
 ####
@@ -248,7 +248,7 @@ test FunctionType-9.0 {Test updateType} {
 test FunctionType-9.1 {Test updateType} {
     catch {$sdRT updateType $empRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (string, double) -> double argument: () -> unknown}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: function(a0:string, a1:double) double argument: function() unknown}}
 
 ######################################################################
 ####
@@ -256,7 +256,7 @@ test FunctionType-9.1 {Test updateType} {
 test FunctionType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (string, double) -> double argument: (string, unknown) -> unknown}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (string, double) -> double argument: (string, unknown) -> unknown}}}
 
 ######################################################################
 ####
@@ -264,5 +264,5 @@ test FunctionType-9.2 {Test updateType} {
 test FunctionType-9.3 {Test updateType} {
     $varRT updateType $sdRT
     $varRT toString
-} {(string, double) -> double}
+} {function(a0:string, a1:double) double}
 
