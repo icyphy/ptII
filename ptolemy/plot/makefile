@@ -199,6 +199,7 @@ ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 	rm -f ptolemy.plotapplet.jar
 	(cd $(CLASSPATH); $(JAR) cf $(PTPACKAGE_DIR)/ptolemy.plotapplet.jar \
 		$(PTPACKAGE_DIR)/CmdLineArgException.class \
+		$(PTPACKAGE_DIR)/EPSGraphics.class \
 		$(PTPACKAGE_DIR)/Plot.class \
 		$(PTPACKAGE_DIR)/PlotApplet.class \
 		$(PTPACKAGE_DIR)/PlotBox.class \
@@ -206,14 +207,16 @@ ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 		$(PTPACKAGE_DIR)/PlotLive.class \
 		$(PTPACKAGE_DIR)/PlotLiveApplet.class \
 		$(PTPACKAGE_DIR)/PlotPoint.class \
+		$(PTPACKAGE_DIR)/PtolemyGraphics.class \
 		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
 		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
+		'$(PTPACKAGE_DIR)/PlotBox$$CommandListener.class' \
 		'$(PTPACKAGE_DIR)/PlotBox$$DragListener.class' \
 		'$(PTPACKAGE_DIR)/PlotBox$$FillButtonListener.class' \
 		'$(PTPACKAGE_DIR)/PlotBox$$ZoomListener.class' \
 		'$(PTPACKAGE_DIR)/PlotLive$$StartButtonListener.class' \
 		'$(PTPACKAGE_DIR)/PlotLive$$StopButtonListener.class' \
-		)
+            )
 
 docs: javadocs
 
