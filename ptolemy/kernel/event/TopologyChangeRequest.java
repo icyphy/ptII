@@ -80,54 +80,54 @@ public abstract class TopologyChangeRequest {
      */
     public abstract void constructEventQueue() throws Exception;
 
-           /** Send the sequence of mutation events to the mutation listener
-             * argument. This method must be called only after processEvents()
-             * has successfully completed. In general, the caller will
+    /** Send the sequence of mutation events to the mutation listener
+     * argument. This method must be called only after processEvents()
+     * has successfully completed. In general, the caller will
      * pass an instance of TopologyMulticaster, so that a number
      * mutation listeners will be notified with the events.
      *
      * @param listener The mutation listener to pass the
      * sequence of events to
      */
-            public void notifyListeners (TopologyListener listener) {
-                Enumeration elts = _events.elements();
-                while (elts.hasMoreElements()) {
-                    TopologyEvent event = (TopologyEvent) elts.nextElement();
-                    switch (event.getID()) {
-                    case TopologyEvent.ENTITY_ADDED:
-                        listener.entityAdded(event);
-                        break;
+    public void notifyListeners (TopologyListener listener) {
+        Enumeration elts = _events.elements();
+        while (elts.hasMoreElements()) {
+            TopologyEvent event = (TopologyEvent) elts.nextElement();
+            switch (event.getID()) {
+            case TopologyEvent.ENTITY_ADDED:
+                listener.entityAdded(event);
+                break;
+                
+            case TopologyEvent.ENTITY_REMOVED:
+                listener.entityRemoved(event);
+                break;
 
-                    case TopologyEvent.ENTITY_REMOVED:
-                        listener.entityRemoved(event);
-                        break;
+            case TopologyEvent.PORT_ADDED:
+                listener.portAdded(event);
+                break;
 
-                    case TopologyEvent.PORT_ADDED:
-                        listener.portAdded(event);
-                        break;
+            case TopologyEvent.PORT_REMOVED:
+                listener.portRemoved(event);
+                break;
 
-                    case TopologyEvent.PORT_REMOVED:
-                        listener.portRemoved(event);
-                        break;
+            case TopologyEvent.PORT_LINKED:
+                listener.portLinked(event);
+                break;
 
-                    case TopologyEvent.PORT_LINKED:
-                        listener.portLinked(event);
-                        break;
+            case TopologyEvent.PORT_UNLINKED:
+                listener.portUnlinked(event);
+                break;
 
-                    case TopologyEvent.PORT_UNLINKED:
-                        listener.portUnlinked(event);
-                        break;
+            case TopologyEvent.RELATION_ADDED:
+                listener.relationAdded(event);
+                break;
 
-                    case TopologyEvent.RELATION_ADDED:
-                        listener.relationAdded(event);
-                        break;
-
-                    case TopologyEvent.RELATION_REMOVED:
-                        listener.relationRemoved(event);
-                        break;
-                    }
-                }
+            case TopologyEvent.RELATION_REMOVED:
+                listener.relationRemoved(event);
+                break;
             }
+        }
+    }
  
     /** Perform the actions contained by the mutation events
      * in this mutation request. (Note that no events are
@@ -158,10 +158,10 @@ public abstract class TopologyChangeRequest {
                 catch (Exception e) {}
                 
                 // Set up the exception to throw
-                       exception = new TopologyChangeFailedException(event, doException);
+                exception = new TopologyChangeFailedException(event, doException);
 
                 // Now undo the events that were already done
-                       elts = doneEvents.elements();
+                elts = doneEvents.elements();
                 while (elts.hasMoreElements()) {
                     TopologyEvent undoEvent = (TopologyEvent) elts.nextElement();
                     try {
@@ -313,12 +313,11 @@ public abstract class TopologyChangeRequest {
     }
 
     ///////////////////////////////////////////////////////////////////
-            ////                      private variables                    ////
+    ////                      private variables                    ////
 
-            // The queue of events
-            private LinkedList _events = new LinkedList();
+    // The queue of events
+    private LinkedList _events = new LinkedList();
 
     // The object that created this request
-            private Object _source;
-
+    private Object _source;
 }

@@ -73,101 +73,104 @@ public class TopologyEvent extends java.util.EventObject {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                    ////
 
-  /** The composite entity that had something added or removed.
-   */
-  public CompositeEntity compositeEntity;
+    /** The composite entity that had something added or removed.
+     */
+    public CompositeEntity compositeEntity;
 
-  /** The component entity that was added to or removed from
-   * a composite entity
-   */
-  public ComponentEntity componentEntity;
+    /** The component entity that was added to or removed from
+     * a composite entity
+     */
+    public ComponentEntity componentEntity;
 
-  /** The entity that had a port added or removed
-   */
-  public Entity entity;
+    /** The entity that had a port added or removed
+     */
+    public Entity entity;
 
-  /** The port that was added, removed, linked, or unlinked
-   */
-  public Port port;
+    /** The port that was added, removed, linked, or unlinked
+     */
+    public Port port;
 
-  /** The relation that was linked or unlinked
-   */
-  public Relation relation;
+    /** The relation that was linked or unlinked
+     */
+    public Relation relation;
 
-  /** The component relation that was added to or removed
-   * from a composite entity
-   */
-  public ComponentRelation componentRelation;
+    /** The component relation that was added to or removed
+     * from a composite entity
+     */
+    public ComponentRelation componentRelation;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public static fields                  ////
 
-  /** An entity has been added to a composite entity. The fields
-   * <b>entity</b> and <b>compositeEntity</b> are valid.
-   */
-  public static final int ENTITY_ADDED = 7531;
+    /** An entity has been added to a composite entity. The fields
+     * <b>entity</b> and <b>compositeEntity</b> are valid.
+     */
+    public static final int ENTITY_ADDED = 7531;
 
-  /** An entity has been removed from a composite entity. The fields
-   * <b>entity</b> and <b>compositeEntity</b> are valid.
-   */
-  public static final int ENTITY_REMOVED = ENTITY_ADDED + 1;
+    /** An entity has been removed from a composite entity. The fields
+     * <b>entity</b> and <b>compositeEntity</b> are valid.
+     */
+    public static final int ENTITY_REMOVED = ENTITY_ADDED + 1;
 
-  /** A port has been added to an entity. The fields
-   * <b>entity</b> and <b>port</b> are valid.
-   */
-  public static final int PORT_ADDED = ENTITY_REMOVED + 1;
+    /** A port has been added to an entity. The fields
+     * <b>entity</b> and <b>port</b> are valid.
+     */
+    public static final int PORT_ADDED = ENTITY_REMOVED + 1;
 
-  /** A port has been removed from an entity. The fields
-   * <b>entity</b> and <b>port</b> are valid.
-   */
-  public static final int PORT_REMOVED = PORT_ADDED + 1;;
+    /** A port has been removed from an entity. The fields
+     * <b>entity</b> and <b>port</b> are valid.
+     */
+    public static final int PORT_REMOVED = PORT_ADDED + 1;;
 
-  /** A port has been linked to a relation. The fields
-   * <b>relation</b> and <b>port</b> are valid.
-   */
-  public static final int PORT_LINKED = PORT_REMOVED + 1;
+    /** A port has been linked to a relation. The fields
+     * <b>relation</b> and <b>port</b> are valid.
+     */
+    public static final int PORT_LINKED = PORT_REMOVED + 1;
 
-  /** A port has been unlinked from a relation. The fields
-   * <b>relation</b> and <b>port</b> are valid.
-   */
-  public static final int PORT_UNLINKED = PORT_LINKED + 1;
+    /** A port has been unlinked from a relation. The fields
+     * <b>relation</b> and <b>port</b> are valid.
+     */
+    public static final int PORT_UNLINKED = PORT_LINKED + 1;
 
-  /** A relation has been added to a composite entity. The fields
-   * <b>relation</b> and <b>compositeEntity</b> are valid.
-   */
-  public static final int RELATION_ADDED = PORT_UNLINKED + 1;
+    /** A relation has been added to a composite entity. The fields
+     * <b>relation</b> and <b>compositeEntity</b> are valid.
+     */
+    public static final int RELATION_ADDED = PORT_UNLINKED + 1;
 
-  /** A relation has been removed from a composite entity. The fields
-   * <b>relation</b> and <b>compositeEntity</b> are valid.
-   */
-  public static final int RELATION_REMOVED = RELATION_ADDED + 1;
+    /** A relation has been removed from a composite entity. The fields
+     * <b>relation</b> and <b>compositeEntity</b> are valid.
+     */
+    public static final int RELATION_REMOVED = RELATION_ADDED + 1;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
-  /** Create a new mutation event, with the specified ID and with
-   * the given source (i.e. director or similar), composite entity,
-   * and component entity.
-   */
-  public TopologyEvent (int id, Object source, CompositeEntity compositeEntity,
-			ComponentEntity componentEntity) {
-    super(source);
-    this.id = id;
-    this.compositeEntity = compositeEntity;
-    this.componentEntity = componentEntity;
-  }
+    /** Create a new mutation event, with the specified ID and with
+     * the given source (i.e. director or similar), composite entity,
+     * and component entity.
+     */
+    public TopologyEvent (int id, Object source,
+            CompositeEntity compositeEntity,
+            ComponentEntity componentEntity) {
+        super(source);
+        this.id = id;
+        this.compositeEntity = compositeEntity;
+        this.componentEntity = componentEntity;
+    }
 
-  /** Create a new mutation event, with the specified ID and with
-   * the given source (i.e. director or similar), entity,
-   * and port.
-   */
-  public TopologyEvent (int id, Object source, Entity entity, Port port) {
-    super(source);
-    this.id = id;
-    this.entity = entity;
-    this.port = port;
-  }
+    /** Create a new mutation event, with the specified ID and with
+     * the given source (i.e. director or similar), entity,
+     * and port.
+     */
+    public TopologyEvent (int id, Object source,
+            Entity entity,
+            Port port) {
+        super(source);
+        this.id = id;
+        this.entity = entity;
+        this.port = port;
+    }
 
     /** Create a new mutation event, with the specified ID and with
      * the given source (i.e. director or similar), composite entity,
@@ -182,160 +185,161 @@ public class TopologyEvent extends java.util.EventObject {
         this.componentRelation = componentRelation;
     }
 
-  /** Create a new mutation event, with the specified ID and with
-   * the given source (i.e. director or similar), relation,
-   * and port.
-   */
-  public TopologyEvent (int id, Object source,
-			 Relation relation, Port port) {
-    super(source);
-    this.id = id;
-    this.relation = relation;
-    this.port = port;
-  }
+    /** Create a new mutation event, with the specified ID and with
+     * the given source (i.e. director or similar), relation,
+     * and port.
+     */
+    public TopologyEvent (int id, Object source,
+            Relation relation,
+            Port port) {
+        super(source);
+        this.id = id;
+        this.relation = relation;
+        this.port = port;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-  /** Get the composite entity involved in this event.
-   *
-   * @return The composite entity, or null if this is not the right event
-   * type.
-   */
-  public CompositeEntity getCompositeEntity() {
-    return compositeEntity;
-  }
+    /** Get the composite entity involved in this event.
+     *
+     * @return The composite entity, or null if this is not the right event
+     * type.
+     */
+    public CompositeEntity getCompositeEntity() {
+        return compositeEntity;
+    }
 
-  /** Get the component entity involved in this event.
-   *
-   * @return The component entity, or null if this is not the right event
-   * type.
-   */
-  public ComponentEntity getComponentEntity() {
-    return componentEntity;
-  }
+    /** Get the component entity involved in this event.
+     *
+     * @return The component entity, or null if this is not the right event
+     * type.
+     */
+    public ComponentEntity getComponentEntity() {
+        return componentEntity;
+    }
 
-  /** Get the entity involved in this event.
-   *
-   * @return The entity, or null if this is not the right event
-   * type.
-   */
-  public Entity getEntity() {
-    return entity;
-  }
+    /** Get the entity involved in this event.
+     *
+     * @return The entity, or null if this is not the right event
+     * type.
+     */
+    public Entity getEntity() {
+        return entity;
+    }
 
-  /** Get the ID of this event. The ID indicates what type
-   * of event this, and is one of the constants ENTIYTY_ADDED,
-   * ENTITY_REMOVED, and so on.
-   *
-   * @return The integer ID.
-   */
-  public int getID() {
-    return id;
-  }
+    /** Get the ID of this event. The ID indicates what type
+     * of event this, and is one of the constants ENTIYTY_ADDED,
+     * ENTITY_REMOVED, and so on.
+     *
+     * @return The integer ID.
+     */
+    public int getID() {
+        return id;
+    }
 
-  /** Get the relation involved in this event.
-   *
-   * @return The relation, or null if this is not the right event
-   * type.
-   */
-  public Relation getRelation() {
-    return relation;
-  }
+    /** Get the relation involved in this event.
+     *
+     * @return The relation, or null if this is not the right event
+     * type.
+     */
+    public Relation getRelation() {
+        return relation;
+    }
 
-  /** Get the component relation involved in this event.
-   *
-   * @return The component relation, or null if this is not the right event
-   * type.
-   */
-  public ComponentRelation getComponentRelation() {
-    return componentRelation;
-  }
+    /** Get the component relation involved in this event.
+     *
+     * @return The component relation, or null if this is not the right event
+     * type.
+     */
+    public ComponentRelation getComponentRelation() {
+        return componentRelation;
+    }
 
-  /** Get the port involved in this event.
-   *
-   * @return The port, or null if this is not the right event
-   * type.
-   */
-  public Port getPort() {
-    return port;
-  }
+    /** Get the port involved in this event.
+     *
+     * @return The port, or null if this is not the right event
+     * type.
+     */
+    public Port getPort() {
+        return port;
+    }
 
-  /** Make the topology change represented by this event.
-   */
-  public void doTopologyChange() throws Exception {
+    /** Make the topology change represented by this event.
+     */
+    public void doTopologyChange() throws Exception {
 	switch (getID()) {
 	case ENTITY_ADDED:
-	  componentEntity.setContainer(compositeEntity);
-	  break;
+            componentEntity.setContainer(compositeEntity);
+            break;
 
 	case ENTITY_REMOVED:
-	  componentEntity.setContainer(null);
-	  break;
+            componentEntity.setContainer(null);
+            break;
 
 	case PORT_ADDED:
-	  port.setContainer(entity);
-	  break;
+            port.setContainer(entity);
+            break;
 
 	case PORT_REMOVED:
-	  port.setContainer(null);
-	  break;
+            port.setContainer(null);
+            break;
 
 	case PORT_LINKED:
-	  port.link(relation);
-	  break;
+            port.link(relation);
+            break;
 
 	case PORT_UNLINKED:
-	  port.unlink(relation);
-	  break;
+            port.unlink(relation);
+            break;
 
 	case RELATION_ADDED:
-	  componentRelation.setContainer(compositeEntity);
-	  break;
+            componentRelation.setContainer(compositeEntity);
+            break;
 
 	case RELATION_REMOVED:
-	  componentRelation.setContainer(null);
-	  break;
+            componentRelation.setContainer(null);
+            break;
 	}
-  }
+    }
 
-  /** Undo the topology change represented by this event.
-   */
-  public void undoTopologyChange() throws Exception {
+    /** Undo the topology change represented by this event.
+     */
+    public void undoTopologyChange() throws Exception {
 	switch (getID()) {
 	case ENTITY_ADDED:
-	  componentEntity.setContainer(null);
-	  break;
+            componentEntity.setContainer(null);
+            break;
 
 	case ENTITY_REMOVED:
-	  componentEntity.setContainer(compositeEntity);
-	  break;
+            componentEntity.setContainer(compositeEntity);
+            break;
 
 	case PORT_ADDED:
-	  port.setContainer(null);
-	  break;
+            port.setContainer(null);
+            break;
 
 	case PORT_REMOVED:
-	  port.setContainer(entity);
-	  break;
+            port.setContainer(entity);
+            break;
 
 	case PORT_LINKED:
-	  port.unlink(relation);
-	  break;
+            port.unlink(relation);
+            break;
 
 	case PORT_UNLINKED:
-	  port.link(relation);
-	  break;
+            port.link(relation);
+            break;
 
 	case RELATION_ADDED:
-	  componentRelation.setContainer(null);
-	  break;
+            componentRelation.setContainer(null);
+            break;
 
 	case RELATION_REMOVED:
-	  componentRelation.setContainer(compositeEntity);
-	  break;
+            componentRelation.setContainer(compositeEntity);
+            break;
 	}
-  }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                    ////

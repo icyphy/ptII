@@ -53,34 +53,34 @@ public class TopologyChangeFailedException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                    ////
 
-  /** The mutation event that failed.
-   */
-  public TopologyEvent failedEvent;
+    /** The mutation event that failed.
+     */
+    public TopologyEvent failedEvent;
 
-  /** The mutation event that failed when a rollback was attempted.
-   */
-  public TopologyEvent failedEventOnUndo;
+    /** The mutation event that failed when a rollback was attempted.
+     */
+    public TopologyEvent failedEventOnUndo;
 
-  /** The exception that was thrown by the failed mutation event.
-   */
-  public Exception thrownException;
+    /** The exception that was thrown by the failed mutation event.
+     */
+    public Exception thrownException;
 
-  /** The exception that was thrown by the failed undo mutation event.
-   */
-  public Exception thrownExceptionOnUndo;
+    /** The exception that was thrown by the failed undo mutation event.
+     */
+    public Exception thrownExceptionOnUndo;
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
-   /** Create a new TopologyChangeFailedException containing the event
-   * which failed and the exception it threw.
-   */
-  public TopologyChangeFailedException (
-				  TopologyEvent failedEvent,
-				  Exception thrownException) {
-    this.failedEvent = failedEvent;
-    this.thrownException = thrownException;
-  }
+    /** Create a new TopologyChangeFailedException containing the event
+     * which failed and the exception it threw.
+     */
+    public TopologyChangeFailedException (
+            TopologyEvent failedEvent,
+            Exception thrownException) {
+        this.failedEvent = failedEvent;
+        this.thrownException = thrownException;
+    }
 				  
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

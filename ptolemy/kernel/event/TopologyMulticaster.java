@@ -29,14 +29,16 @@
 
 package ptolemy.kernel.event;
 
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TopologyMulticaster
 /**
-A TopologyEventMulticaster that
-forwards topology change events it receives to a list of other
-listeners. This is useful for clients that wish
-to support mutation requests.
+A TopologyEventMulticaster that forwards topology change events it
+receives to a list of other listeners. This is typically used
+by classes that provide addTopologyListener() and removeTologyListener()
+methods.
 
 @author John Reekie
 @version $Id$
@@ -47,89 +49,127 @@ public class TopologyMulticaster implements TopologyListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a new mutation listener. Any time any of the
+    /** Add a new topology listener. Any time any of the
      * event notification methods is called, it will be forwarded
      * to the added listener.
      *
-     * @param listener An object that listens to mutation events
+     * @param listener An object that listens to topology events
      */
-  public void addTopologyListener (TopologyListener listener) {
-   // FIXME
-  }
+    public void addTopologyListener (TopologyListener listener) {
+        _listeners.insertLast(listener);
+    }
 
     /** Notify that an entity has been added to a composite.
      * The <b>compositeEntity</b> and <b>entity</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void entityAdded (TopologyEvent event) {}
+    public void entityAdded (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).entityAdded(event);
+        }
+    }
 
     /** Notify that an entity has been removed from a composite.
      * The <b>compositeEntity</b> and <b>entity</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void entityRemoved (TopologyEvent event) {}
+    public void entityRemoved (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).entityRemoved(event);
+        }
+    }
 
     /** Notify that a port has been added to an entity.
      * The <b>entity</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void portAdded (TopologyEvent event) {}
+    public void portAdded (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).portAdded(event);
+        }
+    }
 
     /** Notify that a port has been removed from a entity.
      * The <b>entity</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void portRemoved (TopologyEvent event) {}
+    public void portRemoved (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).portRemoved(event);
+        }
+    }
 
-    /** Remove a new mutation listener. The listener will
-     * no longer be notified of mutation events. If the
+    /** Remove a new topology listener. The listener will
+     * no longer be notified of topology events. If the
      * given listener has not been previously registered
      * with addTopologyListener() (or is null), then do
      * nothing.
      *
-     * @param listener An object that listens to mutation events
+     * @param listener An object that listens to topology events
      */
-  public void removeTopologyListener (TopologyListener listener) {
-   // FIXME
-  }
+    public void removeTopologyListener (TopologyListener listener) {
+        _listeners.removeOneOf(listener);
+    }
 
-     /** Notify that a relation has been added to a composite.
+    /** Notify that a relation has been added to a composite.
      * The <b>compositeEntity</b> and <b>relation</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
-    */
-  public void relationAdded (TopologyEvent event) {}
+     * @param event The topology event
+     */
+    public void relationAdded (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).relationAdded(event);
+        }
+    }
 
     /** Notify that a relation has been removed from a composite.
      * The <b>compositeEntity</b> and <b>relation</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void relationRemoved (TopologyEvent event) {}
+    public void relationRemoved (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).relationRemoved(event);
+        }
+    }
 
     /** Notify that a port has been linked to a relation.
      * The <b>relation</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-      * @param event The mutation event
+     * @param event The topology event
      */
-  public void portLinked (TopologyEvent event) {}
+    public void portLinked (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).portLinked(event);
+        }
+    }
 
     /** Notify that a port has been unlinked from a relation.
      * The <b>relation</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-     * @param event The mutation event
+     * @param event The topology event
      */
-  public void portUnlinked (TopologyEvent event) {}
+    public void portUnlinked (TopologyEvent event) {
+        for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
+            ((TopologyListener) e.nextElement()).portUnlinked(event);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+
+    // FIXME: use ArrayList when we port to JDK1.2
+    private LinkedList _listeners = new LinkedList();
 }
