@@ -78,8 +78,15 @@ public class ParameterEditor extends PtolemyQuery implements Configurer {
             if(attribute instanceof Parameter) {
                 Parameter param = 
                     (Parameter) attribute;
+		String tokenValue = "";
+		try {
+		    tokenValue = param.stringRepresentation();
+		} catch (Exception e) {
+		    System.out.println("Token " + param.getName() + " has an" +
+				       " illegal value!");
+		}
                 addLine(param.getName(), param.getName(), 
-                        param.getToken().toString());
+                        tokenValue);
                 attachParameter(param, param.getName());
             }
         }
