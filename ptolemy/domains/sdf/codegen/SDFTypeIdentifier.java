@@ -117,9 +117,9 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
         try {
             CompileUnitNode sdfAtomicActorUnit = StaticResolution.loadFile(
                     SearchPath.NAMED_PATH.openSource(
-                            "ptolemy.domains.sdf.kernel.SDFAtomicActor"), 1);
+                            "ptolemy.actor.TypedAtomicActor"), 1);
             SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-                    sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS);
+                    sdfAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
             SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();
 
             CompileUnitNode sdfIOPortUnit = StaticResolution.loadFile(
