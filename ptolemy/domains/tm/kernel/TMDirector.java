@@ -681,7 +681,8 @@ public class TMDirector extends Director {
             Object[] events = _eventQueue.toArray();
             // System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
             for (int i = events.length-1; i >= 0; i-- ) {
-                String actorName = ((Nameable)((TMEvent)events[i]).actor()).getName();
+                String actorName =
+                    ((Nameable)((TMEvent)events[i]).actor()).getName();
                 double time = getCurrentTime();
                 int scheduleEvent = SchedulePlotter.TASK_BLOCKED;
                 if (i == 0) {
