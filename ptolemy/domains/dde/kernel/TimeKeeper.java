@@ -79,8 +79,9 @@ priorities of the associated TimeKeeper is totally ordered.
 A TimeKeeper manages the ordering of receivers by keeping track of
 its receivers and their corresponding receiver times and priorities.
 As tokens are placed in and taken out of the receivers of an actor,
-the TimeKeeper's list is updated. This same information allows the
-TimeKeeper to determine what the current time is.
+the TimeKeeper's receiver list is updated. The receiver list is sorted
+by RcvrComparator. This same information allows the TimeKeeper to 
+determine what the current time is.
 
 @author John S. Davis II
 @version $Id$
@@ -165,6 +166,34 @@ public class TimeKeeper {
         return _outputTime;
     }
 
+    /** Update receivers controlled by this time keeper that have
+     *  a receiver time equal to TimedQueueReceiver.IGNORE. For
+     *  each such receiver, call DDEReceiver.removeIgnoredToken().
+     */
+    public synchronized void removeAllIgnoreTokens() {
+	String name = ((Nameable) _actor).getName();
+	/*
+	if( name.equals("join") ) {
+	    System.out.println("*****removeAllIgnoreTokens() called by "+name+" at time "+_currentTime);
+	}
+	*/
+
+	if( _rcvrList == null ) {
+	    return;
+	}
+	if( _ignoredRcvrs ) {
+	    TimedQueueReceiver rcvr;
+	    for( int i = 0; i < _rcvrList.size(); i++ ) {
+	        rcvr = (TimedQueueReceiver)_rcvrList.get(i);
+		if( rcvr.getRcvrTime() ==
+			TimedQueueReceiver.IGNORE ) {
+		    rcvr.removeIgnoredToken();
+		}
+	    }
+	    _ignoredRcvrs = false;
+	}
+    }
+
     /** Send a NullToken to all output channels that have a receiver 
      *  time less than or equal to the current time of this time keeper. 
      *  In this case, set the time stamp of the NullTokens to be equal 
@@ -185,9 +214,6 @@ public class TimeKeeper {
 	    }
 	}
 	*/
-
-
-
 	Iterator ports = _actor.outputPortList().iterator(); 
 	double time = getCurrentTime(); 
 	while( ports.hasNext() ) {
@@ -230,6 +256,106 @@ public class TimeKeeper {
 	} 
     }
 
+    /** Update the list of receivers by adding a receiver to the
+     *  receiver list if not already present and then sorting the
+     *  list. The receiver list is sorted according to a RcvrComparator.
+     * @param tqr The TimedQueueReceiver whose position is being
+     *  updated.
+     * @see ptolemy.domains.dde.kernel.RcvrComparator
+     */
+    public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
+	if( _rcvrList == null ) {
+	    _rcvrList = new LinkedList();
+	}
+
+	double time = tqr.getRcvrTime();
+	if( time == TimedQueueReceiver.IGNORE ) {
+	    /*
+	    System.out.println("#### SET IGNORE #####");
+	    */
+	    _ignoredRcvrs = true;
+	}
+
+	if( !_rcvrList.contains( tqr ) ) {
+	    // Add receiver to list
+	    if( time > 0 ) {
+		_rcvrList.addFirst( tqr );
+	    } else {
+		_rcvrList.addLast( tqr );
+	    }
+	}
+
+	Collections.sort( _rcvrList, _rcvrComparator );
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                   package friendly variables              ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                   package friendly methods		   ////
+
+    /** Print the contents of the receiver list contained by
+     *  this actor. 
+     * @deprecated Use for testing purposes only.
+    synchronized void printRcvrList() {
+	String name = ((NamedObj)_actor).getName();
+        System.out.println("\n###Print "+name+"'s RcvrList.");
+        System.out.println("   Number of Receivers in RcvrList = "
+                + _rcvrList.size() );
+        if( _rcvrList.size() == 0 ) {
+            System.out.println("\tList is empty");
+            System.out.println("###End of printRcvrList()\n");
+	    return;
+        }
+        for( int i = 0; i < _rcvrList.size(); i++ ) {
+	    TimedQueueReceiver testRcvr = (TimedQueueReceiver)_rcvrList.get(i);
+            double time = testRcvr.getRcvrTime();
+	    Token token = null;
+	    if( testRcvr._queue.size() > 0 ) {
+		token = ((TimedQueueReceiver.Event)testRcvr._queue.get(0)).getToken();
+	    }
+	    String msg = "\t"+name+"'s Receiver "+i+
+                " has a time of " +time+" and ";
+	    if( token instanceof NullToken ) {
+		msg += "contains a NullToken";
+	    } else if( token != null ) {
+		msg += "contains a RealToken";
+	    } else {
+		msg += "contains no token";
+	    }
+	    System.out.println(msg);
+        }
+        System.out.println("###End of printRcvrList()\n");
+    }
+     */
+
+    /** Set the output time associated with this time keeper.
+     *  Throw an IllegalActionException if the output time is
+     *  less than the current time.
+     * @param outputTime The output time of this time keeper.
+     * @exception IllegalActionException if the output time is
+     *  less than the current time.
+     */
+    synchronized void setOutputTime(double outputTime)
+            throws IllegalActionException {
+            
+        if( outputTime < _currentTime ) {
+            throw new IllegalActionException("Illegal attempt "
+            	    + "to set the time keeper's output time "
+                    + "in the past");
+        }
+        /*
+        if( _outputTime > _currentTime ) {
+            if( _outputTime > outputTime ) {
+                return;
+            }
+        }
+        */
+	if( outputTime != TimedQueueReceiver.IGNORE ) {
+            _outputTime = outputTime;
+	}
+    }
+
     /** Set the priorities of the receivers contained in the input
      *  ports of the actor managed by this time keeper. Order the
      *  receiver priorities relative to one another according to the
@@ -241,7 +367,7 @@ public class TimeKeeper {
      * @exception IllegalActionException If an error occurs during
      *  receiver access.
      */
-    public synchronized void setRcvrPriorities()
+    synchronized void setRcvrPriorities()
             throws IllegalActionException {
 		/*
 	String name = ((Nameable)_actor).getName();
@@ -287,150 +413,6 @@ public class TimeKeeper {
             cnt++;
         }
     }
-
-    /** Set the output time associated with this time keeper.
-     *  Throw an IllegalActionException if the output time is
-     *  less than the current time.
-     * @param outputTime The output time of this time keeper.
-     */
-    synchronized void setOutputTime(double outputTime)
-            throws IllegalActionException {
-        if( _outputTime > _currentTime ) {
-            if( _outputTime > outputTime ) {
-                return;
-            }
-        }
-	if( outputTime != TimedQueueReceiver.IGNORE ) {
-            _outputTime = outputTime;
-	}
-    }
-
-    /** Update receivers controlled by this time keeper that have
-     *  a receiver time equal to TimedQueueReceiver.IGNORE. For
-     *  each such receiver, call DDEReceiver.removeIgnoredToken().
-     */
-    public synchronized void removeAllIgnoreTokens() {
-	String name = ((Nameable) _actor).getName();
-	/*
-	if( name.equals("join") ) {
-	    System.out.println("*****removeAllIgnoreTokens() called by "+name+" at time "+_currentTime);
-	}
-	*/
-
-
-
-	if( _rcvrList == null ) {
-	    return;
-	}
-	if( _ignoredRcvrs ) {
-	    TimedQueueReceiver rcvr;
-	    for( int i = 0; i < _rcvrList.size(); i++ ) {
-	        rcvr = (TimedQueueReceiver)_rcvrList.get(i);
-		if( rcvr.getRcvrTime() ==
-			TimedQueueReceiver.IGNORE ) {
-		    rcvr.removeIgnoredToken();
-		}
-	    }
-	    _ignoredRcvrs = false;
-	}
-    }
-
-    /** Update the list of receivers by adding and sorting a new 
-     *  receiver or resorting a receiver that already exists. The
-     *  receiver is sorted according to a RcvrComparator.
-     * @param tqr The TimedQueueReceiver whose position is being
-     *  updated.
-     * @see ptolemy.domains.dde.kernel.RcvrComparator
-     */
-    public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
-	if( _rcvrList == null ) {
-	    _rcvrList = new LinkedList();
-	}
-
-	/*
-	double time = tqr.getRcvrTime();
-	if( time == TimedQueueReceiver.IGNORE ) {
-	    System.out.println("#### SET IGNORE #####");
-	    _ignoredRcvrs = true;
-	}
-
-	if( !_rcvrList.contains( tqr ) ) {
-	    // Add receiver to list
-	    if( time > 0 ) {
-		_rcvrList.addFirst( tqr );
-	    } else {
-		_rcvrList.addLast( tqr );
-	    }
-	}
-
-	Collections.sort( _rcvrList, _rcvrComparator );
-	*/
-
-
-
-
-	double time = tqr.getRcvrTime();
-	if( time == TimedQueueReceiver.IGNORE ) {
-	    // System.out.println("#### SET IGNORE #####");
-	    _ignoredRcvrs = true;
-	}
-
-	// If receiver is already on the list then sort and return
-	if( _rcvrList.contains( tqr ) ) {
-	    Collections.sort( _rcvrList, _rcvrComparator );
-	    return;
-	}
-
-	// Add receiver to list and then sort
-	if( time > 0.0 ) {
-	    _rcvrList.addFirst( tqr );
-	} else {
-	    _rcvrList.addLast( tqr );
-	}
-	
-	Collections.sort( _rcvrList, _rcvrComparator );
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                   package friendly variables              ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                   package friendly methods		   ////
-
-    /** Print the contents of the receiver list contained by
-     *  this actor. 
-     * @deprecated Use for testing purposes only.
-    synchronized void printRcvrList() {
-	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n###Print "+name+"'s RcvrList.");
-        System.out.println("   Number of Receivers in RcvrList = "
-                + _rcvrList.size() );
-        if( _rcvrList.size() == 0 ) {
-            System.out.println("\tList is empty");
-            System.out.println("###End of printRcvrList()\n");
-	    return;
-        }
-        for( int i = 0; i < _rcvrList.size(); i++ ) {
-	    TimedQueueReceiver testRcvr = (TimedQueueReceiver)_rcvrList.get(i);
-            double time = testRcvr.getRcvrTime();
-	    Token token = null;
-	    if( testRcvr._queue.size() > 0 ) {
-		token = ((TimedQueueReceiver.Event)testRcvr._queue.get(0)).getToken();
-	    }
-	    String msg = "\t"+name+"'s Receiver "+i+
-                " has a time of " +time+" and ";
-	    if( token instanceof NullToken ) {
-		msg += "contains a NullToken";
-	    } else if( token != null ) {
-		msg += "contains a RealToken";
-	    } else {
-		msg += "contains no token";
-	    }
-	    System.out.println(msg);
-        }
-        System.out.println("###End of printRcvrList()\n");
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods		   ////

@@ -43,29 +43,55 @@ import java.util.NoSuchElementException;
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver
 /**
-A receiver that stores time stamped tokens according to DDE
-semantics. A <I>time stamped token</I> is a token that has a
-time stamp associated with it. A DDEReceiver stores time
-stamped tokens by enforcing a blocking read and blocking
-write style. Time stamped tokens are appended to the queue
-with either of the put() methods, both of which block on a
-write if the queue is full. Time stamped tokens are removed
-from the queue via the get() method that blocks on a read if
-the queue is empty. If a process blocks on a read or a write,
-the director is informed. Blocks are removed (and the director
-is informed) if the conditions of the queue contents that led
-to blocking no longer exist.
+A DDEReceiver stores time stamped tokens according to distributed
+discrete event semantics. A <I>time stamped token</I> is a token 
+that has a time stamp associated with it. A DDEReceiver stores time
+stamped tokens by enforcing a blocking read and blocking write style. 
+Time stamped tokens are appended to the queue with either of the put() 
+methods, both of which block on a write if the queue is full. Time 
+stamped tokens are removed from the queue via the get() method. The
+get() method will throw a NoTokenException if it is invoked when the 
+hasToken() method returns false. 
 <P>
-The key difference between DDEReceiver and TimedQueueReceiver
-is that get() and put() block as described above. In fact,
-the blocking mechanism of DDEReceiver is such that hasToken()
-blocks as well. If hasToken() is called while the receiver is
-empty, then hasToken() will block until a token is available.
+Each DDEReceiver is managed by a TimeKeeper. A single time keeper is
+assigned to manage all of the receivers of a given actor by keeping
+track of the actor's local notion of time. As tokens are consumed
+(returned by the get() method) in a receiver, the local time of the
+actor will advance to the value of the consumed token's time stamp. 
+The hasToken() method of a receiver will return true only if the 
+receiver's get() method will result in the minimum advancement of local 
+time with respect to all of the receivers controlled by the TimeKeeper. 
+If the get() method of multiple receivers will result in a minimum
+but identical local time advancement, then the hasToken() method of the
+receiver with the highest priority will true (the others will return
+false). 
 <P>
-This class assumes that valid time stamps have non-negative
-values. Several reserved negative values exist for special
-purposes: INACTIVE, IGNORE and RECEIVER. These values are
-public attributes of TimedQueueReceiver.
+If a receiver with a nonnegative receiver time is empty, then the hasToken() 
+method will perform a blocking read. Once, a token is available then
+hasToken() will return true or false according to the minimum time 
+advancement rules cited in the preceding paragraph. Note that hasToken()
+blocks while get() does not block.
+<P>
+DDEReceivers process certain events that are hidden from view by
+ports and actors. In particular, NullTokens and time stamps of 
+value TimedQueueReceiver.IGNORE. NullTokens allow actors to 
+communicate information on their local time advancement to 
+neighboring actors without the need for an actual data exchange.
+NullTokens are passed at the receiver level and circumvent the
+Ptolemy II data typing mechanism. 
+<P>
+Time stamps of value TimedQueueReceiver.IGNORE are used to initiate
+execution in feedback cycles. If a receiver has a time stamp with
+value IGNORE, then it will not be considered when determining which
+receiver's get() method will result in the minimum local time 
+advancement. Once a single token has been consumed by any other
+receiver, then the event with time stamp of value IGNORE will be
+removed. If all receivers have receiver times of IGNORE, then all
+such events will be removed.
+<P>
+IMPORTANT: This class assumes that valid time stamps have non-negative
+values. Reserved negative values exist for special purposes: INACTIVE, 
+IGNORE and RECEIVER. These values are attributes of TimedQueueReceiver.
 
 
 @author John S. Davis II
@@ -101,29 +127,22 @@ public class DDEReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Do a blocking read on the queue. If no token is available,
-     *  then inform the director that this receiver is blocking on
-     *  a read and wait until a token becomes available. When a
-     *  token becomes available, determine if this queue has the
-     *  unique oldest receiver time with respect to all of the
-     *  receivers contained by the actor that contains this receiver;
-     *  if so, return the token. If the receiver time is a non-unique
-     *  minimum then determine if this receiver has the highest
-     *  priority of all receivers that share the non-unique minimum
-     *  receiver time and if so, return the token. Otherwise throw a
-     *  NoTokenException. If at any point during this method this
-     *  receiver is scheduled for termination, then throw a
-     *  TerminateProcessException to cease execution of the actor
-     *  that contains this receiver.
+    /** Return a token from the queue. If no token is available,
+     *  then throw a NoTokenException. If at any point during 
+     *  this method this receiver is scheduled for termination, 
+     *  then throw a TerminateProcessException to cease execution 
+     *  of the actor that contains this receiver.
      *  <P>
      *  IMPORTANT: This method is designed to be called after
      *  hasToken() has been called. Verify that this method is
-     *  safe to call by calling hasToken() first.
-     * @return Token The oldest token on this queue if this queue has
-     *  the minimum receiver time of all receivers contained by the
-     *  actor that contains this receiver.
+     *  safe to call by calling hasToken() first. Note that 
+     *  this method does not perform a blocking read but hasToken()
+     *  does.
+     *  FIXME
+     * @return The oldest token on this queue.
      * @exception NoTokenException If this method is called while
      *  hasToken() returns false.
+     * @see hasToken()
      */
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
@@ -150,48 +169,51 @@ public class DDEReceiver extends TimedQueueReceiver
     }
 
     /** Return true if the get() method of this receiver will return a
-     *  token without throwing a NoTokenException. If this receiver has
-     *  a receiver time that is not less than or equal to the receiver
-     *  time of all receivers contained by the actor that contains this
-     *  receiver then return false. If this receiver has a receiver time
-     *  that is equal to the minimum receiver time of all receivers
-     *  contained by the actor that contains this receiver and at least
-     *  one receiver has a receiver time equal to that of this receiver,
-     *  then return false if this receiver has a lower priority when
-     *  compared to all receivers sharing its receiver time. Otherwise,
-     *  block until this receiver contains a token. If at any point during
-     *  this method this receiver is scheduled for termination, then throw
-     *  a TerminateProcessException to cease execution of the actor that
-     *  contains this receiver.
+     *  token without throwing a NoTokenException. This method will
+     *  perform a blocking read if this receiver is empty and has a
+     *  nonnegative receiver time. Once the receiver is no longer empty,
+     *  this method will return true only if this receiver is sorted
+     *  first with respect to the other receivers contained by this
+     *  receiver's actor. The sorting rules are found in
+     *  ptolemy.domains.dde.kernel.RcvrComparator.
      *  <P>
-     *  If this receiver is contained on the inside of a boundary port,
-     *  then return true if this receiver contains a non-NullToken.
+     *  Note that this method calls uses no synchronization directly 
+     *  and calls 
+     *  hasToken(workspace, director, timeKeeper, _hideNullTokens).
+     *  The version of hasToken (with parameters) is recursive and
+     *  handles synchronization.
      * @return Return true if the get() method of this receiver will
      *  return a token without throwing a NoTokenException.
      */
-    public boolean hasToken() {
+    public boolean yohasToken() {
 	Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)((Actor) 
 		getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
+        
+	if( thread instanceof DDEThread ) {
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+            return hasToken(workspace, director, timeKeeper, _hideNullTokens);
+        }
+        return false;
+        
+        /*
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 
 	    int value = 0;
 	    timeKeeper.updateRcvrList( this );
 	    while( value == 0 ) {
-		/*
-		if( this != timeKeeper.getFirstRcvr() ) {
-		    return false;
-		}
-		*/
+		// FIXME
+		// if( this != timeKeeper.getFirstRcvr() ) {
+		//    return false;
+		// }
 		value = getNextTokenType(workspace, director, 
 			timeKeeper, _hideNullTokens);
-		/* JFIXME
-		if( value == 0 ) {
-		    timeKeeper.sendOutNullTokens(this);
-		}
-		*/
+		// JFIXME
+		// if( value == 0 ) {
+		//     timeKeeper.sendOutNullTokens(this);
+		// }
 	    }
 	    if( value == 1 ) {
 		return true;
@@ -200,6 +222,147 @@ public class DDEReceiver extends TimedQueueReceiver
 	    } 
 	}
 	return false;
+        */
+    }
+        
+        
+    /** Return true if the get() method of this receiver will return a
+     *  token without throwing a NoTokenException. This method is
+     *  recursive and contains a large block of code that is
+     *  synchronized. It takes parameters to avoid have to gain
+     *  access to the workspace within the synchronized block.
+     *  <P>
+     *  If at any point during this method this receiver is scheduled 
+     *  for termination, then throw a TerminateProcessException to cease 
+     *  execution of the actor that contains this receiver.
+     */
+    public boolean hasToken(Workspace workspace, 
+    		DDEDirector director, TimeKeeper timeKeeper, 
+                boolean _hideNullTokens) {
+        return false;
+    }
+    
+    public boolean hasToken() {
+	String name = ((Nameable)getContainer().getContainer()).getName();
+
+        System.out.println(name+".hasToken() Beginning instantiation");
+	Workspace workspace = getContainer().workspace();
+        DDEDirector director = (DDEDirector)((Actor) 
+		getContainer().getContainer()).getDirector();
+	Thread thread = Thread.currentThread();
+	TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+        System.out.println(name+".hasToken() Through with instantiation");
+        
+	if( !(thread instanceof DDEThread) ) {
+            return false;
+        }
+        
+        boolean sendNullTokens = false;
+        
+	synchronized(this) {
+        
+            
+	    //////////////////////
+	    // Update the RcvrList
+	    //////////////////////
+	    timeKeeper.updateRcvrList( this );
+
+	    /////////////////////////////////////////
+	    // Determine if this Receiver is in Front
+	    /////////////////////////////////////////
+	    if( this != timeKeeper.getFirstRcvr() ) {
+        	System.out.println(name+".hasToken() returning false");
+	        return false;
+	    }
+
+	    //////////////////////////////////////////
+	    // Determine if the TimeKeeper is inactive 
+	    //////////////////////////////////////////
+            if( timeKeeper.getNextTime() == INACTIVE ) {
+                requestFinish();
+	    }
+
+	    ///////////////////
+	    // Check Rcvr Times
+	    ///////////////////
+            if( getRcvrTime() == IGNORE && !_terminate ) {
+	        timeKeeper.removeAllIgnoreTokens();
+
+	        /* JFIXME
+	        */
+                sendNullTokens = true;
+                
+                /*
+	        timeKeeper.sendOutNullTokens(this);
+	        return hasToken(workspace, director, 
+			timeKeeper, _hideNullTokens);
+                */
+            }
+
+	    ///////////////////////////
+	    // Check Token Availability
+	    ///////////////////////////
+            if( super.hasToken() && !_terminate && !sendNullTokens ) {
+	        if ( !hasNullToken() ) {
+        	    System.out.println(name+".hasToken() returning true");
+	            return true;
+	        } else {
+		    // Treat Null Tokens Normally For Feedback
+		    if( !_hideNullTokens ) {
+        	        System.out.println(name+".hasToken() returning true");
+		        return true;
+		    }
+
+		    // Deal With Null Tokens Separately
+		    super.get();
+                    sendNullTokens = true;
+                    
+                    /*
+		    timeKeeper.sendOutNullTokens(this);
+	            return hasToken(workspace, director, 
+			timeKeeper, _hideNullTokens);
+                    */
+	        }
+	    }
+
+	    ////////////////////////
+	    // Perform Blocking Read
+	    ////////////////////////
+	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
+	        _readPending = true;
+                director.addInternalReadBlock();
+	        while( _readPending && !_terminate ) {
+		    workspace.wait( this );
+	        }
+	    }
+
+	    ////////////////////
+	    // Check Termination
+	    ////////////////////
+	    if( _terminate ) {
+	        if( _readPending ) {
+		    _readPending = false;
+		    director.removeInternalReadBlock();
+	        }
+                throw new TerminateProcessException("");
+	    }
+	    /*
+            return 0;
+	    return hasToken(workspace, director, 
+			timeKeeper, _hideNullTokens);
+	    */
+        }
+        
+        System.out.println(name+".hasToken() out of synchronization");
+        if( sendNullTokens ) {
+	    timeKeeper.sendOutNullTokens(this);
+        }
+        System.out.println(name+".hasToken() through sending NullTokens");
+	return hasToken(); 
+        /*
+	return hasToken(workspace, director, 
+        	timeKeeper, _hideNullTokens);
+        */
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
@@ -279,6 +442,8 @@ public class DDEReceiver extends TimedQueueReceiver
      *  accordance with the constraints of the ProcessReceiver
      *  interface.
      * @param flag The boolean pause flag of this receiver.
+     * @deprecated This code is being replaced by 
+     *  ptolemy.actor.CompositeActor.stopFire()
      */
     public synchronized void requestPause(boolean pause) {
 	;
