@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFConservativeRcvr-2.1 {Single put/get; Check sizes} {
+test ODFReceiver-2.1 {Single put/get; Check sizes} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     # Note: Director not really needed since blocking won't occur in this test
@@ -58,7 +58,7 @@ test ODFConservativeRcvr-2.1 {Single put/get; Check sizes} {
     $topLevel setDirector $dir
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr $iop]
+    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set initSize [$rcvr getSize]
     
     set t1 [java::new ptolemy.data.Token]
@@ -74,7 +74,7 @@ test ODFConservativeRcvr-2.1 {Single put/get; Check sizes} {
 ######################################################################
 ####
 #
-test ODFConservativeRcvr-3.1 {put, get, put, put, get; Check token, sizes and times} {
+test ODFReceiver-3.1 {put, get, put, put, get; Check token, sizes and times} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     # Note: Director not really needed since blocking won't occur in this test
@@ -82,7 +82,7 @@ test ODFConservativeRcvr-3.1 {put, get, put, put, get; Check token, sizes and ti
     $topLevel setDirector $dir
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr $iop]
+    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set initSize [$rcvr getSize]
     
     set t1 [java::new ptolemy.data.Token]
@@ -110,7 +110,7 @@ test ODFConservativeRcvr-3.1 {put, get, put, put, get; Check token, sizes and ti
 ######################################################################
 ####
 #
-test ODFConservativeRcvr-3.2 {put, put, put, get, get, get; Check token and times} {
+test ODFReceiver-3.2 {put, put, put, get, get, get; Check token and times} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     # Note: Director not really needed since blocking won't occur in this test
@@ -118,7 +118,7 @@ test ODFConservativeRcvr-3.2 {put, put, put, get, get, get; Check token and time
     $topLevel setDirector $dir
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr $iop]
+    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set initSize [$rcvr getSize]
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
@@ -143,14 +143,14 @@ test ODFConservativeRcvr-3.2 {put, put, put, get, get, get; Check token and time
 ######################################################################
 ####
 #
-#test ODFConservativeRcvr-4.1 {Single get on an empty queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
+#test ODFReceiver-4.1 {Single get on an empty queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
 #    set wspc [java::new ptolemy.kernel.util.Workspace]
 #    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
 #    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
 #    $topLevel setDirector $dir
 #    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
 #    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr $iop]
+#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
 #    set t1 [java::new ptolemy.data.Token]
 #    $rcvr get 
 #} {}
@@ -158,14 +158,14 @@ test ODFConservativeRcvr-3.2 {put, put, put, get, get, get; Check token and time
 ######################################################################
 ####
 #
-#test ODFConservativeRcvr-4.2 {Single put on a full queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
+#test ODFReceiver-4.2 {Single put on a full queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
 #    set wspc [java::new ptolemy.kernel.util.Workspace]
 #    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
 #    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
 #    $topLevel setDirector $dir
 #    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
 #    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr $iop]
+#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
 #    $rcvr setCapacity 0
 #    set t [java::new ptolemy.data.Token]
 #    $rcvr put $t

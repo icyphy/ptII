@@ -164,9 +164,9 @@ test ODFThread-2.5 {getNextTime()} {
     set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.ODFConservativeRcvr]
+    set rcvr1 [java::new ptolemy.domains.odf.kernel.ODFReceiver]
+    set rcvr2 [java::new ptolemy.domains.odf.kernel.ODFReceiver]
+    set rcvr3 [java::new ptolemy.domains.odf.kernel.ODFReceiver]
     set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 15.0 2]
     set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 1]
     set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 6.0 3]
