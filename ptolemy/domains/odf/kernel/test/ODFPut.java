@@ -47,15 +47,15 @@ import ptolemy.data.StringToken;
 
 */
 
-public class ODFPut extends AtomicActor {
+public class ODFPut extends TypedAtomicActor {
 
     /**
      */
-    public ODFPut(CompositeActor cont, String name)
+    public ODFPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         outputPort = new IOPort(this, "output", false, true);
+         outputPort = new TypedIOPort(this, "output", false, true);
 	 outputPort.setMultiport(true);
     }
 
@@ -65,5 +65,5 @@ public class ODFPut extends AtomicActor {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    public IOPort outputPort;
+    public TypedIOPort outputPort;
 }

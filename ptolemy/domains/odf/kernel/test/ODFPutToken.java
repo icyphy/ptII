@@ -51,7 +51,7 @@ public class ODFPutToken extends ODFPut {
 
     /**
      */
-    public ODFPutToken(CompositeActor cont, String name, int numTokens)
+    public ODFPutToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 

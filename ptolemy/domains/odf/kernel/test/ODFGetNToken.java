@@ -51,7 +51,7 @@ public class ODFGetNToken extends ODFGet {
 
     /**
      */
-    public ODFGetNToken(CompositeActor cont, String name, int numTokens)
+    public ODFGetNToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 

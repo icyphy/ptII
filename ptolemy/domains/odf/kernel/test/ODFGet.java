@@ -51,11 +51,11 @@ public class ODFGet extends ODFActor {
 
     /**
      */
-    public ODFGet(CompositeActor cont, String name)
+    public ODFGet(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         inputPort = new IOPort(this, "input", true, false);
+         inputPort = new TypedIOPort(this, "input", true, false);
 	 inputPort.setMultiport(true);
     }
 
@@ -71,5 +71,5 @@ public class ODFGet extends ODFActor {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    public IOPort inputPort;
+    public TypedIOPort inputPort;
 }
