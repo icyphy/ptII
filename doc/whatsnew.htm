@@ -37,8 +37,6 @@ Configurations have been refactored into
 separate directories in <CODE>$PTII/ptolemy/configs</CODE>,
 and one example of such a standalone tool, HyVisual, is provided.
 
-FIXME: Python.
-
 <li> Updates to Vergil, the user interface for building models
 (Steve Neuendorffer, Edward A. Lee, John Reekie):
 	<menu>
@@ -46,63 +44,58 @@ FIXME: Python.
         <li> Persistent window sizing and placement.
 	<li> Undo/Redo.
 	<li> Port Parameters.
-	<li><CODE>vergil -help</CODE> will list the possible configurations.
-	<li> A full-screen mode was created for viewing Ptolemy II
-	models.  This could be used, for example, in presentations.
+	<li><CODE>vergil -help</CODE> lists available configurations.
+	<li> Full-screen mode for use in presentations.
         </menu>
 
 <li> Other user interface improvements
 (Steve Neuendorffer, Edward A. Lee):
         <menu>
-        <li> An infrastructure has been provided for creating
-        interactive shells, and an expression parser, Python shell,
-        and Tcl shell are provided (under File:New).
-	<li> GUI components for viewing Ptolemy II data,
-	as given in the expression language. Files with the extension .ptd are
-	now
-opened by a token viewer. The default viewer is a text editor, but if
-the data is a matrix, then the matrix viewer is used.
+        <li> Interactive shells infrastructure.
+        <li> An interactive expression shell using this infrastructure.
+	<li> Infrastructure for specialized token viewers.
+        Files with the extension .ptd are now opened by a token viewer.
+        The default token viewers is a text editor, but others can be
+	added in the configuration.
+	<li> A matrix token viewer.
         </menu>
 
-
 <li> HSIF Support
-(Haiyang Zheng)
- <br>
+(Haiyang Zheng).
 The Hybrid System Interchange Format (HSIF), was developed by the
-<a href="http://www.isis.vanderbilt.edu#in_browser">Institute of Software Integrated Systems (ISIS) at Vanderbilt University</a>
-as part of the <a href="http://www.isis.vanderbilt.edu/Projects/mobies/default.html#in_browser">ISIS MoBIES</a> effort.
+<a href="http://www.isis.vanderbilt.edu#in_browser">
+Institute of Software Integrated Systems (ISIS) at Vanderbilt University</a>
+as part of the
+<a href="http://www.isis.vanderbilt.edu/Projects/mobies/default.html#in_browser">ISIS MoBIES</a> effort.
 The HSIF documentation states:
-
-<quote>
+<menu>
 "The goal of HSIF is to define an interchange format for hybrid system
 models that can be shared between modeling and analysis tools. HSIF
 models represent dynamic systems, whose dynamics includes both
 continuous and discrete behaviors."
-</quote>
+</menu>
 
-<br> Haiyang Zheng developed a set of XSLT files that convert
- HSIF into MoML, the XML format used to represent Ptolemy II Models.
-
- <br>See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+Haiyang Zheng developed a set of XSLT files that convert
+HSIF into MoML, the XML format used to represent Ptolemy II Models.
+See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a>.
 </li>
 
 <li> Higher Order Components
 <a href="codeDoc/ptolemy/actor/hoc/MultiInstanceComposite.html">MultiInstanceComposite</a>
 (Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.)
-        </menu>
+
+<li>
+Python integration, with a
+<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript</a>
+actor that permits definition of actors in Python (Xiaojun Liu).
+This uses
+<a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
+a Java implementation of Python.
 </menu>
 
 <h2>Other Features that are new in Ptolemy II 3.0</h2>
 
 <ul>
-
-
-<li> <a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript</a>
-(Xiaojun Liu)
-An interface to 
-<a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
-a Java implementation of Python.
-
 
 <li> Ptolemy II Matlab interface updates
 (Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.) -
