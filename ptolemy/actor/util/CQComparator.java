@@ -24,29 +24,26 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.util;
 
-import collections.*;
+import java.util.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CQComparator
 /**
-This interface extends the Comparator interface which defines
-int compare(Object, Object) method. The extension defines these
-two additional methods:
-<ul>
-<li> long getBinIndex(Object key, Object zeroReference, Object binWidth)
-<li> Object getBinWidth(Object[] keyArray)
-</ul>
-<p>
-An object implementing this interface can be shared among different
-CalendarQueue instances, because it doesn't contain any state information.
+This interface extends the Comparator interface, which defines
+the compare() method. The extension defines additional methods
+that specifically support the CalendarQueue class.  That class
+needs to associate an entry in the queue with a virtual bin
+number, and needs to be able to periodically recompute the width
+of its bins.  Thus, merely being able to compare entries is
+not sufficient.
 
-@author Lukito Muliadi
+@author Lukito Muliadi, Edward A. Lee
 @version $Id$
 @see CalendarQueue
 @see collections.Comparator
@@ -57,37 +54,38 @@ public interface CQComparator extends Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a key, a zero reference, and a bin width, return the index of
-     *  the bin containing the key.
-     *  This operation is conceptually equivalent to:
-     *  <i>(key-zeroReference) / binWidth</i>,
-     *  where the division is an integer division
+    /** Given an entry, return a virtual bin number for the entry.
+     *  The virtual bin number is a quantized version of whatever
+     *  key is being used to compare entries.
+     *  The calculation performed should be something like:
+     *  <p>
+     *  <i>(entry - zeroReference) / binWidth</i>,
+     *  </p>
+     *  with the result cast to long.
      *  <p>
      *  Classes that implement this interface will in general need to
      *  perform a downcast on the arguments (of type Object) to the
      *  appropriate user defined classes. If the arguments are not of
      *  appropriate type, the implementation should throw a
      *  ClassCastException.
-     * @param key an object representing the sort key.
-     * @param zeroReference an object representing the zero reference.
-     * @param binWidth an object representing the bin width.
+     *
+     * @param entry An object that can be inserted in a calendar queue.
      * @return The index of the bin.
-     * @exception ClassCastException Incompatible argument type.
      */
-    public long getBinIndex(Object key, Object zeroReference, Object binWidth);
+    public long getVirtualIndex(Object entry);
 
-    /** Given an array of keys, return an appropriate bin width for a
-     *  calendar queue to hold these keys.  This method assumes that the
-     *  keys provided are all different, and are in increasing order.
+    /** Given an array of entries, set an appropriate bin width for a
+     *  calendar queue to hold these entries.  This method assumes that the
+     *  entries provided are all different, and are in increasing order.
      *  Ideally, the bin width is chosen so that
      *  the average number of entries in non-empty bins is equal to one.
-     *  If the argument is null, return the default bin width.
-     *  The return value is an object because keys can be any
-     *  comparable objects, so how a width is represented depends on
-     *  how the keys are realized.
-     *  @param keyArray An array of key objects.
-     *  @return The bin width.
-     *  @exception ClassCastException Incompatible argument type.
+     *  If the argument is null set the default bin width.
+     *  @param entryArray An array of entries.
      */
-    public Object getBinWidth(Object[] keyArray);
+    public void setBinWidth(Object[] entryArray);
+
+    /** Set the zero reference, to be used in calculating the virtual
+     *  bin number.
+     */
+    public void setZeroReference(Object zeroReference);
 }

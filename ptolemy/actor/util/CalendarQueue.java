@@ -1,4 +1,4 @@
-/* CalendarQueue, an O(1) implementation of Priority Queue.
+/* CalendarQueue, an implementation of a priority queue.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,40 +40,29 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CalendarQueue
 /**
-This class implements a fast priority queue. Entries are sorted
-according to their sort key. A dequeue operation will remove the entry
-that has the smallest sort key.
-<p>
-For reusability, the sort keys can be any instance of Object.
-A client needs to implement the CQComparator interface to define how the
-sort keys are compared. This implementation is provided to
-the CalendarQueue constructor.
+This class implements a fast priority queue. Entries are sorted with the
+help of a comparator provided to the constructor.
+A dequeue operation will remove the smallest entry according to this sort.
+Entries can be any instance of Object that are acceptable to the
+specified comparator.
 <p>
 Entries are enqueued using the put() method, and dequeued using the take()
-method. The take() method returns the entry associated with the
-smallest key. The toArray() methods can be used to examine the contents
-of the queue.
+method. The get() method returns the smallest entry in the queue, but
+without removing it from the queue.
+The toArray() methods can be used to examine the contents of the queue.
 <p>
-CalendarQueue operates like a 'bag' or multiset
-collection. This simply means that an
+This class operates like a 'bag' or multiset collection.
+This simply means that an
 entry can be added into the queue even if it already exists in the queue.
 If a 'set' behavior is desired, one can subclass CalendarQueue and
 override the put() method.
 <p>
-Associated with the take() method, we have getNextKey() and getPreviousKey().
-The former returns the current smallest sort key in the queue,
-while the latter returns
-the sort key associated with the entry that was last dequeued using the
-take() method. For example, suppose the smallest-key entry is associated
-with value 'CC' and key 'S'. Then the sequence getNextKey(), take(), and
-getPreviousKey() will return 'S', 'CC', and 'S'.
-<p>
 The queue works as follows.  Entries are conceptually stored in
 an infinite set of virtual bins (or buckets). The instance of CQComparator
 is consulted to determine which virtual bin should be used for an entry
-(by calling its getBinIndex() method).  Each virtual bin has a width
-(determined by calling the getBinWidth() method of the CQComparator).
-Within each virtual bin, entries are sorted by key.
+(by calling its getVirtualIndex() method).  Each virtual bin has a width,
+which can be altered by calling the setBinWidth() method of the CQComparator.
+Within each virtual bin, entries are sorted.
 <p>
 Having an infinite number of bins, however, is not practical.
 Thus, the virtual bins are mapped into physical bins (or buckets)
@@ -87,7 +76,7 @@ month (bin) of this calendar.  Its virtual bin number might be
 <p>
 The performance of a calendar queue is very sensitive to the number
 of bins, the width of the bins, and the relationship of these quantities
-to the keys that are observed.  Thus, this implementation may frequently
+to the entries that are observed.  Thus, this implementation may frequently
 change the number of bins.  When it does change the number of bins,
 it changes them by a specifiable <i>bin count factor</i>.
 This defaults to 2, but can be specified as a constructor argument.
@@ -99,8 +88,8 @@ queue size exceeds <i>nf</i>.
 The number of bins will be divided by <i>f</i> if the 
 queue size falls below <i>n/f</i>.  Thus, the queue attempts to
 keep the number of bins close to the size of the queue.
-Each time it resizes the queue, it uses data currently in the
-queue to calculate a reasonable bin width (actually, it defers
+Each time it changes the number of bins, it uses recently dequeued entries
+to calculate a reasonable bin width (actually, it defers
 to the associated CQComparator for this calculation).
 <p>
 Changing the number of bins is a relatively expensive operation,
@@ -109,7 +98,7 @@ of change operations. Working counter to this, however, is that the
 queue is most efficient when there is on average one event per bin.
 Thus, the queue becomes less efficient if change operations are less
 frequent.  Change operations can be entirely disabled by calling
-setAdaptive().
+setAdaptive() with argument <i>false</i>.
 <p>
 This implementation is not synchronized, so if multiple threads
 depend on it, the caller must be.
@@ -147,14 +136,14 @@ public class CalendarQueue {
      *  of buckets.  It too defaults to 2 if the other constructor is used.
      *  @param comparator The comparator used to sort entries.
      *  @param minNumBuckets The minimum number of buckets.
-     *  @param resizeFactor The threshold factor.
+     *  @param binCountFactor The bin count factor.
      */
     public CalendarQueue(CQComparator comparator,
             int minNumBuckets,
-            int resizeFactor) {
+            int binCountFactor) {
         this(comparator);
         _minNumBuckets = minNumBuckets;
-        _queueResizeFactor = resizeFactor;
+        _queueBinCountFactor = binCountFactor;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,80 +165,39 @@ public class CalendarQueue {
         _debugging = true;
     }
 
-    /** Empty the queue.
+    /** Empty the queue, discarding all current information.
+     *  On the next put(), the queue will be reinitialized, including
+     *  setting the bin width and zero reference of the comparator.
      */
     public void clear() {
-        _zeroRef = null;
+        _initialized = false;
         _qSize = 0;
-        _takenKey = null;
     }
 
-    /** Return the key associated with the object that is at the head of the
-     *  queue (i.e. the one that would be obtained on the next take()).
+    /** Return entry that is at the head of the
+     *  queue (i.e. the one that will be obtained by the next take()).
      *  If the queue is empty, then throw an exception.
-     *  <p>
-     *  NOTE: This method is slower
-     *  than the similar method getPreviousKey(). Therefore, it is
-     *  recommended to use getPreviousKey() whenever possible.
      *
-     *  @return Object The smallest sort key in the queue.
+     *  @return Object The smallest entry in the queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public final Object getNextKey()
-            throws IllegalActionException {
+    public final Object get() throws IllegalActionException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
-            throw new IllegalActionException(
-                "Cannot getNextKey() on an empty queue.");
+            throw new IllegalActionException("Queue is empty.");
         }
-        Object[][] contents = toArray(1);
-        return contents[0][0];
-    }
-
-    /** Return the key of the last object dequeued using take() method.
-     *  If the queue was empty when the last take() method was invoked,
-     *  then throw an exception (note that the last take() method would have
-     *  also thrown an exception). If take() has never been called, then throw
-     *  an exception as well.
-     *  A typical application would call take() followed
-     *  by getPreviousKey() to get the value and its corresponding
-     *  key, respectively.
-     *
-     *  @return The sort key associated with the last entry dequeued by the
-     *   take() method.
-     *  @exception IllegalActionException If take() has not been
-     *   called, or the queue was empty when it was last called.
-     */
-    public final Object getPreviousKey()
-            throws IllegalActionException {
-        // First check if _takenKey == null which means either the last take()
-        // threw an exception or take() has never been called.
-        if (_takenKey == null) {
-            throw new IllegalActionException("No previous key available.");
-        }
-        return _takenKey;
+        Object[] contents = toArray(1);
+        return contents[0];
     }
 
     /** Return true if the specified entry is in the queue.
-     *  This is checked using the equals() method of the key and value.
+     *  This is checked using the equals() method.
+     *  @param entry The entry.
      *  @return True if the specified entry is in the queue.
-     *  @param key The sort-key of the entry.
-     *  @param value The value of the entry.
      */
-    public boolean includes(Object key, Object value) {
-        // If the queue is empty, then return false
+    public boolean includes(Object entry) {
         if (_qSize == 0) return false;
-
-        // Create a CQEntry object to wrap value and key.
-        CQEntry cqEntry = new CQEntry(value, key);
-
-        // Calculate the index into the queue array.
-        long i = _getBinIndex(key);
-        i = i % _nBuckets;
-        if (i < 0) i += _nBuckets;
-
-        // Query the bucket to see whether the entry is included.
-        return _bucket[(int)i].includes(cqEntry);
+        return _bucket[_getBinIndex(entry)].includes(entry);
     }
 
     /** Return true if the queue is empty, and false otherwise.
@@ -259,118 +207,80 @@ public class CalendarQueue {
         return (_qSize == 0);
     }
 
-    /** Add an entry to the queue. An entry is specified by its key and
-     *  its value.  This method always returns true.  A derived class,
-     *  however, may return false if the entry is already on the queue
+    /** Add an entry to the queue.  This method always returns true.
+     *  A derived class, however, may return false if the entry is
+     *  already on the queue
      *  and is not added again.  In this class, the entry is always added,
      *  even if an identical entry already exists on the queue.
+     *  <p>
+     *  The first time this is called after queue creation or after
+     *  calling clear() results in the comparator having its zero reference
+     *  set to the argument and its bin width set to the default.
+     *  Also, the number of buckets is set to the minimum (which have
+     *  been given to the constructor).
      *
-     *  @param key The key of the entry to be added to the queue.
-     *  @param value The value of the entry to be added to the queue.
+     *  @param entry The entry to be added to the queue.
      *  @return True.
-     *  @exception IllegalArgumentException If the key is null.
      */
-    public boolean put(Object key, Object value) {
-        // create a CQEntry object to wrap value and key
-        CQEntry cqEntry = new CQEntry(value, key);
-        return put(cqEntry);
-    }
-
-    /** Add an entry to the queue. An entry is given as an instance of
-     *  CQEntry. This method always returns true.  A derived class,
-     *  however, may return false if the entry is already on the queue
-     *  and is not added again.  In this class, the entry is always added,
-     *  even if an identical entry already exists on the queue.
-     *
-     *  @param key The key of the entry to be added to the queue.
-     *  @param value The value of the entry to be added to the queue.
-     *  @return True.
-     *  @exception IllegalArgumentException If the key is null.
-     */
-    public boolean put(CQEntry cqEntry) {
-        if (cqEntry.key == null) {
-            throw new IllegalArgumentException(
-                "CalendarQueue.put() can't accept null key"
-            );
-        }
-        if (_debugging) _debug("+ queueing event: " + cqEntry.value
-                + ", tag: " + cqEntry.key);
+    public boolean put(Object entry) {
+        if (_debugging) _debug("+ putting in queue: " + entry);
 
         // If this is the first put since the queue creation,
         // then do initialization.
-        if (_zeroRef == null) {
-            _zeroRef = cqEntry.key;
+        if (!_initialized) {
+            _cqComparator.setZeroReference(entry);
+            _cqComparator.setBinWidth(null);
             _qSize = 0;
-            _localInit(_minNumBuckets, _cqComparator.getBinWidth(null),
-                    cqEntry.key);
+            _localInit(_minNumBuckets, entry);
             // Indicate that we do not have enough samples redo width.
             _sampleValid = false;
-            _previousTakenKey = null;
         }
 
-        // Get the virtual bin number.
-        long i = _getBinIndex(cqEntry.key);
-        // Translate to a physical bin number.
-        i = i % _nBuckets;
-        // Make sure the bin number is non-negative.
-        if (i < 0) i += _nBuckets;
+        // Get the bin number.
+        int binNumber = _getBinIndex(entry);
 
-        // If _minKey equal to null (which happens before any entries are put
-        // in the queue), or the queue size is zero,
-        // or if the new entry has lower key than the current
-        // smallest key) then update the minimum key of the queue.
-        if (_minKey == null || _qSize == 0 ||
-                _cqComparator.compare(cqEntry.key, _minKey) < 0) {
-            _minKey = cqEntry.key;
-            _minVirtualBucket = _getBinIndex(_minKey);
-            _minBucket = (int)(_minVirtualBucket % _nBuckets);
-            if (_minBucket < 0) _minBucket += _nBuckets;
+        // If _minimumEntry is equal to null (which happens before any entries
+        // are put in the queue), or the queue size is zero,
+        // or if the new entry is less than the current
+        // smallest entry) then update the minimum entry of the queue.
+        if (_minimumEntry == null || _qSize == 0 ||
+                _cqComparator.compare(entry, _minimumEntry) < 0) {
+            _minimumEntry = entry;
+            _minVirtualBucket = _cqComparator.getVirtualIndex(entry);
+            _minBucket = _getBinIndex(entry);
         }
 
-        // Insert the entry into bucket i, which has a sorted list.
-        _bucket[(int)i].insert(cqEntry);
+        // Insert the entry into bucket binNumber, which has a sorted list.
+        _bucket[binNumber].insert(entry);
         // Indicate increased size.
         ++_qSize;
 
         // Change the calendar size if needed.
-        if (_qSize > _topThreshold) _qSizeOverThreshold++;
-        if (_qSizeOverThreshold > _RESIZE_LAG) {
-            _resize(_nBuckets*_queueResizeFactor);
-        }
+        _resize(true);
+
         return true;
     }
 
-    /** Remove a specific entry (specified by a key and
-     *  value). This method returns true if the entry
+    /** Remove the specified entry and return true if the entry
      *  is found and successfully removed, and false
      *  if it is not found.
-     *  Equality is tested using the equals() method of the key and value.
+     *  Equality is tested using the equals() method of the entry.
      *  If there are multiple entries in the queue that match, then
      *  only the first one is removed. The first one always
-     *  correspond to the one enqueued first among those multiple entries.
-     *  Therefore, the queue follows FIFO behavior.
-     *  @param key The sort key for the entry to remove.
-     *  @param value The value for the entry to remove.
-     *  @return True if a match is found and removed, false otherwise.
+     *  corresponds to the one enqueued first among those multiple entries.
+     *  Therefore, the queue has FIFO behavior.
+     *  @param entry The entry to remove.
+     *  @return True If a match is found and the entry is removed.
      */
-    public boolean remove(Object key, Object value) {
+    public boolean remove(Object entry) {
         // If the queue is empty then return false.
         if (_qSize == 0) {
             return false;
         }
-
-        CQEntry cqEntry = new CQEntry(value, key);
-
-        // Calculate the bin number.
-        long i = _getBinIndex(key);
-        i = i % _nBuckets;
-        if (i < 0) i += _nBuckets;
-
-        // Remove the object.
-        boolean result = _bucket[(int)i].remove(cqEntry);
-
+        boolean result = _bucket[_getBinIndex(entry)].remove(entry);
         if (result) {
             _qSize--;
+            _resize(false);
         }
         return result;
     }
@@ -413,21 +323,16 @@ public class CalendarQueue {
         return _qSize;
     }
 
-    /** Remove the entry with the smallest key and return its value.
-     *  If there are multiple entries with the same smallest key,
-     *  then return the first one that was put in the queue (FIFO
-     *  behavior).  If the key returned is not the same as the key
-     *  previously returned by this method, then add it to the
-     *  collection of keys to use in any future recalculations of
-     *  the bin width.  Note that since values are
-     *  permitted to be null, this method could return null.
-     *  @return The value associated with the smallest key.
+    /** Remove the smallest entry and return it.
+     *  If there are multiple smallest entries, then return the
+     *  first one that was put in the queue (FIFO behavior).
+     *
+     *  @return The entry that is smallest, per the comparator.
      *  @exception IllegalActionException If the queue is empty.
      */
     public final Object take() throws IllegalActionException {
         // First check whether the queue is empty.
         if (_qSize == 0) {
-            _takenKey = null;
             throw new IllegalActionException(
                 "Cannot take from an empty queue.");
         }
@@ -437,33 +342,33 @@ public class CalendarQueue {
         // of the calendar.
         int i = _minBucket, j = 0;
         int indexOfMinimum = i;
-        Object minKeySoFar = null;
+        Object minSoFar = null;
         Object result = null;
         while (true) {
-            // At each bucket, we first determine if the bucket is empty.
+            // At each bucket, we first determine whether the bucket is empty.
             // If not, then we check whether the first entry in the
             // bucket is in the current year. This is done simply by
             // comparing the virtual bucket number to _minVirtualBucket.
             // If an entry is in the current year, then return it.
             // If no entry is in the current year, then we cycle
-            // through all buckets and find the entry with the minimum
-            // key.
+            // through all buckets and find the minimum entry.
             if (!_bucket[i].isEmpty()) {
                 // The bucket is not empty.
-                Object minimumKeyInBucket = _bucket[i].head.contents.key;
-                if (_getBinIndex(minimumKeyInBucket) == _minVirtualBucket + j) {
+                Object minimumInBucket = _bucket[i].head.contents;
+                if (_cqComparator.getVirtualIndex(minimumInBucket)
+                        == _minVirtualBucket + j) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
                     break;
                 } else {
                     // The entry is not in the current year. 
-                    // Compare key to minimum found so far.
-                    if (minKeySoFar == null) {
-                        minKeySoFar = minimumKeyInBucket;
+                    // Compare to the minimum found so far.
+                    if (minSoFar == null) {
+                        minSoFar = minimumInBucket;
                         indexOfMinimum = i;
-                    } else if (_cqComparator.compare(minimumKeyInBucket,
-                            minKeySoFar) < 0) {
-                        minKeySoFar = minimumKeyInBucket;
+                    } else if (_cqComparator.compare(minimumInBucket,
+                            minSoFar) < 0) {
+                        minSoFar = minimumInBucket;
                         indexOfMinimum = i;
                     }
                 }
@@ -475,7 +380,7 @@ public class CalendarQueue {
             // If one round of search has already elapsed,
             // then return the minimum that we have found.
             if (i == _minBucket) {
-                if (minKeySoFar == null) {
+                if (minSoFar == null) {
                     throw new InternalErrorException(
                         "Queue is empty, but size() is not zero!");
                 }
@@ -483,35 +388,29 @@ public class CalendarQueue {
                 break;
             }
         }
-        _collect(_takenKey);
-        if (_debugging) _debug("- taking event: " + result);
+        _collect(result);
+        if (_debugging) _debug("- taking from queue: " + result);
         return result;
     }
 
-    /** Return the keys and values currently in the queue as a pair
-     *  of arrays.  The return value is an array of arrays, where the
-     *  0 element is an array of keys and the 1 element is an array
-     *  of values.
-     *  @return The keys and values currently in the queue.
+    /** Return the entries currently in the queue as an array.
+     *  @return The entries currently in the queue.
      */
-    public final Object[][] toArray() {
+    public final Object[] toArray() {
         return toArray(Integer.MAX_VALUE);
     }
 
-    /** Return the keys and values currently in the queue as a pair
-     *  of arrays, but no more of them than the number given as an
-     *  argument.  The return value is an array of arrays, where the
-     *  0 element is an array of keys and the 1 element is an array
-     *  of values.  Each array has length equal to the argument
-     *  or to the size of the queue, whichever is smaller.
+    /** Return the entries currently in the queue,
+     *  but no more of them than the number given as an
+     *  argument.
      *  To get all the entries in the queue, call this method
      *  with argument Integer.MAX_VALUE.
-     *  @param limit The maximum number of keys and values desired.
-     *  @return The keys and values currently in the queue.
+     *  @param limit The maximum number of entries desired.
+     *  @return The entries currently in the queue.
      */
-    public final Object[][] toArray(int limit) {
+    public final Object[] toArray(int limit) {
         if (limit > _qSize) limit = _qSize;
-        Object[][] result = new Object[2][limit];
+        Object[] result = new Object[limit];
         if (_qSize == 0) return result;
         int index = 0;
 
@@ -524,7 +423,7 @@ public class CalendarQueue {
         long minimumNextVirtualBucket = Long.MAX_VALUE;
         int indexOfMinimum = currentBucket;
         int nextStartBucket = _minBucket;
-        Object minKeySoFar = null;
+        Object minSoFar = null;
 
         // Keep track of where we are in each bucket.
         CQCell[] bucketHead = new CQCell[_bucket.length];
@@ -541,23 +440,22 @@ public class CalendarQueue {
             // the year.
             // If an entry is in the current year, then add it to the result.
             // If no entry is in the current year, then we cycle
-            // through all buckets and find the entry with the minimum
-            // key.
+            // through all buckets and find the minimum entry.
             if (bucketHead[currentBucket] != null) {
                 // There are more entries in the bucket.
-                Object nextKeyInBucket = bucketHead[currentBucket].contents.key;
-
-                while (_getBinIndex(nextKeyInBucket) == virtualBucket) {
+                Object nextInBucket = bucketHead[currentBucket].contents;
+                while (_cqComparator.getVirtualIndex(nextInBucket)
+                        == virtualBucket) {
                     // The entry is in the current year. Return it.
-                    result[0][index] = nextKeyInBucket;
-                    result[1][index] = bucketHead[currentBucket].contents.value;
+                    result[index] = nextInBucket;
                     index++;
                     if (index == limit) return result;
                     bucketHead[currentBucket] = bucketHead[currentBucket].next;
                     if (bucketHead[currentBucket] == null) break;
-                    nextKeyInBucket = bucketHead[currentBucket].contents.key;
+                    nextInBucket = bucketHead[currentBucket].contents;
                 }
-                long nextVirtualBucket = _getBinIndex(nextKeyInBucket);
+                long nextVirtualBucket =
+                        _cqComparator.getVirtualIndex(nextInBucket);
 
                 if (nextVirtualBucket < minimumNextVirtualBucket) {
                     minimumNextVirtualBucket = nextVirtualBucket;
@@ -585,18 +483,18 @@ public class CalendarQueue {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Collect a key for later use to recalculate bin widths.
-    // The key is collected only if it is strictly greater than the
-    // previously collected key.
-    private void _collect(Object key) {
-        if ((_previousTakenKey == null) ||
-                (_cqComparator.compare(key, _previousTakenKey) > 0)) {
-            _sampleKeys[_sampleKeyIndex++] = key;
-            if(_sampleKeyIndex == _SAMPLE_SIZE) {
-                _sampleKeyIndex = 0;
+    // Collect an entry for later use to recalculate bin widths.
+    // The entry is collected only if it is strictly greater than the
+    // previously collected entry.
+    private void _collect(Object entry) {
+        if ((_previousTakenEntry == null) ||
+                (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
+            _sampleEntries[_sampleEntryIndex++] = entry;
+            if(_sampleEntryIndex == _SAMPLE_SIZE) {
+                _sampleEntryIndex = 0;
                 _sampleValid = true;
             }
-            _previousTakenKey = key;
+            _previousTakenEntry = entry;
         }
     }
 
@@ -616,23 +514,22 @@ public class CalendarQueue {
         }
     }
 
-    // Note: This is basically a macro..
-    private long _getBinIndex(Object key) {
-        return _cqComparator.getBinIndex(key, _zeroRef, _width);
+    // Get the virtual bin index of the entry, and map it into
+    // a physical bin index.
+    private int _getBinIndex(Object entry) {
+        long i = _cqComparator.getVirtualIndex(entry);
+        i = i % _nBuckets;
+        if (i < 0) i += _nBuckets;
+        return (int)i;
     }
 
     // Initialize the bucket array to the specified number of buckets
     // with the specified width.
     //
-    // nbuckets: number of total buckets
-    // bwidth: bucket width
-    // startKey: starting date of the new calendar
-    private void _localInit(
-            int nbuckets,
-            Object bwidth,
-            Object startKey) {
+    // @param nbuckets The number of buckets.
+    // @param firstEntry: First entry of the new queue.
+    private void _localInit(int nbuckets, Object firstEntry) {
 
-        _width = bwidth;
         _nBuckets = nbuckets;
         _bucket = new CQLinkedList[_nBuckets];
 
@@ -643,17 +540,18 @@ public class CalendarQueue {
         }
 
         // Set the initial position in queue.
-        _minKey = startKey;
-        _minVirtualBucket = _getBinIndex(startKey);
-        _minBucket = (int)(_minVirtualBucket % _nBuckets);
-        if (_minBucket < 0) _minBucket += _nBuckets;
+        _minimumEntry = firstEntry;
+        _minVirtualBucket = _cqComparator.getVirtualIndex(firstEntry);
+        _minBucket = _getBinIndex(firstEntry);
 
         // Set the queue size change thresholds.
-        _bottomThreshold = _nBuckets/_queueResizeFactor;
-        _topThreshold = _nBuckets*_queueResizeFactor;
+        _bottomThreshold = _nBuckets/_queueBinCountFactor;
+        _topThreshold = _nBuckets*_queueBinCountFactor;
         _qSizeOverThreshold = _qSizeUnderThreshold = 0;
+        _initialized = true;
     }
 
+    // Check to see whether the queue needs resizing, and if it does, do it.
     // Copy the queue into a new queue with the specified number of buckets.
     // Unlike Randy Brown's realization, a new queue is reallocated
     // each time the number of buckets changes.
@@ -661,25 +559,54 @@ public class CalendarQueue {
     // 1. A new bin width is computed as a function of the entry statistics.
     // 2. Create the new queue and initialize it.
     // 3. Transfer all elements from the old queue into the new queue.
-    private void _resize(int newsize) {
+    // The argument indicates whether the queue just increased or decreased
+    // in size.
+    private void _resize(boolean increasing) {
         if (!_resizeEnabled) return;
-        if (_debugging) _debug(">>>>>> changing number of buckets to: "
-                + newsize);
+        int newsize = _nBuckets;
+        boolean resize = false;
+        if (increasing) {
+            if (_qSize > _topThreshold) _qSizeOverThreshold++;
+            if (_qSizeOverThreshold > _RESIZE_LAG) {
+                resize = true;
+                _qSizeOverThreshold = 0;
+                newsize = (_nBuckets*_queueBinCountFactor);
+                if (_debugging) {
+                    _debug(">>>>>> increasing number of buckets to: "
+                    + newsize);
+                }
+            }
+        } else {
+            // Queue has just decreased in size.
+            if (_qSize < _bottomThreshold) _qSizeUnderThreshold++;
+            if (_qSizeUnderThreshold > _RESIZE_LAG) {
+                resize = true;
+                _qSizeUnderThreshold = 0;
+                // If it is already minimum or close, do nothing.
+                if (_nBuckets/_queueBinCountFactor > _minNumBuckets) {
+                    newsize = (_nBuckets/_queueBinCountFactor);
+                    if (_debugging) {
+                        _debug(">>>>>> decreasing number of buckets to: "
+                        + newsize);
+                    }
+                }
+            }
+        }
+        if (!resize) return;
 
         // Find new bucket width, if appropriate.
-        Object new_width = _width;
         if (_sampleValid) {
             // Have to copy samples into a new array to ensure that they
             // increasing...
             Object[] sampleCopy = new Object[_SAMPLE_SIZE];
             for (int i = 0; i < _SAMPLE_SIZE; i++) {
-                sampleCopy[i] = _sampleKeys[_sampleKeyIndex++];
-                if(_sampleKeyIndex == _SAMPLE_SIZE) {
-                    _sampleKeyIndex = 0;
+                sampleCopy[i] = _sampleEntries[_sampleEntryIndex++];
+                if(_sampleEntryIndex == _SAMPLE_SIZE) {
+                    _sampleEntryIndex = 0;
                 }
             }
-            new_width = _cqComparator.getBinWidth(sampleCopy);
-            if (_debugging) _debug(">>> changing bin width to: " + new_width);
+            _cqComparator.setBinWidth(sampleCopy);
+            if (_debugging) _debug(">>> changing bin width.");
         }
 
         // Save location and size of the old calendar.
@@ -687,99 +614,54 @@ public class CalendarQueue {
         int old_nbuckets = _nBuckets;
 
         // Initialize new calendar.
-        _localInit(newsize, new_width, _minKey);
+        _localInit(newsize, _minimumEntry);
         _qSize = 0;
 
         // Go through each of the old buckets and add its elements
         // to the new queue. Disable debugging to not report these puts.
         boolean saveDebugging = _debugging;
         _debugging = false;
+        boolean saveResizeEnabled = _resizeEnabled;
         _resizeEnabled = false;
         for (int i = 0; i < old_nbuckets; i++) {
             while (!old_bucket[i].isEmpty()) {
-                CQEntry entry = (CQEntry)old_bucket[i].take();
-                put(entry);
+                put(old_bucket[i].take());
             }
         }
         _debugging = saveDebugging;
-        _resizeEnabled = true;
+        _resizeEnabled = saveResizeEnabled;
     }
 
     // Take the first entry from the specified bucket and return
     // its value.
     private Object _takeFromBucket(int index) {
-        CQEntry minEntry = (CQEntry)_bucket[index].take();
+        Object minEntry = _bucket[index].take();
 
         // Update the position on the calendar.
         _minBucket = index;
-        _minKey = minEntry.key;
-        _minVirtualBucket = _getBinIndex(_minKey);
+        _minimumEntry = minEntry;
+        _minVirtualBucket = _cqComparator.getVirtualIndex(minEntry);
         --_qSize;
 
         // Reduce the calendar size if needed.
-        if (_qSize < _bottomThreshold) _qSizeUnderThreshold++;
-        if (_qSizeUnderThreshold > _RESIZE_LAG) {
-            // If it is already minimum or close, do nothing.
-            if (_nBuckets/_queueResizeFactor > _minNumBuckets) {
-                _resize (_nBuckets/_queueResizeFactor);
-            }
-        }
+        _resize(false);
+
         // Return the item found.
-        _takenKey = minEntry.key;
-        return minEntry.value;
+        return minEntry;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
 
-    // A value and its key.
-    private class CQEntry {
-
-        public Object value;
-        public Object key;
-
-        public CQEntry(Object value, Object key) {
-            this.value = value;
-            this.key = key;
-        }
-
-        // Override Object.equal() method to compare the contents
-        // using their equals() methods.
-        public final boolean equals(Object obj) {
-            if (!(obj instanceof CQEntry)) {
-                return false;
-            } else {
-                CQEntry snd = (CQEntry) obj;
-
-                if (value == null) {
-                    if (snd.value != null) {
-                        return false;
-                    }
-                } else if (!value.equals(snd.value)) {
-                    return false;
-                }
-                // Values are equal.
-
-                if (this.key == null || snd.key == null) {
-                    throw new InternalErrorException(
-                        "Null keys found in queue!");
-                } else if (!this.key.equals(snd.key)){
-                    return false;
-                }
-                // Keys are equal.
-                return true;
-            }
-        }
-    }
-
-    // Specialized sorted list of CQEntry objects.  This class is used
-    // instead of java's SortedMap in order to provide the following
-    // features:
+    // Specialized sorted list of objects.  This class is used
+    // instead of java's built-in collections in order to provide the
+    // following features:
     //   - multiset behavior.  An entry can appear more than once.
     //   - monitoring of buckets in order to trigger reallocation.
     //   - monitoring of time stamps in order to help set bin width.
     // The class is very specialized, with many features of generic
     // collections missing.
+    //
     private class CQLinkedList {
 
         // Construct an empty list.
@@ -788,11 +670,11 @@ public class CalendarQueue {
             tail = null;
         }
 
-        public final CQEntry first() {
+        public final Object first() {
             return head.contents;
         }
 
-        public final boolean includes(CQEntry obj) {
+        public final boolean includes(Object obj) {
             return (head.find(obj) != null);
         }
 
@@ -803,7 +685,7 @@ public class CalendarQueue {
         // Insert the specified entry into the list, in sorted position.
         // If there are already objects of the same key, then this one
         // is positioned after those objects.
-        public final void insert(CQEntry obj) {
+        public final void insert(Object obj) {
 
             // Special case: linked list is empty.
             if (head == null) {
@@ -817,7 +699,7 @@ public class CalendarQueue {
             // then tail != null as well.
 
             // Special case: Check if obj is greater than or equal to tail.
-            if (_cqComparator.compare(obj.key, tail.contents.key) >= 0) {
+            if (_cqComparator.compare(obj, tail.contents) >= 0) {
                 // obj becomes new tail.
                 CQCell newTail = new CQCell(obj, null);
                 tail.next = newTail;
@@ -826,7 +708,7 @@ public class CalendarQueue {
             }
 
             // Check if head is strictly greater than obj
-            if ( _cqComparator.compare(head.contents.key,obj.key) > 0) {
+            if ( _cqComparator.compare(head.contents, obj) > 0) {
                 // obj becomes the new head
                 head = new CQCell(obj, head);
                 return;
@@ -841,7 +723,7 @@ public class CalendarQueue {
             // greater than obj.
             do {
                 // check if currCell is strictly greater than obj
-                if ( _cqComparator.compare(currCell.contents.key,obj.key) > 0) {
+                if ( _cqComparator.compare(currCell.contents, obj) > 0) {
                     // insert obj between prevCell and currCell
                     CQCell newcell = new CQCell(obj, currCell);
                     prevCell.next = newcell;
@@ -856,12 +738,12 @@ public class CalendarQueue {
         // to determine a match.  Only the first matching element that is found
         // is removed. Return true if a matching element is found and removed,
         // and false otherwise.
-        public final boolean remove(CQEntry cqEntry) {
+        public final boolean remove(Object obj) {
             // two special cases:
             // Case 1: list is empty: always return false.
             if (head == null) return false;
             // Case 2: The element I want is at head of the list.
-            if (head.contents.equals(cqEntry)) {
+            if (head.contents.equals(obj)) {
                 if (head != tail) {
                     // Linked list has at least two cells.
                     head = head.next;
@@ -877,7 +759,7 @@ public class CalendarQueue {
             CQCell prevCell = head;
             CQCell currCell = prevCell.next;
             do {
-                if (currCell.contents.equals(cqEntry)) {
+                if (currCell.contents.equals(obj)) {
                     // Found a match.
                     if (tail == currCell) {
                         // Removing the tail. Need to update.
@@ -894,8 +776,8 @@ public class CalendarQueue {
             return false;
         }
 
-        // Remove and eturn the first element in the list.
-        public final CQEntry take() {
+        // Remove and return the first element in the list.
+        public final Object take() {
             // remove the head
             CQCell oldHead = head;
             head = head.next;
@@ -922,7 +804,7 @@ public class CalendarQueue {
          *  @param contents The contents.
          *  @param next The next cell, or null if this is the end of the list.
          */
-        public CQCell(CQEntry contents, CQCell next) {
+        public CQCell(Object contents, CQCell next) {
             this.contents = contents;
             this.next = next;
         }
@@ -941,7 +823,7 @@ public class CalendarQueue {
          }
 
         /** The contents of the cell. */
-        public CQEntry contents;
+        public Object contents;
 
         /** The next cell in the list, or null if there is none. */
         public CQCell next;
@@ -971,10 +853,7 @@ public class CalendarQueue {
     private int _qSizeUnderThreshold = 0;
 
     // The number of times a threshold must be exceeded to trigger resizing.
-    private final static int _RESIZE_LAG = 8;
-
-    // The width of each bucket, as specified by the associated CQComparator.
-    private Object _width;
+    private final static int _RESIZE_LAG = 32;
 
     // The largest queue size before number of buckets gets increased.
     private int _topThreshold;
@@ -982,8 +861,8 @@ public class CalendarQueue {
     // The smallest queue size before number of buckets gets decreased.
     private int _bottomThreshold;
 
-    // The key of the first entry seen.
-    private Object _zeroRef = null;
+    // An indicator of whether the queue has been initialized.
+    private boolean _initialized = false;
 
     // The array of bins or buckets.
     private CQLinkedList[] _bucket;
@@ -994,7 +873,7 @@ public class CalendarQueue {
 
     // The factor by which to multiply (or divide)
     // the number of bins to when resizing.
-    private int _queueResizeFactor = 2;
+    private int _queueBinCountFactor = 2;
 
     // Flag for enable/disable changing the number of bins.
     private boolean _resizeEnabled = true;
@@ -1002,30 +881,28 @@ public class CalendarQueue {
     // Comparator to determine how to order entries.
     private CQComparator _cqComparator;
 
-    // The key of the most recent entry removed by take().
-    private Object _takenKey = null;
+    // The minimum entry in the queue.
+    // All entries in the queue have greater keys (or equal).
+    private Object _minimumEntry = null;
 
-    // The minimum key. All elements in the queue have greater keys (or equal).
-    private Object _minKey = null;
-
-    // The quantized value of _minKey (the virtual bin number).
+    // The quantized value of _minimumEntry (the virtual bin number).
     private long _minVirtualBucket;
 
-    // The positive modulo of _minKey (the physical bin number).
+    // The positive modulo of _minimumEntry (the physical bin number).
     private int _minBucket;
 
-    // Number of key samples to calculate bin width.
+    // Number of entries to calculate bin width.
     private final static int _SAMPLE_SIZE = 8;
 
-    // Sample keys to use to calculate bin width.
-    private Object[] _sampleKeys = new Object[_SAMPLE_SIZE];
+    // Sample entries to use to calculate bin width.
+    private Object[] _sampleEntries = new Object[_SAMPLE_SIZE];
 
-    // Index into the sample keys array.
-    private int _sampleKeyIndex = 0;
+    // Index into the sample entries array.
+    private int _sampleEntryIndex = 0;
 
-    // Indicator of whether there are enough sample keys to calculate width.
+    // Indicator of whether there are enough sample entries to calculate width.
     private boolean _sampleValid = false;
 
-    // The most recently collected key.
-    private Object _previousTakenKey = null;
+    // The most recently collected entry.
+    private Object _previousTakenEntry = null;
 }
