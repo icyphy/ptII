@@ -329,20 +329,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;unitless(double)&quot;}, Const2={value=&quot;unitless(double)&quot;}, InUnitsOf={units=&quot;unitless(double)&quot;}, InUnitsOf2={units=&quot;unitless(double)&quot;}, NonStrictTest={correctValues=&quot;{double}&quot;, tolerance=&quot;double&quot;, trainingMode=&quot;boolean&quot;}, NonStrictTest2={correctValues=&quot;{double}&quot;, tolerance=&quot;double&quot;, trainingMode=&quot;boolean&quot;}}">
-        </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;unitless(double)&quot;, trigger=&quot;unknown&quot;}, Const2={output=&quot;unitless(double)&quot;, trigger=&quot;unknown&quot;}, InUnitsOf={input=&quot;unitless(double)&quot;, output=&quot;double&quot;}, InUnitsOf2={input=&quot;unitless(double)&quot;, output=&quot;double&quot;}, NonStrictTest={input=&quot;double&quot;}, NonStrictTest2={input=&quot;double&quot;}}">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 360.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -350,7 +336,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="240.0, 310.0">
+        <vertex name="vertex1" value="240.0, 305.0">
         </vertex>
     </relation>
     <link port="Const.output" relation="relation"/>
