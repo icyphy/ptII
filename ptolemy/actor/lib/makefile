@@ -232,6 +232,8 @@ OPTIONAL_FILES = \
 	'Expression$$1.class' \
 	'Expression$$OutputTypeFunction.class' \
 	'Expression$$VariableScope.class' \
+	'ExpressionToToken$$1.class' \
+	'ExpressionToToken$$ExpressionScope.class' \
 	'RecordDisassembler$$1.class' \
 	'RecordDisassembler$$PortFunction.class' \
 	'RecordUpdater$$1.class' \
