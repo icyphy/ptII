@@ -168,13 +168,14 @@ public class HTMLViewerTableau extends Tableau {
                             (HTMLEffigy)effigy, "htmlTableau");
                 }
 		try {
-		    ((HTMLViewer)tableau.getFrame()).setPage(effigy.url.getURL());
+		    ((HTMLViewer)tableau.getFrame())
+                            .setPage(effigy.uri.getURL());
 		} catch (IOException io) {
 		    // setPage() throws an IOException if the page can't
 		    // be found.  If we are under Web Start, it could be
 		    // that we are looking in the wrong Jar file, so
 		    // we try again.
-		    String urlString = effigy.url.getURL().toString();
+		    String urlString = effigy.uri.toString();
 		    URL anotherURL =
 			JNLPUtilities.jarURLEntryResource(urlString);
 		    if (anotherURL == null) {

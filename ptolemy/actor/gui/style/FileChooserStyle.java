@@ -31,7 +31,11 @@
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
+
+import java.io.File;
+import java.net.URI;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileChooserStyle
@@ -93,11 +97,9 @@ public class FileChooserStyle extends ParameterEditorStyle {
         else return true;
     }
 
-    /** Create a new type-in line
-     *  entry in the given query associated with the
+    /** Create a new entry in the given query associated with the
      *  attribute containing this style.  The name of the entry is
      *  the name of the attribute.  Attach the attribute to the created entry.
-     *
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {
@@ -105,7 +107,15 @@ public class FileChooserStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = container.getExpression();
         defaultValue = container.getExpression();
-        query.addFileChooser(name, name, defaultValue, defaultValue);
+        URI modelURI = URIAttribute.getModelURI(this);
+        File directory = null;
+        if (modelURI != null) {
+            if (modelURI.getScheme().equals("file")) {
+                File modelFile = new File(modelURI);
+                directory = modelFile.getParentFile();
+            }
+        }
+        query.addFileChooser(name, name, defaultValue, modelURI, directory);
         query.attachParameter(container, name);
     }
 }

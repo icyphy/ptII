@@ -159,7 +159,7 @@ public class PlotEffigy extends Effigy {
                 if (extension.equals("plt") || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container,
                             container.uniqueName("effigy"));
-                    effigy.url.setURL(input);
+                    effigy.uri.setURL(input);
                     return effigy;
                 }
             }

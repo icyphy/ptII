@@ -100,7 +100,7 @@ public class BrowserEffigy extends Effigy {
 
 	// The BrowserLauncher will read the URL for us, so no need
 	// to read it here.
-        effigy.url.setURL(in);
+        effigy.uri.setURL(in);
         return effigy;
     }
 

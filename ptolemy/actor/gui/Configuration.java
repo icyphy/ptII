@@ -34,19 +34,14 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.attributes.URLAttribute;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -382,17 +377,17 @@ public class Configuration extends CompositeEntity {
             effigy = new PtolemyEffigy(workspace());
             effigy.setModel(entity);
 
-            // Look to see whether the model has a URLAttribute.
-            List attributes = entity.attributeList(URLAttribute.class);
+            // Look to see whether the model has a URIAttribute.
+            List attributes = entity.attributeList(URIAttribute.class);
             if (attributes.size() > 0) {
-                // The entity has a URL, which was probably
+                // The entity has a URI, which was probably
                 // inserted by MoMLParser.
 
-                URL url = ((URLAttribute)attributes.get(0)).getURL();
+                URI uri = ((URIAttribute)attributes.get(0)).getURI();
 
-                // Set the url and identifier of the effigy.
-                effigy.url.setURL(url);
-                effigy.identifier.setExpression(url.toExternalForm());
+                // Set the URI and identifier of the effigy.
+                effigy.uri.setURI(uri);
+                effigy.identifier.setExpression(uri.toString());
 
                 // Put the effigy into the directory
                 ModelDirectory directory = getDirectory();
@@ -444,9 +439,9 @@ public class Configuration extends CompositeEntity {
 						    + separator
 						    + entity.getName());
 
-                    // Set the url of the effigy to that of
+                    // Set the uri of the effigy to that of
                     // the parent.
-                    effigy.url.setURL(parentEffigy.url.getURL());
+                    effigy.uri.setURI(parentEffigy.uri.getURI());
 
                     // Indicate success.
                     isContainerSet = true;

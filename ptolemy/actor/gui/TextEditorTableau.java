@@ -165,7 +165,7 @@ public class TextEditorTableau extends Tableau {
                 // the name "textEffigy".
                 // Attempt to use it's url attribute and create a new
                 // instance of TextEffigy contained by the specified one.
-                URL url = effigy.url.getURL();
+                URL url = effigy.uri.getURL();
                 TextEffigy textEffigy;
                 if (effigy instanceof PtolemyEffigy) {
                     // NOTE: It seems unfortunate here to have

@@ -176,7 +176,7 @@ public class TextEffigy extends Effigy {
             // No document associated.  Allow modifications.
             effigy.setModifiable(true);
         }
-        effigy.url.setURL(in);
+        effigy.uri.setURL(in);
         return effigy;
     }
 

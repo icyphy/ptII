@@ -30,7 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.attributes.URLAttribute;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
@@ -38,6 +38,8 @@ import ptolemy.plot.plotml.PlotMLParser;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JFrame;
@@ -46,7 +48,7 @@ import javax.swing.JFrame;
 //// PlotTableau
 /**
 A tableau representing a plot in a toplevel window.
-The URL that is viewed is given by the <i>url</i> parameter, and
+The URL that is viewed is given by the <i>uri</i> parameter, and
 can be either an absolute URL, a system fileName, or a resource that
 can be loaded relative to the classpath.  For more information about how
 the URL is specified, see MoMLApplication.specToURL().
@@ -79,29 +81,34 @@ public class PlotTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        url = new URLAttribute(this, "url");
+        uri = new URIAttribute(this, "uri");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** The URL to display. */
-    public URLAttribute url;
+    /** The URI to display. */
+    public URIAttribute uri;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>url</i> parameter, then open the
-     *  specified URL and display its contents.
+    /** If the argument is the <i>uri</i> parameter, then open the
+     *  specified URI and display its contents.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the URL cannot be opened,
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == url) {
-            URL toRead = url.getURL();
-            _parseURL(toRead);
+        if (attribute == uri) {
+            try {
+                URL toRead = new URL(uri.getURI().toString());
+                _parseURL(toRead);
+            } catch (MalformedURLException ex) {
+                throw new IllegalActionException(this, ex,
+                "Invalid URL specification.");
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -147,7 +154,7 @@ public class PlotTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Read from the specified stream in PlotML format.
+    /** Read from the specified URL in PlotML format.
      *  If there is no plot frame yet, then defer.
      *  Report any errors.
      *  @param url The URL to read from.
@@ -232,9 +239,9 @@ public class PlotTableau extends Tableau {
                     tableau = new PlotTableau(
                             (PlotEffigy)effigy, "plotTableau");
                 }
-                URL url = effigy.url.getURL();
-                if (url != null) {
-                    tableau.url.setURL(url);
+                URI uri = effigy.uri.getURI();
+                if (uri != null) {
+                    tableau.uri.setURI(uri);
                 }
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after

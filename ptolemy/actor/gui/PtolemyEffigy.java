@@ -32,7 +32,7 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.attributes.URLAttribute;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
@@ -40,6 +40,7 @@ import ptolemy.moml.MoMLParser;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import javax.swing.JFrame;
@@ -316,16 +317,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // not care anymore.
                             MoMLParser.setModified(false);
 
-			    // Identify the URL from which the model was read
+			    // Identify the URI from which the model was read
 			    // by inserting an attribute into both the model
 			    // and the effigy.
-			    URLAttribute url =
-                                new URLAttribute(toplevel, "_url");
-			    url.setURL(input);
+			    URIAttribute uri =
+                                new URIAttribute(toplevel, "_uri");
+			    uri.setURI(new URI(input.toExternalForm()));
 
 			    // This is used by TableauFrame in its
 			    //_save() method.
-			    effigy.url.setURL(input);
+			    effigy.uri.setURI(new URI(input.toExternalForm()));
 
 			    return effigy;
 			} else {

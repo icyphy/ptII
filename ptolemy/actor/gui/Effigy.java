@@ -31,16 +31,16 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
-import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URLAttribute;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.*;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
@@ -50,8 +50,8 @@ import javax.swing.JFrame;
 /**
 An effigy represents model metadata, and is contained by the
 model directory or by another effigy. The effigy, for example,
-keeps track of where the model originated (from a URL or file)
-and whether the model has been modified since the URL or file was
+keeps track of where the model originated (from a URI or file)
+and whether the model has been modified since the URI or file was
 read. In design automation, such information is often called
 "metadata." When we began to design this class, we called it
 ModelModel, because it was a model of a Ptolemy II model.
@@ -65,20 +65,20 @@ can contain entities.  By convention, an effigy contains all
 open instances of Tableau associated with the model. It also
 contains a string attribute named "identifier" with a value that
 uniquely identifies the model. A typical choice (which depends on
-the configuration) is the canonical URL for a MoML file that
+the configuration) is the canonical URI for a MoML file that
 describes the model.  In the case of an effigy contained by another,
-a typical choice is the URL of the parent effigy, a pound sign "#",
+a typical choice is the URI of the parent effigy, a pound sign "#",
 and a name.
 <p>
 An effigy may contain other effigies.  The top effigy
-in such a containment hierarchy is associated with a URL or file.
+in such a containment hierarchy is associated with a URI or file.
 Contained effigies are associated with the same file, and represent
 structured data within the top-level representation in the file.
 The topEffigy() method returns that top effigy.
 <p>
 NOTE: It might seem more natural for the identifier to match the name
 of the effigy rather than recording the identifier in a string attribute.
-But in Ptolemy II, an entity name cannot have periods in it, and a URL
+But in Ptolemy II, an entity name cannot have periods in it, and a URI
 typically does have periods in it.
 
 @author Steve Neuendorffer and Edward A. Lee
@@ -98,7 +98,7 @@ public class Effigy extends CompositeEntity {
         try {
             identifier = new StringAttribute(this, "identifier");
             identifier.setExpression("Unnamed");
-            url = new URLAttribute(this, "url");
+            uri = new URIAttribute(this, "uri");
         } catch (Exception ex) {
             throw new InternalErrorException("Can't create identifier!");
         }
@@ -117,7 +117,7 @@ public class Effigy extends CompositeEntity {
 	super(container, name);
         identifier = new StringAttribute(this, "identifier");
         identifier.setExpression("Unnamed");
-        url = new URLAttribute(this, "url");
+        uri = new URIAttribute(this, "uri");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,15 +126,15 @@ public class Effigy extends CompositeEntity {
     /** The identifier for the effigy.  The default value is "Unnamed". */
     public StringAttribute identifier;
 
-    /** The URL for the effigy.  The default value is null. */
-    public URLAttribute url;
+    /** The URI for the effigy.  The default value is null. */
+    public URIAttribute uri;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the argument is the <i>identifier</i> parameter, then set
      *  the title of all contained Tableaux to the value of the parameter;
-     *  if the argument is the <i>url</i> parameter, then check to see
+     *  if the argument is the <i>uri</i> parameter, then check to see
      *  whether it is writable, and call setModifiable() appropriately.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -146,25 +146,24 @@ public class Effigy extends CompositeEntity {
                 Tableau tableau = (Tableau)tableaux.next();
                 tableau.setTitle(identifier.getExpression());
             }
-        } else if (attribute == url) {
-            URL u = url.getURL();
-            if (u == null) {
-                // A new model, with no URL, is by default modifiable.
-                _modifiableURL = true;
+        } else if (attribute == uri) {
+            URI uriValue = uri.getURI();
+            if (uriValue == null) {
+                // A new model, with no URI, is by default modifiable.
+                _modifiableURI = true;
             } else {
-                String protocol = u.getProtocol();
+                String protocol = uriValue.getScheme();
                 if (!(protocol.equals("file"))) {
-                    _modifiableURL = false;
+                    _modifiableURI = false;
                 } else {
-                    String filename = u.getFile();
-                    File file = new File(filename);
+                    File file = new File(uriValue);
 		    try {
-			_modifiableURL = file.canWrite();
+			_modifiableURI = file.canWrite();
 		    } catch (java.security.AccessControlException
                             accessControl) {
 			// If we are running in a sandbox, then canWrite()
 			// may throw an AccessControlException.
-			_modifiableURL = false;
+			_modifiableURI = false;
 		    }
                 }
             }
@@ -204,20 +203,20 @@ public class Effigy extends CompositeEntity {
         return _factory;
     }
 
-    /** Return a writable file for the URL given by the <i>url</i>
+    /** Return a writable file for the URI given by the <i>uri</i>
      *  parameter of this effigy, if there is one, or return
      *  null if there is not.  This will return null if the file does
-     *  not exist, or it exists and is not writable, or the <i>url</i>
+     *  not exist, or it exists and is not writable, or the <i>uri</i>
      *  parameter has not been set.
+     *  @returns A writable file, or null if one cannot be created.
      */
     public File getWritableFile() {
         File result = null;
-        URL fileURL = url.getURL();
-        if (fileURL != null) {
-            String protocol = fileURL.getProtocol();
+        URI fileURI = uri.getURI();
+        if (fileURI != null) {
+            String protocol = fileURI.getScheme();
             if (protocol.equals("file")) {
-                String filename = fileURL.getFile();
-                File tentativeResult = new File(filename);
+                File tentativeResult = new File(fileURI);
                 if (tentativeResult.canWrite()) {
                     result = tentativeResult;
                 }
@@ -228,23 +227,23 @@ public class Effigy extends CompositeEntity {
 
     /** Return whether the model data is modifiable.  In this case,
      *  this is determined by checking whether
-     *  the URL associated with this effigy can be written
-     *  to.  This will return false if either there is no URL associated
-     *  with this effigy, or the URL is not a file, or the file is not
+     *  the URI associated with this effigy can be written
+     *  to.  This will return false if either there is no URI associated
+     *  with this effigy, or the URI is not a file, or the file is not
      *  writable or does not exist, or setModifiable() has been called
      *  with a false argument.
      *  @return False to indicate that the model is not modifiable.
      */
     public boolean isModifiable() {
         if (!_modifiable) return false;
-        else return _modifiableURL;
+        else return _modifiableURI;
     }
 
     /** Return the value set by setModified(), or false if setModified()
      *  has not been called on this effigy or any effigy contained by
      *  the same top effigy (returned by topEffigy()).
      *  This method is intended to be used to
-     *  keep track of whether the data in the file or URL associated
+     *  keep track of whether the data in the file or URI associated
      *  with this data has been modified.  The method is called by
      *  an instance of TableauFrame to determine whether it is safe
      *  to close.
@@ -303,15 +302,15 @@ public class Effigy extends CompositeEntity {
     }
 
     /** If the argument is false, the specify that that the model is not
-     *  modifiable, even if the URL associated with this effigy is writable.
+     *  modifiable, even if the URI associated with this effigy is writable.
      *  If the argument is true, or if this method is never called,
      *  then whether the model is modifiable is determined by whether
-     *  the URL can be written to.
+     *  the URI can be written to.
      *  Notice that this does not automatically result in any tableaux
      *  that are contained switching to being uneditable.  But it will
-     *  prevent them from writing to the URL.
+     *  prevent them from writing to the URI.
      *  @see #isModifiable()
-     *  @param flag False to prevent writing to the URL.
+     *  @param flag False to prevent writing to the URI.
      */
     public void setModifiable(boolean flag) {
         _modifiable = flag;
@@ -435,11 +434,11 @@ public class Effigy extends CompositeEntity {
     // A tableau factory offering multiple views.
     private TableauFactory _factory = null;
 
-    // Indicator that the URL must not be written to (if false).
+    // Indicator that the URI must not be written to (if false).
     private boolean _modifiable = true;
 
-    // Indicator that the URL can be written to.
-    private boolean _modifiableURL = true;
+    // Indicator that the URI can be written to.
+    private boolean _modifiableURI = true;
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;

@@ -93,7 +93,7 @@ public class TokenEffigy extends Effigy {
         }
     }
 
-    /** If the argument is the <i>url</i> parameter, then read the
+    /** If the argument is the <i>uri</i> parameter, then read the
      *  specified URL and parse the data contained in it.
      *  @exception IllegalActionException If the URL cannot be read or
      *   if the data is malformed.
@@ -102,15 +102,15 @@ public class TokenEffigy extends Effigy {
             throws IllegalActionException {
         // The superclass does some handling of the url attribute.
         super.attributeChanged(attribute);
-        if (attribute == url) {
-            URL urlToRead = url.getURL();
-            if (urlToRead != null) {
-                try {
+        if (attribute == uri) {
+            try {
+                URL urlToRead = uri.getURL();
+                if (urlToRead != null) {
                     read(urlToRead);
-                } catch (IOException ex) {
-                    throw new IllegalActionException(this, null, ex,
-                    "Failed to read data: " + ex.getMessage());
                 }
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, null, ex,
+                "Failed to read data: " + ex.getMessage());
             }
         }
     }
@@ -275,7 +275,7 @@ public class TokenEffigy extends Effigy {
                 if (extension.equals("ptd")) {
                     TokenEffigy effigy = new TokenEffigy(container,
                             container.uniqueName("effigy"));
-                    effigy.url.setURL(input);
+                    effigy.uri.setURL(input);
                     return effigy;
                 }
             }

@@ -90,7 +90,9 @@ public class BrowserTableau extends Tableau {
         // of MoMLApplication.parseArgs() will end up calling this method
         // a second time.
 
-	String url = ((Effigy)getContainer()).url.getURL().toExternalForm();
+        // FIXME: Probably the following could make better use of URI
+        // facilities (used to be URL based).
+	String url = ((Effigy)getContainer()).uri.toString();
 	try {
 
 	    if (url.startsWith("jar:")) {

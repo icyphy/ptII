@@ -42,6 +42,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -228,7 +229,7 @@ public class TableauFrame extends Top {
                             directory, (URL)null, doc);
 
                     effigy.identifier.setExpression(doc.toExternalForm());
-                    effigy.url.setURL(doc);
+                    effigy.uri.setURL(doc);
                     // If this fails, we do not want the effigy
                     // in the directory.
                     try {
@@ -429,7 +430,7 @@ public class TableauFrame extends Top {
 	return _defaultIconImage;
     }
 
-    /** Get the name of this object, which in this class is the URL
+    /** Get the name of this object, which in this class is the URI
      *  associated with the effigy, or the string "Unnamed" if none.
      *  This overrides the base class to provide a reasonable name
      *  for the title of the window.
@@ -438,9 +439,9 @@ public class TableauFrame extends Top {
     protected String _getName() {
         Effigy effigy = getEffigy();
         if (effigy != null) {
-            URL url = effigy.url.getURL();
-            if (url != null) {
-                return url.toExternalForm();
+            URI uri = effigy.uri.getURI();
+            if (uri != null) {
+                return uri.toString();
             }
         }
         return "Unnamed";
@@ -473,7 +474,7 @@ public class TableauFrame extends Top {
     }
 
     /** Save the model to the current file, determined by the
-     *  <i>url</i> parameter of the associated effigy, or if
+     *  <i>uri</i> parameter of the associated effigy, or if
      *  that has not been set or is not a writable file, or if the
      *  effigy has been set non-modifiable, then invoke
      *  _saveAs(). This calls _writeFile() to perform the save.

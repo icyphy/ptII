@@ -123,7 +123,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
         // Create a new effigy.
         HTMLEffigy effigy = new HTMLEffigy(container,
                 container.uniqueName("effigy"));
-        effigy.url.setURL(in);
+        effigy.uri.setURL(in);
         // FIXME: What to do about the base?
         return effigy;
     }

@@ -45,6 +45,7 @@ import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.actor.parameters.SliderParameter;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
@@ -58,7 +59,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
+import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -188,19 +190,25 @@ public class PtolemyQuery extends Query
                     }
                     // FIXME: Other types?
                 } else if (attribute instanceof FileAttribute) {
-                    // Specify the directory in which to start
+                    // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.
-                    // FIXME: Should remember previous browse location?
-                    URL base = ((FileAttribute)attribute).getModelURL();
-                    String directory = "";
-                    if (base != null) {
-                        if (base.getProtocol().equals("file")) {
-                            directory = base.getFile();
+                    URI modelURI = URIAttribute.getModelURI(
+                            (FileAttribute)attribute);
+                    File directory = null;
+                    if (modelURI != null) {
+                        if (modelURI.getScheme().equals("file")) {
+                            File modelFile = new File(modelURI);
+                            directory = modelFile.getParentFile();
                         }
                     }
-                    // Third argument is the directory.
-                    addFileChooser(name, name, attribute.getExpression(), "");
+                    // FIXME: Should remember previous browse location?
+                    // Last argument is the starting directory.
+                    addFileChooser(name,
+                            name,
+                            attribute.getExpression(),
+                            directory.toURI(),
+                            directory);                      
                     attachParameter(attribute, name);
                     foundStyle = true;
                 }
