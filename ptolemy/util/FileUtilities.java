@@ -67,7 +67,7 @@ public class FileUtilities {
      *  copied because the sourceURL and the destinationFile refer to the   
      *  same file
      */
-    public boolean binaryCopyURLToFile(URL sourceURL,
+    public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile)
             throws IOException {
 
