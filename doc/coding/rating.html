@@ -228,6 +228,13 @@ can't have any confidence in its stability.
  <p> Before submitting a package for code review to Green, please check
 the following items:
 	<menu>
+
+	<li> Compile with <CODE>javac -deprecation</CODE> and fix
+	any warnings.  If it is not possibile to fix the warnings,
+	consider adding the <CODE>@deprecated</CODE> javadoc tag
+	to the method.  To compile Ptolemy II with <CODE>-deprecation</CODE>, 
+	run <CODE>make clean all JFLAGS=-deprecation</CODE>.
+
 	<li> <CODE>make javadocs</CODE> does not produce
 	any warnings.
 
