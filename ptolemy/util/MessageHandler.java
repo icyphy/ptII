@@ -137,6 +137,8 @@ public class MessageHandler {
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
+     *  NOTE: If the set message handler is graphical, then
+     *  this must be called in the swing event thread!
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
@@ -163,6 +165,9 @@ public class MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
+     *  NOTE: If the set error handler is graphical, then this must
+     *  be called from within the swing event thread, or deadlock or
+     *  rendering problems may occur.
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {
