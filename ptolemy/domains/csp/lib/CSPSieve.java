@@ -94,9 +94,11 @@ public class CSPSieve extends CSPActor {
 		// is it the next prime?
 		if (islargestprime) {
 		  // yes - make and queue the topologyChange
+		    /* JFIXME
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
 		    getDirector().queueTopologyChangeRequest(t);
                     //System.out.println(getName() +":Queued TopologyChange");
+		    */
 		    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
 		    islargestprime = false;
@@ -114,7 +116,7 @@ public class CSPSieve extends CSPActor {
     /*  Create and return a new TopologyChangeRequest object that
      *  adds a new sieve.
      *  @param value The prime the new filter should sieve.
-     */
+     *  JFIXME
     private TopologyChangeRequest _makeChangeRequest(final int value) {
         TopologyChangeRequest request = new TopologyChangeRequest(this) {
 
@@ -144,6 +146,7 @@ public class CSPSieve extends CSPActor {
         };
         return request;
     }
+     */
 
 
     ///////////////////////////////////////////////////////////////////
