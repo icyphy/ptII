@@ -2,7 +2,7 @@
 
 @Author: Edward A. Lee and Christopher Hylands
 
-@Version: $Id$
+@Version: 
 
 @Copyright (c) 1997- The Regents of the University of California.
 All rights reserved.
@@ -52,7 +52,9 @@ import java.net.*;              // Need URL
  *
  *  @author Edward A. Lee, Christopher Hylands
  *  @version $Id$
- *  @see PlotBox, Plot, Pxgraph
+ *  @see PlotBox
+ *  @see Plot
+ *  @see Pxgraph
  */
 public class PlotApplet extends Applet {
 
