@@ -30,13 +30,9 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.actor.gui.PortConfigurer;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import diva.gui.toolbox.JContextMenu;
