@@ -49,7 +49,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 
 JSRCS = \
 	Const.java \
-	Writer.java
+	Writer.java \
+	FIR.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 
