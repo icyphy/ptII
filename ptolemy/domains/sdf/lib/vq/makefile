@@ -54,6 +54,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 CLASSPATH = ../../../../..
 
 JSRCS = \
+	ImageDisplay.java \
 	ImagePartition.java \
 	ImageSequence.java \
 	ImageUnpartition.java \
