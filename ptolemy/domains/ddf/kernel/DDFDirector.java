@@ -91,9 +91,11 @@ import ptolemy.kernel.util.Workspace;
    actor must be fired in a single iteration. If the value of the parameter 
    runUntilDeadlock is a BooleanToken with value true, one single iteration 
    consists of repeating the basic iteration until deadlock is reached which 
-   is the status of the model where all active actors are unable to fire 
-   because their firing rules are not satisfied. Note runUntilDeadlock can 
-   be set to true only when this director is not on the top level. 
+   is the status of the model where all active actors under the control of 
+   this director are unable to fire because their firing rules are not 
+   satisfied. However, they may be able to fire again during next iteration
+   when tokens are transferred in from outside domain. Note runUntilDeadlock 
+   can be set to true only when this director is not on the top level. 
    <p>
    The algorithm implementing one basic iteration goes like this:
    <pre>
