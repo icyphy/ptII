@@ -110,7 +110,8 @@ test IllegalActionException-5.1 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{.: Detail String}}
+} {{.:
+Detail String}}
 
 ######################################################################
 ####
@@ -121,7 +122,8 @@ test IllegalActionException-5.2 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{.My NamedObj: Detail String}}
+} {{.My NamedObj:
+Detail String}}
 
 ######################################################################
 ####
@@ -186,7 +188,8 @@ test IllegalActionException-7.1 {Create a IllegalActionException with an \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{. and .: Detail Message}}
+} {{. and .:
+Detail Message}}
 
 ######################################################################
 ####
@@ -199,7 +202,8 @@ test IllegalActionException-7.2 {Create a IllegalActionException with a \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .: Detail Message}}
+} {{.NamedObj 1 and .:
+Detail Message}}
 
 ######################################################################
 ####
@@ -211,7 +215,8 @@ test IllegalActionException-7.3 {Create a IllegalActionException with an \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{. and .NamedObj 2: Detail Message}}
+} {{. and .NamedObj 2:
+Detail Message}}
 
 ######################################################################
 ####
@@ -223,4 +228,5 @@ test IllegalActionException-7.4 {Create a IllegalActionException with a \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .NamedObj 2: Detail Message}}
+} {{.NamedObj 1 and .NamedObj 2:
+Detail Message}}

@@ -82,14 +82,16 @@ test Workspace-3.2 {Add objects to the wrong workspace} {
     set n1 [java::new ptolemy.kernel.util.NamedObj N1]
     catch {$w add $n1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: W and .N1: Cannot add an item to the directory of a workspace that it is not in.}}
+} {{ptolemy.kernel.util.IllegalActionException: W and .N1:
+Cannot add an item to the directory of a workspace that it is not in.}}
 
 test Workspace-3.3 {Add objects twice to the workspace directory} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
     catch {$w add $n1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: W and W.N1: Object is already listed in the workspace directory.}}
+} {{ptolemy.kernel.util.IllegalActionException: W and W.N1:
+Object is already listed in the workspace directory.}}
 
 ######################################################################
 ####

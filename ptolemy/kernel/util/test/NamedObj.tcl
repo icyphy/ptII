@@ -92,7 +92,8 @@ test NamedObj-2.3 { Check names with dots} {
     # Now, dots are permitted.
     catch {java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .null: Cannot set a name with a period: This.name.has.dots}}
+} {{ptolemy.kernel.util.IllegalActionException: .null:
+Cannot set a name with a period: This.name.has.dots}}
 
 ######################################################################
 ####

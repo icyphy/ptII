@@ -166,7 +166,7 @@ test ComponentPort-3.4 {Level-crossing link error} {
     set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1:\
+} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1:
 Link crosses levels of the hierarchy}}
 
 ######################################################################
