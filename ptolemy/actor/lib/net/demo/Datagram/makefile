@@ -53,6 +53,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Datagram.xml \
+	DatagramCounter.xml \
 	DatagramDE.xml \
 	DatagramInjector.xml \
 	DatagramParsed.xml \
