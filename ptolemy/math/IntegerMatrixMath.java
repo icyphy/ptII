@@ -825,7 +825,7 @@ public class IntegerMatrixMath {
 
         for (int i = 0; i < _rows(matrix); i++) {
 
-            sb.append(asf.vectorBeginString());
+	    sb.append(asf.vectorBeginString());
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(asf.intString(matrix[i][j]));
 
@@ -834,7 +834,7 @@ public class IntegerMatrixMath {
                 }
             }
 
-            sb.append(asf.vectorEndString());
+	    sb.append(asf.vectorEndString());
 
             if (i < (_rows(matrix) - 1)) {
                 sb.append(asf.vectorDelimiterString());
