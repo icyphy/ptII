@@ -1372,9 +1372,10 @@ public class NamedObj implements Nameable, Debuggable,
     protected LinkedList _debugListeners = null;
 
     /** An index that is incremented to expedite the search for a unique
-     *  name by the uniqueName() method.
+     *  name by the uniqueName() method.  The starting value is 2 so
+     *  that the second instance of something has the number 2 appended.
      */
-    protected int _uniqueNameIndex = 0;
+    protected int _uniqueNameIndex = 2;
 
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.
