@@ -153,7 +153,7 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_traversalMethod == TM_CUSTOM) {
-            node.setChildren(TNLManip.traverseList(this, node, args, node.children()));
+            node.setChildren(TNLManip.traverseList(this, args, node.children()));
         } else {
             // traversalMethod == TM_CHILDREN_FIRST
             node.setChildren((ArrayList) node.getDefinedProperty(

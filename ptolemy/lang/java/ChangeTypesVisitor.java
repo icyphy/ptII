@@ -102,7 +102,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_declsLeft > 0) {
-            node.setChildren(TNLManip.traverseList(this, node, null, node.children()));
+            node.setChildren(TNLManip.traverseList(this, null, node.children()));
         }
         return node;
     }

@@ -70,11 +70,11 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         _filename = (String) node.getDefinedProperty(IDENT_KEY);
 
         // figure what types are being used
-        TNLManip.traverseList(this, node, null, node.getDefTypes());
+        TNLManip.traverseList(this, null, node.getDefTypes());
 
         // report extra imports
         List importList =
-            TNLManip.traverseList(this, node, null, node.getImports());
+            TNLManip.traverseList(this, null, node.getImports());
 
         // remove extra imports if desired
         if (_remove) {

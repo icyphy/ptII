@@ -79,7 +79,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        TNLManip.traverseList(this, node,
+        TNLManip.traverseList(this,
                 TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
 
         return null;
@@ -112,7 +112,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         // just pass on the same environment to the children
-        return TNLManip.traverseList(this, node, args, node.children());
+        return TNLManip.traverseList(this, args, node.children());
     }
 
     /** Get environment from this node, and pass it to the children.
@@ -123,7 +123,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
 
-        TNLManip.traverseList(this, node, childArgs, node.children());
+        TNLManip.traverseList(this, childArgs, node.children());
 
         // remove the ENVIRON_KEY property which is no longer needed
         node.removeProperty(ENVIRON_KEY);
@@ -136,8 +136,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY));
 
-        TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getInterfaces());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         // remove the ENVIRON_KEY property which is no longer needed
         node.removeProperty(ENVIRON_KEY);

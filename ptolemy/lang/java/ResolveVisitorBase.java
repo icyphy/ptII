@@ -182,7 +182,7 @@ public abstract class ResolveVisitorBase extends JavaVisitor
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_traversalMethod == TM_CUSTOM) {
-            TNLManip.traverseList(this, node, args, node.children());
+            TNLManip.traverseList(this, args, node.children());
         }
         return null;
     }

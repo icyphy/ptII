@@ -69,7 +69,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         LinkedList childArgs = TNLManip.cons(new FieldContext());
 
-        TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolve field on " +
                 node.getDefinedProperty(IDENT_KEY));
@@ -86,7 +86,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         LinkedList childArgs = TNLManip.cons(subCtx);
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         return node;
     }
@@ -108,7 +108,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         LinkedList childArgs = TNLManip.cons(subCtx);
 
-        node.setParams(TNLManip.traverseList(this, node, childArgs, node.getParams()));
+        node.setParams(TNLManip.traverseList(this, childArgs, node.getParams()));
         node.setBody((TreeNode) node.getBody().accept(this, childArgs));
 
         return node;
@@ -125,7 +125,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                     className);
         }
 
-        node.setParams(TNLManip.traverseList(this, node, args, node.getParams()));
+        node.setParams(TNLManip.traverseList(this, args, node.getParams()));
         node.setConstructorCall((ConstructorCallNode)
                 node.getConstructorCall().accept(this, args));
         node.setBody((BlockNode) node.getBody().accept(this, args));
@@ -141,7 +141,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         EnvironIter methods = classEnv.lookupFirstProper(classDecl.getName(),
                 CG_CONSTRUCTOR);
 
-        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
 
         node.setProperty(DECL_KEY, resolveCall(methods, node.getArgs()));
 
@@ -165,7 +165,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         EnvironIter methods = superEnv.lookupFirstProper(superDecl.getName(),
                 CG_CONSTRUCTOR);
 
-        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
 
         node.setProperty(DECL_KEY, resolveCall(methods, node.getArgs()));
 
@@ -194,7 +194,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         LinkedList childArgs = TNLManip.cons(subCtx);
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         return node;
     }
@@ -282,7 +282,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
 
-        TNLManip.traverseList(this, node, args, node.getArgs());
+        TNLManip.traverseList(this, args, node.getArgs());
 
         FieldContext subCtx = (FieldContext) ctx.clone();
         subCtx.methodArgs = node.getArgs();
@@ -323,7 +323,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                     node.getEnclosingInstance().accept(this, args));
         }
 
-        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
 
         TypeNameNode typeName = node.getDtype();
 
@@ -367,7 +367,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                     node.getEnclosingInstance().accept(this, args));
         }
 
-        node.setSuperArgs(TNLManip.traverseList(this, node, args, node.getSuperArgs()));
+        node.setSuperArgs(TNLManip.traverseList(this, args, node.getSuperArgs()));
 
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
 
@@ -384,7 +384,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         subCtx.inStatic = false;
         subCtx.methodArgs = null;
 
-        node.setMembers(TNLManip.traverseList(this, node, TNLManip.cons(subCtx),
+        node.setMembers(TNLManip.traverseList(this, TNLManip.cons(subCtx),
                 node.getMembers()));
 
         return node;

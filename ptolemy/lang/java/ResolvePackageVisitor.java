@@ -79,7 +79,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         childArgs.addLast(Boolean.FALSE);      // inner class = false
         childArgs.addLast(NullValue.instance); // no enclosing decl
 
-        TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
         node.accept(new ResolveImportsVisitor(), null);
 
@@ -121,7 +121,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         listArgs.addLast(env);                  // last environment
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
-        TNLManip.traverseList(this, null, listArgs, node.getMembers());
+        TNLManip.traverseList(this, listArgs, node.getMembers());
 
         return null;
     }
@@ -129,7 +129,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         // just pass on args as is
-        TNLManip.traverseList(this, node, args, node.children());
+        TNLManip.traverseList(this, args, node.children());
         return null;
     }
 
@@ -224,7 +224,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         memberArgs.addLast(env);                  // environment for this class
         memberArgs.addLast(Boolean.TRUE);         // inner class = true
         memberArgs.addLast(ocl);                  // last class decl
-        TNLManip.traverseList(this, node, memberArgs, node.getMembers());
+        TNLManip.traverseList(this, memberArgs, node.getMembers());
 
         return null;
     }
@@ -243,7 +243,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         listArgs.addLast(env);                  // last environment
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
-        TNLManip.traverseList(this, null, listArgs, nodeList);
+        TNLManip.traverseList(this, listArgs, nodeList);
     }
 
     /** The package this compile unit is in. */

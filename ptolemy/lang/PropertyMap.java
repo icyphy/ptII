@@ -1,4 +1,4 @@
-/* A subclass on which to base objects that have properties.
+/* A class on which to base objects that have properties.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -42,16 +42,19 @@ import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyMap
-/** A subclass on which to base objects that have properties.
+/**
+A class on which to base objects that have properties.
+A property is an arbitrary object that is associated with the object
+by a key.
 @author Jeff Tsay
 @version $Id$
  */
 public class PropertyMap implements Cloneable {
 
-    public PropertyMap() {}
-
-    /** Make a deep copy of the property map, so that the two instances can have
-     *  different values for the same property.
+    /** Make a deep copy of the property map, so that the new instance
+     *  can have different values for the same property than those of
+     *  the old instance.
+     *  @return The new PropertyMap.
      */
     public Object clone() {
         PropertyMap pm = null;

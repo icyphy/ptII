@@ -976,7 +976,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         } else {
             return _separateList(
-                    TNLManip.traverseList(this, null, null, list), "; ");
+                    TNLManip.traverseList(this, null, list), "; ");
         }
     }
 

@@ -64,7 +64,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         _importOnDemand("java.lang");
 
-        TNLManip.traverseList(this, node, null, node.getImports());
+        TNLManip.traverseList(this, null, node.getImports());
 
         return null;
     }

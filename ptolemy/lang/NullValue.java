@@ -1,4 +1,4 @@
-/*
+/* A singleton marker class indicating a null value.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -31,12 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
-/**
+/** A singleton marker class indicating a null value.
 @author Jeff Tsay
 @version $Id$
  */
 public final class NullValue {
     private NullValue() {}
 
+    /** The one instance of this class. */
     public static NullValue instance = new NullValue();
 }

@@ -71,7 +71,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.add(NullValue.instance); // enclosing class decl
         childArgs.add(NullValue.instance); // enclosing class environ
 
-        TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolveClass for " +
                 node.getProperty(IDENT_KEY));
@@ -154,7 +154,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me);
         childArgs.addLast(me.getEnviron());
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         return null;
     }
@@ -256,7 +256,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me);
         childArgs.addLast(me.getEnviron());
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         return null;
     }
@@ -444,7 +444,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me);
         childArgs.addLast(myEnviron);
 
-        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+        TNLManip.traverseList(this, childArgs, node.getMembers());
 
         return null;
     }
@@ -461,7 +461,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         LinkedList childArgs = new LinkedList();
         childArgs.add(NullValue.instance); // no enclosing class decl
         childArgs.add(NullValue.instance); // no enclosing class environ
-        TNLManip.traverseList(this, node, args, node.children());
+        TNLManip.traverseList(this, args, node.children());
         return null;
     }
 

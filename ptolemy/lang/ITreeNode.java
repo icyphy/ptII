@@ -1,4 +1,4 @@
-/* The interface that all nodes in an abstract syntax tree implement.
+/* An interface that nodes in an abstract syntax tree implement.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
+// FIXME: Seems that only TreeNode implements this.  Eliminate?
 
 package ptolemy.lang;
 
@@ -39,64 +40,104 @@ import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ITreeNode
-/** The interface that all nodes in an abstract syntax tree implement.
+/**
+An interface that nodes in an abstract syntax tree implement.
+
 @author Jeff Tsay
 @version $Id$
  */
 public interface ITreeNode extends Cloneable {
 
-    /** Accept a visitor, giving the visitor a list of zero arguments. */
-    public Object accept(IVisitor v);
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
 
-    /** Accept a visitor, giving the visitor a list of arguments. Depending on
-     *  the traversal method, the children of the node may be visited before or
-     *  after this node is visited, or not at all.
+    /** Accept a visitor with no arguments. An implementation
+     *  of this manages visits to the child nodes.
+     *  Depending on the traversal method, the children of the node
+     *  may be visited before or after this node is visited, or not at all.
+     *  @param visitor The visitor to accept.
+     *  @return The result of the visit.
      */
-    public Object accept(IVisitor v, LinkedList visitorArgs);
+    public Object accept(IVisitor visitor);
 
-    /** Return the list of all direct children of this node. */
-    public ArrayList children();
+    /** Accept a visitor with the specified arguments. An implementation
+     *  of this manages visits to the child nodes.
+     *  Depending on the traversal method, the children of the node
+     *  may be visited before or after this node is visited, or not at all.
+     *  @param visitor The visitor to accept.
+     *  @param visitorArgs The arguments of the visit.
+     *  @return The result of the visit.
+     */
+    public Object accept(IVisitor visitor, LinkedList visitorArgs);
 
-    /** Syntactic sugar to get the return value of the most recent
-     * visitor to the i-th child node, where the argument is i.
+    /** Return the list of children of this node.
+     *  @return A list of children nodes.
+     */
+    public List children();
+
+    /** Get the return value of the most recent
+     *  visitor to the <i>index</i>-th child node.
+     *  @param index The index of the child whose visit result is returned.
+     *  @return The most recent result of visiting the specified child.
      */
     public Object childReturnValueAt(int index);
 
-    /** Syntactic sugar to get the return value of the most recent
-     * visitor to the specified child node.
+    /** Get the return value of the most recent
+     *  visitor to the specified child node.
+     *  @param child The child whose visit result is returned.
+     *  @return The most recent result of visiting the specified child.
      */
     public Object childReturnValueFor(Object child);
 
-    /** Return the class ID number (the node ID), which is unique for
-     *  each sub-type.
+    /** Return the class ID number, which is unique for each sub-type.
+     *  @return A unique class ID number.
      */
     public int classID();
 
-    /** Return a clone of this node, cloning all children of the node. */
+    /** Return a deep clone of this node, which contains clones of the
+     *  children of the node.  If the node identifies itself as a singleton
+     *  by returning true in its isSingleton() method, then do not clone it.
+     *  @return A deep copy of this node.
+     */
     public Object clone();
 
-    /** Return the child at the specified index in the child list. */
+    /** Return the child at the specified index in the child list.
+     *  If there is no such child, return null.
+     *  @param index The index of the desired child.
+     *  @return The child node, or null if there is none.
+     */
     public Object getChild(int index);
 
+    /** Return true if the class of this object is a singleton, i.e. there
+     *  exists only one object of the subclass. This method needs to be
+     *  overridden by  singleton classes.
+     *  @return False.
+     */
     public boolean isSingleton();
 
-    /** Set the child at the specified index in the child list. */
+    /** Set the child at the specified index to the specified object,
+     *  replacing any previous child at that index.
+     *  @param index The index of the child.
+     *  @param child The child to insert.
+     */
     public void setChild(int index, Object child);
 
-    /** Visit all nodes or lists in in the argument list, and place the list of
-     *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
+    /** Set the children of this node to the specified list.
+     *  @param childList The list of children.
      */
-    public void traverseChildren(IVisitor v, LinkedList args);
-
     public void setChildren(ArrayList childList);
 
-    /** Return a String representation of this node.
-     *  Call the toString() method of all child nodes.
-     */
-    public String toString();
-
-    /** Return a String representation of this node, indented by ident.
-     *  Call the toString() method of all child nodes.
+    /** Return a String representation of this node, prefixed by prefix,
+     *  and all its children.
+     *  @return A representation of this node.
      */
     public String toString(String indent);
+
+    /** Visit all nodes or lists in in the argument list, and place
+     *  the list of returned values in the CHILD_RETURN_VALUES_KEY
+     *  property of the node.
+     *  @param visitor The visitor to apply to the children.
+     *  @param args The arguments to pass to the visitor.
+     */
+    public void traverseChildren(IVisitor visitor, LinkedList args);
 }

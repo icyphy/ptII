@@ -43,7 +43,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        List retList = TNLManip.traverseList(this, null, null,
+        List retList = TNLManip.traverseList(this, null,
                 node.getDefTypes());
 
         LinkedList newDefTypeList = new LinkedList();
@@ -66,7 +66,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
         int modifiers = node.getModifiers();
 
-        List retList = TNLManip.traverseList(this, null, null, node.getMembers());
+        List retList = TNLManip.traverseList(this, null, node.getMembers());
 
         Iterator retItr = retList.iterator();
 
@@ -130,7 +130,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        List retList = TNLManip.traverseList(this, null, null, node.getMembers());
+        List retList = TNLManip.traverseList(this, null, node.getMembers());
 
         Iterator retItr = retList.iterator();
 

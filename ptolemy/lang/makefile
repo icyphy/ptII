@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang
 
-DIRS = 		java
+DIRS = 		java tree
 
 # Root of the Java directory
 ROOT =		../..
@@ -60,7 +60,7 @@ JSRCS = ApplicationUtility.java \
         StringManip.java \
         TNLManip.java \
         TrackedPropertyMap.java \
-        TreeNode.java 
+        TreeNode.java
 
 EXTRA_SRCS =	$(JSRCS)
 

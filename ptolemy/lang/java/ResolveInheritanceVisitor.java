@@ -65,7 +65,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ApplicationUtility.trace("resolveInheritance for " +
                 node.getProperty(IDENT_KEY));
 
-        TNLManip.traverseList(this, node, null, node.getDefTypes());
+        TNLManip.traverseList(this, null, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolveInheritance for " +
                 node.getProperty(IDENT_KEY));
@@ -331,7 +331,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     /** The default visit method. Visit all child nodes. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         LinkedList childArgs = new LinkedList();
-        TNLManip.traverseList(this, node, args, node.children());
+        TNLManip.traverseList(this, args, node.children());
         return null;
     }
 
