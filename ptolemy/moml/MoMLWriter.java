@@ -44,7 +44,10 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+
 import ptolemy.actor.IOPort;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -463,6 +466,12 @@ public class MoMLWriter extends Writer {
             // Alot of things aren't presistent and are just skipped.
             if(object instanceof NotPersistent && !_isForcePersistence) 
                 return false;
+
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistance? 
+            if(object instanceof Variable && !(object instanceof Parameter))
+                return false;
+
             // Documentation uses a special tag with no class.
             if(object instanceof Documentation && !_isLiteral) {
                 Documentation container = (Documentation)object;
@@ -1158,9 +1167,6 @@ public class MoMLWriter extends Writer {
             check = check && writer._write(object, depth, object.getName());
             String string = stringWriter.toString();
 
-            if(!check) {
-                System.out.println("check helped!");
-            }
             // If the object is different, then write it.
             if(check && !string.equals(deferredString)) {
                 //  System.out.println("string = " + string);
