@@ -77,21 +77,19 @@ test FixToken-1.3 {Create a non-empty instance from an String} {
 
 ######################################################################
 
-test FixToken-2.1 {Test additive identity} {	   
+test FixToken-2.1 {Test additive identity} {	    
     set c21 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
     set p [java::new ptolemy.data.FixToken $c21 ]
     set token [$p zero]
     list [$token toString]
-} {fix(0.0,1,1)}
+} {fix(0.0,16,4)}
 
 test FixToken-2.2 {Test multiplicative identity} { 
     set c22 [java::call ptolemy.math.Quantizer round 12.2 $p0 ]
     set p [java::new ptolemy.data.FixToken $c22 ]
     set token [$p one]
     list [$token toString]
-} {fix(1.0,4,4)}
-
-#FIXME: the 4,4 is a bit strange?
+} {fix(1.0,16,4)}
 
 ######################################################################
 
