@@ -130,18 +130,48 @@ public class ModelDirectory extends CompositeEntity {
             } catch (KernelException ex) {
                 throw new InternalErrorException("Cannot remove directory!");
             }
-        } else 	if (remainingEntities.size() == 1) {
-            // Check to see whether what remains is only the configuration.
-            Object remaining = remainingEntities.get(0);
-            if (remaining instanceof PtolemyEffigy) {
-                if (((PtolemyEffigy)remaining).getModel()
-                        instanceof Configuration) {
-                    try {
-                        setContainer(null);
-                    } catch (KernelException ex) {
-                        throw new InternalErrorException(
-                                "Cannot remove directory!");
+        } else {
+            if (remainingEntities.size() == 1) {
+                // Check to see whether what remains is only the configuration.
+                Object remaining = remainingEntities.get(0);
+                if (remaining instanceof PtolemyEffigy) {
+                    if (((PtolemyEffigy)remaining).getModel()
+                            instanceof Configuration) {
+                        try {
+                            setContainer(null);
+                        } catch (KernelException ex) {
+                            throw new InternalErrorException(
+                                    "Cannot remove directory!");
+                        }
                     }
+                }
+            } 
+            
+            // Finally, we might have a case where none of the effigies in
+            // the application have a tableau, in which case the application
+            // no longer has a UI.  If this happens, then we want to remove
+            // the directory, triggering the application to exit.
+            boolean anyTableau = false;
+            // Check to see if the remaining effigies have any tableaux.
+            for(Iterator effigies = remainingEntities.iterator();
+                effigies.hasNext() && !anyTableau;) {
+                Effigy effigy = (Effigy)effigies.next();
+                if(effigy.numberOfOpenTableaux() > 0) {
+                    anyTableau = true;
+                }
+            }
+            // If we can't find any tableau for any of the effigies, then exi
+            if(!anyTableau) {
+                try {
+                    // This gets reentrant...  Ugh..
+                     for(Iterator effigies = remainingEntities.iterator();
+                         effigies.hasNext();) {
+                         Effigy effigy = (Effigy)effigies.next();
+                         effigy.setContainer(null);
+                     }
+                } catch (KernelException ex) {
+                    throw new InternalErrorException(
+                            "Cannot remove directory!");
                 }
             }
         }
