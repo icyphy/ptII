@@ -157,7 +157,13 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
     <entity name="Symbol1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 175.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 150.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -170,7 +176,13 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
     <entity name="Symbol2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="50.0, 255.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 230.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -322,11 +334,11 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="160.0, 185.0">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="315.0, 185.0">
         </vertex>
     </relation>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" class="ptolemy.moml.Vertex" value="140.0, 265.0">
+        <vertex name="vertex" class="ptolemy.moml.Vertex" value="275.0, 265.0">
         </vertex>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
