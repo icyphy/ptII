@@ -40,9 +40,19 @@
 #    ptuser@kahn 2% setenv CLASSPATH $TYCHO/java
 #    ptuser@kahn 3% java pt.domains.pn.kernel.PNPrimeExample 50
 
+# These commands use the Java version of this demo.
+# The PNPrimeExample Java class creates the same definitions and connections
+# as this file does in Tcl.
+#
 # set PNPrimeExample [java::new pt.domains.pn.kernel.PNPrimeExample]
 # set args [java::new {java.lang.String[]} {1} {50}]
 # $PNPrimeExample main $args
+
+if [catch {package require java} err] {
+    puts stderr "This file requires Tcl Blend, and will not work\
+	    with Itcl2.2."
+    puts stderr "'package require java' failed with:\n$err"
+}
 
 # If $TYCHO is not set, then try to set it.
 if [info exists env(TYCHO)] {
@@ -62,6 +72,16 @@ if [info exists env(TYCHO)] {
 	set TYCHO [file join [pwd] .. .. .. ..]
     }
 }
+
+set stream [java::new java.io.ByteArrayOutputStream]
+set printStream [java::new \
+    {java.io.PrintStream java.io.OutputStream} $stream]
+java::call System setErr $printStream
+java::call System setOut $printStream
+#set e [java::field System err]
+#$e {println String} foo
+#$printStream flush
+#puts "The error was [$stream toString]"
 
 set myUniverse [java::new pt.domains.pn.kernel.PNUniverse]
 
@@ -122,3 +142,7 @@ description2DAG "Universe Structure After Execute" \
 	$finalDAGFileName $finalDescription
 
 puts "Bye World"
+
+# Get the output
+$printStream flush
+list "[$stream toString]"
