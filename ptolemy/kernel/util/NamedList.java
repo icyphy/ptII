@@ -39,7 +39,8 @@ package ptolemy.kernel.util;
 import collections.CorruptedEnumerationException;
 
 import collections.LinkedList;
-import collections.CollectionEnumeration;
+
+import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import java.io.Serializable;
 
@@ -130,7 +131,7 @@ public class NamedList implements Cloneable, Serializable {
      *  @see collections.LinkedList#elements()
      *  @return An enumeration of Nameable objects.
      */
-    public synchronized CollectionEnumeration elements() {
+    public synchronized Enumeration elements() {
         return _namedlist.elements();
     }
 
@@ -147,7 +148,7 @@ public class NamedList implements Cloneable, Serializable {
      *  @return The requested element if it is found, and null otherwise.
      */
     public synchronized Nameable get(String name) {
-        CollectionEnumeration enum = _namedlist.elements();
+        Enumeration enum = _namedlist.elements();
         while( enum.hasMoreElements() ) {
             Nameable obj = (Nameable)enum.nextElement();
             if( name.equals(obj.getName()) ) {
@@ -274,7 +275,7 @@ public class NamedList implements Cloneable, Serializable {
      *  @return The index of the desired element, or -1 if it not on the list.
      */
     private int _getIndexOf(String name) {
-        CollectionEnumeration enum = _namedlist.elements();
+        Enumeration enum = _namedlist.elements();
         int count = 0;
         while( enum.hasMoreElements() ) {
             Nameable obj = (Nameable)enum.nextElement();

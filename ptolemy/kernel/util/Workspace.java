@@ -34,7 +34,6 @@ import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.LinkedList;
-import collections.CollectionEnumeration;
 import collections.HashedSet;
 
 //////////////////////////////////////////////////////////////////////////
@@ -200,7 +199,7 @@ public final class Workspace implements Nameable, Serializable {
      *  they were added.
      *  @return An enumeration of NamedObj objects.
      */
-    public synchronized CollectionEnumeration directory() {
+    public synchronized Enumeration directory() {
         return _directory.elements();
     }
 
@@ -614,7 +613,7 @@ public final class Workspace implements Nameable, Serializable {
                 result += " ";
             }
             result += "directory {\n";
-            CollectionEnumeration enum = directory();
+            Enumeration enum = directory();
             while (enum.hasMoreElements()) {
                 NamedObj obj = (NamedObj)enum.nextElement();
                 // If deep is not set, then zero-out the contents flag
