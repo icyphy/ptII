@@ -104,7 +104,7 @@ public class RecordAssembler extends TypedAtomicActor {
 	// check if all input ports have token
         Object[] portArray = inputPortList().toArray();
 	int size = portArray.length;
-	for (int i=0; i<size; i++) {
+	for (int i = 0; i < size; i++) {
 	    IOPort port = (IOPort)portArray[i];
 	    if ( !port.hasToken(0)) {
 	        return;
@@ -115,7 +115,7 @@ public class RecordAssembler extends TypedAtomicActor {
 	String[] labels = new String[size];
 	Token[] values = new Token[size];
 
-	for (int i=0; i<size; i++) {
+	for (int i = 0; i < size; i++) {
 	    IOPort port = (IOPort)portArray[i];
 	    labels[i] = port.getName();
 	    values[i] = port.get(0);
@@ -138,7 +138,7 @@ public class RecordAssembler extends TypedAtomicActor {
 	Type[] types = new Type[size];
 
 	// form the declared type for the output port
-	for (int i=0; i<size; i++) {
+	for (int i = 0; i < size; i++) {
 	    labels[i] = ((Port)portArray[i]).getName();
 	    types[i] = BaseType.ANY;
 	}
