@@ -65,21 +65,27 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =  \
+    CoordinatorUtil/CoordinatorUtil.jar \
 	CorbaIOUtil/CorbaIOUtil.jar \
-	util/util.jar
+	util/util.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CorbaActorClient.java \
+    CorbaActorClient.java \
 	PushConsumer.java \
 	PushSupplier.java \
 	PullConsumer.java \
-	PullSupplier.java
+	PullSupplier.java \
+	TaskCoordinator.java \
+	TaskReceiver.java \
+	TaskReporter.java
 
 EXTRA_SRCS =	$(JSRCS) \
+	Coordinator.idl \
 	CorbaActor.idl \
+	CorbaIO.idl \
 	README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
