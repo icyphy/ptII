@@ -47,6 +47,7 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
+	codegen.htm \
 	contents.css \
 	contentsheader.htm \
 	default.css \
@@ -89,7 +90,29 @@ OPTIONAL_FILES =	\
 	codeDocPtiny \
 	uml
 
-PTINYJSRCS = \
+# Java packages for codegen
+CODEGENPACKAGES = \
+			ptolemy.lang \
+			ptolemy.lang.java \
+			ptolemy.lang.java.extended \
+			ptolemy.lang.java.nodetypes \
+			ptolemy.lang.java.tree \
+			ptolemy.codegen \
+			ptolemy.codegen.saveasjava \
+			ptolemy.domains.sdf.codegen
+
+CODEGENJSRCS = \
+			../ptolemy/lang/*.java \
+			../ptolemy/lang/java/*.java \
+			../ptolemy/lang/java/extended/*.java \
+			../ptolemy/lang/java/nodetypes/*.java \
+			../ptolemy/lang/java/tree/*.java \
+			../ptolemy/codegen/*.java \
+			../ptolemy/codegen/saveasjava/*.java \
+			../ptolemy/domains/sdf/codegen
+
+
+PTINYPACKAGES = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
@@ -101,16 +124,17 @@ PTINYJSRCS = \
 # GR domain uses Java 3D, which is not part of the default
 # JDK1.3 download, so we can't include the GR domain classes in
 # the default build.
-#GRJSRCS =		ptolemy.domains.gr.kernel \
+#GRPACKAGES =		ptolemy.domains.gr.kernel \
 #			ptolemy.domains.gr.lib
 
 # Javasound is not part of JDK1.2
-#JAVASOUNDJSRCS =	ptolemy.actor.lib.javasound \
+#JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
 #			ptolemy.media.javasound
 
-ALLJSRCS =		$(PTINYJSRCS) \
-			$(GRJSRCS) \
-			$(JAVASOUNDJSRCS) \
+ALLPACKAGES =		$(CODEGENPACKAGES) \
+			$(PTINYPACKAGES) \
+			$(GRPACKAGES) \
+			$(JAVASOUNDPACKAGES) \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
@@ -172,7 +196,8 @@ troubleshootingVergil.htm: troubleshooting.htm
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
-codeDoc/tree.html:	../ptolemy/plot/*.java \
+codeDoc/tree.html:	$(CODEGENJSRCS) \
+			../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
@@ -218,14 +243,14 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLJSRCS) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLPACKAGES) )
 
 
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDocPtiny $(PTINYJSRCS) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
 # We don't include common.mk since we don't use the compiler here
