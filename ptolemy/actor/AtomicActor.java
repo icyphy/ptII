@@ -205,6 +205,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_debugging) {
             _debug("Called initialize()");
         }
+        // Clear the input receivers.
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            if(port.isInput()) {
+                // Clear all receivers.
+                Receiver[][] receivers = port.getReceivers();
+                for(int i = 0; i < receivers.length; i++) {
+                    Receiver[] receivers2 = receivers[i];
+                    for(int j = 0; j < receivers2.length; j++) {
+                        receivers2[j].clear();
+                    }
+                } 
+            }
+        }
     }
 
     /** List all the input ports.
