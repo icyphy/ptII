@@ -47,12 +47,13 @@ nodes in the parse tree.
 */
 public class ASTPtLogicalNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() 
+            throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
+        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             String str = "Not enough/too many operators for number";
             throw new IllegalArgumentException(str + " of children");
         }
@@ -67,10 +68,10 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             throw new IllegalArgumentException(str + "to a Boolean");
         }
         boolean result = values[0];
-        for (i = 0; i<_tokenList.size(); i++) {
-            Token x = (Token)_tokenList.take();
+        for (i = 0; i<_lexicalTokens.size(); i++) {
+            Token x = (Token)_lexicalTokens.take();
             // need to reinsert at end if want to reParse tree
-            _tokenList.insertLast(x);
+            _lexicalTokens.insertLast(x);
             if ( x.image.equalsIgnoreCase("&&") ) {
                 result = (result && values[i+1]);
             } else if ( x.image.equalsIgnoreCase("||") ) {
