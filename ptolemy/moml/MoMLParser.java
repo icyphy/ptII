@@ -239,11 +239,16 @@ public class MoMLParser extends HandlerBase {
         // Filters can filter out graphical classes, or change
         // the names of ports to handle backward compatibility.
         if (_filter != null) {
-            value = _filter.filterAttributeValue(_current, name, value);
-            if (value == null) {
+	    // Sometimes the value we pass in is null, so we only
+	    // want to skip if filterAttributeValue returns null
+	    // when passed a non-null value.
+	    String filteredValue =
+		_filter.filterAttributeValue(_current, name, value);
+            if (value != null && filteredValue == null) {
                 _skipElementName = name;
                 _skipElement = 1;
             }
+	    value = filteredValue;
         }
 
         // NOTE: value may be null if attribute default is #IMPLIED.
@@ -485,7 +490,8 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** Get the MoMLFilter used to translate names.
-     *  FIXME: should this be static?
+     *  Note that this method is static.  The returned MoMLFilter
+     *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilter currently filtering. 
      */
     public MoMLFilter getMoMLFilter() {
@@ -733,7 +739,8 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** Set the MoMLFilter to translate names.
-     *  FIXME: should this be static?   
+     *  Note that this method is static.  The specified MoMLFilter
+     *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to call.  
      */   
     public void setMoMLFilter(MoMLFilter filter) {
@@ -2573,8 +2580,9 @@ public class MoMLParser extends HandlerBase {
     private static ErrorHandler _handler = null;
 
     // MoMLFilter to apply if non-null.  MoMLFilters translate MoML
-    // elements.
-    private MoMLFilter _filter = null;
+    // elements.  This filter will filter all MoML for all instances
+    // of this class.
+    private static MoMLFilter _filter = null;
 
     // List of top-level entities imported via import element.
     private List _imports;
