@@ -1,4 +1,4 @@
-/* Transform Actors using Soot
+/* Transform Actors using Soot and generate C
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -27,10 +27,12 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.shallow;
+package ptolemy.copernicus.deep;
+
 
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.SootUtilities;
 
 import soot.*;
 import soot.jimple.*;
@@ -53,12 +55,15 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate Java classes for that model.
+Read in a MoML model, generate .class files with very few
+dependencies on Ptolemy II.
 
-@author Stephen Neuendorffer, Christopher Hylands
+@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
-public class Main extends KernelMain {    
+
+public class Main extends KernelMain {
+    
 
     /** Read in a MoML mode and generate Java classes for that model. 
      *  @param args An array of Strings that control the transformation
@@ -66,58 +71,48 @@ public class Main extends KernelMain {
     public Main(String [] args) throws Exception {
 	super(args);
 
-        // Process the options.
+        // Process the global options.
         // FIXME!!
-        String options = "deep targetPackage:ptolemy.copernicus.shallow.cg";
-
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
-                ActorTransformer.v(_toplevel), options));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.mt", 
-                ModelTransformer.v(_toplevel), options));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt", 
-                CommandLineTransformer.v(_toplevel), options));
-       
-        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
-        //        InvokeGraphBuilder.v()));
-        // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
-        //        StaticInliner.v()));
+        String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
+ 
+        // Add a transformer to convert each actor class to Deep Class
+        // "wjtp" means "whole java tranformation package"
+        // This transformer is required to be a scene transformer,
+        // and it is applied before body transformers.
+        // "wjtp.deep" is the name of the phase.
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.deep", 
+        //        DeepTransformer.v(_toplevel), options));
         
-        // When we fold classes, we create extra locals.  These optimizations
-        // will remove them.  Unfortunately, -O creates bogus code?
-        /*   Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
+        // Add transformers to do other passes.
+        // "jtp" mean "java tranformation package.
+        // These transformers are required to be a body transformer,
+        // and are applied after scene transformers.
+
+        // First pass: "cpaf" = "constant propagator and folder"
+        Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
                 ConstantPropagatorAndFolder.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
                 ConditionalBranchFolder.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.uce",
                 UnreachableCodeEliminator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                CopyPropagator.v()));
+	Scene.v().getPack("jtp").add(new Transform("jtp.cp",
+                  CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-        DeadAssignmentEliminator.v()));*/
-       
-	_callSootMain(args);
+                DeadAssignmentEliminator.v()));
+           
+        _callSootMain(args);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in a MoML model, generate java files */
+    /** Read in a MoML model, generate .class files with very few
+     *  dependencies on Ptolemy II.
+     */
     public static void main(String[] args) throws Exception {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);
     }
+
 }
-
-    
-
-
-
-
-
-
-
-
-
-
-

@@ -71,28 +71,12 @@ public class Main extends KernelMain {
     /** Read in a MoML mode and generate Java classes for that model. 
      *  @param args An array of Strings that control the transformation
      */
-    public Main(String [] args) {
+    public Main(String [] args) throws Exception{
 	super(args);
 
         // Process the global options.
         // FIXME!!
         String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
-
-        // A Hack to ignore the class we specify on the command
-	// line. This is a soot problem that requires this hack.
-	// We will provide soot with java.lang.Object as its
-	// only application class in Main. The first transformation
-	// will ignore all application classes (i.e. set them to
-	// library classes)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack", 
-                new IgnoreAllApplicationClasses(), ""));
- 
-        // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model. 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
-                ActorTransformer.v(_toplevel), options));
 
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
@@ -127,7 +111,7 @@ public class Main extends KernelMain {
     ////                         public methods                    ////
 
     /** Read in a MoML model, generate .class files for use with JHDL */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);

@@ -34,6 +34,8 @@ ME =		ptolemy/copernicus/jhdl
 # Root of the Java directory
 ROOT =		../../..
 
+# $PTII/configure looks for Soot and JHDL and sets
+# variables in $PTII/mk/ptII.mk
 CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
 
 # Get configuration info

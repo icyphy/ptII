@@ -1,6 +1,6 @@
-# Ptolemy code generation for JHDL SimpleAdd demo
+# Makefile for Ptolemy II C
 #
-# @Authors: (makefile only) Christopher Hylands- based on a file by Thomas M. Parks
+# @Authors:  (makefile) Christopher Hylands- based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,27 +29,24 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/jhdl/demo/SimpleAdd
-
-DIRS =
+ME =		ptolemy/copernicus/c
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../..
 
+# $PTII/configure looks for Soot and JHDL and sets
+# variables in $PTII/mk/ptII.mk
 CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	SimpleAdd
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-#PTCLASSJAR = 	$(PTPACKAGE).jar
+DIRS =		test
 
+# Keep this list alphabetized.
 JSRCS = \
-	SimpleAdd.java \
-	SimpleAddSystem.java
+	Main.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -58,43 +55,23 @@ EXTRA_SRCS =	$(JSRCS)
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-install: all $(PTCLASSJAR)
+install: all
 
 depend:
 	@echo "no dependencies in this directory"
 
-TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
-SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
-MODEL = SimpleAddSystem
-TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
-SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
-
 demo: jclass
-	@echo "First we generate SimpleAdd.class"
-	$(JAVA) -Xmx128M -Xms128M \
-	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.jhdl.Main $(SOURCECLASS) -d "$(ROOT)"
-	@echo "decompile the simpleAdd actor"
-	"$(PTII)/bin/jode" $(TARGETPACKAGE).SimpleAdd
-#	java -classpath $(ROOT) $(TARGETCLASS)
-
-interpret: jclass
-	@echo "Run as a Ptolemy system"
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)" \
-		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-		-class $(TARGETCLASS) \
-		-iterations 1
+	(cd demo/SimpleAdd; $(MAKE) demo)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
 
