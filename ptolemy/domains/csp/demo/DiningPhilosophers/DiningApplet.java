@@ -260,7 +260,7 @@ public class DiningApplet extends Applet
     }
 
     public synchronized void philosopherChanged() {
-        if (simulationThread.isAlive()) {
+        if (simulationThread != null && simulationThread.isAlive()) {
             // repaint the table for the current state
             _table.repaint();
             /* To slow down the model, uncomment this...
