@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
 This director extends DE director and handles hierarchical DE models.
 
 This director uses IODependencies, which specify the input and output
-relations of a actor, to do topological sort and scheduling. This director
+relations of an actor, to do topological sort and scheduling. This director
 excludes the models with cyclic loops in the graph composed of IO ports 
 of actors, and throws an exception complaining that no valid schedules
 can be found.
