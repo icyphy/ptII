@@ -49,18 +49,19 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// PortLocationDialog
 /**
-This class is a modal dialog box for configuring the port locations of an entity.
-An instance of this class contains an instance of PortLocationConfigurer.
-The dialog is modal, so the statement that creates the dialog will
-not return until the user dismisses the dialog.
+This class is a modal dialog box for configuring the port locations of
+an entity. An instance of this class contains an instance of
+PortLocationConfigurer.  The dialog is modal, so the statement that
+creates the dialog will not return until the user dismisses the
+dialog.
 
 @see PortLocationConfigurer
-@author Mason Holding
+@author Mason Holding, Contributor: Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.1
 */
-public
-class PortLocationDialog extends ComponentDialog implements ChangeListener
-{
+public class PortLocationDialog extends ComponentDialog
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  Several buttons are added to the dialog.
@@ -112,8 +113,9 @@ class PortLocationDialog extends ComponentDialog implements ChangeListener
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if (change == null || change.getSource() != this) return;
-
+        if (change == null || change.getSource() != this) {
+            return;
+        }
         // Open a new dialog.
         PortLocationDialog dialog = new PortLocationDialog(
                 _owner, _target, _configuration);
@@ -127,8 +129,9 @@ class PortLocationDialog extends ComponentDialog implements ChangeListener
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change == null || change.getSource() != this) return;
-
+        if (change == null || change.getSource() != this) {
+            return;
+        }
         _target.removeChangeListener(this);
 
         if (!change.isErrorReported()) {
@@ -147,10 +150,6 @@ class PortLocationDialog extends ComponentDialog implements ChangeListener
             ((PortLocationConfigurer)contents).apply();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
