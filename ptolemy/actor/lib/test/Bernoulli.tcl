@@ -53,7 +53,8 @@ test Bernoulli-1.1 {test constructor} {
 } {0L 0.5}
 
 test Bernoulli-1.2 {test clone} {
-    set g2 [java::cast ptolemy.actor.lib.Bernoulli [$g clone]]
+    set g2 [java::cast ptolemy.actor.lib.Bernoulli \
+		[$g clone [$e0 workspace]]]
     $seed setExpression {2l}
     set seed [getParameter $g2 seed]
     [$seed getToken] toString

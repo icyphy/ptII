@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test AddSubtract-1.1 {test constructor and clone} {
     set e0 [sdfModel 3]
     set addsub [java::new ptolemy.actor.lib.AddSubtract $e0 addsub]
-    set newObject [java::cast ptolemy.actor.lib.AddSubtract [$addsub clone]]
+    set newObject [java::cast ptolemy.actor.lib.AddSubtract \
+		       [$addsub clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}

@@ -47,7 +47,8 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set values [getParameter $pulse values]
     set indexes [getParameter $pulse indexes]
 
-    set newObject [java::cast ptolemy.actor.lib.Pulse [$pulse clone]]
+    set newObject [java::cast ptolemy.actor.lib.Pulse \
+		       [$pulse clone [$e0 workspace]]]
     set newValues [getParameter $newObject values]
     set newIndexes [getParameter $newObject indexes]
     set valuesVal [[$newValues getToken] toString]

@@ -54,7 +54,7 @@ test RecordDisassembler-1.1 {test clone} {
     set e0 [sdfModel 3]
     set recDisasmMaster [java::new ptolemy.actor.lib.RecordDisassembler $e0 \
     								disassembler]
-    set disassembler [_testClone $recDisasmMaster]
+    set disassembler [_testClone $recDisasmMaster [$e0 workspace]]
     $recDisasmMaster setContainer [java::null]
     $disassembler setContainer $e0
     $disassembler description 1

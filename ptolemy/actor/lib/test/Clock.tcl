@@ -48,7 +48,8 @@ test Clock-1.0 {test constructor and initial value} {
 } {ptolemy.data.expr.Parameter {.top.clock.values} {1, 0}}
 
 test Clock-1.1 {test clone and initial value} {
-    set clock [java::cast ptolemy.actor.lib.Clock [$clockmaster clone]]
+    set clock [java::cast ptolemy.actor.lib.Clock \
+		   [$clockmaster clone [$e0 workspace]]]
     $clockmaster setContainer [java::null]
     $clock setContainer $e0
     [$clock getAttribute values] toString

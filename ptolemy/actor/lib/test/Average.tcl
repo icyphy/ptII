@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Average-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set average [java::new ptolemy.actor.lib.Average $e0 average]
-    set newObject [java::cast ptolemy.actor.lib.Average [$average clone]]
+    set newObject [java::cast ptolemy.actor.lib.Average \
+		       [$average clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}

@@ -59,7 +59,8 @@ test Interpolator-1.1 {test constructor and clone with default values} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set baseInterp [java::new ptolemy.actor.lib.Interpolator $e0 baseInterp]
 
-    set interp [java::cast ptolemy.actor.lib.Interpolator [$baseInterp clone]]
+    set interp [java::cast ptolemy.actor.lib.Interpolator \
+		    [$baseInterp clone [$e0 workspace]]]
     set values [getParameter $interp values]
     set valuesStr [[$values getToken] toString]
     set indexes [getParameter $interp indexes]

@@ -44,7 +44,8 @@ test MathFunction-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set mathFunctionbase [java::new ptolemy.actor.lib.MathFunction $e0 \
 	    MathFunction]
-    set mathFunction [java::cast ptolemy.actor.lib.MathFunction [$mathFunctionbase clone]]
+    set mathFunction [java::cast ptolemy.actor.lib.MathFunction \
+			  [$mathFunctionbase clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}
@@ -151,13 +152,16 @@ test MathFunction-3.2 {test with modulo on clone} {
 
     # 3.1 set the function to modulo.  The clone method
     # should preserve this and should also have a second port
-    set mathFunctionClone [java::cast ptolemy.actor.lib.MathFunction [$mathFunction clone]]
+    set mathFunctionClone [java::cast ptolemy.actor.lib.MathFunction \
+			       [$mathFunction clone [$e0 workspace]]]
     $mathFunctionClone setContainer $e1
 
-    set rampClone [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
+    set rampClone [java::cast ptolemy.actor.lib.Ramp \
+		       [$ramp clone [$e0 workspace]]]
     $rampClone setContainer $e1
 
-    set recClone [java::cast ptolemy.actor.lib.Recorder [$rec clone]]
+    set recClone [java::cast ptolemy.actor.lib.Recorder \
+		      [$rec clone [$e0 workspace]]]
     $recClone setContainer $e1
     $e1 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $rampClone] output] \
@@ -167,7 +171,8 @@ test MathFunction-3.2 {test with modulo on clone} {
        [java::field $mathFunctionClone output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $recClone] input]
 
-    set constClone [java::cast ptolemy.actor.lib.Const [$const clone]]
+    set constClone [java::cast ptolemy.actor.lib.Const \
+			[$const clone [$e0 workspace]]]
     $constClone setContainer $e1
 
     $e1 connect \

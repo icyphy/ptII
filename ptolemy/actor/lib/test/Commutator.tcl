@@ -57,7 +57,7 @@ test Commutator-1.1 {test clone} {
     set e0 [sdfModel 3]
     set commutatormaster [java::new ptolemy.actor.lib.Commutator \
             $e0 commutator]
-    set commutator [_testClone $commutatormaster]
+    set commutator [_testClone $commutatormaster [$e0 workspace]]
     $commutatormaster setContainer [java::null]
     $commutator setContainer $e0
     $commutator description 1

@@ -49,7 +49,8 @@ test CurrentTime-1.0 {test constructor and initial value} {
 } {ptolemy.data.expr.Parameter {.top.currentTime.stopTime} 0.0}
 
 test CurrentTime-1.1 {test clone and initial value} {
-    set currentTime [java::cast ptolemy.actor.lib.CurrentTime [$currentTimeMaster clone]]
+    set currentTime [java::cast ptolemy.actor.lib.CurrentTime \
+			 [$currentTimeMaster clone [$e0 workspace]]]
     $currentTimeMaster setContainer [java::null]
     $currentTime setContainer $e0
 

@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test AbsoluteValue-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set absbase [java::new ptolemy.actor.lib.AbsoluteValue $e0 abs]
-    set abs [java::cast ptolemy.actor.lib.AbsoluteValue [$absbase clone]]
+    set abs [java::cast ptolemy.actor.lib.AbsoluteValue \
+		 [$absbase clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}

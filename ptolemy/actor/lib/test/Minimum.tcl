@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Minimum-1.1 {test constructor and clone} {
     set e0 [sdfModel 5]
     set baseobj [java::new ptolemy.actor.lib.Minimum $e0 baseobj]
-    set minimum [java::cast ptolemy.actor.lib.Minimum [$baseobj clone]]
+    set minimum [java::cast ptolemy.actor.lib.Minimum \
+		     [$baseobj clone [$e0 workspace]]]
     $minimum setName minimum
     $minimum setContainer $e0
     $baseobj setContainer [java::null]

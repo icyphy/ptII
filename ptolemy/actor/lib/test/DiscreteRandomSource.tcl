@@ -48,7 +48,8 @@ test DiscreteRandomSource-1.0 {test constructor and initial value} {
 } {ptolemy.data.expr.Parameter {.top.random.values} {0, 1}}
 
 test DiscreteRandomSource-1.1 {test clone and initial value} {
-    set random [java::cast ptolemy.actor.lib.DiscreteRandomSource [$randommaster clone]]
+    set random [java::cast ptolemy.actor.lib.DiscreteRandomSource \
+		    [$randommaster clone [$e0 workspace]]]
     $randommaster setContainer [java::null]
     $random setContainer $e0
     [$random getAttribute values] toString

@@ -60,7 +60,8 @@ test Const-1.0 {test constructor and initial value} {
 test Const-1.1 {test clone and initial value} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
-    set newObject [java::cast ptolemy.actor.lib.Const [$const clone]]
+    set newObject [java::cast ptolemy.actor.lib.Const \
+		       [$const clone [$e0 workspace]]]
     $newObject setName new
     [$newObject getAttribute value] toString
 } {ptolemy.data.expr.Parameter {.new.value} 1}

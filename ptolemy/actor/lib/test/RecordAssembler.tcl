@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test RecordAssembler-1.1 {test clone} {
     set e0 [sdfModel 3]
     set recAsmMaster [java::new ptolemy.actor.lib.RecordAssembler $e0 assembler]
-    set assembler [_testClone $recAsmMaster]
+    set assembler [_testClone $recAsmMaster [$e0 workspace]]
     $recAsmMaster setContainer [java::null]
     $assembler setContainer $e0
     $assembler description 1

@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Maximum-1.1 {test constructor and clone} {
     set e0 [sdfModel 5]
     set baseobj [java::new ptolemy.actor.lib.Maximum $e0 baseobj]
-    set maximum [java::cast ptolemy.actor.lib.Maximum [$baseobj clone]]
+    set maximum [java::cast ptolemy.actor.lib.Maximum \
+		     [$baseobj clone [$e0 workspace]]]
     $maximum setName maximum
     $maximum setContainer $e0
     $baseobj setContainer [java::null]

@@ -54,7 +54,7 @@ test Distributor-1.1 {test clone} {
     set e0 [sdfModel 3]
     set distributormaster [java::new ptolemy.actor.lib.Distributor \
             $e0 distributor]
-    set distributor [_testClone $distributormaster]
+    set distributor [_testClone $distributormaster [$e0 workspace]]
     $distributormaster setContainer [java::null]
     $distributor setContainer $e0
     $distributor description 1

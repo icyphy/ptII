@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test Scale-1.1 {test constructor and clone} {
     set e0 [sdfModel 5]
     set scalebase [java::new ptolemy.actor.lib.Scale $e0 scale]
-    set scale [java::cast ptolemy.actor.lib.Scale [$scalebase clone]]
+    set scale [java::cast ptolemy.actor.lib.Scale \
+		   [$scalebase clone [$e0 workspace]]]
     $scalebase setContainer [java::null]
     $scale setContainer $e0
     # Success here is just not throwing an exception.

@@ -50,7 +50,7 @@ test db-1.1 {Test DB} {
 
     # Get a clone to test cloning.
     set clone [java::cast ptolemy.actor.lib.DB \
-    [$conver clone]]
+		   [$conver clone [$e0 workspace]]]
     $conver setContainer [java::null]
     $clone setName d2fClone
     $clone setContainer $e0

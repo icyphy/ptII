@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test Expression-1.1 {test clone} {
     set e0 [sdfModel 3]
     set exprmaster [java::new ptolemy.actor.lib.Expression $e0 expr]
-    set expr [_testClone $exprmaster]
+    set expr [_testClone $exprmaster [$e0 workspace]]
     $exprmaster setContainer [java::null]
     $expr setContainer $e0
     $expr description 1

@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test MultiplyDivide-1.1 {test constructor and clone} {
     set e0 [sdfModel 2]
     set muldiv [java::new ptolemy.actor.lib.MultiplyDivide $e0 muldiv]
-    set newObject [java::cast ptolemy.actor.lib.MultiplyDivide [$muldiv clone]]
+    set newObject [java::cast ptolemy.actor.lib.MultiplyDivide \
+		       [$muldiv clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}

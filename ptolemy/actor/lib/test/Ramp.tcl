@@ -48,7 +48,8 @@ test Ramp-1.1 {test clone} {
     $init setToken [java::new ptolemy.data.DoubleToken 2.5]
     $step setExpression init
 
-    set newObject [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
+    set newObject [java::cast ptolemy.actor.lib.Ramp \
+		       [$ramp clone [$e0 workspace]]]
     set newInit [getParameter $newObject init]
     set newStep [getParameter $newObject step]
     set initVal [[$newInit getToken] toString]
