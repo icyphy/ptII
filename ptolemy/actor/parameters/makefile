@@ -52,7 +52,8 @@ PTCLASSALLJARS =
 JSRCS = \
 	LocationParameter.java \
 	ParameterPort.java \
-	PortParameter.java
+	PortParameter.java \
+	SliderParameter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
