@@ -579,14 +579,19 @@ public class Query extends JPanel {
         }
     }
 
-    /** Return the preferred size, since it usually does not make
-     *  sense to stretch a query box.  Currently (JDK 1.3), only BoxLayout
-     *  pays any attention to this.
+    /** Return the preferred height, but set the width to the maximum
+     *  possible value.  Currently (JDK 1.3), only BoxLayout pays any
+     *  attention to getMaximumSize().
+     *
      *  @return The maximum desired size.
      */
-    public Dimension getMaximumSize() {
-        return getPreferredSize();
-    }
+     public Dimension getMaximumSize() {
+         // If you change this, be sure to try applets that have both
+         // horizontal and vertical layout.
+         Dimension preferred = super.getPreferredSize();
+         preferred.width = Short.MAX_VALUE;
+         return preferred;
+     }
 
     /** Get the preferred width to be used for entry boxes created
      *  in using addLine().  The preferred width is set using
@@ -1115,7 +1120,10 @@ public class Query extends JPanel {
         if (_entries.size() < 10) { 
             // If we have less than 10 entries, set the preferred height
             // to be the number of entries * the text height.
-            preferredSize.height = _entries.size() * getTextHeight() * 3;
+
+            // Be sure to check an applet such as GR/Pendulum that has
+            // a single parameter after modifying this.
+            preferredSize.height = _entries.size() * getTextHeight() * 4;
         } else {
             preferredSize.height = 10 * getTextHeight();
         }
