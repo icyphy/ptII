@@ -219,8 +219,6 @@ test PlotBox-14.1 {write} {
   <tick label="2002" position="9.0"/>
   <tick label="2003" position="10.0"/>
 </xTicks>
-<xLog/>
-<yLog/>
 <noColor/>
 </plot>
 }}
@@ -317,8 +315,6 @@ test PlotBox-14.2 {write with DTD included} {
   <tick label="2002" position="9.0"/>
   <tick label="2003" position="10.0"/>
 </xTicks>
-<xLog/>
-<yLog/>
 <noColor/>
 </plot>
 }}
@@ -341,8 +337,6 @@ YLabel: Downloads
 XRange: 0.0010, 10.0
 YRange: 1.0, 1000.0
 XTicks: "1993" 0.0, "1994" 1.0, "1995" 2.0, "1996" 3.0, "1997" 4.0, "1998" 5.0, "1999" 6.0, "2000" 7.0, "2001" 8.0, "2002" 9.0, "2003" 10.0
-XLog: on
-YLog: on
 Color: off
 }}
 
