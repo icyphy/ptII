@@ -238,10 +238,10 @@ public class MoMLParser extends HandlerBase {
         // This needs to be done for every attribute whose value is a name.
         if (_namespace != DEFAULT_NAMESPACE &&
                 (name.equals("name")
-                || name.equals("port")
-                || name.equals("relation")
-                || name.equals("vertex")
-                || name.equals("pathTo"))) {
+                        || name.equals("port")
+                        || name.equals("relation")
+                        || name.equals("vertex")
+                        || name.equals("pathTo"))) {
             value = _namespace + ":" + value;
         }
         // NOTE: value may be null if attribute default is #IMPLIED.
@@ -307,7 +307,7 @@ public class MoMLParser extends HandlerBase {
                 // NOTE: The following may throw a CancelException, which
                 // will have the effect of cancelling the entire parse.
                 MessageHandler.warning("Evaluating parameter "
-                + param.getFullName() + " triggers exception.", ex);
+                        + param.getFullName() + " triggers exception.", ex);
             }
         }
         // If there were any unrecognized elements, warn the user.
@@ -350,9 +350,9 @@ public class MoMLParser extends HandlerBase {
             return;
         }
 	if ( _skipRendition ) {
-	     if (elementName.equals("rendition")) {
-		 _skipRendition = false;
-	     }
+            if (elementName.equals("rendition")) {
+                _skipRendition = false;
+            }
 	} else if (elementName.equals("configure")) {
             try {
                 ((Configurable)_current).configure(
@@ -374,7 +374,7 @@ public class MoMLParser extends HandlerBase {
             // Create a new doc element only if there is character data.
             if (_currentCharData.length() > 0) {
                 Documentation doc
-                        = new Documentation(_current, _currentDocName);
+                    = new Documentation(_current, _currentDocName);
                 doc.setValue(_currentCharData.toString());
             }
             _currentDocName = null;
@@ -502,7 +502,7 @@ public class MoMLParser extends HandlerBase {
         // parser, in which case we just set the parser.
         // FIXME: Should we check the class rather than casting?
         ParserAttribute parserAttribute =
-               (ParserAttribute)_toplevel.getAttribute("_parser");
+            (ParserAttribute)_toplevel.getAttribute("_parser");
         if (parserAttribute == null) {
             parserAttribute = new ParserAttribute(_toplevel, "_parser");
         }
@@ -705,10 +705,10 @@ public class MoMLParser extends HandlerBase {
                     Map.Entry entry = (Map.Entry)attributes.next();
                     if (entry.getValue() != null) {
                         _currentCharData.append(" "
-                               + entry.getKey()
-                               + "=\""
-                               + entry.getValue()
-                               + "\"");
+                                + entry.getKey()
+                                + "=\""
+                                + entry.getValue()
+                                + "\"");
                     }
                 }
                 _attributes.clear();
@@ -736,7 +736,7 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
 
                 NamedObj newEntity = _createEntity(
-                         className, entityName, source);
+                        className, entityName, source);
                 if (_current != null) {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
@@ -876,7 +876,7 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(entityName, "No name for element \"entity\"");
                 String source = (String)_attributes.get("source");
                 NamedObj newEntity = _createEntity(
-                         className, entityName, source);
+                        className, entityName, source);
                 // NOTE: The entity may be at the top level.
                 if (_current != null) {
                     _containers.push(_current);
@@ -1048,7 +1048,7 @@ public class MoMLParser extends HandlerBase {
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
-                            _current.getAttribute(propertyName);
+                        _current.getAttribute(propertyName);
                     String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
@@ -1071,10 +1071,10 @@ public class MoMLParser extends HandlerBase {
                         if (value != null) {
                             if (!(property instanceof Settable)) {
                                 throw new XmlException("Property is not an "
-                                + "instance of Settable, so can't set value.",
-                                _currentExternalEntity(),
-                                _parser.getLineNumber(),
-                                _parser.getColumnNumber());
+                                        + "instance of Settable, so can't set value.",
+                                        _currentExternalEntity(),
+                                        _parser.getLineNumber(),
+                                        _parser.getColumnNumber());
                             }
                             Settable settable = (Settable)property;
                             settable.setExpression(value);
@@ -1089,19 +1089,19 @@ public class MoMLParser extends HandlerBase {
                         if (newClass != null) {
                             // Check that it has the right class.
                             _checkClass(property, newClass,
-                            "property named \"" + propertyName
-                            + "\" exists and is not an instance of "
-                            + className);
+                                    "property named \"" + propertyName
+                                    + "\" exists and is not an instance of "
+                                    + className);
                         }
                         // If value is null and the property already
                         // exists, then there is nothing to do.
                         if (value != null) {
                             if (!(property instanceof Settable)) {
                                 throw new XmlException("Property is not an "
-                                + "instance of Settable, so can't set value.",
-                                _currentExternalEntity(),
-                                _parser.getLineNumber(),
-                                _parser.getColumnNumber());
+                                        + "instance of Settable, so can't set value.",
+                                        _currentExternalEntity(),
+                                        _parser.getLineNumber(),
+                                        _parser.getColumnNumber());
                             }
                             Settable settable = (Settable)property;
                             settable.setExpression(value);
@@ -1204,11 +1204,11 @@ public class MoMLParser extends HandlerBase {
                 if (relationName != null) countArgs++;
                 if (countArgs != 1) {
                     throw new XmlException(
-                             "Element unlink requires exactly one of "
-                             + "an index, an insideIndex, or a relation.",
-                             _currentExternalEntity(),
-                             _parser.getLineNumber(),
-                             _parser.getColumnNumber());
+                            "Element unlink requires exactly one of "
+                            + "an index, an insideIndex, or a relation.",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
                 }
 
                 if (relationName != null) {
@@ -1276,12 +1276,12 @@ public class MoMLParser extends HandlerBase {
             // A constructor or method invoked via reflection has
             // triggered an exception.
             String msg = "XML element \"" + elementName
-                    + "\" triggers exception:\n  "
-                    + ex.getTargetException().toString();
-            throw new XmlException(msg,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+                + "\" triggers exception:\n  "
+                + ex.getTargetException().toString();
+                throw new XmlException(msg,
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
 
@@ -1293,7 +1293,7 @@ public class MoMLParser extends HandlerBase {
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
-                        + "\" triggers exception:\n  " + ex.toString();
+                    + "\" triggers exception:\n  " + ex.toString();
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
@@ -1369,9 +1369,9 @@ public class MoMLParser extends HandlerBase {
             throws XmlException {
         if(!correctClass.isInstance(object)) {
             throw new XmlException(msg,
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
     }
 
@@ -1380,9 +1380,9 @@ public class MoMLParser extends HandlerBase {
             throws XmlException {
         if(object == null) {
             throw new XmlException(message,
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
     }
 
@@ -1410,10 +1410,10 @@ public class MoMLParser extends HandlerBase {
             throws Exception {
         if (_current != null && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
-                   + "of another that is not a CompositeEntity.",
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
+                    + "of another that is not a CompositeEntity.",
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
         CompositeEntity container = (CompositeEntity)_current;
         ComponentEntity previous = _searchForEntity(entityName);
@@ -1454,17 +1454,17 @@ public class MoMLParser extends HandlerBase {
                     // Read external model definition in a new parser,
                     // rather than in the current context.
                     MoMLParser newParser =
-		            new MoMLParser(_workspace, _classLoader);
+                        new MoMLParser(_workspace, _classLoader);
                     NamedObj candidateReference = null;
                     try {
                         candidateReference =
-                               _parse(newParser, _base, classAsFile);
+                            _parse(newParser, _base, classAsFile);
                     } catch (Exception ex2) {
                         // Try the alternate file, if it's not null.
                         if (altClassAsFile != null) {
                             try {
                                 candidateReference =
-                                       _parse(newParser, _base, altClassAsFile);
+                                    _parse(newParser, _base, altClassAsFile);
                                 classAsFile = altClassAsFile;
                             } catch (Exception ex3) {
                                 // Rethrow the original exception.
@@ -1476,12 +1476,12 @@ public class MoMLParser extends HandlerBase {
                         reference = (ComponentEntity)candidateReference;
                     } else {
                         throw new XmlException(
-                               "File "
-                               + classAsFile
-                               + " does not define a ComponentEntity.",
-                               _currentExternalEntity(),
-                               _parser.getLineNumber(),
-                               _parser.getColumnNumber());
+                                "File "
+                                + classAsFile
+                                + " does not define a ComponentEntity.",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
                     }
                     // Check that the classname matches the name of the
                     // reference.
@@ -1489,13 +1489,13 @@ public class MoMLParser extends HandlerBase {
                     if (!className.equals(referenceName)
                             && !className.endsWith("." + referenceName)) {
                         throw new XmlException(
-                               "File "
-                               + classAsFile
-                               + " does not define a class named "
-                               + className,
-                               _currentExternalEntity(),
-                               _parser.getLineNumber(),
-                               _parser.getColumnNumber());
+                                "File "
+                                + classAsFile
+                                + " does not define a class named "
+                                + className,
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
                     }
 
                     // Set the classname and source of the import.
@@ -1532,9 +1532,9 @@ public class MoMLParser extends HandlerBase {
             if (_current != null) {
                 // Not a top-level entity.
                 _checkClass(_current, CompositeEntity.class,
-                       "Cannot create an entity inside an element that "
-                       + "is not a CompositeEntity. It is: "
-                       + _current);
+                        "Cannot create an entity inside an element that "
+                        + "is not a CompositeEntity. It is: "
+                        + _current);
                 Object[] arguments = new Object[2];
 
                 arguments[0] = _current;
@@ -1559,15 +1559,15 @@ public class MoMLParser extends HandlerBase {
             // it was defined to be a class.
             if (!reference.getMoMLInfo().elementName.equals("class")) {
                 throw new XmlException("Attempt to extend an entity that "
-                + "is not a class: " + reference.getFullName(),
-                _currentExternalEntity(),
-                _parser.getLineNumber(),
-                _parser.getColumnNumber());
+                        + "is not a class: " + reference.getFullName(),
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
             }
 
             // Clone it into the workspace of the container.
             ComponentEntity newEntity =
-                   (ComponentEntity)reference.clone(container.workspace());
+                (ComponentEntity)reference.clone(container.workspace());
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -1771,7 +1771,7 @@ public class MoMLParser extends HandlerBase {
 
             } catch (Exception anotherException) {
                 errorMessage.append("2. Failed to open '" + source +
-                "' using class loader:\n" + anotherException + "\n");
+                        "' using class loader:\n" + anotherException + "\n");
 
                 // Failed to open relative to the classpath.
                 // Try relative to the current working directory.
@@ -1788,7 +1788,7 @@ public class MoMLParser extends HandlerBase {
                     }
                 } catch (Exception exception) {
                     errorMessage.append("3. Failed to open '" + xmlFile +
-                    "' relative to the user directory:\n" + exception + "\n");
+                            "' relative to the user directory:\n" + exception + "\n");
                 }
             }
         }
@@ -1797,9 +1797,9 @@ public class MoMLParser extends HandlerBase {
                     "\nUsing base: " + base +
                     "\nTried the following:\n" +
                     errorMessage,
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
         // If we get here, then xmlFile cannot possibly be null.
         try {
@@ -1826,12 +1826,12 @@ public class MoMLParser extends HandlerBase {
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
-                       container.uniqueName("_extension"));
+                        container.uniqueName("_extension"));
                 attr.appendMoMLDescription(
-                    "<delete" + type + " name=\"" + deleted + "\"/>");
+                        "<delete" + type + " name=\"" + deleted + "\"/>");
             } catch (KernelException ex) {
                 throw new InternalErrorException(
-                    "Unable to record deletion from class!\n" + ex.toString());
+                        "Unable to record deletion from class!\n" + ex.toString());
             }
         }
     }
@@ -1847,25 +1847,25 @@ public class MoMLParser extends HandlerBase {
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
-                       container.uniqueName("_extension"));
+                        container.uniqueName("_extension"));
                 if (insertAtSpec == null) {
                     attr.appendMoMLDescription("<link port=\""
-                           + port
-                           + "\" relation=\""
-                           + relation
-                           + "\"/>");
+                            + port
+                            + "\" relation=\""
+                            + relation
+                            + "\"/>");
                 } else {
                     attr.appendMoMLDescription("<link port=\""
-                           + port
-                           + "\" relation=\""
-                           + relation
-                           + "\" insertAt=\""
-                           + insertAtSpec
-                           + "\"/>");
+                            + port
+                            + "\" relation=\""
+                            + relation
+                            + "\" insertAt=\""
+                            + insertAtSpec
+                            + "\"/>");
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(
-                    "Unable to record extension to class!\n" + ex.toString());
+                        "Unable to record extension to class!\n" + ex.toString());
             }
         }
     }
@@ -1877,11 +1877,11 @@ public class MoMLParser extends HandlerBase {
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
-                       container.uniqueName("_extension"));
+                        container.uniqueName("_extension"));
                 attr.appendMoMLDescription(newObj.exportMoML());
             } catch (KernelException ex) {
                 throw new InternalErrorException(
-                    "Unable to record extension to class!\n" + ex.toString());
+                        "Unable to record extension to class!\n" + ex.toString());
             }
         }
     }
@@ -1898,29 +1898,29 @@ public class MoMLParser extends HandlerBase {
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
-                       container.uniqueName("_extension"));
+                        container.uniqueName("_extension"));
                 if (relation != null) {
                     attr.appendMoMLDescription("<unlink port=\""
-                           + port
-                           + "\" relation=\""
-                           + relation
-                           + "\"/>");
+                            + port
+                            + "\" relation=\""
+                            + relation
+                            + "\"/>");
                 } else if (indexSpec != null) {
                     attr.appendMoMLDescription("<unlink port=\""
-                           + port
-                           + "\" index=\""
-                           + indexSpec
-                           + "\"/>");
+                            + port
+                            + "\" index=\""
+                            + indexSpec
+                            + "\"/>");
                 } else {
                     attr.appendMoMLDescription("<unlink port=\""
-                           + port
-                           + "\" insideIndex=\""
-                           + insideIndexSpec
-                           + "\"/>");
+                            + port
+                            + "\" insideIndex=\""
+                            + insideIndexSpec
+                            + "\"/>");
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(
-                    "Unable to record extension to class!\n" + ex.toString());
+                        "Unable to record extension to class!\n" + ex.toString());
             }
         }
     }
@@ -1931,7 +1931,7 @@ public class MoMLParser extends HandlerBase {
     // be contained (deeply) by the current environment, or an XmlException
     // will be thrown.
     private Attribute _searchForAttribute(String name)
-             throws XmlException {
+            throws XmlException {
         Attribute result = null;
         // If the name is absolute, strip the prefix.
         String topLevelName = "(no top level)";
@@ -1975,7 +1975,7 @@ public class MoMLParser extends HandlerBase {
                     if (source == null && candidateSource == null) {
                         return candidate;
                     } else if (source != null
-                           && source.equals(candidateSource)) {
+                            && source.equals(candidateSource)) {
                         return candidate;
                     }
                 }
@@ -1988,7 +1988,7 @@ public class MoMLParser extends HandlerBase {
                 if (possibleCandidate instanceof ComponentEntity) {
                     candidate = (ComponentEntity)possibleCandidate;
                     String candidateClassName
-                            = candidate.getMoMLInfo().className;
+                        = candidate.getMoMLInfo().className;
                     if (candidateClassName.equals(name)) {
                         String candidateSource = candidate.getMoMLInfo().source;
                         if (source == null && candidateSource == null) {
@@ -2027,31 +2027,31 @@ public class MoMLParser extends HandlerBase {
                     if (_current != null
                             && _current != _toplevel) {
                         throw new XmlException(
-                            "Reference to an existing entity: "
-                            + _toplevel.getFullName()
-                            + " in an inappropriate context: "
-                            + _current.getFullName(),
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                                "Reference to an existing entity: "
+                                + _toplevel.getFullName()
+                                + " in an inappropriate context: "
+                                + _current.getFullName(),
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
                     }
                     return (ComponentEntity)_toplevel;
                 } else {
                     if (name.length() > nextPeriod + 1) {
                         ComponentEntity result =
-                                ((CompositeEntity)_toplevel).getEntity(
-                                name.substring(nextPeriod + 1));
+                            ((CompositeEntity)_toplevel).getEntity(
+                                    name.substring(nextPeriod + 1));
                         if (result != null) {
                             if (_current != null
                                     && !_current.deepContains(result)) {
                                 throw new XmlException(
-                                    "Reference to an existing entity: "
-                                    + result.getFullName()
-                                    + " in an inappropriate context: "
-                                    + _current.getFullName(),
-                                    _currentExternalEntity(),
-                                    _parser.getLineNumber(),
-                                    _parser.getColumnNumber());
+                                        "Reference to an existing entity: "
+                                        + result.getFullName()
+                                        + " in an inappropriate context: "
+                                        + _current.getFullName(),
+                                        _currentExternalEntity(),
+                                        _parser.getLineNumber(),
+                                        _parser.getColumnNumber());
                             }
                             return result;
                         }
@@ -2063,7 +2063,7 @@ public class MoMLParser extends HandlerBase {
             // Name is relative.
             if (_current instanceof CompositeEntity) {
                 ComponentEntity result =
-                       ((CompositeEntity)_current).getEntity(name);
+                    ((CompositeEntity)_current).getEntity(name);
                 if (result != null && !_current.deepContains(result)) {
                     throw new XmlException(
                             "Reference to an existing entity: "
@@ -2091,7 +2091,7 @@ public class MoMLParser extends HandlerBase {
     // be contained (deeply) by the current environment, or an XmlException
     // will be thrown.
     private Port _searchForPort(String name)
-             throws XmlException {
+            throws XmlException {
         Port result = null;
         // If the name is absolute, strip the prefix.
         String topLevelName = "(no top level)";
@@ -2124,7 +2124,7 @@ public class MoMLParser extends HandlerBase {
     // be contained (deeply) by the current environment, or an XmlException
     // will be thrown.
     private ComponentRelation _searchForRelation(String name)
-             throws XmlException {
+            throws XmlException {
         ComponentRelation result = null;
         // If the name is absolute, strip the prefix.
         String topLevelName = "(no top level)";
