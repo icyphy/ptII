@@ -49,7 +49,8 @@ TCL_SRCS = \
 	testEnums.tcl \
 	testParameters.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) \
+# Shell scripts that should be made executable
+SCRIPTS = \
 	chkextra \
 	chkjava \
 	html2ps \
@@ -57,10 +58,12 @@ EXTRA_SRCS =	$(TCL_SRCS) \
 	ptIIbuildfast \
 	ptIIbuildtest \
 	ptIIdirs \
-	ptlocaldict \
 	ptspell \
 	rmtrailingline \
 	rmtrailingspace
+
+EXTRA_SRCS =	$(TCL_SRCS) $(SCRIPTS) \
+	ptlocaldict \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,7 +75,7 @@ OPTIONAL_FILES =	doc
 
 # Do make sources so that we ensure that the subdirectories are checked out
 all:  sources $(MISC_SRCS)
-	-chmod a+x chkjava rmtrailingspace
+	-chmod a+x $(SCRIPTS)
 
 install: all
 
