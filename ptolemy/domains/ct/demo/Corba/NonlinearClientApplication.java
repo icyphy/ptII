@@ -75,6 +75,7 @@ public class NonlinearClientApplication {
             _dir = new CTMultiSolverDirector(
                     _toplevel, "DIR");
             _dir.STAT = true;
+            //man.addDebugListener(new StreamListener());
             //_dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
             AddSubtract add1 = new AddSubtract( _toplevel, "Add1");
@@ -86,7 +87,10 @@ public class NonlinearClientApplication {
             _client = new CorbaActorClient( _toplevel, "NonliearClient");
             //_client.addDebugListener(new StreamListener());
             TypedIOPort cin = new TypedIOPort(_client, "input", true, false);
+            cin.setMultiport(false);
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
+            cout.setMultiport(false);
+
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
 
             myplot.place(null);

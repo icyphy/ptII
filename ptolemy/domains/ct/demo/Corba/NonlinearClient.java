@@ -62,10 +62,18 @@ public class NonlinearClient extends TypedCompositeActor {
         super(workspace);
         setName( "NonlinearSystem");
 
+        ORBInitProperties = new Parameter(this, "ORBInitProperties",
+                new StringToken("-ORBInitialPort 1050"));
+        remoteActorName = new Parameter(this, "remoteActorName",
+                new StringToken("Nonlinear"));
+        stopTime = new Parameter(this, "stopTime",
+                new DoubleToken(6.0));
+
         CTMultiSolverDirector director = 
             new CTMultiSolverDirector(this, "CTMultiSolverDirector");
 	setDirector(director);
         director.STAT = true;
+        director.stopTime.setExpression("stopTime");
         //director.addDebugListener(new StreamListener());
         Clock sqwv = new Clock(this, "SQWV");
         AddSubtract add1 = new AddSubtract(this, "Add1");
@@ -75,8 +83,11 @@ public class NonlinearClient extends TypedCompositeActor {
         Scale gain2 = new Scale(this, "Gain2");
         Scale gain3 = new Scale(this, "Gain3");
         CorbaActorClient client = 
-            new CorbaActorClient( this, "NonliearClient");
+            new CorbaActorClient(this, "NonliearClient");
         //client.addDebugListener(new StreamListener());
+        client.ORBInitProperties.setExpression("ORBInitProperties");
+        client.remoteActorName.setExpression("remoteActorName");
+
         TypedIOPort cin = new TypedIOPort(client, "input", true, false);
         TypedIOPort cout = new TypedIOPort(client, "output", false, true);
         TimedPlotter myplot = new TimedPlotter(this, "Plot");
@@ -84,7 +95,7 @@ public class NonlinearClient extends TypedCompositeActor {
         myplot.plot.setGrid(true);
         myplot.plot.setXRange(0.0, 6.0);
         myplot.plot.setYRange(-2.0, 2.0);
-        myplot.plot.setSize(600, 400);
+        myplot.plot.setSize(400, 400);
         myplot.plot.addLegend(0,"response");
 
         IORelation r1 = (IORelation)connect(sqwv.output, gain1.input, "R1");
@@ -118,4 +129,14 @@ public class NonlinearClient extends TypedCompositeActor {
         gain3.factor.setToken(new DoubleToken(-1000.0));
         
     }
+
+    /////////////////////////////////////////////////////////////////
+    ////                           parameters                    ////
+    
+    public Parameter ORBInitProperties;
+
+    public Parameter remoteActorName;
+
+    public Parameter stopTime;
+
 }

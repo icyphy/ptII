@@ -39,6 +39,10 @@ respectively.
 
 To execute the model in the applet, please follow these steps:
 
+0. If there are generated files in the ./util directory, do:
+   prompt> idlj -td ../../../../.. -pkgPrefix util \
+	ptolemy.domains.ct.demo.Corba -fall CorbaActor.idl
+   
 1. Compile the files, (which is probably done.)
 	make
 
