@@ -86,8 +86,7 @@ public class Scheduler extends Attribute {
             setName(_DEFAULT_SCHEDULER_NAME);
         } catch (KernelException ex) {
             // Should not be thrown.
-            throw new InternalErrorException(this, ex,
-                    "Failed to set name to " + _DEFAULT_SCHEDULER_NAME);
+            throw new InternalErrorException(this, ex, null);
         }
     }
 
@@ -104,8 +103,7 @@ public class Scheduler extends Attribute {
             setName(_DEFAULT_SCHEDULER_NAME);
         } catch (KernelException ex) {
             // Should not be thrown.
-            throw new InternalErrorException(this, ex,
-                    "Failed to set name to " + _DEFAULT_SCHEDULER_NAME);
+            throw new InternalErrorException(this, ex, null);
         }
     }
 
