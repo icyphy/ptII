@@ -3,7 +3,7 @@
 # Author:  Christopher Brooks
 # Version: $Id$
 #
-# Copyright (c) 2004 The Regents of the University of California.
+# Copyright (c) 2004-2005 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -211,7 +211,7 @@ awk ' {
 
            print indent "</property>"
         }
-    } else {
+    } else { # foo
         print $0
     }
 } ' < $tmpfile2 > $tmpfile1
@@ -242,7 +242,7 @@ awk ' {
                    break;
                }
            }
-          #print indent "<link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
+           #print indent "<!--bar--><link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
 
            # Get the value of the srcLine_end_ field
            srcLine_end_=""
@@ -256,7 +256,7 @@ awk ' {
           #print indent "<link port=\"" srcLine_end_ "\" relation=\"" id "\"/>" 
        }
 
-    } else {
+    } else { # bar
         print $0
     }
 }' < $tmpfile1 > $tmpfile2
@@ -356,7 +356,7 @@ awk 'BEGIN {
        print indent "     </property>"
     } else if ($1 ~ /<\/Primitive>/) {
         print indent "</entity>"
-    } else {
+    } else { # bif
         print $0
     }
 } ' < $tmpfile2 > $tmpfile1
@@ -438,15 +438,38 @@ $0 ~ /<entity/ {
        # has a dstLine field
        if ($1 ~ /<OutputPort/) {
            relation = dstLine
-       } else {
+       } else { # bof
            relation = srcLine
        }
 
+
+       # Get the value of the position field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /osition=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       split(position, p, ",")
+       x = substr(p[1], 2, length(p[1])) / 4
+       y = substr(p[2], 1, length(p[2]) - 1) / 4
+
+       location="[" x "," y "]"
+       relationLocationMap[dstLine] = location
+
        indent = substr($0, 0, index($0,"<") - 1)  
+       print indent "<!-- relationLocationMap " dstLine, "[" x "," y "] -->" 
+
+
+
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
        if ($1 ~ /<OutputPort/) {
            if (name == "output") {
+               # If we have 2 or more output ports, then declare it a multiport
+               # we need this for composite actors in sbw.
                outputCount++  
                if (outputCount > 2) {
                    print indent "    <property name=\"multiport\"/>"
@@ -455,6 +478,8 @@ $0 ~ /<entity/ {
            print "<property name=\"output\"/>"
        } else if ($1 ~ /<InputPort/) {
            if (name == "input") {
+               # If we have 2 or more input ports, then declare it a multiport
+               # we need this for composite actors in sbw.
                inputCount++  
                if (inputCount > 2) {
                    print indent "    <property name=\"multiport\"/>"
@@ -490,6 +515,21 @@ $0 ~ /<entity/ {
        #    }
        #}
 
+       # Get the value of the position field
+       position=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /osition=$/) {
+               position = f[i+1]
+               break;
+           }
+       }
+       split(position, p, ",")
+       x = substr(p[1], 2, length(p[1])) / 4
+       y = substr(p[2], 1, length(p[2]) - 1) / 4
+       print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
+       print indent "     </property>"
+
        print indent "</port>"
 
        if (length(links[longName]) == 0) { 
@@ -510,8 +550,31 @@ $0 ~ /<entity/ {
            # FIXME: this needs to be linked in the container???
            #links[longName] = dstLine
        }       
-    } else {
-        print $0
+    } else { # biz
+        if ($1 ~ /<relation/) {
+            # Get the value of the name field
+            name=""
+            nf = split($0, f, "\"")   
+            for (i = 1; i <= nf; i++) {
+                if ( f[i] ~ /name=$/) {
+                    name = f[i+1]
+                    break;
+                }
+            }
+
+            # Get the location, if any
+            if (relationLocationMap[name] == "") { 
+                print $0
+            } else {
+                indent = substr($0, 0, index($0,"<") - 1)  
+                # Get rid of the />
+                print substr($0, 0, length($0)-2) ">"
+                print indent "    <vertex name=\"vertex1\" value=\"" relationLocationMap[name] "\"/>" 
+               print indent "</relation>"
+            }
+        } else {
+            print $0   
+        }
     }
 }
 $1 ~ /<\/entity>/ {
@@ -664,7 +727,7 @@ awk '{
     } 
 } ' < $tmpfile1 > $tmpfile2
 
-
+# 
 cp $tmpfile2 $output
 
 rm -f $tmpfile1 $tmpfile2
