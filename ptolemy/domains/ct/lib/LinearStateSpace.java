@@ -31,6 +31,8 @@
 package ptolemy.domains.ct.lib;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Scale;
@@ -42,6 +44,8 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 
 import java.util.Iterator;
+import java.io.Writer;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LienarStateSpace
@@ -276,6 +280,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Integrators
             for(int i = 0; i < n; i++) {
                 integrators[i] = new Integrator(this, "state_" + i);
+                integrators[i].initialState.setToken(
+                        x0.getElementAsToken(0, i));
                 states[i] = new TypedIORelation(this, "relation_state_" + i);
                 integrators[i].output.link(states[i]);
                 // One adder per integrator.
@@ -288,7 +294,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 for(int j = 0; j < n; j++) {
                     // We don't create the Scale if the corresponding element
                     // in the A matrix is 0.
-                    Token tokenIJ = a.getElementAsToken(i,j);
+                    Token tokenIJ = a.getElementAsToken(i, j);
                     if(!(tokenIJ.isEqualTo(tokenIJ.zero())).booleanValue()) {
                         feedback[i][j] = new Scale(this,
                                 "feedback_" + i + "_" +j);
