@@ -85,14 +85,32 @@ public class StringUtilities {
 
 
     /** Return a string with a maximum line length of <i>length</i>
-     *   characters, limited to the given number of characters.
-     *   If the string is truncated, an ellipsis will be appended to
-     *   the end  of the string.
+     *  characters, limited to the given number of characters. 
+     *  If there are more than 10 newlines, then the string is truncated
+     *  after 10 lines.
+     *  If the string is truncated, an ellipsis will be appended to
+     *  the end  of the string.
      *  @param string The string to truncate.
      *  @param length The length to which to truncate the string.
      */
     public static String ellipsis(String string, int length) {
         string = StringUtilities.split(string);
+
+        // Third argument being true means return the delimiters as tokens.
+        StringTokenizer tokenizer = new StringTokenizer(string, "\n", true);
+        // If there are more than 10 lines and 10 newlines, return
+        // truncate after the first 20 lines and newlines. 
+        // This is necessary so that we can deal with very long lines
+        // of text without spaces.
+        if (tokenizer.countTokens() > 20) {
+            StringBuffer results = new StringBuffer();
+            for (int i = 0; i < 20 && tokenizer.hasMoreTokens(); i++) {
+                results.append(tokenizer.nextToken());
+            }
+            results.append("..."); 
+            return results.toString();
+        }
+
         if (string.length() > length) {
             return string.substring(0, length-3) + "...";
         }
