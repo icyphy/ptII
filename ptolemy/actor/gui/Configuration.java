@@ -439,12 +439,13 @@ public class Configuration extends CompositeEntity {
         // If the entity defers its MoML definition to another,
         // then open that other, unless this is a class extending another.
         Prototype deferredTo = null;
+        boolean isClass = false;
         if (entity instanceof Prototype) {
             deferredTo = ((Prototype)entity).getDeferTo();
+            isClass = ((Prototype)entity).isClassDefinition();
         }
         String elementName = entity.getMoMLElementName();        
-        if (deferredTo != null
-                && (elementName == null || !elementName.equals("class"))) {
+        if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }
 
@@ -557,7 +558,7 @@ public class Configuration extends CompositeEntity {
      *  @param container The proposed container.
      *  @exception IllegalActionException If the argument is not null.
      */
-    public void setContainer(CompositeEntity container)
+    public void setContainer(Prototype container)
         throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(
