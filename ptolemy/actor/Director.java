@@ -601,8 +601,9 @@ public class Director extends Attribute implements Executable {
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
         if (newTime < getCurrentTime()) {
-            throw new IllegalActionException(this,
-                    "Attempt to move current time backwards.");
+            throw new IllegalActionException(this, "Attempt to move current "
+                    + "time backwards. (newTime = " + newTime
+                    + ") < (getCurrentTime() = " + getCurrentTime() + ")");
         }
         _currentTime = newTime;
     }
