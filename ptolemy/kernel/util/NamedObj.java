@@ -133,7 +133,7 @@ public class NamedObj implements
     // FIXME: Accepted rating was green, but
     // FIXME: Need review of methods from Derivable and Changeable interfaces,
     // FIXME: and also containedObjectsIterator()
-    // FIXME: and also the private method _getHeritageObject() and protected method _getHeritageList().
+    // FIXME: and also the private method _getHeritageObject().
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -408,7 +408,7 @@ public class NamedObj implements
 
             // Make sure the new object is not marked as a class.
             // It may have been cloned from a class.
-            newObject._isInherited = false;
+            newObject._isDerived = false;
 
             if (workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
@@ -942,26 +942,16 @@ public class NamedObj implements
         }
     }
 
-    /** Return a list of objects to which a change to this
-     *  object should propagate, which is the list of objects that
-     *  are created as a side effect of creating this one (that is, they
-     *  are "heritage" that is "inherited" by their containers from
-     *  a container of this object). This method returns a
-     *  complete list, including objects that have been locally
-     *  modified (as indicated by isModifiedHeritage()).
-     *  <p>
-     *  In this base class, the returned list is empty.
-     *  The implementation of this method uses the strategy
-     *  pattern, and derived classes should override the
-     *  protected method _getHeritageObject() to return an
-     *  object of the appropriate type.
-     *  @return A list of instances of of the same class as
-     *   this object.  In this base class, the list is empty.
-     *  @see #isModifiedHeritage()
-     *  @see #getShadowedHeritageList()
+    /** Return a list of objects derived from this one.
+     *  This is the list of objects that are "inherited" by their
+     *  containers from a container of this object).
+     *  All objects in the returned list are of the same
+     *  class as this object.
+     *  @return A list of derived objects of the same class as this object.
+     *  @see #getShadowedDerivedList()
      */
     public List getDerivedList() {
-        return _getHeritageList(null, false, this, 0, null, null);
+        return _getDerivedList(null, false, this, 0, null, null);
     }
 
     /** Get the model error handler specified by setErrorHandler().
@@ -1045,7 +1035,7 @@ public class NamedObj implements
 
     /** Return -1 if this is not an inherited object, 0 if this
      *  is an inherited object that has been modified locally, and
-     *  a depth greater than zero if this inherited object has
+     *  a depth greater than zero if this derived object has
      *  been modified by propagation at the returned depth above
      *  this object in the containment hierarchy.
      *  @return An integer indicating whether this object has been
@@ -1053,35 +1043,39 @@ public class NamedObj implements
      *  @see #setOverrideDepth(int)
      */
     public int getOverrideDepth() {
-        if (!_isInherited) {
+        if (!_isDerived) {
             return -1;
         }
         return _overrideDepth;
     }
 
-    /** FIXME: Update per interface.
-     *
-     *  Return a list of objects to which a change to this
-     *  object should propagate, which is the list of objects that
-     *  are created as a side effect of creating this one (that is, they
-     *  are "heritage" that is "inherited" by their containers from
-     *  a container of this object), and that have not been locally
-     *  modified as indicated by isModifiedHeritage().  If an object
-     *  has been locally modified, then its heritage is also not
-     *  included in the list (it "shadows" changes to those objects).
+    /** Return a list of objects derived from this one that are
+     *  not overridden. An object is overridden if either its
+     *  getOverrideDepth() method returns 0, or if it is shadowed
+     *  by an object along the path from this object to it.
+     *  Intuitively, shadowing occurs if
+     *  a change has been previously propagated higher in the
+     *  hierarchy than the specified depth.
      *  <p>
-     *  In this base class, the returned list is empty.
-     *  The implementation of this method uses the strategy
-     *  pattern, and derived classes should override the
-     *  protected method _getHeritageList() to return an
-     *  object of the appropriate type.
-     *  @return A list of instances of the same class as this object.
-     *   This base class returns an empty list.
-     *  @see #isModifiedHeritage()
-     *  @see #getHeritageList()
+     *  All objects in the returned list are of the same
+     *  class as this object.
+     *  <p>
+     *  If a non-null argument is given, then the specified list
+     *  will be populated with the integers <i>m</i><sub>i</sub>
+     *  in the derivation chain. Note that the length of this list
+     *  is the same as the length of the returned list, and that
+     *  the returned list does not include the first object in
+     *  the derivation chain (this object).
+     *  @param depthList If non-null, then the specified list will
+     *   be populated with instances of java.lang.Integer representing
+     *   the depths of propagation along the derivation chain.
+     *  @return A list of objects of the same class as the object on
+     *   which this is called.
+     *  @see #getOverrideDepth()
+     *  @see #getDerivedList()
      */
     public List getShadowedDerivedList(List depthList) {
-        return _getHeritageList(null, true, this, 0, null, depthList);
+        return _getDerivedList(null, true, this, 0, null, depthList);
     }
 
     /** Get the source, which gives an external URL
@@ -1145,8 +1139,8 @@ public class NamedObj implements
         return _deferChangeRequests;
     }
 
-    /** Return true if this object is an inherited object.  An object
-     *  is inherited it is created in its container as a side effect
+    /** Return true if this object is a derived object.  An object
+     *  is derived if it is created in its container as a side effect
      *  of the creation of a similar object in some other container.
      *  For example, some container of this object may be an instance
      *  of Instantiable that was created by another instance of Instantiable,
@@ -1154,17 +1148,17 @@ public class NamedObj implements
      *  If this method returns true, then there is typically no need
      *  to export a description of this object to a persistent representation
      *  (such as MoML), unless this object has been modified (as indicated
-     *  by isModifiedHeritage().  Moreover, if this method returns true,
+     *  by getOverrideDepth().  Moreover, if this method returns true,
      *  then it is reasonable to prohibit certain changes to this object,
      *  such as a name change or a change of container.  Such changes
      *  break the relationship with the object from which this inherits.
      *  @see Instantiable
-     *  @see #isModifiedHeritage()
+     *  @see #getOverrideDepth()
      *  @return True if the object is an inherited object.
      */
     public final boolean isDerived() {
         // NOTE: New method added. EAL 12/03
-        return _isInherited;
+        return _isDerived;
     }
 
     /** Return true if this object is persistent.
@@ -1318,15 +1312,17 @@ public class NamedObj implements
         }
     }
 
-    /** Set whether this object is an inherited object.  If an object
-     *  is an inherited object, then it exports no MoML (unless it is
-     *  changed) and cannot have its name or container changed.
-     *  By default, instances of NamedObj are not inherited objects.
-     *  @param inherited True to mark this object as an inherited object.
+    /** Set whether this object is a derived object.  If an object
+     *  is derived, then normally has no persistent representation
+     *  when it is exported (unless it is overridden, as indicated
+     *  by getOverrideDepth()) and cannot have its name
+     *  or container changed.
+     *  By default, instances of NamedObj are not derived objects.
+     *  @param isDerived True to mark this object as a derived object.
      *  @see #isDerived()
      */
     public final void setDerived(boolean inherited) {
-        _isInherited = inherited;
+        _isDerived = inherited;
         _overrideDepth = -1;
     }
 
@@ -1338,23 +1334,25 @@ public class NamedObj implements
         _modelErrorHandler = handler;
     }
 
-    /** Specify whether this object has been modified.  This has an
-     *  effect only if setInherited() has been called with a true
+    /** Specify whether this object overrides its inherited value,
+     *  and if so, at what depth above in the hierarchy the parent
+     *  relationship that triggered this override occurred.  This has an
+     *  effect only if setDerived() has been called with a true
      *  argument.  In that case, if this method is called with
-     *  argument true, then this object will export MoML despite the
-     *  fact that it is an inherited object.  I.e., call this with
-     *  true to specify that this inherited object has been
-     *  modified. To reverse the effect of this call, call it again
-     *  with false argument.
-     *
-     *  FIXME doc
-     *
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @see #setInherited(boolean)
-     *  @see #isModifiedHeritage()
+     *  argument 0, then this object will export MoML despite the
+     *  fact that it is a derived object.  I.e., call this with
+     *  0 to specify that this derived object has been
+     *  modified directly. To reverse the effect of this call, call it again
+     *  with -1 argument.
+     *  @param depth The depth above this object in the hierarchy at
+     *   which the propagation occurred, or 0 to indicate that the
+     *   override is direct (not propagated), or -1 to indicate that
+     *   the object is not overridden.
+     *  @see #setDerived(boolean)
+     *  @see #getOverrideDepth()
      */
     public void setOverrideDepth(int depth) {
-        if (_isInherited) {
+        if (_isDerived) {
             _overrideDepth = depth;
         }
     }
@@ -1875,7 +1873,7 @@ public class NamedObj implements
      *  @exception InternalErrorException If the object does not exist
      *   or has the wrong class. Not thrown in this base class.
      */
-    protected NamedObj _getHeritageObject(String relativeName,
+    protected NamedObj _getContainedObject(String relativeName,
             NamedObj container) throws InternalErrorException {
         return null;
     }
@@ -1992,7 +1990,7 @@ public class NamedObj implements
             // Suppress MoML only if it is an inherited object that has
             // not been locally changed, and that its contained objects
             // have not been locally changed.
-            if (_isInherited) {
+            if (_isDerived) {
                 // FIXME: Is this right?
                 if (_overrideDepth == 0) {
                     return false;
@@ -2083,7 +2081,7 @@ public class NamedObj implements
      *   subclasses that override _getHeritageObject() can
      *   return non-empty lists.
      */
-    private List _getHeritageList(
+    private List _getDerivedList(
             HashSet visited,
             boolean shadow,
             NamedObj context,
@@ -2123,7 +2121,7 @@ public class NamedObj implements
                 } else {
                     newRelativeName = context.getName() + "." + relativeName;
                 }
-                result.addAll(_getHeritageList(
+                result.addAll(_getDerivedList(
                                       visited,
                                       shadow,
                                       container,
@@ -2152,7 +2150,7 @@ public class NamedObj implements
                         // Look for an object with the relative name.
                         NamedObj candidate = other;
                         if (relativeName != null) {
-                            candidate = _getHeritageObject(relativeName, other);
+                            candidate = _getContainedObject(relativeName, other);
                         }
                         if (candidate == null) {
                             // No candidate and no error.  In theory, we
@@ -2191,11 +2189,11 @@ public class NamedObj implements
                         if (depthList == null) {
                             // Note that depth starts at zero for this call,
                             // since this is checking propagation from here.
-                            result.addAll(candidate._getHeritageList(
+                            result.addAll(candidate._getDerivedList(
                                                   visited, shadow, candidate, 0, null, null));
                         } else {
                             List subDepthList = new LinkedList();
-                            result.addAll(candidate._getHeritageList(
+                            result.addAll(candidate._getDerivedList(
                                                   visited, shadow, candidate, 0, null, subDepthList));
                             depthList.addAll(subDepthList);
                         }
@@ -2239,7 +2237,7 @@ public class NamedObj implements
 
     // Boolean variable to indicate whether this is an inherited object.
     // By default, instances of NamedObj are not inherited.
-    private boolean _isInherited = false;
+    private boolean _isDerived = false;
 
     // Boolean variable to indicate the persistence of the object.
     // By default, instances of NamedObj are persistent.

@@ -56,14 +56,13 @@ public interface Derivable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a list of objects to which changes to
-     *  this object should propagate. This is the list of objects that
-     *  are created as a side effect of creating this one (that is, they
-     *  are "heritage" that is "inherited" by their containers from
-     *  a container of this object). Implementors may return an empty
+    /** Return a list of objects derived from this one.
+     *  This is the list of objects that are "inherited" by their
+     *  containers from a container of this object).
+     *  Implementors may return an empty
      *  list, but should not return null. This method should return a
-     *  complete list, including objects that have been locally
-     *  modified (as indicated by getOverrideDepth()).
+     *  complete list, including objects that have been overridden
+     *  (as indicated by getOverrideDepth()).
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
      *  be clones constructed directly or indirectly).
@@ -89,41 +88,9 @@ public interface Derivable extends Nameable {
      *  not overridden. An object is overridden if either its
      *  getOverrideDepth() method returns 0, or if it is shadowed
      *  by an object along the path from this object to it.
-     *  This shadowing is somewhat subtle, and requires some
-     *  notation to explain precisely.
-     *  <p>
-     *  A path from this object to a derived object is a sequence
-     *  of objects <i>x</i><sub>1</sub>, ..., <i>x</i><sub>n</sub>,
-     *  where <i>x</i><sub>1</sub> is this object and <i>x</i><sub>n</sub>
-     *  is the derived object.  For each pair <i>x</i><sub>i</sub>
-     *  and <i>x</i><sub>i+1</sub>, there is a pair of (deep) containers
-     *  <i>y</i><sub>i</sub> and <i>y'</i><sub>i+1</sub> above them
-     *  (respectively) in the hierarchy such that <i>y</i><sub>i</sub>
-     *  is a <i>parent</i> (not container)
-     *  of <i>y'</i><sub>i+1</sub>. Let <i>m</i><sub>i</sub>
-     *  be the depth in the hierarchy between <i>y</i><sub>i</sub>
-     *  and <i>x</i><sub>i</sub>.  That is, <i>m</i><sub>i</sub> = 1
-     *  if <i>y</i><sub>i</sub> is the immediate container of
-     *  <i>x</i><sub>i</sub>, and it is 2 if there is a container
-     *  in between, etc.  Then derivation chain is such that
-     *  <i>y'</i><sub>i+1</sub> is <i>m</i><sub>i</sub> levels
-     *  above <i>x</i><sub>i+1</sub> in the containment hierarchy.
-     *  That is, for each neighboring object in the derivation chain,
-     *  they each have a container the same depth above them in the
-     *  hierarchy where one container is the parent of the other.
-     *  A derivation chain is shadowed if for any such pair,
-     *  <i>x</i><sub>i</sub>, <i>x</i><sub>i+1</sub>, either
-     *  <i>x</i><sub>i+1</sub>.getOverrideDepth() returns 0
-     *  or it returns a number greater than <i>m</i><sub>i</sub>.
-     *  <p>
-     *  Note that between any two objects, there are zero or more
-     *  derivation chains between them. That is, the derivation
-     *  chain is not unique.  We define preferred derivation chain
-     *  to be the one found by a depth-first search.
-     *  <p>
-     *  Intuitively, this means that shadowing will occur if
+     *  Intuitively, shadowing occurs if
      *  a change has been previously propagated higher in the
-     *  hierarchy than the change being considered now.
+     *  hierarchy than the specified depth.
      *  <p>
      *  Implementors may return an empty list, but should not return null.
      *  All objects in the returned list are required to be of the same
@@ -165,16 +132,12 @@ public interface Derivable extends Nameable {
      */
     public boolean isDerived();
 
-    /** Set whether this object is an inherited object.  If an object
-     *  is an inherited object, then normally has no persistent representation
-     *  when it is exported (unless it is changed) and cannot have its name
+    /** Set whether this object is a derived object.  If an object
+     *  is derived, then normally has no persistent representation
+     *  when it is exported (unless it is overridden, as indicated
+     *  by getOverrideDepth()) and cannot have its name
      *  or container changed.
-     *  By default, instances of NamedObj are not inherited objects.
-     *  If this method is called with a <i>false</i> argument, then
-     *  it will call setDerived(false) on the container as
-     *  well, making all containers above in the hierarchy not
-     *  inherited objects.
-     *  @param isDerived True to mark this object as an inherited object.
+     *  @param isDerived True to mark this object as a derived object.
      *  @see #isDerived()
      */
     public void setDerived(boolean isDerived);
@@ -186,7 +149,7 @@ public interface Derivable extends Nameable {
      *  argument.  In that case, if this method is called with
      *  argument 0, then this object will export MoML despite the
      *  fact that it is a derived object.  I.e., call this with
-     *  0 to specify that this inherited object has been
+     *  0 to specify that this derived object has been
      *  modified directly. To reverse the effect of this call, call it again
      *  with -1 argument.
      *  @param depth The depth above this object in the hierarchy at
