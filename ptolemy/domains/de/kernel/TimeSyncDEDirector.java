@@ -56,8 +56,8 @@ import java.net.Socket;
  *  'timeBaseHost', which takes an IP address.
  *  FIXME: consider network time protocol.
  *  This director maintains a 'timeOrigin', which is the network time 
- *  corresponing to modeling time 0. To map the modeling timt 't' to the
- *  network in other systems, use the folumar:
+ *  corresponding to modeling time 0. To map the modeling time 't' to the
+ *  network in other systems, use the fomular:
  *  <Pre>
  *      t+timeOrigin
  *  </pre>
@@ -133,7 +133,7 @@ public class TimeSyncDEDirector extends DEDirector {
      */
     public Parameter timeBaseHost;
 
-    /** Time sync compenstation. This value is added to the time origin
+    /** Time sync compensation. This value is added to the time origin
      *  so that the model time is always this amount ahead of the
      *  global time, in order to compensate the computation delay.
      *  In this design, the parameter is not suggested to be changeable
@@ -146,13 +146,13 @@ public class TimeSyncDEDirector extends DEDirector {
     ////                         public methods                    ////
 
     /** FIXME: Do we allow time base to change at run time?
-     *  @param attr The changed parameter.
+     *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
      */
-    public void attributeChanged(Attribute attr)
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        super.attributeChanged(attr);
+        super.attributeChanged(attribute);
     }
 
     /** Clone the director into the specified workspace. This calls the

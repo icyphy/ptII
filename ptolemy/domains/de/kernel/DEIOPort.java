@@ -125,14 +125,14 @@ public class DEIOPort extends TypedIOPort {
             _useDelay = false;
             try {
                 _workspace.getReadAccess();
-                Receiver fr[][] = getRemoteReceivers();
-                if (fr == null) {
+                Receiver farReceivers[][] = getRemoteReceivers();
+                if (farReceivers == null) {
                     return;
                 }
-                for (int i = 0; i < fr.length; i++) {
-                    for (int j = 0; j < fr[i].length; j++) {
+                for (int i = 0; i < farReceivers.length; i++) {
+                    for (int j = 0; j < farReceivers[i].length; j++) {
                         try {
-                            ((DEReceiver)fr[i][j]).setDelay(_delay);
+                            ((DEReceiver)farReceivers[i][j]).setDelay(_delay);
                         } catch (ClassCastException e) {
                             throw new InvalidStateException("DEIOPort.send() " +
                                     "expects to connect to receivers " +
@@ -230,12 +230,12 @@ public class DEIOPort extends TypedIOPort {
             _useDelay = false;
             try {
                 workspace().getReadAccess();
-                Receiver[][] fr = getRemoteReceivers();
-                if (fr == null) return;
-                if (fr[channelindex] == null) return;
-                for (int j = 0; j < fr[channelindex].length; j++) {
+                Receiver[][] farReceivers = getRemoteReceivers();
+                if (farReceivers == null) return;
+                if (farReceivers[channelindex] == null) return;
+                for (int j = 0; j < farReceivers[channelindex].length; j++) {
                     try {
-                        ((DEReceiver)fr[channelindex][j]).setDelay(_delay);
+                        ((DEReceiver)farReceivers[channelindex][j]).setDelay(_delay);
                     } catch (ClassCastException e) {
                         throw new InvalidStateException("DEIOPort.send() " +
                                 "expects to connect to receivers of type " +

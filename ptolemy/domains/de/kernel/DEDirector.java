@@ -304,14 +304,15 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
      */
-    public void attributeChanged(Attribute attr)
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging) _debug("Updating DEDirector parameter", attr.getName());
-        if (attr == stopWhenQueueIsEmpty) {
+        if (_debugging) _debug("Updating DEDirector parameter",
+                attribute.getName());
+        if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
         }
-        if (attr == synchronizeToRealTime) {
+        if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
         }
@@ -618,7 +619,7 @@ public class DEDirector extends Director {
      *  this director at the time of the next event in the event queue
      *  of this director.
      *  Note that when the
-     *  <i>stopWhenQueuIsEmpty</i> parameter is false, and the queue is
+     *  <i>stopWhenQueueIsEmpty</i> parameter is false, and the queue is
      *  empty, the stall happens in the fire() method.
      *  @exception IllegalActionException Not thrown in this class.
      */
@@ -722,14 +723,14 @@ public class DEDirector extends Director {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof Actor) {
-            double outsideCurrTime = ((Actor)container)
+            double outsideCurrentTime = ((Actor)container)
                     .getExecutiveDirector().getCurrentTime();
-            if (outsideCurrTime < getCurrentTime()) {
+            if (outsideCurrentTime < getCurrentTime()) {
                 throw new IllegalActionException(this,
                 "Received an event in the past at "
                 + "an opaque composite actor boundary.");
             }
-            setCurrentTime(outsideCurrTime);
+            setCurrentTime(outsideCurrentTime);
             return super.transferInputs(port);
         } else {
             return false;
@@ -817,8 +818,8 @@ public class DEDirector extends Director {
                     "Attempt to queue an event in the past.");
         }
         
-        Actor destn = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destn);
+        Actor destination = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
                 receiver.getContainer().getName()+ " ("+token.toString()+") ",
                 "time = "+ time + " microstep = "+ microstep + " depth = "
@@ -842,8 +843,8 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
 
-        Actor destn = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destn);
+        Actor destination = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destination);
         _eventQueue.put(new DEEvent(receiver, token,
                 getCurrentTime(), _microstep + 1, depth));
     }
@@ -1000,7 +1001,7 @@ public class DEDirector extends Director {
                 // of which receiver is filled.
                 DEReceiver rec = currentEvent.receiver();
 
-                // If rec is null, then it's a 'pure event', and there's
+                // If receiver is null, then it's a 'pure event', and there's
                 // no need to put event into receiver.
                 if (rec != null) {
                     // Transfer the event to the receiver.
