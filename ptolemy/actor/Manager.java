@@ -354,6 +354,10 @@ public class Manager extends NamedObj implements Runnable {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
                 setDeferringChangeRequests(false);
+                
+                // This is done again here because actors may throw exceptions
+                // during wrapup().
+                _workspace.incrVersion();
 
                 // Reset this for the next run.
                 _finishRequested = false;
