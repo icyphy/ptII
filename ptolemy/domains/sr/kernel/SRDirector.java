@@ -238,7 +238,8 @@ public class SRDirector extends StaticSchedulingDirector {
         // in prefire()).
 
         // _fireActor is also responsible for checking that the actor is
-        // ready to fire (sufficient known inputs are available).
+        // ready to fire (sufficient known inputs are available) via 
+        // _isFiringAllowed method.
 
         do {
             Iterator firingIterator = schedule.firingIterator();
@@ -524,7 +525,12 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _fireActor(Actor actor) throws IllegalActionException {
 
         if (_isReadyToFire(actor) && !_stopRequested) {
+            // If the actor is nonstrict or all the inputs are known,
+            // it is ready to fire.
             if (!_isFiringAllowed(actor)) {
+                // However, the actor is not in the actorsAllowToFire set.
+                // The actor is prefired such that it can be added into
+                // the set if its prefire method returns true.
                 _debug("    SRDirector is prefiring", _getNameOf(actor));
                 if (actor.prefire()) {
                     _doAllowFiringOf(actor);
@@ -782,7 +788,8 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     /** Return true if the specified actor is ready to fire.  An actor is
-     *  ready to fire if sufficient known inputs are available.
+     *  ready to fire if sufficient known inputs are available, or the actor
+     *  is a nonstrict actor..
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
 
