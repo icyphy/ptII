@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,6 +56,19 @@ currently that is not enforced by this class.
 @version $Id$
 */
 public class Vertex extends Location {
+
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public Vertex(Workspace workspace) {
+	super(workspace);
+	getMoMLInfo().elementName = "vertex";
+    }
 
     /** Construct an attribute with the given name and position.
      *  @param container The container.
