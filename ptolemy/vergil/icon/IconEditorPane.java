@@ -138,10 +138,6 @@ public class IconEditorPane extends JCanvas {
 	_interactor2.setPrototypeDecorator(new BoundsManipulator());
 	_interactor3.setPrototypeDecorator(new CircleManipulator());
 	
-	// Begin with the elements specified in the icon passed into 
-	// the constructor.
-	addXMLIcon(icon);
-
 	// This next part allows the user to select multiple figures 
 	// with the mouse by dragging a rectangle box around the figures 
 	// the user wishes to be selected.
@@ -149,6 +145,10 @@ public class IconEditorPane extends JCanvas {
 	_selectionDragger.addSelectionInteractor(_interactor1);
 	_selectionDragger.addSelectionInteractor(_interactor2);
 	_selectionDragger.addSelectionInteractor(_interactor3);
+
+	// Begin with the elements specified in the icon passed into 
+	// the constructor.
+	addXMLIcon(icon);
     }
 
     //         StringBufferInputStream xml_stream = null;
