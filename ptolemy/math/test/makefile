@@ -58,7 +58,6 @@ JSIMPLE_TESTS = \
 	FixPoint.tcl \
 	Fraction.tcl \
 	Interpolation.tcl \
-        MatrixMath.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
@@ -106,9 +105,6 @@ test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayStat.tcl
 
 test_jem:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
 	   $(JTCLSH) ExtendedMath.tcl
-
-test_jmm:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
-	   $(JTCLSH) MatrixMath.tcl
 
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl

@@ -56,7 +56,7 @@ package ptolemy.math;
 
 public class LongMatrixMath {
 
-    // Private constructor prevents construction of this class.
+    // private constructor prevents construction of this class.
     private LongMatrixMath() {}
 
     /** Return a new matrix that is constructed from the argument by
@@ -716,6 +716,9 @@ public class LongMatrixMath {
         return retval;
     }
 
+
+
+
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to doubles.
      *  @param array An matrix of long.
@@ -938,7 +941,7 @@ public class LongMatrixMath {
     }
 
     /** Return the number of columns of a matrix. */
-    private static final int _columns(final long[][] matrix) {
+    protected static final int _columns(final long[][] matrix) {
         return matrix[0].length;
     }
 
@@ -948,7 +951,7 @@ public class LongMatrixMath {
      *  @param matrix1 A matrix of longs.
      *  @param matrix2 A matrix of longs.
      */
-    private static final void _checkSameDimension(final String caller,
+    protected static final void _checkSameDimension(final String caller,
              final long[][] matrix1, final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -968,7 +971,7 @@ public class LongMatrixMath {
      *  @param matrix A matrix of longs.
      *  @return The dimension of the square matrix.
      */
-    private static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller, 
              final long[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -979,14 +982,14 @@ public class LongMatrixMath {
         return _rows(matrix);
     }
 
-    private static final String _dimensionString(final long[][] matrix) {
+    protected static final String _dimensionString(final long[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
 
     
     /** Return the number of rows of a matrix. */
-    private static final int _rows(final long[][] matrix) {
+    protected static final int _rows(final long[][] matrix) {
         return matrix.length;
     }
 }

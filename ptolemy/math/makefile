@@ -67,15 +67,17 @@ JSRCS = ArrayStringFormat.java \
 	DoubleMatrixMath.java \
 	IntegerMatrixMath.java \
 	LongMatrixMath.java \
+        ComplexMatrixMath.java \
 	FloatUnaryOperation.java \
 	DoubleUnaryOperation.java \
 	IntegerUnaryOperation.java \
 	LongUnaryOperation.java \
+        ComplexUnaryOperation.java \
 	FloatBinaryOperation.java \
 	DoubleBinaryOperation.java \
 	IntegerBinaryOperation.java \
 	LongBinaryOperation.java \
-	MatrixMath.java
+        ComplexBinaryOperation.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -631,6 +631,8 @@ public class LongArrayMath {
         return sum;
     }
     
+
+        
     /** Return a new array that is formed by converting the longs in
      *  the argument array to doubles.
      *  If the length of the argument array is 0, return a new array of length 0.

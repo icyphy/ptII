@@ -783,18 +783,18 @@ public class SignalProcessing {
      *  @param interval The time between successive samples. This may
      *  be negative if the waveform is to be reversed, or zero if the
      *  array is to be filled with a constant.
-     *  @param sampleGen A SampleGenerator.
+     *  @param sampleGen A DoubleUnaryOperation.
      *  @return A new array of doubles.
-     *  @see ptolemy.math.SampleGenerator
+     *  @see ptolemy.math.DoubleUnaryOperation
      */
     public static final double[] sampleWave(int length,
-     double startTime, double interval, SampleGenerator sampleGen) {
+     double startTime, double interval, DoubleUnaryOperation sampleGen) {
         double time = startTime;
 
         double[] retval = new double[length];
 
         for (int t = 0; t < length; t++) {
-            retval[t] = sampleGen.sampleAt(time);
+            retval[t] = sampleGen.operate(time);
             time += interval;
         }
 
@@ -1116,7 +1116,7 @@ public class SignalProcessing {
      *  </pre>
      *  </p>
      */
-    public static class GaussianSampleGenerator implements SampleGenerator {
+    public static class GaussianSampleGenerator implements DoubleUnaryOperation {
 
         /** Construct a GaussianSampleGenerator.
          *  @param mean The mean of the Gaussian function.
@@ -1131,7 +1131,7 @@ public class SignalProcessing {
         /** Return a sample of the Gaussian function, sampled at the
          *  specified time.
          */
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             double shiftedTime = time - _mean;
             return _factor *
                 Math.exp(-shiftedTime * shiftedTime * _oneOverVariance);
@@ -1153,7 +1153,7 @@ public class SignalProcessing {
      *  </pre>
      *  </p>
      */
-    public static class PolynomialSampleGenerator implements SampleGenerator {
+    public static class PolynomialSampleGenerator implements DoubleUnaryOperation {
 
         /** Construct a PolynomialSampleGenerator. The input argument is an array of
          *  doubles a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute the formula :
@@ -1183,7 +1183,7 @@ public class SignalProcessing {
          *  Note that at time = 0, with a negative direction, the sample
          *  will be positive or negative infinity.
          */
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             double sum = _coefficients[0];
             double tn = time;
             
@@ -1206,7 +1206,7 @@ public class SignalProcessing {
     /** This class generates samples of a sawtooth wave with the specified
      *  period and phase. The returned values range between -1.0 and 1.0.
      */
-    public static class SawtoothSampleGenerator implements SampleGenerator {
+    public static class SawtoothSampleGenerator implements DoubleUnaryOperation {
 
         /** Construct a SawtoothSampleGenerator with the given period and
          *  phase.  The phase is given as a fraction of a cycle,
@@ -1223,7 +1223,7 @@ public class SignalProcessing {
         /** Return a sample of the sawtooth wave, sampled at the
          *  specified time.
          */
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             double point = ((time / _period) + _phase + 0.5) % 1.0;
             return 2.0 * point - 1.0;
         }
@@ -1243,7 +1243,7 @@ public class SignalProcessing {
      *  set the phase to -Math.PI*0.5 from the
      *  phase, since sin(t) = cos(t - PI/2).
      */
-    public static class SinusoidSampleGenerator implements SampleGenerator {
+    public static class SinusoidSampleGenerator implements DoubleUnaryOperation {
 
         /**
          *  Construct a SinusoidSampleGenerator.
@@ -1257,7 +1257,7 @@ public class SignalProcessing {
             _phase = phase;
         }
 
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             return Math.cos(_frequency * time + _phase);
         }
 
@@ -1289,7 +1289,7 @@ public class SignalProcessing {
      *  Kluwer Academic Publishers, Boston, 1994.</a>
      *
      */
-    public static class RaisedCosineSampleGenerator implements SampleGenerator {
+    public static class RaisedCosineSampleGenerator implements DoubleUnaryOperation {
 
         /*  Construct a RaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing,
@@ -1307,7 +1307,7 @@ public class SignalProcessing {
         /**  Return a sample of the raised cosine pulse, sampled at the
          *  specified time.
          */
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             if (time == 0.0) return 1.0;
             double x = time * _oneOverFZC;
             double s = sinc(Math.PI * x);
@@ -1327,12 +1327,12 @@ public class SignalProcessing {
         private final double _excess;
     }
 
-    public static class SincSampleGenerator implements SampleGenerator {
+    public static class SincSampleGenerator implements DoubleUnaryOperation {
         public SincSampleGenerator(double firstZeroCrossing) {
             _piOverFZC = Math.PI / firstZeroCrossing;
         }
 
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
             return sinc(_piOverFZC * time);
         }
 
@@ -1364,7 +1364,7 @@ public class SignalProcessing {
      *  that are independent of time.
      */
     public static class SqrtRaisedCosineSampleGenerator
-        implements SampleGenerator {
+        implements DoubleUnaryOperation {
         /** Construct a SqrtRaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing of
          *  the corresponding raised cosine pulse.
@@ -1405,7 +1405,7 @@ public class SignalProcessing {
          *  @param time The time at which to sample the pulse.
          *  @return A double.
          */
-        public final double sampleAt(double time) {
+        public final double operate(double time) {
 
             if (time == 0.0) {
                 return _sampleAtZero;

@@ -56,7 +56,7 @@ package ptolemy.math;
 
 public class DoubleMatrixMath {
 
-    // Private constructor prevents construction of this class.
+    // private constructor prevents construction of this class.
     private DoubleMatrixMath() {}
 
     /** Return a new matrix that is constructed from the argument by
@@ -765,6 +765,28 @@ public class DoubleMatrixMath {
         return retval;
     }
 
+    /** Return a new matrix that is formed by converting the doubles in
+     *  the argument matrix to complex numbers. Each complex number has real
+     *  part equal to the value in the argument matrix and a zero imaginary part.
+     *  @param array An matrix of double.
+     *  @return A new matrix of complex numbers.
+     */
+    public static final Complex[][] toComplexMatrix(final double[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+ 
+        Complex[][] retval = new Complex[rows][columns];
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                retval[i][j] = new Complex(matrix[i][j], 0.0);
+            }
+        }
+        return retval;
+    }            
+
+
+
 
     
     /** Return a new matrix that is formed by converting the doubles in
@@ -987,7 +1009,7 @@ public class DoubleMatrixMath {
     }
 
     /** Return the number of columns of a matrix. */
-    private static final int _columns(final double[][] matrix) {
+    protected static final int _columns(final double[][] matrix) {
         return matrix[0].length;
     }
 
@@ -997,7 +1019,7 @@ public class DoubleMatrixMath {
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
      */
-    private static final void _checkSameDimension(final String caller,
+    protected static final void _checkSameDimension(final String caller,
              final double[][] matrix1, final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -1017,7 +1039,7 @@ public class DoubleMatrixMath {
      *  @param matrix A matrix of doubles.
      *  @return The dimension of the square matrix.
      */
-    private static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller, 
              final double[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -1028,7 +1050,7 @@ public class DoubleMatrixMath {
         return _rows(matrix);
     }
 
-    private static final String _dimensionString(final double[][] matrix) {
+    protected static final String _dimensionString(final double[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
@@ -1124,7 +1146,7 @@ public class DoubleMatrixMath {
 
     
     /** Return the number of rows of a matrix. */
-    private static final int _rows(final double[][] matrix) {
+    protected static final int _rows(final double[][] matrix) {
         return matrix.length;
     }
 }

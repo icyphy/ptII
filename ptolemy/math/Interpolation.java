@@ -319,7 +319,7 @@ public class Interpolation {
 	M[3][2] = 1;
 	M[3][3] = 0;
 
-	double[][] MInverse = MatrixMath.inverse(M);
+	double[][] MInverse = DoubleMatrixMath.inverse(M);
 
 	// forming the column vector of values and tangents
 	double[] Gh = new double[4];
@@ -330,7 +330,7 @@ public class Interpolation {
 
 	// compute the coefficients vector coef[a, b, c, d] or the 3rd order
 	// curve.
-	double[] coef = MatrixMath.multiply(Gh, MInverse);
+	double[] coef = DoubleMatrixMath.multiply(Gh, MInverse);
 
 	// compute the interpolated value
 	double indexSqr = index*index;

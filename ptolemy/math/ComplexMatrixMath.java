@@ -179,6 +179,46 @@ public class ComplexMatrixMath {
         return retval;
     }
 
+    /** Returns true iff the differences of all the real and imaginary parts of 
+     *  corresponding elements of 2 matrices, that are of the same size, are all 
+     *  within a constant range, [-R, R], where R is the allowed error. 
+     *  The specified absolute
+     *  difference must be non-negative.
+     *  More concisely, abs(Re{M1[i, j]} - Re{M2[i, j]}) 
+     *  and abs(Re{M1[i, j]} - Re{M2[i, j]}) must both be within [-R, R]
+     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
+     *  @param matrix1 A matrix of complex numbers.
+     *  @param matrix2 A matrix of complex numbers.
+     *  @param absoluteError A Complex indicating the absolute value of the
+     *  allowed error.
+     *  @return A boolean condition.
+     */
+    public static final boolean arePartsWithin(final Complex[][] matrix1, 
+            final Complex[][] matrix2, double absoluteError) {
+        if (absoluteError < 0.0) {
+            throw new IllegalArgumentException(
+                    "within(): absoluteError (" + absoluteError +
+                    " must be non-negative.");
+        }
+
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("arePartsWithin", matrix1, matrix2);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {                
+                if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real) > absoluteError) ||
+                    (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag) > absoluteError)) {
+                   return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
     /** Return a new matrix that is constructed by conjugating the elements in the 
      *  input matrix. 
      */
@@ -236,6 +276,7 @@ public class ComplexMatrixMath {
     /** Return the determinate of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1]
+     *  THIS IS NOT TESTED!     
      */
     public static final Complex determinate(final Complex[][] matrix) {
         _checkSquare("determinate", matrix);
@@ -409,6 +450,7 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
      *  This method is from [1]
+     *  THIS IS NOT TESTED!
      */
     public static final Complex[][] inverse(final Complex[][] A) {
         _checkSquare("inverse", A);
@@ -534,7 +576,7 @@ public class ComplexMatrixMath {
     }
     
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+     *  by a real scalefactor.
      */
     public static final Complex[][] multiply(final Complex[][] matrix,
             final double scalefactor) {
@@ -549,6 +591,25 @@ public class ComplexMatrixMath {
         }
         return retval;
     }
+
+    /** Return a new matrix that is constructed by multiplying the matrix
+     *  by a complex scalefactor.
+     */
+    public static final Complex[][] multiply(final Complex[][] matrix,
+            final Complex z) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        Complex[][] retval = new Complex[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                retval[i][j] = matrix[i][j].multiply(z);
+            }
+        }
+        return retval;
+    }
+
+
 
     /** Return a new array that is constructed from the argument by
      *  pre-multiplying the array (treated as a row vector) by a matrix.
@@ -804,46 +865,15 @@ public class ComplexMatrixMath {
         return retval;
     }
 
-    /** Returns true iff the differences of all the real and imaginary parts of 
-     *  corresponding elements of 2 matrices, that are of the same size, are all 
-     *  within a constant range, [-R, R], where R is the allowed error. 
-     *  The specified absolute
-     *  difference must be non-negative.
-     *  More concisely, abs(Re{M1[i, j]} - Re{M2[i, j]}) 
-     *  and abs(Re{M1[i, j]} - Re{M2[i, j]}) must both be within [-R, R]
-     *  for 0 <= i < m and 0 <= j <n where M1 and M2 are both m x n matrices.
-     *  @param matrix1 A matrix of complex numbers.
-     *  @param matrix2 A matrix of complex numbers.
-     *  @param absoluteError A Complex indicating the absolute value of the
-     *  allowed error.
-     *  @return A boolean condition.
+    /** Return a new complex matrix whose entries are all zero.
+     *  The size of the matrix is specified by the input arguments.
      */
-    public static final boolean arePartsWithin(final Complex[][] matrix1, 
-            final Complex[][] matrix2, double absoluteError) {
-        if (absoluteError < 0.0) {
-            throw new IllegalArgumentException(
-                    "within(): absoluteError (" + absoluteError +
-                    " must be non-negative.");
-        }
-
-        int rows = _rows(matrix1);
-        int columns = _columns(matrix1);
-
-        _checkSameDimension("arePartsWithin", matrix1, matrix2);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {                
-                if ((Math.abs(matrix1[i][j].real - matrix2[i][j].real) > absoluteError) ||
-                    (Math.abs(matrix1[i][j].imag - matrix2[i][j].imag) > absoluteError)) {
-                   return false;
-                }
-            }
-        }
-        return true;
+    public static final Complex[][] zero(int rows, int columns) {
+        return _zeroMatrix(new Complex[rows][columns], rows, columns);
     }
 
     /** Return the number of columns of a matrix. */
-    private static final int _columns(final Complex[][] matrix) {
+    protected static final int _columns(final Complex[][] matrix) {
         return matrix[0].length;
     }
 
@@ -853,7 +883,7 @@ public class ComplexMatrixMath {
      *  @param matrix1 A matrix of complex numbers.
      *  @param matrix2 A matrix of complex numbers.
      */
-    private static final void _checkSameDimension(final String caller,
+    protected static final void _checkSameDimension(final String caller,
              final Complex[][] matrix1, final Complex[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -873,7 +903,7 @@ public class ComplexMatrixMath {
      *  @param matrix A matrix of complex numbers.
      *  @return The dimension of the square matrix.
      */
-    private static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller, 
              final Complex[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -884,14 +914,14 @@ public class ComplexMatrixMath {
         return _rows(matrix);
     }
 
-    private static final String _dimensionString(final Complex[][] matrix) {
+    protected static final String _dimensionString(final Complex[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
     
     /** Return the number of rows of a matrix. */
     protected static final int _rows(final Complex[][] matrix) {
         return matrix.length;        
-    }
+    }    
     
     protected static final Complex[][] _zeroMatrix(Complex[][] matrix, int rows, int columns) {
         for (int i = 0; i < rows; i++) {
@@ -900,5 +930,5 @@ public class ComplexMatrixMath {
             }
         }        
         return matrix;
-    }
+    }    
 }

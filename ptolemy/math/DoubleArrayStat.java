@@ -98,6 +98,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A double.
      */
     public static final double geometricMean(double[] array) {
+        if (array.length < 1) {
+           return 1.0;
+        }
+    
         return Math.pow(productOfElements(array), 1.0 / array.length);
     }
 
@@ -105,31 +109,72 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Throw an exception if the length of the array is 0.
      */
     public static final double max(double[] array) {
+        Object[] maxReturn = maxAndIndex(array);
+        
+        return ((Double) maxReturn[0]).doubleValue();
+    }
 
-        int length = _nonZeroLength(array, "DoubleArrayStat.max");
+
+    /** Return the maximum value of the array and the index at which the
+     *  maximum occurs in the array. The maximum value is wrapped with
+     *  the Double class, the index is wrapped with the Integer class,
+     *  and an Object array is returned containing these values.
+     *  If the array is of length zero, throw an IllegalArgumentException.
+     *  @param array An array of doubles.
+     *  @return An array of two Objects, retval[0] is the Double
+     *  representation of the maximum value, retval[1] is the Integer
+     *  representation of the corresponding index.
+     */
+    public static final Object[] maxAndIndex(double[] array) {
+
+        int length = _nonZeroLength(array, "DoubleArrayStat.maxAndIndex");
+        int maxIndex = 0;
 
         double maxElement = array[0];
 
         for (int i = 1; i < length; i++) {
-            maxElement = Math.max(array[i], maxElement);
+            if (array[i] > maxElement) {
+               maxElement = array[i];
+               maxIndex = i;
+            } 
         }
-        return maxElement;
+        return new Object[] { new Double(maxElement), new Integer(maxIndex) };
     }
-
+    
     /** Return the minimum value in the array.
      *  Throw an exception if the length of the array is 0.
      */
     public static final double min(double[] array) {
+        Object[] minReturn = minAndIndex(array);
+        
+        return ((Double) minReturn[0]).doubleValue();
+    }
 
-        int length = _nonZeroLength(array, "DoubleArrayStat.min");
+    /** Return the minimum value of the array and the index at which the
+     *  minimum occurs in the array. The minimum value is wrapped with
+     *  the Double class, the index is wrapped with the Integer class,
+     *  and an Object array is returned containing these values.
+     *  If the array is of length zero, throw an IllegalArgumentException.     
+     *  @param array An array of doubles.
+     *  @return An array of two Objects, retval[0] is the Double
+     *  representation of the minimum value, retval[1] is the Integer
+     *  representation of the corresponding index.
+     */
+    public static final Object[] minAndIndex(double[] array) {
+
+        int length = _nonZeroLength(array, "DoubleArrayStat.minAndIndex");
+        int minIndex = 0;
 
         double minElement = array[0];
 
         for (int i = 1; i < length; i++) {
-            minElement = Math.min(array[i], minElement);
+            if (array[i] < minElement) {
+               minElement = array[i];
+               minIndex = i;
+            } 
         }
-        return minElement;
-    }
+        return new Object[] { new Double(minElement), new Integer(minIndex) };
+    }    
 
     /** Return the variance of the elements in the array, assuming 
      *  sufficient statistics.
@@ -534,4 +579,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
         return retval;
     }
+    
+    
 }

@@ -56,7 +56,7 @@ package ptolemy.math;
 
 public class FloatMatrixMath {
 
-    // Private constructor prevents construction of this class.
+    // private constructor prevents construction of this class.
     private FloatMatrixMath() {}
 
     /** Return a new matrix that is constructed from the argument by
@@ -765,6 +765,9 @@ public class FloatMatrixMath {
         return retval;
     }
 
+
+
+
     /** Return a new matrix that is formed by converting the floats in
      *  the argument matrix to doubles.
      *  @param array An matrix of float.
@@ -987,7 +990,7 @@ public class FloatMatrixMath {
     }
 
     /** Return the number of columns of a matrix. */
-    private static final int _columns(final float[][] matrix) {
+    protected static final int _columns(final float[][] matrix) {
         return matrix[0].length;
     }
 
@@ -997,7 +1000,7 @@ public class FloatMatrixMath {
      *  @param matrix1 A matrix of floats.
      *  @param matrix2 A matrix of floats.
      */
-    private static final void _checkSameDimension(final String caller,
+    protected static final void _checkSameDimension(final String caller,
              final float[][] matrix1, final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
@@ -1017,7 +1020,7 @@ public class FloatMatrixMath {
      *  @param matrix A matrix of floats.
      *  @return The dimension of the square matrix.
      */
-    private static final int _checkSquare(final String caller, 
+    protected static final int _checkSquare(final String caller, 
              final float[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
@@ -1028,7 +1031,7 @@ public class FloatMatrixMath {
         return _rows(matrix);
     }
 
-    private static final String _dimensionString(final float[][] matrix) {
+    protected static final String _dimensionString(final float[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
@@ -1124,7 +1127,7 @@ public class FloatMatrixMath {
 
     
     /** Return the number of rows of a matrix. */
-    private static final int _rows(final float[][] matrix) {
+    protected static final int _rows(final float[][] matrix) {
         return matrix.length;
     }
 }

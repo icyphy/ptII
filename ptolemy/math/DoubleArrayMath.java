@@ -451,6 +451,24 @@ public class DoubleArrayMath {
         return sum;
     }
     
+    /** Return a new array that is formed by converting the doubles in
+     *  the argument array to complex numbers. Each complex number has real
+     *  part equal to the value in the argument matrix and a zero imaginary part.
+     *  @param array An array of double.
+     *  @return A new array of complex numbers.
+     */
+    public static final Complex[] toComplexArray(final double[] array) {
+        int length = array.length;
+        Complex[] retval = new Complex[length];
+
+        for (int i = 0; i < length; i++) {
+            retval[i] = new Complex(array[i], 0.0);
+        }
+        return retval;
+        
+    }            
+
+        
 
     /** Return a new array that is formed by converting the doubles in
      *  the argument array to doubles.
