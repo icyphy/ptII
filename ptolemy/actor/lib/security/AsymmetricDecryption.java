@@ -73,6 +73,7 @@ TODO: include sources of information on JCE cipher and algorithms
 
 @author Rakesh Reddy
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class AsymmetricDecryption extends CipherActor {

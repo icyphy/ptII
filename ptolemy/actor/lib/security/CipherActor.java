@@ -65,6 +65,7 @@ and Java Cryptography Architecture(JCA).
 
 @author Rakesh Reddy
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class CipherActor extends CryptographyActor {

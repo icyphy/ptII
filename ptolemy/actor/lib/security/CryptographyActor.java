@@ -81,6 +81,7 @@ TODO: add link talking about basics of crypto or create a readme.txt
 
 @author Rakesh Reddy
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class CryptographyActor extends TypedAtomicActor {

@@ -66,6 +66,7 @@ TODO: include sources of information on JCE cipher and algorithms
 TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class SignatureSigner extends SignatureActor {

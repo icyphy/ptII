@@ -68,6 +68,7 @@ Cryptography Extension (JCE).
 
 @author Rakesh Reddy
 @version $Id$
+@since Ptolemy II 3.1
 */
 
 public class ServiceInformation extends TypedAtomicActor {
