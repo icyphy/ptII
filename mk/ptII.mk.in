@@ -175,7 +175,7 @@ PTJACL_JFLAG =  @PTJACL_JFLAG@
 # jtclsh script to run Jacl for the test suite.
 # We could use bin/ptjacl here, but instead we start it from within
 # make and avoid problems
-JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)\$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
+JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
 
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
