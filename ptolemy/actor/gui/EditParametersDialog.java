@@ -209,7 +209,7 @@ public class EditParametersDialog extends ComponentDialog
                 null);
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
-        // A blank property name is interepreted as a cancel.
+        // A blank property name is interpreted as a cancel.
         String newName = _query.stringValue("name");
 
         // Need to escape quotes in default value.
