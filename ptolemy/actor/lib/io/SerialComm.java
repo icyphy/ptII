@@ -260,7 +260,7 @@ public class SerialComm extends TypedAtomicActor
         } catch (Exception ex) {
             throw new IllegalActionException(this,
                     "Communication port initialization failed: "
-                    + ex.toString());
+                    + ex);
         }
     }
 
@@ -283,7 +283,7 @@ public class SerialComm extends TypedAtomicActor
             // instead.
             throw new KernelRuntimeException(this,
                     "serialEvent's call to fireAt() failed: "
-                    + ex.toString());
+                    + ex);
         }
     }
 
