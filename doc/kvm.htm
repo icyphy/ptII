@@ -7,10 +7,150 @@
 </head>
 <body>
 <h1>KVM</h1>
-Ptolemy II can generate simulations that run on the Palm Pilot
-and Handspring using the Java KVM or j2me_cldc facility.
-The Ptolemy II/Palm facility is extremely experimental, and is based
-on the <a href="codegen.htm">Ptolemy II Code Generation</a> facility
+ <p>The Ptolemy II/Palm facility is extremely experimental, and is based
+on the <a href="codegen.htm">Ptolemy II Code Generation</a> facility.
+
+
+ <p>In June, 1999, Sun Microsystems released a Java Virtual Machine
+that ran under PalmOS.  The first release of this product was called
+the KVM, where the K stood for kilobytes, indicating that the 
+virtual machine would run in a very small memory footprint (50-80k of object
+code).
+[Object code measurement came from http://java.sun.com/products/cldc/ds/]
+
+ <p>In May 2000, Sun released the Java 2 Micro Edition (J2ME), which
+uses the KVM and Connected, Limited Device Configuration (CLDC) technology 
+to provide a Java environment under PalmOS.
+
+ <p>The CLDC implementation for PalmOS is fairly limited in many ways.
+Two key limitatios are that that floats and doubles are not supported
+and it is not possible to access native code using JNI.
+
+ <p>We decided to attempt to run simple Ptolemy II simulations on the
+Palm.  Our first attempt was a simple Ramp/File Writer simulation
+running on a HandSpring PalmOS compatible.
+Unfortunatley, the download/run/reset cycle took far too long.
+Fortunately, there are several simulators available for PalmOS.  Palm
+OS Emulator (POSE) is available from the Palm website, but it requires
+a copy of a Palm ROM image.  The Palm CLDC ships with a primitive
+emulator for testing J2ME code only.  We used both emulators for 
+our testing, and only occaisionally ran code on the actual hardware.
+
+ <p>The overall procedure:
+<ol>
+<li> Generate .java files using the Ptolemy II code generation facility.
+
+<li> Compile the .java files while setting the 
+<CODE>javac</CODE> bootclasspath to include the KVM classes
+
+<li> The J2ME can verify classes using an alternative verification scheme.
+The <CODE>preverify</CODE> tool reads in classfiles, verifies them,
+and writes out new classfiles with an annotation that they are
+preverified and roughly 5% larger in size
+
+<BLOCKQUOTE>
+[http://java.sun.com/products/cldc/wp/KVMwp.pdf p22]
+</BLOCKQUOTE>
+
+
+<li> Run the Java Palm Simulator on the preverified .class files
+
+<li> Generate a PalmOS binary by running the 
+<CODE>palm.database.MakePalmApp</CODE> Java application
+
+<li> Download the PalmOS binary to the PalmOS Emulator that runs
+under Windows.  
+
+<li> Download the PalmOS binary to the real PalmOS hardware.
+
+</ol>
+<h2>Performance Measurements</h2>
+It seems like every paper that measures performance includes
+"<I>There are three kinds of lies: lies, damned lies, and statistics.</I>"
+<BLOCKQUOTE>
+
+[Mark Twain attributes this to Disraeli in
+Mark Twain, Mark Twain's Own Autobiography: The
+Chapters from the North American Review, ed. Michael J.
+Kiskis (Madison: University of Wisconsin Press, 1990).
+
+http://marktwain.about.com/library/texts/bl_notmarktwain.htm?terms
+http://marktwain.about.com/arts/marktwain/library/biography/bl_auto_ch020.htm?terms
+]
+
+</BLOCKQUOTE>
+
+That being said, our test environment was an IBM 600X laptop with a 450Mhz Pentium III, 192Mb of memory running Windows 2000.  We used two JVMs, the Sun JDK1.3.0
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0-C)
+Java HotSpot(TM) Client VM (build 1.3.0-C, mixed mode)
+</pre>
+
+and the the IBM 1.3.0 JDK
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cn130-20000622 (JIT enabled: jitc
+)
+</pre>
+We used version 1.0 of the J2ME CLDC to run on a HandSpring Visor Deluxe PalmOS3.1 8Mb.
+<h3>Ramp</h3>
+We created a simple Ramp/FileWriter simulation that used
+integers so that it would run on the Palm
+
+ <table>
+  <th>
+   Test</td>
+   <td>Sun JDK times</td>
+   <td>Sun JDK average</td>
+   <td>IBM JDK times</td>
+   <td>IBM JDK average</td>
+   <td>J2ME times</td>
+   <td>J2ME average</td>
+  </th>
+  <tr>
+   <td>Ramp - Standard PTII Simulation </td>
+   <td>330ms 321ms 320ms 331ms 320ms</td>
+   <td>324.4ms</td>
+   <td>411ms 411ms 411ms 421ms 410ms</td>
+   <td>412.8ms</td>
+   <td>NA</td>
+   <td>NA</td>
+  </tr>
+  <tr>
+   <td>Ramp - codegen </td>
+   <td>161ms 160ms 161ms 160ms 170ms</td>
+   <td>162.4ms</td>
+   <td>250ms 221ms 210ms 210ms 211ms</td>
+   <td>220.4ms</td>
+   <td>18210ms 18220ms 18210ms 18210ms 18210ms</td>
+   <td>18212ms</td>
+  </tr>
+  <tr>
+   <td>Orthocom - Standard PTII Simulation </td>
+   <td>621ms 631ms 630ms 631ms 630ms</td>
+   <td>628.6ms</td>
+   <td>1261ms 1092ms 1112ms 1102ms 1192ms</td>
+   <td>1151.8ms</td>
+   <td>NA</td>
+   <td>NA</td>
+  </tr>
+  <tr>
+   <td>Orthcom - codegen </td>
+   <td>210ms 230ms 230ms 230ms 230ms</td>
+   <td>226.0ms</td>
+   <td>421ms  440ms  450ms  461ms  440ms</td>
+   <td>442.4ms</td>
+   <td>NA</td>
+   <td>NA</td>
+  </tr>
+ </table>
+
+ <p>Interestingly running the Palm OS Emulator 3.0a6 yielded the following
+printed run times for the Ramp codegen, but the actual walk clock time was more like 11 seconds
+
+(46370ms 46380ms 50010ms 50000ms 50020ms)
 
 <h2>Remote links</h2>
 <menu>
