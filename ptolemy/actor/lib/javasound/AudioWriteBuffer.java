@@ -424,6 +424,4 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     private Token[][] _inArray;
     private boolean _safeToInitialize = false;
     private double[] _audioBuffer;
-    //private boolean _debug_info = true;
-    private boolean _debug_info = false;
 }
