@@ -29,8 +29,12 @@
 
 package ptolemy.copernicus.java;
 
-import ptolemy.copernicus.kernel.PtolemyUtilities;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Hierarchy;
@@ -46,11 +50,6 @@ import soot.jimple.Stmt;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// DeadObjectEliminator

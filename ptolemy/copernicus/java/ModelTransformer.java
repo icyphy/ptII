@@ -29,6 +29,15 @@
 
 package ptolemy.copernicus.java;
 
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -65,7 +74,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
 import soot.BooleanType;
 import soot.FastHierarchy;
 import soot.Hierarchy;
@@ -79,7 +87,6 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
-import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
@@ -89,22 +96,12 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.StaticFieldRef;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
-
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

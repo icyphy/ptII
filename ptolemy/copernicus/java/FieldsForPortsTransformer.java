@@ -29,6 +29,11 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -38,8 +43,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.util.StringUtilities;
-
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
@@ -68,11 +71,6 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForPortsTransformer

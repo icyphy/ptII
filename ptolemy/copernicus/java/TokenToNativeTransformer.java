@@ -29,11 +29,21 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-
 import soot.ArrayType;
 import soot.Body;
 import soot.BooleanType;
@@ -100,17 +110,6 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.toolkits.scalar.UnusedLocalEliminator;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

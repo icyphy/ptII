@@ -29,20 +29,20 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
 import soot.RefType;
-import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
@@ -64,10 +64,6 @@ import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

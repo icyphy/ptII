@@ -30,6 +30,11 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -37,10 +42,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.data.expr.Variable;
-
 import soot.FastHierarchy;
 import soot.Hierarchy;
 import soot.Local;
@@ -56,11 +58,6 @@ import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
 
 
 

@@ -30,6 +30,14 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -41,10 +49,8 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.BaseType;
-import soot.Body;
 import soot.IntType;
 import soot.Local;
 import soot.Modifier;
@@ -55,7 +61,6 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Value;
 import soot.ValueBox;
-import soot.VoidType;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
@@ -65,15 +70,6 @@ import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.util.Chain;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFPortInliner

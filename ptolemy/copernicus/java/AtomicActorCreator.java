@@ -30,11 +30,10 @@
 
 package ptolemy.copernicus.java;
 
-import ptolemy.kernel.Entity;
-
-import soot.SootClass;
-
 import java.util.Map;
+
+import ptolemy.kernel.Entity;
+import soot.SootClass;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,11 +29,16 @@
 
 package ptolemy.copernicus.java;
 
-import ptolemy.kernel.attributes.URIAttribute;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-
+import ptolemy.kernel.attributes.URIAttribute;
 import soot.FastHierarchy;
 import soot.Hierarchy;
 import soot.Local;
@@ -58,14 +63,8 @@ import soot.jimple.ParameterRef;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
-import soot.toolkits.scalar.LocalSplitter;
 import soot.jimple.toolkits.typing.TypeAssigner;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import soot.toolkits.scalar.LocalSplitter;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,9 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
@@ -37,7 +40,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
 import soot.Local;
 import soot.RefType;
 import soot.SootClass;
@@ -47,9 +49,6 @@ import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.util.Chain;
-
-import java.util.Map;
-import java.util.Set;
 
 /*
 import soot.jimple.toolkits.invoke.StaticInliner;

@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -38,7 +44,6 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.Attribute;
-
 import soot.Local;
 import soot.NullType;
 import soot.RefType;
@@ -56,7 +61,6 @@ import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.InterfaceInvokeExpr;
-import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
@@ -68,12 +72,6 @@ import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenTypeAnalysis

@@ -30,10 +30,14 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.type.BaseType;
-
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Local;
@@ -46,11 +50,6 @@ import soot.ValueBox;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.JimpleBody;
 import soot.toolkits.graph.CompleteUnitGraph;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenInstanceofEliminator

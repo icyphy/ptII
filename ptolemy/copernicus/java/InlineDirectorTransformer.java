@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import java.io.FileWriter;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -50,7 +56,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.BooleanType;
 import soot.FastHierarchy;
@@ -78,12 +83,6 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeResolver;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
-
-import java.io.FileWriter;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer

@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -40,7 +46,6 @@ import ptolemy.graph.InequalitySolver;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-
 import soot.Body;
 import soot.Local;
 import soot.RefType;
@@ -68,12 +73,6 @@ import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeSpecializerAnalysis

@@ -30,6 +30,11 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
@@ -40,7 +45,6 @@ import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-
 import soot.Local;
 import soot.Options;
 import soot.RefType;
@@ -75,11 +79,6 @@ import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,11 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -45,7 +50,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
-
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
@@ -67,11 +71,11 @@ import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
-import soot.jimple.ThisRef;
 import soot.jimple.NullConstant;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
+import soot.jimple.ThisRef;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.Evaluator;
@@ -83,11 +87,6 @@ import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineParameterTransformer

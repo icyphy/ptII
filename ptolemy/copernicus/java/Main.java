@@ -43,7 +43,6 @@ import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
-
 import soot.Pack;
 import soot.Scene;
 import soot.Transform;
@@ -51,9 +50,9 @@ import soot.jimple.toolkits.scalar.CommonSubexpressionEliminator;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.toolkits.scalar.UnusedLocalEliminator;

@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
@@ -37,12 +43,6 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// FreeVariableModelAnalysis

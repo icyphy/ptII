@@ -29,6 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -36,7 +42,6 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
-
 import soot.Body;
 import soot.BooleanType;
 import soot.FastHierarchy;
@@ -51,7 +56,6 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
-import soot.jimple.NullConstant;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
@@ -66,12 +70,6 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeResolver;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// CommandLineTransformer

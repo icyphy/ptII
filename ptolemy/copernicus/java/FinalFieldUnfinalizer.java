@@ -29,20 +29,15 @@
 
 package ptolemy.copernicus.java;
 
-import soot.Options;
-import soot.Scene;
-import soot.Modifier;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.SootField;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
-
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+
+import soot.Modifier;
+import soot.Options;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
 
 //////////////////////////////////////////////////////////////////////////
 //// FinalFieldUnfinalizer

@@ -29,10 +29,14 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-
 import soot.Local;
 import soot.RefType;
 import soot.SootMethod;
@@ -45,11 +49,6 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.CompleteUnitGraph;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjConstructorAnalysis

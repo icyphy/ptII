@@ -29,10 +29,14 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
-
 import soot.Local;
 import soot.RefType;
 import soot.SootMethod;
@@ -46,11 +50,6 @@ import soot.jimple.NewExpr;
 import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.scalar.LocalDefs;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer

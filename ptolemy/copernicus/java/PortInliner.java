@@ -31,7 +31,6 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.TypedIOPort;
-
 import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;

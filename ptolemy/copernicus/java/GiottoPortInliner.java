@@ -30,6 +30,15 @@
 
 package ptolemy.copernicus.java;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -39,7 +48,6 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.BaseType;
 import soot.Body;
@@ -63,15 +71,6 @@ import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.util.Chain;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoPortInliner
