@@ -317,4 +317,72 @@ test Icon-9.5 {removeGraphic tests} {
 } 0}
 
   
+######################################################################
+####
+#
+test Icon-10.1 {addPort tests} {
+    set e0 [java::new ptolemy.schematic.Icon]
+    set g0 [java::new ptolemy.schematic.SchematicPort]
+    $g0 setName testport
+    $e0 addPort $g0
+    $e0 toString
+} {<icon name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</icon>
+}
+
+######################################################################
+####
+#
+test Icon-10.2 {containsPort tests} {
+    # Uses setup from above
+    list [$e0 containsPort testport] [$e0 containsPort failtest]
+} {1 0}
+
+######################################################################
+####
+#
+test Icon-10.3 {getPort tests} {
+    # Uses setup from above
+    set g1 [$e0 getPort testport]
+    list [$e0 toString] [$g1 toString]
+} {{<icon name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</icon>
+} {<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+}}
+
+
+######################################################################
+####
+#
+test Icon-10.4 {ports tests} {
+    # Uses setup from above
+    set genum [$e0 ports]
+    set s [$genum nextElement]
+    list [$s toString] [$genum hasMoreElements]
+} {{<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+} 0}
+   
+######################################################################
+####
+#
+test Icon-10.5 {removePort tests} {
+    # Uses setup from above
+    set s [$e0 toString]
+    $e0 removePort testport
+    set genum [$e0 ports]
+    list $s [$e0 toString] [$genum hasMoreElements]
+} {{<icon name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</icon>
+} {<icon name="">
+<entitytype name=""></entitytype>
+</icon>
+} 0}
+
+  
 
