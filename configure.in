@@ -283,7 +283,6 @@ else
 ])
 fi
 
-
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
@@ -317,7 +316,6 @@ else
   Cannot find '$PTJAVA_DIR/bin/javac'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
 fi
-
 
 #--------------------------------------------------------------------
 #	Test the Java Compiler (javac)
@@ -1187,6 +1185,7 @@ else
 	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
     esac
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
@@ -1335,29 +1334,32 @@ fi
 #       MATLAB Interface
 #       check to see if matlab is in the user's path
 #--------------------------------------------------------------------
-# PTMATLAB_DIR is set to matlab and used in
-# $PTII/ptolemy/makefile if matlab, extern/include/libeng.def and gcc are found
+# PTMATLAB_DIR is set to matlab and used in $PTII/ptolemy/makefile
+# if matlab and gcc are found; PTMATLAB_LIBDIR is then also set to
+# the platform-dependent directory containg Matlab's engine libraries
 PTMATLAB_DIR=
+PTMATLAB_LIBDIR=
 
-# Set PTWINDOWS to true if we are running under Windows
-PTWINDOWS=no
+PTMATLAB_SUPPORTED=no
 case "`uname -s`" in
+Linux)
+	PTMATLAB_SUPPORTED=yes
+	;;
 CYGWIN*)
-	PTWINDOWS=yes
+	PTMATLAB_SUPPORTED=yes
 	;;
 esac
 
-if test "$PTWINDOWS" = "no"; then
-    AC_MSG_WARN([The Matlab interface only works under Windows.
-    You are running `uname -s`.])
+
+if test "$PTMATLAB_SUPPORTED" = "no"; then
+    AC_MSG_WARN([The Matlab interface is not supported on this platform (you are running `uname -s`).])
 else
     # We only need to look for matlab if $PTII/ptolemy/matlab exists
     if test ! -d "$PTII/ptolemy/matlab"; then
 	AC_MSG_RESULT([$PTII/ptolemy/matlab is not present,
-	    so we need not find matlab, gcc and dlltool.])
+	    so we need not find matlab and gcc.])
 	MATLAB_DIR=/matlab
 	PTCC=gcc
-	PTDLLTOOL=dlltool
     else
 	AC_PATH_PROG(MATLAB, matlab)
 	if test "${MATLAB:-none}" = "none"; then
@@ -1390,13 +1392,22 @@ else
 	    If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
 	    else
-		if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
-		    AC_MSG_RESULT([$MATLAB_DIR])
-		    AC_PATH_PROG(PTCC, gcc)
-		    if test "${PTCC:-none}" != "none"; then
+		AC_MSG_RESULT([$MATLAB_DIR])
+		case "`uname -s`" in
+		Linux)
+			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+			;;
+		CYGWIN*)
+			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
+			;;
+		esac
+		AC_MSG_RESULT([using ${MATLAB_LIBDIR} for Matlab's engine libraries])
+		AC_MSG_CHECKING([for gcc])
+		AC_PATH_PROG(PTCC, gcc)
+		if test "${PTCC:-none}" != "none"; then
 			AC_MSG_RESULT([$PTCC])
 			PTMATLAB_DIR=matlab
-		    else    
+		else    
 			AC_MSG_WARN([Failed to find gcc])
 			AC_PATH_PROG(PTCC, cc)
 			if test "${PTCC:-none}" != "none"; then
@@ -1406,17 +1417,6 @@ else
 			    AC_MSG_WARN([Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab]);
 			fi
-		    fi
-		    AC_PATH_PROG(PTDLLTOOL, dlltool)
-		    if test "${PTDLLTOOL:-none}" = "none"; then
-			PTMATLAB_DIR=
-			AC_MSG_WARN([Failed to find dlltool, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab]);
-		    fi
-		else 
-		    AC_MSG_WARN([Failed to find matlab libeng.def file at
-    ${MATLAB_DIR}/extern/include/libeng.def. 
-    Perhaps Matlab is not installed?]);
 		fi
 	    fi
 	fi
@@ -1765,6 +1765,9 @@ AC_SUBST(LEJOS_DIR)
 # This directory usually contains bin,...
 AC_SUBST(MATLAB_DIR)
 
+# Set the location of Matlab's engine libraries
+AC_SUBST(MATLAB_LIBDIR)
+
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
 
@@ -1775,10 +1778,6 @@ AC_SUBST(PTCC)
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
 #
 AC_SUBST(PTCOMM_DIR)
-
-# Set to dlltool if dlltool was found and used in
-# $PTII/ptolemy/matlab/makefile.
-AC_SUBST(PTDLLTOOL)
 
 # PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
 # GC_malloc() can be found either in the default compiler location
