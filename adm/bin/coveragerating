@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Wed Dec 18 08:01:14 2002 by cxh]-
+# -[Thu Nov 20 10:25:51 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -17,6 +17,8 @@ summaryfile=$2
 javafiles=/tmp/coveragerating.javafiles
 
 ratingfile=/tmp/coveragerating.ratingfile
+
+complexityfile=/tmp/coveragerating.complexity
 
 find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
 
@@ -36,16 +38,54 @@ find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
 			-e 's=/=.=g'> $ratingfile
 #fi
 
+# Create a file that has three fields on each line:
+# 1) The string "complexity"
+# 2) The file name
+# 3) The cyclometric complexity
+#if [ ! -f $complexityfile ]; then
+	echo "Regenerating $complexityfile"
+	complexityfile_tmp=/tmp/coveragerating.complexity_tmp
+	if [ ! -f $complexityfile_tmp ]; then
+	    rm -f $complexityfile_tmp
+	    for javafile in `cat $javafiles`
+	    do
+		jv-scan --complexity $javafile >> $complexityfile_tmp
+	    done    
+        fi	    
+	# Look for all the lines with two fields, add a complexity tag
+	# convert the / to . and sort by complexity
+	awk ' NF == 2 {print "complexity", $0}' < $complexityfile_tmp |
+	    sed "s@$tree/@\.@" |
+	    sed 's@/@.@g' |
+	    sort +2nr -3nr > $complexityfile
+
+	#rm -f $complexityfile_tmp
+#fi
+
+
 # Read in the rating file, then the coverage file
-awk '{if ($0 !~ /</) {
-	# Reading in the rating file, which has no < chars
-	# print $1,$2
-	color = $2
-	# If the color is yellow, then substitute in gold
-        if (color ~ /ellow/) {
-	    color = "#ffaa00"
+awk '{
+     if ($0 !~ /</) {
+	if (NF == 3 && $1 ~ "complexity") {
+	    # Reading in the complexity file
+	    # It should be first in the list of files read in because
+	    # we keep track of the rank
+	    print "complexity: " $2, $3
+	    complexityValue = $3 
+	    complexityRank[$2] = NR
+
+	    complexity[$2] = $3
+	    maxComplexityRank = NR
+	} else {
+	    # Reading in the rating file, which has no < chars
+	    print $1,$2
+	    color = $2
+	    # If the color is yellow, then substitute in gold
+	    if (color ~ /ellow/) {
+		color = "#ffaa00"
+	    }
+	    rating[$1] = color
 	}
-	rating[$1] = color
      } else {
 	# Reading in the coverage html file
 	if ($0 ~ />Package /) {
@@ -66,21 +106,39 @@ awk '{if ($0 !~ /</) {
 			filename = filename "/" filearray[i]
 		    }
 
-		    #print file, rating[file], filename
+		    #print "-------------"file, rating[file], filename
 		    printf("%s ",$1)
 
 		    printf("%s>",ff[1]);
 		    
 		    # 34 is double quote
-		    printf("<a href=%c%s.html%c><font color=%s>%s</font></a><", 34, filename, 34, rating[file], ff[nff]);
+		    printf("<a href=%c%s.html%c><font color=%s>%s</font></a></th>", 34, filename, 34, rating[file], ff[nff]);
 
-		    for(i=3;i<nnf;i++) {
-			printf("%s>",ff[i]);
+		    #for(i=3;i<nnf;i++) {
+		    #	printf("%s>",ff[i]);
+		    #}
+
+		    #printf("%s",ff[nnf]);
+
+		    # Print the complexity value
+		    complexityValue = complexity[file]
+		    if (complexityValue == "") {
+			complexityValue = "&nbsp;"
+ 		    }
+		    percentComplexityRank = int(complexityRank[file]/maxComplexityRank * 100.0)
+	    if (complexityValue > 500) {
+		complexityValue="<font color=#ff0000>" complexityValue"</font>"
+	    }
+
+		    # If the file is in the top 5%, we print it in red
+		    if (percentComplexityRank <= 5) {
+			printf("<td><font color=#ff0000>%s %2d%%</font></td>", complexityValue, percentComplexityRank) 
+		    } else {
+			printf("<td>%s %2d%% </td>", complexityValue, percentComplexityRank) 
 		    }
 
-		    printf("%s",ff[nnf]);
-
-		    for(i=2;i<nf;i++) {
+		    printf("<");
+		    for(i=3;i<nf;i++) {
 			printf("%s<",f[i])
 		    }
 		    printf("%s ",f[nf]);
@@ -98,7 +156,9 @@ awk '{if ($0 !~ /</) {
 	    }
 	}
     }
-}' $ratingfile $summaryfile |
+}' $complexityfile $ratingfile $summaryfile |
+sed 's@<th align="center">method</th>@<th align="center"><a href="#complexity">complexity</a></th><th align="center">method</th>@' |
+sed 's@<TR><th align="center">TOTAL</th>@<TR><th align="center">TOTAL</th><td>\&nbsp;</td>@' |
 awk '{
 	if (sawheader==1) {
 	    print $0
@@ -107,6 +167,21 @@ awk '{
 		sawheader=1
 	    } 
 	}
+     }
+     END {
+	print "<a name=\"complexity\">Complexity:</a>" 
+	print "The complexity column measures the cyclometric complexity"
+	print "<br>The first number is the cyclometric complexity as reported"
+	print "by the GNU jv-scan program.  In general, low numbers are"
+	print "good, high numbers are not so good"
+	print "<br>The second number is the rank of the file as a percentage"
+	print "of all the files."
+	print "Files that are in the top 5% are colored red.  These files"
+	print "are the most complex files in the tree, and therefore the most"
+ 	print "likely to have complex bugs.  These files should probably"
+	print "be refactored to aid in testability"
+	print "<br>If a file has only a percentage, then jv-scan failed"
+	print "to process it"
      }' > /tmp/coveragerating.out
 
 # Create a TOC
@@ -129,7 +204,7 @@ awk ' BEGIN {
     }
     END {
         print "</menu>" 
-    }' date="foo" /tmp/coveragerating.out >/tmp/coveragerating.toc
+    }' date=`date` /tmp/coveragerating.out >/tmp/coveragerating.toc
 
 cp $summaryfile $summaryfile.bak
 cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
