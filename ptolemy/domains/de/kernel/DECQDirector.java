@@ -264,6 +264,11 @@ public class DECQDirector extends Director {
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
+
+	// initialize the global event queue.
+	_cQueue = new CalendarQueue(new DECQComparator());
+	// initialize the directed graph for scheduling.
+	_dag = new DirectedGraph();
         _currentTime = 0.0;
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
@@ -385,8 +390,9 @@ public class DECQDirector extends Director {
                             } else {
 				// FIXME: what should happen here...
 				// This shouldn't happen ?
-				throw new InternalErrorException("DECQDir"+
-					"ector, please consider this case.");
+				// FIXME: Ack.. turned out this does happen..
+				System.out.println("Null receiver in event destined for actor " + ((Entity)currentEvent.actor).description(FULLNAME));
+				
 			    }
                         } else {
                             // Put it back in the queue.
