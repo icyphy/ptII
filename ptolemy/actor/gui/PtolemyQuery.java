@@ -31,6 +31,7 @@
 
 package ptolemy.actor.gui;
 
+import java.awt.Color;
 import java.awt.Window;
 import java.io.File;
 import java.net.URI;
@@ -214,19 +215,22 @@ public class PtolemyQuery extends Query
                             name,
                             attribute.getExpression(),
                             base,
-                            directory);
+                            directory,
+                            preferredBackgroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Parameter
                         && ((Parameter)attribute).getChoices() != null) {
                     Parameter castAttribute = (Parameter)attribute;
+                    Color background = preferredBackgroundColor(attribute);
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
                     addChoice(name,
                             name,
                             castAttribute.getChoices(),
                             castAttribute.getExpression(),
-                            true);
+                            true,
+                            background);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Variable) {
@@ -256,7 +260,11 @@ public class PtolemyQuery extends Query
         String defaultValue = attribute.getExpression();
         if (defaultValue == null) defaultValue = "";
         if (!(foundStyle)) {
-            addLine(attribute.getName(), attribute.getName(), defaultValue);
+            Color background = preferredBackgroundColor(attribute);
+            addLine(attribute.getName(),
+                    attribute.getName(),
+                    defaultValue,
+                    background);
             // The style itself does this, so we don't need to do it again.
             attachParameter(attribute, attribute.getName());
         }
@@ -585,6 +593,22 @@ public class PtolemyQuery extends Query
             }
         }
     }
+    
+    /** Return the preferred background color for editing the specified
+     *  object.  The default is Color.white, but if the object is an
+     *  instance of Parameter and it is in string mode, then a light
+     *  blue is returned.
+     *  @param object The object to be edited.
+     */
+    public static Color preferredBackgroundColor(Object object) {
+        Color background = Color.white;
+        if (object instanceof Parameter) {
+            if (((Parameter)object).isStringMode()) {
+                background = _STRING_MODE_BACKGROUND_COLOR;
+            }
+        }
+        return background;
+    }
 
     /** Notify this query that the value of the specified attribute has
      *  changed.  This is called by an attached attribute when its
@@ -689,6 +713,13 @@ public class PtolemyQuery extends Query
 
     // Saved error handler to restore after change.
     private ErrorHandler _savedErrorHandler = null;
+    
+    // Background color for string mode edit boxes.
+    // FIXME: Until I figure out how to set the background
+    // color of a combo box, it is misleading to use
+    // anything but white here. @#*&^@!#$%&^$# Swing.
+    private static Color _STRING_MODE_BACKGROUND_COLOR = Color.white;
+    // Better would be: new Color(230, 255, 255, 255);
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.
