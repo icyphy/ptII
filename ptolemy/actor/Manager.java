@@ -59,7 +59,7 @@ domains may spawn additional threads of their own.
 
 @author Steve Neuendorffer
 // Contributors: Mudit Goel, Edward A. Lee, Lukito Muliadi
-@version: $Id$
+@version: @(#)Manager.java	1.10  10/14/98
 */
 
 public final class Manager extends NamedObj {
@@ -136,7 +136,7 @@ public final class Manager extends NamedObj {
      *  number of iterations.
      */
     public void blockingGo(int iterations) {
-        CompositeActor container = ((CompositeActor)getContainer());
+        CompositeActor toplevel = ((CompositeActor)getToplevel());
                
         // ensure that we only have one execution running.
         synchronized(this) {
@@ -158,7 +158,7 @@ public final class Manager extends NamedObj {
         try {
             try {
                 // Initialize the topology
-                container.initialize();
+                toplevel.initialize();
                 
                 // Call _iterate() until:
                 // _isRunning is set to false (presumably by stop())
@@ -173,7 +173,7 @@ public final class Manager extends NamedObj {
                         if(_isPaused) {
                             // Notify listeners that we are paused.
                             event = 
-                                new ExecutionEvent(this,iterations);
+                                new ExecutionEvent(this,_iteration);
                             listeners = 
                                 _ExecutionListeners.elements();
                             while(listeners.hasMoreElements()) {
@@ -189,7 +189,7 @@ public final class Manager extends NamedObj {
                             // Somebody woke us up, so notify all the 
                             // listeners that we are resuming.
                             event = 
-                                new ExecutionEvent(this,iterations);
+                                new ExecutionEvent(this,_iteration);
                             listeners = 
                                 _ExecutionListeners.elements();
                             while(listeners.hasMoreElements()) {
@@ -211,11 +211,11 @@ public final class Manager extends NamedObj {
                 _isPaused = false;
                 
                 // try to wrapup the topology.
-                container.wrapup();
+                toplevel.wrapup();
 
                 // notify all listeners that we have been stopped.
                 event = 
-                    new ExecutionEvent(this,iterations);
+                    new ExecutionEvent(this,_iteration);
                 listeners = 
                     _ExecutionListeners.elements();
                 while(listeners.hasMoreElements()) {
@@ -227,15 +227,7 @@ public final class Manager extends NamedObj {
             }
         }
         catch (Exception e) {
-            // if any exceptions get up to this level, then we have to tell
-            // the gui by enscapsulating in an event.
-            event = new ExecutionEvent(this,iterations,e);
-            listeners = _ExecutionListeners.elements();
-            while(listeners.hasMoreElements()) {
-                ExecutionListener l = 
-                    (ExecutionListener) listeners.nextElement();
-                l.executionError(event);
-            }
+            fireExecutionError(e);
         }
     }
      
@@ -252,16 +244,38 @@ public final class Manager extends NamedObj {
             _runningthread.notify();
     }
 
+    /** Encapsulate the Exception with an ExecutionEvent and call 
+     *  ExecutionError in all the ExecutionListeners.   If there are
+     *  no ExecutionListeners, then print the exception's stack trace on 
+     *  the console.
+     * 
+     *  @param e The Exception
+     **/
+     public void fireExecutionError(Exception e) {
+     // if any exceptions get up to this level, then we have to tell
+     // the gui by enscapsulating in an event.
+            ExecutionEvent event = new ExecutionEvent(this,_iteration,e);
+            Enumeration listeners = _ExecutionListeners.elements();
+            // if nobody is listening, then just dump the stack trace.
+            if(!listeners.hasMoreElements()) {
+                e.printStackTrace();
+            }
+            while(listeners.hasMoreElements()) {
+                ExecutionListener l = 
+                    (ExecutionListener) listeners.nextElement();
+                l.executionError(event);
+            }
+     }
 
-    /** Return the container, which is the composite actor for which this
-     *  is the Manager.   This composite actor does not have a parent, and 
+
+    /** Return the toplevel composite actor for which this manager
+     *  controls execution.   This composite actor does not have a parent, and 
      *  contains the entire hierarchy for an execution.
      *  @return The CompositeActor that this Manager is responsible for.
      */
-       public Nameable getContainer() {
-        return _container;
+    public CompositeActor getToplevel() {
+        return _toplevel;
     }
-    
     
     /** Start an execution that will run for an unspecified number of 
      *  iterations.   This will normally be terminated by calling finish, 
@@ -320,17 +334,17 @@ public final class Manager extends NamedObj {
 	    throws TypeConflictException {
 	try {
 	    workspace().getWriteAccess();
-            CompositeActor container = (CompositeActor)getContainer();
-            if ( !(container instanceof TypedCompositeActor)) {
+            CompositeActor toplevel = (CompositeActor)getToplevel();
+            if ( !(toplevel instanceof TypedCompositeActor)) {
                 return;
             }
 
 	    LinkedList conflicts = new LinkedList();
 	    conflicts.appendElements(
-			((TypedCompositeActor)container).checkTypes());
+			((TypedCompositeActor)toplevel).checkTypes());
 
             Enumeration constraints =
-                	((TypedCompositeActor)container).typeConstraints();
+                	((TypedCompositeActor)toplevel).typeConstraints();
 
 	    if (constraints.hasMoreElements()) {
                 InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
@@ -373,7 +387,7 @@ public final class Manager extends NamedObj {
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts.elements(),
-		    "Type conflicts occurred in " + container.getFullName());
+		    "Type conflicts occurred in " + toplevel.getFullName());
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
@@ -421,8 +435,8 @@ public final class Manager extends NamedObj {
             _runningthread = null;
         }
         // Terminate the entire hierarchy as best we can.
-        CompositeActor container = ((CompositeActor)getContainer());
-        container.terminate();
+        CompositeActor toplevel = ((CompositeActor)getToplevel());
+        toplevel.terminate();
 
         // notify all execution listeners that execution was terminated.
         ExecutionEvent event = new ExecutionEvent(this);
@@ -479,8 +493,8 @@ public final class Manager extends NamedObj {
      *   throws it.
      */
     private boolean _iterate() throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        if (container == null) {
+        CompositeActor toplevel = (CompositeActor)getToplevel();
+        if (toplevel == null) {
             throw new InvalidStateException("Manager "+ getName() +
                     " attempted execution with no topology to execute!");
         }        
@@ -511,9 +525,9 @@ public final class Manager extends NamedObj {
                 }
             }
                 
-            if (container.prefire()) {
-                container.fire();
-                return container.postfire();
+            if (toplevel.prefire()) {
+                toplevel.fire();
+                return toplevel.postfire();
             }
             return false;
         } finally {
@@ -528,14 +542,14 @@ public final class Manager extends NamedObj {
      *  an InvalidStateException.
      */
     protected void _makeManagerOf (CompositeActor ca) {
-        _container = ca;
         if (ca != null) {
             if(ca.getContainer() != null) 
                 throw new InvalidStateException("Manager's container must " +
                         "be the toplevel CompositeActor!");
             workspace().remove(this);
         }
-    }
+        _toplevel = ca;
+     }
 
     /** This method serves at the implementation for both go() and go(int).
      *  Starts a new ManagerExecutionThread which will call
@@ -566,7 +580,7 @@ public final class Manager extends NamedObj {
     ////                         private variables                 ////
 
     // The toplevel CompositeActor that contains this Manager
-    private CompositeActor _container = null;
+    private CompositeActor _toplevel = null;
 
     private boolean _isRunning;
     private boolean _isPaused;
