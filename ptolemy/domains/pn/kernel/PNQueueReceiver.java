@@ -138,12 +138,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         notifyAll();
     }
 
-    /** Clear this receiver of any contained tokens.
-      */
-     public void clear() {
-         _queue.clear();
-     }
-
     /** Get a token from this receiver. If the receiver is empty then
      *  block until a token becomes available. Use the local director
      *  to manage blocking reads that occur. If this receiver is
