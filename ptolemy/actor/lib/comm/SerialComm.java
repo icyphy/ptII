@@ -302,6 +302,8 @@ public class SerialComm extends TypedAtomicActor
 		}
 	    }
 
+	    //(moved to finally clause)_directorFiredAtAlready = false;
+
             if (bytesAvailable >= _threshold) {
 		// Read only if the at least desired amount of data is present.
 		if (_truncation != 0 && bytesAvailable > _truncation) {
@@ -333,10 +335,12 @@ public class SerialComm extends TypedAtomicActor
         } catch (IOException ex) {
             throw new IllegalActionException(this, "I/O error: " +
                     ex.getMessage());
-        }
+        } finally {
+	    _directorFiredAtAlready = false;
+	}
     }
 
-    /** Preinitialize does the resource allocation for this actor.
+    /** [Pre]initialize does the resource allocation for this actor.
      *  Specifically, it opens the serial port (setting the baud rate
      *  and other communication settings) and then activates the
      *  serial port's event listening resource, directing events to the
@@ -347,8 +351,8 @@ public class SerialComm extends TypedAtomicActor
      *  below.)
      *  @exception IllegalActionException if the try fails.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 	_directorFiredAtAlready = false;
         try {
 
