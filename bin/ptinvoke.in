@@ -340,7 +340,7 @@ case `basename "$0"` in
     emachine)
 	if [ -f "$GIOTTO_JAR" ]; then
 	    help="Execute the emachine"
-	    javastartupclass=platform.emachine.Emulator
+	    javastartupclass=platform.emachine.java.Emulator
 	    javasourcedir=
 	else
 	    echo "GiottoSDK was not found when $PTII/configure was run, "
