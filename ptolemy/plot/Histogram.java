@@ -38,81 +38,81 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
 /**
- * A histogram plotter.  The plot can be configured and data can
- * be provided either through a file with commands or through direct
- * invocation of the public methods of the class.  To read a file or a
- * URL, use the read() method.
- * <p>
- * When calling the public methods, in most cases the changes will not
- * be visible until paint() has been called.  To request that this
- * be done, call repaint().  One exception is addPoint(), which
- * makes the affect of the new point visible immediately (or nearly
- * immediately) if the plot is visible on the screen.
- * <p>
- * The ASCII format for the file file contains any number commands,
- * one per line.  Unrecognized commands and commands with syntax
- * errors are ignored.  Comments are denoted by a line starting with a
- * pound sign "#".  The recognized commands include those supported by
- * the base class, plus a few more.  The commands are case
- * insensitive, but are usually capitalized.  The number of data sets
- * to be plotted does not need to be specified.  Data sets are added as needed.
- * Each dataset is identified with a color (see the base class).
- * <P>
- * The appearance of the histogram can be altered by the following commands:
- * <pre>
- * Bars: <i>width</i>
- * Bars: <i>width, offset</i>
- * </pre>
- * The <i>width</i> is a real number specifying the width of the bars
- * as a fraction of the bin width.  It usually has a value less than
- * or equal to one,
- * and defaults to 0.5.  The <i>offset</i> is a real number
- * specifying how much the bar of the <i>i </i><sup>th</sup> data set
- * is offset from the previous one.  This allows bars to "peek out"
- * from behind the ones in front.  It defaults to 0.15.
- * Note that the frontmost data set will be the first one.
- * <p>
- * The width of each bin of the histogram can be specified using:
- * <pre>
- * BinWidth: <i>width</i>
- * </pre>
- * This is given in whatever units the data has.
- * By default, each bin is centered at <i>x</i> = <i>nw</i>,
- * where <i>w</i> is the width of the bin and <i>n</i> is an integer.
- * That bin represents values in the range (<i>x - w/2, x + w/2</i>).
- * The alignment of the bins can be changed with the following command:
- * <pre>
- * BinOffset: <i>offset</i>
- * </pre>
- * If this method is used with argument <i>o</i>, then each bin is
- * centered at <i>x = nw + o</i>, and represents values in the range
- * (<i>x - w/2 + o, x + w/2 + o</i>).  So for example, if <i>o = w/2</i>,
- * then each bin represents values from <i>nw</i> to
- * (<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
- * The default offset is 0.5, half the default bin width.
- * <p>
- * To specify data to be plotted, start a data set with the following command:
- * <pre>
- * DataSet: <i>string</i>
- * </pre>
- * Here, <i>string</i> is a label that will appear in the legend.
- * It is not necessary to enclose the string in quotation marks.
- * To start a new dataset without giving it a name, use:
- * <pre>
- * DataSet:
- * </pre>
- * In this case, no item will appear in the legend.
- * New datasets are plotted <i>behind</i> the previous ones.
- * The data itself is given by a sequence of numbers, one per line.
- * The numbers are specified as
- * strings that can be parsed by the Double parser in Java.
- * It is also possible to specify the numbers using all the formats
- * accepted by the Plot class, so that the same data may be plotted by
- * both classes.  The <i>x</i> data is ignored, and only the <i>y</i>
- * data is used to calculate the histogram.
- *
- * @author Edward A. Lee
- * @version $Id$
+A histogram plotter.  The plot can be configured and data can
+be provided either through a file with commands or through direct
+invocation of the public methods of the class.  To read a file or a
+URL, use the read() method.
+<p>
+When calling the public methods, in most cases the changes will not
+be visible until paint() has been called.  To request that this
+be done, call repaint().  One exception is addPoint(), which
+makes the affect of the new point visible immediately (or nearly
+immediately) if the plot is visible on the screen.
+<p>
+The ASCII format for the file file contains any number commands,
+one per line.  Unrecognized commands and commands with syntax
+errors are ignored.  Comments are denoted by a line starting with a
+pound sign "#".  The recognized commands include those supported by
+the base class, plus a few more.  The commands are case
+insensitive, but are usually capitalized.  The number of data sets
+to be plotted does not need to be specified.  Data sets are added as needed.
+Each dataset is identified with a color (see the base class).
+<P>
+The appearance of the histogram can be altered by the following commands:
+<pre>
+Bars: <i>width</i>
+Bars: <i>width, offset</i>
+</pre>
+The <i>width</i> is a real number specifying the width of the bars
+as a fraction of the bin width.  It usually has a value less than
+or equal to one,
+and defaults to 0.5.  The <i>offset</i> is a real number
+specifying how much the bar of the <i>i </i><sup>th</sup> data set
+is offset from the previous one.  This allows bars to "peek out"
+from behind the ones in front.  It defaults to 0.15.
+Note that the frontmost data set will be the first one.
+<p>
+The width of each bin of the histogram can be specified using:
+<pre>
+BinWidth: <i>width</i>
+</pre>
+This is given in whatever units the data has.
+By default, each bin is centered at <i>x</i> = <i>nw</i>,
+where <i>w</i> is the width of the bin and <i>n</i> is an integer.
+That bin represents values in the range (<i>x - w/2, x + w/2</i>).
+The alignment of the bins can be changed with the following command:
+<pre>
+BinOffset: <i>offset</i>
+</pre>
+If this method is used with argument <i>o</i>, then each bin is
+centered at <i>x = nw + o</i>, and represents values in the range
+(<i>x - w/2 + o, x + w/2 + o</i>).  So for example, if <i>o = w/2</i>,
+then each bin represents values from <i>nw</i> to
+(<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
+The default offset is 0.5, half the default bin width.
+<p>
+To specify data to be plotted, start a data set with the following command:
+<pre>
+DataSet: <i>string</i>
+</pre>
+Here, <i>string</i> is a label that will appear in the legend.
+It is not necessary to enclose the string in quotation marks.
+To start a new dataset without giving it a name, use:
+<pre>
+DataSet:
+</pre>
+In this case, no item will appear in the legend.
+New datasets are plotted <i>behind</i> the previous ones.
+The data itself is given by a sequence of numbers, one per line.
+The numbers are specified as
+strings that can be parsed by the Double parser in Java.
+It is also possible to specify the numbers using all the formats
+accepted by the Plot class, so that the same data may be plotted by
+both classes.  The <i>x</i> data is ignored, and only the <i>y</i>
+data is used to calculate the histogram.
+
+@author Edward A. Lee
+@version $Id$
  */
 public class Histogram extends PlotBox {
 
