@@ -60,7 +60,7 @@ public class GiottoActorComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public static int getFrequency(Actor actor) {
 	try {
@@ -101,7 +101,7 @@ public class GiottoActorComparator implements Comparator {
     /** Caution: equals is inconsistent with compare.
      *  FIXME: If there is an equals, then hashCode should probably also
      *  be overriden
-     */   
+     */
     public boolean equals(Object object) {
 	return false;
     }

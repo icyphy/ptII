@@ -139,7 +139,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
     }
 
     /** Return the real start time.
-     *  @return The real start time in terms of milliseconds counting 
+     *  @return The real start time in terms of milliseconds counting
      *  from 1/1/1970
      */
     public long getRealStartTime() {
@@ -162,7 +162,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    if (_debugging)
 		_debug("Giotto director firing!");
-	    
+
 	    _realStartTime = System.currentTimeMillis();
 
 	    _postfirereturns = _fire(giottoSchedule);
@@ -363,7 +363,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		// Assumption: schedule has even number of elements.
 
 		List higherFrequencyList = (List) schedule.nextElement();
-		
+
 		if (higherFrequencyList != null) {
 		    Enumeration higherFrequency =
                         Collections.enumeration(higherFrequencyList);
