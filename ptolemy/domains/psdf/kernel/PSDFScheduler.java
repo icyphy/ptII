@@ -507,7 +507,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
             NamedObj reference = (CompositeActor)
-                PSDFScheduler.this.getContainer();
+                    PSDFScheduler.this.getContainer();
             Variable result;
             if(name.indexOf("::") != -1) {
                 String insideName = name.replaceAll("::", ".");
@@ -536,7 +536,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
             NamedObj reference = (CompositeActor)
-                PSDFScheduler.this.getContainer();
+                    PSDFScheduler.this.getContainer();
             Variable result;
             if(name.indexOf("::") != -1) {
                 String insideName = name.replaceAll("::", ".");
