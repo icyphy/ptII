@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FireAtDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 429]">
     </property>
@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 111, 868, 545}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 111, 868, 547}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -115,13 +115,17 @@
             </property>
         </entity>
         <entity name="1:NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,5.0,5.0,5.0}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 5.0, 5.0, 5.0}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 180.0">
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 180.0}">
             </property>
         </entity>
         <entity name="2:NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4,8,12,16}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4, 8, 12, 16}">
+            </property>
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 350.0">
             </property>
@@ -143,13 +147,17 @@
         <link port="2:NonStrictTest.input" relation="relation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.1,0.2,0.3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.2, 0.3}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 195.0">
         </property>
     </entity>
     <entity name="1:NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,5.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 5.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 270.0">
         </property>
