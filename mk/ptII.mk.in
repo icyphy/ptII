@@ -137,7 +137,7 @@ JINI_LIB =	$(JINI_DIR)/lib
 
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
 
-# Set to dd3d and used in
+# Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
 
