@@ -31,6 +31,7 @@ import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -51,7 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Yellow (liuj)
    @see GiottoDirector
 */
-public class GiottoReceiver extends AbstractReceiver {
+public class GiottoReceiver extends AbstractReceiver 
+    implements StateReceiver {
 
     /** Construct an empty GiottoReceiver with no container.
      */

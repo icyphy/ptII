@@ -31,6 +31,7 @@ import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -45,7 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (neuendor)
 */
-public class PBOReceiver extends AbstractReceiver {
+public class PBOReceiver extends AbstractReceiver 
+    implements StateReceiver {
 
     /** Construct an empty PBOReceiver with no container.
      */

@@ -30,6 +30,7 @@ package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -90,7 +91,8 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
-public class SRReceiver extends AbstractReceiver {
+public class SRReceiver extends AbstractReceiver 
+    implements StateReceiver {
 
     /** Construct an SRReceiver with unknown state and the given director.
      */

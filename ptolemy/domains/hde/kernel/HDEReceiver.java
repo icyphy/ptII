@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.hde.kernel;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.kernel.util.IllegalActionException;
@@ -61,7 +62,8 @@ import ptolemy.kernel.util.IllegalActionException;
     @Pt.ProposedRating Green (liuj)
     @Pt.AcceptedRating Green (cxh)
 */
-public class HDEReceiver extends DEReceiver {
+public class HDEReceiver extends DEReceiver 
+    implements StateReceiver {
 
     /** Construct an empty DEReceiver with no container.
      */
