@@ -32,6 +32,8 @@ package ptolemy.actor.gui;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+import java.net.URL;
+
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionShellEffigy
 /**
@@ -41,7 +43,7 @@ A representative of an expression shell.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class ExpressionShellEffigy extends PtolemyEffigy {
+public class ExpressionShellEffigy extends Effigy {
 
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -49,6 +51,7 @@ public class ExpressionShellEffigy extends PtolemyEffigy {
      */
     public ExpressionShellEffigy(Workspace workspace) {
         super(workspace);
+        _model = new NamedObj();
     }
 
     /** Create a new effigy in the given container with the given name.
@@ -62,7 +65,41 @@ public class ExpressionShellEffigy extends PtolemyEffigy {
     public ExpressionShellEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _model = new NamedObj();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. This calls the
+     *  base class and then clones the associated model.
+     *  @param workspace The workspace for the new effigy.
+     *  @return A new effigy.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ExpressionShellEffigy newObject
+               = (ExpressionShellEffigy)super.clone(workspace);
+        if (_model != null) {
+            newObject._model = (NamedObj)_model.clone(new Workspace());
+        }
+        return newObject;
+    }
+
+    /** Return the model used to store variables.
+     *  @return A model.
+     */
+    public NamedObj getModel() {
+        return _model;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** A model used to store variables. */
+    private NamedObj _model;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -84,17 +121,35 @@ public class ExpressionShellEffigy extends PtolemyEffigy {
             super(container, name);
         }
 
-        /** Create a new effigy.  We use the strategy pattern here
-         *  so that derived classes can easily override the exact class
-         *  that is created.
-         *  @param container The container for the effigy.
-         *  @param name The name.
-         *  @return A new effigy.
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Return true, indicating that this effigy factory is
+         *  capable of creating an effigy without a URL being specified.
+         *  @return True.
          */
-        protected PtolemyEffigy _newEffigy(
-                CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            return new ExpressionShellEffigy(container, name);
+        public boolean canCreateBlankEffigy() {
+            return true;
+        }
+
+        /** If the <i>input</i> URL is null, then
+         *  create a blank effigy; otherwise, return null.
+         *  This effigy is not capable of reading a file.
+         *  The blank effigy will have a new model associated with it.
+         *  @param container The container for the effigy.
+         *  @param base The base for relative file references, or null if
+         *   there are no relative file references.
+         *  @param input The input URL.
+         *  @return A new instance of ExpressionShellEffigy, or null if the URL
+         *   is not null.
+         *  @exception Exception If there is some failure.
+         *   is malformed in some way.
+         */
+        public Effigy createEffigy(
+                CompositeEntity container, URL base, URL input)
+                throws Exception {
+            return new ExpressionShellEffigy(
+                    container, container.uniqueName("effigy"));
         }
     }
 }

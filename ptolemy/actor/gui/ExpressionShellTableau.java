@@ -77,14 +77,6 @@ public class ExpressionShellTableau extends Tableau
 
         // Ensure that there is a context in which to evaluate expressions.
         NamedObj model = ((ExpressionShellEffigy)getContainer()).getModel();
-
-        // The following probably will not happen, since the base class
-        // ensures that there is a blank TypedCompositeActor, at least.
-        if (model == null) {
-            model = new NamedObj();
-            ((ExpressionShellEffigy)getContainer()).setModel(model);
-        }
-
         _evaluator = new Parameter(model, "evaluator");
     }
 
