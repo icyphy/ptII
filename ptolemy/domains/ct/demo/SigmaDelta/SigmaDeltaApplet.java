@@ -104,7 +104,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _toplevel.setName("DESystem");
 
             // Set up the top level composite actor, director and manager
-            _deDirector = new DEDirector(_toplevel,"DEDirector");
+            _deDirector = new DEDirector(_toplevel, "DEDirector");
             //_deDirector.addDebugListener(new StreamListener());
 
             // CT subsystem
