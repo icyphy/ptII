@@ -300,9 +300,11 @@ public class Clock extends TimedSource {
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
-        if (cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0) {
-            _tentativeCurrentValue = _tentativeCurrentValue.zero();
+        if (cycleLimit > 0 ) {
+            Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+            if (currentTime.compareTo(stopTime) >= 0) {
+                _tentativeCurrentValue = _tentativeCurrentValue.zero();
+            }
         }
 
         // Used to use any negative number here to indicate
@@ -406,12 +408,12 @@ public class Clock extends TimedSource {
      */
     protected void _updateTentativeValues()
             throws IllegalActionException {
-        _tentativeCycleStartTime = _cycleStartTime;
         _tentativeCurrentValue = _currentValue;
-        _tentativePhase = _phase;
         _tentativeCycleCount = _cycleCount;
-        _tentativeStartTime = _startTime;
+        _tentativeCycleStartTime = _cycleStartTime;
         _tentativeDone = _done;
+        _tentativePhase = _phase;
+        _tentativeStartTime = _startTime;
     }
 
     /** Update the states and request refiring if necessary.

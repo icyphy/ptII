@@ -127,13 +127,9 @@ public class TriggeredContinuousClock extends ContinuousClock
      */
     protected void _updateTentativeValues()
             throws IllegalActionException {
-        _tentativeCycleStartTime = _cycleStartTime;
-        _tentativeCurrentValue = _currentValue;
-        _tentativePhase = _phase;
-        _tentativeCycleCount = _cycleCount;
-        _tentativeDone = _done;
-        _tentativeStartTime = _startTime;
-
+        
+        super._updateTentativeValues();
+        
         // Check the start input, to see whether everything needs to
         // be reset.
         if (start.getWidth() > 0) {
