@@ -58,7 +58,7 @@ public class ExtendedMath {
     public static final double acosh(final double x) {
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
-                    + "is required to be greater than 1.  Got " + x);
+                    + " is required to be greater than 1.  Got " + x);
         }
         return Math.log( x+Math.sqrt(x*x-1) );
     }
@@ -68,10 +68,9 @@ public class ExtendedMath {
      */
     public static final double asinh(final double x) {
         double result;
-        if (x<0) {
+        if (x < 0) {
             result = -Math.log( -x+Math.sqrt(x*x+1) );
-        }
-        else {
+        } else {
             result = Math.log( x+Math.sqrt(x*x+1) );
         }
         return result;
@@ -95,21 +94,24 @@ public class ExtendedMath {
     }
 
     public static final int roundToInt(final double x) {
-        long tmp = Math.round(x);
-        if (tmp > Integer.MAX_VALUE || tmp < Integer.MIN_VALUE) {
-            throw new IllegalArgumentException
-                ("double value " + x +"does not fit "+
-                 "into an Integer.");
+        long returnValue = Math.round(x);
+        if (returnValue > Integer.MAX_VALUE 
+                || returnValue < Integer.MIN_VALUE) {
+            throw new IllegalArgumentException("double value " + x
+                    + " does not fit into an Integer.");
         }
-        return (int)tmp;
+        return (int)returnValue;
     }
 
     /** If the argument is less than zero, return -1, otherwise
      *  return 1.
      */
     public static final int sgn(final double x) {
-        if (x<0) return -1;
-        else return 1;
+        if (x < 0) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     /** Return the hyperbolic sine of the argument.
