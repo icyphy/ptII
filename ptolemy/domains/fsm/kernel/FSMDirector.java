@@ -412,7 +412,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
 	if (tr == null) {
 	    ModelErrorHandler container = getContainer();
 	    if (container != null) {
-		return container.handleModelError(context, exception);
+		//The following statement leads to dead loop
+		// because the container will call this method again.
+		//return container.handleModelError(context, exception);
+
+		throw exception;
 	    }
         }
 
