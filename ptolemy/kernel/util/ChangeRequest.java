@@ -250,8 +250,6 @@ public abstract class ChangeRequest {
     /** Set the description.
      *  @param description The description.
      *  @since Ptolemy II 3.1
-     *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh)
      */
     public void setDescription(String description) {
         _description = description;
