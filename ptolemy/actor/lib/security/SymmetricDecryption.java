@@ -102,6 +102,9 @@ public class SymmetricDecryption extends CipherActor {
 
         key = new TypedIOPort(this, "key", true, false);
         key.setTypeEquals(KeyToken.KEY);
+
+        // Hide the keySize parameter, it is not used.
+        keySize.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -102,11 +102,15 @@ public class SymmetricEncryption extends CipherActor {
 
         algorithm.setVisibility(Settable.NOT_EDITABLE);
         algorithm.setPersistent(false);
+
         // Hide the algorithm parameter.
         algorithm.setVisibility(Settable.EXPERT);
 
         key = new TypedIOPort(this, "key", true, false);
         key.setTypeEquals(KeyToken.KEY);
+
+        // Hide the keySize parameter, it is not used.
+        keySize.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
