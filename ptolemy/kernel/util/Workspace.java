@@ -32,6 +32,7 @@ package ptolemy.kernel.util;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.Enumeration;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 import collections.HashedSet;
@@ -110,6 +111,7 @@ it's combined with, say, mutable domain (e.g. PN).
 public class Workspace implements Nameable, Serializable {
 
     private static final boolean DEBUG = false;
+    private static final boolean DEBUG1 = true;
 
     /** Create a workspace with an empty string as its name.
      */
@@ -487,6 +489,16 @@ public class Workspace implements Nameable, Serializable {
                 
             }
 	    try {
+                if (DEBUG1) {
+                    System.out.println(Thread.currentThread().getName() + 
+                            ": cannot get write access.");
+                    Enumeration reads = _readers.keys();
+                    while (reads.hasMoreElements()) {
+                        Thread thread = (Thread)reads.nextElement();
+                        ReadDepth r = (ReadDepth)_readers.get(thread);
+                        System.out.println(thread.getName() + ": " + r._count);
+                    }
+                }
 		wait();
 	    } catch (InterruptedException e) {
 		System.err.println(e.toString());
