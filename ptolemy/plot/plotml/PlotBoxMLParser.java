@@ -388,9 +388,9 @@ public class PlotBoxMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    // Indicator of whether we are parsing x ticks or y ticks.
-    private boolean _xtick;
-
     // The external entities being parsed.
     private Stack _externalEntities = new Stack();
+
+    // Indicator of whether we are parsing x ticks or y ticks.
+    private boolean _xtick;
 }
