@@ -401,7 +401,6 @@ public class ProcessDirector extends Director {
      *  @param receiver The receiver whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(ProcessReceiver receiver) {
-        System.out.println("Blocked on receiver " + receiver.getContainer());
         _blockedActorCount++;
         notifyAll();
     }
