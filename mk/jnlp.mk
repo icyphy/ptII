@@ -136,6 +136,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
+	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/sr/demo/demo.jar \
