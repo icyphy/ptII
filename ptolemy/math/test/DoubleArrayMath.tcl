@@ -57,19 +57,6 @@ set e1 [java::new {double[]} 4 [list -62.3 0.332 5.22 -0.03]]
 # ar is a double array used to store the results of tests
 
 ####################################################################
-test DoubleArrayMath-1.1 {abs} {
-    set ar [java::call ptolemy.math.DoubleArrayMath abs $a1]
-    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
-    jdkPrintArray $ar
-} {3.7 6.6 0.0003 3829.0 3.261}
-
-####################################################################
-test DoubleArrayMath-1.2 {abs with two empty arrays} {
-    set ar [java::call ptolemy.math.DoubleArrayMath abs $a0]
-    jdkPrintArray $ar
-} {}
-
-####################################################################
 test DoubleArrayMath-2.1 {add} {
     set ar [java::call ptolemy.math.DoubleArrayMath add $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl

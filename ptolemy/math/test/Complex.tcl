@@ -53,8 +53,8 @@ test Complex-1.1 {constructors} {
 2.0 - 3.0i}}
 
 ####################################################################
-test Complex-2.1 {mag} {
-    list "[$c0 mag]\n[$c1 mag]\n[$c2 mag]"
+test Complex-2.1 {magnitude} {
+    list "[$c0 magnitude]\n[$c1 magnitude]\n[$c2 magnitude]"
 } {{0.0
 0.5
 3.60555127546}}

@@ -107,7 +107,7 @@ test DoubleArrayStat-1.4.2 {min with array with NaN in it} {
 test DoubleArrayStat-1.4.3 {min of empty aray} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat min $a0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.min() : input array has length 0.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.minAndIndex() : input array has length 0.}}
 
 ####################################################################
 test DoubleArrayStat-2.1 {max} {
@@ -119,7 +119,7 @@ test DoubleArrayStat-2.1 {max} {
 test DoubleArrayStat-2.2 {max of empty aray} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat max $a0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.max() : input array has length 0.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.maxAndIndex() : input array has length 0.}}
   
 ####################################################################
 test DoubleArrayStat-3.1 {mean} {
