@@ -114,7 +114,6 @@ JSRCS = \
         Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
-	OrderedMerge.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Pulse.java \
@@ -160,7 +159,6 @@ OTHER_FILES_TO_BE_JARED = \
 	array.xml \
 	booleanflowcontrol.xml \
 	communications.xml \
-	esoteric.xml \
 	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
