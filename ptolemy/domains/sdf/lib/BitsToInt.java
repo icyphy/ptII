@@ -64,7 +64,8 @@ public class BitsToInt extends SDFAtomicActor {
 
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTokenConsumptionRate(32);
+	_inputRate = 32;
+        input.setTokenConsumptionRate(_inputRate);
         input.setTypeEquals(BaseType.BOOLEAN);
 
         output = (SDFIOPort) newPort("output");
@@ -111,17 +112,22 @@ public class BitsToInt extends SDFAtomicActor {
     public final void fire() throws IllegalActionException  {
         int i, j;
         int integer = 0;
-        BooleanToken[] bits = new BooleanToken[32];
+        Token[] bits = new BooleanToken[32];
 
-        input.getArray(0, bits);
+        bits = input.get(0, _inputRate);
 
         for (i = 0; i < 32; i++) {
             integer = integer << 1;
-            if (bits[i].booleanValue())
+            if (((BooleanToken)bits[i]).booleanValue())
                 integer += 1;
         }
 
         IntToken value = new IntToken(integer);
         output.send(0, value);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private int _inputRate;
 }
