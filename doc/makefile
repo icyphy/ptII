@@ -187,6 +187,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
+			ptolemy.kernel.attributes \
 			ptolemy.kernel.util \
 			ptolemy.actor \
 			ptolemy.actor.gui \
@@ -307,6 +308,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
+			../ptolemy/kernel/attributes/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
