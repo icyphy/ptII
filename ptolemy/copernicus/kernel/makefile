@@ -75,7 +75,8 @@ JSRCS = \
 	WatchDogTimer.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	Generator.xml
+	Generator.xml \
+	soot-license.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
