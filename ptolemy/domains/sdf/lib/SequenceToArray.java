@@ -117,9 +117,9 @@ public class SequenceToArray extends SDFTransformer {
                 "Invalid arrayLength: " + rate);
             }
             input.setTokenConsumptionRate(rate);
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
             }
         } else {
             super.attributeChanged(attribute);

@@ -116,10 +116,10 @@ public class SequenceToDoubleMatrix extends SDFTransformer {
             int iColumns = ((IntToken) columns.getToken()).intValue();
 
             input.setTokenConsumptionRate(iRows * iColumns);
-            Director dir = getDirector();
 
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director directory = getDirector();
+            if (directory != null) {
+                directory.invalidateSchedule();
             }
         } else {
             super.attributeChanged(attribute);

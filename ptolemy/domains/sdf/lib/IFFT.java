@@ -121,9 +121,9 @@ public class IFFT extends SDFTransformer {
             _inComplexArray = new Complex[_consumptionRate];
             _outTokenArray = new ComplexToken[_productionRate];
 
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
             }
         } else {
             super.attributeChanged(attribute);

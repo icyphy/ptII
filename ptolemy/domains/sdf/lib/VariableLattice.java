@@ -180,8 +180,9 @@ public class VariableLattice extends Lattice {
      */
     public void fire() throws IllegalActionException {
         if (newCoefficients.hasToken(0)) {
-            ArrayToken coefToken = (ArrayToken)(newCoefficients.get(0));
-            reflectionCoefficients.setToken(coefToken);
+            ArrayToken coefficientsToken =
+                (ArrayToken)(newCoefficients.get(0));
+            reflectionCoefficients.setToken(coefficientsToken);
         }
         for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();

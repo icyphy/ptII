@@ -118,9 +118,9 @@ public class DownSample extends SDFTransformer {
                 "Invalid factor: " + factorValue);
             }
             input.setTokenConsumptionRate(factorValue);
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
             }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken)phase.getToken()).intValue();

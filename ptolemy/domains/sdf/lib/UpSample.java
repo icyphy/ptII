@@ -125,9 +125,9 @@ public class UpSample extends SDFTransformer {
                 "Invalid factor: " + factorValue);
             }
             output.setTokenProductionRate(factorValue);
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
             }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken)phase.getToken()).intValue();

@@ -118,9 +118,9 @@ public class Repeat extends SDFTransformer {
 
             input.setTokenConsumptionRate(count);
             output.setTokenProductionRate(count * repetitions);
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateSchedule();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
             }
         } else {
             super.attributeChanged(attribute);
@@ -128,7 +128,7 @@ public class Repeat extends SDFTransformer {
     }
 
     /** Consume <i>blockSize</i> input tokens from the input port.
-     *  Produce <i>blocksize*numberOfTimes</i>
+     *  Produce <i>blockSize*numberOfTimes</i>
      *  tokens on the output port, consisting of <i>numberOfTimes</i>
      *  repetitions of the input.  For example, if <i>blockSize</i> = 3 and
      *  <i>numberOfTimes</i> = 2, then on the following input:<br>

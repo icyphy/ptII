@@ -177,14 +177,16 @@ public class RaisedCosine extends FIR {
             throws IllegalActionException {
         if (attribute == excessBW || attribute == length
                 || attribute == root || attribute == symbolInterval) {
-            double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
-            int inter = ((IntToken)(symbolInterval.getToken())).intValue();
+            double excessBWValue =
+                ((DoubleToken)(excessBW.getToken())).doubleValue();
+            int symbolIntervalValue =
+                ((IntToken)(symbolInterval.getToken())).intValue();
             int lengthValue = ((IntToken)(length.getToken())).intValue();
             boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
-            if (ebw < 0.0) {
+            if (excessBWValue < 0.0) {
                 throw new IllegalActionException(this,
                         "Excess bandwidth was "
-                        + ebw
+                        + excessBWValue
                         + " which is not greater than or equal to zero.");
             }
             if (lengthValue <= 0) {
@@ -197,10 +199,10 @@ public class RaisedCosine extends FIR {
             DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
                    (DoubleUnaryOperation)
                    new SignalProcessing.SqrtRaisedCosineSampleGenerator(
-                       inter, ebw) :
+                       symbolIntervalValue, excessBWValue) :
                    (DoubleUnaryOperation)
                    new SignalProcessing.RaisedCosineSampleGenerator(
-                       inter, ebw);
+                       symbolIntervalValue, excessBWValue);
 
             double[] tapsArray =
                 SignalProcessing.sampleWave(lengthValue, -center, 1.0,
