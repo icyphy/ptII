@@ -386,8 +386,11 @@ test ComplexMatrixToken-7.2 {Test multiplying ComplexMatrixToken to BooleanMatri
     catch {set res3 [$q multiply $p]} msg3
     catch {set res4 [$q multiplyReverse $p]} msg4
 
-    list $msg1 $msg2 $msg3 $msg4
-} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false; true, false]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false; true, false]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanMatrixToken '[true, false; true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanMatrixToken '[true, false; true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.}}
+    list "$msg1\n$msg2\n$msg3\n$msg4"
+} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false; true, false]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanMatrixToken '[true, false; true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanMatrixToken '[true, false; true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false; true, false]' because the types are incomparable.}}
 
 test ComplexMatrixToken-7.2.1 {Test multiply operator between ComplexMatrixToken and BooleanMatrixToken of different dimensions} {
     set b [java::new {boolean[][]} {2 3} {{true false true} {false true false}}]
@@ -397,8 +400,11 @@ test ComplexMatrixToken-7.2.1 {Test multiply operator between ComplexMatrixToken
     catch {set res3 [$q multiply $p]} msg3
     catch {set res4 [$q multiplyReverse $p]} msg4
 
-    list $msg1 $msg2 $msg3 $msg4
-} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.}}
+    list "$msg1\n$msg2\n$msg3\n$msg4"
+} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanMatrixToken '[true, false, true; false, true, false]' because the types are incomparable.}}
 
 test ComplexMatrixToken-7.3 {Test multiplying ComplexMatrixToken to ComplexMatrixToken.} {
     set c1 [java::new {ptolemy.math.Complex double double} 2.0 0.0]
@@ -470,8 +476,11 @@ test ComplexMatrixToken-7.6 {Test multiplying ComplexMatrixToken to BooleanToken
     catch {set res3 [$r multiply $p]} msg3
     catch {set res4 [$r multiplyReverse $p]} msg4
 
-    list $msg1 $msg2 $msg3 $msg4
-} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.}}
+    list "$msg1\n$msg2\n$msg3\n$msg4"
+} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' and ptolemy.data.BooleanToken 'true' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.
+ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the types are incomparable.}}
 
 test ComplexMatrixToken-7.7 {Test multiplying ComplexMatrixToken to ComplexToken.} {
     set c1 [java::new {ptolemy.math.Complex double double} 2.0 0.0]

@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test LongToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.LongToken]
     $p toString
-} {0}
+} {0L}
 
 ######################################################################
 ####
@@ -61,7 +61,7 @@ test LongToken-1.0 {Create an empty instance} {
 test LongToken-1.1 {Create an instance with a value} {
     set token [java::new {ptolemy.data.LongToken long} 7]
     $token toString
-} {7}
+} {7L}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test LongToken-1.1 {Create an instance with a value} {
 test LongToken-1.2 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.LongToken String} "5"]
     $token toString
-} {5}
+} {5L}
 
 ######################################################################
 ####
@@ -88,7 +88,7 @@ test LongToken-2.1 {Create a non-empty instance and query its value as a double}
     catch {$p doubleValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type double.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12L' to the type double.}}
 
 ######################################################################
 ####
@@ -98,7 +98,7 @@ test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type int.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12L' to the type int.}}
 
 ######################################################################
 ####
@@ -106,7 +106,7 @@ test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
 test LongToken-2.3 {Create a non-empty instance and query its value as a string} {
     set p [java::new {ptolemy.data.LongToken long} 12]
     $p toString
-} {12}
+} {12L}
 
 ######################################################################
 ####
@@ -115,7 +115,7 @@ test LongToken-2.4 {Create a non-empty instance and query its value as a complex
     set p [java::new {ptolemy.data.LongToken long} 12]
     catch {$p complexValue} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12' to the type Complex.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '12L' to the type Complex.}}
 
 ######################################################################
 ####
@@ -125,7 +125,7 @@ test LongToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {0}
+} {0L}
 ######################################################################
 ####
 # 
@@ -134,7 +134,7 @@ test LongToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {1}
+} {1L}
 
 ######################################################################
 ####
@@ -146,7 +146,7 @@ test LongToken-3.0 {Test adding longs.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {14 14}
+} {14L 14L}
 ######################################################################
 ####
 # 
@@ -159,7 +159,7 @@ test LongToken-3.1 {Test adding longs and ints.} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {9 9 9}
+} {9L 9L 9L}
 
 ######################################################################
 ####
@@ -176,7 +176,7 @@ test LongToken-4.0 {Test dividing longs.} {
     set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {1 1 0 2}
+} {1L 1L 0L 2L}
 
 ######################################################################
 ####
@@ -190,7 +190,7 @@ test LongToken-4.1 {Test dividing longs and ints.} {
     set res3 [$tok2 divide $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {3 0 0}
+} {3L 0L 0L}
 
 ######################################################################
 ####
@@ -233,7 +233,7 @@ test LongToken-6.0 {Test modulo between longs.} {
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {1 2}
+} {1L 2L}
 ######################################################################
 ####
 # 
@@ -247,7 +247,7 @@ test LongToken-6.1 {Test modulo operator between longs and ints.} {
     set res3 [$tok2 modulo $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {1 3 3}
+} {1L 3L 3L}
 
 ######################################################################
 ####
@@ -260,7 +260,7 @@ test longToken-7.0 {Test multiply operator between longs.} {
     set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {14 14}
+} {14L 14L}
 ######################################################################
 ####
 # 
@@ -274,7 +274,7 @@ test LongToken-7.1 {Test multiply operator between longs and ints.} {
     set res3 [$tok2 multiply $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {21 21 21}
+} {21L 21L 21L}
 
 
 ######################################################################
@@ -288,7 +288,7 @@ test LongToken-8.0 {Test subtract operator between longs.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {5 -5}
+} {5L -5L}
 ######################################################################
 ####
 # 
@@ -302,7 +302,7 @@ test LongToken-8.1 {Test subtract operator between longs and ints.} {
     set res3 [$tok2 subtract $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {4 -4 -4}
+} {4L -4L -4L}
 
 ######################################################################
 ####
@@ -318,7 +318,7 @@ test LongToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{"value is 2323....."}}
+} {{"value is 23L23L....."}}
 
 ######################################################################
 ####
@@ -357,7 +357,7 @@ test LongToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.LongToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1L}
 
 test LongToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
@@ -390,7 +390,7 @@ test LongToken-13.5 {Test convert from IntToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.LongToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1L}
 
 test LongToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]
@@ -398,7 +398,7 @@ test LongToken-13.6 {Test convert from LongToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.LongToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1L}
 
 test LongToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]

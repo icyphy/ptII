@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test LongMatrixToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.LongMatrixToken]
     $p toString
-} {[0]}
+} {[0L]}
 
 ######################################################################
 ####
@@ -62,7 +62,7 @@ test LongMatrixToken-1.1 {Create a non-empty instance from an int} {
     set a [java::new {long[][]} {2 2} {{5 4} {3 2}}]
     set p [java::new {ptolemy.data.LongMatrixToken long[][]} $a]
     $p toString
-} {[5, 4; 3, 2]}
+} {[5L, 4L; 3L, 2L]}
 
 ######################################################################
 ####
@@ -70,7 +70,7 @@ test LongMatrixToken-1.1 {Create a non-empty instance from an int} {
 test LongMatrixToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.LongMatrixToken String} "\[5L, 4; 3, 2\]"]
     $p toString
-} {[5, 4; 3, 2]}
+} {[5L, 4L; 3L, 2L]}
 
 ######################################################################
 ####
@@ -78,7 +78,7 @@ test LongMatrixToken-1.2 {Create a non-empty instance from an String} {
 test LongMatrixToken-2.0 {Create a non-empty instance and query its value as an int} {
     catch {$p intMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type int matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' to the type int matrix.}}
 
 ######################################################################
 ####
@@ -86,7 +86,7 @@ test LongMatrixToken-2.0 {Create a non-empty instance and query its value as an 
 test LongMatrixToken-2.1 {Create a non-empty instance and query its value as a double} {
     catch {$p doubleMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type double matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' to the type double matrix.}}
 
 ######################################################################
 ####
@@ -102,7 +102,7 @@ test LongMatrixToken-2.2 {Create a non-empty instance and query its value as a l
 test LongMatrixToken-2.3 {Create a non-empty instance and query its value as a string} {
     set res1 [$p toString]
     list $res1
-} {{[5, 4; 3, 2]}}
+} {{[5L, 4L; 3L, 2L]}}
 
 ######################################################################
 ####
@@ -110,7 +110,7 @@ test LongMatrixToken-2.3 {Create a non-empty instance and query its value as a s
 test LongMatrixToken-2.4 {Create a non-empty instance and query its value as a complex} {
     catch {$p complexMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type complex matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' to the type complex matrix.}}
 
 ######################################################################
 ####
@@ -118,7 +118,7 @@ test LongMatrixToken-2.4 {Create a non-empty instance and query its value as a c
 test LongMatrixToken-2.5 {Test additive identity} {
     set token [$p zero] 
     list [$token toString]
-} {{[0, 0; 0, 0]}}
+} {{[0L, 0L; 0L, 0L]}}
 
 ######################################################################
 ####
@@ -126,7 +126,7 @@ test LongMatrixToken-2.5 {Test additive identity} {
 test LongMatrixToken-2.6 {Test multiplicative identity} {
     set token [$p one]
     list [$token toString]
-} {{[1, 0; 0, 1]}}
+} {{[1L, 0L; 0L, 1L]}}
 
 ######################################################################
 ####
@@ -138,7 +138,7 @@ test LongMatrixToken-3.0 {Test adding longs.} {
     set res1 [$p add $q]
 
     list [$res1 toString] 
-} {{[7, 5; 6, 3]}}
+} {{[7L, 5L; 6L, 3L]}}
 
 test LongMatrixToken-3.4 {Test adding LongMatrixToken to LongToken.} {
     set r [java::new {ptolemy.data.LongToken long} 2]
@@ -148,7 +148,7 @@ test LongMatrixToken-3.4 {Test adding LongMatrixToken to LongToken.} {
     set res4 [$r addReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[7, 6; 5, 4]} {[7, 6; 5, 4]} {[7, 6; 5, 4]} {[7, 6; 5, 4]}}
+} {{[7L, 6L; 5L, 4L]} {[7L, 6L; 5L, 4L]} {[7L, 6L; 5L, 4L]} {[7L, 6L; 5L, 4L]}}
 
 ######################################################################
 ####
@@ -161,7 +161,7 @@ test LongMatrixToken-4.0 {Test dividing longs.} {
     catch {[set res1 [$p divide $q]]} e1
 
     list $e1
-} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' and ptolemy.data.LongMatrixToken '[2, 1; 3, 1]'}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' and ptolemy.data.LongMatrixToken '[2L, 1L; 3L, 1L]'}}
 
 ######################################################################
 ####
@@ -182,7 +182,7 @@ test LongMatrixToken-6.0 {Test modulo between longs.} {
     catch {[set res1 [$p modulo $q]]} e1
 
     list $e1
-} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' and ptolemy.data.LongMatrixToken '[2, 1; 3, 1]'}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' and ptolemy.data.LongMatrixToken '[2L, 1L; 3L, 1L]'}}
 
 ######################################################################
 ####
@@ -195,7 +195,7 @@ test LongMatrixToken-7.0 {Test multiply operator between longs.} {
     catch {$q3 multiply $p} res3
 
     list [$res1 toString] [$res2 toString] $res3
-} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.LongMatrixToken '[2, 1, 3; 3, 1, 6]' and ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' because the matrices have incompatible dimensions.}}
+} {{[22L, 9L; 12L, 5L]} {[22L, 9L, 39L; 12L, 5L, 21L]} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.LongMatrixToken '[2L, 1L, 3L; 3L, 1L, 6L]' and ptolemy.data.LongMatrixToken '[5L, 4L; 3L, 2L]' because the matrices have incompatible dimensions.}}
 
 test LongMatrixToken-7.4 {Test multiplying LongMatrixToken to LongToken.} {
     set r [java::new {ptolemy.data.LongToken long} 2]
@@ -205,7 +205,7 @@ test LongMatrixToken-7.4 {Test multiplying LongMatrixToken to LongToken.} {
     set res4 [$r multiplyReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[10, 8; 6, 4]} {[10, 8; 6, 4]} {[10, 8; 6, 4]} {[10, 8; 6, 4]}}
+} {{[10L, 8L; 6L, 4L]} {[10L, 8L; 6L, 4L]} {[10L, 8L; 6L, 4L]} {[10L, 8L; 6L, 4L]}}
 
 
 ######################################################################
@@ -217,7 +217,7 @@ test LongMatrixToken-8.0 {Test subtract operator between longs.} {
     set res1 [$p subtract $q]
 
     list [$res1 toString] 
-} {{[3, 3; 0, 1]}}
+} {{[3L, 3L; 0L, 1L]}}
 
 test LongMatrixToken-8.4 {Test subtracting LongMatrixToken to LongToken.} {
     set r [java::new {ptolemy.data.LongToken long} 2]
@@ -227,7 +227,7 @@ test LongMatrixToken-8.4 {Test subtracting LongMatrixToken to LongToken.} {
     set res4 [$r subtractReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[3, 2; 1, 0]} {[-3, -2; -1, 0]} {[-3, -2; -1, 0]} {[3, 2; 1, 0]}}
+} {{[3L, 2L; 1L, 0L]} {[-3L, -2L; -1L, 0L]} {[-3L, -2L; -1L, 0L]} {[3L, 2L; 1L, 0L]}}
 
 ######################################################################
 ####

@@ -168,7 +168,7 @@ test UnsignedByteToken-13.5 {Test convert from IntToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1' to the type byte because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1L' to the type byte because the type of the token is higher or incomparable with the given type.}}
 
 test UnsignedByteToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]

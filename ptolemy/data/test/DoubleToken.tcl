@@ -509,7 +509,7 @@ test DoubleToken-13.6 {Test convert from LongToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type double because the type of the token is higher or incomparable with the given type.}}
 
 test DoubleToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
