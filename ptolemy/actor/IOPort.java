@@ -1425,7 +1425,10 @@ public class IOPort extends ComponentPort {
             // NOTE: Can't just clear the _localReceiversTable because
             // that would unlink inside relations as well.
             if (_localReceiversTable != null) {
-                Iterator relations = _localReceiversTable.keySet().iterator();
+                // Have to clone the local receivers table to avoid
+                // a ConcurrentModificationException.
+                HashMap clonedMap = (HashMap)(_localReceiversTable.clone());
+                Iterator relations = clonedMap.keySet().iterator();
                 while (relations.hasNext()) {
                     Relation relation = (Relation)relations.next();
                     if (!isInsideLinked(relation)) {
@@ -1449,7 +1452,10 @@ public class IOPort extends ComponentPort {
             // NOTE: Can't just clear the _localReceiversTable because
             // that would unlink inside relations as well.
             if (_localReceiversTable != null) {
-                Iterator relations = _localReceiversTable.keySet().iterator();
+                // Have to clone the local receivers table to avoid
+                // a ConcurrentModificationException.
+                HashMap clonedMap = (HashMap)(_localReceiversTable.clone());
+                Iterator relations = clonedMap.keySet().iterator();
                 while (relations.hasNext()) {
                     Relation relation = (Relation)relations.next();
                     if (isInsideLinked(relation)) {
