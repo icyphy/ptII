@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
         Compose.java \
+        GetInfo.java \
 	ZeroOneSource.java
 
 # Non-graphical Java tests written in Tcl
