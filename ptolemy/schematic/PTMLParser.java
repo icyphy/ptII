@@ -76,11 +76,11 @@ public class PTMLParser extends HandlerBase{
     public void attribute(String name, String value, boolean specified) 
     throws Exception {
         if(name == null) throw new XmlException("Attribute has no name",
-                currentExternalEntity(),
+                _currentExternalEntity(),
                 parser.getLineNumber(),
                 parser.getColumnNumber());
         if(value == null) throw new XmlException("Attribute has no value",
-                currentExternalEntity(),
+                _currentExternalEntity(),
                 parser.getLineNumber(),
                 parser.getColumnNumber());
         attributes.putAt(name, value);
@@ -104,7 +104,7 @@ public class PTMLParser extends HandlerBase{
         if(current!=root) 
             throw new XmlException(
                     "internal error in PTMLParser",
-                    currentExternalEntity(),
+                    _currentExternalEntity(),
                     parser.getLineNumber(),
                     parser.getColumnNumber());
     }
@@ -130,9 +130,9 @@ public class PTMLParser extends HandlerBase{
     public void endExternalEntity(String URI) throws Exception {
         if(DEBUG) 
             System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
-        if(!currentExternalEntity().equals(URI)) 
+        if(!_currentExternalEntity().equals(URI)) 
             throw new XmlException("Entities out of order",
-                    currentExternalEntity(),
+                    _currentExternalEntity(),
                     parser.getLineNumber(),
                     parser.getColumnNumber());
         sysids.removeFirst();
@@ -196,6 +196,16 @@ public class PTMLParser extends HandlerBase{
         return root;
     }
  
+    /**
+     * Implement com.microstar.xml.XMLHandler.resolveEntity
+     * If a public specifier is given, then append XMLLocation to it.
+     */
+    public String resolveEntity(String pubID, String sysID) 
+            throws Exception {
+        if(pubID == null) return sysID;
+        return XMLLOCATION+pubID;
+    }
+
     /** 
      * Implement com.microstar.xml.XMLHandler.startDocument
      * Initialize the parse tree to contain no elements.
@@ -266,7 +276,7 @@ public class PTMLParser extends HandlerBase{
         sysids.insertFirst(URI);
     }
 
-    protected String currentExternalEntity() {
+    protected String _currentExternalEntity() {
         if(DEBUG)
             System.out.println("currentExternalEntity: URI=\"" + 
                     (String)sysids.first() + "\"\n");
@@ -283,6 +293,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement root;
     private XmlParser parser = new XmlParser();
     private static final boolean DEBUG = false;
+    private static final String XMLLOCATION = "file:/users/neuendor
 
 }
 
