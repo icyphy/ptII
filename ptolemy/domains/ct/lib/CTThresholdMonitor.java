@@ -118,15 +118,25 @@ public class CTThresholdMonitor extends CTActor
         return true;
     }
 
+    /** Return half the current step size if the step is not successful.
+     *  Otherwise, return the current step size.
+     *  @return Half the current step size if the step is not successful.
+     */
     public double refinedStepSize() {
-        return 0.0;
+        CTDirector dir = (CTDirector)getDirector();
+        if(!_success) {
+            return 0.5*dir.getCurrentStepSize();
+        }
+        return dir.getCurrentStepSize();
     }
 
+    /** Return java.lang.Double.MAX_VALUE, since this actor does not predict 
+     *  step sizes.
+     *  @return java.lang.Double.MAX_VALUE.
+     */
     public double predictedStepSize() {
-        return 0.0;
+        return java.lang.Double.MAX_VALUE;
     }
- 
-    
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
