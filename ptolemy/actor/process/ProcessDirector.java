@@ -425,7 +425,7 @@ public class ProcessDirector extends Director {
      *  <P>
      *  This method is not synchronized on the workspace, so the caller
      *  should be.
-     * @exception IllegalActionException if an error occurs while
+     * @exception IllegalActionException If an error occurs while
      *  accessing the receivers of all actors under the control of
      *  this director.
      */

@@ -170,7 +170,7 @@ public class ProcessThread extends PtolemyThread {
     /** End the execution of the actor under the control of this
      *  thread. Subclasses are encouraged to override this method
      *  as necessary for domain specific functionality.
-     * @exception IllegalActionException if an error occurs while
+     * @exception IllegalActionException If an error occurs while
      *  ending execution of the actor under the control of this
      *  thread.
      */
