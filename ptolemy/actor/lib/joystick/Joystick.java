@@ -72,7 +72,10 @@ then you need to be sure that the
 <p>By default, $PTII/configure looks for the Joystick
 interface in <code>$PTII/vendors/misc/joystick/lib</code>, so you could either
 add that directory to your path, or copy <code>jjstick.dll</code>
-to <code>$PTII/bin</code>
+to <code>$PTII/bin</code>:
+<pre>
+cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
+</pre>
 
 <p> When the fire() method is called, a DoubleMatrixToken is
 produced on the output.  The X value is in [0][0] and the
@@ -100,6 +103,11 @@ com.centralnexus.input.JoystickListener {
             throws NameDuplicationException, IllegalActionException, 
             IOException {
         super(container, name);
+	_debugging = true;
+	if (_debugging) {
+	    _debug("Joystick()");
+	}
+
         // FIXME: Why Double Matrix?  Why not an array or two separate ports?
         // FIXME: What is the range of the output?
 	output.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -135,6 +143,10 @@ com.centralnexus.input.JoystickListener {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+	if (_debugging){
+	    _debug("Joystick.attributeChanged(): " + attribute );
+	}
+
         // FIXME: not sure about this, but it seems like a good idea.
         if (attribute == pollingInterval && _joy != null) {
             int pollingIntervalValue
@@ -166,6 +178,10 @@ com.centralnexus.input.JoystickListener {
 	data[0][0] = currentX;
 	data[1][0] = -currentY;
 	DoubleMatrixToken result = new DoubleMatrixToken(data);
+	if (_debugging){
+	    _debug("Joystick.fire(): " + result);
+	}
+
 	output.send(0, result);
     }
 
@@ -176,6 +192,9 @@ com.centralnexus.input.JoystickListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+	if (_debugging){
+	    _debug("Joystick.initialize() start");
+	}
         int pollingIntervalValue
                 = ((IntToken)pollingInterval.getToken()).intValue();
         double deadZoneValue
@@ -194,6 +213,10 @@ com.centralnexus.input.JoystickListener {
         _joy.setDeadZone(deadZoneValue);
 	_joy.setPollInterval(pollingIntervalValue);
 	_joy.addJoystickListener(this);
+	if (_debugging){
+	    _debug("Joystick.initialize() end");
+	}
+
     }
 
 
@@ -213,7 +236,7 @@ com.centralnexus.input.JoystickListener {
 	//	current_Y = _joy.getY();
     }
 
-    /** Called when the joystick button is changed.
+    /** Called when the joystick button is changed. */
     public void joystickButtonChanged(com.centralnexus.input.Joystick j) {
         // FIXME: Why not use these
 
