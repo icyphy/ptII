@@ -621,20 +621,17 @@ public class DEDirector extends Director {
 	return new DEReceiver();
     }
 
-    /** Return false if there is no more actor to fire. Otherwise, if
+    /** Return false if there are no more actors to fire. Otherwise, if
      *  the director is an embedded director and the queue is not empty,
-     *  then requests the executive director to refire the container of
+     *  then request that the executive director refire the container of
      *  this director at the time of the next event in the event queue
      *  of this director.
-     *  Note that when the
-     *  <i>stopWhenQueueIsEmpty</i> parameter is false, and the queue is
-     *  empty, the stall happens in the fire() method.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        //boolean  = ((BooleanToken)stopWhenQueueIsEmpty.getToken()).
-        //    booleanValue();
-        if (_noMoreActorsToFire && _exceedStopTime) {
+        boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
+               .booleanValue();
+        if (_noMoreActorsToFire && (stop || _exceedStopTime)) {
             return false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
