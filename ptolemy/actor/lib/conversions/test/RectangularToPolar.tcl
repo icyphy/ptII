@@ -62,10 +62,10 @@ test RectangularToPolar-1.1 {test 1} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver yInput]
     $e0 connect \
-            [java::field $conver magOutput] \
+            [java::field $conver magnitudeOutput] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
     $e0 connect \
-            [java::field $conver angOutput] \
+            [java::field $conver angleOutput] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
@@ -102,9 +102,11 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver1 yInput]
     $e0 connect \
-            [java::field $conver1 magOutput] [java::field $conver2 magInput]
+            [java::field $conver1 magnitudeOutput] \
+	    [java::field $conver2 magnitudeInput]
     $e0 connect \
-            [java::field $conver1 angOutput] [java::field $conver2 angInput]
+            [java::field $conver1 angleOutput] \
+	    [java::field $conver2 angleInput]
     $e0 connect \
             [java::field $conver2 xOutput] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
