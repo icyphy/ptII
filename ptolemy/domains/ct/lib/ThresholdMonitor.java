@@ -172,18 +172,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  @return True if this step is accurate.
      */
     public boolean isThisStepAccurate() {
-        if (!_first) {
-            if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
-                    ((_lastInput <= _lowerBound) &&
-                            (_thisInput >= _upperBound))) {
-                _debug(getFullName() + "one step crosses the threshold" +
-                        "cutting the step size in half.");
-                _accurate = false;
-                return false;
-            }
-        }
-        _accurate = true;
-        return true;
+        return isStateAccurate() && isOutputAccurate();
     }
 
     /** Make this input to be the history input and return true.
@@ -251,4 +240,29 @@ public class ThresholdMonitor extends TypedAtomicActor
 
     // this input token value.
     private double _thisInput;
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        if (!_first) {
+            if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
+                    ((_lastInput <= _lowerBound) &&
+                            (_thisInput >= _upperBound))) {
+                _debug(getFullName() + "one step crosses the threshold" +
+                        "cutting the step size in half.");
+                _accurate = false;
+                return false;
+            }
+        }
+        _accurate = true;
+        return true;
+    }
 }

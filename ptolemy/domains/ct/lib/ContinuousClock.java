@@ -29,14 +29,15 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Clock;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
@@ -74,7 +75,8 @@ import ptolemy.math.Utilities;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public class ContinuousClock extends Clock {
+public class ContinuousClock extends Clock //implements CTEventGenerator 
+    {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -111,19 +113,76 @@ public class ContinuousClock extends Clock {
      */
     public void fire() throws IllegalActionException {
 
+        if (_debugging) 
+            _debug(" --- Firing begins.");
+
+        output.send(0, _currentValue);
+        if (_debugging)_debug("Output: " + _currentValue + " at " + 
+            getDirector().getCurrentTime() + ".");
+
+        if (_debugging) 
+            _debug(" --- Firing finished.");
+    }
+
+    /** Schedule the first firing and initialize local variables.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   or if the <i>values</i> parameter is not a row vector, or if the
+     *   fireAt() method of the director throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _tMinus = true;
+        _tPlus = false;
+        _startTime = getDirector().timeConstants.POSITIVE_INFINITY;
+    }
+
+    /** Make sure the continuous clock runs inside a CT domain.
+     *  @exception IllegalActionException If the director is not
+     *  a CTDirector or the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (!(getDirector() instanceof CTDirector)) {
+            throw new IllegalActionException("ContinuousClock can only" +
+                    " be used inside CT domain.");
+        }
+        super.preinitialize();
+    }
+
+    public boolean postfire() throws IllegalActionException {
+        
+        // Since start time and stop time are registered as breakpoints.
+        // If the current execution is not a discrete phase execution,
+        // simply returns true.
+        if (!((CTDirector)getDirector()).isDiscretePhase()) {
+            // Unlike what is defined in the super.postfire, continuous clock 
+            // requires that the current time passes the stop time.
+            // That is, not only discrete phase execution, but also the continuous
+            // phase execution is performed.
+            if (getDirector().getCurrentTime().compareTo(getStopTime()) > 0) {
+                if (_debugging) 
+                    _debug(" --- Postfire returns false.");
+                return false;
+            } else {
+                if (_debugging) 
+                    _debug(" --- Postfire returns true.");
+                return true;
+            }
+        }
+        
         // Get the current time and period.
-        double currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
-        if (_debugging)_debug("--- Firing at time " + currentTime + ".");
+        if (_debugging)_debug("--- Postfiring at time " + currentTime + ".");
 
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
 
-        // Use Double.NEGATIVE_INFINITY to indicate that no refire
+        // Use timeConstants.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
+        _tentativeNextFiringTime 
+            = getDirector().timeConstants.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
@@ -135,8 +194,10 @@ public class ContinuousClock extends Clock {
         // for some time, as might happen for example in a hybrid system).
         // But do not do this if we are before the first iteration.
         if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime + periodValue <= currentTime) {
-                _tentativeCycleStartTime += periodValue;
+            while (_tentativeCycleStartTime.add(periodValue).compareTo(
+                currentTime) <= 0) {
+                _tentativeCycleStartTime 
+                    = _tentativeCycleStartTime.add(periodValue);
             }
 
             // Adjust the phase if time has moved beyond the current phase.
@@ -148,17 +209,12 @@ public class ContinuousClock extends Clock {
             // expected break point, it should be treated as a break point
             // as what the director does in processBreakPoints method.
 
-           double currentPhaseTime = 
-               _tentativeCycleStartTime + _offsets[_tentativePhase];
-           currentPhaseTime = Utilities.round(currentPhaseTime, 
-               getDirector().getTimeResolution());            
+           Time currentPhaseTime = 
+               _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
            // Adjust the phase if time has moved beyond the current phase.
-           if (currentTime >= currentPhaseTime) {
+           if (currentTime.compareTo(currentPhaseTime) == 0) {
                 if (_tPlus) {
                     if (_debugging)_debug("phase is: tPlus");
-
-                    // Phase boundary.  Change the current value.
-                    _tentativeCurrentValue = _getValue(_tentativePhase);
 
                     // Increment to the next phase.
                     _tentativePhase++;
@@ -166,7 +222,8 @@ public class ContinuousClock extends Clock {
                     if (_tentativePhase >= _offsets.length) {
                         _tentativePhase = 0;
                         // Schedule the first firing in the next period.
-                        _tentativeCycleStartTime += periodValue;
+                        _tentativeCycleStartTime = 
+                            _tentativeCycleStartTime.add(periodValue);
                         // Indicate that the cycle count should increase.
                         _tentativeCycleCountIncrement++;
                     }
@@ -188,6 +245,9 @@ public class ContinuousClock extends Clock {
                 } else if (_tMinus) {
                     if (_debugging) _debug("phase is: tMinus");
 
+                    // Phase boundary.  Change the current value.
+                    _tentativeCurrentValue = _getValue(_tentativePhase);
+
                     _tMinus = !_tMinus;
                     _tPlus = !_tPlus;
 
@@ -197,9 +257,7 @@ public class ContinuousClock extends Clock {
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
-                    = _tentativeCycleStartTime + _offsets[_tentativePhase];
-                _tentativeNextFiringTime = Utilities.round(
-                    _tentativeNextFiringTime, getDirector().getTimeResolution());
+                    = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
@@ -215,97 +273,28 @@ public class ContinuousClock extends Clock {
         // its components. So, the following code does not get called.
 
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        double stopTime = Utilities.round(
-                            _tentativeStartTime + cycleLimit * periodValue, 
-                            getDirector().getTimeResolution());
-        if (cycleLimit > 0 && currentTime >= stopTime) {
+        
+        Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+        if (cycleLimit > 0 && currentTime.compareTo(stopTime) >= 0) {
             _tentativeCurrentValue = defaultValue.getToken();
         }
 
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
+        _updateStates();
 
-        output.send(0, _tentativeCurrentValue);
-        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+        // Unlike what is defined in the super.postfire, continuous clock 
+        // requires that the current time passes the stop time.
+        // That is, not only discrete phase execution, but also the continuous
+        // phase execution is performed.
+        if (currentTime.compareTo(getStopTime()) > 0) {
+            if (_debugging) 
+                _debug(" --- Postfire returns false.");
+            return false;
+        }
+
+        if (_debugging) 
+            _debug(" --- Postfire returns true.");
+        return true;
     }
-
-    /** Schedule the first firing and initialize local variables.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _tMinus = true;
-        _tPlus = false;
-    }
-
-    /** Make sure the continuous clock runs inside a CT domain.
-     *  @exception IllegalActionException If the director is not
-     *  a CTDirector or the parent class throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        if (!(getDirector() instanceof CTDirector)) {
-            throw new IllegalActionException("ContinuousClock can only" +
-                    " be used inside CT domain.");
-        }
-        super.preinitialize();
-    }
-
-    /** Update the state of the actor and schedule the next firing,
-     *  if appropriate.
-     *  @exception IllegalActionException If the director throws it when
-     *   scheduling the next firing.
-     */
-    public boolean postfire() throws IllegalActionException {
-
-        if (_debugging)_debug("Postfiring.");
-
-        _cycleStartTime = _tentativeCycleStartTime;
-        _currentValue = _tentativeCurrentValue;
-        _phase = _tentativePhase;
-        _cycleCount = _tentativeCycleCount;
-        _startTime = _tentativeStartTime;
-        _done = _tentativeDone;
-
-        _cycleCount += _tentativeCycleCountIncrement;
-        if (_debugging) {
-            _debug("Phase for next iteration: " + _phase);
-        }
-
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (!_done && _tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
-            if (_debugging)_debug("Requesting firing at: "
-                    + _tentativeNextFiringTime + ".");
-        }
-        // This should be computed after the above so that a firing
-        // gets requested for the tail end of the output pulses.
-        _done = _done || (cycleLimit > 0
-                && _cycleCount > cycleLimit
-                && _phase == 0);
-
-        if (_done) {
-            _cycleCount = 0;
-            if (_debugging) {
-                _debug("Done with requested number of cycles.");
-            }
-        }
-        if (_debugging) {
-            _debug("Cycle count for next iteration: " + _cycleCount + ".");
-        }
-        return super.postfire();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     // Boolean variables indicating the phases beside the break point.
     private boolean _tMinus;

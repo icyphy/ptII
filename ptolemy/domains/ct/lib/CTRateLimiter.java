@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -126,13 +127,24 @@ public class CTRateLimiter extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _newToken = input.get(0);
-            double currentTime = getDirector().getCurrentTime();
-            if (currentTime == _lastTime) {
+            Time currentTime = getDirector().getCurrentTime();
+            if (currentTime.compareTo(_lastTime) == 0) {
+                // If the current time is the same as the last time,
+                // output the last token, because any change of the
+                // output from the last time indicates an infinite
+                // rate change. 
+                // The only exception is that in the first firing,
+                // where the last token is null, the new token is always
+                // accepted. 
+                if (_lastToken != null) {
+                    _newToken = _lastToken;
+                }
                 output.send(0, _newToken);
             } else {
                 double valueDifference = ((DoubleToken)_newToken.subtract(
                                                   _lastToken)).doubleValue();
-                double timeDifference = currentTime - _lastTime;
+                double timeDifference = 
+                    currentTime.subtract(_lastTime).getTimeValue();
                 double rate = valueDifference / timeDifference;
                 double risingRate = ((DoubleToken)risingSlewRate.getToken())
                     .doubleValue();
@@ -150,6 +162,15 @@ public class CTRateLimiter extends Transformer {
         }
     }
 
+    /** Initialize the local time variables and the cache of last token.
+     *  @exception IllegalActionException If the super cclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _lastTime = new Time(this);
+        _lastToken = null;
+    }
+
     /** Update the time and value for this iteration. Return the same
      *  value as super.postfire().
      *  @exception IllegalActionException If the director throws it when
@@ -164,11 +185,15 @@ public class CTRateLimiter extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Last time instant.
-    private double _lastTime;
+    private Time _lastTime;
 
     // Last output value.
     private Token _lastToken;
 
     // New value.
     private Token _newToken;
+    
+    // Stored token.
+    private Token _storedToken;
+
 }

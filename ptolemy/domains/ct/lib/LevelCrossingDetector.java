@@ -208,7 +208,13 @@ public class LevelCrossingDetector extends Transformer
         }
 
         if (director.isDiscretePhase()) {
-            if (hasCurrentEvent()) {
+
+            if (_debugging) {
+                _debug("This is a discrete phase execution.");
+            }
+            // Check if the discontinuity generates events.
+            if (((_lastTrigger - _level) * (_thisTrigger - _level)
+                    < 0.0) || hasCurrentEvent()) {
                 // Emit event.
                 if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
@@ -269,77 +275,7 @@ public class LevelCrossingDetector extends Transformer
      *          does not cross the level threshold.
      */
     public boolean isThisStepAccurate() {
-        if (_first) {
-            if (_debugging) {
-                _debug("It is the first iteration, the step size is "
-                         + "assumed to be accurate.");
-            }
-            _first = false;
-            _eventNow = false;
-            return true;
-        }
-
-        if (_debugging) {
-            _debug("The last trigger is " + _lastTrigger);
-            _debug("The current trigger is " + _thisTrigger);
-        }
-
-        // If at breakpoints, no step size refinement is necessary.
-        // The step size is 0.0, and it is always accurate.
-        if (((CTDirector)getDirector()).isBreakpointIteration()) {
-            if (_debugging) {
-                _debug("This is a breakpoint iteration.");
-            }
-            // Check if the discontinuity generates events.
-            if ((_lastTrigger - _level) * (_thisTrigger - _level)
-                    < 0.0) {
-                if (_enabled) {
-                    _eventNow = true;
-                    if (_debugging)
-                        _debug("Event is detected at "
-                                + getDirector().getCurrentTime());
-                    _enabled = false;
-                }
-                _eventMissed = false;
-            }
-            return true;
-        }
-
-        if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
-            if (_enabled) {
-                _eventNow = true;
-                if (_debugging)
-                    _debug("Event is detected at "
-                            + getDirector().getCurrentTime());
-                _enabled = false;
-            }
-            _eventMissed = false;
-            return true;
-        } else {
-            // FIXME: if last step is a level, this step may still not be accurate
-            // because of other actors's accuracy requirements.
-            if (!_enabled) {
-                // FIXME: The statement below has some questions. Hyzheng 07/25/2003
-                // if last step is a level, always accurate.
-                _enabled = true;
-            } else {
-                if ((_lastTrigger - _level) * (_thisTrigger - _level)
-                        < 0.0) {
-
-                    CTDirector dir = (CTDirector)getDirector();
-                    _eventMissed = true;
-                    // The refined step size is a linear interpolation.
-                    _refineStep = (Math.abs(_lastTrigger - _level)
-                            *dir.getCurrentStepSize())
-                        /Math.abs(_thisTrigger-_lastTrigger);
-                    if (_debugging) _debug(getFullName() +
-                            " Event Missed: refined step at" +  _refineStep);
-                    return false;
-                }
-            }
-            _eventMissed = false;
-            return true;
-        }
+        return isStateAccurate() && isOutputAccurate();
     }
 
     /** Prepare for the next iteration, by making the current trigger
@@ -437,4 +373,88 @@ public class LevelCrossingDetector extends Transformer
 
     // Indicating whether the 'level' value has changed.
     private boolean _levelChanged;
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+         return true;
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        if (_first) {
+            if (_debugging) {
+                _debug("It is the first iteration, the step size is "
+                         + "assumed to be accurate.");
+            }
+            _first = false;
+            _eventNow = false;
+            return true;
+        }
+
+        if (_debugging) {
+            _debug("The last trigger is " + _lastTrigger);
+            _debug("The current trigger is " + _thisTrigger);
+        }
+
+//        // If at breakpoints, no step size refinement is necessary.
+//        // The step size is 0.0, and it is always accurate.
+//        if (((CTDirector)getDirector()).isDiscretePhase()) {
+//            if (_debugging) {
+//                _debug("This is a discrete phase execution.");
+//            }
+//            // Check if the discontinuity generates events.
+//            if ((_lastTrigger - _level) * (_thisTrigger - _level)
+//                    < 0.0) {
+//                if (_enabled) {
+//                    _eventNow = true;
+//                    if (_debugging)
+//                        _debug("Event is detected at "
+//                                + getDirector().getCurrentTime());
+//                    _enabled = false;
+//                }
+//                _eventMissed = false;
+//            }
+//            return true;
+//        }
+
+        if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
+            if (_enabled) {
+                _eventNow = true;
+                if (_debugging)
+                    _debug("Event is detected at "
+                            + getDirector().getCurrentTime());
+                _enabled = false;
+            }
+            _eventMissed = false;
+            return true;
+        } else {
+            // FIXME: if last step is a level, this step may still not be accurate
+            // because of other actors's accuracy requirements.
+            if (!_enabled) {
+                // FIXME: The statement below has some questions. Hyzheng 07/25/2003
+                // if last step is a level, always accurate.
+                _enabled = true;
+            } else {
+                if ((_lastTrigger - _level) * (_thisTrigger - _level)
+                        < 0.0) {
+
+                    CTDirector dir = (CTDirector)getDirector();
+                    _eventMissed = true;
+                    // The refined step size is a linear interpolation.
+                    _refineStep = (Math.abs(_lastTrigger - _level)
+                            *dir.getCurrentStepSize())
+                        /Math.abs(_thisTrigger-_lastTrigger);
+                    if (_debugging) _debug(getFullName() +
+                            " Event Missed: refined step at" +  _refineStep);
+                    return false;
+                }
+            }
+            _eventMissed = false;
+            return true;
+        }
+    }
 }

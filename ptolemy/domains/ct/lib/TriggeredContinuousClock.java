@@ -29,8 +29,10 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -57,7 +59,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public class TriggeredContinuousClock extends ContinuousClock {
+public class TriggeredContinuousClock extends ContinuousClock 
+    implements CTWaveformGenerator {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -129,6 +132,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
         _tentativePhase = _phase;
         _tentativeCycleCount = _cycleCount;
         _tentativeDone = _done;
+        _tentativeStartTime = _startTime;
 
         // Check the start input, to see whether everything needs to
         // be reset.
@@ -138,7 +142,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
                 start.get(0);
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
-                double currentTime = getDirector().getCurrentTime();
+                Time currentTime = getDirector().getCurrentTime();
                 _tentativeCycleStartTime = currentTime;
                 _tentativeStartTime = currentTime;
                 _tentativePhase = 0;

@@ -31,6 +31,7 @@ package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -133,8 +134,9 @@ public class FirstOrderHold extends Transformer
                         ", " + _derivative + ").");
             }
         }
-        output.send(0, new DoubleToken(_value + (director.getCurrentTime()
-                                               - _time)*_derivative));
+        double timeInterval = 
+            director.getCurrentTime().subtract(_time).getTimeValue(); 
+        output.send(0, new DoubleToken(_value + timeInterval * _derivative));
     }
 
     /** Initialize token. If there is no input, the initial token is
@@ -158,5 +160,5 @@ public class FirstOrderHold extends Transformer
 
     private double _derivative;
 
-    private double _time;
+    private Time _time;
 }

@@ -29,8 +29,10 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;
@@ -38,7 +40,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicSampler
@@ -134,16 +135,19 @@ public class CTPeriodicSampler extends Transformer
      */
     public void fire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && _hasCurrentEvent) {
+        if (director.isDiscretePhase() && hasCurrentEvent()) {
             for (int i = 0;
                  i < Math.min(input.getWidth(), output.getWidth());
                  i++) {
                 if (input.hasToken(i)) {
-                    output.send(i, input.get(i));
+                    Token token = input.get(i);
+                    output.send(i, token);
+                    if (_debugging) 
+                        _debug(getFullName(), " sends event: " + token
+                            + " to channel " + i  
+                            + ", at: " + getDirector().getCurrentTime());
                 }
             }
-            if (_debugging) _debug(getFullName(), " produces event at: "
-                    + getDirector().getCurrentTime());
         }
     }
 
@@ -152,8 +156,7 @@ public class CTPeriodicSampler extends Transformer
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
-        if (Math.abs(director.getCurrentTime() - _nextSamplingTime)
-                < director.getTimeResolution() ) {
+        if (director.getCurrentTime().compareTo(_nextSamplingTime) == 0) {
             _hasCurrentEvent = true;
         } else {
             _hasCurrentEvent = false;
@@ -184,11 +187,13 @@ public class CTPeriodicSampler extends Transformer
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if (director.isDiscretePhase() && _hasCurrentEvent) {
+            // discrete events are generated; schedule another
+            // discrete phase execution at the current time
+            // such that other discrete actors react to the events.
+            director.fireAt(this, director.getCurrentTime());
             // register for the next event.
-            _nextSamplingTime += _samplePeriod;
-            _nextSamplingTime = Utilities.round(_nextSamplingTime,
-                director.getTimeResolution());
-            if (_debugging) _debug(getFullName(), "request fire at"
+            _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
+            if (_debugging) _debug(getFullName(), "request fire at "
                     + _nextSamplingTime);
             // The null argument prevents the triple firing that would
             // otherwise occur.
@@ -208,5 +213,5 @@ public class CTPeriodicSampler extends Transformer
     private boolean _hasCurrentEvent = false;
 
     // the next sampling time.
-    private double _nextSamplingTime;
+    private Time _nextSamplingTime;
 }

@@ -30,6 +30,7 @@ package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -44,7 +45,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EventSource
@@ -208,8 +208,7 @@ public class EventSource extends TypedAtomicActor
      */
     public boolean hasCurrentEvent() {
         CTDirector director = (CTDirector)getDirector();
-        return (Math.abs(director.getCurrentTime() -_nextOutputTime)
-                < director.getTimeResolution());
+        return (director.getCurrentTime().compareTo(_nextOutputTime) == 0);
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -224,9 +223,7 @@ public class EventSource extends TypedAtomicActor
         _cycleStartTime = getDirector().getCurrentTime();
         _phase = 0;
 
-        _nextOutputTime = _offsets[0] + _cycleStartTime;
-        _nextOutputTime = Utilities.round(_nextOutputTime,
-            getDirector().getTimeResolution());
+        _nextOutputTime = _cycleStartTime.add(_offsets[0]);
         // Schedule the first firing.
         // The null argument prevents the triple firing that the
         // director would otherwise do.
@@ -249,9 +246,7 @@ public class EventSource extends TypedAtomicActor
             _phase++;
             if (_phase >= _offsets.length) {
                 _phase = 0;
-                _cycleStartTime += periodValue;
-                _cycleStartTime = Utilities.round(_cycleStartTime, 
-                    director.getTimeResolution());
+                _cycleStartTime = _cycleStartTime.add(periodValue);
             }
             if (_offsets[_phase] >= periodValue) {
                 throw new IllegalActionException(this,
@@ -260,9 +255,7 @@ public class EventSource extends TypedAtomicActor
                         + "period, which is " + periodValue);
             }
             if (hasCurrentEvent()) {
-                _nextOutputTime = _cycleStartTime + _offsets[_phase];
-                _nextOutputTime = Utilities.round(_nextOutputTime, 
-                    director.getTimeResolution());
+                _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
                 // The null argument prevents the triple firing that the
                 // director would otherwise do.
                 director.fireAt(null, _nextOutputTime);
@@ -278,7 +271,7 @@ public class EventSource extends TypedAtomicActor
     // Either the clone method or the initialize() method sets them.
 
     // The most recent cycle start time.
-    private transient double _cycleStartTime;
+    private transient Time _cycleStartTime;
 
     // Cache of offsets array value.
     private transient double[] _offsets;
@@ -287,5 +280,5 @@ public class EventSource extends TypedAtomicActor
     private transient int _phase;
 
     // The next time point when the output should be emitted.
-    private transient double _nextOutputTime;
+    private transient Time _nextOutputTime;
 }
