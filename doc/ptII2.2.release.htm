@@ -732,6 +732,23 @@ a Java application.  For details, see
 <a href="http://developer.java.sun.com/developer/bugParade/bugs/4713003.html" target="_top"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4713003.html</CODE></a>
 <br>The workaround is to start the java interpreter with 
 <CODE>-Dsun.java2d.noddraw=true</CODE>
+ <br>Apparently this is fixed in Java 1.4.1_02 and possibly in
+JRE 1.4.0_03
+ <br>The Java bug page says:
+<BLOCKQUOTE>
+Note: ifyou can't disable the use of ddraw by java prior to
+installing it, you can still disable the use of ddraw by the
+system,  install java,  set the -Dsun.java2d.d3d=false in
+the plugin control panel, and then enable ddraw in the
+system again.
+
+ <p>The ddraw can be disabled by either running "Program
+Files/DirectX/Setup/dxsetup" application, or in the Display
+Properties panel: click 'Advanced' button, then go to
+'Troubleshoot' tab, and set the slider on the second mark
+from the left.
+
+</BLOCKQUOTE>
 
 <!--/hyVisualDocs-->
 <li> Web Start does not work very well if the pathname to the 
