@@ -47,24 +47,65 @@ import java.util.Random;
 
 Model of a server in a M/M/1 queue. It serves customers with times
 that are exponentially distributed. It is parameterized by the
-Parameter "servicelRate". The default service rate is 1.
+Parameter "serviceRate". The default service rate is 1.
 <p>
 @author Neil Smyth
 @version $Id$
 
  */
 public class Server extends CSPActor {
+    
+    /** Construct a Server in the default workspace with an empty string
+     *  as its name. The actor is parameterized by the rate at which 
+     *  customers are served, which is a double. The default service 
+     *  rate is 1.0. 
+     *  The actor is created with a single input port, of width one, 
+     *  called "input".
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     */
     public Server() throws IllegalActionException, NameDuplicationException {
         super();
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(1)) );
         _input = new IOPort(this, "input", true, false);
     }
 
+    /** Construct a Server in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown. The actor is parameterized 
+     *  by the rate at which customers are served, which is a double. 
+     *  The default service rate is 1.0. The actor is created with a 
+     *  single input port, of width one, called "input".
+     *  <p>
+     *  @param container The CompositeActor that contains this actor.
+     *  @param name The actor's name.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name argument coincides with
+     *   an entity already in the container.
+     */
     public Server(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
 
+    /** Construct a Server in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown. The actor is parameterized 
+     *  by the rate at which customers are served, which is a double. 
+     *  The service rate is assigned the value passed in. The actor is 
+     *  created with a single input port, of width one, called "input".
+     *  <p>
+     *  @param container The CompositeActor that contains this actor.
+     *  @param name The actor's name.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @param rate The rate at which customers are served.
+     *  @exception NameDuplicationException If the name argument coincides with
+     *   an entity already in the container.
+     */
     public Server(CompositeActor cont, String name, double rate)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
@@ -75,7 +116,17 @@ public class Server extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    public void fire() {
+    /** Executes the code in this actor. This actor waits for a 
+     *  customer to arrive, then delays for a random time, 
+     *  representing the service times, described by an 
+     *  exponential distribution. A customer arrival is marked by 
+     *  the arrival of a message at the input channel of the actor. 
+     *  It then repeats.
+     *  executing until a TerminateProcessException is thrown.
+     *  @exception IllegalActionException If an error occurs during 
+     *   executing the process.
+     */
+    public void fire() throws IllegalActionException {
         Random rand = new Random();
         int count = 0;
         double interval = 0;
@@ -84,7 +135,7 @@ public class Server extends CSPActor {
                 Token t = _input.get(0);
                 //double rate = ((DoubleToken)_rate.getToken()).doubleValue();
                 double rate = 1.0;
-		// exponential distribution parameterised by rate.
+		// exponential distribution parameterized by rate.
                 interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
                 delay(interval/1000);
@@ -94,10 +145,8 @@ public class Server extends CSPActor {
             }
             System.out.println("Server(" + getName() + "):finished normally.");
             return;
-        } catch (IllegalActionException ex) {
-            throw new TerminateProcessException(getName() + ": invalid get.");
-	} catch (NoTokenException ex) {
-            throw new TerminateProcessException(getName() + ": invalid get.");
+        } catch (NoTokenException ex) {
+            throw new IllegalActionException(getName() + ": invalid get.");
         } 
     }
 
@@ -110,7 +159,10 @@ public class Server extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    // The input port for this actor.
     private IOPort _input;
     
+    // The rate at which customers are served. It parameterizes an 
+    // exponential distribution.
     private Parameter _rate;
 }
