@@ -260,7 +260,6 @@ public class JAIJPEGWriter extends Sink {
             _jpegEncodeParameters.setWriteImageOnly(writeImageDataOnlyValue);
         }
         _jpegEncodeParameters.setQuality((float)((DoubleToken)quality.getToken()).doubleValue());
-        //FIXME:  I'm guessing that you either have to set both or set none. dunnoyet.
         if (!((BooleanToken)useDefaultLuminanceTable.getToken()).booleanValue()) {
             // make a private method to do all this, one that returns an int array
             _jpegEncodeParameters.setLumaQTable(_tableFiller((ArrayToken)userSpecifiedLuminanceTable.getToken()));
