@@ -186,23 +186,28 @@ public class LineWriter extends Sink {
         if (input.hasToken(0)) {
             Token token = input.get(0);
             if (_writer == null) {
-                // Open the file.
-                File file = fileName.asFile();
                 boolean appendValue
                     = ((BooleanToken)append.getToken()).booleanValue();
-                boolean confirmOverwriteValue
-                    = ((BooleanToken)confirmOverwrite.getToken())
-                    .booleanValue();
-                // Don't ask for confirmation in append mode, since there
-                // will be no loss of data.
-                if (file.exists() && !appendValue && confirmOverwriteValue) {
-                    // Query for overwrite.
-                    // FIXME: This should be called in the event thread!
-                    // There is a chance of deadlock since it is not.
-                    if (!MessageHandler.yesNoQuestion(
-                                "OK to overwrite " + file + "?")) {
-                        throw new IllegalActionException(this,
-                                "Please select another file name.");
+
+                if (!fileName.stringValue().equals("System.out")) {
+                    // Only check for append and overwrite if the
+                    // fileName is not "System.out"
+                    // Open the file.
+                    File file = fileName.asFile();
+                    boolean confirmOverwriteValue
+                        = ((BooleanToken)confirmOverwrite.getToken())
+                        .booleanValue();
+                    // Don't ask for confirmation in append mode, since there
+                    // will be no loss of data.
+                    if (file.exists() && !appendValue && confirmOverwriteValue) {
+                        // Query for overwrite.
+                        // FIXME: This should be called in the event thread!
+                        // There is a chance of deadlock since it is not.
+                        if (!MessageHandler.yesNoQuestion(
+                                    "OK to overwrite " + file + "?")) {
+                            throw new IllegalActionException(this,
+                                    "Please select another file name.");
+                        }
                     }
                 }
                 _writer = new PrintWriter(
