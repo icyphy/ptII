@@ -131,7 +131,7 @@ public class Pulse extends SequenceSource {
                         "Cannot set indexes parameter to a non-row vector.");
             }
             int previous = -1;
-            for (int j=0; j<idx[0].length; j++) {
+            for (int j = 0; j < idx[0].length; j++) {
                 if (idx[0][j] <= previous) {
                     throw new IllegalActionException(this,
                             "Value of indexes must be an array of nonnegative "
