@@ -53,7 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AddSub.java \
 	Average.java \
-	CoinFlip.java \
+	Bernoulli.java \
 	Commutator.java \
 	Const.java \
 	Distributor.java \
@@ -65,6 +65,7 @@ JSRCS = \
 	Print.java \
 	Pulse.java \
 	Ramp.java \
+	RandomSource.java \
 	Recorder.java \
 	SequenceActor.java \
 	SequenceSource.java \

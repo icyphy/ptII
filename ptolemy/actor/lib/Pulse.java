@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -34,18 +34,42 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
 /**
 Produce a pulse with a shape specified by the parameters.
-The type of the output can be anything, although if interpolation
-is used, then the tokens of that type must support appropriate
-arithmetic operators.  Currently only linear interpolation
-is supported, so the tokens must support subtraction, multiplication by
-a double, and addition.  The default pulse that is produced
-is the Kronecker delta function, which consists of the integer
-one followed by an infinite number of zeros.
+The <i>values</i> parameter specifies the sequence of values
+to produce at the output.  The <i>indexes</i> parameter specifies
+when those values should be produced.  These two parameters
+must both contain matrices with the same dimensions or an
+exception will be thrown by the fire() method.
+<p>
+The <i>values</i> and <i>indexes</i> parameters are two-dimensional
+matrices.  They are read row first; i.e., the first row is read,
+then the second, etc.  This actor counts iterations, and when the
+iterations match a value in the <i>indexes</i> matrix, then
+the corresponding value (at the same position in the matrix)
+from the <i>values</i> array is produced at the output.
+<p>
+The <i>indexes</i> array must be increasing and non-negative,
+or an exception will be thrown when it is set.
+<p>
+Eventually, this actor will support various kinds of interpolation.
+For now, it outputs a zero (of the same type as the values) whenever
+the iteration count does not match an index in <i>indexes</i>.
+<p>
+The <i>values</i> parameter must be set to
+a MatrixToken value, or an exception will be thrown.
+If it is not set, then by default it has a value that is
+an IntMatrix of form {{1,0}} (one row, two columns, with
+values 1 and 0).  The default indexes matrix is {{0,1}}.
+Thus, the default output sequence will be 1, 0, 0, ...
+<p>
+The type of the output can be any token type that has a corresponding
+matrix token type.  The type is inferred from the type of the
+<i>values</i> parameter.
 
 @author Edward A. Lee
 @version $Id$
@@ -65,76 +89,213 @@ public class Pulse extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-/*
-        int defaultIndexes[][] = {
-            {0, 1}
-        };
-        indexes = new Parameter(this, "indexes",
-                new IntMatrixToken(defaultIndexes));
-*/
-        width = new Parameter(this, "width", new IntToken(1));
-        value = new Parameter(this, "value");
+        indexes = new Parameter(this, "indexes", defaultIndexToken);
+        indexes.setTypeEquals(IntMatrixToken.class);
+        attributeChanged(indexes);
+        values = new Parameter(this, "values", defaultValueToken);
+        attributeChanged(values);
+        _zero = new IntToken(0);
+        _dummy = new Variable(this, "_dummy", _zero);
+	output.setTypeAtLeast(_dummy);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The output port. */
-    public TypedIOPort output;
-
-    /** The value produced by the pulse when it is not zero.
-     *  If this parameter is not specified by the time initialize() is
-     *  called, then it will be set to a DoubleToken with value 1.0.
+    /** The indexes at which the specified values will be produced.
+     *  This parameter must contain an IntMatrixToken.
      */
-    public Parameter value;
+    public Parameter indexes;
 
-    /** The width of the pulse, in number of samples.
-     *  This parameter contains an IntToken, with default value 1.
+    /** The values that will be produced at the specified indexes.
      */
-    public Parameter width;
+    public Parameter values;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    // FIXME: Clone method.
-
-    /** Evaluate the value of the pulse
-     *  and set the declared type of the output port.
-     *  If no value has been specified, then set it to a DoubleToken
-     *  with value 1.0.
-     *  @exception IllegalActionException If there is no director.
+    /** Locally cache the values and indexes.
+     *  @exception IllegalActionException If the indexes array is not
+     *   increasing and non-negative.
      */
-    // FIXME: Mutations are not supported.
-    public void initialize() throws IllegalActionException {
-        Token _valueToken = value.getToken();
-        if (_valueToken == null) {
-            _valueToken = new DoubleToken(1.0);
-            value.setToken(_valueToken);
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == values) {
+            _values = (MatrixToken)values.getToken();
+        } else if (attribute == indexes) {
+            _indexes = ((IntMatrixToken)indexes.getToken()).intMatrix();
+            int previous = -1;
+            for (int i=0; i<_indexes.length; i++) {
+                for (int j=0; j<_indexes[i].length; j++) {
+                    if (_indexes[i][j] <= previous) {
+                        throw new IllegalActionException(this,
+                        "Value of indexes must be an array of nonnegative "
+                        + "integers increasing in value.");
+                    }
+                    previous = _indexes[i][j];
+                }
+            }
         }
-        output.setTypeEquals(value.getType());
-        _zero = _valueToken.zero();
-
-        _width = ((IntToken)(width.getToken())).intValue();
     }
 
-    /** Output the value if the count of firings is less than the width,
-     *  otherwise output a zero token with the same type as the value.
-     *  @exception IllegalActionException If there is no director.
+    /** Notify the director that a type change has occured that may
+     *  affect the type of the output.
+     *  This will cause type resolution to be redone at the next opportunity.
+     *  It is assumed that type changes in the parameters are implemented
+     *  by the director's change request mechanism, so they are implemented
+     *  when it is safe to redo type resolution.
+     *  If there is no director, then do nothing.
+     *  @exception IllegalActionException If the new values array has no
+     *   elements in it, or if it is not a MatrixToken.
+     */
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
+        Director dir = getDirector();
+        if (dir != null) {
+            dir.invalidateResolvedTypes();
+        }
+        try {
+            MatrixToken valuesArray = (MatrixToken)values.getToken();
+            Token prototype = valuesArray.getElementAsToken(0,0);
+            _dummy.setToken(prototype);
+            _zero = prototype.zero();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException(this,
+            "Cannot set values to an empty array.");
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(this,
+            "Cannot set values to something that is not an array: "
+            + values.getToken());
+        }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new actor.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        Pulse newobj = (Pulse)super.clone(ws);
+        newobj.indexes = (Parameter)newobj.getAttribute("indexes");
+        try {
+            indexes.setTypeEquals(IntMatrixToken.class);
+            newobj.attributeChanged(indexes);
+            newobj.values = (Parameter)newobj.getAttribute("values");
+            newobj.attributeChanged(values);
+            // set the type constraints.
+            MatrixToken val = (MatrixToken)(newobj.values.getToken());
+            if (val != null && val.getRowCount() > 0 &&
+                    val.getColumnCount() > 0) {
+                MatrixToken valuesArray = (MatrixToken)newobj.values.getToken();
+                Token tok = valuesArray.getElementAsToken(0,0);
+                newobj._zero = tok.zero();
+            } else {
+                newobj._zero = new IntToken(0);
+            }
+            newobj._dummy = (Variable)(newobj.getAttribute("_dummy"));
+            newobj._dummy.setToken(_zero);
+            newobj.output.setTypeAtLeast(newobj._dummy);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
+        return newobj;
+    }
+
+    /** Output a value if the count of iterations matches one of the entries
+     *  in the indexes array.
+     *  Otherwise output a zero token with the same type as the values in
+     *  the value array.
+     *  @exception IllegalActionException If the values and indexes parameters
+     *   do not have the same dimension, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (_fireCount < _width) {
-            output.broadcast(value.getToken());
-        } else {
-            output.broadcast(_zero);
+        if (_values.getRowCount() != _indexes.length) {
+            throw new IllegalActionException(this,
+            "Parameters values and indexes must be arrays "
+            + "of the same dimension.");
         }
+        if (_indexRowCount < _indexes.length &&
+                _indexColCount < _indexes[_indexRowCount].length) {
+            if (_values.getColumnCount() != _indexes[_indexRowCount].length) {
+                throw new IllegalActionException(this,
+                "Parameters values and indexes must be arrays "
+                + "of the same dimension.");
+            }
+            int currentIndex = _indexes[_indexRowCount][_indexColCount];
+            if (_iterationCount == currentIndex) {
+                // Got a match with an index.
+                output.broadcast(_values.getElementAsToken(
+                    _indexRowCount,_indexColCount));
+                _match = true;
+                return;
+            }
+        }
+        output.broadcast(_zero);
+        _match = false;
+    }
+
+    /** Set the iteration count to zero.
+     */
+    public void initialize() {      
+        _iterationCount = 0;
+        _indexRowCount = 0;
+        _indexColCount = 0;
+    }
+
+    /** Update the interation counters.
+     */
+    public boolean postfire() {
+        ++_iterationCount;
+        if (_match) {
+            ++_indexColCount;
+            if (_indexColCount >= _values.getColumnCount()) {
+                _indexColCount = 0;
+                ++_indexRowCount;
+            }
+        }
+        return super.postfire();
+    }
+
+    /** Start an interation.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _match = false;
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Token _valueToken;
-    private int _fireCount = 0;
-    private int _width;
+    // FIXME: What happens when these overflow?
+    private int _iterationCount = 0;
+    private int _indexRowCount = 0;
+    private int _indexColCount = 0;
+
     private Token _zero;
+    private boolean _match = false;
+
+    private int defaultIndexes[][] = {
+        {0, 1}
+    };
+
+    private IntMatrixToken defaultIndexToken =
+            new IntMatrixToken(defaultIndexes);
+
+    private int defaultValues[][] = {
+        {1,0}
+    };
+
+    private IntMatrixToken defaultValueToken =
+            new IntMatrixToken(defaultValues);
+
+    // Dummy variable which reflects the type of the elements of the
+    // values parameter, so that the output type can be related to it.
+    private Variable _dummy;
+
+    // Locally cached data
+    private transient MatrixToken _values;
+    private transient int[][] _indexes;
 }
 

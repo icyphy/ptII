@@ -51,7 +51,10 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Bernoulli.tcl \
 	Const.tcl \
+	Gaussian.tcl \
+	Pulse.tcl \
 	Ramp.tcl
 
 #	Expression.tcl \

@@ -65,3 +65,25 @@ test Ramp-1.2 {test clone} {
     list $stepValue $newStepValue
 } {5.5 2.5}
 
+######################################################################
+#### Test Ramp in an SDF model
+#
+test Ramp-2.1 {test with the default output values} {
+    set e0 [sdfModel 5]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field $rec input]
+    [$e0 getManager] run
+    enumToTokenValues [$rec getRecord 0]
+} {0 1 2 3 4}
+
+test Ramp-2.1 {test with strings} {
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression {"a"}
+    $step setExpression {"b"}
+    [$e0 getManager] run
+    enumToTokenValues [$rec getRecord 0]
+} {a ab abb abbb abbbb}
