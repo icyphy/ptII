@@ -257,9 +257,10 @@ public class GeneratorAttribute extends SingletonAttribute
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
             throws IllegalActionException, NameDuplicationException {
        
-        if (modelPathOrURL == null)
+        if (modelPathOrURL == null) {
             // Get the modelPath and update modelPath and model.
             modelPathOrURL = getParameter("modelPath");
+        }
 
         // Update the modelName and iterations Parameters.
         updateModelAttributes(modelPathOrURL);
@@ -314,6 +315,7 @@ public class GeneratorAttribute extends SingletonAttribute
         }
 
 
+        // Update ptIIUserDirectoryAsURL
         String ptIIUserDirectoryAsURL;
         try {
             ptIIUserDirectoryAsURL =
@@ -332,6 +334,7 @@ public class GeneratorAttribute extends SingletonAttribute
         ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
             .setExpression(ptIIUserDirectoryAsURL);
         
+
         String targetPath = getParameter("targetPath");
 
         // Check that ptIIUserDirectory + targetPath is writable.
