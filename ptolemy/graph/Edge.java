@@ -28,29 +28,30 @@ package ptolemy.graph;
 //////////////////////////////////////////////////////////////////////////
 //// Edge
 /**
-A weighted edge for a directed or undirected graph. Edges should normally
-be manipulated (created, and modified) only by classes of graphs that contain them. The 
-connectivity of edges is specified by "source" nodes and "sink" nodes. 
-A directed edge is directed "from" its source node "to" its sink node.
-For an undirected edge, the source node is simply the first node that
-was specified when the edge was created, and the sink node is the second node.
-This convention allows undirected edges to later be "converted" in a consistent
-manner to directed edges, if desired.
-<p>
-Self-loop edges (edges whose source and sink nodes are identical) are allowed.
-<p>
-An arbitrary object can be associated with an edge as the "weight" of the
-edge.
+A weighted edge for a directed or undirected graph. Edges should
+normally be manipulated (created, and modified) only by classes of
+graphs that contain them. The connectivity of edges is specified by
+"source" nodes and "sink" nodes.  A directed edge is directed "from"
+its source node "to" its sink node.  For an undirected edge, the
+source node is simply the first node that was specified when the edge
+was created, and the sink node is the second node.  This convention
+allows undirected edges to later be "converted" in a consistent manner
+to directed edges, if desired.
+
+<p>Self-loop edges (edges whose source and sink nodes are identical)
+are allowed.
+
+<p>An arbitrary object can be associated with an edge as the "weight"
+of the edge.
 
 @author Shuvra S. Bhattacharyya 
 @version $Id$
-@see ptolemy.synthesis.Node
+@see ptolemy.graph.Node
 */
-
-    
 public class Edge {
 
-    /** Construct an edge with a specified source node, sink node, and edge weight.
+    /** Construct an edge with a specified source node, sink node, and
+     *  edge weight.
      *  The edge weight may be <em>null</em>.
      *  @param the source node.
      *  @param the sink node.
@@ -77,18 +78,15 @@ public class Edge {
      */
     public Node source() {return _source;}
 
-    /** Return a string representation of the edge. The string representation
-     *  is of the form 
-     *  <p>
-     *  (<em>source</em>, <em>sink</em>, <em>weight</em>),
-     *  <p>
-     *  where <em>source</em>, <em>sink</em>, and <em>weight</em> are string 
-     *  representations of the 
-     *  source node, sink node, and edge weight, respectively.
+    /** Return a string representation of the edge. The string
+     *  representation is of the form <p> (<em>source</em>,
+     *  <em>sink</em>, <em>weight</em>), <p> where <em>source</em>,
+     *  <em>sink</em>, and <em>weight</em> are string representations
+     *  of the source node, sink node, and edge weight, respectively.
      *  The edge weight is suppressed from the representation if the
      *  method argument is <em>false</em>.
-     *  @param showWeight include a string representation of the edge weight in the
-     *  edge's string representation.
+     *  @param showWeight include a string representation of the edge
+     *  weight in the edge's string representation.
      *  @return the edge's string representation. 
      */  
     public String toString(boolean showWeight) {

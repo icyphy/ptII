@@ -27,52 +27,54 @@
 */
 
 package ptolemy.graph;
-import java.util.*;
+
+//import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Graph 
 /**
 A basic weighted graph.
-Each node has a unique Object, called the <em>node weight</em>, associated
-with it.  To construct a graph,
-use <code>add</code> to add nodes and <code>addEdge</code> to add
-edges between nodes.
-<p>
-Distinct nodes must have distinct weights, as determined
-by the <code>equals</code> method. After a node has been inserted into a
-weighted graph, its weight may be modified as long as the
-modification does not affect comparison of the weight using the
-<code>equals</code> method of the weight's class. Violation of this convention
-may lead to unpredictable results. 
-<p>
-Edges also have arbitrary Objects associated
-with them, and these are referred to as <em>edge weights</em>. 
-At present, edge weights need not be unique.
-<p>
-NOTE: This class is a starting point for implementing graph algorithms,
+
+<p>Each node has a unique Object, called the <em>node weight</em>,
+associated with it.  To construct a graph, use <code>add</code> to add
+nodes and <code>addEdge</code> to add edges between nodes.
+
+<p>Distinct nodes must have distinct weights, as determined by the
+<code>equals</code> method. After a node has been inserted into a
+weighted graph, its weight may be modified as long as the modification
+does not affect comparison of the weight using the <code>equals</code>
+method of the weight's class. Violation of this convention may lead to
+unpredictable results.
+
+<p>Edges also have arbitrary Objects associated with them, and these
+are referred to as <em>edge weights</em>.  At present, edge weights
+need not be unique.
+
+<p>NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
-<p> 
-Both directed and undirected graphs can be implemented using this class.
-In directed graphs, the order of nodes specified to <code>addEdge</code> is relevant,
-whereas in undirected graphs, the order is unimportant. Support for both
-undirected and directed graphs follows from the combined support for
-these in the underlying {@link Node} and {@link Edge} classes.
-<p>
-If a class <code>XXXGraph</code> extends {@link Graph}, and another class
-<code>YYYGraph</code> extends <code>XXXGraph</code>, then the node (edge)
-weight type used in <code>YYYGraph</code> must be the same as or must extend
-the node (edge) weight type used in <code>XXXGraph</code>. The node weight
-type used in {@link Graph} is Object, and the edge weight type used in
-{@link Graph} is also Object. These are the types of the objects that maintain
-the weights of the {@link Node}s and {@link Edge}s, respectively.  
+
+<p>Both directed and undirected graphs can be implemented using this
+class.  In directed graphs, the order of nodes specified to
+<code>addEdge</code> is relevant, whereas in undirected graphs, the
+order is unimportant. Support for both undirected and directed graphs
+follows from the combined support for these in the underlying {@link
+Node} and {@link Edge} classes.
+
+<p>If a class <code>XXXGraph</code> extends {@link Graph}, and another
+class <code>YYYGraph</code> extends <code>XXXGraph</code>, then the
+node (edge) weight type used in <code>YYYGraph</code> must be the same
+as or must extend the node (edge) weight type used in
+<code>XXXGraph</code>. The node weight type used in {@link Graph} is
+Object, and the edge weight type used in {@link Graph} is also
+Object. These are the types of the objects that maintain the weights
+of the {@link Node}s and {@link Edge}s, respectively.
 
 @author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu
 @version $Id$
-@see ptolemy.synthesis.Edge
-@see ptolemy.synthesis.Node
+@see ptolemy.graph.Edge
+@see ptolemy.graph.Node
 */
-
 public class Graph {
 
     /** Construct an empty graph.
@@ -100,9 +102,9 @@ public class Graph {
     }
 
     /** Construct an empty graph with enough storage allocated for the
-     *  specified number of edges, and number of nodes.  Memory management is more
-     *  efficient with this constructor if the number of nodes and edges is
-     *  known.
+     *  specified number of edges, and number of nodes.  Memory
+     *  management is more efficient with this constructor if the
+     *  number of nodes and edges is known.
      *  @param nodeCount the number of nodes.
      *  @param edgeCount the number of edges.
      */
@@ -117,15 +119,16 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a node to this graph.  The node is represented by (has as its weight) 
-     *  the specified Object. The Object cannot be <code>null</code>.
-     *  In addition, two Objects equal to each other, as determined
-     *  by the <code>equals</code> method, cannot both be added.<p>
+    /** Add a node to this graph.  The node is represented by (has as
+     *  its weight) the specified Object. The Object cannot be
+     *  <code>null</code>.  In addition, two Objects equal to each
+     *  other, as determined by the <code>equals</code> method, cannot
+     *  both be added.<p>
      *
      *  After nodes are added to a graph, the node weights should not
      *  be changed in a manner that affects comparison against other
-     *  possible node weights by the <code>equals</code>
-     *  method. Doing so may generate unexpected results.
+     *  possible node weights by the <code>equals</code> method. Doing
+     *  so may generate unexpected results.
      *
      *  @param o the Object ("node weight") representing a graph node
      *  @exception IllegalArgumentException if a
@@ -148,12 +151,13 @@ public class Graph {
         _recomputeIdentifiers = true;
     }
 
-    /** Add a collection of nodes to the graph. Each object in the collection
-     *  is taken to be a weight of a new node that is added to the graph.
-     *  None of the objects in the collection can be null (however, it
-     *  is fine to pass an empty collection). Effectively,
-     *  each object in the collection is operated on by the
-     *  {@link #add(Object)} method.
+    /** Add a collection of nodes to the graph. Each object in the
+     *  collection is taken to be a weight of a new node that is added
+     *  to the graph.  None of the objects in the collection can be
+     *  null (however, it is fine to pass an empty
+     *  collection). Effectively, each object in the collection is
+     *  operated on by the {@link #add(Object)} method.
+     *
      *  @param weights the collection of Objects representing nodes
      *  to be added to the graph.
      */
@@ -163,12 +167,11 @@ public class Graph {
     }
 
     /** Add an edge between two nodes.  If the edge is subsequently
-     *  operated on as a directed edge, its orientation will be
-     *  taken to be directed <em>from</em> the first (<em>o1</em>) node 
-     *  <em>to</em> the second
-     *  (<em>o2</em>) node. Multiple edges
-     *  between the same nodes are allowed, and are considered different
-     *  edges.  Self loops are also allowed.
+     *  operated on as a directed edge, its orientation will be taken
+     *  to be directed <em>from</em> the first (<em>o1</em>) node
+     *  <em>to</em> the second (<em>o2</em>) node. Multiple edges
+     *  between the same nodes are allowed, and are considered
+     *  different edges.  Self loops are also allowed.
      *
      *  @param o1 an Object (node weight) representing a graph node.
      *  @param o2 an Object (node weight) representing a graph node.
@@ -182,14 +185,13 @@ public class Graph {
         _edges.add(edge);
     }
     
-    /** Add a weighted edge between two nodes.  An arbitrary Object can be
-     *  assigned as the edge weight. If the edge is subsequently
-     *  operated on as a directed edge, its orientation will be
-     *  taken to be directed <em>from</em> the first (<em>o1</em>) node 
-     *  <em>to</em> the second
-     *  (<em>o2</em>) node. Multiple edges
-     *  between the same nodes are allowed, and are considered different
-     *  edges.  Self loops are also allowed.
+    /** Add a weighted edge between two nodes.  An arbitrary Object
+     *  can be assigned as the edge weight. If the edge is
+     *  subsequently operated on as a directed edge, its orientation
+     *  will be taken to be directed <em>from</em> the first
+     *  (<em>o1</em>) node <em>to</em> the second (<em>o2</em>)
+     *  node. Multiple edges between the same nodes are allowed, and
+     *  are considered different edges.  Self loops are also allowed.
      *
      *  @param o1 an Object (node weight) representing a graph node
      *  @param o2 an Object (node weight) representing a graph node
@@ -204,10 +206,11 @@ public class Graph {
         _edges.add(edge);
     }
 
-    /** Test if the specified Object is a node weight in this graph. The
-     *  Object is a node weight if it is equal to an Object specified in
-     *  a successful <code>add</code> call. Equality is determined
-     *  by the <code>equals</code> method.
+    /** Test if the specified Object is a node weight in this
+     *  graph. The Object is a node weight if it is equal to an Object
+     *  specified in a successful <code>add</code> call. Equality is
+     *  determined by the <code>equals</code> method.
+     *
      *  @param o the Object (node weight) to be tested.
      *  @return <code>true</code> if the specified Object is a node weight
      *   in this graph; <code>false</code> otherwise.
@@ -229,7 +232,8 @@ public class Graph {
      *  @return a String description of this graph.
      */
     public String description() {
-	    StringBuffer result = new StringBuffer("{" + this.getClass().getName() + "\n");
+	    StringBuffer result = new StringBuffer("{"
+                    + this.getClass().getName() + "\n");
         Iterator nodes = _nodes.iterator();
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
@@ -264,15 +268,16 @@ public class Graph {
      
     /** Return all the edges in this graph in the form of a 2-D Object
      *  array. Each row of the array represents an edge, corresponding
-     *  to a successful <code>addEdge</code> call, but the order of the
-     *  rows is not necessarily the same as the calls. The array always
-     *  has two columns, corresponding to the two arguments of
+     *  to a successful <code>addEdge</code> call, but the order of
+     *  the rows is not necessarily the same as the calls. The array
+     *  always has two columns, corresponding to the two arguments of
      *  <code>addEdge</code>, in the order the arguments are
-     *  listed. These columns contain the node weights of the nodes that
-     *  are connected by the edges. Specifically, each [<em>i</em>][0] entry
-     *  of this array gives the source node weight of the <em>i</em>th 
-     *  edge, and each [<em>i</em>][1] entry gives the 
-     *  sink node weight of the <em>i</em>th edge.
+     *  listed. These columns contain the node weights of the nodes
+     *  that are connected by the edges. Specifically, each
+     *  [<em>i</em>][0] entry of this array gives the source node
+     *  weight of the <em>i</em>th edge, and each [<em>i</em>][1]
+     *  entry gives the sink node weight of the <em>i</em>th edge.
+     *
      *  @return the edges in the graph.
      */
     public Object[][] getEdges() {
@@ -297,9 +302,9 @@ public class Graph {
      *  @param o an Object representing the weight of a graph node.
      *  @return the node.
      *  @exception IllegalArgumentException if the specified Object is
-     *   not a node weight in this graph (that is, there is no node in the graph
-     *   whose weight is equal to the specified Object, as determined by
-     *   the <code>equals()</code> method).
+     *   not a node weight in this graph (that is, there is no node in
+     *   the graph whose weight is equal to the specified Object, as
+     *   determined by the <code>equals()</code> method).
      */
     public final Node getNode(Object o) {
         Object associatedObject = _nodeTable.get(o);
@@ -331,9 +336,10 @@ public class Graph {
         return _nodes.iterator();
     }
      
-    /** Return all the node weights in this graph in the form of an Objects array.
-     *  The Objects are the ones passed in successful <code>add</code>
-     *  calls.
+    /** Return all the node weights in this graph in the form of an
+     *  Objects array.  The Objects are the ones passed in successful
+     *  <code>add</code> calls.
+     *
      *  @return the node weights in the graph.
      */
     public Object[] getNodes() {
@@ -347,11 +353,12 @@ public class Graph {
     }
 
     /** Return the sink nodes of this graph. A node is a sink node if
-     *  it contains no output edges. Thus, this method makes sense only
-     *  for directed graphs. The sink nodes are returned as an array
-     *  whose size (number of elements) is equal to the number of sink nodes.
-     *  Each element of the array is a {@link Node}. A zero-element array is returned
-     *  if there are no sink nodes.
+     *  it contains no output edges. Thus, this method makes sense
+     *  only for directed graphs. The sink nodes are returned as an
+     *  array whose size (number of elements) is equal to the number
+     *  of sink nodes.  Each element of the array is a {@link Node}. A
+     *  zero-element array is returned if there are no sink nodes.
+     *
      *  @return the sink nodes of the graph.
      */
     public Node[] getSinkNodes() {
@@ -366,12 +373,14 @@ public class Graph {
        return (Node[]) (sinkList.toArray(sinks)); 
     }
 
-    /** Return the source nodes of this graph. A node is a source node if
-     *  it contains no input edges. Thus, this method makes sense only
-     *  for directed graphs. The source nodes are returned as an array
-     *  whose size (number of elements) is equal to the number of source nodes.
-     *  Each element of the array is a {@link Node}. A zero-element array is returned
-     *  if there are no source nodes.
+    /** Return the source nodes of this graph. A node is a source node
+     *  if it contains no input edges. Thus, this method makes sense
+     *  only for directed graphs. The source nodes are returned as an
+     *  array whose size (number of elements) is equal to the number
+     *  of source nodes.  Each element of the array is a {@link
+     *  Node}. A zero-element array is returned if there are no source
+     *  nodes.
+     *
      *  @return the source nodes of the graph.
      */
     public Node[] getSourceNodes() {
@@ -391,10 +400,11 @@ public class Graph {
      */
     public void removeEdge(Edge removeMe) {
         if (_remove(_edges, removeMe) == null) {
-            throw new RuntimeException("Attempt to remove and edge that is not "
-                    + "contained in the graph.\n"
+            throw new RuntimeException("Attempt to remove and edge that is "
+                    + "not contained in the graph.\n"
                     + "A dump of the edge and graph follow.\n"
-                    + "The edge:\n" + removeMe + "\nThe graph:\n" + this.description()
+                    + "The edge:\n" + removeMe + "\nThe graph:\n"
+                    + this.description()
                     + "\n");
         }
         removeMe.source().removeEdge(removeMe);
@@ -407,10 +417,11 @@ public class Graph {
      */
     public void removeNode(Node removeMe) {
         if (_remove(_nodes, removeMe) == null) {
-                throw new RuntimeException("Attempt to remove a node that is not "
-                        + "contained in the graph.\n"
+                throw new RuntimeException("Attempt to remove a node that is "
+                        + "not contained in the graph.\n"
                         + "A dump of the node and graph follow.\n"
-                        + "The node:\n" + removeMe + "\nThe graph:\n" + this.description()
+                        + "The node:\n" + removeMe + "\nThe graph:\n"
+                        + this.description()
                         + "\n");
         }
         _nodeTable.remove(removeMe.weight());
@@ -420,10 +431,12 @@ public class Graph {
             if (edge.source() != removeMe) edge.source().removeEdge(edge);
             if (edge.sink() != removeMe) edge.sink().removeEdge(edge);
             if (_remove(_edges, edge) == null) {
-                throw new RuntimeException("We have encountered an edge that is "
-                        + "incident to a node, but is not contained in the graph's "
-                        + "edge list.\nA dump of the node and edge follow.\n"
-                        + "The node:\n" + removeMe + "\nThe edge:\n" + edge + "\n");
+                throw new RuntimeException("We have encountered an edge that "
+                        + "is incident to a node, but is not contained in "
+                        + "the graph's edge list.\n"
+                        + "A dump of the node and edge follow.\n"
+                        + "The node:\n" + removeMe
+                        + "\nThe edge:\n" + edge + "\n");
             }
         }
         _recomputeIdentifiers = true;
@@ -479,10 +492,11 @@ public class Graph {
         else return node.weight();
     }
 
-    /** Return the weight of a given node in the graph given the node identifer.
-     *  The node set of the graph should not have changed since the
-     *  last invocation of {@link #_enumerateNodes()} (otherwise, the
-     *  node identifier might not be valid).
+    /** Return the weight of a given node in the graph given the node
+     *  identifer.  The node set of the graph should not have changed
+     *  since the last invocation of {@link #_enumerateNodes()}
+     *  (otherwise, the node identifier might not be valid).
+     *
      *  @param node the node identifier.
      *  @return the weight of the node.
      */
