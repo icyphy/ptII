@@ -271,6 +271,9 @@ public class PTMLParser extends HandlerBase{
         else if(name.equals("parameter")) {
             e=new SchematicParameter(attributes);
         }
+        else if(name.equals("layout")) {
+            e=new SchematicLayout(attributes);
+        }
         else if(name.equals("port")) {
             e=new SchematicPort(attributes);
         }
