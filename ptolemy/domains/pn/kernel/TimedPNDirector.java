@@ -111,8 +111,9 @@ public class TimedPNDirector extends BasePNDirector {
      *  value 1. This sets the initial capacities of the FIFO queues in all
      *  the receivers created in the PN domain.
      */
-    public TimedPNDirector() {
-        super();
+    public TimedPNDirector()     
+            throws IllegalActionException, NameDuplicationException {
+         super();
     }
 
     /**Construct a director in the  workspace with an empty name.
@@ -123,7 +124,8 @@ public class TimedPNDirector extends BasePNDirector {
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
      */
-    public TimedPNDirector(Workspace workspace) {
+    public TimedPNDirector(Workspace workspace)
+           throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

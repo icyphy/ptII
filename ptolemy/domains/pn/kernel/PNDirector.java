@@ -95,7 +95,8 @@ public class PNDirector extends BasePNDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      */
-    public PNDirector() {
+    public PNDirector()
+           throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -107,8 +108,9 @@ public class PNDirector extends BasePNDirector {
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
      */
-    public PNDirector(Workspace workspace) {
-        super(workspace);
+    public PNDirector(Workspace workspace)
+           throws IllegalActionException, NameDuplicationException {
+         super(workspace);
     }
 
     /**  Construct a director in the given container with the given name.
@@ -216,10 +218,10 @@ public class PNDirector extends BasePNDirector {
      *  a mutation.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
+    /*  protected synchronized boolean _areActorsDeadlocked() {
 	return (_readBlockCount + _writeBlockCount
                 == _getActiveActorsCount());
-    }
+        }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
