@@ -520,6 +520,7 @@ jnlp_sign1: $(SIGNED_DIR)
 		"$(PTJAVA_DIR)/bin/jarsigner" \
 			-keystore $(KEYSTORE) \
 			$(STOREPASSWORD) \
+			$(KEYPASSWORD) \
 			$(SIGNED_DIR)/$$x $(KEYALIAS); \
 	done;
 
