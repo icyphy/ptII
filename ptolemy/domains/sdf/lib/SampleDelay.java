@@ -83,8 +83,8 @@ public class SampleDelay extends SDFTransformer {
 
 	// set type constraints.
 	ArrayType paramType = (ArrayType)initialOutputs.getType();
-	InequalityTerm elemTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
     }
 
@@ -127,8 +127,8 @@ public class SampleDelay extends SDFTransformer {
 
         // set the type constraints
         ArrayType paramType = (ArrayType)newObject.initialOutputs.getType();
-        InequalityTerm elemTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }

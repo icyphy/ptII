@@ -86,8 +86,8 @@ public class ArrayToSequence extends SDFTransformer {
 	// Set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType inputType = (ArrayType)input.getType();
-	InequalityTerm elemTerm = inputType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = inputType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
@@ -150,8 +150,8 @@ public class ArrayToSequence extends SDFTransformer {
 
         // set the type constraints
         ArrayType inputType = (ArrayType)newObject.input.getType();
-        InequalityTerm elemTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = inputType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }
 

@@ -79,8 +79,8 @@ public class LineCoder extends SDFTransformer {
         wordLength.setTypeEquals(BaseType.INT);
 
 	ArrayType paramType = (ArrayType)table.getType();
-	InequalityTerm elemTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,8 +139,8 @@ public class LineCoder extends SDFTransformer {
 
         // set the type constraints
         ArrayType paramType = (ArrayType)newObject.table.getType();
-        InequalityTerm elemTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }
 

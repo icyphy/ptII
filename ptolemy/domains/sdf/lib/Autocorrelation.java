@@ -290,8 +290,8 @@ public class Autocorrelation extends SDFTransformer {
             result = new LinkedList();
         }
 	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm elemTerm = outArrType.getElementTypeTerm();
-	Inequality ineq = new Inequality(input.getTypeTerm(), elemTerm);
+	InequalityTerm elementTerm = outArrType.getElementTypeTerm();
+	Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
 	result.add(ineq);
 	return result;

@@ -157,8 +157,8 @@ public class SequenceToArray extends SDFTransformer {
      */
     public List typeConstraintList() {
 	ArrayType outArrType = (ArrayType)output.getType();
-	InequalityTerm elemTerm = outArrType.getElementTypeTerm();
-	Inequality ineq = new Inequality(input.getTypeTerm(), elemTerm);
+	InequalityTerm elementTerm = outArrType.getElementTypeTerm();
+	Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
 	List result = new LinkedList();
 	result.add(ineq);

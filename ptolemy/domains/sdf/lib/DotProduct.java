@@ -87,12 +87,12 @@ public class DotProduct extends TypedAtomicActor {
         // set the output type to be no less than the element type of the
         // input arrays.
         ArrayType input1Type = (ArrayType)input1.getType();
-        InequalityTerm elemTerm1 = input1Type.getElementTypeTerm();
-        output.setTypeAtLeast(elemTerm1);
+        InequalityTerm elementTerm1 = input1Type.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm1);
 
         ArrayType input2Type = (ArrayType)input2.getType();
-        InequalityTerm elemTerm2 = input2Type.getElementTypeTerm();
-        output.setTypeAtLeast(elemTerm2);
+        InequalityTerm elementTerm2 = input2Type.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm2);
     }
 
     ///////////////////////////////////////////////////////////////////

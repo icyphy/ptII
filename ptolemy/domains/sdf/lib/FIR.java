@@ -133,8 +133,8 @@ public class FIR extends SDFTransformer {
 
 	// Set type constraints.
 	ArrayType paramType = (ArrayType)taps.getType();
-	InequalityTerm elemTerm = paramType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
         output.setTypeAtLeast(input);
     }
 
@@ -234,8 +234,8 @@ public class FIR extends SDFTransformer {
 
         // Set the type constraints.
         ArrayType paramType = (ArrayType)newObject.taps.getType();
-        InequalityTerm elemTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
