@@ -234,7 +234,7 @@ public class MoMLApplication {
 		    // This works in Web Start, see
 		    // http://java.sun.com/products/javawebstart/faq.html#54
 		    URL inURL = Thread.currentThread()
-			.getContextClassLoader().getResource(spec);  
+			.getContextClassLoader().getResource(spec);
 
                     if (inURL == null) {
 			throw new Exception();

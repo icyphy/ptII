@@ -148,7 +148,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Display only .xml and .moml files */
     class XMLOrMoMLFileFilter extends FileFilter {
-    
+
 	/** Accept only .xml or .moml files.
 	 *  @param file The file to be checked.
 	 *  @return true if the file is a directory, a .xml or a .moml file.
@@ -177,7 +177,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 	    }
 	    return false;
 	}
-    
+
 	/**  The description of this filter */
 	public String getDescription() {
 	    return ".xml and .moml files";

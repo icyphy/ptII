@@ -37,10 +37,10 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// BrowserEffigy
 /**
-An effigy for a web browser.  
+An effigy for a web browser.
 
 <p> We invoke the user's web browser for certain files such as pdf files
- 
+
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
