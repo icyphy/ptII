@@ -427,12 +427,7 @@ public class Graph implements Cloneable {
      *  @return True if the specified object is an edge weight in this graph.
      */
     public boolean containsEdgeWeight(Object weight) {
-        try {
-            _sameWeightEdges(weight);
-        } catch (Exception exception) {
-            return false;
-        }
-        return true;
+        return _edgeWeightMap.containsKey(weight);
     }
 
     /** Return True if the specified node exists in the
@@ -454,12 +449,7 @@ public class Graph implements Cloneable {
      *  @return True if the specified object is a node weight in this graph.
      */
     public boolean containsNodeWeight(Object weight) {
-        try {
-            _sameWeightNodes(weight);
-        } catch (Exception exception) {
-            return false;
-        }
-        return true;
+        return _nodeWeightMap.containsKey(weight);
     }
 
     /** Return a description of this graph.
