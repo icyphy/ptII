@@ -190,8 +190,7 @@ public class FSMGraphController extends FSMViewerController {
 
             try {
 		// add it to the foreground layer.
-		FigureLayer layer =
-		    getGraphPane().getForegroundLayer();
+		FigureLayer layer = getGraphPane().getForegroundLayer();
 		Site headSite, tailSite;
 
 		// Temporary sites.  One of these will get removed later.

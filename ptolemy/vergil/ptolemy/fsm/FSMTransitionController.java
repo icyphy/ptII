@@ -54,8 +54,10 @@ import diva.canvas.connector.PerimeterTarget;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
+import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionModel;
+import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
@@ -65,8 +67,10 @@ import diva.gui.toolbox.MenuCreator;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
 import ptolemy.vergil.toolbox.EditParametersFactory;
@@ -175,7 +179,7 @@ public class FSMTransitionController extends BasicEdgeController {
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                    ////
@@ -208,7 +212,7 @@ public class FSMTransitionController extends BasicEdgeController {
             // First, the edge is only associated with a relation after it
             // is fully connected.  Second, edges that aren't
             // connected should be erased (which this will rather
-            // conveniently take care of for us
+            // conveniently take care of for us).
             getController().rerenderEdge(edge);
         }
     }
@@ -217,7 +221,7 @@ public class FSMTransitionController extends BasicEdgeController {
 
 	/** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            AbstractConnector c = new ArcConnector(tailSite, headSite);
+            ArcConnector c = new ArcConnector(tailSite, headSite);
             c.setHeadEnd(new Arrowhead());
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
@@ -226,10 +230,38 @@ public class FSMTransitionController extends BasicEdgeController {
 	    if(transition != null) {
 		c.setToolTipText(transition.getName());
                 String labelStr = transition.getLabel();
+                try {
+                    double exitAngle = ((DoubleToken)(transition.exitAngle
+                            .getToken())).doubleValue();
+                    // If the angle is too large, then truncate it to
+                    // a reasonable value.
+                    double maximum = 99.0*Math.PI;
+                    if (exitAngle > maximum) {
+                        exitAngle = maximum;
+                    } else if (exitAngle < -maximum) {
+                        exitAngle = -maximum;
+                    }
+                    // If the angle is zero, then the arc does not get
+                    // drawn.  So we restrict it so that it can't quite
+                    // go to zero.
+                    double minimum = Math.PI/999.0;
+                    if (exitAngle < minimum && exitAngle > -minimum) {
+                        if (exitAngle > 0.0) {
+                            exitAngle = minimum;
+                        } else {
+                            exitAngle = - minimum;
+                        }
+                    }
+                    c.setAngle(exitAngle);
+                } catch (IllegalActionException ex) {
+                    // Ignore, accepting the default.
+                    // This exception should not occur.
+                }
                 if(!labelStr.equals("")) {
+                    // FIXME: get label position modifier, if any.
                     LabelFigure label = new LabelFigure(
                             labelStr, _labelFont);
-                    label.setFillPaint(Color.blue);
+                    label.setFillPaint(Color.black);
                     c.setLabelFigure(label);
                 }
             }

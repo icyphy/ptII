@@ -127,6 +127,10 @@ The <i>reset</i> parameter specifies whether the refinement of the destination
 state is reset when the transition is taken. There is no reset() method in the
 Actor interface, so the initialize() method of the refinement is called. Please
 note that this feature is still under development.
+<p>
+There is also an <i>exitAngle</i> parameter, which should take
+a value between -PI and PI.  This parameter determines the arc used
+to draw the transition.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
@@ -158,6 +162,9 @@ public class Transition extends ComponentRelation {
         guardExpression = new StringAttribute(this, "guardExpression");
 	outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
+        exitAngle = new Parameter(this, "exitAngle");
+        exitAngle.setExpression("PI/5.0");
+	exitAngle.setTypeEquals(BaseType.DOUBLE);
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
@@ -175,6 +182,12 @@ public class Transition extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Attribute the exit angle of a visual rendition.
+     *  This parameter contains a DoubleToken, initially with value PI/5.
+     *  It must lie between -PI and PI.  Otherwise, it will be truncated
+     *  to lie within this range.
+     */
+    public Parameter exitAngle;
 
     /** Attribute specifying the guard expression.
      */
@@ -306,7 +319,7 @@ public class Transition extends ComponentRelation {
      *  The first line is the guard expression. The second line is the
      *  concatenation of the expressions of <i>outputActions</i> and
      *  <i>setActions</i>.
-     *  @return A label describing this transition.
+     *  @return A string describing this transition.
      */
     public String getLabel() {
         StringBuffer buffer = new StringBuffer();

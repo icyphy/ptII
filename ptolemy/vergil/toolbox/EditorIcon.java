@@ -116,7 +116,9 @@ public class EditorIcon extends Attribute implements NotPersistent {
      *  figure returned by createBackgroundFigure() as its background.
      *  This method adds a LabelFigure to the CompositeFigure that
      *  contains the name of the container of this icon, unless the
-     *  container has an attribute called "_hideName".
+     *  container has an attribute called "_hideName".  If the container
+     *  has an attribute called "_centerName", then the name is rendered
+     *  in the center of the background figure, rather than above it.
      *  This method should never return null, even if the icon has
      *  not been properly initialized.
      *  @return A new CompositeFigure consisting of the background figure
@@ -132,11 +134,20 @@ public class EditorIcon extends Attribute implements NotPersistent {
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
         if(container.getAttribute("_hideName") == null) {
-            LabelFigure label = new LabelFigure(container.getName(),
-                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-            // Shift the label slightly right so it doesn't collide with ports.
-            label.translateTo(backBounds.getX() + 5, backBounds.getY());
-            ((CompositeFigure)figure).add(label);
+            if(container.getAttribute("_centerName") == null) {
+                LabelFigure label = new LabelFigure(container.getName(),
+                        _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+                // Shift the label slightly right so it doesn't
+                // collide with ports.
+                label.translateTo(backBounds.getX() + 5, backBounds.getY());
+                ((CompositeFigure)figure).add(label);
+            } else {
+                LabelFigure label = new LabelFigure(container.getName(),
+                        _labelFont, 1.0, SwingConstants.CENTER);
+                label.translateTo(backBounds.getCenterX(),
+                        backBounds.getCenterY());
+                ((CompositeFigure)figure).add(label);
+            }
         }
 	return figure;
     }

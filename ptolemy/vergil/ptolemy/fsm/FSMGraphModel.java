@@ -85,22 +85,19 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event whose source is the given source.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
+    /** Disconnect an edge from its two enpoints and notify graph
+     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     *  event whose source is the given source.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException if the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
-	if(!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
-	MutableEdgeModel model = (MutableEdgeModel)getEdgeModel(edge);
+	if(!(getEdgeModel(edge) instanceof ArcModel)) return;
+	ArcModel model = (ArcModel)getEdgeModel(edge);
 	Object head = model.getHead(edge);
 	Object tail = model.getTail(edge);
-        model.setTail(edge, null);
-        model.setHead(edge, null);
+        model.removeEdge(edge);
         if(head != null) {
             GraphEvent e = new GraphEvent(eventSource,
                     GraphEvent.EDGE_HEAD_CHANGED,
@@ -115,12 +112,11 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
         }
     }
 
-    /**
-     * Return the model for the given edge object.  If the object is not
-     * an edge, then return null.
-     * @param edge An object which is assumed to be in this graph model.
-     * @return An instance of ArcModel if the object is an Arc.
-     * Otherwise return null.
+    /** Return the model for the given edge object.  If the object is not
+     *  an edge, then return null.
+     *  @param edge An object which is assumed to be in this graph model.
+     *  @return An instance of ArcModel if the object is an Arc.
+     *   Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
 	if(edge instanceof Arc) {
@@ -164,13 +160,11 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
         return super.getSemanticObject(element);
     }
 
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
+    /** Delete a node from its parent graph and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException if the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
 	if(!(getNodeModel(node) instanceof PtolemyNodeModel)) return;
@@ -210,7 +204,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	while(links.hasNext()) {
  	    Arc link = (Arc)links.next();
             Relation relation = link.getRelation();
-            if(relation == null) continue;
+            if (relation == null) continue;
             boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
                     getRoot(), this);
             boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
@@ -221,6 +215,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 Object tailObj = getSemanticObject(link.getTail());
                 link.setHead(null);
                 link.setTail(null);
+                link.setRelation(null);
                 links.remove();
                 NamedObj container =
                     (NamedObj)_getChangeRequestParent(relation);
@@ -318,6 +313,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     /** The model for arcs between states.
      */
     public class ArcModel implements MutableEdgeModel {
+
 	/** Return true if the head of the given edge can be attached to the
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be an arc.
@@ -345,7 +341,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
 
 	/** Return the head node of the given edge.
-	 *  @param edge The edge, which is assumed to be an arc.
+	 *  @param edge The edge, which is assumed to be an instance of Arc.
 	 *  @return The node that is the head of the specified edge.
 	 */
 	public Object getHead(Object edge) {
@@ -353,7 +349,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
 
 	/** Return the tail node of the specified edge.
-	 *  @param edge The edge, which is assumed to be an arc.
+	 *  @param edge The edge, which is assumed to be an instance of Arc.
 	 *  @return The node that is the tail of the specified edge.
 	 */
 	public Object getTail(Object edge) {
@@ -369,144 +365,54 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    return true;
 	}
 
-
-	/** Append moml to the given buffer that disconnects a link with the
-	 *  given head, tail, and relation.  Names in the returned moml will be
-         *  relative to the iven container.
+	/** Remove the given edge and delete its associated relation.
+	 *  This class queues a new change request with the ptolemy model
+	 *  to make this modification.
+	 *  @param edge The edge, which is assumed to be an arc.
 	 */
-	private void _unlinkMoML(
-                NamedObj container,
-                StringBuffer moml,
-                NamedObj linkHead,
-                NamedObj linkTail,
-                Relation relation) throws Exception {
-	    // If the link is already connected, then create a bit of MoML
-	    // to unlink the link.
- 	    if(linkHead != null && linkTail != null) {
-		NamedObj head = (NamedObj)getSemanticObject(linkHead);
-		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-	        if(head instanceof State &&
-                        tail instanceof State) {
-		    // When we connect two states, we actually connect the
-		    // appropriate ports.
-		    State headState = (State)head;
-		    State tailState = (State)tail;
-		    ComponentPort headPort =
-			(ComponentPort)headState.incomingPort;
-		    ComponentPort tailPort =
-			(ComponentPort)tailState.outgoingPort;
-		    // Unlinking two ports with an anonymous relation.
-		    moml.append("<unlink port=\"" +
-                            headPort.getName(container) +
-                            "\" relation=\"" +
-                            relation.getName(container) +
-                            "\"/>\n");
-		    moml.append("<unlink port=\"" +
-                            tailPort.getName(container) +
-                            "\" relation=\"" +
-                            relation.getName(container) +
-                            "\"/>\n");
-		    moml.append("<deleteRelation name=\"" +
-                            relation.getName(container) +
-                            "\"/>\n");
-		} else {
-		    throw new RuntimeException(
-                            "Unlink failed: " +
-                            "Head = " + head + ", Tail = " + tail);
+	public void removeEdge(final Object edge) {
+	    final Arc link = (Arc)edge;
+	    Relation linkRelation = (Relation)link.getRelation();
+	    // This moml is parsed to execute the change
+	    final StringBuffer moml = new StringBuffer();
+            // Make the request in the context of the container.
+            final CompositeEntity container =
+                    (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+            moml.append(_deleteRelation(container, linkRelation));
+	    ChangeRequest request =
+		new MoMLChangeRequest(FSMGraphModel.this,
+                        container,
+                        moml.toString()) {
+                protected void _execute() throws Exception {
+                    super._execute();
+                    link.setHead(null);
+                    link.setTail(null);
+                    link.setRelation(null);
+                }
+            };
+
+	    // Handle what happens if the mutation fails.
+	    request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // Ignore... nothing we can do about it anyway.
 		}
-	    } else {
-		// No unlinking to do.
-	    }
+
+		public void changeExecuted(ChangeRequest change) {
+                    _linkSet.remove(edge);
+		}
+	    });
+	    container.requestChange(request);
 	}
 
-	/** Append moml to the given buffer that connects a link with the
-	 *  given head, tail, and relation.  Names in the returned moml will be
-         *  relative to the given container.  This may require adding an
-	 *  anonymous relation to the ptolemy model.  If this is required,
-	 *  the name of the relation <b>relative to the composite object
-         *  of this graph model</b> is returned.
-	 *  If no relation need be added, then
-	 *  null is returned.
-	 */
-	private String _linkMoML(
-                NamedObj container,
-                StringBuffer moml,
-                StringBuffer failmoml,
-                NamedObj linkHead,
-                NamedObj linkTail) throws Exception {
-	    if(linkHead != null && linkTail != null) {
-		NamedObj head = (NamedObj)getSemanticObject(linkHead);
-		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
-		if(head instanceof State &&
-                        tail instanceof State) {
-		    // When we connect two states, we actually connect the
-		    // appropriate ports.
-		    State headState = (State)head;
-		    State tailState = (State)tail;
-		    ComponentPort headPort =
-			   (ComponentPort)headState.incomingPort;
-		    ComponentPort tailPort =
-			   (ComponentPort)tailState.outgoingPort;
-                    CompositeEntity ptolemyModel = getPtolemyModel();
-		    // Linking two ports with a new relation.
-		    String relationName =
-			ptolemyModel.uniqueName("relation");
-                    // If the context is not the entity that we're editing,
-                    // then we need to set the context correctly.
-                    if(ptolemyModel != container) {
-                        String contextString = "<entity name=\"" +
-                            ptolemyModel.getName(container) +
-                            "\">\n";
-                        moml.append(contextString);
-                        failmoml.append(contextString);
-                    }
-		    // Note that we use no class so that we use the container's
-		    // factory method when this gets parsed
-		    moml.append("<relation name=\"" + relationName + "\"/>\n");
-		    moml.append("<link port=\"" +
-                            headPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
-		    moml.append("<link port=\"" +
-                            tailPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
-		    // Record moml so that we can blow away these
-		    // links in case we can't create them
-		    failmoml.append("<unlink port=\"" +
-                            headPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
-		    failmoml.append("<unlink port=\"" +
-                            tailPort.getName(ptolemyModel) +
-                            "\" relation=\"" + relationName +
-                            "\"/>\n");
-		    failmoml.append("<deleteRelation name=\"" +
-                            relationName +
-                            "\"/>\n");
-                    // close the context
-                    if(ptolemyModel != container) {
-                        moml.append("</entity>");
-                        failmoml.append("</entity>");
-                    }
-		    return relationName;
-		} else {
-		    throw new RuntimeException(
-                            "Link failed: " +
-                            "Head = " + head + ", Tail = " + tail);
-		}
-	    } else {
-		// No Linking to do.
-		return null;
-	    }
-	}
-
-	/** Connect the given edge to the given head node.
+	/** Connect the given edge to the given head node. If the specified
+         *  head is null, then any pre-existing relation associated with
+         *  this edge will be deleted.
 	 *  This class queues a new change request with the ptolemy model
 	 *  to make this modification.
 	 *  @param edge The edge, which is assumed to be an arc.
 	 *  @param head The new head for the edge, which is assumed to
-	 *  be an icon.
+	 *   be an icon.
 	 */
 	public void setHead(final Object edge, final Object newArcHead) {
 	    final Arc link = (Arc)edge;
@@ -522,27 +428,30 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
+                    (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
-	    String relationName = "";
+            // If there is a previous connection, remove it.
+            if (linkRelation != null) {
+                if (newArcHead == null) {
+                    // There will be no further connection, so just
+                    // delete the relation.
+                    moml.append(_deleteRelation(container, linkRelation));
+                } else {
+                    // There will be a further connection, so preserve
+                    // the relation.
+                    moml.append(_unlinkHead(container, linkHead, linkRelation));
+                }
+            }
 
-	    try {
-		// create moml to unlink any existing.
-		_unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
-
-		// create moml to make the new links.
-		relationName =
-		    _linkMoML(container, moml, failmoml,
-                            (NamedObj)newArcHead, linkTail);
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
-
+	    String relationName = null;
+            if (newArcHead != null) {
+                // create moml to make the new link.
+                relationName = _linkHead(container, moml, failmoml,
+                        (NamedObj)newArcHead, linkTail, linkRelation);
+            }
 	    moml.append("</group>\n");
 	    failmoml.append("</group>\n");
-
 	    final String relationNameToAdd = relationName;
-
 	    ChangeRequest request =
 		new MoMLChangeRequest(FSMGraphModel.this,
                         container,
@@ -551,12 +460,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     super._execute();
                     link.setHead(newArcHead);
                     if(relationNameToAdd != null) {
-                        ComponentRelation relation =
-                        (ComponentRelation)getPtolemyModel().getRelation(
+                        ComponentRelation relation = (ComponentRelation)
+                                getPtolemyModel().getRelation(
                                 relationNameToAdd);
                         link.setRelation(relation);
-                    } else {
-                        link.setRelation(null);
                     }
                 }
             };
@@ -590,12 +497,12 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    }
 		}
 	    });
-
 	    container.requestChange(request);
-
 	}
 
-	/** Connect the given edge to the given tail node.
+	/** Connect the given edge to the given tail node. If the specified
+         *  tail is null, then any pre-existing relation associated with
+         *  this edge will be deleted.
 	 *  This class queues a new change request with the ptolemy model
 	 *  to make this modification.
 	 *  @param edge The edge, which is assumed to be an arc.
@@ -618,20 +525,25 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
-	    String relationName = "";
+            // If there is a previous connection, remove it.
+            if (linkRelation != null) {
+                if (newArcTail == null) {
+                    // There will be no further connection, so just
+                    // delete the relation.
+                    moml.append(_deleteRelation(container, linkRelation));
+                } else {
+                    // There will be a further connection, so preserve
+                    // the relation.
+                    moml.append(_unlinkTail(container, linkTail, linkRelation));
+                }
+            }
 
-	    try {
-		// create moml to unlink any existing.
-		_unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
-
-		// create moml to make the new links.
-		relationName =
-		    _linkMoML(container, moml, failmoml,
-                            linkHead, (NamedObj)newArcTail);
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
-
+	    String relationName = null;
+            if (newArcTail != null) {
+                // create moml to make the new links.
+                relationName = _linkTail(container, moml, failmoml,
+                        linkHead, (NamedObj)newArcTail, linkRelation);
+            }
 	    moml.append("</group>\n");
 	    failmoml.append("</group>\n");
 
@@ -646,9 +558,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setTail(newArcTail);
                     if(relationNameToAdd != null) {
                         link.setRelation(
-                                getPtolemyModel().getRelation(relationNameToAdd));
-                    } else {
-                        link.setRelation(null);
+                                getPtolemyModel()
+                                .getRelation(relationNameToAdd));
                     }
                 }
             };
@@ -684,6 +595,256 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    });
 
 	    container.requestChange(request);
+	}
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
+
+	/** Return moml to remove a relation in the specified container.
+	 */
+	private String _deleteRelation (
+                NamedObj container,
+                Relation relation) {
+            return "<deleteRelation name=\""
+                    + relation.getName(container)
+                    + "\"/>\n";
+	}
+
+	/** Append moml to the given buffer that connects a link with the
+	 *  given head.  If the relation argument is non-null, then that
+         *  relation is used, and null is returned.  Otherwise, a new
+         *  relation is created, and its name is returned. Names in the
+         *  generated moml will be relative to the specified container.
+         *  The failmoml argument is also populated, but with MoML code
+         *  to execute if the link fails.  This disconnects any partially
+         *  constructed link.
+	 */
+	private String _linkHead (
+                NamedObj container,
+                StringBuffer moml,
+                StringBuffer failmoml,
+                NamedObj linkHead,
+                NamedObj linkTail,
+                Relation linkRelation) {
+	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+		if(head instanceof State && tail instanceof State) {
+		    // When we connect two states, we actually connect the
+		    // appropriate ports.
+		    State headState = (State)head;
+		    State tailState = (State)tail;
+		    ComponentPort headPort =
+			    (ComponentPort)headState.incomingPort;
+		    ComponentPort tailPort =
+			    (ComponentPort)tailState.outgoingPort;
+                    CompositeEntity ptolemyModel = getPtolemyModel();
+                    // If the context is not the entity that we're editing,
+                    // then we need to set the context correctly.
+                    if(ptolemyModel != container) {
+                        String contextString = "<entity name=\"" +
+                            ptolemyModel.getName(container) +
+                            "\">\n";
+                        moml.append(contextString);
+                        failmoml.append(contextString);
+                    }
+                    boolean createdNewRelation = false;
+                    String relationName = null;
+                    if (linkRelation != null) {
+                        // Pre-existing relation. Use it.
+                        relationName = linkRelation.getName(ptolemyModel);
+                    } else {
+                        createdNewRelation = true;
+                        // Linking two ports with a new relation.
+                        relationName = ptolemyModel.uniqueName("relation");
+                        // Note that we specify no class so that we use the
+                        // container's factory method when this gets parsed
+                        moml.append("<relation name=\""
+                                + relationName
+                                + "\"/>\n");
+		        moml.append("<link port=\""
+                                + tailPort.getName(ptolemyModel)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+		    moml.append("<link port=\""
+                            + headPort.getName(ptolemyModel)
+                            + "\" relation=\""
+                            + relationName
+                            + "\"/>\n");
+		    // Record moml so that we can blow away these
+		    // links in case we can't create them
+		    failmoml.append("<unlink port=\"" +
+                            headPort.getName(ptolemyModel) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
+                    if (linkRelation == null) {
+		        failmoml.append("<unlink port=\""
+                                + tailPort.getName(ptolemyModel)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+		        failmoml.append("<deleteRelation name=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+                    // close the context
+                    if(ptolemyModel != container) {
+                        moml.append("</entity>");
+                        failmoml.append("</entity>");
+                    }
+                    if (createdNewRelation) {
+                        return relationName;
+                    } else {
+                        return null;
+                    }
+		} else {
+		    throw new RuntimeException(
+                            "Attempt to create a link between non-states: " +
+                            "Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No Linking to do.
+		return null;
+	    }
+	}
+
+	/** Append moml to the given buffer that connects a link with the
+	 *  given tail.  If the relation argument is non-null, then that
+         *  relation is used, and null is returned.  Otherwise, a new
+         *  relation is created, and its name is returned. Names in the
+         *  generated moml will be relative to the specified container.
+         *  The failmoml argument is also populated, but with MoML code
+         *  to execute if the link fails.  This disconnects any partially
+         *  constructed link.
+	 */
+	private String _linkTail (
+                NamedObj container,
+                StringBuffer moml,
+                StringBuffer failmoml,
+                NamedObj linkHead,
+                NamedObj linkTail,
+                Relation linkRelation) {
+            // NOTE: This method is almost identical to the previous
+            // one, but just enough different that it isn't obvious
+            // how to combine them into one method.
+	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+		if(head instanceof State && tail instanceof State) {
+		    // When we connect two states, we actually connect the
+		    // appropriate ports.
+		    State headState = (State)head;
+		    State tailState = (State)tail;
+		    ComponentPort headPort =
+			    (ComponentPort)headState.incomingPort;
+		    ComponentPort tailPort =
+			    (ComponentPort)tailState.outgoingPort;
+                    CompositeEntity ptolemyModel = getPtolemyModel();
+                    // If the context is not the entity that we're editing,
+                    // then we need to set the context correctly.
+                    if(ptolemyModel != container) {
+                        String contextString = "<entity name=\""
+                                + ptolemyModel.getName(container)
+                                + "\">\n";
+                        moml.append(contextString);
+                        failmoml.append(contextString);
+                    }
+                    boolean createdNewRelation = false;
+                    String relationName = null;
+                    if (linkRelation != null) {
+                        // Pre-existing relation. Use it.
+                        relationName = linkRelation.getName(ptolemyModel);
+                    } else {
+                        createdNewRelation = true;
+                        // Linking two ports with a new relation.
+                        relationName = ptolemyModel.uniqueName("relation");
+                        // Note that we specify no class so that we use the
+                        // container's factory method when this gets parsed
+                        moml.append("<relation name=\""
+                                + relationName
+                                + "\"/>\n");
+		        moml.append("<link port=\""
+                                + headPort.getName(ptolemyModel)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+		    moml.append("<link port=\""
+                            + tailPort.getName(ptolemyModel)
+                            + "\" relation=\""
+                            + relationName
+                            + "\"/>\n");
+		    // Record moml so that we can blow away these
+		    // links in case we can't create them
+		    failmoml.append("<unlink port=\"" +
+                            tailPort.getName(ptolemyModel) +
+                            "\" relation=\"" + relationName +
+                            "\"/>\n");
+                    if (linkRelation == null) {
+		        failmoml.append("<unlink port=\""
+                                + headPort.getName(ptolemyModel)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+		        failmoml.append("<deleteRelation name=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+                    // close the context
+                    if(ptolemyModel != container) {
+                        moml.append("</entity>");
+                        failmoml.append("</entity>");
+                    }
+                    if (createdNewRelation) {
+                        return relationName;
+                    } else {
+                        return null;
+                    }
+		} else {
+		    throw new RuntimeException(
+                            "Attempt to create a link between non-states: " +
+                            "Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No Linking to do.
+		return null;
+	    }
+	}
+
+	/** Return moml to unlink a relation with the given head in the
+         *  specified container.
+	 */
+	private String _unlinkHead (
+                NamedObj container,
+                NamedObj linkHead,
+                Relation relation) {
+            NamedObj head = (NamedObj)getSemanticObject(linkHead);
+            State headState = (State)head;
+            ComponentPort headPort = (ComponentPort)headState.incomingPort;
+            return "<unlink port=\""
+                    + headPort.getName(container)
+                    + "\" relation=\""
+                    + relation.getName(container)
+                    + "\"/>\n";
+	}
+
+	/** Return moml to unlink a relation with the given tail in the
+         *  specified container.
+	 */
+	private String _unlinkTail(
+                NamedObj container,
+                NamedObj linkTail,
+                Relation relation) {
+            NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+            State tailState = (State)tail;
+            ComponentPort tailPort = (ComponentPort)tailState.outgoingPort;
+            return "<unlink port=\""
+                    + tailPort.getName(container)
+                    + "\" relation=\""
+                    + relation.getName(container)
+                    + "\"/>\n";
 	}
     }
 
@@ -779,27 +940,23 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     /** The model for an icon that represent states.
      */
     public class StateModel extends PtolemyNodeModel {
-	/**
-	 * Return the graph parent of the given node.
-	 * @param node The node, which is assumed to be an icon contained in
-	 * this graph model.
-	 * @return The container of the icon's container, which should
-	 * be the root of this graph model.
+
+	/** Return the graph parent of the given node.
+	 *  @param node The node, which is assumed to be a location.
+	 *  @return The container of the icon's container, which should
+	 *   be the root of this graph model.
 	 */
 	public Object getParent(Object node) {
 	    return ((Location)node).getContainer().getContainer();
 	}
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * This method first ensures that there is an arc
-	 * object for every link.
-	 * The iterator is constructed by
-	 * removing any arcs that do not have the given node as head.
-	 * @param node The node, which is assumed to be an icon contained in
-	 * this graph model.
-	 * @return An iterator of Arc objects, all of which have
-	 * the given node as their head.
+	/** Return an iterator over the edges coming into the given node.
+	 *  This method first ensures that there is an arc
+	 *  object for every link. The iterator is constructed by
+	 *  removing any arcs that do not have the given node as head.
+	 *  @param node The node, which is assumed to be a location.
+	 *  @return An iterator of Arc objects, all of which have
+	 *   the given node as their head.
 	 */
 	public Iterator inEdges(Object node) {
 	    Location icon = (Location)node;
@@ -817,20 +974,16 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    stateLinkList.add(link);
 		}
 	    }
-
 	    return stateLinkList.iterator();
 	}
 
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * This method first ensures that there is an arc
-	 * object for every link.
-	 * The iterator is constructed by
-	 * removing any arcs that do not have the given node as tail.
-	 * @param node The node, which is assumed to be an icon contained in
-	 * this graph model.
-	 * @return An iterator of Arc objects, all of which have
-	 * the given node as their tail.
+	/** Return an iterator over the edges coming into the given node.
+	 *  This method first ensures that there is an arc
+	 *  object for every link. The iterator is constructed by
+	 *  removing any arcs that do not have the given node as tail.
+	 *  @param node The node, which is assumed to be a location.
+	 *  @return An iterator of Arc objects, all of which have
+	 *   the given node as their tail.
 	 */
 	public Iterator outEdges(Object node) {
 	    Location icon = (Location)node;
@@ -852,10 +1005,25 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
 
 	/** Remove the given node from the model.  The node is assumed
-	 *  to be an icon.
+	 *  to be a Location belonging to an entity.
 	 */
 	public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = (NamedObj)((Location)node).getContainer();
+
+            // First remove all the in and out edges.
+            // This isn't done automatically by the Ptolemy kernel, because
+            // the kernel only removes the links to the relations. The
+            // relations themselves are left in place.  But in the FSM
+            // domain, it makes no sense to have a relation with only one
+            // link to it.  So we remove the relations.
+            Iterator inEdges = inEdges(node);
+            while(inEdges.hasNext()) {
+                disconnectEdge(eventSource, inEdges.next());
+            }
+            Iterator outEdges = outEdges(node);
+            while(outEdges.hasNext()) {
+                disconnectEdge(eventSource, outEdges.next());
+            }
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.

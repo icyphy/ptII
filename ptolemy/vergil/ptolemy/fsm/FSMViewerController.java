@@ -32,8 +32,8 @@ package ptolemy.vergil.ptolemy.fsm;
 
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
-import diva.graph.EdgeController;
 import diva.graph.GraphPane;
+import diva.graph.EdgeController;
 import diva.graph.NodeController;
 
 import ptolemy.actor.gui.Configuration;
@@ -102,8 +102,7 @@ public class FSMViewerController extends PtolemyGraphController {
                 "Node with unknown semantic object: " + object);
     }
 
-    /**
-     * Return the edge controller appropriate for the given node.
+    /** Return the edge controller appropriate for the given node.
      */
     public EdgeController getEdgeController(Object edge) {
         return _transitionController;

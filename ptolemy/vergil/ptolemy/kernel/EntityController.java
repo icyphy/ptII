@@ -236,7 +236,7 @@ public class EntityController extends AttributeController {
                 portFigure.translate(x, y);
 
                 // If the port contains an attribute named "_showName",
-                // the render the name of the port as well.
+                // then render the name of the port as well.
                 if (port.getAttribute("_showName") != null) {
                     LabelFigure label = null;
                     if (port.isOutput() && port.isInput()) {
