@@ -122,6 +122,10 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/python/copyright.htm");
 
         _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.x10.X10Interface",
+                "ptolemy/actor/lib/x10/x10-copyright.htm");
+
+        _addIfPresent(copyrightsMap,
                 "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-license.html");
 
