@@ -188,6 +188,38 @@ test TotallyOrderedSet-6.3 { take the first element } {
 } {2 0.2 3.0 999.3}
 
 ######################################################################
+####  remove all less than
+#
+test TotallyOrderedSet-6.4 { remove all less than } {
+    $toset insert $p7
+    $toset insert $p8
+    $toset insert $p9
+    $toset insert $p10
+    $toset insert $p11
+    $toset insert $p12
+    $toset insert $p13
+    $toset insert $p14
+    $toset insert $p15
+    #now we have: 3.0 8.9 50.0 999.1 999.3 999.8 1001.0 1002.1 1002.2 
+    # 1002.3 
+    set l1 [java::new {Double double} 1000.0 ]
+    $toset removeAllLessThan $l1
+    list [$toset size] [$toset first] \
+            [$toset at 1]
+} {4 1001.0 1002.1}
+
+test TotallyOrderedSet-6.4 { remove all (strictly) less than } {
+    #now we have:  1001.0 1002.1 1002.2 1002.3 
+    set l2 [java::new {Double double} 1002.1 ]
+    $toset removeAllLessThan $l2
+    list [$toset size] [$toset first] \
+            [$toset at 1]
+} {3 1002.1 1002.2}
+
+
+
+
+######################################################################
 #### Clear the set.
 #
 test TotallyOrderedSet-7.1 { clear the set } {
