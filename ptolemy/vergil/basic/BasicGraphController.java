@@ -30,41 +30,42 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import java.awt.event.ActionEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import diva.canvas.Figure;
+import diva.canvas.event.EventLayer;
+import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
 import diva.graph.GraphException;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
-
+import diva.gui.toolbox.MenuFactory;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import ptolemy.vergil.toolbox.FigureAction.SourceType;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphController

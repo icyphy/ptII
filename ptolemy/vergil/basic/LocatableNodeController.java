@@ -35,20 +35,17 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.TerminalFigure;
-import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.interactor.DragInteractor;
+import diva.canvas.interactor.Interactor;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
-import diva.graph.GraphViewEvent;
 import diva.graph.NodeInteractor;
-
-import java.awt.Color;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.vergil.toolbox.SnapConstraint;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController

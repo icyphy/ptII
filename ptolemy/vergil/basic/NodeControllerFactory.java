@@ -30,12 +30,8 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.IconController;
-import ptolemy.kernel.util.*;
-
 import diva.graph.GraphController;
-import diva.graph.NodeController;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// NodeControllerFactory

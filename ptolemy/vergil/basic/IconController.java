@@ -30,19 +30,14 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.icon.XMLIcon;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.icon.XMLIcon;
-import ptolemy.moml.Location;
-
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.Location;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.icon.XMLIcon;
 
 import java.util.Iterator;
 import java.util.List;

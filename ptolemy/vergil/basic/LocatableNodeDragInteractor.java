@@ -30,33 +30,23 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.basic.LocatableNodeController;
-import ptolemy.vergil.basic.BasicGraphController;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.moml.*;
-
-import diva.graph.*;
 import diva.canvas.Figure;
 import diva.canvas.TransformContext;
-import diva.canvas.connector.Connector;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.DragInteractor;
-import diva.canvas.interactor.QuadrantConstraint;
-import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeDragInteractor;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.*;
+import ptolemy.vergil.toolbox.SnapConstraint;
 
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import javax.swing.SwingConstants;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.vergil.toolbox.SnapConstraint;
 // FIXME: Dependency on subpackage shouldn't be here.
-import ptolemy.vergil.basic.BasicGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor

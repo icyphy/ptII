@@ -30,13 +30,11 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.basic.LocatableNodeController;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.gui.MessageHandler;
-
 import diva.graph.GraphController;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.*;
+import ptolemy.vergil.toolbox.FigureAction;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;

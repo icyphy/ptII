@@ -30,28 +30,23 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.kernel.AttributeNodeModel;
-import ptolemy.vergil.kernel.CompositeEntityModel;
 import diva.graph.GraphEvent;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.NodeModel;
 
 import java.util.List;
-
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.kernel.AttributeNodeModel;
+import ptolemy.vergil.kernel.CompositeEntityModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractBasicGraphModel

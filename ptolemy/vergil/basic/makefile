@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/basic
 
-DIRS =
+DIRS =		img
 
 # Root of the Java directory
 ROOT =		../../..
@@ -49,17 +49,17 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ParameterizedNodeController.java \
-	NodeControllerFactory.java \
-	LocatableNodeDragInteractor.java \
 	AbstractBasicGraphModel.java \
-	NamedObjNodeModel.java \
-	NamedObjController.java \
-	LocatableNodeController.java \
-	EditorDropTarget.java \
-	IconController.java \
 	BasicGraphController.java \
 	BasicGraphFrame.java \
+	EditorDropTarget.java \
+	IconController.java \
+	LocatableNodeController.java \
+	LocatableNodeDragInteractor.java \
+	NamedObjController.java \
+	NamedObjNodeModel.java \
+	NodeControllerFactory.java \
+	ParameterizedNodeController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -70,7 +70,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
