@@ -1390,9 +1390,10 @@ public class PlotBox extends Panel {
                 "   F: fill plot\n" +
                 "   H or ?: print help message (this message)\n" +
                 "   Cntr-D or Q: quit\n" +
+                _usage() +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                null, null, 13, 60, TextArea.SCROLLBARS_NONE);
+                null, null, 24, 60, TextArea.SCROLLBARS_NONE);
         message.setTitle("About Ptolemy Plot Package");
     }
 
@@ -1548,6 +1549,24 @@ public class PlotBox extends Panel {
         if (!_grid) output.println("Grid: off");
         if (_wrap) output.println("Wrap: on");
         if (!_usecolor) output.println("Color: off");
+    }
+
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected String _usage() {
+        return "File Directives:" +
+                "   XLabel: string\n" +
+                "   YLabel: string\n" +
+                "   XRange: min, max\n" +
+                "   YRange: min, max\n" +
+                "   XTicks: label position, label position\n" +
+                "   YTicks: label position, label position\n" +
+                "   XLog: on|off\n" +
+                "   YLog: on|off\n" +
+                "   Grid: on|off\n" +
+                "   Color: on|off\n" +
+                "   Wrap: on|off\n";
     }
 
     ///////////////////////////////////////////////////////////////////
