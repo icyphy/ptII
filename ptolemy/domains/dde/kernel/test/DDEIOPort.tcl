@@ -50,200 +50,95 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test DDEIOPort-2.1 {Send/receive multiple Tokens across one channel} {
+test DDEIOPort-2.1 {Check send()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
+    set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
+
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
-    
-    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
-    $portA setOutput true
-    
-    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
-    $portB setInput true
-    
-    set rel [$topLevel connect $portA $portB "rel"]
-    
-    $dir initialize
-    
-    $actorB setPriorities
-    
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
-    
-    $portA send 0 $t1 
-    $portA send 0 $t2 
-    $portA send 0 $t3 
-    
-    set t4 [$actorB getNextToken]
-    set t5 [$actorB getNextToken]
-    set t6 [$actorB getNextToken]
 
-    list [expr {$t1 == $t4} ] [expr {$t2 == $t5} ] [expr {$t3 == $t6} ] 
-} {1 1 1}
+    set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
+    set inPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
+    set rel [$topLevel connect $outPort $inPort "rel"]
 
-######################################################################
-####
-#
-test DDEIOPort-2.2 {Send/receive tokens at different times along two channels} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
-    $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
-    
-    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
-    $portA setOutput true
-    
-    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
-    $portB setOutput true
-    
-    set portC1 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC1"]
-    $portC1 setInput true
-    
-    set portC2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC2"]
-    $portC2 setInput true
-    
-    set rel1 [$topLevel connect $portA $portC1 "rel1"]
-    set rel2 [$topLevel connect $portB $portC2 "rel2"]
-    
-    $dir initialize
-    
-    $actorC setPriorities
-    
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
-    set t4 [java::new ptolemy.data.Token]
-    set endToken [java::new ptolemy.data.Token]
-    
-    $portA send 0 $t1 10.0
-    $portB send 0 $t2 5.0
-    $portA send 0 $t3 20.0
-    $portB send 0 $t4 25.0
-    $portA send 0 $endToken 1000.0
-    $portB send 0 $endToken 1000.0
-    
-    set t5 [$actorC getNextToken]
-    set t6 [$actorC getNextToken]
-    set t7 [$actorC getNextToken]
-    set t8 [$actorC getNextToken]
+    set tok [java::new ptolemy.data.Token]
 
-    list [expr {$t5 == $t2} ] [expr {$t6 == $t1} ] [expr {$t7 == $t3} ] [expr {$t8 == $t4} ] 
-} {1 1 1 1}
+    $inPort createReceivers
 
-######################################################################
-####
-#
-test DDEIOPort-2.3 {Send/receive tokens at identical times with different priorities along two channels} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
-    $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
-    
-    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
-    $portA setOutput true
-    
-    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
-    $portB setOutput true
-    
-    set portC1 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC1"]
-    $portC1 setInput true
-    
-    set portC2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC2"]
-    $portC2 setInput true
-    $portC2 setPriority 10
-    
-    set rel1 [$topLevel connect $portA $portC1 "rel1"]
-    set rel2 [$topLevel connect $portB $portC2 "rel2"]
-    
-    $dir initialize
-    
-    $actorC setPriorities
-    
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
-    set t4 [java::new ptolemy.data.Token]
-    set endToken [java::new ptolemy.data.Token]
-    
-    $portA send 0 $t1 5.0
-    $portB send 0 $t2 5.0
-    $portA send 0 $t3 
-    $portB send 0 $t4 
-    $portA send 0 $endToken 1000.0
-    $portB send 0 $endToken 1000.0
-    
-    set t5 [$actorC getNextToken]
-    set t6 [$actorC getNextToken]
-    set t7 [$actorC getNextToken]
-    set t8 [$actorC getNextToken]
+    set rcvrs [$inPort getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs get {0 0}]]
 
-    list [expr {$t5 == $t2} ] [expr {$t6 == $t4} ] [expr {$t7 == $t1} ] [expr {$t8 == $t3} ] 
-} {1 1 1 1}
+    $rcvr setCapacity 1
+
+    set hasRoom [$rcvr hasRoom]
+    $outPort send 0 $tok 5.0
+    set noRoom [$rcvr hasRoom]
+
+    list $hasRoom $noRoom
+
+} {1 0}
 
 ######################################################################
 ####
 #
 test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
+    set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
+    set act3 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act3"] 
+
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
-    
-    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
-    $portA setOutput true
-    $portA setMultiport true
-    
-    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
-    $portB setInput true
-    
-    set portC [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC"]
-    $portC setInput true
-    
-    set rel1 [$topLevel connect $portA $portB "rel1"]
-    set rel2 [$topLevel connect $portA $portC "rel2"]
-    
+
+    set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
+    set inPort2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
+    set inPort3 [java::new ptolemy.domains.dde.kernel.DDEIOPort $act3 "input" true false]
+    $outPort setMultiport true
+
+    set rel2 [$topLevel connect $outPort $inPort2 "rel2"]
+    set rel3 [$topLevel connect $outPort $inPort3 "rel3"]
+
     $dir initialize
+
+    set rcvrs2 [$inPort2 getReceivers]
+    set rcvr2 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs2 get {0 0}]]
+    set rcvrs3 [$inPort3 getReceivers]
+    set rcvr3 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs3 get {0 0}]]
+
+    set tok [java::new ptolemy.data.Token]
+
+    $rcvr2 setCapacity 1
+    $rcvr3 setCapacity 1
+
+    set val 1
+
+    if { [$rcvr2 hasRoom] != 1 } {
+	set val 0
+    }
+    if { [$rcvr3 hasRoom] != 1 } {
+	set val 0
+    }
+
+    $outPort broadcast $tok 5.0
+
+    if { [$rcvr2 hasRoom] != 0 } {
+	set val 0
+    }
+    if { [$rcvr3 hasRoom] != 0 } {
+	set val 0
+    }
+
+    list $val [$rcvr2 getLastTime] [$rcvr3 getLastTime]
+
+} {1 5.0 5.0}
+
+
+
+
     
-    $actorB setPriorities
-    $actorC setPriorities
-    
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set endToken [java::new ptolemy.data.Token]
-    
-    $portA broadcast $t1 5.0
-    $portA broadcast $t2 
-    $portA broadcast $endToken 1000.0
-    
-    set t3 [$actorB getNextToken]
-    set t4 [$actorB getNextToken]
-    set t5 [$actorB getNextToken]
-    
-    set t6 [$actorC getNextToken]
-    set t7 [$actorC getNextToken]
-    set t8 [$actorC getNextToken]
-
-    list [expr {$t3 == $t1} ] [expr {$t4 == $t2} ] [expr {$t5 == $endToken} ] [expr {$t6 == $t1} ] [expr {$t7 == $t2} ] [expr {$t8 == $endToken} ]
-} {1 1 1 1 1 1}
-
-
-
-
-
-
 
 
 
