@@ -77,7 +77,7 @@ public class SDFDirector extends Director {
         super(sdfDirector);
     }
 
-    /** Generatre the code for the firing of actors according to the SDF
+    /** Generate the code for the firing of actors according to the SDF
      *  schedule.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the SDF director does not have an
@@ -157,6 +157,8 @@ public class SDFDirector extends Director {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+            // FIXME: Should not just be SampleDelay actor.
+            // Should be all actors that have initial production rate > 0.
             if (actor instanceof SampleDelay) {
                 ArrayToken initialTokens = (ArrayToken) 
                         ((SampleDelay) actor).initialOutputs.getToken();
@@ -172,8 +174,16 @@ public class SDFDirector extends Director {
                     CodeGeneratorHelper sinkActorHelper
                             = (CodeGeneratorHelper) _getHelper
                             ((NamedObj) sinkActor);
-                    sinkActorHelper.setOffset(sinkChannel.port,
-                            sinkChannel.channelNumber, NumberOfInitialTokens);
+                    // We do not update the offsets of the sink channels.
+                    // The offsets of sink channels are the offset to which
+                    // tokens are read from the the buffer of the SampleDelay
+                    // (consumed by the sink actor).
+                    // The offset of the SampleDelay output (also = offset of 
+                    // the input?) is the offset to which (initial) tokens are
+                    // pushed into the receivers of the sink actors.
+                    
+                    //sinkActorHelper.setOffset(sinkChannel.port,
+                      //      sinkChannel.channelNumber, NumberOfInitialTokens);
                 }
             }
         }
