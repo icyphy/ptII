@@ -93,6 +93,13 @@ public class DERegister extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort clock;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
@@ -122,9 +129,4 @@ public class DERegister extends DEActor {
 
     // the last token seen in the input port.
     private Token _lastInput;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
-    public DEIOPort clock;
 }
