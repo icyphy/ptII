@@ -35,7 +35,7 @@ import ptolemy.component.data.TupleToken;
 //////////////////////////////////////////////////////////////////////////
 //// Method
 /**
-   interface for the port representing a method call.
+   Interface for the port representing a method call.
 
    @author Yang Zhao
    @version $Id$
@@ -45,5 +45,9 @@ import ptolemy.component.data.TupleToken;
 */
 
 public interface Method {
-    public TupleToken call(TupleToken token); 
+
+    /** Call the method associated with this port with the specified
+     *  arguments.
+     */
+    public TupleToken call(TupleToken arguments); 
 }

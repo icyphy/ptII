@@ -1,4 +1,4 @@
-/* Interface for defining how an object can be invoked.
+/* Interface with basic method for initializing and executing components.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -32,15 +32,20 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// Component
 /**
-   This interface defines the interface for component. It contains a sub
-   set of methods of the executable interface, i.e. it is more coarse 
-   grained.
-   FIXME: should this only keep initialize or preinitialize?
-   should it containe the fire method?
+   This interface defines the basic methods for initializing and
+   executing components. The intended usage is that preintialize()
+   is invoked exactly once in an execution of a model, before any
+   static analysis such as scheduling or type resolution is done.
+   The initialize() method may be invoked more than once to
+   initialize() a component, and it is invoked after static analysis.
+   The run() method may be invoked multiple times after initialize().
+   The wrapup() method is invoked exactly once at the end of an
+   execution of a model. It is important that an implementor ensure
+   that wrapup() is called even if an exception occurs.
 
-   @author Yang Zhao
+   @author Yang Zhao and Edward A. Lee
    @version $Id$
-   @since Ptolemy II 4.0
+   @since Ptolemy II 5.0
    @Pt.ProposedRating yellow (ellen_zh)
    @Pt.AcceptedRating red (davisj)
 */
@@ -49,36 +54,34 @@ public interface Component {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Begin execution of the component.  This is invoked exactly once
-     *  after the preinitialization phase.  Since type resolution is done
-     *  in the preinitialization phase, along with topology changes that
-     *  may be requested by higher-order function actors, an actor
-     *  can produce output data and schedule events in the initialize()
-     *  method.
-     *
-     *  @exception IllegalActionException If execution is not permitted.
+    /** Initialize the component.  This is invoked once after
+     *  preinitialize() and again whenever the component needs
+     *  to be reinitialized.
+     *  @exception IllegalActionException If initialization
+     *   cannot be completed.
      */
     public void initialize() throws IllegalActionException;
 
-
-    /** This method should be invoked exactly once per execution
-     *  of a model, before any of these other methods are invoked.
-     *  For actors, this is invoked prior to type resolution and
-     *  may trigger changes in the topology, changes in the
-     *  type constraints.
-     *
-     *  @exception IllegalActionException If initializing is not permitted.
+    /** Preinitialize the component. This is invoked exactly
+     *  once per execution of a model, before any other methods
+     *  in this interface are invoked.
+     *  @exception IllegalActionException If preinitialization
+     *   cannot be completed.
      */
     public void preinitialize() throws IllegalActionException;
+    
+    /** Execute the component. This is invoked after preinitialize()
+     *  and initialize(), and may be invoked repeatedly.
+     * @throws IllegalActionException If the run cannot be completed.
+     */
+    public void run() throws IllegalActionException;
 
-
-    /** This method is invoked exactly once per execution
-     *  of an application.  None of the other action methods should be
-     *  be invoked after it.  It finalizes an execution, typically closing
-     *  files, displaying final results, etc.  When this method is called,
-     *  no further execution should occur.
-     *
-     *  @exception IllegalActionException If wrapup is not permitted.
+    /** Wrap up an execution. This method is invoked exactly once
+     *  per execution of a model. It finalizes an execution, typically
+     *  closing files, displaying final results, etc. If any other
+     *  method from this interface is invoked after this, it must
+     *  begin with preinitialize().
+     *  @exception IllegalActionException If wrapup fails.
      */
     public void wrapup() throws IllegalActionException;
 }

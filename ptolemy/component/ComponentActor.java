@@ -240,6 +240,16 @@ public class ComponentActor extends TypedCompositeActor
         super.preinitialize();
     }
     
+    /** Execute the component, which in this base class means doing
+     *  nothing and returning immediately.
+     *  This is invoked after preinitialize()
+     *  and initialize(), and may be invoked repeatedly.
+     *  @throws IllegalActionException If the run cannot be completed
+     *   (not thrown in this base class).
+     */
+    public void run() throws IllegalActionException {
+    }
+
     /* (non-Javadoc)
      * @see ptolemy.kernel.Component#initialize()
      */
@@ -272,7 +282,7 @@ public class ComponentActor extends TypedCompositeActor
             if(iter == Executable.COMPLETED) {
                 return output.call();
             } else {
-                return TupleToken._VOIDTUPLE;
+                return TupleToken.VOID;
             } 
         } catch (Exception ex) {
             // this shouldn't happen.
@@ -429,11 +439,11 @@ public class ComponentActor extends TypedCompositeActor
                         Token[] tokens = new Token[1];
                         tokens[0] = t;
                         Iterator ports = this.deepConnectedPortList().iterator();
-                        MCPort port = (MCPort) ports.next();
+                        MethodCallPort port = (MethodCallPort) ports.next();
                         //System.out.println("get the connected method call port");
                         return port.call(new TupleToken(tokens));
                     } else {
-                        return TupleToken._VOIDTUPLE;
+                        return TupleToken.VOID;
                     }
                     }
                 } catch (Exception ex) {
@@ -442,9 +452,9 @@ public class ComponentActor extends TypedCompositeActor
                 }
             } else {
                 // The port provided should over write this method.
-                return TupleToken._VOIDTUPLE;
+                return TupleToken.VOID;
             }
-            return TupleToken._VOIDTUPLE;
+            return TupleToken.VOID;
         
         }
         
@@ -462,7 +472,7 @@ public class ComponentActor extends TypedCompositeActor
                 }
                 return _executeInside();
             } else {
-                return TupleToken._VOIDTUPLE;
+                return TupleToken.VOID;
             }
         }
         

@@ -1,4 +1,4 @@
-/* A receiver for use in the wireless domain.
+/* A port for use in component domains.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// MCPort
+//// MethodCallPort
 /**
    A port for use in the component domain.
 
@@ -51,13 +51,13 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating red(cxh)
 */
 
-public class MCPort extends ComponentPort {
+public class MethodCallPort extends ComponentPort {
 
     /** Construct a port in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
      */
-    public MCPort() {
+    public MethodCallPort() {
         super();
     }
 
@@ -68,7 +68,7 @@ public class MCPort extends ComponentPort {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
      */
-    public MCPort(Workspace workspace) {
+    public MethodCallPort(Workspace workspace) {
         super(workspace);
     }
 
@@ -85,7 +85,7 @@ public class MCPort extends ComponentPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public MCPort(ComponentEntity container, String name)
+    public MethodCallPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -105,11 +105,11 @@ public class MCPort extends ComponentPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public MCPort(ComponentEntity container, String name,
+    public MethodCallPort(ComponentEntity container, String name,
             boolean isProvidedPort)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-        _isProviedPort = isProvidedPort;
+        _isProvider = isProvidedPort;
     }
 
 
@@ -127,32 +127,76 @@ public class MCPort extends ComponentPort {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        MCPort newObject = (MCPort)super.clone(workspace);
+        MethodCallPort newObject = (MethodCallPort)super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);
         return newObject;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to attach an empty properties token.
-     *  @param token The token to put.
-     *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
+    /** Call the method associated with this port with the specified
+     *  arguments.
+     *  <p>
+     *  If this port is a provider, as indicated by @link{#isProvider()},
+     *  then this method returns TupleToken.VOID, an empty tuple token.
+     *  Subclasses should override this method to perform whatever
+     *  functionality is associated with this method.
+     *  <p>
+     *  If this port is not a provider of this method, then this method
+     *  delegates the call to all ports to which this port is
+     *  deeply connected that are providers.  The order in which those
+     *  calls are performed is determined by the order in which connections
+     *  are made. The returned token is a concatenation of the returned
+     *  values of all the called methods. If there is nothing connected,
+     *  then this method will return TupleToken.VOID.
+     *  @param arguments The arguments to the method.
+     *  @see #isProvider()
+     *  @see TupleToken.VOID
      */
-    public synchronized TupleToken call(TupleToken token) {
-        if (!isProvided()) {
+    public synchronized TupleToken call(TupleToken arguments) {
+        if (!isProvider()) {
             Iterator ports = this.deepConnectedPortList().iterator();
-            MCPort port = (MCPort) ports.next();
-            return port.call(token);
-        } else {
-            // The port provided should over write this method.
-            return TupleToken._VOIDTUPLE;
+            TupleToken result = TupleToken.VOID;
+            while (ports.hasNext()) {
+                MethodCallPort port = (MethodCallPort) ports.next();
+                if (port.isProvider()) {
+                    result = TupleToken.merge(result, port.call(arguments));
+                }
+            }
+            return result;
         }
-        
+        // The port provided should over write this method.
+        return TupleToken.VOID;
     }
     
-
-    public boolean isProvided() {
-        return _isProviedPort;
+    /** Return true if this port provides the method,
+     *  vs. requires the method.  By default, this method returns
+     *  false, meaning that the port requires rather than provides
+     *  the method.
+     *  @see #setProvider(boolean)
+     *  @see #MethodCallPort(ComponentEntity, String, boolean)
+     *  @see #call(TupleToken)
+     *  @return True if this port provides the method.
+     */
+    public boolean isProvider() {
+        return _isProvider;
     }
-    private boolean _isProviedPort = false;
+
+    /** Call with argument true to specify that this port provides the method,
+     *  and call with argument false to specify that it requires the method.
+     *  @see #isProvider()
+     *  @see #MethodCallPort(ComponentEntity, String, boolean)
+     *  @see #call(TupleToken)
+     *  @return True if this port provides the method.
+     */
+    public void setProvider(boolean isProvider) {
+        _isProvider = isProvider;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** Indicator of whether this port provides the method. */
+    private boolean _isProvider = false;
 }

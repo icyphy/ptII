@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.component.data;
 
 import ptolemy.component.data.type.TupleType;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,14 +41,14 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (cxh)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class TupleToken extends Token {
-    /** Construct an TupleToken with the specified token array. 
-     *  @param value An array of tokens.
-     *  @exception IllegalActionException FIXME...
+    
+    /** Construct a TupleToken with the specified token array as its value.
+     *  @param value The value.
      */
     public TupleToken(Token[] value) {
         _initialize(value);
@@ -57,6 +56,7 @@ public class TupleToken extends Token {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Return an array of tokens populated with the contents of this
      *  array token.  The returned array is a copy so the caller is
      *  free to modify it.
@@ -76,12 +76,12 @@ public class TupleToken extends Token {
         return result;
     }
 
-    /** Return true if the class of the argument is ArrayToken and of
-     *  the same length and the elements are equal to that of this
+    /** Return true if the class of the argument is TupleToken and it
+     *  has the same length and the elements are equal to that of this
      *  token.  Equality of the contained elements is tested by their
      *  equals() method.
-     *  @param object An instance of Object.
-     *  @return True if the argument is an array token of the same length
+     *  @param object The object to compare with.
+     *  @return True if the argument is a tuple token of the same length
      *   and the elements are equal to that of this token.
      */
     public boolean equals(Object object) {
@@ -96,7 +96,7 @@ public class TupleToken extends Token {
             return false;
         }
 
-        Token[] array = tupleArgument.tupleValue();
+        Token[] array = tupleArgument._value;
         for (int i = 0; i < length; i++) {
             if ( !_value[i].equals(array[i])) {
                 return false;
@@ -109,7 +109,7 @@ public class TupleToken extends Token {
     /** Return the element at the specified index.
      *  @param index The index of the desired element.
      *  @return The token contained in this array token at the
-     *  specified index.
+     *   specified index.
      *  @exception ArrayIndexOutOfBoundException If the specified index is
      *   outside the range of the token array.
      */
@@ -117,10 +117,10 @@ public class TupleToken extends Token {
         return _value[index];
     }
     
-    /** Return the element at the specified index.
+    /** Return the element type at the specified index.
      *  @param index The index of the desired element.
-     *  @return The token contained in this array token at the
-     *  specified index.
+     *  @return The type of the token contained in this array token at the
+     *   specified index.
      *  @exception ArrayIndexOutOfBoundException If the specified index is
      *   outside the range of the token array.
      */
@@ -128,8 +128,9 @@ public class TupleToken extends Token {
         return _value[index].getType();
     }
 
-    /** Return the type of this ArrayToken.
-     *  @return An ArrayType.
+    /** Return the type of this token, which is a TupleType populated
+     *  with the types of the value of this token.
+     *  @return A TupleType.
      */
     public Type getType() {
         Type[] types = new Type[_value.length];
@@ -145,15 +146,36 @@ public class TupleToken extends Token {
     public int length() {
         return _value.length;
     }
+    
+    /** Merge two tuple tokens into one by concatenating their tokens.
+     *  @param first The first tuple token.
+     *  @param second The second tuple token.
+     *  @return The merged tuple token.
+     */
+    public static TupleToken merge(TupleToken first, TupleToken second) {
+        if (first == VOID) {
+            return second;
+        }
+        if (second == VOID) {
+            return first;
+        }
+        Token[] firstTokens = first._value;
+        Token[] secondTokens = second._value;
+        Token[] result = new Token[firstTokens.length + secondTokens.length];
+        System.arraycopy(firstTokens, 0, result, 0, firstTokens.length);
+        System.arraycopy(secondTokens, 0, result,
+                firstTokens.length, secondTokens.length);
+        return new TupleToken(result);
+    }
 
-    /** Return a new ArrayToken representing the multiplicative
-     *  identity.  The returned token contains an array of the same
-     *  size as the array contained by this token, and each element of
-     *  the array in the returned token is the multiplicative identity
+    /** Return a new TupleToken representing the multiplicative
+     *  identity.  The returned token contains a tuple of the same
+     *  size as the tuple contained by this token, where each element of
+     *  the tuple in the returned token is the multiplicative identity
      *  of the corresponding element of this token.
-     *  @return An ArrayToken.
+     *  @return A TupleToken of multiplicative identities.
      *  @exception IllegalActionException If multiplicative identity is not
-     *   supported by the element token.
+     *   supported by an element token.
      */
     public Token one() throws IllegalActionException {
         Token[] oneValueTuple = new Token[_value.length];
@@ -165,60 +187,54 @@ public class TupleToken extends Token {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  @return A string beginning with "{" that contains expressions
-     *  for every element in the array separated by commas, ending with "}".
+     *  FIXME: This is not currently supported by the expression language.
+     *  @return A string beginning with "<" that contains expressions
+     *   for every element in the tuple separated by commas, ending with ">".
      */
     public String toString() {
-        StringBuffer buffer = new StringBuffer("{");
+        StringBuffer buffer = new StringBuffer("<");
         for (int i = 0; i < _value.length; i++) {
             buffer.append(_value[i].toString());
             if (i < (_value.length - 1)) {
                 buffer.append(", ");
             }
         }
-        buffer.append("}");
+        buffer.append(">");
         return buffer.toString();
     }
 
-    /** Returns a new ArrayToken representing the additive identity.
-     *  The returned token contains an array of the same size as the
-     *  array contained by this token, and each element of the array
+    /** Returns a new TupleToken representing the additive identity.
+     *  The returned token contains a tuple of the same size as the
+     *  tuple contained by this token, and each element of the tuple
      *  in the returned token is the additive identity of the
      *  corresponding element of this token.
-     *  @return An ArrayToken.
-     *  @exception IllegalActionException If additive identity is not
-     *  supported by an element token.
+     *  @return A TupleToken with additive identities.
+     *  @exception IllegalActionException If the additive identity is not
+     *   supported by an element token.
      */
     public Token zero() throws IllegalActionException {
         Token[] zeroValueTuple = new Token[_value.length];
         for (int i = 0; i < _value.length; i++) {
             zeroValueTuple[i] = _value[i].zero();
         }
-        return new ArrayToken(zeroValueTuple);
+        return new TupleToken(zeroValueTuple);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                 ////
+    
+    /** An empty tuple token. */
+    public static TupleToken VOID = new TupleToken(new Token[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Throw an exception if the argument is not a TupleToken of the
-    // same length.
-    private void _checkArgumentLength(Token token)
-            throws IllegalActionException {
-
-        int length = ((TupleToken)token).length();
-        if (length() != length) {
-            throw new IllegalActionException("The length of the argument (" +
-                    length + ") is not the same as the length of this token ("
-                    + length() + ").");
-        }
-    }
-
-    // initialize this token using the specified array.
+    // Initialize this token using the specified array.
     private void _initialize(Token[] value){
         int length = value.length;
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
-            _value[i] = value[i];// elementType.convert(value[i]);
+            _value[i] = value[i];
         }
     }
 
@@ -226,6 +242,4 @@ public class TupleToken extends Token {
     ////                         private variables                 ////
 
     private Token[] _value;
-    public static Token[] _VOID = new Token[0];
-    public static TupleToken _VOIDTUPLE = new TupleToken(_VOID);
 }

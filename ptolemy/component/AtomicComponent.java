@@ -1,4 +1,4 @@
-/* A AtomicComponent is a vertex in a clustered graph.
+/* A component with functionality given in Java.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -38,20 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// AtomicComponent
 /**
-   A Component is a component in a CompositeEntity.
-   It might itself be composite, but in this base class it is assumed to
-   be atomic (meaning that it cannot contain components).
-   <p>
-   Derived classes may further constrain the container to be
-   a subclass of CompositeEntity.  To do this, they should override
-   the protected method _checkContainer() to throw an exception.
-   <p>
-   A Component can contain instances of MCPort.  Derived
-   classes may further constrain to a subclass of MCPort.
-   To do this, they should override the public method newPort() to create
-   a port of the appropriate subclass, and the protected method _addPort()
-   to throw an exception if its argument is a port that is not of the
-   appropriate subclass.
+   A component with functionality given in Java. The functionality can
+   be given in the {@link #run()} method or by the
+   {@link MethodCallPort#call(TupleToken)} method of contained ports
+   that are providers.
 
    @author Yang Zhao
    @version $Id$
@@ -85,9 +75,20 @@ public class AtomicComponent extends ComponentEntity
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Initialize the component, which in this base class means
+     *  doing nothing and returning immediately.  This is invoked once after
+     *  preinitialize() and again whenever the component needs
+     *  to be reinitialized.
+     *  @exception IllegalActionException If initialization
+     *   cannot be completed (not thrown in this base class).
+     */
+    public void initialize() throws IllegalActionException {
+    }
+
     /** Create a new port with the specified name.
      *  The container of the port is set to this entity.
-     *  This overrides the base class to create an instance of MCPort.
+     *  This overrides the base class to create an instance of MethodCallPort.
      *  Derived classes may override this to further constrain the ports.
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
@@ -101,28 +102,41 @@ public class AtomicComponent extends ComponentEntity
             throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            Port port = new MCPort(this, name);
+            Port port = new MethodCallPort(this, name);
             return port;
         } finally {
             _workspace.doneWriting();
         }
     }
 
-    /** Do nothing in this base class. Derived class may overwrite
-     *  this method. 
+    /** Preinitialize the component, which in this base class means doing
+     *  nothing and returning immediately. This is invoked exactly
+     *  once per execution of a model, before any other methods
+     *  in this interface are invoked.
+     *  @exception IllegalActionException If preinitialization
+     *   cannot be completed (not thrown in this base class).
      */
     public void preinitialize() throws IllegalActionException {
-        //_creatMethodMap();
     }
     
-    /** Do nothing in this base class. Derived class may overwrite
-     *  this method. 
+    /** Execute the component, which in this base class means doing
+     *  nothing and returning immediately.
+     *  This is invoked after preinitialize()
+     *  and initialize(), and may be invoked repeatedly.
+     *  @throws IllegalActionException If the run cannot be completed
+     *   (not thrown in this base class).
      */
-    public void initialize() throws IllegalActionException {
+    public void run() throws IllegalActionException {
     }
 
-    /** Do nothing in this base class. Derived class may overwrite
-     *  this method. 
+    /** Wrap up an execution, which in this base class means doing
+     *  nothing and returning immediately. This method is invoked
+     *  exactly once per execution of a model. It finalizes
+     *  an execution, typically
+     *  closing files, displaying final results, etc. If any other
+     *  method from this interface is invoked after this, it must
+     *  begin with preinitialize().
+     *  @exception IllegalActionException If wrapup fails.
      */
     public void wrapup() throws IllegalActionException {
     }
@@ -132,14 +146,14 @@ public class AtomicComponent extends ComponentEntity
 
     /** Add a port to this entity. This overrides the base class to
      *  throw an exception if the added port is not an instance of
-     *  MCPort.  This method should not be used
+     *  MethodCallPort.  This method should not be used
      *  directly.  Call the setContainer() method of the port instead.
      *  This method does not set
      *  the container of the port to point to this entity.
      *  It assumes that the port is in the same workspace as this
      *  entity, but does not check.  The caller should check.
      *  Derived classes may override this method to further constrain to
-     *  a subclass of MCPort.
+     *  a subclass of MethodCallPort.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *  @param port The port to add to this entity.
@@ -150,13 +164,12 @@ public class AtomicComponent extends ComponentEntity
      */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
-        if (!(port instanceof MCPort)) {
+        if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");
         }
         super._addPort(port);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

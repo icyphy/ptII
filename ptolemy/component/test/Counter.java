@@ -31,7 +31,7 @@ package ptolemy.component.test;
 import ptolemy.data.IntToken;
 import ptolemy.component.data.TupleToken;
 import ptolemy.component.AtomicComponent;
-import ptolemy.component.MCPort;
+import ptolemy.component.MethodCallPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,7 +61,7 @@ public class Counter extends AtomicComponent {
     public Counter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        increment = new MCPort(this, "increment", true) {
+        increment = new MethodCallPort(this, "increment", true) {
             public synchronized TupleToken call(TupleToken args) {
                 System.out.println("---call method Counter.increment");
                 IntToken arg = (IntToken)args.getElement(0);
@@ -72,9 +72,9 @@ public class Counter extends AtomicComponent {
             }
         };
         //increment.setTypeEquals(BaseType.GENERAL);
-        decrement = new MCPort(this, "decrement", true);
+        decrement = new MethodCallPort(this, "decrement", true);
         //decrement.setTypeEquals(BaseType.GENERAL);
-        output = new MCPort(this, "output", false);
+        output = new MethodCallPort(this, "output", false);
         //output.setTypeEquals(BaseType.INT);
     }
 
@@ -85,17 +85,17 @@ public class Counter extends AtomicComponent {
      *  receives a token, then the counter is incremented.  The port
      *  has type general.
      */
-    public MCPort increment;
+    public MethodCallPort increment;
 
     /** The decrement port. If this input port
      *  receives a token, then the counter is decremented.  The port
      *  has type general.
      */
-    public MCPort decrement;
+    public MethodCallPort decrement;
 
     /** The output port with type IntToken.
      */
-    public MCPort output;
+    public MethodCallPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

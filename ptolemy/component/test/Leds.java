@@ -30,7 +30,7 @@ package ptolemy.component.test;
 
 import ptolemy.component.data.TupleToken;
 import ptolemy.component.AtomicComponent;
-import ptolemy.component.MCPort;
+import ptolemy.component.MethodCallPort;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -61,12 +61,12 @@ public class Leds extends AtomicComponent {
     public Leds(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        display = new MCPort(this, "display", true) {
+        display = new MethodCallPort(this, "display", true) {
             public synchronized TupleToken call(TupleToken args) {
                 System.out.println("---call method Leds.displays.");
                 IntToken arg = (IntToken)args.getElement(0);
                 System.out.println("*** Leds Displays: " + arg.intValue());
-                return TupleToken._VOIDTUPLE;
+                return TupleToken.VOID;
             }
         };
     }
@@ -78,6 +78,6 @@ public class Leds extends AtomicComponent {
      *  receives a token, then the counter is incremented.  The port
      *  has type general.
      */
-    public MCPort display;
+    public MethodCallPort display;
 
 }
