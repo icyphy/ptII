@@ -1115,7 +1115,7 @@ set body {
         <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
     <entity name="derived" class=".top.master">
-        <link port="p" relation="r" insertAt="1"/>
+        <link port="p" relation="r" insertAt="0"/>
     </entity>
 </entity>
 }
@@ -1137,7 +1137,7 @@ test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
         </relation>
     </class>
     <entity name="derived" class=".top.master">
-        <link port="p" relation="r" insertAt="1"/>
+        <link port="p" relation="r" insertAt="0"/>
     </entity>
 </entity>
 }
