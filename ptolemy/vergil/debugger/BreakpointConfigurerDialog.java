@@ -30,8 +30,11 @@ package ptolemy.vergil.debugger;
 import java.awt.Frame;
 
 import ptolemy.gui.ComponentDialog;
+import ptolemy.actor.gui.QueryUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.util.MessageHandler;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointConfigurerDialog
@@ -66,9 +69,16 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
             BasicGraphController graphController) {
         super(owner,
                 "Configure breakpoints for " + target.getName(),
-                new BreakpointConfigurer(target, graphController));
-    }
+                new BreakpointConfigurer(target, graphController),
+                _moreButtons);
 
+        // Once we get to here, the dialog has already been dismissed.
+
+        if (buttonPressed().equals("Help")) {
+            QueryUtilities.openHTMLResource(
+                    "ptolemy/vergil/debugger/breakpoints.htm", owner);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -78,8 +88,21 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!buttonPressed().equals("Cancel")) {
-            ((BreakpointConfigurer)contents).apply();
+        if (!buttonPressed().equals("Cancel") 
+                && !buttonPressed().equals("Help")) {
+            try {
+                ((BreakpointConfigurer)contents).apply();
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to handle closing of breakpoint "
+                        + "dialog.", throwable); 
+            }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Button labels.
+    private static String[] _moreButtons
+        = {"OK", "Cancel", "Help"};
 }
