@@ -229,6 +229,8 @@ public class HadamardCode extends Source {
             return result;
         }
     }
+    ////////////////////////////////////////////////////////////
+    ////               private variable                    ////
 
     //index of the element in the hadamard row.
     private int _index;
