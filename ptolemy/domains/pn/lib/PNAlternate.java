@@ -67,8 +67,10 @@ public class PNAlternate extends PNStar {
             while (true) {
                 data =  readFrom(_input);
                 writeTo(_output1, data);
+                System.out.println(this.getName()+" writes "+data+" to "+_output1.getName()+"\n");
                 data =  readFrom(_input);
                 writeTo(_output2, data);
+                System.out.println(this.getName()+" writes "+data+" to "+_output2.getName()+"\n");
             }
         } catch (TerminationException e) {
             return;
