@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.util.Hashtable;
 
 import diva.graph.*;
@@ -163,15 +164,8 @@ public class Type extends SDFApplet implements ChangeListener {
             JPanel visPanel = new JPanel();
             visPanel.setLayout(new BorderLayout());
             visPanel.setBackground(getBackground());
-            _jgraph.setBackground(getBackground());
-            // FIXME: title borders don't work in diva...
-            // _jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
-            //        "Type Lattice"));
-            _jgraph.setBorder(new LineBorder(Color.black));
+            _jgraph = _constructLatticeModel();
             visPanel.add(_jgraph, BorderLayout.WEST);            
-            _jgraph.setMinimumSize(new Dimension(400, 290));
-            _jgraph.setPreferredSize(new Dimension(400, 290));
-            _jgraph.setMaximumSize(new Dimension(400, 290));
 
             // Place items in the top-level.
             getContentPane().add(_ioPanel, BorderLayout.NORTH);
@@ -219,10 +213,6 @@ public class Type extends SDFApplet implements ChangeListener {
      *  displayed in the Diva animation.
      */
     public void start() {
-        // Construct the Ptolemy type lattice model
-        final Graph graph = _constructLattice();
-        // Display the type lattice
-        _displayGraph(_jgraph, graph);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -314,7 +304,17 @@ public class Type extends SDFApplet implements ChangeListener {
     }
 
     // Construct the graph representing the Ptolemy type lattice
-    private Graph _constructLattice() {
+    private JGraph _constructLatticeModel() {
+        JGraph jgraph = new JGraph();
+        jgraph.setBackground(getBackground());
+        // FIXME: title borders don't work in diva...
+        // jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
+        //        "Type Lattice"));
+        jgraph.setBorder(new LineBorder(Color.black));
+        jgraph.setMinimumSize(new Dimension(400, 290));
+        jgraph.setPreferredSize(new Dimension(400, 290));
+        jgraph.setMaximumSize(new Dimension(400, 290));
+
 	GraphImpl impl = new BasicGraphImpl();
 	Graph graph = impl.createGraph(null);
 
@@ -340,17 +340,6 @@ public class Type extends SDFApplet implements ChangeListener {
         impl.addNode(nObject, graph);
         impl.addNode(nScalar, graph);
         impl.addNode(nLong, graph);
-
-        /*
-          nodeMap.put(a1, nNaT);
-          nodeMap.put(a2, nInt);
-          nodeMap.put(a3, nDouble);
-          nodeMap.put(a4, nComplex);
-          nodeMap.put(a5, nString);
-          nodeMap.put(a6, nGeneral);
-          nodeMap.put(a7, nBoolean);
-          nodeMap.put(a8, nObject);
-        */
 
         // Edges
         Edge e;
@@ -403,34 +392,26 @@ public class Type extends SDFApplet implements ChangeListener {
 	impl.setEdgeTail(e, nScalar);
 	impl.setEdgeHead(e, nComplex);
 
-        return graph;
-    }
-
-    // Construct the graph widget to display the type lattice with
-    // the default constructor (giving it an empty graph),
-    // and then set the model once the window is showing.
-    //
-    private void _displayGraph(JGraph g, Graph graph) {
-
         // Make sure we have the right renderers and then
         // display the graph
         final GraphController gc = new TypeGraphController();
 	final GraphPane gp = new GraphPane(gc);
-	g.setCanvasPane(gp);
+        jgraph.setCanvasPane(gp);
 	gc.setGraph(graph);
+   
+        LayoutTarget target = new BasicLayoutTarget(gc);
+        LayoutUtilities.place(target, nGeneral, 230, 30); 
+        LayoutUtilities.place(target, nScalar, 120, 80);
+        LayoutUtilities.place(target, nString, 170, 55); 
+        LayoutUtilities.place(target, nComplex, 90, 125); 
+        LayoutUtilities.place(target, nDouble, 90, 170);  
+        LayoutUtilities.place(target, nLong, 170, 140);  
+        LayoutUtilities.place(target, nInt, 120, 220);  
+        LayoutUtilities.place(target, nBoolean, 250, 120); 
+        LayoutUtilities.place(target, nObject, 340, 140); 
+        LayoutUtilities.place(target, nNaT, 230, 260); 
 
-        // Do the layout
-	final Graph layoutGraph = graph;
-	SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                // Layout is a bit stupid
-		LevelLayout staticLayout = new LevelLayout();
-		staticLayout.setOrientation(LevelLayout.VERTICAL);
-		LayoutTarget target = new BasicLayoutTarget(gc);
-		staticLayout.layout(target, layoutGraph);
-                gp.repaint();
-            }
-        });
+        return jgraph;
     }
 
     // Initialize the trace model.
@@ -542,7 +523,7 @@ public class Type extends SDFApplet implements ChangeListener {
     private SchematicPanel _schemPanel = new SchematicPanel();
 
     // The JGraph where we display the type lattice.
-    private JGraph _jgraph = new JGraph();
+    private JGraph _jgraph = null;
 
     // The pane displaying the trace
     private TracePane _tracePane;
