@@ -1,4 +1,4 @@
-/* Display the high-level infomation of interface automata to stdout.
+/* Display the high-level information of interface automata to stdout.
 
  Copyright (c) 1999-2002 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// GetInfo
 /**
-Display the high-level infomation of interface automata to stdout.
+Display the high-level information of interface automata to stdout.
 This class reads the MoML description of a number of interface automata,
 and writes their high-level description to stdout one by one. The high-
 level description is obtained by the getInfo() method of
