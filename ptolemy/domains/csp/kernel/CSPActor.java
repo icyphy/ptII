@@ -134,6 +134,7 @@ public class CSPActor extends AtomicActor {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CSPActor newobj = (CSPActor)super.clone(ws);
+        newobj._blocked = false;
         newobj._branchesActive = 0;
 	newobj._branchesBlocked = 0;
 	newobj._branchTrying = -1;
@@ -241,6 +242,7 @@ public class CSPActor extends AtomicActor {
                 //System.out.println(getName() +": all branches are blocked.");
                 // Note: acquiring a second lock, need to be careful.
                 ((CSPDirector)getDirector())._actorBlocked();
+                _blocked = true;
             }
         }
     }
@@ -296,6 +298,7 @@ public class CSPActor extends AtomicActor {
             if (_branchesBlocked == _branchesStarted) {
                 // Note: acquiring a second lock, need to be careful.
                 ((CSPDirector)getDirector())._actorUnblocked();
+                _blocked = false;
             }
             _branchesBlocked--;
         }
@@ -421,6 +424,11 @@ public class CSPActor extends AtomicActor {
         }
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
+            if (_blocked) {
+                // Actor was registered as blocked when the 
+                // construct was terminated.
+                ((CSPDirector)getDirector())._actorUnblocked();
+            }
             throw new TerminateProcessException(this, "CSPActor: exiting " +
                     "conditional branching due to TerminateProcessException.");
         }
@@ -480,6 +488,7 @@ public class CSPActor extends AtomicActor {
      */
     private void _resetConditionalState() {
         synchronized(_getInternalLock()) {
+            _blocked = false;
             _branchesActive = 0;
             _branchesBlocked = 0;
             _branchesStarted = 0;
@@ -490,6 +499,10 @@ public class CSPActor extends AtomicActor {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
+
+    // Flag indicating whether this actor is currently registered 
+    // as blocked while in the nidst of a CDO or CIF.    
+    boolean _blocked = false;
 
     // Contains the number of conditional branches that are still
     // active.
