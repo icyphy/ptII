@@ -106,7 +106,7 @@ public class DebugListenerTableau extends Tableau {
 
     /** Set the object for this tableau to listen to, or null
      *  to stop listening to the current one.  If this tableau is
-     *  already listenening to an object, then first stop listening
+     *  already listening to an object, then first stop listening
      *  to that object.
      *  @param debuggable The object to listen to.
      */

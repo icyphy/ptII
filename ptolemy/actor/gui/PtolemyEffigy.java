@@ -278,7 +278,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    toplevel = parser.parse(base, in.openStream());
 			} catch (IOException io) {
 			    // If we are running under Web Start, we
-			    // might jave a URL that refers to another
+			    // might have a URL that refers to another
 			    // jar file.
 			    URL anotherURL = 
 				MoMLApplication

@@ -132,10 +132,10 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  @param manager The manager calling this method.
      */
     public void managerStateChanged(Manager manager) {
-        Manager.State newstate = manager.getState();
-        if (newstate != _previousState) {
+        Manager.State newState = manager.getState();
+        if (newState != _previousState) {
             report(manager.getState().getDescription());
-            _previousState = newstate;
+            _previousState = newState;
         }
     }
 

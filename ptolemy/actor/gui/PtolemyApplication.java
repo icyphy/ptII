@@ -119,13 +119,13 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
-        URL inurl = specToURL("ptolemy/configs/runWelcomeWindow.xml");
+        URL inURL = specToURL("ptolemy/configs/runWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inurl, inurl.openStream());
+        _parser.parse(inURL, inURL.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-	URL idurl = specToURL("ptolemy/configs/intro.htm");
-        doc.identifier.setExpression(idurl.toExternalForm());
+	URL idURL = specToURL("ptolemy/configs/intro.htm");
+        doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
     }
 

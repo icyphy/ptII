@@ -147,10 +147,10 @@ public class MoMLApplet extends PtolemyApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newinfo[][] = {
+        String newInfo[][] = {
             {"modelURL", "", "URL for the MoML file"},
         };
-        return _concatStringArrays(super.getParameterInfo(), newinfo);
+        return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
     /** Read the model from the <i>modelURL</i> applet parameter.

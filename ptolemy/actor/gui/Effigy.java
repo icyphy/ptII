@@ -360,7 +360,7 @@ public class Effigy extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    // A tableau factory affering multiple views.
+    // A tableau factory offering multiple views.
     private TableauFactory _factory = null;
 
     // Indicator that the URL must not be written to (if false).

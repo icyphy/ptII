@@ -76,7 +76,7 @@ If a Ptolemy model is instantiated on the command line, either
 by giving a MoML file or a -class argument, then parameters of that
 model can be set on the command line.  The syntax is:
 <pre>
-    ptolemy <i>modelfile.xml</i> -<i>paramname</i> "<i>value</i>"
+    ptolemy <i>modelFile.xml</i> -<i>parameterName</i> "<i>value</i>"
 </pre>
 where <i>paramname</i> is the name of a parameter relative to the top level
 of a model or the director of a model.  For instance, if foo.xml defines
@@ -211,11 +211,11 @@ public class MoMLApplication {
                     // directory will think it has two different files.
                     Class refClass = Class.forName(
                             "ptolemy.kernel.util.NamedObj");
-                    URL inurl = refClass.getClassLoader().getResource(spec);
-                    if (inurl == null) {
+                    URL inURL = refClass.getClassLoader().getResource(spec);
+                    if (inURL == null) {
 			throw new Exception();
                     } else {
-                        return inurl;
+                        return inURL;
                     }
                 } catch (Exception exception) {
                     throw new IOException("File not found: " + spec);
@@ -354,12 +354,12 @@ public class MoMLApplication {
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
-                    URL inurl = specToURL(arg);
+                    URL inURL = specToURL(arg);
 
                     // Strangely, the XmlParser does not want as base the
                     // directory containing the file, but rather the
                     // file itself.
-                    URL base = inurl;
+                    URL base = inURL;
 
                     // If a configuration has been found, then
                     // defer to it to read the model.  Otherwise,
@@ -372,16 +372,16 @@ public class MoMLApplication {
                                     "No model directory!");
                         }
 
-                        String key = inurl.toExternalForm();
+                        String key = inURL.toExternalForm();
 
                         // Now defer to the model reader.
-                        _config.openModel(base, inurl, key);
+                        _config.openModel(base, inURL, key);
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
                         MoMLParser parser = new MoMLParser();
                         NamedObj toplevel = parser.parse(
-                                base, inurl.openStream());
+                                base, inURL.openStream());
                         if (toplevel instanceof Configuration) {
                             _config = (Configuration)toplevel;
                         }
@@ -500,10 +500,10 @@ public class MoMLApplication {
      */
     protected Configuration _readConfiguration(String urlSpec)
             throws Exception {
-        URL inurl = specToURL(urlSpec);
+        URL inURL = specToURL(urlSpec);
         _parser = new MoMLParser();
         Configuration toplevel = (Configuration)
-            _parser.parse(inurl, inurl.openStream());
+            _parser.parse(inURL, inURL.openStream());
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
@@ -514,7 +514,7 @@ public class MoMLApplication {
                 = new PtolemyEffigy(
                         (ModelDirectory)directory, toplevel.getName());
             effigy.setModel(toplevel);
-            effigy.identifier.setExpression(inurl.toExternalForm());
+            effigy.identifier.setExpression(inURL.toExternalForm());
         }
         return toplevel;
     }

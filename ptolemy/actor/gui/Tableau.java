@@ -214,7 +214,7 @@ public class Tableau extends CompositeEntity {
 	    super.setContainer(container);
 	    // Blow away the frame.
 	    if(_frame != null) {
-		// Note that we call hide instead of dipose..
+		// Note that we call hide instead of dispose . . .
 		// The windowListener set in setFrame()
                 // will trigger dispose() to get called.
 		_frame.hide();

@@ -97,7 +97,7 @@ public class TableauFactory extends Attribute {
      *  to each contained factory in order until one is capable of creating a
      *  tableau for the specified effigy.  Subclasses of this class will
      *  usually be inner classes of a Tableau, and will create the Tableau.
-     *  A subclass that actually creates a tableau is resonsible for setting
+     *  A subclass that actually creates a tableau is responsible for setting
      *  the container of the table to the specified effigy, and for naming
      *  the tableau.
      *  Subclasses should not call show() in createTableau(), it is the

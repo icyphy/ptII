@@ -70,7 +70,7 @@ public class RenameConfigurer extends Query
         // for everything else.  Note that ports are a little confusing,
         // because names are _always_ shown for external ports inside
         // a composite actor.  This dialog determines whether they will
-        // be shown on the outside of the comnposite actor.
+        // be shown on the outside of the composite actor.
         boolean nameShowing = false;
         if (object instanceof Port) {
             nameShowing = _object.getAttribute("_showName") != null;

@@ -169,7 +169,7 @@ public class TextEffigy extends Effigy {
             try {
                 fout.write(_doc.getText(0, _doc.getLength()));
             } catch (BadLocationException ex) {
-                throw new IOException("Failed to get text from the docuemnt: "
+                throw new IOException("Failed to get text from the document: "
                         + ex);
             }
             fout.close();

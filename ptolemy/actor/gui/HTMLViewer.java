@@ -73,7 +73,7 @@ public class HTMLViewer extends TableauFrame
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
         _scroller = new JScrollPane(pane);
-        // Default, which can be overriden by calling setSize().
+        // Default, which can be overridden by calling setSize().
         _scroller.setPreferredSize(new Dimension(800, 600));
         getContentPane().add(_scroller);
     }

@@ -161,13 +161,13 @@ public class PtolemyApplet extends BasicJApplet
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String newinfo[][] = {
+        String newInfo[][] = {
             {"modelClass", "", "Classname for an instance of NamedObj"},
             {"orientation", "",
-             "Orientation: vertical, horixontal, or controls_only"},
+             "Orientation: vertical, horizontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
         };
-        return _concatStringArrays(super.getParameterInfo(), newinfo);
+        return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
     /** Initialize the applet. This method is called by the browser
@@ -263,7 +263,7 @@ public class PtolemyApplet extends BasicJApplet
      *  @param workspace The workspace in which to create the model.
      *  @return A model.
      *  @exception Exception If something goes wrong.  This is a broad
-     *   exception to allow derived classes wide lattitude as to which
+     *   exception to allow derived classes wide latitude as to which
      *   exception to throw.
      */
     protected NamedObj _createModel(Workspace workspace)

@@ -234,14 +234,14 @@ public class PtolemyQuery extends Query
             ChangeRequest request;
 
             // NOTE: We must use a MoMLChangeRequest so that changes
-            // propogate to any objects that have been instantiating
+            // propagate to any objects that have been instantiating
             // using this one as a class.  This is only an issue if
             // attribute is a NamedObj, so we first check.
             if (attribute instanceof NamedObj) {
                 NamedObj castAttribute = (NamedObj)attribute;
 
                 // The context for the MoML should be the first container
-                // above this attribute in the hiearchy that defers its
+                // above this attribute in the hierarchy that defers its
                 // MoML definition, or the immediate parent if there is none.
                 NamedObj parent = MoMLChangeRequest.getDeferredToParent(
                         castAttribute);
