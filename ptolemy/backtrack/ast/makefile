@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/ast
 
-DIRS = 		test	
+DIRS = 		transform test
 
 # Root of the Java directory
 ROOT =		../../..
