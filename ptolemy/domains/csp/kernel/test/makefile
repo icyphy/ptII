@@ -44,7 +44,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	CSPCheckToken.java \
+	CSPHasRoom.java \
+	CSPHasToken.java \
 	CSPGet.java \
 	CSPPut.java
 
