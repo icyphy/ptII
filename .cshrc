@@ -52,6 +52,7 @@ set path = ( \
 	/usr/ucb /usr/bin /bin \
 	/usr/bsd \
 	/usr/bin/X11 \
+	/users/ptdesign/gnu/sol2.5/bin \
 	/usr/ccs/bin \
 	/usr/sww/bin /usr/sww/X11/bin . )
 
