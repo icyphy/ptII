@@ -549,7 +549,7 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     /** Return a concise description of the object.
-     *  @return The classname and name.
+     *  @return The class name and name.
      */
     public String toString() {
         return getClass().getName() + " {" + getFullName()+ "}";
