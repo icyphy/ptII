@@ -65,11 +65,11 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
+			ptolemy.domains.dde.kernel \
+			ptolemy.domains.dde.lib \
 			ptolemy.domains.de.demo \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
-			ptolemy.domains.odf.kernel \
-			ptolemy.domains.odf.lib \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.lib \
 			ptolemy.domains.sc.kernel \
