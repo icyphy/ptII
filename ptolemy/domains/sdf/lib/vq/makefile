@@ -56,6 +56,7 @@ JSRCS = \
 	ImageSequence.java \
 	ImageUnpartition.java \
 	PSNR.java \
+	RateSelector.java \
 	VQDecode.java
 
 EXTRA_SRCS =	$(JSRCS)
