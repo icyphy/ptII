@@ -230,10 +230,12 @@ public class ComponentRelation extends Relation {
             name = new String("");
         }
         CompositeEntity container = (CompositeEntity) getContainer();
-        ComponentRelation another = container.getRelation(name);
-        if((container != null) && (another != null) && (another != this)) {
-            throw new NameDuplicationException(container,
-                "already contains a relation with the name "+name+".");
+        if((container != null)) {
+            ComponentRelation another = container.getRelation(name);
+            if((another != null) && (another != this)) {
+                throw new NameDuplicationException(container,
+                    "already contains a relation with the name "+name+".");
+            }
         }
         super.setName(name);
     }
