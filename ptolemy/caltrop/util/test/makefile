@@ -35,7 +35,7 @@ ME =		ptolemy/caltrop/util/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
