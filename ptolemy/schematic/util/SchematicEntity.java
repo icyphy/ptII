@@ -228,10 +228,8 @@ public class SchematicEntity extends PTMLTemplateObject
 	    while(templateTerminals.hasMoreElements()) {
 		Terminal terminal = (Terminal)templateTerminals.nextElement();
 		try {
-		    System.out.println("Adding terminal");
 		    addTerminal(new SchematicTerminal(terminal.getName(), 
 						      terminal));
-		    System.out.println("Finished Adding terminal");
 		    
 		} catch (Exception ex) {
 		    throw new InternalErrorException(ex.getMessage());

@@ -43,7 +43,7 @@ import java.awt.event.InputEvent;
 import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// SchematicTerminal
+//// EditorGraphController
 /**
  * A Graph Controller for the Ptolemy II schematic editor.  
  * Terminal creation: Ctrl-button 1
@@ -238,6 +238,7 @@ public class EditorGraphController extends GraphController {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
+	    System.out.println(sourcenode.toString());
 	    if(!(sourcenode instanceof SchematicTerminal)) return;
 
             FigureLayer layer = (FigureLayer) e.getLayerSource();

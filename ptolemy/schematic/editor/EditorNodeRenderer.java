@@ -84,8 +84,10 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    while(terminals.hasMoreElements()) {
 		ptolemy.schematic.util.SchematicTerminal terminal = 
 	    	    (ptolemy.schematic.util.SchematicTerminal) terminals.nextElement();
+		StraightTerminal terminalFigure = new StraightTerminal();
+		terminalFigure.setUserObject(terminal);
 		((IconFigure)figure).addTerminal(
-		    new StraightTerminal(), SwingConstants.NORTH, 50);
+		    terminalFigure, SwingConstants.NORTH, 50);
 	    }
 	    //	    double scale = getCompositeScale();
 	    //figure.getTransformContext().getTransform().scale(scale, scale);

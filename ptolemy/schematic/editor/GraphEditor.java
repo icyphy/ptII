@@ -250,12 +250,9 @@ public class GraphEditor extends AbstractApplication {
 
         try {
             parseLibraries();
-	    System.out.println("adding node");
             EntityTemplate template = _entityLibrary.getEntity("SaveImage");
             SchematicEntity node = new SchematicEntity("test1", template);
-	    System.out.println("created node\n" + node.description());
             p3.addNode(node, 60, 50);
-	    System.out.println("Done adding node");
             
             template = _entityLibrary.getEntity("LoadImage");
             node = new SchematicEntity("test2", template);
