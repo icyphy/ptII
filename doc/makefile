@@ -29,17 +29,15 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Tycho directory
-ROOT =		../..
-# True source directory
-VPATH =		$(ROOT)/java/doc
+# Root of Ptolemy II directory
+ROOT =		..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 # Sub directories to run make in.
-DIRS =		 internals #usersGuides
+DIRS =		 coding internals #usersGuides
 
 EXTRA_SRCS = \
 	index.html \
@@ -54,25 +52,31 @@ OPTIONAL_FILES =	codeDoc internals
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
-ALLJSRCS = 		ptplot/*.java \
+ALLJSRCS = 		pt/plot/*.java \
 			pt/kernel/*.java \
-			pt/actors/*.java \
+			pt/kernel/util/*.java \
+			pt/actor/*.java \
+			pt/actor/util/*.java \
 			pt/data/*.java \
+			pt/data/expr/*.java \
 			pt/domains/pn/kernel/*.java \
 			pt/domains/ct/kernel/*.java \
-			pt/domains/pn/stars/*.java \
-			pt/domains/ct/stars/*.java
+			pt/domains/pn/lib/*.java \
+			pt/domains/ct/lib/*.java
 
 all: codeDoc/tree.html
 
-codeDoc/tree.html: ../ptplot/*.java \
+codeDoc/tree.html: 	../pt/plot/*.java \
 			../pt/kernel/*.java \
-			../pt/actors/*.java \
+			../pt/kernel/util/*.java \
+			../pt/actor/*.java \
+			../pt/actor/util/*.java \
 			../pt/data/*.java \
+			../pt/data/expr/*.java \
 			../pt/domains/pn/kernel/*.java \
 			../pt/domains/ct/kernel/*.java \
-			../pt/domains/pn/stars/*.java \
-			../pt/domains/ct/stars/*.java \
+			../pt/domains/pn/lib/*.java \
+			../pt/domains/ct/lib/*.java \
 
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
