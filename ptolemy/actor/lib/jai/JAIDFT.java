@@ -42,14 +42,19 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// JAIDFT
 /**
-   Calculate the discrete Fourier transform of an image.  The output has
-   twice as many bands as the input.  Band 0 in the input gets mapped to
-   bands 0 and 1 in the output (band 0 contains the real information,
-   band 1 contains the imaginary information).  Band 1 in the input gets
-   mapped to bands 1 and 2, etc.
+   Calculate the discrete Fourier transform of an image.  If the input
+   is real, then the output has twice as many bands as the input (the 
+   dataNature parameter should be set to <i>realToComplex</i>).  Band 0 
+   in the input gets mapped to bands 0 and 1 in the output (band 0 
+   contains the real information, band 1 contains the imaginary 
+   information).  Band 1 in the input gets mapped to bands 1 and 2, etc.
    <p>
-   Because the output contains twice as many bands, trying to display
-   or save the output will produce strange results.
+   If the input is complex, then the output has the same amount of bands
+   as the input (the dataNature parameter should be set to 
+   "complexToComplex", "complexToReal should never be used").
+   <p>
+   The output of this actor may not be suitable for displaying or saving 
+   because of the increase in the number of bands.  
 
    @see JAIIDFT
    @author James Yeh
@@ -85,18 +90,26 @@ public class JAIDFT extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Fill in here.
+    /** A parameter that describes the nature of the input and output
+     *  data.  The default is <i>realToComplex</i>.  If the input is
+     *  complex, then <i>complexToComplex</i> should be used.  The 
+     *  setting <i>complexToReal</i> should probably not be used.
      */
     public StringAttribute dataNature;
 
-    /** Fill in here.
+    /** The scaling to be done on the output.  There are three options,
+     *  <i>none</i> (the default, does no scaling), <i>unitary</i> 
+     *  (multiplies by square root of the product of the dimensions), 
+     *  and <i>dimensions</i> (multiplies by the product of the 
+     *  dimensions).  In a DFT-IDFT chain, the overall scaling should 
+     *  equal the product of the dimensions.
      */
     public StringAttribute scalingType;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fill in here.
+    /** Override the base class and set the parameters.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
@@ -133,7 +146,8 @@ public class JAIDFT extends Transformer {
     
     /** Fire this actor.
      *  Output the discrete Fourier transform of the inputted image.
-     *  @exception IllegalActionException If a contained method throws it.
+     *  @exception IllegalActionException If a contained method throws it,
+     *  
      */
     public void fire() throws IllegalActionException {
         super.fire();

@@ -46,7 +46,9 @@ import ptolemy.kernel.util.*;
    output image data is of a higher resolution (doubles), not suitable for 
    displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster actor to cast the data to an appropriate type
-   (for instance, byte).
+   (for instance, byte).  The output of the DCT is zero padded to the
+   next power of 2 in each dimension (unless that dimensions is already
+   a power of two, in which case, nothing happens).
 
    @see JAIDataCaster
    @see JAIIDCT

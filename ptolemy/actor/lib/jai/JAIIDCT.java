@@ -45,7 +45,9 @@ import ptolemy.kernel.util.*;
    image data is of a high resolution (doubles), not suitable for 
    displaying or saving.  To display or save the output of this image,
    use the JAIDataCaster actor to cast the data to an appropriate type
-   (for instance, byte).
+   (for instance, byte).  The output is zero-padded in each dimension to
+   the next power of two (unless it already is a power of two in which case
+   nothing happens).
    <p>
    No JAIDataCaster actors should be used in between a JAIDCT and JAIIDCT 
    actor, unless if loss of spectral information is okay (or even desired).
