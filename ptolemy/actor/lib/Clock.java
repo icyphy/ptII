@@ -116,8 +116,6 @@ public class Clock extends TimedSource {
         double defaultOffsets[][] = {{0.0, 1.0}};
         offsets = new Parameter(this, "offsets",
                 new DoubleMatrixToken(defaultOffsets));
-        // FIXME: The following fails with ArrayIndexOutOfBoundsException
-        // offsets.setExpression("[0.0, 1.0]");
         offsets.setTypeEquals(DoubleMatrixToken.class);
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
@@ -270,9 +268,6 @@ public class Clock extends TimedSource {
         // (unless, perhaps, the entire domain has been dormant
         // for some time, as might happen for example in a hybrid system).
         while (_tentativeCycleStartTime + prd <= currentTime) {
-System.out.println("++ currentTime: " + currentTime);
-System.out.println("++ prd: " + prd);
-System.out.println("++ _tentativeCycleStartTime: " + _tentativeCycleStartTime);
             _tentativeCycleStartTime += prd;
         }
         double[][] offsts =
