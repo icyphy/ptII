@@ -60,6 +60,7 @@ JSRCS = ArrayStringFormat.java \
 	DoubleUnaryOperation.java \
 	ExtendedMath.java \
 	FixPoint.java \
+	FixPointQuantization.java \
 	FloatArrayMath.java \
 	FloatBinaryOperation.java \
 	FloatMatrixMath.java \
@@ -74,8 +75,11 @@ JSRCS = ArrayStringFormat.java \
 	LongBinaryOperation.java \
 	LongMatrixMath.java \
 	LongUnaryOperation.java \
+	Overflow.java \
 	Precision.java \
+	Quantization.java \
 	Quantizer.java \
+	Rounding.java \
 	SignalProcessing.java
 
 EXTRA_SRCS =	$(JSRCS)

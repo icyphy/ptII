@@ -67,12 +67,16 @@ JSIMPLE_TESTS = \
         DoubleMatrixMath.tcl \
 	FloatMatrixMath.tcl \
 	ExtendedMath.tcl \
-	Quantizer.tcl \
 	FixPoint.tcl \
+	FixPointQuantization.tcl \
 	Fraction.tcl \
 	IntegerMatrixMath.tcl \
 	Interpolation.tcl \
 	LongMatrixMath.tcl \
+	Overflow.tcl \
+	Quantization.tcl \
+	Quantizer.tcl \
+	Rounding.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
