@@ -80,7 +80,7 @@ test Server-3.2 {test with negative service time} {
     $serviceTime setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "-1.0"
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: -1.0
   in .top.server.serviceTime
 Because:
 Cannot have negative service time: -1.0
