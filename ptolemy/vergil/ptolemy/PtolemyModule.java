@@ -58,7 +58,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileWriter;
-import java.net.URL;
+import java.net.*;
 
 import java.awt.Component;
 import java.awt.BorderLayout;
@@ -278,6 +278,27 @@ public class PtolemyModule implements Module {
         application.addDocumentFactory(new PtolemyDocument.Factory());
 	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
+	try {
+	    String ptII = System.getProperty("ptolemy.PTII");
+	    System.setProperty("java.security.policy",
+			       ptII + "/bin/policy.all");
+	    System.setProperty("outrigger.spacename",
+			       "JavaSpaces");
+	    System.setProperty("com.sun.jini.lookup.groups",
+			       "public");
+	    System.setProperty("java.rmi.server.codebase",
+			       "file:" + ptII + "/");
+	    URL url;
+	    url = new URL("file:" + ptII + 
+			  "/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar");
+	    application.classLoadingService.addToClassPath(url);
+	    url = new URL("file:" + ptII + 
+			  "/vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar");
+	    application.classLoadingService.addToClassPath(url);
+	} catch (Exception ex2) {
+	    ex2.printStackTrace();
+	}
+	
 	SwingUtilities.invokeLater(new PaletteInitializer());
 
     }
@@ -413,8 +434,8 @@ public class PtolemyModule implements Module {
 		frame = new JFrame();
 		
 		ModelPane modelPane = new ModelPane(toplevel);
-		frame.getContentPane().add(modelPane,
-						     BorderLayout.NORTH);
+		frame.getContentPane().add(modelPane, BorderLayout.NORTH);
+
 		// Create a panel to place placeable objects.
 		JPanel displayPanel = new JPanel();
 		displayPanel.setLayout(new BoxLayout(displayPanel,
@@ -426,8 +447,7 @@ public class PtolemyModule implements Module {
 		    i.hasNext();) {
 		    Object o = i.next();
 		    if(o instanceof Placeable) {
-			((Placeable) o).place(
-					      displayPanel);
+			((Placeable) o).place(displayPanel);
 		    }
 		}
 		
@@ -449,8 +469,7 @@ public class PtolemyModule implements Module {
 		timer.start();
 	    } catch (Exception ex) {
 		getApplication().showError("Execution Failed", ex);
-	    }
-	    
+	    }	    
 	}
     }
     
@@ -750,15 +769,17 @@ public class PtolemyModule implements Module {
             entitylibURL = 
 		getModuleResources().getResource("rootEntityLibrary");
 
-            MoMLParser parser;
-            parser = new MoMLParser();
+	    MoMLParser parser;
+	    parser = new MoMLParser(null, null, 
+		((VergilApplication)getApplication()).classLoadingService.getClassLoader());
 	    _iconLibrary =
                 (CompositeEntity) parser.parse(iconlibURL,
                         iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
 
             //FIXME: this is bogus  The parser should be reusable.
-            parser = new MoMLParser();
+            parser = new MoMLParser(null, null, 
+		((VergilApplication)getApplication()).classLoadingService.getClassLoader());
             _entityLibrary =
                 (CompositeEntity) parser.parse(entitylibURL,
                         entitylibURL.openStream());

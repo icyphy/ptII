@@ -59,7 +59,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.DataOutputStream;
-import java.net.URL;
+import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -148,10 +148,12 @@ public class VergilApplication extends MDIApplication {
 
         setCurrentDocument(null);
 
+	classLoadingService = new ClassLoadingService();
+	addService(classLoadingService);
 	// FIXME read this out of resources somehow.
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
-
+	
 	// Start with a new document.
 	// This is kindof
 	// bogus, but it is not easy to fire the action manually.
@@ -161,6 +163,8 @@ public class VergilApplication extends MDIApplication {
 	timer.setRepeats(false);
 	timer.start();
     }
+
+    public ClassLoadingService classLoadingService;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
