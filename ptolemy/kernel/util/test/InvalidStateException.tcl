@@ -245,3 +245,19 @@ test InvalidStateException-11.1 {Create a InvalidStateException with a \
 	    $ll [java::null]]
     list [$pe getMessage]
 } {{  in .NamedObj 1, .NamedObj 2, .NamedObj 3}}
+
+
+ 
+######################################################################
+####
+#
+test InvalidStateException-12.1 {Create a InvalidStateException with a Nameable, a Cause and a detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.InvalidStateException \
+	    $n1 $cause  "Detail Message"]
+    list [$pe getMessage]
+} {{Detail Message
+  in .NamedObj 1
+Because:
+Cause Exception}}

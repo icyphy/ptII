@@ -63,6 +63,19 @@ test KernelRuntimeException-2.1 {Create a KernelRuntimeException} {
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{} {}}
 
+ 
+######################################################################
+####
+#
+test KernelRuntimeException-7.1 {Create a KernelRuntimeException with a cause and a detail message} {
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.KernelRuntimeException \
+	    $cause  "Detail Message"]
+    $pe getMessage
+} {Detail Message
+Because:
+Cause Exception}
+
 set nameables [java::new java.util.LinkedList]
 $nameables add [java::new ptolemy.kernel.util.NamedObj "n1"]
 $nameables add [java::new ptolemy.kernel.util.NamedObj "n2"]
