@@ -83,29 +83,32 @@ public class PrintThreads {
     /** Return a String containing all the ThreadGroups in the JVM
      *  that are descendents of the root ThreadGroup.
      */
-    public static void allThreadGroups() {
+    public static String allThreadGroups() {
         ThreadGroup rootGroup = rootThreadGroup();
 
-        System.out.println("ThreadGroups: "
-                + (rootGroup.activeGroupCount() + 1));
+        StringBuffer results = new StringBuffer("ThreadGroups: "
+                + (rootGroup.activeGroupCount() + 1) + "\n");
 
-        System.out.println(rootGroup.toString());
+        results.append(rootGroup.toString());
+
         ThreadGroup threadGroups[]
             = new ThreadGroup[rootGroup.activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
-        String lineSeparator = _getLineSeparator();
-        String results = new String();
         for (int i = 0; i < threadGroups.length; i++) {
-            results += threadGroups[i].toString() + lineSeparator;
+            results.append(threadGroups[i].toString() + "\n");
         }
+        
+        return results.toString();
     }
 
     /** Return a string containing all the threads in the JVM
      * who are members of ThreadGroups which are descendants of the
      * root ThreadGroup.
+     * @param indicateEventDispatchThread true if we should indicate
+     * which thread is the Swing Event Dispatch Thread.
      */
-    public static String allThreads() {
+    public static String allThreads(boolean indicateEventDispatchThread ) {
         ThreadGroup rootGroup = null;
         try {
             rootGroup = rootThreadGroup();
@@ -115,23 +118,25 @@ public class PrintThreads {
             rootGroup = Thread.currentThread().getThreadGroup();
         }
 
-        String lineSeparator = _getLineSeparator();
-        String results =
-            new String("Threads: " + rootGroup.activeCount() + lineSeparator
-                    + "Current Thread (*) "
+        StringBuffer results = new StringBuffer("Threads: "
+                + rootGroup.activeCount() + "\n");
+
+        if (indicateEventDispatchThread) {
+            results.append("Current Thread (*) "
                     + (SwingUtilities.isEventDispatchThread() ?
                             "_is_" : "_is not_")
-                    + " the Swing Event Dispatch Thread" + lineSeparator
-                    + _getHeader() + lineSeparator);
+                    + " the Swing Event Dispatch Thread\n");
+        }
+        results.append(_getHeader());
 
         Thread threads[] = new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
 
         for (int i = 0; i < threads.length; i++ ) {
             Thread thread = threads[i];
-            results += toThreadDescription(thread) + lineSeparator;
+            results.append(toThreadDescription(thread) + "\n");
         }
-        return results;
+        return results.toString();
     }
 
     /* Return a user friendly description of the thread.
@@ -179,19 +184,7 @@ public class PrintThreads {
      */
     private final static String _getHeader() {
         return _stringFormat("Name", 35)
-            + " " + _stringFormat("Group", 20) + " Pri Daemon Alive Curr";
-    }
-
-    /* Return the line separator.  If we are in an applet return \n */
-    private final static String _getLineSeparator() {
-        String results =  new String("\n");
-        try {
-            results = System.getProperty("line.separator");
-        } catch (Exception e) {
-            // getProperty() will throw an exception if we are
-            // running in an applet, in which case we default to "\n".
-        }
-        return results;
+            + " " + _stringFormat("Group", 20) + " Pri Daemon Alive Curr\n";
     }
 
     /* Pads inputString out with spaces to width length.
