@@ -36,6 +36,10 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+JPACKAGE = 	plot
+JVERSION =	1.0
+JDIST =		$(JPACKAGE)$(JVERSION)
+
 DIRS = 	demo #doc test
 
 CLASSPATH =	..
