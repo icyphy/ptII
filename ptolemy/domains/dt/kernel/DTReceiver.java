@@ -54,13 +54,15 @@ import javax.swing.*;
 A first-in, first-out (FIFO) queue receiver with variable capacity. Tokens
 are put into the receiver with the put() method, and removed from the
 receiver with the get() method. The token removed is the oldest one in 
-the receiver.  Time is incremented by a fixed amount deltaT everytime the
-get() method is called. Each receiver has its own value of deltaT. 
+the receiver.  Time is incremented by a fixed amount <i>deltaT</i> everytime 
+the get() method is called. Each receiver has its own value of deltaT. 
 We calculate deltaT as "period / (rate * repeats)" where:
-    - period is the execution time of the director per iteration 
-    - rate   is the rate of the port that holds this receiver
-    - repeats is the firing count per iteration of the actor 
+<UL>
+    <LI> period is the execution time of the director per iteration 
+    <LI> rate   is the rate of the port that holds this receiver
+    <LI> repeats is the firing count per iteration of the actor 
               that holds this receiver
+</UL>
 @author C. Fong
 @version $Id$
 */
@@ -102,10 +104,10 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Calculate _deltaT for this receiver. This method should only be
-     *  invoked after the preinitialize() stage of the director. Prior to
-     *  that, certain information about the SDF dataflow graph topology 
-     *  is not yet available. 
+    /** Calculate the constant time increment for this receiver. This method 
+     *  should only be invoked after the preinitialize() stage of the director. 
+     *  Prior to that, certain information about the SDF dataflow graph 
+     *  topology is not yet available. 
      *  @exception IllegalActionException If there is an error in
      *  getting attribute information from the ports.
      */
@@ -138,10 +140,23 @@ public class DTReceiver extends SDFReceiver implements Receiver {
                 }
             }       		
         	
-            repeats = _localDirector.getRepeats(_to);
-        	periodValue = _localDirector.getPeriod();
-        	_periodDivider = repeats * _inrate; 
-        	_deltaT = periodValue / _periodDivider;
+        	if (_toPort.isOutput()) {
+        	    
+        	} else {
+        	}
+        	
+        	// FIXME: check tunneling topology 
+           	periodValue = _localDirector.getPeriod();
+            if (_toPort.isOutput()) {
+                repeats = _localDirector.getRepeats(_from);
+                _periodDivider = repeats * _outrate;
+                _deltaT = periodValue / _periodDivider;
+            } else {
+                repeats = _localDirector.getRepeats(_to);
+                _periodDivider = repeats * _inrate; 
+            	_deltaT = periodValue / _periodDivider;
+                
+            }
         }
     }
 
@@ -211,28 +226,6 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     	}
     }
     
-    /**  For debugging purposes. Display pertinent information about
-     *   this receiver.
-     */
-    public void displayReceiverInfo() {
-        String fromString;
-        String toString;
-        
-        if (_from == null) {
-              fromString="0";
-        } else {
-              fromString=((Nameable) _from).getName();
-        }
-        
-        if (_to == null) {
-              toString="0";
-        } else {
-              toString=((Nameable) _to).getName();
-        }
-        
-        debug.println(fromString+" "+toString+" "+_deltaT);
-    }
-
 
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
@@ -243,10 +236,14 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
         Actor actor = (Actor) super.getContainer().getContainer();
         IOPort currentPort = (IOPort) super.getContainer();
-        DTDirector director = (DTDirector) ((Actor) actor).getDirector();
+        Director director = ((Actor) actor).getDirector();
 
         // FIXME: need to consider different cases for TypedComposositeActor ports
-        director.setCurrentTime(_localTime);
+        try {
+            director.setCurrentTime(_localTime);
+        } catch (Exception e) {
+        // FIXME: process exception
+        }
 
         String sourceName = ((Nameable) _to).getName();
         String destinationName = ((Nameable) _from).getName();
@@ -256,11 +253,21 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         return super.get();
     }
 
+   
+    
     /** Return the port that feeds this Receiver
      *  @return The port that feeds this receiver.
      */
     public TypedIOPort getSourcePort() {
         return (TypedIOPort) _fromPort;
+    }
+    
+    public double getDeltaT() {
+        return _deltaT;
+    }
+    
+    public int getPeriodDivider() {
+        return _periodDivider;
     }
   
 
@@ -277,8 +284,50 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         super.put(token);        
     }
     
+    /** Return true if get() will succeed in returning a token.
+     *  @return A boolean indicating whether there is a token in this
+     *  receiver.
+     */
+    public boolean hasToken() {
+        if (overrideHasToken == true) {
+            debug.println("disable hasToken");
+            return false;
+        } else {
+            debug.println("enabled hasToken");
+            return super.hasToken();
+        }
+    }
     
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                  package-access methods                   ////
    
+    /**  For debugging purposes. Display pertinent information about
+     *   this receiver.
+     */
+    void displayReceiverInfo() {
+        String fromString;
+        String toString;
+        
+        if (_from == null) {
+              fromString="0";
+        } else {
+              fromString=((Nameable) _from).getName();
+        }
+        
+        fromString += " (" + ((TypedIOPort)_fromPort).getType() + ")";
+        
+        if (_to == null) {
+              toString="0";
+        } else {
+              toString=((Nameable) _to).getName();
+        }
+        
+        toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
+        
+        debug.println(fromString+" "+toString+" "+_deltaT);
+    }
+
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -293,8 +342,16 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         _localTime = 0.0; 
         _periodDivider = 0; 
         _deltaT = 0.0;
+        overrideHasToken = false;
         debug = new DTDebug(false);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                  package-access variables                 ////
+    
+    // override the value of hasToken() given by SDFReceiver
+    // This variable is used in mixed-hierarchical DT
+    boolean overrideHasToken;    
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
