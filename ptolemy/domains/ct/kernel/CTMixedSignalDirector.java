@@ -365,6 +365,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 _catchUp();
             }
             //runlength = Math.min(runlength, _runAheadLength);
+            System.out.println( "Outside domain"
+                        + " current time " + _outsideTime
+                        + " next iteration time " + nextIterTime
+                        + "run length "+ runlength);
             if(runlength < _runAheadLength) {
                 _setFireEndTime(nextIterTime);
             } else {
