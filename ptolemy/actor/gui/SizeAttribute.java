@@ -127,16 +127,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
     public void recordSize(Component component) {
         try {
             Rectangle bounds = component.getBounds();
-            int[][] boundsMatrix = new int[1][2];
-            boundsMatrix[0][0] = bounds.width;
-            boundsMatrix[0][1] = bounds.height;
-
-            IntMatrixToken token = new IntMatrixToken(boundsMatrix);
-            setToken(token);
-
-            // If we don't do this, then the bounds may not be written.
-            setPersistent(true);
-
+            setToken("[" + bounds.width + ", " + bounds.height + "]");
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");
         }
