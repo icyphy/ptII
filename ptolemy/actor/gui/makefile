@@ -86,7 +86,6 @@ JSRCS = \
 	JVMTableau.java \
 	LocationAttribute.java \
 	MatrixPane.java \
-	MatrixTokenTableau.java \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
