@@ -340,7 +340,7 @@ public class FIR extends SDFTransformer {
         // NOTE: If the filter length increases, then it is impossible
         // to correctly initialize the delay line to contain previously
         // seen data, because that data has not been saved.
-        int length = (int)Math.max(_phaseLength, _decimationValue);
+        int length = _phaseLength + _decimationValue;
         if (_data == null) {
             _data = new Token[length];
             for (int i = 0; i < length; i++ ) {
