@@ -67,6 +67,7 @@ JSIMPLE_TESTS = \
 	Maximum.tcl \
 	Minimum.tcl \
 	MultiplyDivide.tcl \
+	OrderedMerge.tcl \
 	Pulse.tcl \
 	Ramp.tcl \
 	RecordAssembler.tcl \
