@@ -35,8 +35,11 @@ package ptolemy.actor.lib;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -83,7 +86,7 @@ to read.
 A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
 Prentice Hall, 1989.
 
-@author Brian K. Vogel
+@author Brian K. Vogel, Steve Neuendorffer
 @author Aleksandar Necakov, Research in Motion Limited
 @version $Id$
 @since Ptolemy II 1.0
@@ -108,7 +111,23 @@ public class IIR extends Transformer {
 	denominator = new Parameter(this, "denominator");
         denominator.setExpression("{1.0}");
 	attributeChanged(denominator);
-    }
+
+        numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+
+	// Set the type of the output port.
+	// Set type constraints.
+	ArrayType numeratorType = (ArrayType)numerator.getType();
+	InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
+
+     	ArrayType denominatorType = (ArrayType)denominator.getType();
+	InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm2);
+
+        input.setTypeAtLeast(output);
+        output.setTypeAtLeast(input);
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -143,22 +162,15 @@ public class IIR extends Transformer {
             throws IllegalActionException {
         if (attribute == numerator) {
             ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
-            _numerator = new Token[numeratorValue.length()];
-            for (int i = 0; i < numeratorValue.length(); i++) {
-                _numerator[i] = numeratorValue.getElement(i);
-            }
+            _numerator = numeratorValue.arrayValue();
 	} else if (attribute == denominator) {
             ArrayToken denominatorValue =
                 (ArrayToken)denominator.getToken();
-            _denominator = new Token[denominatorValue.length()];
-            for (int i = 0; i < denominatorValue.length(); i++) {
-                _denominator[i] = denominatorValue.getElement(i);
-            }
+            _denominator = denominatorValue.arrayValue();
 
 	    // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
-            if
-                (!_denominator[0].isEqualTo(_denominator[0].one())
+            if(!_denominator[0].isEqualTo(_denominator[0].one())
                         .booleanValue()) {
                 try {
                     MessageHandler.warning(
@@ -180,6 +192,36 @@ public class IIR extends Transformer {
             _initStateVector();
         }
     }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        IIR newObject = (IIR)super.clone(workspace);
+        try {
+            newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            
+            ArrayType numeratorType = (ArrayType)newObject.numerator.getType();
+            InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
+            newObject.output.setTypeAtLeast(elementTerm);
+            
+            ArrayType denominatorType = (ArrayType)newObject.denominator.getType();
+            InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
+            newObject.output.setTypeAtLeast(elementTerm2);
+            
+            newObject.input.setTypeAtLeast(newObject.output);
+            newObject.output.setTypeAtLeast(newObject.input);
+        } catch (IllegalActionException ex) {
+            throw new CloneNotSupportedException(ex.getMessage());
+        }
+        return newObject;
+    }    
 
     /** If at least one input token is available, consume a single
      *  input token, apply the filter to that input token, and
@@ -215,43 +257,6 @@ public class IIR extends Transformer {
         _currentTap = 0;
     }
 
-    /** Invoke a specified number of iterations of this actor. Each
-     *  iteration causes the filter to consume an input token and
-     *  compute a single output token. An invocation
-     *  of this method therefore applies the filter to <i>count</i>
-     *  successive input tokens.
-     *  <p>
-     *  This method should be called instead of the usual prefire(),
-     *  fire(), postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors.  This leads to more
-     *  efficient execution.
-     *  @param count The number of iterations to perform.
-     *  @return COMPLETED if the actor was successfully iterated the
-     *   specified number of times. Otherwise, return NOT_READY, and do
-     *   not consume any input tokens.
-     *  @exception IllegalActionException If iterating cannot be
-     *  performed.
-     */
-    public int iterate(int count) throws IllegalActionException {
-        Token[] _resultArray = new Token[count];
-        if (input.hasToken(0, count)) {
-	    // NOTE: inArray.length may be > count, in which case
-	    // only the first count tokens are valid.
-            Token[] inArray = input.get(0, count);
-	    for (int i = 0; i < count; i++) {
-               	// Compute the current output sample given the input sample.
-                _resultArray[i] = _computeOutput(inArray[i]);
-		// Update the state vector pointer.
-		if (--_currentTap < 0) _currentTap = _stateVector.length -
-                                           1;
-	    }
-            output.send(0, _resultArray, count);
-            return COMPLETED;
-        } else {
-            return NOT_READY;
-        }
-    }
-
     /** Update the filter state.
      *
      *  @exception IllegalActionException If the base class throws it.
@@ -267,8 +272,8 @@ public class IIR extends Transformer {
     ////                         private variables                 ////
 
     // Filter parameters
-    private Token[] _numerator;
-    private Token[] _denominator;
+    private Token[] _numerator = new Token[0];
+    private Token[] _denominator = new Token[0];
 
     // Filter state vector
     private Token[] _stateVector;
@@ -280,29 +285,15 @@ public class IIR extends Transformer {
     private Token _latestWindow;
 
     private void _initStateVector() throws  IllegalActionException {
-        if (_numerator == null || _denominator == null) {
-            throw new IllegalActionException(
-                    "Cannot initialize the IIR filter. Invalid specification "
-                    + "of the numerator or the denominator polynomial.");
-        }
-        // Get the first token from the Matrix
-	// Uses this token to extract its type.
-	Token tmpToken = numerator.getToken();
-	Token tmpDenomToken = denominator.getToken();
-	if (TypeLattice.compare(tmpToken, tmpDenomToken) ==
-                ptolemy.graph.CPO.LOWER) {
-            tmpToken = tmpDenomToken;
-	}
-	// Set the type to the input and output port.
-	input.setTypeEquals(((ArrayToken)tmpToken).getElementType());
-	output.setTypeEquals(((ArrayToken)tmpToken).getElementType());
-
-	int stateSize = (int)java.lang.Math.max(_numerator.length,
-                _denominator.length);
-	_stateVector = new Token[stateSize];
-
-        for (int j = 0; j < _stateVector.length; j++) {
-            _stateVector[j] = ((ArrayToken)tmpToken).getElement(0).zero();
+        if(_numerator.length > 0) {
+            int stateSize = (int)java.lang.Math.max(_numerator.length,
+                    _denominator.length);
+            _stateVector = new Token[stateSize];
+            Token zero = _numerator[0].zero();
+            
+            for (int j = 0; j < _stateVector.length; j++) {
+                _stateVector[j] = zero;
+            }
         }
     }
 
