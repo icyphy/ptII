@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II DDE domain demos
+# Makefile for Ptolemy II Distributed Discrete Event domain demos
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-1999 The Regents of the University of California.
+# @Copyright (c) 1998-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,10 +31,10 @@
 
 ME =		ptolemy/domains/dde/demo
 
-DIRS = 		helloWorld LocalZeno
-
 # Root of the Java directory
 ROOT =		../../../..
+
+DIRS = 		helloWorld LocalZeno
 
 CLASSPATH =	$(ROOT)
 
@@ -42,45 +42,23 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Flags to pass to javadoc. (Override value in ptII.mk)
-JDOCFLAGS = 	-author -version -public
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS =	index.htm
 
-# Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS = 
-
-# Non-graphical Java demos written in Tcl
-# Since there are no demos, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a demo, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-        dummy.tcl
-
-
-EXTRA_SRCS =	$(JSRCS) \
-	index.htm
-
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS)
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
-
-JCLASS = $(JSRCS:%.java=%.class)
-
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
-depend:
-	@echo "no dependencies in this directory"
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
