@@ -53,6 +53,8 @@ public class Query extends JPanel {
     public Query() {
         _grid = new GridBagLayout();
         setLayout(_grid);
+        // It's not clear whether the following has any real significance...
+        setOpaque(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +109,7 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JTextField entryBox = new JTextField(defaultValue, _width);
-        entryBox.setBackground(_background);
+        entryBox.setBackground(Color.white);
         _addPair(lbl, entryBox);
         _entries.put(name, entryBox);
         // Add the listener last so that there is no notification
@@ -221,6 +223,13 @@ public class Query extends JPanel {
     public void setBackground(Color color) {
         super.setBackground(color);
         _background = color;
+        // Set the background of any components that already exist.
+        Component[] components = getComponents();
+        for (int i = 0; i < components.length; i++) {
+            if (!(components[i] instanceof JTextField)) {
+                components[i].setBackground(_background);
+            }
+        }
     }
 
     /** Set the displayed text of an item that has been added using
@@ -357,7 +366,7 @@ public class Query extends JPanel {
     ////                         private variables                 ////
 
     // The hashtable of items in the query
-    private Hashtable _entries = new Hashtable();
+    private Map _entries = new HashMap();
 
     // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
