@@ -67,7 +67,6 @@ public class Entity extends NamedObj {
      */	
     public Enumeration enumEntities() {
 	 LinkedList storedEntities = new LinkedList();
-
 	 if( _portList == null ) { 
 	     return storedEntities.elements();
 	 }
@@ -139,7 +138,6 @@ public class Entity extends NamedObj {
      */	
     public Enumeration enumRelations() {
 	 LinkedList storedRelations = new LinkedList();
-
 	 if( _portList == null ) { 
 	     return storedRelations.elements();
 	 }
