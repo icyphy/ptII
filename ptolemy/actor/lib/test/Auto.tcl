@@ -49,6 +49,7 @@ proc createAndExecute {file} {
 }
 
 foreach file [glob auto/*.xml] {
+    puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
         createAndExecute $file
         list {}

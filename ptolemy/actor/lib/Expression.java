@@ -52,8 +52,9 @@ the type of the output.  What this means (loosely) is that
 the types of the input tokens can be converted losslessly into
 tokens with the type of the output.
 <p>
-The <i>expression</i> parameter should be set using its
-setExpression() method.  By default, it is empty, and attempting
+The <i>expression</i> parameter specifies an expression that can
+refer to the inputs by name.  By default, the expression
+is empty, and attempting
 to execute the actor without setting it triggers an exception.
 <p>
 The expression language understood by this actor is documented
