@@ -15,6 +15,8 @@
         </property>
     </property>
     <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="263.0, 154.0">
         </property>
         <port name="inputBits" class="ptolemy.actor.TypedIOPort">
@@ -43,6 +45,8 @@
         </port>
     </entity>
     <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
@@ -86,6 +90,8 @@
         </port>
     </entity>
     <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="198.0, 283.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

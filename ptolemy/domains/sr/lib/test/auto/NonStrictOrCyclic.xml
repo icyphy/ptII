@@ -4,9 +4,11 @@
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[112, 114]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="73.0, 38.0">
@@ -52,6 +54,8 @@
                 <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
                 </property>
             </property>
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="335.0, 250.0">
         </property>

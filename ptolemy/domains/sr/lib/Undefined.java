@@ -30,7 +30,6 @@
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -50,7 +49,7 @@ SR, the output will never converge to a defined value.
 @version $Id$
 */
 
-public class Undefined extends Source implements NonStrictActor {
+public class Undefined extends Source {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -64,6 +63,7 @@ public class Undefined extends Source implements NonStrictActor {
     public Undefined(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        new Attribute(this, "_nonStrictMarker");
         outputType = new StringAttribute(this, "outputType");
         outputType.setExpression("int");
         attributeChanged(outputType);

@@ -32,10 +32,10 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -57,8 +57,7 @@ If no input tokens are available at all, then no output is produced.
 @version $Id$
 */
 
-public class NonStrictThreeBitAdder extends TypedAtomicActor
-    implements NonStrictActor {
+public class NonStrictThreeBitAdder extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -72,6 +71,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor
     public NonStrictThreeBitAdder(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        new Attribute(this, "_nonStrictMarker");
         inputBits = new TypedIOPort(this, "inputBits", true, false);
         inputBits.setMultiport(true);
         highBit = new TypedIOPort(this, "highBit", false, true);
@@ -147,6 +147,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor
         if (high != null) highBit.send(0, high);
         if (low != null) lowBit.send(0, low);
     }
+
 }
 
 

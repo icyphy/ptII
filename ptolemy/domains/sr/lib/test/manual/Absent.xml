@@ -7,6 +7,8 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="98.0, 51.0">
@@ -86,6 +88,8 @@
         </port>
     </entity>
     <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="boolean">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
@@ -103,8 +107,6 @@
                 <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
                 </property>
             </property>
-        </property>
-        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="100.0, 255.0">
         </property>
@@ -133,8 +135,3 @@
     <link port="NonStrictDisplay.input" relation="relation5"/>
     <link port="Absent.output" relation="relation2"/>
 </entity>
-
-
-
-
-

@@ -7,6 +7,8 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
@@ -146,5 +148,3 @@
     <link port="NonStrictLogicalOr.input" relation="relation6"/>
     <link port="NonStrictLogicalOr.output" relation="relation"/>
 </entity>
-
-

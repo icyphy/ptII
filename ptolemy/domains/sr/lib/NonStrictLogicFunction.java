@@ -30,7 +30,6 @@
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.logic.LogicFunction;
 import ptolemy.data.Token;
@@ -78,8 +77,7 @@ At most one token is consumed on each input channel.
 @author Paul Whitaker
 @version $Id$
 */
-public class NonStrictLogicFunction extends LogicFunction
-    implements NonStrictActor {
+public class NonStrictLogicFunction extends LogicFunction {
 
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
@@ -94,6 +92,7 @@ public class NonStrictLogicFunction extends LogicFunction
     public NonStrictLogicFunction(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        new Attribute(this, "_nonStrictMarker");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,9 +30,9 @@
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
@@ -51,7 +51,7 @@ in a given iteration, no token is output on the next iteration.
 @version $Id$
 */
 
-public class NonStrictDelay extends Transformer implements NonStrictActor {
+public class NonStrictDelay extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -65,7 +65,7 @@ public class NonStrictDelay extends Transformer implements NonStrictActor {
     public NonStrictDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        new Attribute(this, "_nonStrictMarker");
         output.setTypeSameAs(input);
     }
 

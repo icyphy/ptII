@@ -32,10 +32,10 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -53,8 +53,7 @@ ports.
 @version $Id$
 */
 
-public class InstantaneousDialogGenerator extends TypedAtomicActor
-    implements NonStrictActor {
+public class InstantaneousDialogGenerator extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -68,6 +67,8 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor
     public InstantaneousDialogGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        new Attribute(this, "_nonStrictMarker");
+
         dataInput = new TypedIOPort(this, "dataInput", true, false);
         indexOutput = new TypedIOPort(this, "indexOutput", false, true);
         dataOutput = new TypedIOPort(this, "dataOutput", false, true);

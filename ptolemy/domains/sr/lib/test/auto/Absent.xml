@@ -7,6 +7,8 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="98.0, 51.0">
@@ -28,6 +30,8 @@
                 <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
                 </property>
             </property>
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="302.0, 257.0">
         </property>
@@ -68,6 +72,8 @@
         </port>
     </entity>
     <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="boolean">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">

@@ -30,9 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -55,7 +55,7 @@ converge to a fixed point.
 @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
 @version $Id$
  */
-public class NonStrictDisplay extends Display implements NonStrictActor {
+public class NonStrictDisplay extends Display {
 
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
@@ -68,6 +68,7 @@ public class NonStrictDisplay extends Display implements NonStrictActor {
     public NonStrictDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        new Attribute(this, "_nonStrictMarker");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.NonStrictActor;     // FIXME: remove
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
@@ -541,10 +540,9 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Return true if the specified actor is a nonstrict actor.
      */
     private boolean _isNonStrict(Actor actor) {
-        //Attribute nonStrictAttribute = 
-        //    ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
-        //return (nonStrictAttribute != null);  FIXME
-        return (actor instanceof NonStrictActor);
+        Attribute nonStrictAttribute = 
+            ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
+        return (nonStrictAttribute != null);
     }
 
     /** Return true if the specified actor is ready to fire.  An actor is

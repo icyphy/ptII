@@ -7,12 +7,16 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="71.0, 47.0">
         </property>
     </property>
     <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="267.0, 224.0">
         </property>
         <port name="dataInput" class="ptolemy.actor.TypedIOPort">
