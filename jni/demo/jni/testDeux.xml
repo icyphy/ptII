@@ -2,7 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testDeux" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, -3, 1036, 780}}">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, -3, 1036, 773}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 664]">
     </property>
@@ -34,7 +36,8 @@ native function named testDeux, placed in testDeux.dll library.
 Its arguments are all scalar, and so copies of them are exchanged
 between the Java side and the native side.
 
-See the Visual Project associated jnitestDeux.</text></svg></configure>
+See the Visual Project associated jnitestDeux or
+$PTII/jni/demo/jni/README.htm</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
