@@ -406,26 +406,32 @@ public class Director extends NamedObj implements Executable {
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
+     *  This method is write-synchronized on the workspace.
      */
     // FIXME: should have a TypeConflictException?
     public void resolveTypes() {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if ( !(container instanceof TypedCompositeActor)) {
-            return;
-        }
-        Enumeration constraints =
+	try {
+	    workspace().getWriteAccess();
+            CompositeActor container = ((CompositeActor)getContainer());
+            if ( !(container instanceof TypedCompositeActor)) {
+                return;
+            }
+            Enumeration constraints =
                 ((TypedCompositeActor)container).typeConstraints();
  
-        InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
-        solver.addInequalities(constraints);
+            InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
+            solver.addInequalities(constraints);
  
-        // find the greatest solution (most general types)
-        boolean resolved = solver.solve(false);
-        if( !resolved) {
-            // FIXME: should have a new TypeConflictException
-            throw new InvalidStateException("Type Conflict.");
-        }
-        // FIXME: also need to check if any port is resolved to NaT.
+            // find the greatest solution (most general types)
+            boolean resolved = solver.solve(false);
+            if ( !resolved) {
+                // FIXME: should have a new TypeConflictException
+                throw new InvalidStateException("Type Conflict.");
+            }
+            // FIXME: also need to check if any port is resolved to NaT.
+	} finally {
+	    workspace().doneWriting();
+	}
     }
 
     /** Invoke initialize(), then invoke iterate() until it returns false,
