@@ -235,7 +235,10 @@ public class NonStrictTest extends Transformer {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
                 .booleanValue();
-        if (training && _trainingTokens != null) {
+        // Note that wrapup() might get called by the manager before
+        // we have any data...
+        if (training && _trainingTokens != null &&
+                _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
             Token[] newTokens = new Token[newValues.length];
             for(int i = 0; i < newValues.length; i++) {
