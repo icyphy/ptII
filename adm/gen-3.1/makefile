@@ -635,6 +635,7 @@ NONJSALLCOREDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
+	ptolemy/copernicus/actor \
 	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/java \
 	ptolemy/copernicus/shallow
