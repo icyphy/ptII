@@ -19,7 +19,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="JAITIFFWriter" class="ptolemy.actor.lib.jai.JAITIFFWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="goldhill.tif">
+        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="PtolemyII.tif">
         </property>
         <property name="writeTiled" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -33,7 +33,7 @@
         </port>
     </entity>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="goldhill.gif">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 145.0">
         </property>

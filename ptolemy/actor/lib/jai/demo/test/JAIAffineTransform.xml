@@ -68,7 +68,7 @@ The output should be the image rotated by 45 degrees.</text></svg></configure>
         </port>
     </entity>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="yosemite.png">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 115.0">
         </property>

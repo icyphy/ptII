@@ -41,7 +41,7 @@ with this actor.</text></svg></configure>
         </property>
     </property>
     <entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="yosemite.jpg">
+        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="PtolemyII.jpg">
         </property>
         <property name="writeJFIFHeader" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -79,7 +79,7 @@ with this actor.</text></svg></configure>
         </port>
     </entity>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="yosemite.png">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 155.0">
         </property>
