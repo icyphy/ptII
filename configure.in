@@ -542,13 +542,11 @@ else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
         AC_MSG_RESULT([$PTCC])
-        PTJNI_DIR=jni
     else    
         AC_MSG_WARN([Failed to find gcc])
         AC_PATH_PROG(PTCC, cc)
         if test "${PTCC:-none}" != "none"; then
             AC_MSG_RESULT([$PTCC])
-            PTJNI_DIR=jni
         else    
             AC_MSG_WARN([Failed to find gcc or cc, so we will
     not be able use GC in $PTII/ptolemy/copernicus/c]);
@@ -1123,7 +1121,8 @@ fi
 
 #--------------------------------------------------------------------
 #       Java Native Interface (JNI)
-#       Ptolemy II can interface to native code using JNI
+#       Ptolemy II can interface to user provided native code using JNI
+#	Ptolemy II can interface to Matlab using JNI
 #--------------------------------------------------------------------
 # PTJNI_DIR is set to jni and used in
 # $PTII/makefile if gcc or cc is found.
@@ -1132,7 +1131,7 @@ PTJNI_DIR=
 if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" ; then
     AC_MSG_RESULT([$PTII/jni and $PTII/ptolemy/matlab are not present,
         so we need not find gcc or cc])
-elseb
+else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
         AC_MSG_RESULT([$PTCC])
