@@ -88,6 +88,15 @@ public class FIFOQueue implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Remove all items currently stored in the queue and
+     *  clear the history queue. The queue capacity, history 
+     *  capacity and container remain unchanged.
+     */
+    public void clear() {
+        _queueList.clear();
+        _historyList.clear();
+    }
+
     /** Clone this queue. The cloned queue has no container. The
      *  objects in the queue themselves are not cloned.
      *  @return A clone of this queue
