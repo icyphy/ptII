@@ -695,12 +695,21 @@ test Parameter-17.0 {String mode parameters} {
     set e1 [java::new ptolemy.kernel.Entity]
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
     $p1 setStringMode true
-	$p1 getExpression
-} {""}
+    $p1 setToken [java::new ptolemy.data.StringToken "noQuotes!"]
+    $p1 getExpression
+} {noQuotes!}
+
+test Parameter-17.1 {String mode parameters} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    $p1 setStringMode true
+    $p1 setExpression "noQuotes!"
+    $p1 getExpression
+} {noQuotes!}
 
 test Parameter-17.2 {String mode parameters} {
     $p1 setExpression {a"}
-	$p1 getExpression
+    $p1 getExpression
 } {a"}
 
 test Parameter-17.3 {String mode parameters} {

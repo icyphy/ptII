@@ -386,7 +386,11 @@ public class Variable extends Attribute
                 token = getToken();
             } catch (IllegalActionException ex) {}
             if (token != null) {
-                value = token.toString();
+                if (isStringMode()) {
+                    value = ((StringToken)token).stringValue();
+                } else {
+                    value = token.toString();
+                }               
             }
         }
         if (value == null) {
