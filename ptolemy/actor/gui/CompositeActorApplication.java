@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -302,20 +303,12 @@ public class CompositeActorApplication {
             if (_expectingClass) {
                 _expectingClass = false;
 
-                Class newClass = Class.forName(arg);
-
-                // Instantiate the specified class in a new workspace.
-                Workspace workspace = new Workspace();
-
-                // Get the constructor that takes a Workspace argument.
-                Class[] argTypes = new Class[1];
-                argTypes[0] = workspace.getClass();
-                Constructor constructor = newClass.getConstructor(argTypes);
-
-                Object args[] = new Object[1];
-                args[0] = workspace;
+                MoMLParser parser = new MoMLParser();
+                String string = "<entity name=\"toplevel\" class=\"" + 
+                    arg + "\"/>";
                 CompositeActor model
-                    = (CompositeActor)constructor.newInstance(args);
+                    = (CompositeActor)parser.parse(string);
+               
                 _models.add(model);
 
                 // Create a manager.
