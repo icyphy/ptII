@@ -42,3 +42,13 @@ The easiest way to update the Visio files is to:
    
 
 
+Figure	UML file		Page within that file
+1.2	packages.uml		packages
+1.3	packages.uml		domains
+1.5	uml.uml			summary
+
+3.1	actor.lib.uml		actor.lib
+3.2     actor.lib.gui.uml
+3.3	??? Token class
+3.6	actor.lib.uml		Sources
+3.7	actor.lib.uml		Sinks
