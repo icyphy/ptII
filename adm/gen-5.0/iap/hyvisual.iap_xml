@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Wed Mar 02 10:41:45 PST 2005 -->
-<InstallAnywhere_Deployment_Project increments="4947">
+     DATE:   Thu Mar 03 16:10:40 PST 2005 -->
+<InstallAnywhere_Deployment_Project increments="4928">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="6" minor="1" revision="-1"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,0,99,-102,-61,-48,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,3,15,98,100,2,1,0,0</authorizationID>
+		<authorizationID>1,0,0,0,99,-23,67,-96,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,2,12,102,106,2,1,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="240">
+	<installationObjects uniqueObjects="239">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
 			<property name="classpath">
 				<object class="java.util.Vector">
@@ -1626,7 +1626,7 @@ Press ""Done"" to quit the installer.]]></string>
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[March 2, 2005 10:41:45 AM PST]]></string>
+						<string><![CDATA[March 3, 2005 4:10:39 PM PST]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1674,7 +1674,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[March 2, 2005 10:40:12 AM PST]]></string>
+						<string><![CDATA[March 2, 2005 11:46:23 AM PST]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -2053,7 +2053,7 @@ This will remove features installed by InstallAnywhere.  It will not remove file
 						<string><![CDATA[com/zerog/ia/installer/images/]]></string>
 					</property>
 					<property name="description">
-						<string><![CDATA[$PRODUCT_NAME$ Runtime, documentation, demos, sources.]]></string>
+						<string><![CDATA[$PRODUCT_NAME$ Runtime, documentation, demos, sources. (54Mb total without the JRE)]]></string>
 					</property>
 					<property name="imageName">
 						<string><![CDATA[typical.png]]></string>
@@ -2074,8 +2074,8 @@ This will remove features installed by InstallAnywhere.  It will not remove file
 - The PDF Design Document
 - The developer documentation
 - The javadoc Java Class documentation
-The Ptiny  feature is required so that the docs
-may be viewed. (22Mb total without the JRE)]]></string>
+The "Full"  feature is required so that the docs
+may be viewed. (15.6Mb total without the JRE)]]></string>
 							</property>
 							<property name="shortName">
 								<string><![CDATA[Documentation]]></string>
@@ -2392,7 +2392,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="08982c648d57"/>
 										<object refID="08982cbe8d57"/>
 										<object refID="08982d058d58"/>
-										<object refID="875a96bbaae1"/>
 										<object refID="08982cbf8d57"/>
 										<object refID="03bd664d91fe"/>
 									</installChildren>
@@ -2732,6 +2731,7 @@ and any path to a file to read from that file]]></string>
 										</object>
 										<object refID="874b0af2aa1a"/>
 										<object refID="08982d068d58"/>
+										<object refID="875a96bbaae1"/>
 										<object refID="03bd664d91fe"/>
 									</installChildren>
 								</object>
@@ -2745,7 +2745,8 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[Source code for $PRODUCT_NAME$,
 including pdf documentation.
 Javadoc documentation may be
-generated during compilation.]]></string>
+generated during compilation.
+(Runtime + Docs + source = 54Mb total without the JRE)]]></string>
 							</property>
 							<property name="shortName">
 								<string><![CDATA[Source]]></string>
@@ -2806,14 +2807,15 @@ generated during compilation.]]></string>
 						</object>
 						<object class="com.zerog.ia.installer.InstallBundle" objectID="a3eb27d6986e">
 							<property name="bundleName">
-								<string><![CDATA[Full]]></string>
+								<string><![CDATA[Runtime]]></string>
 							</property>
 							<property name="description">
 								<string><![CDATA[The Full option installs all of the $PRODUCT_NAME$ features, but not the documentation and sources.
-This option is recommended for most users.]]></string>
+This option is recommended for most users.
+This option will consume roughly 11.8Mb without the JDK.]]></string>
 							</property>
 							<property name="shortName">
-								<string><![CDATA[Full]]></string>
+								<string><![CDATA[Runtime]]></string>
 							</property>
 							<installChildren>
 								<object refID="a3d1e35b97e5"/>
@@ -6168,30 +6170,6 @@ included.]]></string>
 								</object>
 							</installChildren>
 						</object>
-						<object class="com.zerog.ia.installer.InstallBundle" objectID="a3d1e35b97e3">
-							<property name="bundleName">
-								<string><![CDATA[Ptiny]]></string>
-							</property>
-							<property name="description">
-								<string><![CDATA[The Ptiny option installs only the Continuous Time and Finite State Machine domains
-The actor and user documentation is not included.
-This option will consume roughly 7.5Mb, and is recommended only for users with limited disk space.]]></string>
-							</property>
-							<property name="shortName">
-								<string><![CDATA[Ptiny]]></string>
-							</property>
-							<property name="preferredLocalizationVariant">
-								<string><![CDATA[application]]></string>
-							</property>
-							<installChildren>
-								<object refID="a3d1e35c97e0"/>
-								<object refID="a3d1e35b97e5"/>
-								<object refID="a3ef68ab986e"/>
-								<object refID="eaaa63bb8dd6"/>
-								<object refID="a3ef6db7986e"/>
-								<object refID="a3ee006c986e"/>
-							</installChildren>
-						</object>
 					</installChildren>
 				</object>
 				<object class="com.zerog.ia.installer.InstallSet" objectID="a3d1e35c97e2">
@@ -6216,7 +6194,6 @@ but no sources.]]></string>
 					</property>
 					<installChildren>
 						<object refID="a3eb27d6986e"/>
-						<object refID="a3d1e35b97e3"/>
 						<object refID="a3d1e35c97e3"/>
 					</installChildren>
 				</object>
@@ -6240,11 +6217,9 @@ but no sources.]]></string>
 						<string><![CDATA[minimal]]></string>
 					</property>
 					<installChildren>
-						<object refID="a3d1e35b97e3"/>
 						<object refID="a3eb27d6986e"/>
 					</installChildren>
 				</object>
-				<object refID="a3d1e35b97e3"/>
 				<object refID="a3eb27d6986e"/>
 				<object refID="a3d1e35c97e3"/>
 				<object refID="fd82435fa0e5"/>
