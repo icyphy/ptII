@@ -1023,6 +1023,16 @@ else
 	AC_MSG_RESULT([$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE])
     fi
 
+    AC_MSG_CHECKING([for the proper shared library prefix])
+    case "`uname -s`" in
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	*) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+    esac
+    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
+
     AC_MSG_CHECKING([for the proper shared library suffix])
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
@@ -1035,11 +1045,11 @@ else
 
     AC_MSG_CHECKING([for the proper shared library flag])
     case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
 	SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_CFLAG=n;;
+	*) PTJNI_SHAREDLIBRARY_CFLAG=;;
     esac
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
 fi
@@ -1634,10 +1644,13 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
 
-# JNI shared library suffix, under Solaris this would be -fPIC
+# JNI shared library suffix, under Solaris this would be -fPIC.
 AC_SUBST(PTJNI_SHAREDLIBRARY_CFLAG)
 
-# JNI shared library suffix
+# JNI shared library prefix, under Solaris this would be lib.
+AC_SUBST(PTJNI_SHAREDLIBRARY_PREFIX)
+
+# JNI shared library suffix, under Windows this would be dll.
 AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # Set to joystick if Joystick.jar was found
