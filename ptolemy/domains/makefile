@@ -72,7 +72,6 @@ PTAUXALLJARS = \
 		dde/dde.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
-		nc/nc.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
@@ -81,6 +80,7 @@ PTAUXALLJARS = \
 
 # Are we shipping these domains?
 #		hdf/hdf.jar
+#		nc/nc.jar 
 #		pbo/pbo.jar
 #		petrinet/petrinet.jar
 
