@@ -1,6 +1,6 @@
 /* This actor senses specified X10 commands.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,21 +43,22 @@ import x10.Command;
 //////////////////////////////////////////////////////////////////////////
 //// LevelListener
 /** 
- * This actor will output an integer between 0 and 100 whenever a specified
- * command with the specified house and unit code is detected.  If this actor
- * fires and no such command has been issued, then it outputs -1. Only commands
- * that have levels associated with them are supported, namely DIM and BRIGHT.
- * For on-off commands, use CommandSensor.
- * <p>
- * Note also that the CM17A wireless interface is unidirectional, only sending
- * commands to the X10 network, and not receiving from it.  Thus, this
- * actor will not work with it (or more precisely, it will only report
- * commands that are sent out from the same serial port).
- * 
- * @author Colin Cochran and Edward A. Lee
- * @version $Id$
- * @see CommandSensor
- */
+This actor will output an integer between 0 and 100 whenever a specified
+command with the specified house and unit code is detected.  If this actor
+fires and no such command has been issued, then it outputs -1. Only commands
+that have levels associated with them are supported, namely DIM and BRIGHT.
+For on-off commands, use {@link CommandListener}.
+<p>
+Note also that the CM17A wireless interface is unidirectional, only sending
+commands to the X10 network, and not receiving from it.  Thus, this
+actor will not work with it (or more precisely, it will only report
+commands that are sent out from the same serial port).
+
+@see CommandListener
+@author Colin Cochran, Edward A. Lee
+@version $Id$
+@since Ptolemy II 3.1
+*/
 
 public class LevelListener extends Receiver {
 

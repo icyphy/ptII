@@ -1,6 +1,6 @@
 /* This actor senses specified X10 commands.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,30 +44,32 @@ import x10.Command;
 //////////////////////////////////////////////////////////////////////////
 //// CommandListener
 /** 
- * This actor will output a <i>true</i> whenever a specified command with the
- * specified house and unit code is detected.  Only commands that are present
- * or absent are supported by this actor. Use LevelSensor for commands (like
- * BRIGHT and DIM) that have levels associated with them.
- * <p>
- * A typical use of this actor is to have a
- * motion sensor (or "occupancy sensor") with the specified house and unit
- * code. If there is a such a motion sensor, then this actor will output
- * true when it detects command.
- * <p>
- * Note that an X10 motion sensor can be used to turn on and off devices
- * directly if they have the same house and unit codes. The motion sensor
- * will broadcast an on command and after some time an off command for that
- * house and unit code.  This actor, however, only reacts to the on command
- * by producing an output <i>true</i>.
- * <p>
- * Note also that the CM17A wireless interface is unidirectional, only sending
- * commands to the X10 network, and not receiving from it.  Thus, this
- * actor will not work with it (or more precisely, it will only report
- * commands that are sent out from the same serial port).
- * 
- * @author Colin Cochran and Edward A. Lee
- * @version $Id$
- * @see LevelSensor
+This actor will output a <i>true</i> whenever a specified command with the
+specified house and unit code is detected.  Only commands that are present
+or absent are supported by this actor. Use LevelSensor for commands (like
+BRIGHT and DIM) that have levels associated with them.
+
+<p>
+A typical use of this actor is to have a
+motion sensor (or "occupancy sensor") with the specified house and unit
+code. If there is a such a motion sensor, then this actor will output
+true when it detects command.
+
+<p>Note that an X10 motion sensor can be used to turn on and off devices
+directly if they have the same house and unit codes. The motion sensor
+will broadcast an on command and after some time an off command for that
+house and unit code.  This actor, however, only reacts to the on command
+by producing an output <i>true</i>.
+
+<p>Note also that the CM17A wireless interface is unidirectional, only sending
+commands to the X10 network, and not receiving from it.  Thus, this
+actor will not work with it (or more precisely, it will only report
+commands that are sent out from the same serial port).
+
+@see LevelListener
+@author Colin Cochran, Edward A. Lee
+@version $Id$
+@since Ptolemy II 3.1
  */
 
 public class CommandListener extends Receiver {

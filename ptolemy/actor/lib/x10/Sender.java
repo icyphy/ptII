@@ -1,6 +1,6 @@
 /* Send commands to an x10 network.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,12 +42,13 @@ import x10.Command;
 //////////////////////////////////////////////////////////////////////////
 //// Sender
 /** 
- * Add broadcast functionality to the X10 interface. Derived classes need to
- * implement logic for sending commands.
- * 
- * @author Colin Cochran (contributor: Edward A. Lee)
- * @version $Id$
- */
+Add broadcast functionality to the X10 interface. Derived classes need to
+implement logic for sending commands.
+
+@author Colin Cochran (contributor: Edward A. Lee)
+@version $Id$
+@since Ptolemy II 3.1
+*/
 
 public class Sender extends X10Interface {
 
@@ -56,7 +57,8 @@ public class Sender extends X10Interface {
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has anactor.lib.x10
+     *  @exception NameDuplicationException If the container already
+     *  has anactor.lib.x10
      *   actor with this name.
      */
     public Sender(CompositeEntity container, String name)
@@ -77,12 +79,10 @@ public class Sender extends X10Interface {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-	/** This string stores the destination-housecode address.
-     */
+    /** This string stores the destination-housecode address. */
     public StringParameter houseCode;
     
-    /** This string stores the destination-unitcode address.
-     */ 
+    /** This string stores the destination-unitcode address. */ 
     public StringParameter unitCode;
     
     ///////////////////////////////////////////////////////////////////
@@ -102,18 +102,18 @@ public class Sender extends X10Interface {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-	/** Add a command to the x10-interface send-queue. Commands are
-	 * broadcasted in a FIFO manner. 
-	 * @param command The command to be sent on the x10 network.
-     * @return void
-	 */
-	protected void _transmit(Command command){
-		_interface.addCommand(command);
-	}
+    /** Add a command to the x10-interface send-queue. Commands are
+     * broadcasted in a FIFO manner. 
+     * @param command The command to be sent on the x10 network.
+     */
+    protected void _transmit(Command command){
+        _interface.addCommand(command);
+    }
     
     /** Return true if any channel on a given port has a true input; return
-     * false otherwise.
-     * @return boolean
+     *  false otherwise.
+     *  @return true if any channel on a given port has a true input; return
+     *  false otherwise.
      */
     protected boolean _hasTrueInput (TypedIOPort port) 
             throws NoTokenException, IllegalActionException{
@@ -136,7 +136,6 @@ public class Sender extends X10Interface {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 	
-	/** This string is the address of a given module on the x10 network.
-	 */
-	protected String _destination;
+    /** The address of a given module on the x10 network. */
+    protected String _destination;
 }
