@@ -47,9 +47,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-// Don't import anything from vergil directly so that we avoid 
-// compiling vergil when we compile this file
-//import ptolemy.vergil.fsm.modal.ModalModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -422,16 +419,9 @@ public class HDFDirector extends SDFDirector {
         for (Iterator entities = container.entityList().iterator();
                     entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
-
-            // Instead of refering to ptolemy.vergil.fsm.modal.ModalModel
-            // directly, we use reflection so as to avoid a compile
-            // time circular loop
-
-            //if (entity instanceof _modalModelClass.class) {
-            if (entity.getClass().isAssignableFrom(_modalModelClass)) {
+            if (entity instanceof CompositeActor) {
                 //System.out.println("preinitialize():" + entity.getName() + 
                 //    "is a ModalModel controller.");
-                //Director director =((ModalModel)entity).getDirector();
                 Director director =((CompositeActor)entity).getDirector();
                 //System.out.println("director = " + director.getFullName());
                 if (director instanceof HDFFSMDirector) {
@@ -454,16 +444,9 @@ public class HDFDirector extends SDFDirector {
         for (Iterator entities = container.entityList().iterator();
                     entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
-            // Instead of refering to ptolemy.vergil.fsm.modal.ModalModel
-
-            // directly, we use reflection so as to avoid a compile
-            // time circular loop
-
-            //if (entity instanceof _modalModelClass.class) {
-            if (entity.getClass().isAssignableFrom(_modalModelClass)) {
+            if (entity instanceof CompositeActor) {
                 //System.out.println(entity.getName() + 
                 //    "is a ModalModel controller.");
-                //Director director =((ModalModel)entity).getDirector();
                 Director director =((CompositeActor)entity).getDirector();
                 //System.out.println("director = " + director.getFullName());
                 if (director instanceof HDFFSMDirector) {
@@ -604,27 +587,6 @@ public class HDFDirector extends SDFDirector {
         }
         return outputPortList;
     }
-
-    // Instead of refering to ptolemy.vergil.fsm.modal.ModalModel
-    // directly, we use reflection so as to avoid a compile
-    // time circular loop.
-
-    private static Class _modalModelClass;
-    static {
-        try {
-            _modalModelClass =
-                Class.forName("ptolemy.vergil.fsm.modal.ModalModel");
-        } catch (Throwable throwable) {
-            System.out.println("Warning: HDFDirector failed to initialize: "
-                    + throwable);
-            ExceptionInInitializerError error = 
-                new ExceptionInInitializerError("Class.forName('"
-                        + "ptolemy.vergil.fsm.modal.ModalModel') failed");
-            error.initCause(throwable);
-            throw error;
-        }
-    }
-
 
     // The hashmap for the schedule cache.
     private Map _scheduleCache;
