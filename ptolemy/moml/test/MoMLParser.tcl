@@ -759,7 +759,7 @@ test MoMLParser-1.17 {test extension of a composite class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.actor.CompositeActor">
-    <director name="dir" class="ptolemy.actor.Director"/>
+    <property name="dir" class="ptolemy.actor.Director"/>
 </model>
 }
 
@@ -773,8 +773,8 @@ test MoMLParser-1.18 {test director persistence} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.CompositeActor">
-    <director name="dir" class="ptolemy.actor.Director">
-    </director>
+    <property name="dir" class="ptolemy.actor.Director">
+    </property>
 </model>
 }
 
@@ -784,7 +784,7 @@ set body {
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class="master">
-        <director name="dir" class="ptolemy.actor.Director"/>
+        <property name="dir" class="ptolemy.actor.Director"/>
     </entity>
 </model>
 }
@@ -802,8 +802,8 @@ test MoMLParser-1.18.1 {test director persistence in instatiation of a class} {
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class=".top.master">
-        <director name="dir" class="ptolemy.actor.Director">
-        </director>
+        <property name="dir" class="ptolemy.actor.Director">
+        </property>
     </entity>
 </model>
 }
@@ -1264,8 +1264,8 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
     #<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     #    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
     #<model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
-    #    <director name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-    #    </director>
+    #    <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+    #    </property>
     #    <entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
     #        <entity name="Connect" class="ptolemy.domains.fsm.demo.ABP.DEFSMActor">
     #            <port name="expired" class="ptolemy.actor.TypedIOPort">
@@ -1898,9 +1898,9 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
             [$parser parse $incMomlBase]]
     $parser parse {
 <model name=".top">
-<director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+<property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
     <property name="iterations" value="1"/>
-</director>
+</property>
 <entity name="source" class="ptolemy.actor.lib.Ramp"/>
 <entity name="dist" class="ptolemy.actor.lib.Distributor"/>
 <entity name="comm" class="ptolemy.actor.lib.Commutator"/>
@@ -1936,9 +1936,9 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
             [$parser parse $incMomlBase]]
     $parser parse {
 <model name=".top">
-<director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+<property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
     <property name="iterations" value="1"/>
-</director>
+</property>
 <entity name="source" class="ptolemy.actor.lib.Ramp"/>
 <entity name="dist" class="ptolemy.actor.lib.Distributor"/>
 <entity name="comm" class="ptolemy.actor.lib.Commutator"/>
