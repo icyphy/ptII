@@ -50,7 +50,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLWriter
 /**
-This is a writer that is capable of writing an MoML descriptiong of a 
+This is a writer that is capable of writing an MoML descriptiong of a
 Ptolemy model to another writer.
 
 @author Steve Neuendorffer
@@ -88,7 +88,7 @@ public class MoMLWriter extends Writer {
         }
     }
 
-    /** Write a portion of an array of characters.  
+    /** Write a portion of an array of characters.
      *  This class simply defers to the writer
      *  that was passed in the constructor.  If a null writer was
      *  given to the constructor, then do nothing.
@@ -99,7 +99,7 @@ public class MoMLWriter extends Writer {
      *
      *  @exception  IOException  If an I/O error occurs
      */
-    public void write(char cbuf[], int off, int len) 
+    public void write(char cbuf[], int off, int len)
             throws IOException {
         synchronized(lock) {
             if(_writer != null)
@@ -112,7 +112,7 @@ public class MoMLWriter extends Writer {
      *  an XML string.
      */
     public void write(NamedObj model) throws IOException {
-        if(model.getContainer() == null) 
+        if(model.getContainer() == null)
             writePreamble(model);
         write(model, 0, model.getName());
     }
@@ -122,7 +122,7 @@ public class MoMLWriter extends Writer {
      *  an XML string.
      */
     public void write(NamedObj model, String name) throws IOException {
-        if(model.getContainer() == null) 
+        if(model.getContainer() == null)
             writePreamble(model);
         write(model, 0, name);
     }
@@ -143,7 +143,7 @@ public class MoMLWriter extends Writer {
         throws IOException {
         synchronized(lock) {
             // Alot of things aren't presistent and are just skipped.
-            if(object instanceof NotPersistent) 
+            if(object instanceof NotPersistent)
                 return;
             // Documentation uses a special tag with no class.
             if(object instanceof Documentation) {
@@ -168,7 +168,7 @@ public class MoMLWriter extends Writer {
                 return;
             }
             NamedObj.MoMLInfo info = object.getMoMLInfo();
-          
+
             // Write the first line.
             write(_getIndentPrefix(depth));
             write("<");
@@ -235,7 +235,7 @@ public class MoMLWriter extends Writer {
                     }
                     if(deferredObject == null) {
                         // No moml class..  must have been a java class.
-                        // This sucks.  We should integrate with 
+                        // This sucks.  We should integrate with
                         // the classloader mechanism.
                         MoMLParser parser = new MoMLParser();
                         try {
@@ -246,21 +246,21 @@ public class MoMLWriter extends Writer {
                         } catch (Exception ex) {
                             // Damn, no workspace constructor.  Let's
                             // try a container, name constructor.
-                            // It really would be nice if all of 
+                            // It really would be nice if all of
                             // our actors had workspace constructors,
                             // but version 1.0 only specified the
-                            // (container,name) constructor, and 
-                            // now we're stuck with it. 
+                            // (container,name) constructor, and
+                            // now we're stuck with it.
                             parser.reset();
                             String source = "<entity name=\"test\""
                                 + "class=\"ptolemy.kernel.CompositeEntity\">\n"
                                 + "<entity name=\""
                                 + object.getName() + "\" class=\""
-                                + deferredClass + "\"/>\n" 
+                                + deferredClass + "\"/>\n"
                                 + "</entity>";
                             CompositeEntity toplevel = (CompositeEntity)
                                 parser.parse(source);
-                            deferredObject = 
+                            deferredObject =
                                 toplevel.getEntity(object.getName());
                         }
                     }
@@ -294,8 +294,8 @@ public class MoMLWriter extends Writer {
                         _writeForDeferred(attribute, deferAttribute, depth);
                 }
             }
-            
-            // If we have nothing to defer to, then write out 
+
+            // If we have nothing to defer to, then write out
             // the internals as well.
             if(info.deferTo == null) {
                 // FIXME: Better done using a visitor?  How do we visit an
@@ -304,7 +304,7 @@ public class MoMLWriter extends Writer {
                 //        deferredObject);
                 if(object instanceof Configurable) {
                     Configurable container = (Configurable)object;
-                    Configurable deferredContainer = 
+                    Configurable deferredContainer =
                         (Configurable)deferredObject;
                     String source = container.getSource();
                     String text = container.getText();
@@ -327,12 +327,12 @@ public class MoMLWriter extends Writer {
                         write("</configure>\n");
                         wroteAnything = true;
                     }
-                    
+
                     // Rather awkwardly we have to configure the
                     // container, to handle the entity library.
                     try {
                         deferredContainer.configure(null, source, text);
-                    } 
+                    }
                     catch (Exception ex) {
                         System.out.println("Failed to configure because:");
                         ex.printStackTrace();
@@ -345,7 +345,7 @@ public class MoMLWriter extends Writer {
                     while (ports.hasNext()) {
                         Port port = (Port)ports.next();
                         if(deferredContainer == null) {
-                            // If we have nothing to refer to, 
+                            // If we have nothing to refer to,
                             // then just write the
                             // entity.
                             write(port, depth);
@@ -355,25 +355,25 @@ public class MoMLWriter extends Writer {
                             // see if we need to write the attribute.
                             String portName = port.getName(container);
                             //   System.out.println("portName = " + portName);
-                            Port deferPort = 
+                            Port deferPort =
                                 deferredContainer.getPort(port.getName(container));
-                            // System.out.println("deferPort = " + 
+                            // System.out.println("deferPort = " +
                             //        deferPort);
                             wroteAnything &=
                                 _writeForDeferred(port, deferPort, depth);
                         }
-                    }               
-                } 
+                    }
+                }
                 if(object instanceof ptolemy.kernel.CompositeEntity) {
                     CompositeEntity container = (CompositeEntity)object;
-                    CompositeEntity deferredContainer = 
+                    CompositeEntity deferredContainer =
                         (CompositeEntity) deferredObject;
                     Iterator entities = container.entityList().iterator();
                     while (entities.hasNext()) {
-                        ComponentEntity entity = 
+                        ComponentEntity entity =
                             (ComponentEntity)entities.next();
                         if(deferredContainer == null) {
-                            // If we have nothing to refer to, 
+                            // If we have nothing to refer to,
                             // then just write the
                             // entity.
                             write(entity, depth);
@@ -385,10 +385,10 @@ public class MoMLWriter extends Writer {
                             //    System.out.println("entityName = " + entityName);
                             Entity deferredEntity =
                                 deferredContainer.getEntity(entityName);
-                            // System.out.println("deferEntity= " + 
+                            // System.out.println("deferEntity= " +
                             //        deferredEntity);
                             wroteAnything &=
-                                _writeForDeferred(entity, deferredEntity, 
+                                _writeForDeferred(entity, deferredEntity,
                                     depth);
                         }
                     }
@@ -420,8 +420,8 @@ public class MoMLWriter extends Writer {
                         write(_getIndentPrefix(depth));
                         write("<property name=\"multiport\"/>\n");
                         wroteAnything = true;
-                    } 
-                }             
+                    }
+                }
                 if(object instanceof ptolemy.moml.Vertex) {
                     Vertex container = (Vertex)object;
                     Vertex linked = container.getLinkedVertex();
@@ -433,7 +433,7 @@ public class MoMLWriter extends Writer {
                         wroteAnything = true;
                     }
                 }
-            }  
+            }
             return wroteAnything;
         }
     }
@@ -449,14 +449,14 @@ public class MoMLWriter extends Writer {
                 _writer.write(_entityPreamble);
         }
     }
-       
+
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
      *  @return A string with zero or more spaces.
      */
     protected static String _getIndentPrefix(int level) {
-        if(level < 0) 
+        if(level < 0)
             return _getIndentPrefix(0);
         synchronized(_prefixes) {
             if(_prefixes.length <= level) {
@@ -484,7 +484,7 @@ public class MoMLWriter extends Writer {
      *  @param depth The level of indenting represented by the spaces.
      *  @return true If anything was written.
      */
-    protected boolean _writeForDeferred(NamedObj object, 
+    protected boolean _writeForDeferred(NamedObj object,
             NamedObj deferredObject, int depth) throws IOException {
         // If there is no deferred object, then write the object.
         if(deferredObject == null) {
@@ -496,19 +496,19 @@ public class MoMLWriter extends Writer {
                 new MoMLWriter(deferStringWriter);
             deferWriter.write(deferredObject, depth);
             String deferredString = deferStringWriter.toString();
-            
+
             StringWriter stringWriter = new StringWriter();
             MoMLWriter writer = new MoMLWriter(stringWriter);
             writer.write(object, depth);
             String string = stringWriter.toString();
-            
+
            // If the object is different, then write it.
             if(!string.equals(deferredString)) {
                 //   System.out.println("string = " + string);
                 //   System.out.println("deferredString = " + deferredString);
                  write(string);
                 return true;
-            } 
+            }
             return false;
         }
     }
@@ -516,14 +516,14 @@ public class MoMLWriter extends Writer {
     private static String[] _prefixes = {"", "    "};
     // The writer
     private Writer _writer;
-    private static final String _entityPreamble = 
+    private static final String _entityPreamble =
     new String("<?xml version=\"1.0\""
             +" standalone=\"no\"?>\n"
             + "<!DOCTYPE entity PUBLIC "
             + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
             + "    \"http://ptolemy.eecs.berkeley.edu"
             + "/xml/dtd/MoML_1.dtd\">\n");
-    private static final String _classPreamble = 
+    private static final String _classPreamble =
     new String("<?xml version=\"1.0\""
             +" standalone=\"no\"?>\n"
             + "<!DOCTYPE class PUBLIC "
