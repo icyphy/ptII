@@ -133,6 +133,7 @@ Gzipped
 HREF
 HSPACE
 HTML
+HTVQ
 Halbwachs
 Harel
 Hashtable
@@ -197,6 +198,7 @@ LUSTRE
 Lego
 Lemkin
 Lenzmann
+Leung
 Levitan
 Linux
 Liu
@@ -279,6 +281,7 @@ Queueing
 README
 REMAINDER
 REMOTERECEIVER
+RGB
 ROWSPAN
 RTOS
 Racal
@@ -414,7 +417,9 @@ classpath
 cloneable
 codebase
 codebook
+codebooks
 codesign
+codevectors
 colspan
 combobox
 commapi
@@ -478,6 +483,7 @@ gigasource
 gigavault
 gindent
 giotto
+greyscale
 gsrc
 gui
 gz
