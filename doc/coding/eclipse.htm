@@ -11,7 +11,72 @@ Eclipse is an Integrated Development Environment available
 from
 <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
 
-<h2>Installation</h2>
+<h2>Getting Started with Eclipse</h2>
+The instructions below cover how to get started using Eclipse
+with Ptolemy II
+
+<h2><a name="cvs_repository">Using the ptII CVS repository in Eclipse</a></h2>
+Eclipse has an extensive CVS capability. However, Eclipse assumes that
+an Eclipse project (including the .classpath, and .project) are under CVS control.
+Therefore, creating the ptII project in Eclipse under CVS control requires an unusual procedure.
+In brief, the CVS ptII module must be checked out of CVS into an Eclipse project that doesn't work "correctly" until
+the .classpath is created by manually running configure.
+
+<ol>
+
+<li> See <a href="http://www.gigascale.org/ptexternal"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get a
+login for cvs access.
+
+<li> You must be using Eclipse 2.1. If necessary, obtain from
+       <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
+<li> Set up the CVS connection:
+
+<ol>
+<li> Expose the CVS Repositories View by Window-&gt;Show View-&gt;Other. The select CVS->CVS Repositories
+<li> In the CVS Repositories Panel right mouse click and select New-&gt;Repository Location:
+
+ <br>Host: <CODE>gigas<B>source</B>.eecs.berkeley.edu</CODE>
+ <br>Repository path: <CODE>/home/cvs</CODE>
+ <br>User: Your username, see 
+<a href="http://www.gigascale.org/ptexternal"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get 
+a login for cvs access
+ <br>ConnectionType
+	<ul>
+	<li> If you have CVS read only access, select <CODE>pserver</CODE>
+	<li> If you have CVS read/write access and have an external ssh
+	binary installed, select <CODE>ext</CODE>.  The
+	Cygwin installation can optionally include an appropriate ssh
+	binary.  If you have Cygwin installed, startup bash and type
+	<CODE>ssh -v</CODE> to see if ssh is installed.
+	<li> <CODE>extssh</CODE> is not recommended because it
+	uses version 1 of the SSH protocol which is implemented
+	by a version of ssh that is built in to Eclipse.
+	 <b>SSH V1 is not as likely to be supported as SSH V2.
+	</ul>
+
+
+
+<li> click Finish
+</ol>
+
+<li> If you are connecting via a DSL connection, you may
+want to use compression to transfer files:
+In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
+to 9.
+
+<li> In the CVS Repositories View window, click on the repository and then on
+HEAD until you see the ptII Head and right click on this
+<li> Select the "Check Out As...." option
+<li> Go through the various menus to create a Java Project named ptII. Don't use the "Default Location". Instead specify the location where you want ptII to go (e.g. <CODE>c:\ptII</CODE>)
+
+<li> Click OK. And, wait for the checkout to finish
+<li> The result should be the ptII project. There will probably be several errors reported that are due to the .classpath that was just created as part of the checkout/project creation process.
+<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath.
+<li> In Eclipse, perform a Refresh on the ptII project. This will cause Eclipse to see the new .classpath
+</ol>
+     
+
+
 
 <h2><a name="dotFileSetup">Using dot files in $PTII to set up</a></h2>
 
@@ -143,36 +208,6 @@ Eclipse to compile just the appropriate .javas
 
 
 </ol>  
-
-<h2><a name="cvs_repository">Using the ptII CVS repository in Eclipse</a></h2>
-Eclipse has an extensive CVS capability. However, Eclipse assumes that
-an Eclipse project (including the .classpath, and .project) are under CVS control.
-Therefore, creating the ptII project in Eclipse under CVS control requires an unusual procedure.
-In brief, the CVS ptII module must be checked out of CVS into an Eclipse project that doesn't work "correctly" until
-the .classpath is created by manually running configure.
-
-<ol>
-<li> You must be using Eclipse 2.1. If necessary, obtain from
-       <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
-<li> Set up the CVS connection
-See <a href="#cvs">Creating the CVS connection</a> to see how to do this
-<li> In the CVS Repositories View open the repository until you see the ptII Head and right click on this
-<li> Select the "Check Out As...." option
-<li> Go through the various menus to create a Java Project named ptII. Don't use the "Default Location". Instead specify the location where you want ptII to go (e.g. c:\ptII)
-<li> Click OK. And, wait for the checkout to finish
-<li> The result should be the ptII project. There will probably be several errors reported that are due to the .classpath that was just created as part of the checkout/project creation process.
-<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath.
-<li> In Eclipse, perform a Refresh on the ptII project. This will cause Eclipse to see the new .classpath
-</ol>
-     
-
-<h2><a name="cvs">Creating the CVS connection</a></h2>
-<ol>
-<li> Expose the CVS Repositories View by Window->Show View->Other. The select CVS->CVS Repositories
-<li> In the CVS Repositories Panel right mouse click and select New->Repository Location
-<li> Specify the appropriate parameters. In particular, specify extssh for Connection Type
-<li> click Finish
-</ol>
 
 <h2><a name="tabs">Don't use tabs in the editor</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
