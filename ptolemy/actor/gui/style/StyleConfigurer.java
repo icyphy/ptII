@@ -105,10 +105,10 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    throw new InternalErrorException(ex.getMessage());
 	}
 
-	Iterator params
+	Iterator parameters
             = object.attributeList(Settable.class).iterator();
-        while (params.hasNext()) {
-            Settable param = (Settable)params.next();
+        while (parameters.hasNext()) {
+            Settable param = (Settable)parameters.next();
             // Skip if the parameter is not visible.
             if (param.getVisibility() == Settable.NONE) continue;
 
