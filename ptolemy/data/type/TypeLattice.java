@@ -162,6 +162,12 @@ public class TypeLattice {
         return _lattice;
     }
 
+    /** Return the least upper bound of the two given types.
+     */
+    public static Type leastUpperBound(Type type1, Type type2) {
+        return (Type)_lattice.leastUpperBound(type1, type2);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 

@@ -138,6 +138,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
 
         ptolemy.data.Token[] tokens = _getChildTokens(node);
+        // Convert up to LUB.
+        ptolemy.data.type.Type elementType = tokens[0].getType();
+        for (int i = 0; i < numChildren; i++) {
+            Type valueType = tokens[i].getType();
+            if (!elementType.equals(valueType)) {
+                elementType = TypeLattice.leastUpperBound(
+                        elementType, valueType);
+            }
+        }
+        for (int i = 0; i < numChildren; i++) {
+            tokens[i] = elementType.convert(tokens[i]);
+        }
+        
         node.setToken(new ArrayToken(tokens));
     }
 
