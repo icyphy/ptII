@@ -97,7 +97,7 @@ OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
 	PtParser.jj
 
-JCLASS = $(OPTIONAL_JSRCS:%.java=%.class) $(JSRCS:%.java=%.class) 
+JCLASS =  $(JSRCS:%.java=%.class) $(OPTIONAL_JSRCS:%.java=%.class) 
 
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
