@@ -45,7 +45,7 @@ test BitsToInt-1.1 {test 1: using the pulse actor as source} {
     set e0 [sdfModel 1]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.domains.sdf.lib.BitsToInt $e0 conver]
+    set conver [java::cast ptolemy.domains.sdf.lib.SDFTransformer [java::new ptolemy.domains.sdf.lib.BitsToInt $e0 conver]]
 
     set values [java::new {boolean[][]} {1 32} [list [list false false false false false false false false false false false false false false false false false false false false false false false false false false false false false true false true]]]
     set valuesParam [getParameter $pulse values]
@@ -72,14 +72,14 @@ test BitsToInt-1.1 {test 1: using the pulse actor as source} {
 #### Test BitsToInt in an SDF model
 #
 
-test IntToBits-1.2 {test 2: using the IntTobits actor as source} {
+test BitsToInt-1.2 {test 2: using the IntTobits actor as source} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver1 [java::new ptolemy.domains.sdf.lib.IntToBits \
-                    $e0 conver1]    
-    set conver2 [java::new ptolemy.domains.sdf.lib.BitsToInt \
-                    $e0 conver2]  
+    set conver1 [java::cast ptolemy.domains.sdf.lib.SDFTransformer [java::new ptolemy.domains.sdf.lib.IntToBits \
+                    $e0 conver1]]    
+    set conver2 [java::cast ptolemy.domains.sdf.lib.SDFTransformer [java::new ptolemy.domains.sdf.lib.BitsToInt \
+                    $e0 conver2]]  
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.IntToken 5]

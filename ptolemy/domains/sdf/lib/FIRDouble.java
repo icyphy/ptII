@@ -1,4 +1,4 @@
-/* An FIR filter.
+/* An FIR filter that is optimized for operating on DoubleTokens.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -33,7 +33,11 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
@@ -46,8 +50,9 @@ capability.  It differs from the standard FIR filter in that its input,
 output and taps are restricted to be doubles, which allows faster
 computation.
 
-@author Edward A. Lee
+@author Edward A. Lee, Bart Kienhuis
 @version $Id$
+@see ptolemy.domains.sdf.lib.FIR
 */
 
 public class FIRDouble extends FIR {
@@ -66,6 +71,7 @@ public class FIRDouble extends FIR {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
+        taps.setTypeEquals(new ArrayType(BaseType.DOUBLE));        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,12 +129,12 @@ public class FIRDouble extends FIR {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void initialize() throws IllegalActionException {
-
-	// Case the tapsToken matrix because it will be
-	// a matrix with doubles.
-        _taps = new double[_tapsToken.getColumnCount()];
+        super.initialize();
+        
+        ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+        _taps = new double[tapsToken.length()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = ((DoubleMatrixToken)_tapsToken).getElementAt(0, i);
+            _taps[i] = ((DoubleToken)tapsToken.getElement(i)).doubleValue();
         }
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
@@ -138,7 +144,6 @@ public class FIRDouble extends FIR {
         if (_taps.length%_interp != 0) datalength++;
         _data = new double[datalength];
         _mostRecent = datalength;
-
     }
 
     ///////////////////////////////////////////////////////////////////

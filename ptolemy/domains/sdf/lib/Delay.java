@@ -25,43 +25,67 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.data.IntToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.MatrixToken;
-import ptolemy.data.Token;
 
-/** This actor outputs a set of initial tokens during the initialize()
- *  method, and subsequently passes the input tokens to the output.
- *  It is used to break dependency cycles in directed loops (the
- *  initial outputs permit the computation to get started). The
- *  default value for the <i>initialOutputs</i> parameter causes a
- *  single integer token with value zero to be produced in
- *  initialize().
- *
- *  @author Steve Neuendorffer, Edward A. Lee
- *  @version $Id$
- */
-public class Delay extends Transformer {
+//////////////////////////////////////////////////////////////////////////
+//// Delay
+/** 
+This actor outputs a set of initial tokens during the initialize()
+method, and subsequently passes the input tokens to the output.
+It is used to break dependency cycles in directed loops of SDF models.
+This actor declares an initial production parameter in its output port
+that is used by the SDF scheduler to properly schedule the model, and
+the initial outputs permit the computation to get started. The
+default value for the <i>initialOutputs</i> parameter causes a
+single integer token with value zero to be produced in
+initialize().
+
+@author Steve Neuendorffer, Edward A. Lee
+@version $Id$
+*/
+
+public class Delay extends SDFTransformer {
+
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Delay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Parameter(output, "tokenInitProduction", new IntToken(1));
-        initialOutputs = new Parameter(this, "initialOutputs",
-                _defaultInitialOutputs);
-        _dummy = new Variable(this, "_dummy", new IntToken(0));
-	output.setTypeAtLeast(_dummy);
+        
+        // FIXME: this parameter should be an array type.
+        initialOutputs = new Parameter(this, "initialOutputs");
+        initialOutputs.setTypeEquals(new ArrayType(BaseType.NAT));
+        initialOutputs.setExpression("[0]"); 
+
+        output.setTokenInitProduction(1);
+
+	// set type constraints.
+	ArrayType paramType = (ArrayType)initialOutputs.getType();
+	InequalityTerm elemTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
         output.setTypeAtLeast(input);
     }
 
@@ -86,29 +110,34 @@ public class Delay extends Transformer {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute != initialOutputs && attribute != _dummy) {
+        if (attribute != initialOutputs) {
             // The base class will probably throw an exception.
             super.attributeTypeChanged(attribute);
         }
     }
 
-    /** Clone the actor into the specified workspace. This sets the port
-     *  and parameter public members of the new object and the type
-     *  constraints among them.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @exception CloneNotSupportedException If the base class throws it.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Delay newObject = (Delay)(super.clone(workspace));
-        // This is private Variable, so it is ok.
-        newObject._dummy =
-            (Variable)newObject.getAttribute("_dummy");
-	newObject.output.setTypeAtLeast(newObject._dummy);
-        newObject.output.setTypeAtLeast(newObject.input);
-        return newObject;
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        Delay newobj = (Delay)(super.clone(ws));
+
+        // set the type constraints
+        try {
+            ArrayType paramType = (ArrayType)newobj.initialOutputs.getType();
+            InequalityTerm elemTerm = paramType.getElementTypeTerm();
+            newobj.output.setTypeAtLeast(elemTerm);
+        } catch (IllegalActionException ex) {
+            // Ignore..  
+            // FIXME: This try..catch seems bogus...  ArrayToSequence
+            // doesn't need it..
+        }
+        return newobj;
     }
 
     /** Read exactly one input token and send it to the output.
@@ -126,18 +155,14 @@ public class Delay extends Transformer {
      *   of the output port throws it.
      */
     public void initialize() throws IllegalActionException {
-        for (int i = 0; i < _columnCount; i++) {
-            output.send(0, _outputsArray.getElementAsToken(0, i));
-        }
+        output.send(0, _outputsArray.arrayValue(), _outputsArray.length());
     }
 
-    /** Check the <i>initialOutputs</i> parameter for conformance (it
-     *  must be an array token containing a single row), and check the
-     *  type of token it contains so that type resolution properly sees
-     *  the constraint that the output type be at least that of the
-     *  elements of this array.  Note that the value and type
-     *  <i>initialOutputs</i> are observed only here.  If the value
-     *  or type change during execution
+    /** Check that the <i>initialOutputs</i> parameter contains an
+     *  array token.  Set the <i>tokenInitProduction</i> parameter of
+     *  the output port to the length of the value of <i>initialOutputs</i>
+     *  Note that the value and type <i>initialOutputs</i> are observed 
+     *  only here.  If the value or type change during execution
      *  of the model, the change will not take effect until the next
      *  execution.
      *
@@ -148,47 +173,22 @@ public class Delay extends Transformer {
         super.preinitialize();
 
         Token contents = initialOutputs.getToken();
-        if (!(contents instanceof MatrixToken)) {
+        if (!(contents instanceof ArrayToken)) {
             throw new IllegalActionException(this,
-                    "Cannot set initialOutputs parameter to a non-matrix.");
+                    "InitialOutputs was " + contents + " which is not an" +
+                    " array token.");
         }
-        _outputsArray = (MatrixToken)contents;
-        int rowCount = _outputsArray.getRowCount();
-        if (rowCount != 1) {
-            throw new IllegalActionException(this,
-                    "Cannot set initialOutputs parameter to a non-row vector.");
-        }
-        _columnCount = _outputsArray.getColumnCount();
-        Parameter production =
-            (Parameter)output.getAttribute("tokenInitProduction");
-        production.setToken(new IntToken(_columnCount));
+        _outputsArray = (ArrayToken)contents;
+        output.setTokenInitProduction(_outputsArray.length());
 
-        // Set _dummy so that type constraints work properly.
-        try {
-            Token prototype = _outputsArray.getElementAsToken(0, 0);
-            _dummy.setToken(prototype);
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException(this,
-                    "Cannot set initialOutputs to an empty array.");
-        }
+        getDirector().invalidateResolvedTypes();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Default initial outputs: a single integer token with value 0.
-    private int defaultValues[][] = {{0}};
-
-    // Default initial outputs as a matrix token.
-    private MatrixToken _defaultInitialOutputs =
-    new IntMatrixToken(defaultValues);
-
     // The outputs to be produced in the initialize method.
-    private MatrixToken _outputsArray;
-
-    // The size of the array.
-    private int _columnCount;
-
-    // Variable containing an element from initial outputs array.
-    private Variable _dummy;
+    private ArrayToken _outputsArray;
 }
+
+

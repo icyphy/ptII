@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
@@ -37,7 +37,6 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.math.DoubleArrayMath;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct
@@ -55,7 +54,7 @@ its output.
 @version $Id$
 */
 
-public class DotProduct extends SDFAtomicActor {
+public class DotProduct extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -69,31 +68,32 @@ public class DotProduct extends SDFAtomicActor {
     public DotProduct(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-      	input1 = new SDFIOPort(this, "input1", true, false);
-	    input1.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-	    input1.setTokenConsumptionRate(1);
-
-	    input2 = new SDFIOPort(this, "input2", true, false);
-	    input2.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-	    input2.setTokenConsumptionRate(1);
-
-	    output = new SDFIOPort(this, "output", false, true);
-	    output.setTypeEquals(BaseType.DOUBLE);
-	    output.setTokenProductionRate(1);
-
+      	input1 = new TypedIOPort(this, "input1", true, false);
+        input1.setTypeAtMost(BaseType.DOUBLE_MATRIX);
+                
+        input2 = new TypedIOPort(this, "input2", true, false);
+        input2.setTypeAtMost(BaseType.DOUBLE_MATRIX);
+        
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input the first matrix token. */
-    public SDFIOPort input1 = null;
+    /** The first input port. This has type MatrixToken, and should be 
+     *  given matrices with only one row.
+     */
+    public TypedIOPort input1 = null;
 
-    /** Input for second matrix token. */
-    public SDFIOPort input2 = null;
+    /** The second input port. This has type MatrixToken, and should be 
+     *  given matrices with only one row.
+     */
+    public TypedIOPort input2 = null;
 
-    /** Output port, which always is the double type. */
-    public SDFIOPort output = null;
+    /** The output port. This has type DoubleToken.
+     */
+    public TypedIOPort output = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

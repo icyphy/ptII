@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (srao@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
@@ -36,8 +36,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,11 +53,11 @@ on the output. Note that this causes a sample rate increase by
 a factor of <i>numberOfTimes</i>,
 and hence affects the number of invocations of downstream actors.
 
-@author Shankar Rao
+@author Shankar Rao, Steve Neuendorffer
 @version $Id$
 */
 
-public class Repeat extends SDFAtomicActor {
+public class Repeat extends SDFTransformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -68,46 +68,38 @@ public class Repeat extends SDFAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Repeat(TypedCompositeActor container, String name)
+    public Repeat(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	input = new SDFIOPort(this, "input", true, false);
-	output = new SDFIOPort(this, "output", false, true);
 	output.setTypeSameAs(input);
 
 	// parameters
 	numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
 	numberOfTimes.setTypeEquals(BaseType.INT);
+
 	blockSize = new Parameter(this, "blockSize", new IntToken(1));
 	blockSize.setTypeEquals(BaseType.INT);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. This actor imposes no type constraints on the
-     *  type of the input.
+    /** The repetition factor. 
      */
-    public SDFIOPort input;
-
-    /** The output port. This actor requires that the output port be the same
-     *  type as the input.
-     */
-    public SDFIOPort output;
-
-    /** The repetition factor. */
     public Parameter numberOfTimes;
 
-    /** The number of tokens in a block. */
+    /** The number of tokens in a block. 
+     */
     public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Repeat a block of <i>blockSize</i> input tokens <i>numberOfTimes</i>
-     *  times on the output. For example, if <i>blockSize</i> = 3 and
+    /** Consume <i>blockSize</i> input tokens from the input port.
+     *  Produce <i>blocksize*numberOfTimes</i>
+     *  tokens on the output port, consisting of <i>numberOfTimes</i> 
+     *  repetitions of the input.  For example, if <i>blockSize</i> = 3 and
      *  <i>numberOfTimes</i> = 2, then on the following input:<br>
      *  <pre>  1 2 3 4 5 6</pre><br>
      *  two invocations of this method will send the following output:<br>
@@ -115,28 +107,24 @@ public class Repeat extends SDFAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	int nt = ((IntToken)numberOfTimes.getToken()).intValue();
-	int bs = ((IntToken)blockSize.getToken()).intValue();
-	Token[] inputBlock = new Token[bs];
-	for (int j = 0; j < bs; j += 1)
-	    inputBlock[j] = input.get(0);
-	for (int i = 0; i < nt; i += 1)
-	    for (int j = 0; j < bs; j += 1)
-		output.send(0, inputBlock[j]);
-
+	int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
+	int count = ((IntToken)blockSize.getToken()).intValue();
+	Token[] inputBlock = input.get(0, count);
+	for (int i = 0; i < repetitions; i += 1)
+            output.send(0, inputBlock, count);
     }
+
     /** Calculate the token production rate and the token consumption
      *  rate based on the parameters <i>blockSize</i> and <i>numberOfTimes</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-	int bs = ((IntToken)blockSize.getToken()).intValue();
-	int nt = ((IntToken)numberOfTimes.getToken()).intValue();
-	input.setTokenConsumptionRate(bs);
-	output.setTokenProductionRate(bs * nt);
+	int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
+	int count = ((IntToken)blockSize.getToken()).intValue();
+	input.setTokenConsumptionRate(count);
+	output.setTokenProductionRate(count * repetitions);
     }
-
 }
 
 

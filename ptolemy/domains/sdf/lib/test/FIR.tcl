@@ -56,10 +56,10 @@ test FIR-1.1 {Test FIR for double FIR} {
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
-      [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] input]
+      [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] input]
 
     $e0 connect \
-     [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] output] \
+     [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] output] \
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     # Set the taps for the FIR
@@ -79,16 +79,14 @@ test FIR-1.1 {Test FIR for double FIR} {
 
 test FIR-2.1 {Test FIR type exeception} {
 
-    set fixMatrix  [java::call ptolemy.data.expr.FixPointFunctions {fix \
-    ptolemy.data.DoubleMatrixToken int int } $tapMatrix 6 2 ]
-    $tapParam setToken $fixMatrix
+    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
 
     catch { [$e0 getManager] execute } msg
 	list $msg
 
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.pulse.output: int
-  .top.FIRclone.input: fix
+  .top.FIRclone.output: scalar
+  .top.rec.input: scalar
 }}
 
 
@@ -109,10 +107,10 @@ test FIR-3.1 {Test FIR for FIX datatype} {
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Transformer $d2f] output] \
-      [java::field [java::cast ptolemy.domains.sdf.lib.FIR $fir] input]
+      [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $fir] input]
 
     $e0 connect \
-      [java::field [java::cast ptolemy.domains.sdf.lib.FIR $fir] output] \
+      [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $fir] output] \
       [java::field [java::cast ptolemy.actor.lib.Transformer $f2d] input]
 
     $e0 connect \
@@ -121,7 +119,7 @@ test FIR-3.1 {Test FIR for FIX datatype} {
 
     # Set the taps for the FIR
     set tapParam [getParameter $fir taps]
-    $tapParam setToken $fixMatrix
+    $tapParam setExpression {fix([-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609], 6, 2)}
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]

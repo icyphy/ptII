@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -33,23 +33,26 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
 /**
-
 This actor implements a type polymorphic finite-impulse response
 filter with multirate capability. Since this filter operates on
-Tokens, it is polymorphic in the type of data it operates on. It can
-operate on Double values like the default FIR filter, but also on
-Complex or FixPoint values.
-
+Tokens, it is polymorphic in the type of data it operates on. 
 <p>
-
+Note that the current implementation of this actor only reads its
+parameters during initialization, so the filter cannot be 
+changed during execution.
+<p>
 When the <i>decimation</i> (<i>interpolation</i>)
 parameters are different from unity, the filter behaves exactly
 as it were followed (preceded) by a DownSample (UpSample) actor.
@@ -67,11 +70,10 @@ parameter and the output sample rate.
 In particular, considerable care must be taken to avoid aliasing.
 Specifically, if the input sample rate is <i>f</i>,
 then the filter stopband should begin before <i>f</i>/2.
-If the interpolation ratio is <i>i < /i>, then <i>f</i>/2 is a fraction
-1/2<i>i < /i> of the sample rate at which you must design your filter.
+If the interpolation ratio is <i>i</i>, then <i>f</i>/2 is a fraction
+1/2<i>i</i> of the sample rate at which you must design your filter.
 <p>
 The <i>decimationPhase</i> parameter is somewhat subtle.
-
 It is exactly equivalent the phase parameter of the DownSample actor.
 Its interpretation is as follows; when decimating,
 samples are conceptually discarded (although a polyphase structure
@@ -83,16 +85,22 @@ the latest (most recent) samples are the ones selected.
 The decimationPhase must be strictly less than
 the decimation ratio.
 <p>
+<i>Note: in this description "sample rate" refers to the physical sampling 
+rate of an A/D converter in the system.  In other words, the number of 
+data samples per second.  This is not usually specified anywhere in an
+SDF system, and most definitely does NOT correspond to the SDF rate parameters
+of this actor.  This actor automatically sets the rates of the input
+and output ports to the decimation and interpolation ratios, respectively.</i>
+<p>
 For more information about polyphase filters, see F. J. Harris,
 "Multirate FIR Filters for Interpolating and Desampling", in
 <i>Handbook of Digital Signal Processing</i>, Academic Press, 1987.
 
-@author Edward A. Lee, Bart Kienhuis
+@author Edward A. Lee, Bart Kienhuis, Steve Neuendorffer
 @version $Id$
 @see ptolemy.data.Token
-@see ptolemy.domains.sdf.lib.FIR
 */
-public class FIR extends SDFAtomicActor {
+public class FIR extends SDFTransformer {
     // FIXME: support mutations.
     // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
@@ -107,25 +115,29 @@ public class FIR extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
-        output = new SDFIOPort(this, "output", false, true);
-
-        taps = new Parameter(this, "taps", new DoubleMatrixToken());
         decimation = new Parameter(this, "decimation", new IntToken(1));
+        decimation.setTypeEquals(BaseType.INT);
+
         decimationPhase = new Parameter(this, "decimationPhase",
 					new IntToken(0));
+        decimationPhase.setTypeEquals(BaseType.INT);
+
         interpolation = new Parameter(this, "interpolation", new IntToken(1));
-        attributeTypeChanged( taps );
+        interpolation.setTypeEquals(BaseType.INT);
+
+        taps = new Parameter(this, "taps");
+        taps.setTypeEquals(new ArrayType(BaseType.NAT));
+        taps.setExpression("[1.0]");
+
+	// set type constraints.
+	ArrayType paramType = (ArrayType)taps.getType();
+	InequalityTerm elemTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
 
     /** The decimation ratio of the filter. This must contain an
      *  IntToken, and by default it has value one.
@@ -156,31 +168,38 @@ public class FIR extends SDFAtomicActor {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == taps) {
-
-	    // Get the first token from the Matrix
-	    // Uses this token to extract its type.
-	    Token tmpToken =
-                ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
-
-	    // Get a token representing zero in the requested type.
-	    // _zero = tmpToken.zero();
-
-	    // Set the type to the input and output port.
-	    input.setTypeEquals(tmpToken.getType());
-	    output.setTypeEquals(tmpToken.getType());
-
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateResolvedTypes();
-            }
+        if (attribute == taps) {	 
         } else {
             super.attributeTypeChanged(attribute);
         }
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        FIR newobj = (FIR)(super.clone(ws));
+
+        // set the type constraints
+        try {
+            ArrayType paramType = (ArrayType)newobj.taps.getType();
+            InequalityTerm elemTerm = paramType.getElementTypeTerm();
+            newobj.output.setTypeAtLeast(elemTerm);
+        } catch (IllegalActionException ex) {
+            // Ignore..  
+            // FIXME: This try..catch seems bogus...  ArrayToSequence
+            // doesn't need it..
+        }
+        return newobj;
+    }
+    
     /** Consume the inputs and produce the outputs of the FIR filter.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
         // phase keeps track of which phase of the filter coefficients
@@ -242,12 +261,6 @@ public class FIR extends SDFAtomicActor {
             throw new IllegalActionException(this,
 					     "decimationPhase too large");
         }
-
-	// Get the taps now to allows for type resolution before initialize
-        _tapsToken = (MatrixToken)(taps.getToken());
-
-        // Get a token representing zero in the appropriate type.
-	_zero = _tapsToken.getElementAsToken(0, 0).zero();
     }
 
     /** Initialize the actor.
@@ -255,10 +268,12 @@ public class FIR extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
 	super.initialize();
 
-        _taps = new Token[_tapsToken.getColumnCount()];
-        for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = _tapsToken.getElementAsToken(0, i);
-        }
+        ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+
+        _taps = tapsToken.arrayValue();
+        
+        // Get a token representing zero in the appropriate type.
+	_zero = _taps[0].zero();
 
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
@@ -284,9 +299,6 @@ public class FIR extends SDFAtomicActor {
     /** Control variables for the FIR main loop. */
     protected int _dec, _interp, _decPhase;
 
-    /** The MatrixToken containing the taps of the FIR. */
-    protected MatrixToken _tapsToken;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -302,5 +314,4 @@ public class FIR extends SDFAtomicActor {
 
     // Cache of the zero token.
     private Token _zero;
-
 }

@@ -68,7 +68,7 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 @version $Id$
 */
 
-public final class ImageDisplay extends Sink implements Placeable {
+public class ImageDisplay extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

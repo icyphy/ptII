@@ -61,16 +61,20 @@ JSRCS = \
 	BitsToInt.java \
 	Delay.java \
         DotProduct.java \
+	DownSample.java \
 	FIR.java \
 	FIRDouble.java \
 	FFT.java \
+	IFFT.java \
 	IntToBits.java\
 	LineCoder.java \
         Multiplexor.java \
 	RaisedCosine.java \
 	Repeat.java \
+	SDFTransformer.java \
 	SequenceToArray.java \
-        SequenceToDoubleMatrix.java
+        SequenceToDoubleMatrix.java \
+	UpSample.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml

@@ -52,7 +52,6 @@ JSRCS = \
 	ImageContrast.java \
 	ImageDisplay.java \
 	ImagePartition.java \
-	ImageScale.java \
 	ImageSequence.java \
 	ImageUnpartition.java \
 	PSNR.java \

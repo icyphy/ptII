@@ -1,4 +1,4 @@
-/* An actor that converts 32 consecutive BooleanTokens to an IntToken
+/* A base class for SDF actors that transform an input stream into an output stream.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
@@ -33,24 +33,20 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
+import ptolemy.domains.sdf.kernel.SDFIOPort;
 
-///////////////////////////////////////////////////////////////
-/// BitsToInt
-/** 
-This actor converts a sequence of 32 consecutive BooleanTokens into a
-single IntToken.  The most significant bit is the first boolean
-token received.  The least significant bit is the last boolean token received.
+//////////////////////////////////////////////////////////////////////////
+//// SDFTransformer
+/**
+This is an abstract base class for actors that transform
+an input stream into an output stream.  It provides an input
+and an output port.
 
-@author Michael Leung
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 
-public class BitsToInt extends SDFTransformer {
+public class SDFTransformer extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -60,55 +56,25 @@ public class BitsToInt extends SDFTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BitsToInt(CompositeEntity container, String name)
+    public SDFTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-
         super(container, name);
 
-        input.setTokenConsumptionRate(32);
-        input.setTypeEquals(BaseType.BOOLEAN);
-
-        output.setTokenProductionRate(1);
-        output.setTypeEquals(BaseType.INT);
+        input = new SDFIOPort(this, "input", true, false);
+        output = new SDFIOPort(this, "output", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     ports and parameters                  ////
 
-    /** Consume 32 consecutive BooleanTokens on the input.
-     *  Output a single IntToken which is representing by the
-     *  BooleanTokens.
-     *  The first token consumed is the most significant bit.
-     *
-     *  @exception IllegalActionException If there is no director.
+    /** The input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  output.
      */
-    public final void fire() throws IllegalActionException  {
-        int i, j;
-        int integer = 0;
-        Token[] bits = new BooleanToken[32];
+    public SDFIOPort input;
 
-        bits = input.get(0, 32);
-
-        for (i = 0; i < 32; i++) {
-            integer = integer << 1;
-            if (((BooleanToken)bits[i]).booleanValue())
-                integer += 1;
-        }
-
-        IntToken value = new IntToken(integer);
-        output.send(0, value);
-    }
+    /** The output port. By default, the type of this output is constrained
+     *  to be at least that of the input.
+     */
+    public SDFIOPort output;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

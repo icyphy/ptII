@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 test SequenceToArray-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set s2abase [java::new ptolemy.domains.sdf.lib.SequenceToArray $e0 s2abase]
-    set s2a [java::cast ptolemy.domains.sdf.lib.SequenceToArray \
+    set s2a [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
 							[$s2abase clone]]
     $s2a setName s2a
     # Success here is just not throwing an exception.
@@ -111,7 +111,7 @@ test SequenceToArray-2.4 {check types} {
 #### Test cascading SequenceToArray
 #
 test SequenceToArray-2.5 {test cascading SequenceToArray} {
-    set s2a2 [java::cast ptolemy.domains.sdf.lib.SequenceToArray \
+    set s2a2 [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
 							[$s2a clone]]
     $s2a2 setName s2a2
     $s2a2 setContainer $e0

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -38,8 +38,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFAtomicActor;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -64,7 +62,7 @@ then filling up row 1 with columns 0 .. n-1, until row m-1.
 @version $Id$
 */
 
-public class SequenceToDoubleMatrix extends SDFAtomicActor {
+public class SequenceToDoubleMatrix extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -78,18 +76,18 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
         input.setTypeAtMost(BaseType.DOUBLE);
 
-        output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         // the number of rows is defaulted to 1
         rows = new Parameter(this, "rows", new IntToken(1));
+        rows.setTypeEquals(BaseType.INT);
         
         // the number of columns is defaulted to 1
         columns = new Parameter(this, "columns", new IntToken(1));
-
+        columns.setTypeEquals(BaseType.INT);
+      
         // set the token consumption rate 
         attributeChanged(columns);
 
@@ -100,20 +98,13 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input receiving the tokens to bundle. */
-    public SDFIOPort input;
-
-    /** Output for sending the DoubleMatrixToken. */
-    public SDFIOPort output;
-
-
     /** The number of rows of the output matrix. This parameter must
-     *  evaluate to an IntToken.
+     *  evaluate to an IntToken.  The default value is 1.
      */
     public Parameter rows;
 
     /** The number of columns of the output matrix. This parameter must
-     *  evaluate to an IntToken.
+     *  evaluate to an IntToken.  The default value is 1.
      */
     public Parameter columns;
 
@@ -156,3 +147,18 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
         output.send(0, new DoubleMatrixToken(matrix));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -35,9 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
-import java.text.MessageFormat;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageUnpartition
@@ -51,7 +49,7 @@ will be placed in row-scanned order from top to bottom into the output image.
 @version $Id$
 */
 
-public class ImageUnpartition extends SDFAtomicActor {
+public class ImageUnpartition extends SDFTransformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -68,30 +66,23 @@ public class ImageUnpartition extends SDFAtomicActor {
 
 	imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
+        imageColumns.setTypeEquals(BaseType.INT);
         imageRows =
             new Parameter(this, "imageRows", new IntToken("144"));
+        imageRows.setTypeEquals(BaseType.INT);
         partitionColumns =
             new Parameter(this, "partitionColumns", new IntToken("4"));
+        partitionColumns.setTypeEquals(BaseType.INT);
         partitionRows =
             new Parameter(this, "partitionRows", new IntToken("2"));
+        partitionRows.setTypeEquals(BaseType.INT);
 
-        input = (SDFIOPort) newPort("input");
-        input.setInput(true);
-
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
         output.setTypeEquals(BaseType.INT_MATRIX);
         output.setTokenProductionRate(1);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
+    ////                      ports and parameters                 ////
 
     /** The width of the input matrices */
     public Parameter imageColumns;
@@ -171,6 +162,9 @@ public class ImageUnpartition extends SDFAtomicActor {
         output.send(0,
                 new IntMatrixToken(image, _imageRows, _imageColumns));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     private ptolemy.data.Token partitions[];
 

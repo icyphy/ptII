@@ -60,9 +60,9 @@ test Repeat-2.1 {test with the default output values} {
     $step setExpression {1.0}
 
     # Use clone of repeat to make sure that is ok.
-    set clone [java::cast ptolemy.domains.sdf.lib.Repeat [$repeat clone]]
+    set clone [java::cast ptolemy.domains.sdf.lib.SDFTransformer [$repeat clone]]
     $repeat setContainer [java::null]
-    $clone setName FIRclone
+    $clone setName clone
     $clone setContainer $e0
 
     set blocksize [getParameter $clone blockSize]
@@ -71,10 +71,10 @@ test Repeat-2.1 {test with the default output values} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       [java::field [java::cast ptolemy.domains.sdf.lib.Repeat $clone] input]
+       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] input]
     $e0 connect \
        [java::field \
-       [java::cast ptolemy.domains.sdf.lib.Repeat $clone] output] \
+       [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] \

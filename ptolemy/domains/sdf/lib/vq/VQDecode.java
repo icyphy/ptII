@@ -34,8 +34,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 import java.io.*;
 import java.net.*;
 
@@ -51,7 +50,7 @@ a table lookup into the codebook.
 @version $Id$
 */
 // FIXME This should be generalized to a Table-lookup actor.
-public final class VQDecode extends SDFAtomicActor {
+public class VQDecode extends SDFTransformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -66,35 +65,30 @@ public final class VQDecode extends SDFAtomicActor {
 
         super(container, name);
 
-        input = (SDFIOPort) newPort("input");
-        input.setInput(true);
         input.setTypeEquals(BaseType.INT);
 
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         codeBook = new Parameter(this, "codeBook",
                 new StringToken("ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
+        codeBook.setTypeEquals(BaseType.STRING);
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
+        blockCount.setTypeEquals(BaseType.INT);
+         
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
         output.setTokenProductionRate(_blockCount);
         input.setTokenConsumptionRate(_blockCount);
         blockWidth =
             new Parameter(this, "blockWidth", new IntToken("4"));
+        blockWidth.setTypeEquals(BaseType.INT);
         blockHeight =
             new Parameter(this, "blockHeight", new IntToken("2"));
+        blockHeight.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
+    ////                      ports and parameters                 ////
 
     /** A Parameter of type String, giving the location of the codebook data
      *  file relative to the root classpath.

@@ -24,16 +24,16 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
-import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -41,13 +41,16 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
 /**
-A polymorphic multiplexor.
-
+A type polymorphic multiplexor. 
 This actor has two input ports. One is a multiport, from which the
 available Tokens to be chosen are received. The other input port
 receives IntTokens representing the channel containing the the Token
 to send to the output.  Because Tokens are immutable, the same Token
 is sent without additional creation of another Token.
+<p>
+This actor is useful in the SDF domain, because it always consumes a 
+token from each channel of the input port, regardless of which channel 
+is being selected.  This makes it safe to use under SDF.
 <p>
 The input port may receive Tokens of any type.
 
@@ -55,7 +58,7 @@ The input port may receive Tokens of any type.
 @version $Id$
 */
 
-public class Multiplexor extends SDFAtomicActor {
+public class Multiplexor extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -70,30 +73,19 @@ public class Multiplexor extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
     	input.setMultiport(true);
-	    input.setTokenConsumptionRate(1);
-
-	    select = new SDFIOPort(this, "select", true, false);
-	    select.setTypeEquals(BaseType.INT);
-	    select.setTokenConsumptionRate(1);
-
-	    output = new SDFIOPort(this, "output", false, true);
-	    output.setTypeSameAs(input);
-	    output.setTokenProductionRate(1);
+                
+        select = new TypedIOPort(this, "select", true, false);
+        select.setTypeEquals(BaseType.INT);
+                
+        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input receiving the tokens to select from. This may be any type. */
-    public SDFIOPort input;
-
     /** Input for index of port to select. The type is IntToken. */
-    public SDFIOPort select;
-
-    /** Output for sending the selected token. */
-    public SDFIOPort output;
+    public TypedIOPort select;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -109,10 +101,10 @@ public class Multiplexor extends SDFAtomicActor {
 
         for (int i = 0; i < input.getWidth(); i++) {
             Token token = input.get(i);
-	        if (i == index) {
-	           output.send(0, token);
-	        }
-	    }
+            if (i == index) {
+                output.send(0, token);
+            }
+        }
     }
 }
 

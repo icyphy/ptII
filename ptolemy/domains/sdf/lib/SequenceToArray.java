@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -41,8 +41,6 @@ import ptolemy.data.Token;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
-import ptolemy.domains.sdf.kernel.SDFAtomicActor;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +60,7 @@ send ArrayTokens of corresponding type.
 @version $Id$
 */
 
-public class SequenceToArray extends SDFAtomicActor {
+public class SequenceToArray extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -76,10 +74,7 @@ public class SequenceToArray extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	input = new SDFIOPort(this, "input", true, false);
-	output = new SDFIOPort(this, "output", false, true);
-
-	// set the tokenConsumptionRate to default 1.
+	// default tokenConsumptionRate is 1.
 	input.setTokenConsumptionRate(1);
 
 	// tokenProductionRate is 1.
@@ -90,27 +85,15 @@ public class SequenceToArray extends SDFAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Consume the inputs and produce the output ArrayToken.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If not enough tokens are available.
      */
     public void fire() throws IllegalActionException {
 	int length = input.getTokenConsumptionRate();
-	Token[] valueArray = new Token[length];
-
-	for (int i = 0; i < length; i++) {
-	    valueArray[i] = input.get(0);
-	}
+	Token[] valueArray = input.get(0, length);
+	
         output.send(0, new ArrayToken(valueArray));
     }
 

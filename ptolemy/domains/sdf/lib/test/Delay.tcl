@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Hylands
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
@@ -69,10 +69,10 @@ test Delay-2.2 {test with the default parameter values} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       [java::field [java::cast ptolemy.actor.lib.Transformer $delay] input]
+       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] input]
     set relation [$e0 connect \
        [java::field \
-       [java::cast ptolemy.actor.lib.Transformer $delay] output] \
+       [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
 
 #set debugger [java::new ptolemy.kernel.util.StreamListener]
@@ -116,7 +116,7 @@ test Delay-2.5 {test with type change to error condition} {
 test Delay-3.0 {test in feedback loop} {
     $ramp setContainer [java::null]
     set input \
-            [java::field [java::cast ptolemy.actor.lib.Transformer $delay] \
+            [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $delay] \
             input]
     $input unlinkAll
     $input link $relation

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -45,23 +45,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrayToSequence
+//// DownSample
 /**
-This actor reads ArrayTokens at the input and writes the array elements
-to the output. The parameter <i>tokenProductionRate</i> at the output
-port must agree with the number of elements in each input ArrayToken.
-If this is not true, an exception will be thrown.  By default, this actor
-sets the value of this parameter to be one.
+This actor downsamples an input stream by an integer factor by
+removing tokens.  The downsample factor is given by the 
+<i>tokenConsumptionRate</i> parameter of the input port.  
+Each firing, this actor reads a number of tokens from the input
+and copies only the first token to the output.  
+The number of tokens consumed during the firing is the same as the 
+<i>tokenConsumptionRate</i> parameter of the input port. 
+By default, this actor sets the value of this parameter to be one, 
+indicating that no downsampling is done.
 <p>
-This actor is polymorphic. It can accept ArrayTokens with any element
-type and send out tokens corresponding to that type.
+This actor is data polymorphic. It can accept any token
+type on the input.
 <p>
 
-@author Yuhong Xiong
+@author Steve Neuendorffer
 @version $Id$
 */
 
-public class ArrayToSequence extends SDFTransformer {
+public class DownSample extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,68 +75,36 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ArrayToSequence(CompositeEntity container, String name)
+    public DownSample(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-     	// tokenConsumptionRate is 1.
+     	// Set tokenConsumptionRate to default 1.
 	input.setTokenConsumptionRate(1);
 
-	// tokenProductionRate to default 1.
+	// tokenProductionRate is 1.
 	output.setTokenProductionRate(1);
 
-	// set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.NAT));
-	ArrayType inputType = (ArrayType)input.getType();
-	InequalityTerm elemTerm = inputType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        ArrayToSequence newObject = (ArrayToSequence)(super.clone(workspace));
-
-        // set the type constraints
-        ArrayType inputType = (ArrayType)newObject.input.getType();
-        InequalityTerm elemTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
-        return newObject;
-    }
-
-    /** Consume the input ArrayToken and produce the outputs.
+    /** Consume the first input Token and produce the same token on the output.
+     *  Then consume a number of tokens from the input port
+     *  so that input.tokenProductionRate tokens are consumed in total.
+     *  All tokens after the first are discarded.
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
-	ArrayToken token = (ArrayToken)input.get(0);
-	int rate = output.getTokenProductionRate();
-	if (token.length() != rate) {
-	    throw new IllegalActionException("ArrayToSequence.fire: The " +
-                    "number of elements in the input ArrayToken (" +
-                    token.length() + ") is not the same as the token " +
-                    "production rate (" + rate + ").");
-	}
-
-	Token[] elements = token.arrayValue();
-        output.send(0, elements, elements.length);
-    }
-
-    /** Return the type constraint that the type of the output port is no
-     *  less than the type of the elements of the input array.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-	// Override the base class implementation to not use the default
-	// constraints.
-	return output.typeConstraintList();
+	Token token = input.get(0);
+        // Send the first token.
+        output.send(0, token);
+        
+        // count is the number of zero tokens to create.
+        int count = input.getTokenConsumptionRate() - 1;   
+        Token array[] = input.get(0, count);
+        // ignore the other consumed tokens.
     }
 }

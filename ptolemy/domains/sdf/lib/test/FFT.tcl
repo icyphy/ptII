@@ -56,10 +56,10 @@ test FFT-1.1 {Test FFT} {
  
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
-      [java::field [java::cast ptolemy.domains.sdf.lib.FFT $clone] input]
+      [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] input]
 
     $e0 connect \
-     [java::field [java::cast ptolemy.domains.sdf.lib.FFT $clone] output] \
+     [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] output] \
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     # Set the taps for the FFT
@@ -70,4 +70,4 @@ test FFT-1.1 {Test FFT} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {{1.0 + 0.0i} {1.0 + -0.0i} {1.0 + -0.0i} {1.0 + -0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
+} {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}

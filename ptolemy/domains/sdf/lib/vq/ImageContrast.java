@@ -34,11 +34,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
-import java.io.*;
 import ptolemy.actor.*;
-import java.text.MessageFormat;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
@@ -48,11 +45,11 @@ if the input image has a lot of pixels with the same or similar color,
 This actor uses gray scale equalization to redistribute the value of each
 pixel between 0 and 255.
 
-@author Michael Leung
+@author Michael Leung, Steve Neuendorffer
 @version $Id$
 */
 
-public final class ImageContrast extends SDFAtomicActor {
+public class ImageContrast extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -67,58 +64,15 @@ public final class ImageContrast extends SDFAtomicActor {
 
         super(container, name);
 
-	new Parameter(this, "XFramesize", new IntToken("176"));
-        new Parameter(this, "YFramesize", new IntToken("144"));
-
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
-        output.setTokenProductionRate(1);
         output.setTypeEquals(BaseType.INT_MATRIX);
-
-        input = (SDFIOPort) newPort("input");
-        input.setInput(true);
-        input.setTokenConsumptionRate(1);
         input.setTypeEquals(BaseType.INT_MATRIX);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Initialize the actor.
-     *  Get the values of all parameters.
-     *  @exception IllegalActionException If xframesize is less than one,
-     *  or yframesize is less than one.
-     */
-
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-	Parameter p;
-
-        p = (Parameter) getAttribute("XFramesize");
-        xframesize = ((IntToken)p.getToken()).intValue();
-        if(xframesize < 0)
-            throw new IllegalActionException(
-                    "The value of the xframesize parameter(" + xframesize +
-                    ") must be greater than zero.");
-
-        p = (Parameter) getAttribute("YFramesize");
-        yframesize = ((IntToken)p.getToken()).intValue();
-        if(yframesize < 0)
-            throw new IllegalActionException(
-                    "The value of the yframesize parameter(" + yframesize +
-                    ") must be greater than zero.");
-
-    }
 
     /** Fire the actor.
      *  Consume one image on the input port.
@@ -140,8 +94,9 @@ public final class ImageContrast extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
 
         int i, j;
-        int colorHistogram[] = new int[256] ;
-
+        int frame[];
+        int frameElement;
+        
         IntMatrixToken message = (IntMatrixToken) input.get(0);
         frame = message.intArray();
 
@@ -153,17 +108,19 @@ public final class ImageContrast extends SDFAtomicActor {
         for(i = 0; i < 256; i ++)
             colorHistogram[i] = 0;
 
-        for(j = 0; j < yframesize; j ++)
-            for(i = 0; i < xframesize; i ++) {
-                frameElement = frame[xframesize*j+i];
-                if ((frameElement < 0) || (frameElement > 255 ))
-                    throw new IllegalActionException("ImageContrast:"+
-                            "input image pixel contains at" + i + "," + j +
-                            "with value" + frame[xframesize*j+i] +
-                            "that is out of bounds." +
-                            "Not between 0 and 255.");
-                colorHistogram[frame[xframesize*j+i]]++;
+        for(i = 0; i < frame.length; i++) {
+            frameElement = frame[i];
+            if ((frameElement < 0) || (frameElement > 255 )) {
+                int row = (int) (i / message.getColumnCount());
+                int column = i % message.getColumnCount();
+                throw new IllegalActionException("ImageContrast:"+
+                        "input image pixel contains at" + row + "," + column +
+                        "with value" + frameElement +
+                        "that is out of bounds." +
+                        "Not between 0 and 255.");
             }
+            colorHistogram[frame[i]]++;
+        }
 
         //Construct the cdf of the color distribution histogram
         //colorHistogram[0] = colorHistogram[0]
@@ -175,25 +132,22 @@ public final class ImageContrast extends SDFAtomicActor {
         // color number to make a new relatively even color distribution
         // image.
 
-        int distributionConstant = xframesize*yframesize/255;
+        int distributionConstant = frame.length / 255;
 
-        for(j = 0; j < yframesize; j ++)
-            for(i = 0; i < xframesize; i ++) {
-                frameElement = frame[xframesize*j+i];
-                frame[xframesize*j+i] = colorHistogram[frameElement] /
-                    distributionConstant;
-            }
+        for(i = 0; i < frame.length; i ++) {
+            frameElement = frame[i];
+            frame[i] = colorHistogram[frameElement] /
+                distributionConstant;
+        }
 
-        message = new IntMatrixToken(frame, yframesize, xframesize);
+        message = new IntMatrixToken(frame,
+                message.getRowCount(),
+                message.getColumnCount());
         output.send(0, message);
-
     }
 
-    private int part[];
-    private int frame[];
-    private int xframesize;
-    private int yframesize;
-    private int frameElement;
-    private int colorHistogram[];
-    private int distributionConstant;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private int colorHistogram[] = new int[256];
 }

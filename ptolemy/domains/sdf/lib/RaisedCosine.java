@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -170,10 +170,12 @@ public class RaisedCosine extends FIR {
         int len = ((IntToken)(length.getToken())).intValue();
         boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
         if(ebw < 0.0) {
-            throw new IllegalActionException(this, "Invalid excess bandwidth");
+            throw new IllegalActionException(this, "Excess bandwidth was " + 
+                    ebw + " which is not greater than or equal to zero.");
         }
         if(len <= 0) {
-            throw new IllegalActionException(this, "Invalid length");
+            throw new IllegalActionException(this, "Length was " + 
+                    len + " which is not greater than zero.");
         }
 
         double [][] tps = new double[1][];

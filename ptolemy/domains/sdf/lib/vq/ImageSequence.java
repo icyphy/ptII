@@ -71,7 +71,7 @@ for loading images.
 @author Steve Neuendorffer
 @version $Id$
 */
-public final class ImageSequence extends Source {
+public class ImageSequence extends Source {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

@@ -35,9 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import java.io.*;
 import ptolemy.actor.*;
-import java.text.MessageFormat;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImagePartition
@@ -51,7 +49,7 @@ are row scanned from the top of input image.
 @version $Id$
 */
 
-public class ImagePartition extends SDFAtomicActor {
+public class ImagePartition extends SDFTransformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -68,30 +66,23 @@ public class ImagePartition extends SDFAtomicActor {
 
 	imageColumns =
             new Parameter(this, "imageColumns", new IntToken("176"));
+        imageColumns.setTypeEquals(BaseType.INT);
         imageRows =
             new Parameter(this, "imageRows", new IntToken("144"));
+        imageRows.setTypeEquals(BaseType.INT);
         partitionColumns =
             new Parameter(this, "partitionColumns", new IntToken("4"));
+        partitionColumns.setTypeEquals(BaseType.INT);
         partitionRows =
             new Parameter(this, "partitionRows", new IntToken("2"));
+        partitionRows.setTypeEquals(BaseType.INT);
 
-        input = (SDFIOPort) newPort("input");
-        input.setInput(true);
         input.setTokenConsumptionRate(1);
-
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
         output.setTypeEquals(BaseType.INT_MATRIX);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
+    ////                      ports and parameters                 ////
 
     /** The width of the input matrices */
     public Parameter imageColumns;
@@ -173,6 +164,9 @@ public class ImagePartition extends SDFAtomicActor {
             }
         output.send(0, partitions, partitions.length);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     private IntMatrixToken partitions[];
 

@@ -50,7 +50,7 @@ output port as a DoubleToken.
 @author Michael Leung, Steve Neuendorffer
 @version $Id$
 */
-public class PSNR extends SDFAtomicActor {
+public class PSNR extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -65,28 +65,28 @@ public class PSNR extends SDFAtomicActor {
 
         super(container, name);
 
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-
-        signal = (SDFIOPort) newPort("signal");
-        signal.setInput(true);
+     
+        signal = new TypedIOPort(this, "signal", true, false);
         signal.setTypeEquals(BaseType.INT_MATRIX);
 
-        distortedSignal = (SDFIOPort) newPort("distortedSignal");
-        distortedSignal.setInput(true);
+        distortedSignal = new TypedIOPort(this, "distortedSignal", true, false);
         distortedSignal.setTypeEquals(BaseType.INT_MATRIX);
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      ports and parameters                 ////
+
     /** The input signal. */
-    public SDFIOPort signal;
+    public TypedIOPort signal;
 
     /** A distorted version of the input signal. */
-    public SDFIOPort distortedSignal;
+    public TypedIOPort distortedSignal;
 
     /** The calculated PSNR between the two inputs. */
-    public SDFIOPort output;
+    public TypedIOPort output;
 
     /** Fire the actor.
      *  Consume one image on each of the input ports.   Calculate the

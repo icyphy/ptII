@@ -56,10 +56,10 @@ test FIRDouble-1.1 {Test FIRDouble} {
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
-      [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] input]
+      [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] input]
 
     $e0 connect \
-     [java::field [java::cast ptolemy.domains.sdf.lib.FIR $clone] output] \
+     [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $clone] output] \
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     # Set the taps for the FIRDouble

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -34,21 +34,22 @@ import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
-import ptolemy.math.SignalProcessing;
+import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineCoder
 /**
 A line coder, which converts a sequence of booleans into symbols.
 
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 
-public class LineCoder extends SDFAtomicActor {
+public class LineCoder extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,69 +63,87 @@ public class LineCoder extends SDFAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.BOOLEAN);
 
-        output = new SDFIOPort(this, "output", false, true);
-        // FIXME: Type should be inferred from the code table.
-        output.setTypeEquals(BaseType.DOUBLE);
+        table = new Parameter(this, "table");
+        table.setTypeEquals(new ArrayType(BaseType.NAT));
+        table.setExpression("[-1.0, 1.0]"); 
 
-        double[][] deftbl = {{-1.0, 1.0}};
-        table = new Parameter(this, "table", new DoubleMatrixToken(deftbl));
-        wordlength = new Parameter(this, "wordlength", new IntToken(1));
+        wordLength = new Parameter(this, "wordLength", new IntToken(1));
+        wordLength.setTypeEquals(BaseType.INT);
+
+	ArrayType paramType = (ArrayType)table.getType();
+	InequalityTerm elemTerm = paramType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
-
-    /** The code table.  Its value is a token of type DoubleMatrixToken.
-     *  The table contains a row vector (a matrix with only one row)
-     *  that provides the symbol values to produce on the output.
-     *  The number of columns of this table must be at least
-     *  2<sup><i>wordlength</i></sup>, or an exception
+    /** The code table.  Its value is a token of type ArrayToken.
+     *  The array provides the symbol values to produce on the output.
+     *  The number of values in this array must be at least
+     *  2<sup><i>wordLength</i></sup>, or an exception
      *  will be thrown.  The number of tokens consumed by this actor when
      *  it fires is log<sub>2</sub>(<i>tablesize</i>), where
      *  <i>tablesize</i> is the length of the table.  If all of these
-     *  values are <i>false</i>, then the first table entry is produced
+     *  values are <i>false</i>, then the first array entry is produced
      *  as an output.  If only the first one is true, then then second
-     *  table value is produced.  In general, the <i>N</i> inputs consumed
-     *  are taken to be a binary digit that indexes the table,
-     *  where the first input is taken to be the low-order bit of the index.
+     *  array value is produced.  In general, the <i>N</i> inputs consumed
+     *  are taken to be a binary digit that indexes the array,
+     *  where the first input is taken to be the low-order bit of the array.
      *  The default code table has two entries, -1.0
      *  and 1.0, so that input <i>false</i> values are mapped to -1.0,
      *  and input <i>true</i> values are mapped to +1.0.
      */
     public Parameter table;
 
-    // FIXME: This table should be allowed to have any Matrix type.
-
     /** The word length is the number of boolean inputs that are consumed
      *  to construct an index into the table.  Its value is an IntToken,
      *  with default value one.
      */
-    public Parameter wordlength;
+    public Parameter wordLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        LineCoder newobj = (LineCoder)(super.clone(ws));
+
+        // set the type constraints
+        try {
+            ArrayType paramType = (ArrayType)newobj.table.getType();
+            InequalityTerm elemTerm = paramType.getElementTypeTerm();
+            newobj.output.setTypeAtLeast(elemTerm);
+        } catch (IllegalActionException ex) {
+            // Ignore..  
+            // FIXME: This try..catch seems bogus...  ArrayToSequence
+            // doesn't need it..
+        }
+        return newobj;
+    }
+
     /** Consume the inputs and produce the corresponding symbol.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If a runtime type error occurs.
      */
     public void fire() throws IllegalActionException {
         int tableaddress = 0;
-        for (int i = 0; i < _wordlength; i++) {
-            boolean data = ((BooleanToken)(input.get(0))).booleanValue();
+        Token tokens[] = input.get(0, _wordLength);
+        for (int i = 0; i < _wordLength; i++) {
+            boolean data = ((BooleanToken)tokens[i]).booleanValue();
             if (data) {
                 tableaddress |= 1 << i;
             }
         }
-        output.send(0, new DoubleToken(_table[tableaddress]));
+        output.send(0, _table[tableaddress]);
     }
 
     /** Set up the consumption constant.
@@ -135,25 +154,23 @@ public class LineCoder extends SDFAtomicActor {
         super.preinitialize();
 
         // FIXME: Handle mutations.
-        _wordlength = ((IntToken)(wordlength.getToken())).intValue();
-        input.setTokenConsumptionRate(_wordlength);
+        _wordLength = ((IntToken)(wordLength.getToken())).intValue();
+        input.setTokenConsumptionRate(_wordLength);
 
-        DoubleMatrixToken tabletoken = (DoubleMatrixToken)(table.getToken());
-        if (tabletoken.getRowCount() != 1) {
-            throw new IllegalActionException(this, "Table parameter is " +
-                    "required to have exactly one row.");
+        ArrayToken tabletoken = (ArrayToken)table.getToken();
+        int size = (int)Math.pow(2, _wordLength);
+        if (tabletoken.length() < size) {
+            throw new IllegalActionException(this, "Table parameter must " +
+                    "have at least " + size + " entries, but only has " +
+                                             tabletoken.length());
         }
-        // FIXME: Check that table is at least 2^wordlength.
-        _table = new double[tabletoken.getColumnCount()];
-        for (int i = 0; i < _table.length; i++) {
-            _table[i] = tabletoken.getElementAt(0, i);
-        }
+        _table = tabletoken.arrayValue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Local cache of these parameter values.
-    private int _wordlength;
-    private double[] _table;
+    private int _wordLength;
+    private Token[] _table;
 }

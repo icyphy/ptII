@@ -45,7 +45,7 @@ test IntToBits-1.1 {test 1} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.domains.sdf.lib.IntToBits $e0 conver]
+    set conver [java::cast ptolemy.domains.sdf.lib.SDFTransformer [java::new ptolemy.domains.sdf.lib.IntToBits $e0 conver]]
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.IntToken 5]
@@ -72,8 +72,7 @@ test IntToBits-1.2 {test 2} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.domains.sdf.lib.IntToBits \
-                    $e0 conver]    
+    set conver [java::cast ptolemy.domains.sdf.lib.SDFTransformer [java::new ptolemy.domains.sdf.lib.IntToBits $e0 conver]]
 
     set value [getParameter $const value]
     $value setToken [java::new ptolemy.data.IntToken 225]    
@@ -88,3 +87,5 @@ test IntToBits-1.2 {test 2} {
     enumToTokenValues [$rec getRecord 0]
 
 } {false false false false false false false false false false false false false false false false false false false false false false false false true true true false false false false true}
+
+

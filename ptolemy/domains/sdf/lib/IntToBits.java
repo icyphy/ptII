@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (mikele@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -42,14 +42,16 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
-/** This actor takes in an IntToken and output 32 consecutive BooleanTokens
-    (bitwise representation of the input IntToken).
-
+/** 
+This actor converts an IntToken into a sequence of 32 consecutive 
+BooleanTokens.  The most significant bit is the first boolean
+token send out.  The least significant bit is the last boolean token send out.
+  
 @author Michael Leung
 @version $Id$
 */
 
-public class IntToBits extends SDFAtomicActor {
+public class IntToBits extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,26 +66,13 @@ public class IntToBits extends SDFAtomicActor {
 
         super(container, name);
 
-        input = (SDFIOPort) newPort("input");
-        input.setInput(true);
         input.setTokenConsumptionRate(1);
         input.setTypeEquals(BaseType.INT);
 
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
         output.setTokenProductionRate(32);
         output.setTypeEquals(BaseType.BOOLEAN);
 
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. This has type IntToken. */
-    public SDFIOPort input;
-
-    /** The output port. This has type BooleanToken. */
-    public SDFIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,7 +86,6 @@ public class IntToBits extends SDFAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
-
     public final void fire() throws IllegalActionException  {
         int i;
         int integer, remainder;
