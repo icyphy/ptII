@@ -59,12 +59,18 @@ DERIVED_FILES =
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	about.htm \
+	array.xml \
 	copyright.htm \
 	configuration.xml \
+	discrete.xml \
 	docs.htm \
+	flowcontrol.xml \
 	help.htm \
 	hyvisualPlanet.gif \
+	io.xml \
 	intro.htm \
+	math.xml \
+	random.xml \
 	sinks.xml \
 	sources.xml \
 	welcomeWindow.xml
