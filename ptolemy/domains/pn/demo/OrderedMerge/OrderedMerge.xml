@@ -11,6 +11,8 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
     </property>
@@ -19,7 +21,8 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model, whose structure is due to Kahn and MacQueen, calculates
-all integers whose prime factors are only 2, 3, and 5, with no redundancies. 
+all integers less than 1000000 whose prime factors are
+only 2, 3, and 5, with no redundancies.
 It uses the OrderedMerge actor, which takes two monotonically increasing
 input sequences and merges them into one monotonically increasing output sequence.</text></svg></configure>
         </property>
@@ -141,7 +144,7 @@ computation, and produces outputs.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 487.5">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 0, 1024, 650}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 0, 1024, 657}}">
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

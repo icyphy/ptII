@@ -83,11 +83,17 @@ Calculates all multiples of 2, 3, and 5, with no redundancies.
 <!-- /HTML CONVERTER -->
 </CENTER>
 
- <p>This model, whose structure is due to Kahn and MacQueen,
-calculates all multiples of 2, 3, and 5, with no redundancies.
+ <p>This model, whose structure is due to Kahn and MacQueen, calculates
+all integers less than 10,000,000 whose prime factors are
+only 2, 3, and 5, with no redundancies.
 It uses the OrderedMerge actor, which takes two monotonically
 increasing input sequences and merges them into one
 monotonically increasing output sequence.
+
+<p>In the PN domain, each actor executes
+in its own Java thread. That thread
+iteratively reads inputs, performs
+computation, and produces outputs.
 
  <p>This applet is implemented in MoML, as shown
 in a <a href="OrderedVergil.htm">Vergil block diagram</a>.
