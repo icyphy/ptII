@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -59,6 +58,16 @@ Requests for attributes are delegated to the container.
 @version $Id$
 */
 public class ModalController extends FSMActor {
+
+    /** Construct a modal controller in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public ModalController(Workspace workspace) {
+	super(workspace);
+    }
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
