@@ -546,4 +546,4 @@ proc diffText {texta textb} {
 # nightly build
 # that classes like actor.lib.NonStrictTest will check to see if
 # the training flag is set
-java::call System setProperty ptolemy.ptII.isRunningNightlyBuild true
+#java::call System setProperty ptolemy.ptII.isRunningNightlyBuild true
