@@ -70,22 +70,16 @@ public class CircularSweep3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        DoubleToken[] tokenArray = new DoubleToken[10];
-        tokenArray[0] = new DoubleToken(0.5);
-        tokenArray[1] = new DoubleToken(0.25);
-        tokenArray[2] = new DoubleToken(0.5);
-        tokenArray[3] = new DoubleToken(-0.25);
-        tokenArray[4] = new DoubleToken(0.25);
-        tokenArray[5] = new DoubleToken(-0.25);
-        tokenArray[6] = new DoubleToken(0.25);
-        tokenArray[7] = new DoubleToken(0.25);
-        tokenArray[8] = new DoubleToken(0.5);
-        tokenArray[9] = new DoubleToken(0.25);
-      	ArrayToken defaultPolygon = new ArrayToken(tokenArray);
-
-        polyline = new Parameter(this, "polyline", defaultPolygon);
-        polyline.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        angleSpan = new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
+        
+        polyline = new Parameter(this, "polyline",
+                    new DoubleMatrixToken(
+                    new double[][] {{0.5,0.25,
+                                     0.5,-0.25,
+                                     0.25,-0.25,
+                                     0.25,0.25,
+                                     0.5,0.25}}));
+        angleSpan = new Parameter(this, 
+                                "angleSpan", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));
     }
 
@@ -93,7 +87,7 @@ public class CircularSweep3D extends GRShadedShape {
     ////                     ports and parameters                  ////
 
     /** The line segment array that is to be swept
-     *  This parameter should contain a DoubleToken.
+     *  This parameter should contain a DoubleMatrixToken.
      */
     public Parameter polyline;
 
@@ -201,18 +195,18 @@ public class CircularSweep3D extends GRShadedShape {
 
     /** Return the polyline
      *  @return the polyline
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *  @exception IllegalActionException If the value of some parameters 
+     *   can't be obtained
      */
     private float[] _getPolyline() throws IllegalActionException {
-        ArrayToken arrayToken = ((ArrayToken) polyline.getToken());
-        int numberOfElements = arrayToken.length()/2;
+        DoubleMatrixToken matrixToken = 
+                                   ((DoubleMatrixToken) polyline.getToken());
+        int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*2];
 
         for(int i=0 ;i < numberOfElements * 2; i++) {
-            data[i] = (float) ((DoubleToken)arrayToken.getElement(i)).doubleValue();
+            data[i] = (float) (matrixToken.getElementAt(0,i));
         }
-
         return data;
     }
 
@@ -222,8 +216,9 @@ public class CircularSweep3D extends GRShadedShape {
      *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
-        ArrayToken arrayToken = ((ArrayToken) polyline.getToken());
-        int numberOfElements = arrayToken.length()/2;
+        DoubleMatrixToken matrixToken = 
+                                   ((DoubleMatrixToken) polyline.getToken());
+        int numberOfElements = matrixToken.getColumnCount()/2;
 
         return numberOfElements;
     }

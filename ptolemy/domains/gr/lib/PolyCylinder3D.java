@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a generalized cylinder with a polygon base
+/* A GR Shape consisting of an extrusion of a polygon base
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -72,16 +72,11 @@ public class PolyCylinder3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        DoubleToken[] tokenArray = new DoubleToken[6];
-        tokenArray[0] = new DoubleToken(0.0);
-        tokenArray[1] = new DoubleToken(0.5*1.0);
-        tokenArray[2] = new DoubleToken(0.5*-0.866);
-        tokenArray[3] = new DoubleToken(0.5*-0.5);
-        tokenArray[4] = new DoubleToken(0.5*0.866);
-        tokenArray[5] = new DoubleToken(0.5*-0.5);
-      	ArrayToken defaultPolygon = new ArrayToken(tokenArray);
-        polygon = new Parameter(this, "polygon", defaultPolygon);
-        polygon.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        polygon = new Parameter(this, "polygon",
+                   new DoubleMatrixToken(
+                   new double[][] {{0.0, 0.5,
+                                   -0.433,-0.25,
+                                    0.433,-0.25}}));
         thickness = new Parameter(this, "thickness", new DoubleToken(0.3));
     }
 
@@ -213,15 +208,17 @@ public class PolyCylinder3D extends GRShadedShape {
      *   be obtained
      */
     private float[] _getPolygon() throws IllegalActionException {
-        ArrayToken arrayToken = ((ArrayToken) polygon.getToken());
-        int numberOfElements = arrayToken.length()/2;
+        DoubleMatrixToken matrixToken =
+                                   ((DoubleMatrixToken) polygon.getToken());
+                                   
+        int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*18];
         int i=0;
         int j=0;
 
         for(i=0 ;i < numberOfElements * 2; i = i + 2) {
-            data[j++] = (float) ((DoubleToken)arrayToken.getElement(i)).doubleValue();
-            data[j++] = (float) ((DoubleToken) arrayToken.getElement(i+1)).doubleValue();
+            data[j++] = (float) matrixToken.getElementAt(0,i);
+            data[j++] = (float) matrixToken.getElementAt(0,i+1);
             data[j++] = 0.0f;
         }
 
@@ -243,8 +240,9 @@ public class PolyCylinder3D extends GRShadedShape {
      *   be obtained
      */
     private int _getVertexCount() throws IllegalActionException {
-        ArrayToken arrayToken = ((ArrayToken) polygon.getToken());
-        int numberOfElements = arrayToken.length()/2;
+        DoubleMatrixToken matrixToken =
+                                   ((DoubleMatrixToken) polygon.getToken());
+        int numberOfElements = matrixToken.getColumnCount()/2;
 
         return numberOfElements;
     }
