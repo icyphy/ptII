@@ -806,6 +806,12 @@ else
     if test -f "$COLT_DIR/colt.jar"; then
         AC_MSG_RESULT($COLT_DIR/colt.jar)
 	PTCOLT_JARS=$COLT_DIR/colt.jar$CLASSPATHSEPARATOR$PTCOLT_JAR
+	ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"$COLT_DIR/colt.jar\"/> "
+	if test -z "$PTCOLT_DIR"; then
+ 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$PTCOLT_JAR\"/> "
+        fi
 	# We found colt
 	PTCOLT_DIR=colt
 	# PTCOLT_PACKAGES is used in ptII/doc/makefile
@@ -823,16 +829,15 @@ else
 	    # Note that we don't substitute in the ${PTII} here
 	    COLT_DIR='${PTII}/vendors/misc/colt'
         else 
-            AC_MSG_RESULT([$COLT_DIR/colt.jar not found, using $PTII/lib/ptcolt.jar])
+            AC_MSG_RESULT([$COLT_DIR/colt.jar not found, using $PTCOLT_JAR])
+ 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$PTCOLT_JAR\"/> "
         fi
     fi
 fi
 
 if test -z "$PTCOLT_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$COLT_DIR/colt.jar\"/> "
 fi 
 
 
