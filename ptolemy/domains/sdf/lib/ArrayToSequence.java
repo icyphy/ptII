@@ -50,7 +50,7 @@ import java.util.List;
 //// ArrayToSequence
 /**
 This actor reads ArrayTokens at the input and writes the array elements
-to the output. The parameter <i>TokenProductionRate</i> at the output
+to the output. The parameter <i>tokenProductionRate</i> at the output
 port must agree with the number of elements in each input ArrayToken.
 If this is not true, an exception will be thrown.
 <p>

@@ -52,7 +52,7 @@ import java.util.List;
 /**
 This actor bundles a certain number of input tokens into an ArrayToken.
 The number of tokens to be bundled into an ArrayToken is determined
-by the parameter <i>TokenConsumptionRate</i> at the input port.
+by the parameter <i>tokenConsumptionRate</i> at the input port.
 <p>
 This actor is polymorphic. It can accept intput of any type and will
 send ArrayTokens of corresponding type.
@@ -79,10 +79,10 @@ public class SequenceToArray extends SDFAtomicActor {
         input = new SDFIOPort(this, "input", true, false);
         output = new SDFIOPort(this, "output", false, true);
 
-	// set the TokenConsumptionRate to default 1.
+	// set the tokenConsumptionRate to default 1.
 	input.setTokenConsumptionRate(1);
 
-	// TokenProductionRate is 1.
+	// tokenProductionRate is 1.
 	output.setTokenProductionRate(1);
 
 	// set the output type to be an ArrayType.
