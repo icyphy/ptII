@@ -45,21 +45,21 @@ import java.awt.Container;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
-import javax.swing.SwingUtilities;
-
 
 /**
 Display the values of the tokens arriving on the input channels in a
 text area on the screen.  Each input token is written on a
-separate line.  The input type is GENERAL, meaning
-that any token is acceptable.  If the input happens to be a StringToken,
+separate line.  The input type can be of any type.
+If the input happens to be a StringToken,
 then the surrounding quotation marks are stripped before printing
 the value of the token.  Thus, string-valued tokens can be used to
 generate arbitrary textual output, at one token per line.
@@ -86,36 +86,33 @@ public class Display extends Sink implements Placeable, SequenceActor {
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL);
 
-        rowsDisplayed = new Parameter(this, "rowsDisplayed", new IntToken(10));
+        rowsDisplayed = new Parameter(this, "rowsDisplayed",
+                new IntToken(10));
         columnsDisplayed = new Parameter(this, "columnsDisplayed",
                 new IntToken(40));
 
-        // NOTE: As of jdk 1.3-beta, the setTabSize() method of
-        // JTextArea does not work (it is ignored), so the tabSize
-        // parameter has no effect.
-        // tabSize = new Parameter(this, "tabSize", new IntToken(8));
+        title = new StringAttribute(this, "title");
+        title.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
-
-    /** The vertical size of the display, in rows. This contains an
-     *  integer, and defaults to 10.
-     */
-    public Parameter rowsDisplayed;
 
     /** The horizontal size of the display, in columnss. This contains
      *  an integer, and defaults to 40.
      */
     public Parameter columnsDisplayed;
 
-    /** The number of characters to expand tabs to. This contains an
-     *  an integer, and defaults to 8.
+    /** The vertical size of the display, in rows. This contains an
+     *  integer, and defaults to 10.
      */
-    // public Parameter tabSize;
+    public Parameter rowsDisplayed;
 
     /** The text area in which the data will be displayed. */
     public JTextArea textArea;
+
+    /** The title to put on top. */
+    public StringAttribute title;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -148,21 +145,6 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 textArea.setColumns(numColumns);
             }
         }
-
-
-        /* NOTE: Does not work...
-           else if (attribute == tabSize) {
-           int tab = ((IntToken)tabSize.getToken()).intValue();
-           if(tab <= 0) {
-           throw new IllegalActionException(this,
-           "tabSize: requires a positive value.");
-           }
-           if (textArea != null) {
-           // NOTE: As of jdk 1.3beta the following is ignored.
-           textArea.setTabSize(tab);
-           }
-           }
-        */
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -253,6 +235,10 @@ public class Display extends Sink implements Placeable, SequenceActor {
             _scrollPane.setBackground(null);
             _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
             _scrollPane.setViewportBorder(new LineBorder(Color.black));
+        }
+        String titleSpec = title.getExpression();
+        if (!titleSpec.trim().equals("")) {
+            _scrollPane.setBorder(BorderFactory.createTitledBorder(titleSpec));
         }
         // Make sure the text is not editable.
         textArea.setEditable(false);
