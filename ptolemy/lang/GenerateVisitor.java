@@ -804,7 +804,7 @@ public class GenerateVisitor {
             _methodBody = "return true;";
         }
 
-        public String methodBody() {
+        public String methodBody(String methodName) {
 
             if (_methodBody != null) {
                 return _IDENT + _IDENT + _methodBody;
@@ -859,8 +859,29 @@ public class GenerateVisitor {
 
                             case 'm':
                             case 'h':
-                                stringBuffer.append("_" + nameStr + " = " +
-                                        nameStr + ";");
+                                if (methodName.equals("NameNode")) {
+
+                                    // Most compilers keep a unique
+                                    // copy of each string in memory,
+                                    // because identifiers of
+                                    // variables, classes, packages,
+                                    // etc. are very likely to appear
+                                    // many times in the program. This
+                                    // means that several uses of the
+                                    // same identifier refer to the
+                                    // same string, reducing the
+                                    // memory needed to store ASTs. In
+                                    // Java, this functionality is
+                                    // implemented by method
+                                    // "intern()" in class
+                                    // Java.lang.String.
+
+                                    stringBuffer.append("_" + nameStr + " = " +
+                                            nameStr + ".intern();");
+                                } else {
+                                    stringBuffer.append("_" + nameStr + " = " +
+                                            nameStr + ";");
+                                }
                                 break;
 
                             case 'p':
@@ -968,7 +989,7 @@ public class GenerateVisitor {
             if (_isInterface) {
                 stringBuffer.append(";");
             } else {
-                stringBuffer.append(" {\n" + methodBody() + "\n" + _IDENT + "}\n");
+                stringBuffer.append(" {\n" + methodBody(_name) + "\n" + _IDENT + "}\n");
             }
 
             return stringBuffer.toString();
