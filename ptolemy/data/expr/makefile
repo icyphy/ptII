@@ -125,7 +125,9 @@ $(OPTIONAL_JSRCS): PtParser.java
 PtParser.java: PtParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
 	@echo "http://www.sun.com/suntest"
-	@echo "You only need install JavaCC if you modify PtParser.jj"
+	@echo "You only need install JavaCC if you modify PtParser.jjt"
+	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
+	@echo "derived from PtParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
@@ -133,7 +135,9 @@ PtParser.java: PtParser.jj
 PtParser.jj: $(EXTRA_SRCS)
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
-	@echo "You only need install JavaCC if you modify PtParser.jj"
+	@echo "You only need install JavaCC if you modify PtParser.jjt"
+	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
+	@echo "derived from PtParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
