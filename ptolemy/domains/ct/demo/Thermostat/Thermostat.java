@@ -93,7 +93,7 @@ public class Thermostat extends CTApplet {
              // the top level CT director
              CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                      _toplevel, "CTTopLevelDirector");
-             //StreamListener dbl = new StreamListener();
+             StreamListener dbl = new StreamListener();
              //topdir.addDebugListener(dbl);
              // a CT ramp
              Const source = new Const(_toplevel, "Const");
@@ -155,6 +155,7 @@ public class Thermostat extends CTApplet {
              //ctIncI.addDebugListener(new StreamListener());
              CTZeroCrossingDetector ctIncD =
                      new CTZeroCrossingDetector(ctInc, "ZD");
+             //ctIncD.addDebugListener(new StreamListener());
              Expression ctIncGF =
                      new Expression(ctInc, "EXPRESSION");
              
@@ -195,13 +196,14 @@ public class Thermostat extends CTApplet {
              CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                      ctInc, "CTIncDir");
              //ctIncDir.addDebugListener(dbl);
-             
+             //System.out.println(ctIncDir.getScheduler().toString());
              CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
              CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
              Integrator ctDecI = new Integrator(ctDec, "Integrator");
              Scale ctGain = new Scale(ctDec, "Gain");
              CTZeroCrossingDetector ctDecD =
                      new CTZeroCrossingDetector(ctDec, "ZD");
+             
              Expression ctDecGF =
                      new Expression(ctDec, "EXPRESSION");
              TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
