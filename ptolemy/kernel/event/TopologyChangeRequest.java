@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -133,12 +134,14 @@ public abstract class TopologyChangeRequest {
                 catch (Exception e) {}
 
                 // Set up the exception to throw
-                exception = new TopologyChangeFailedException(event, doException);
+                exception = new TopologyChangeFailedException(event,
+                        doException);
 
                 // Now undo the events that were already done
                 elts = doneEvents.elements();
                 while (elts.hasMoreElements()) {
-                    TopologyEvent undoEvent = (TopologyEvent) elts.nextElement();
+                    TopologyEvent undoEvent =
+                        (TopologyEvent) elts.nextElement();
                     try {
                         undoEvent.undoTopologyChange();
                     }
@@ -161,7 +164,7 @@ public abstract class TopologyChangeRequest {
 
     /** Return an enumartion of the queued events.
      *
-     * @returns An enumeration of the events in this request.
+     * @return An enumeration of the events in this request.
      */
     public Enumeration queuedEvents () {
         return _events.elements();
