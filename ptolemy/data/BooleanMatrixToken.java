@@ -86,22 +86,21 @@ public class BooleanMatrixToken extends MatrixToken {
      *  StringToken added to it. Note that this means adding with
      *  a BooleanMatrixTokens or a BooleanToken will trigger an
      *  exception.
-     *  @param t The token to add to this token.
+     *  @param token The token to add to this token.
      *  @return A new token.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token.
      */
-    public Token add(Token t)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
+    public Token add(Token token) throws IllegalActionException {
+	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE || compare == CPO.HIGHER ||
                 compare == CPO.SAME) {
             String msg = "add method not supported between " +
                 this.getClass().getName() + " and " +
-                t.getClass().getName();
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else {
-            return t.addReverse(this);
+            return token.addReverse(this);
         }
     }
 
@@ -174,35 +173,34 @@ public class BooleanMatrixToken extends MatrixToken {
      *  token. These two tokens are equal only if the specified token
      *  is also a BooleanMatrixToken with the same dimension, and all the
      *  corresponding elements of the arrays are equal.
-     *  @param t The token with which to test equality.
+     *  @param token The token with which to test equality.
      *  @return A booleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token; or lossless conversion is not possible.
      */
-    public BooleanToken isEqualTo(Token t)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
-	if ( !(t instanceof MatrixToken) ||
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
+	int compare = TypeLattice.compare(this, token);
+	if ( !(token instanceof MatrixToken) ||
                 compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
                     "between " + this.getClass().getName() + " and " +
-                    t.getClass().getName());
+                    token.getClass().getName());
 	}
 
-	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-                ((MatrixToken)t).getColumnCount() != _columnCount) {
+	if ( ((MatrixToken)token).getRowCount() != _rowCount ||
+                ((MatrixToken)token).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 
 	if (compare == CPO.LOWER) {
-	    return t.isEqualTo(this);
+	    return token.isEqualTo(this);
 	} else {
 	    // type of specified token <= BooleanMatrixToken
 	    BooleanMatrixToken tem = null;
-	    if (t instanceof BooleanMatrixToken) {
-		tem = (BooleanMatrixToken)t;
+	    if (token instanceof BooleanMatrixToken) {
+		tem = (BooleanMatrixToken)token;
 	    } else {
-		tem = (BooleanMatrixToken)convert(t);
+		tem = (BooleanMatrixToken)convert(token);
 	    }
 	    boolean[][] array = tem.booleanMatrix();
 

@@ -106,28 +106,27 @@ public class FixMatrixToken extends MatrixToken {
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
-     *  @param t The token to add to this token.
+     *  @param token The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token.
      */
-    public Token add(Token t)
-	    throws IllegalActionException {
+    public Token add(Token token) throws IllegalActionException {
 
-	int compare = TypeLattice.compare(this, t);
+	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
                 this.getClass().getName() + " and " +
-                t.getClass().getName();
+                token.getClass().getName();
 	    throw new IllegalActionException(msg);
 	} else if (compare == CPO.LOWER) {
-	    return t.addReverse(this);
+	    return token.addReverse(this);
 	} else {
 	    // type of the specified token <= FixMatrixToken
 	    FixPoint[][] result = null;
 
-	    if (t instanceof ScalarToken) {
-		FixPoint scalar = ((ScalarToken)t).fixValue();
+	    if (token instanceof ScalarToken) {
+		FixPoint scalar = ((ScalarToken)token).fixValue();
 		result = new FixPoint[_rowCount][_columnCount];
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
@@ -136,7 +135,7 @@ public class FixMatrixToken extends MatrixToken {
 		}
 	    } else {
 		// the specified token is not a scalar.
-		FixMatrixToken tem = (FixMatrixToken)convert(t);
+		FixMatrixToken tem = (FixMatrixToken)convert(token);
 
 	    	if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
@@ -158,21 +157,21 @@ public class FixMatrixToken extends MatrixToken {
     /** Return a new token whose value is the sum of this token
      *  and the argument. The type of the specified token must
      *  be lower than FixMatrixToken.
-     *  @param t The token to add this Token to.
+     *  @param token The token to add this Token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than FixMatrixToken.
      */
-    public Token addReverse(Token t)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
+    public Token addReverse(Token token) throws IllegalActionException {
+	int compare = TypeLattice.compare(this, token);
 	if (! (compare == CPO.HIGHER)) {
 	    throw new IllegalActionException("The type of the specified "
-                    + "token " + t.getClass().getName() + " is not lower than "
+                    + "token " + token.getClass().getName()
+		    + " is not lower than "
                     + getClass().getName());
 	}
 	// add is commutative on FixPoint matrix.
-	return add(t);
+	return add(token);
     }
 
     /** Return the content of this token as a new 2-D FixPoint array.
@@ -246,31 +245,31 @@ public class FixMatrixToken extends MatrixToken {
      *  corresponding elements of the arrays are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
-     *  @param t The token with which to test equality.
+     *  @param token The token with which to test equality.
      *  @return A booleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token; or lossless conversion is not possible.
      */
-    public BooleanToken isEqualTo(Token t)
+    public BooleanToken isEqualTo(Token token)
 	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, t);
-	if ( !(t instanceof MatrixToken) ||
+	int compare = TypeLattice.compare(this, token);
+	if ( !(token instanceof MatrixToken) ||
                 compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
                     "between " + this.getClass().getName() + " and " +
-                    t.getClass().getName());
+                    token.getClass().getName());
 	}
 
-	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-                ((MatrixToken)t).getColumnCount() != _columnCount) {
+	if ( ((MatrixToken)token).getRowCount() != _rowCount ||
+                ((MatrixToken)token).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 
 	if (compare == CPO.LOWER) {
-	    return t.isEqualTo(this);
+	    return token.isEqualTo(this);
 	} else {
 	    // type of specified token <= FixMatrixToken
-	    FixMatrixToken tem = (FixMatrixToken)convert(t);
+	    FixMatrixToken tem = (FixMatrixToken)convert(token);
 	    FixPoint[][] array = tem.fixMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {

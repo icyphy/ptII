@@ -108,32 +108,31 @@ public class ComplexMatrixToken extends MatrixToken {
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
-     *  @param t The token to add to this token.
+     *  @param token The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token.
      */
-    public Token add(Token t)
-            throws IllegalActionException {
+    public Token add(Token token) throws IllegalActionException {
 
-        int compare = TypeLattice.compare(this, t);
+        int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
             String msg = "add method not supported between " +
                 this.getClass().getName() + " and " +
-                t.getClass().getName();
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            return t.addReverse(this);
+            return token.addReverse(this);
         } else {
             // type of the specified token <= ComplexMatrixToken
             Complex[][] result = null;
 
-            if (t instanceof ScalarToken) {
-                Complex scalar = ((ScalarToken)t).complexValue();
+            if (token instanceof ScalarToken) {
+                Complex scalar = ((ScalarToken)token).complexValue();
                 result = ComplexMatrixMath.add(_value, scalar);
             } else {
                 // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
+                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
 
                 if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
@@ -151,21 +150,21 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose value is the sum of this token
      *  and the argument. The type of the specified token must
      *  be lower than ComplexMatrixToken.
-     *  @param t The token to add this Token to.
+     *  @param token The token to add this Token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexMatrixToken.
      */
-    public Token addReverse(Token t)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, t);
+    public Token addReverse(Token token) throws IllegalActionException {
+        int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + t.getClass().getName() + " is not lower than "
+                    + "token " + token.getClass().getName()
+		    + " is not lower than "
                     + getClass().getName());
         }
         // add is commutative on Complex matrix.
-        return add(t);
+        return add(token);
     }
 
     /** Return the content of this token as a new 2-D Complex array.
@@ -241,31 +240,30 @@ public class ComplexMatrixToken extends MatrixToken {
      *  corresponding elements of the arrays are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
-     *  @param t The token with which to test equality.
+     *  @param token The token with which to test equality.
      *  @return A booleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token; or lossless conversion is not possible.
      */
-    public BooleanToken isEqualTo(Token t)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, t);
-        if ( !(t instanceof MatrixToken) ||
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
+        int compare = TypeLattice.compare(this, token);
+        if ( !(token instanceof MatrixToken) ||
                 compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("Cannot check equality " +
                     "between " + this.getClass().getName() + " and " +
-                    t.getClass().getName());
+                    token.getClass().getName());
         }
 
-        if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-                ((MatrixToken)t).getColumnCount() != _columnCount) {
+        if ( ((MatrixToken)token).getRowCount() != _rowCount ||
+                ((MatrixToken)token).getColumnCount() != _columnCount) {
             return new BooleanToken(false);
         }
 
         if (compare == CPO.LOWER) {
-            return t.isEqualTo(this);
+            return token.isEqualTo(this);
         } else {
             // type of specified token <= ComplexMatrixToken
-            ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
+            ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
             return new BooleanToken(
                     ComplexMatrixMath.arePartsWithin(_value,
                             tem._getInternalComplexMatrix(), 0.0));
@@ -322,37 +320,37 @@ public class ComplexMatrixToken extends MatrixToken {
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its number of rows should
      *  be the same as this token's number of columns.
-     *  @param t The token to add to this token.
+     *  @param token The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token.
      */
-    public final Token multiply(final Token t)
+    public final Token multiply(final Token token)
             throws IllegalActionException {
 
-        int compare = TypeLattice.compare(this, t);
+        int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
             String msg = "multiply method not supported between " +
                 this.getClass().getName() + " and " +
-                t.getClass().getName();
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            return t.multiplyReverse(this);
+            return token.multiplyReverse(this);
         } else {
             // type of the specified token <= ComplexMatrixToken
             Complex[][] result = null;
 
-            if (t.getType() == BaseType.COMPLEX) {
+            if (token.getType() == BaseType.COMPLEX) {
                 // multiply by a complex number
-                Complex c = ((ComplexToken) t).complexValue();
+                Complex c = ((ComplexToken)token).complexValue();
                 result = ComplexMatrixMath.multiply(_value, c);
-            } else if (t instanceof ScalarToken) {
+            } else if (token instanceof ScalarToken) {
                 // multiply by a double
-                double scalar = ((ScalarToken)t).doubleValue();
+                double scalar = ((ScalarToken)token).doubleValue();
                 result = ComplexMatrixMath.multiply(_value, scalar);
             } else {
                 // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
+                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
                 if (tem.getRowCount() != _columnCount) {
                     throw new IllegalActionException("Cannot multiply " +
                             "matrix with " + _columnCount +
@@ -370,29 +368,30 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new token whose value is the product of this token
      *  and the argument. The type of the specified token must
      *  be lower than ComplexMatrixToken.
-     *  @param t The token to multiply this Token by.
+     *  @param token The token to multiply this Token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than ComplexMatrixToken.
      */
-    public final Token multiplyReverse(final Token t)
+    public final Token multiplyReverse(final Token token)
             throws IllegalActionException {
-        int compare = TypeLattice.compare(this, t);
+        int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + t.getClass().getName() + " is not lower than "
+                    + "token " + token.getClass().getName()
+		    + " is not lower than "
                     + getClass().getName());
         }
 
         // Check if t is matrix. In that case we must convert t into a
         // ComplexMatrixToken because matrix multiplication is not
         // commutative.
-        if (t instanceof ScalarToken) {
+        if (token instanceof ScalarToken) {
             // multiply is commutative on complex matrices, for scalar types.
-            return multiply(t);
+            return multiply(token);
         } else {
             // the specified token is not a scalar
-            ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
+            ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
             if (tem.getColumnCount() != _rowCount) {
                 throw new IllegalActionException("Cannot multiply " +
                         "matrix with " + tem.getColumnCount() +
@@ -413,33 +412,33 @@ public class ComplexMatrixToken extends MatrixToken {
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
-     *  @param t The token to subtract to this token.
+     *  @param token The token to subtract to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token.
      */
-    public final Token subtract(final Token t)
+    public final Token subtract(final Token token)
             throws IllegalActionException {
 
-        int compare = TypeLattice.compare(this, t);
+        int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
             String msg = "subtract method not supported between " +
                 this.getClass().getName() + " and " +
-                t.getClass().getName();
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            Token me = t.convert(this);
-            return me.subtract(t);
+            Token me = token.convert(this);
+            return me.subtract(token);
         } else {
             // type of the specified token <= ComplexMatrixToken
             Complex[][] result = null;
 
-            if (t instanceof ScalarToken) {
-                Complex scalar = ((ScalarToken)t).complexValue();
+            if (token instanceof ScalarToken) {
+                Complex scalar = ((ScalarToken)token).complexValue();
                 result = ComplexMatrixMath.add(_value, scalar.negate());
             } else {
                 // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
+                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
                 if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
                     throw new IllegalActionException("Cannot subtract two " +
@@ -456,24 +455,25 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return a new Token whose value is the value of this Token
      *  subtracted from the value of the argument Token.
      *  The type of the specified token must be lower than ComplexMatrixToken.
-     *  @param t The token to add this Token to.
+     *  @param token The token to add this Token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than DoubleMatrixToken.
      */
-    public final Token subtractReverse(final Token t)
+    public final Token subtractReverse(final Token token)
             throws IllegalActionException {
-        int compare = TypeLattice.compare(this, t);
+        int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + t.getClass().getName() + " is not lower than "
+                    + "token " + token.getClass().getName()
+		    + " is not lower than "
                     + getClass().getName());
         }
         // add the argument Token to the negative of this Token
         ComplexMatrixToken negativeToken =
             new ComplexMatrixToken(
 	                     ComplexMatrixMath.negative(_value), DO_NOT_COPY);
-        return negativeToken.add(t);
+        return negativeToken.add(token);
     }
 
 

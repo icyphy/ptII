@@ -114,7 +114,7 @@ public class ArrayToken extends Token {
     /** Throw an exception. Use the convert method in ArrayType.
      *  @exception IllegalActionException Always thrown.
      */
-    public static Token convert(Token t)
+    public static Token convert(Token token)
 	    throws IllegalActionException {
 	throw new IllegalActionException("ArrayToken.convert: " +
                 "This method cannot be used, use the convert method " +
