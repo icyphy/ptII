@@ -31,7 +31,7 @@
 	<entity name="JAIToImage" class="ptolemy.actor.lib.jmf.JAIToImage">
 	</entity>
 
-	<entity name="Sound" class="ptolemy.actor.lib.jmf.Sound">
+	<entity name="PlaySound" class="ptolemy.actor.lib.jmf.PlaySound">
 	</entity>
 
 	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">

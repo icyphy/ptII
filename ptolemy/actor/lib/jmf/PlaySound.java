@@ -57,7 +57,7 @@ import ptolemy.kernel.util.*;
 This actor plays audio from a file or URL when it fires.
 If the input has value <i>true</i>, then the sound is played.
 If it has value <i>false</i>, then the sound is stopped.
-If the input is connected, or the actor fires with no input,
+If the input is not connected, or the actor fires with no input,
 then the sound is played when it fires.
 It requires the Java Media Framework.
 
