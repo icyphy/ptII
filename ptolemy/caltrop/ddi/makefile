@@ -78,7 +78,9 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'SDF$$1.class' \
+	'SDF$$ActionRateSignature.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
