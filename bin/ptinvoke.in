@@ -139,6 +139,16 @@ DIVA_JAR="${PTII}/lib/diva.jar"
 
 DIVA_JFLAG=
 
+#### Tini board stuff
+# The tini jar file.
+TINI_DIR='@TINI_DIR@'
+# Jar file containing tini design tools
+TINI_JAR='@TINI_CLASSES@${COMMAPI_JAR}'
+# Jar file containing embedded tini libraries.
+TINICLASSES_JAR='@TINI_DIR@/tiniclasses.jar'
+   
+TINI_JFLAG=
+
 # JDK Version determined by running confTest.class and getting java.version
 JVERSION=@JVERSION@
 
@@ -156,7 +166,8 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
         # T30's seem to be happier with noddraw than with only d3d, at least
 	# under 1.4.1-beta-b14
 #	   J141BUGWORKAROUND=-Dsun.java2d.d3d=false
-	   J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
+	   J141BUGWORKAROUND=
+#-Dsun.java2d.noddraw=true
 	;;     
 	1.4.1_01)  
 	   J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
@@ -242,6 +253,8 @@ passHelpArgument=yes
 # Optional jar file
 jarfile="$ALL_JAR"
 
+# The Java process to run.
+javac="\$JAVAHOME/bin/java"
 
 # javaflag contains optional flags passed to java that may be
 # set by this script
@@ -256,6 +269,11 @@ jarfile="$ALL_JAR"
 # echo "source $PTII/util/testsuite/jdktools.tcl; jdkProperties; exit" | ptjacl
 #
 javaflag="$ALL_JFLAG"
+
+# Flags that are specific to invoking ptolemy programs.  By default,
+# this sets the ptolemy.ptII.dir environment variable.
+ptflag="-Dptolemy.ptII.dir=$PTII"
+
 
 # See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
@@ -281,7 +299,7 @@ case `basename "$0"` in
 	    invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
-	    jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	    jarfile="$ALL_JAR$CLASSPATHSEPARATOR$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	    javaflag="$JODE_JFLAG"
 	else
 	    echo "Jode was not found when $PTII/configure was run, "
@@ -293,6 +311,32 @@ case `basename "$0"` in
 	    
         fi	    
 	;;
+    giottoc)
+	if [ -f "$GIOTTO_JAR" ]; then
+	    help="Run the Giotto Compiler"
+	    javastartupclass=giotto.giottoc.GiottoC
+	    javasourcedir=
+	else
+	    echo "GiottoSDK was not found when $PTII/configure was run, "
+	    echo "  To run GiottoC, download GiottoSDK from:"
+            echo "    http://www.eecs.berkeley.edu/~fresco"
+	    echo "  and run: "
+	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
+	fi	    
+        ;;    
+    emachine)
+	if [ -f "$GIOTTO_JAR" ]; then
+	    help="Execute the emachine"
+	    javastartupclass=platform.emachine.Emulator
+	    javasourcedir=
+	else
+	    echo "GiottoSDK was not found when $PTII/configure was run, "
+	    echo "  To run the embedded machine, download GiottoSDK from:"
+            echo "    http://www.eecs.berkeley.edu/~fresco"
+	    echo "  and run: "
+	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
+	fi	    
+        ;;
     histogram)
 	help="Histogram Plotter"
 	invokeHelp="$0: Usage: $0 [commonOptions] [histogramOptions] [PlotMLOrASCIIFile]"
@@ -309,19 +353,21 @@ case `basename "$0"` in
 	fi    
 	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
 	;;
+    jode)
+	help="Decompile by calling jode, for example: \
+                  $0 ptolemy.util.StringUtilities"
+	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
+	javastartupclass=jode.decompiler.Main
+	javasourcedir=
+	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	javaflag="$JODE_JFLAG"
+	;;
     jshrink)
 	help="extractor/obfuscator"
 	javastartupclass=jshrink.Jshrink
 	javasourcedir=
 	jarfile="$PTII/lib/jshrink.jar"
 	javaflag="-Xmx256M"
-	;;
-    jode)
-	help="Java decompiler"
-	javastartupclass=jode.decompiler.Main
-	javasourcedir=
-	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
-	javaflag="$JODE_JFLAG"
 	;;
     obfuscate)
 	help="Jode obfuscator, useful for reducing class file size"
@@ -437,6 +483,32 @@ case `basename "$0"` in
 	jarfile="$SOOT_JAR"
 	javaflag="$SOOT_JFLAG"
 	;;
+    tinicomm)
+	help="Tini board communications shell"
+	invokeHelp="$0: Usage: $0 [commonOptions]"
+	javastartupclass=JavaKit
+	javasourcedir=
+	jarfile="$TINI_JAR"
+	javaflag="$TINI_JFLAG"
+	;;
+    tinic)
+	javac="\$JAVAHOME/bin/javac"
+	ptflag="" # setting ptII environment variable is not valid under javac
+	help="Tini compiler using embedded libraries"
+	invokeHelp="$0: Usage: $0 [commonOptions]"
+	javastartupclass=
+	javasourcedir=
+	jarfile="$TINI_JAR"
+	javaflag="-bootclasspath \"$TINICLASSES_JAR\" -target 1.1"
+	;;	
+    tiniconverter)
+	help="Tini board static linker, creates .tini files"
+	invokeHelp="$0: Usage: $0 [commonOptions]"
+	javastartupclass=TINIConvertor
+	javasourcedir=
+	jarfile="$TINI_JAR"
+	applicationflags="-d $TINI_DIR/bin/tini.db"
+	;;
     vergil)
 	help="Invoke the Ptolemy II User Interface, for example: \
               $0 \
@@ -517,7 +589,6 @@ if [ -z "$JAVAHOME" ]; then
     fi
 fi
 
-javac="\$JAVAHOME/bin/java"
 jdbflags=""
 quiet=0
 # ${1#-} will not work under Solaris 8
@@ -688,7 +759,7 @@ if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
 
 else
     # If JAVAHOME has spaces in it, we need to jump through hoops
-    str="\"$javac\" $jdbflags $javaflag \"-Dptolemy.ptII.dir=$PTII\" $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+    str="\"$javac\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 fi 
 if [ "$quiet" = "0" ]; then echo $str;fi
 eval exec $str

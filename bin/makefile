@@ -47,6 +47,8 @@ SHELL_FILES = \
 	copernicus \
 	copernicusjhdl \
 	decompile \
+	emachine \
+	giottoc \
 	histogram \
 	htmlconverter \
 	jode \
@@ -62,6 +64,9 @@ SHELL_FILES = \
 	ptolemy \
 	pxgraph \
 	soot \
+	tinicomm \
+	tinic \
+	tiniconverter \
 	startjini.gui \
 	vergil
 
@@ -99,20 +104,24 @@ all: ptinvoke
 	ln -s ptinvoke copernicus
 	rm -f copernicusjhdl
 	ln -s ptinvoke copernicusjhdl
+	rm -f decompile
+	ln -s ptinvoke decompile
+	rm -f emachine
+	ln -s ptinvoke emachine
+	rm -f giottoc
+	ln -s ptinvoke giottoc
 	rm -f histogram
 	ln -s ptinvoke histogram
 	rm -f htmlconverter
 	ln -s ptinvoke htmlconverter
-	rm -f decompile
-	ln -s ptinvoke decompile
 	rm -f jode
 	ln -s ptinvoke jode
 	rm -f mescal
 	ln -s ptinvoke mescal
 	rm -f moml
+	ln -s ptinvoke moml
 	rm -f obfuscate
 	ln -s ptinvoke obfuscate
-	ln -s ptinvoke moml
 	rm -f ptexecute
 	ln -s ptinvoke ptexecute
 	rm -f ptjacl
@@ -129,6 +138,12 @@ all: ptinvoke
 	ln -s ptinvoke pxgraph
 	rm -f soot
 	ln -s ptinvoke soot
+	rm -f tinicomm
+	ln -s ptinvoke tinicomm
+	rm -f tinic
+	ln -s ptinvoke tinic
+	rm -f tiniconverter
+	ln -s ptinvoke tiniconverter
 	rm -f vergil
 	ln -s ptinvoke vergil
 
