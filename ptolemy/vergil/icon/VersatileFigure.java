@@ -1,10 +1,32 @@
-/*
- * $Id$
- *
- * Copyright (c) 1998-2003 The Regents of the University of California.
- * All rights reserved. See the file COPYRIGHT for details.
- *
- */
+/* A VersatileFigure is one that contains a single instance of Shape.
+
+ Copyright (c) 2000-2003 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
+
 package ptolemy.vergil.icon;
 
 import java.awt.AlphaComposite;
@@ -24,33 +46,28 @@ import diva.util.java2d.PaintedShape;
 import diva.util.java2d.PaintedString;
 import diva.util.java2d.ShapeUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// VersatileFigure
 /** A VersatileFigure is one that contains a single instance of
- *  Shape.  The figure can have a fill with optional compositing (for
- *  translucency), and a stroke with a different fill.  With this
- *  class, simple objects can be created on-the-fly simply by passing
- *  an instance of java.awt.Shape to the constructor.
- *
- *  This figure is versatile because it can happily take a PaintedObject
- *  in addition to specific shapes.  This class takes care of the
- *  complications with all the different types of PaintedObject types,
- *  such as PaintedShape, PaintedString, and PaintedPath.
- *
- * @deprecated Will be moved from Diva to ptolemy/vergil/icon.
- *
- * @version $Revision$
- * @since Ptolemy II 2.0
- * @author  Nick Zamora
+Shape.  The figure can have a fill with optional compositing (for
+translucency), and a stroke with a different fill.  With this
+class, simple objects can be created on-the-fly simply by passing
+an instance of java.awt.Shape to the constructor.
+
+This figure is versatile because it can happily take a PaintedObject
+in addition to specific shapes.  This class takes care of the
+complications with all the different types of PaintedObject types,
+such as PaintedShape, PaintedString, and PaintedPath.
+
+@author  Nick Zamora
+@version $Id$
+@since Ptolemy II 2.0
  */
 public class VersatileFigure extends AbstractFigure
     implements ShapedFigure, Cloneable {
 
-    /** The color compositing operator
-     */
-    private Composite _composite = AlphaComposite.SrcOver; // opaque
-
-    /** The painted shape that we use to draw the connector.
-     */
-    private PaintedObject _paintedObject = null;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Create a new figure with the given painted shape.
      */
@@ -58,6 +75,7 @@ public class VersatileFigure extends AbstractFigure
         super ();
         _paintedObject = paintedObject;
     }
+
     /** Create a new figure with the given shape. The figure, by
      *  default, has a unit-width continuous black outline and no fill.
      */
@@ -132,7 +150,8 @@ public class VersatileFigure extends AbstractFigure
      */
     public float getLineWidth () {
         if (_paintedObject instanceof PaintedString) {
-            Integer integer = new Integer (((PaintedString) _paintedObject).getSize ());
+            Integer integer =
+                new Integer (((PaintedString) _paintedObject).getSize ());
             return integer.floatValue ();
         }
         else if (_paintedObject instanceof PaintedShape) {
@@ -427,9 +446,12 @@ public class VersatileFigure extends AbstractFigure
         return clone;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
+
+    // The color compositing operator
+    private Composite _composite = AlphaComposite.SrcOver; // opaque
+
+    // The painted shape that we use to draw the connector.
+    private PaintedObject _paintedObject = null;
 }
-
-
-
-
-
