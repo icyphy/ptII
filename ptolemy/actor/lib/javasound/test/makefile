@@ -32,6 +32,8 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/actor/lib/javasound/test
 
+DIRS =		pitchshift
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
