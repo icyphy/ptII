@@ -70,6 +70,7 @@ JSRCS = \
 	FunctionDependency.java \
 	FunctionDependencyOfAtomicActor.java \
 	FunctionDependencyOfCompositeActor.java \
+	Time.java \
 	TimedEvent.java
 
 EXTRA_SRCS =	$(JSRCS)
