@@ -62,12 +62,12 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {equals java.lang.Object} getClass getContainer getFull
-    Name getLinkedRelations getName hashCode {link pt.kerne
-    l.Relation} notify notifyAll numLinks {setContainer pt.
-    kernel.Entity} {setName java.lang.String} toString {unl
-    ink pt.kernel.Relation} unlinkAll wait {wait long} {wai
-    t long int}
+  methods:       {_checkRelation pt.kernel.Relation} {equals java.lang.O
+    bject} getClass getContainer getFullName getLinkedRelat
+    ions getName hashCode {link pt.kernel.Relation} notify 
+    notifyAll numLinks {setContainer pt.kernel.Entity} {set
+    Name java.lang.String} toString {unlink pt.kernel.Relat
+    ion} unlinkAll wait {wait long} {wait long int}
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String}
@@ -199,29 +199,34 @@ test Port-4.1 {Test unlinkAll} {
 ####
 # 
 test Port-5.1 {Test unlink} {
+    set p3 [java::new pt.kernel.Port]
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port $e1 P1]
-    set p2 [java::new pt.kernel.Port]
-    $p2 setContainer $e1
+    # FIXME: Bug in TclBlend: If p3 is set below instead of above,
+    # TclBlend gives an error on Unix machines, but not on NT.
+    # The error is: 
+    # wrong # args for calling constructor "pt.kernel.Port"
+    # set p3 [java::new pt.kernel.Port]
+    $p3 setContainer $e1
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 link $r1
-    $p2 link $r1
+    $p3 link $r1
     $p1 link $r2
-    $p2 link $r2
+    $p3 link $r2
     $p1 unlink $r1
-    set result1 [_testPortGetLinkedRelations $p1 $p2]
-    $p2 unlink $r2
-    set result2 [_testPortGetLinkedRelations $p1 $p2]
-    $p2 unlink $r1
-    set result3 [_testPortGetLinkedRelations $p1 $p2]
+    set result1 [_testPortGetLinkedRelations $p1 $p3]
+    $p3 unlink $r2
+    set result2 [_testPortGetLinkedRelations $p1 $p3]
+    $p3 unlink $r1
+    set result3 [_testPortGetLinkedRelations $p1 $p3]
 
     # Call unlink on a relation that has already been disconnected.
-    $p2 unlink $r1
-    set result4 [expr {$result3 == [_testPortGetLinkedRelations $p1 $p2]}]
+    $p3 unlink $r1
+    set result4 [expr {$result3 == [_testPortGetLinkedRelations $p1 $p3]}]
 
     $p1 unlink $r2
-    set result5 [_testPortGetLinkedRelations $p1 $p2]
+    set result5 [_testPortGetLinkedRelations $p1 $p3]
 
    list "$result1\n$result2\n$result3\n$result4\n$result5"
 } {{relation2 {relation1 relation2}
