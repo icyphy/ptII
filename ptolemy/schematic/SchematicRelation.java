@@ -43,6 +43,13 @@ Every link has a name that specifies the unique port within a schematic that
 it is connected to.   A link name is formed by period concatenating the
 entity name and the port name that the link is connected to, such as
 "entity.port".
+<!-- schematic relations will be parsed into class SchemticRelation -->
+<!ELEMENT relation (link)*>
+<!ATTLIST relation
+name ID #REQUIRED>
+<!ELEMENT link EMPTY>
+<!ATTLIST link
+name CDATA #REQUIRED>
 
 
 @author Steve Neuendorffer, John Reekie
@@ -56,6 +63,7 @@ public class SchematicRelation extends SchematicElement {
     public SchematicRelation () {
         super("relation");
         links = (HashedMap) new HashedMap();
+        setWidth("1");
     }
 
     /**
@@ -67,6 +75,7 @@ public class SchematicRelation extends SchematicElement {
     public SchematicRelation (HashedMap attributes) {
         super("relation", attributes);
         links = (HashedMap) new HashedMap();
+        if(!hasAttribute("width")) setWidth("1");
     }
 
     /**
@@ -76,11 +85,9 @@ public class SchematicRelation extends SchematicElement {
      * 
      * @return an XMLElement that represents the link.
      */
-    public void addLink (String entity, String port) {
+    public void addLink (String name) {
         XMLElement e = new XMLElement("link");
-        String name = entity + "." + port;
         e.setAttribute("name", name);
-        e.setParent(this);
         addChildElement(e);    
         links.putAt(name, e);
     }
@@ -93,18 +100,29 @@ public class SchematicRelation extends SchematicElement {
     }
 
     /**
-     * Return an enumeration over the links in this relation.
+     * Return a string representing the width of this relation
+     */
+    public String getWidth() {
+        return getAttribute("width");
+    }
+
+    /**
+     * Return an enumeration over the links in this relation.   Each
+     * element in the enumeration will be a string representing a 
+     * port that is connected to this relation.
+     * 
+     * @return an Enumeration of String
      */
     public Enumeration links () {
-        return links.elements();
+        return links.keys();
     }
 
     /** 
-     * Remove the link with the given name from this relation
+     * Remove the link with the given name from this relation.  The link 
+     * should refer to a 
      */
     public void removeLink(String name) {
         XMLElement e = (XMLElement) links.at(name);
-        e.setParent(null);
         removeChildElement(e);
         links.removeAt(name);
     }
@@ -115,6 +133,7 @@ public class SchematicRelation extends SchematicElement {
     public void setWidth(String width) {
         setAttribute("width", width);
     }
+
     HashedMap links;
 
 }
