@@ -29,19 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo
-
-# PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = 		ContinuousClock \
-		BouncingBall CarTracking ComparedClocks \
-		Helicopter HierarchicalExecution LevelCrossingDetector \
-		LevelCrossingDetectorDetectsGlitches \
-		Lorenz SigmaDelta Spontaneous SquareWave \
-		SampledClocks StickyMasses Switch \
-		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
+ME =		ptolemy/domains/ct/demo/Spontaneous
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -50,54 +41,53 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	Spontaneous
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-# We don't include Corba/Corba.jar because we don't ship Corba.
-PTCLASSALLJARS = \
-	ContinuousClock/ContinuousClock.jar \
-	BouncingBall/BouncingBall.jar \
-	CarTracking/CarTracking.jar \
-	ComparedClocks/ComparedClocks.jar \
-	Helicopter/Helicopter.jar \
-	HierarchicalExecution/HierarchicalExecution.jar \
-	LevelCrossingDetector/LevelCrossingDetector.jar \
-	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
-	Lorenz/Lorenz.jar \
-	SampledClocks/SampledClocks.jar \
-	SigmaDelta/SigmaDelta.jar \
-	Spontaneous/Spontaneous.jar \
-	SquareWave/SquareWave.jar \
-	StickyMasses/StickyMasses.jar \
-	Switch/Switch.jar \
-	Transmission/Transmission.jar \
-	Thermostat/Thermostat.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS = index.htm
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Brownian.xml \
+	IncreasingRatePoisson.xml \
+	Poisson.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	Brownian.htm
+#	IncreasingRatePoisson.htm
+#	Poisson.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	Agilent \
-	Saber
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
+install: all
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer *.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Spontaneous.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Spontaneous.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
