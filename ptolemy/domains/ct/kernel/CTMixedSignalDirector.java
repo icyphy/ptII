@@ -170,6 +170,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
+            if(VERBOSE) {
+                System.out.println("In event phase execution.");
+            }
             _eventPhaseExecution();
             exe.fireAt(ca, exe.getCurrentTime());
             _setEventPhase(false);
@@ -521,6 +524,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 return true;
             }
         }
+        System.out.println("Not stopped by events.");
         return false;
     }
 
