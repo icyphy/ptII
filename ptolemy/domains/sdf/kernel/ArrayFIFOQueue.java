@@ -121,7 +121,6 @@ public final class ArrayFIFOQueue implements Cloneable {
 
     /** Enumerate the objects in the queue, beginning with the oldest.
      *  @return An enumeration of objects.
-     *  @see collections.LinkedList#elements()
      */
     public Enumeration elements() {
         return Collections.enumeration(elementList());
@@ -226,7 +225,6 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  previously taken from the queue. If the history capacity is zero,
      *  then return an empty enumeration.
      *  @return An enumeration of objects in the history.
-     *  @see collections.LinkedList#elements()
      */
     public Enumeration historyElements() {
         return Collections.enumeration(_historyList);
