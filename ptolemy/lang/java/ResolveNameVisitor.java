@@ -193,7 +193,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Decl other = scope.lookup(varName, CG_FORMAL | CG_LOCALVAR);
 
         if (other != null) {
-            throw new RuntimeException("declaration shadows " + varName);
+            throw new RuntimeException("declaration shadows " + varName + ".\n"
+                    + "A dump of the offending ParameterNode AST follows.\n"
+                    + node.toString() + "\n");
         }
 
         FormalParameterDecl d = new FormalParameterDecl(varName,
