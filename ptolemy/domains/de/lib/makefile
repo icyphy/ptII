@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DETransformer.java \
+	Inhibit.java \
 	Merge.java \
 	Queue.java \
 	Sampler.java \
