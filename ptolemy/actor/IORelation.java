@@ -165,9 +165,9 @@ public class IORelation extends ComponentRelation {
     public Receiver[][] deepReceivers(IOPort except) {
         try {
             workspace().getReadAccess();
-            Receiver[][] result = null;
+            Receiver[][] result = new Receiver[0][0];
             Enumeration inputs = linkedDestinationPorts(except);
-            Receiver[][] recvrs = null;
+            Receiver[][] recvrs = new Receiver[0][0];
             while(inputs.hasMoreElements()) {
                 IOPort p = (IOPort) inputs.nextElement();
 
@@ -487,21 +487,24 @@ public class IORelation extends ComponentRelation {
     // The two input arrays must have the same number of rows.
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException {
-        if (array1 == null) {
+        if (array1.length <= 0) {
             return array2;
         }
-        if (array2 == null) {
+        if (array2.length <= 0) {
             return array1;
         }
         int width = getWidth();
         Receiver[][] result = new Receiver[width][];
 
         for (int i = 0; i < width; i++) {
-            if(array1[i] == null) {
+            if(array1[i].length <= 0) {
+System.out.println("array1 empty");
                 result[i] = array2[i];
-            } else if(array2[i] == null) {
+            } else if(array2[i].length <= 0) {
+System.out.println("array2 empty");
                 result[i] = array1[i];
             } else {
+
                 int m1 = array1[i].length;
                 int m2 = array2[i].length;
                 result[i] = new Receiver[m1+m2];

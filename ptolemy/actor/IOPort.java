@@ -682,6 +682,7 @@ public class IOPort extends ComponentPort {
      */
     public Receiver[][] getRemoteReceivers() {
         try {
+System.out.println(getContainer().getFullName() + " get Remote Receivers.");
             workspace().getReadAccess();
             if (!isOutput()) return new Receiver[0][0];
 

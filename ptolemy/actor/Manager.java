@@ -214,6 +214,7 @@ public final class Manager extends NamedObj implements Runnable {
             initialize();
             // Call iterate() until finish() is called or postfire()
             // returns false.
+            _debug(getName() + ": begin to iterate.");
             while (!_finishRequested) {
                 if (!iterate()) break;
                 if (_pauseRequested) {
@@ -228,7 +229,12 @@ public final class Manager extends NamedObj implements Runnable {
                 }
             }
             completedSuccessfully = true;
-        } finally {
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalActionException("Exception!!."+ ex.getMessage());
+            
+        }
+        finally {
             wrapup();
             if (completedSuccessfully) {
                 _notifyListenersOfCompletion();
@@ -348,12 +354,14 @@ public final class Manager extends NamedObj implements Runnable {
         boolean result = true;
         try {
             workspace().getReadAccess();
-
+            _debug(getName() + " process change requests.");
             _processChangeRequests();
 
             if (!_typesResolved) {
+                _debug(getName() + ": need resolve type.");
                 resolveTypes();
                 _typesResolved = true;
+                _debug(getName() + ": typed resolved.");
             }
 
             _iterationCount++;
@@ -364,10 +372,13 @@ public final class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 workspace().setReadOnly(true);
             }
+            _debug(getName() + ": prefire the system.");
             if (_container.prefire()) {
+                _debug(getName() + ": fire the system.");
                 _container.fire();
                 result = _container.postfire();
             }
+            _debug(getName() + ": finish one iteration, returning " + result);
         } finally {
             workspace().setReadOnly(false);
             workspace().doneReading();
