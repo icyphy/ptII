@@ -1,0 +1,106 @@
+#!/bin/sh
+# Script to sanity check java files
+# 1) Report protected and private variables that do not have a leading _
+# 2) Report lines longer than 80 chars
+# 3) Report public methods and variables after private or protected ones
+# 4) Make sure that each file includes a copyright, @version and @author
+# 5) Make sure that @author and @version are not @author: and @version:
+
+for file in $@
+do
+
+	results=`grep protected $file | grep -v 'protected methods' |
+		egrep -v '[ 	]*\*' |
+		grep -v 'protected variables' | 
+		grep -v 'protected class' | grep -v ' _'`
+	if [ "x$results" != "x" ]; then
+		echo "$results" | awk '{
+		    # If this is a constructor, then do not complain  
+		    split($2,f,"(")
+		    if (f[1] != filenm) {
+		        if (printedheader == 0) {
+			    print filenm".java: protected does not have a leading _"
+			    printedheader = 1
+			}
+			print $0
+		    }
+		}' filenm=`basename $file .java`    
+	fi
+
+	results=`grep private $file |
+		egrep -v '[ 	]*\*' |
+		grep -v 'private methods' |
+		grep -v 'private class' |
+		grep -v 'private variables' | grep -v ' _'`
+	if [ "x$results" != "x" ]; then
+		echo "$results" | awk '{
+		    # If this is a constructor, then do not complain  
+		    split($2,f,"(")
+		    if (f[1] != filenm) {
+		        if (printedheader == 0) {
+			    print filenm".java: private does not have a leading _"
+			    printedheader = 1
+			}
+			print $0
+		    }
+		}' filenm=`basename $file .java`    
+	fi
+
+	# Look for lines longer than 80 chars
+	awk 'length($0) > 80 {print FILENAME": Line more than 80 chars:"; print $0}' $file
+
+	# Look for public statements after private etc.
+        awk '$1 == "public" {sawpublic=1
+				if (sawprivate == 1) {
+				   print FILENAME": public is after private"
+				   print $0
+				}
+	     			if (sawprotected == 1) {
+				   print FILENAME": public is after protected"
+				   print $0
+				}
+			}
+        $1 == "protected" {
+				if (sawprivate == 1) {
+				   print FILENAME": public is after private"
+				   print $0
+				}
+			}
+	$1 == "private" {
+			    if ( $0 ~ /private class/ ) {
+				# Inner Class
+				sawpublic=0
+				sawprotected=0
+				sawprivate=0
+			    } else {
+				sawprivate=1
+			    }
+	}' $file
+
+	# Check that certain keywords exist
+	words="@version @author Copyright Regents"
+	for word in $words
+	do
+	  egrep -s $word $file
+	  retval=$?
+    	  if [ $retval != 0 ]; then
+	    echo "$file does not contain $word"
+	  fi
+	done  
+
+	# Look for @version: or @author:
+	awk '$0 ~ /@author:/ {
+	    print FILENAME": Remove trailing : from @author:" 
+	    print $0
+	}
+	$0 ~ /@version:/ {
+	    print FILENAME": Remove trailing : from @version:" 
+	    print $0
+	}
+	$0 ~/@returns/ {
+	    print FILENAME": Remove trailing s from @returns" 
+	    print $0
+	}' $file
+
+done
+
