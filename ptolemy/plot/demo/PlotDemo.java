@@ -75,7 +75,7 @@ public class PlotDemo extends PlotApplet {
         plot().setImpulses(true);
 
         boolean first = true;
-        for (int i=0; i <= 100; i++) {
+        for (int i = 0; i <= 100; i++) {
             plot().addPoint(0, (double)i,
                     5 * Math.cos(Math.PI * i/20), !first);
             plot().addPoint(1, (double)i,

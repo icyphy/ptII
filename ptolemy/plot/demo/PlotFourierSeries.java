@@ -66,15 +66,15 @@ public class PlotFourierSeries extends PlotApplet {
         plot().setMarksStyle("none");
         plot().addLegend(0, "ideal");
         plot().addLegend(1, "1 sinusoid");
-        for (int j=2; j <= 10; j++) {
+        for (int j = 2; j <= 10; j++) {
             plot().addLegend(j, j + " sinusoids");
         }
 
         boolean first = true;
         plot().addPoint(0, 0.0, 0.0, false);
-        for (int i=0; i <= 400; i++) {
+        for (int i = 0; i <= 400; i++) {
             double approximation = 0.0;
-            for (int j=1; j <= 10; j++) {
+            for (int j = 1; j <= 10; j++) {
                 double sig = 4.0*Math.sin(i*2.0*Math.PI*(2*j-1)/400.0)/
                     (Math.PI*(2*j-1));
                 approximation += sig;
