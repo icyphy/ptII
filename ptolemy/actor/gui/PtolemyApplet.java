@@ -222,15 +222,11 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
     /** Cleanup after execution of the model.  This method is called
      *  by the browser or appletviewer to inform this applet that
      *  it should clean up.
-     *  In this base class, this method calls the terminate() method
-     *  of the manager.  If there is no manager, do nothing.
-     *  @deprecated This method calls Manager.terminate(), which
-     *  is deprecated.
      */
     public void destroy() {
-        if(_manager != null && _setupOK) {
-            _manager.terminate();
-        }
+        // Note: we used to call manager.terminate() here to get rid
+        // of a lingering browser problem
+        stop();
     }
 
     ///////////////////////////////////////////////////////////////////
