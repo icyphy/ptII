@@ -4247,7 +4247,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-        if test "${PTCC:-none}" == "none"; then
+        if test "${PTCC:-none}" = "none"; then
             { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
 echo "$as_me: WARNING: Failed to find gcc" >&2;}
 	    # Extract the first word of "cc", so it can be a program name with args.
@@ -4289,7 +4289,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-	    if test "${PTCC:-none}" == "none"; then
+	    if test "${PTCC:-none}" = "none"; then
 	        { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the mescal output" >&5
 echo "$as_me: WARNING: Failed to find gcc or cc, so we will
