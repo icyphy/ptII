@@ -71,7 +71,7 @@ public class MatrixViewer extends Sink implements Placeable {
     public MatrixViewer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
                 super(container, name);
-                // input.setTypeEquals(BaseType.MATRIX);
+                input.setTypeEquals(BaseType.MATRIX);
     }
 
     ///////////////////////////////////////////////////////////////////
