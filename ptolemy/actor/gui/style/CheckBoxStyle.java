@@ -114,13 +114,15 @@ public class CheckBoxStyle extends ParameterEditorStyle {
         String name = getContainer().getName();
         if (!(getContainer() instanceof Parameter)) {
             throw new IllegalActionException(getContainer(),
-                    "CheckBoxStyle can only be contained by instances of Parameter.");
+                    "CheckBoxStyle can only be "
+                    + "contained by instances of Parameter.");
         }
         Parameter param = (Parameter)getContainer();
         Token current = param.getToken();
         if (!(current instanceof BooleanToken)) {
             throw new IllegalActionException(getContainer(),
-                    "CheckBoxStyle can only be used for boolean-valued parameters");
+                    "CheckBoxStyle can only be "
+                    + "used for boolean-valued parameters");
         }
         query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
 	query.attachParameter(param, name);
