@@ -32,6 +32,7 @@ package ptolemy.codegen.saveasjava;
 // FIXME: trim this.
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
@@ -53,9 +54,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -146,7 +146,12 @@ public class GeneratorTableau extends Tableau {
             final Query query = new Query();
             // FIXME: getProperty() will probably fail in applets.
             final File cwd = new File(System.getProperty("user.dir"));
+
             query.addLine("directory", "Destination directory", cwd.toString());
+            query.addLine("package", "Package name", "");
+            query.addCheckBox("show", "Show code", true);
+            query.addCheckBox("compile", "Compile code", true);
+            query.addCheckBox("run", "Run code", true);
 
             goButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
@@ -171,6 +176,25 @@ public class GeneratorTableau extends Tableau {
                         outprinter.print((new SaveAsJava()).generate(model));
                         outfile.close();
                         report("Code generation complete.");
+
+                        if (query.booleanValue("show")) {
+                            URL codeFile = destination.toURL();
+                            Configuration config = (Configuration)toplevel();
+                            // FIXME: If we previously had this file open,
+                            // we need to refresh the tableau.
+                            config.openModel(null, codeFile,
+                                  codeFile.toExternalForm());
+                        }
+                        if (query.booleanValue("compile")) {
+                            // FIXME: hardwired file name.
+                            _exec("javac RampPlot.java");
+                            report("Compilation complete.");
+                        }
+                        if (query.booleanValue("run")) {
+                            // FIXME: hardwired file name.
+                            _exec("java ptolemy.actor.gui.CompositeActorApplication -class RampPlot");
+                            report("Execution complete.");
+                        }
                     } catch (Exception ex) {
                         MessageHandler.error("Code generation failed.", ex);
                     }
@@ -182,6 +206,32 @@ public class GeneratorTableau extends Tableau {
 
             getContentPane().add(component, BorderLayout.CENTER);
 	}
+
+        // Execute the specified command and report errors.
+        private void _exec(String command) throws Exception {
+            Runtime runtime = Runtime.getRuntime();
+            // FIXME: hardwired file name.
+            Process process = runtime.exec(command);
+
+            InputStream errorStream = process.getErrorStream();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(errorStream));
+            String line;
+            while((line = reader.readLine()) != null) {
+                // FIXME: do something better here.
+                System.out.println(line);
+            }
+
+            errorStream = process.getInputStream();
+            reader = new BufferedReader(
+                    new InputStreamReader(errorStream));
+            while((line = reader.readLine()) != null) {
+                // FIXME: do something better here.
+                System.out.println(line);
+            }
+
+            process.waitFor();
+        }
     }
 
     /** A factory that creates a control panel for code generation.

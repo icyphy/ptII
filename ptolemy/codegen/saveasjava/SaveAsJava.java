@@ -35,9 +35,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringUtilities;
 
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -156,17 +158,34 @@ class SaveAsJava {
             // a public member whose name and type match the attribute,
             // and if so, just set that.
 
-            String attributeClass = _getClassName(attribute);
-            result.append(_indent(3));
-            result.append(attributeClass);
-            result.append(" ");
-            result.append(attribute.getName());
-            result.append(" = new ");
-            result.append(attributeClass);
-            result.append("(this, \"");
-            result.append(attribute.getName());
-            result.append("\");");
-            result.append("\n");
+            // First, check to see whether the attribute is persistent
+            // by exporting MoML and seeing whether the result is empty.
+            // FIXME: This seems like the wrong way to determine that
+            // the attribute is transient.
+            String moml = attribute.exportMoML();
+            if (moml.length() > 0) {
+                String attributeClass = _getClassName(attribute);
+                String attributeName = attribute.getName();
+                result.append(_indent(3));
+                result.append(attributeClass);
+                result.append(" ");
+                result.append(attributeName);
+                result.append(" = new ");
+                result.append(attributeClass);
+                result.append("(this, \"");
+                result.append(attributeName);
+                result.append("\");");
+                result.append("\n");
+
+                if (attribute instanceof Settable) {
+                    result.append(_indent(3));
+                    result.append(attributeName);
+                    result.append(".setExpression(\"");
+                    result.append(_escapeQuotes(
+                            ((Settable)attribute).getExpression()));
+                    result.append("\");\n");
+                }
+            }
         }
         return result.toString();
     }
@@ -183,7 +202,6 @@ class SaveAsJava {
             throws IllegalActionException {
         String code = new String(); 
         String clname = _getClassName(model);
-
         if (model.isAtomic()) {
              code += _indent(3)
                      + clname + " " + model.getName() + " = new "
@@ -255,6 +273,16 @@ class SaveAsJava {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Given a string, replace all quotation marks with escaped
+     *  quotation marks.
+     *  @param string The string to escape.
+     *  @return A new string with quotation marks replaced.
+     */
+    private static String _escapeQuotes(String string) {
+        string = StringUtilities.substitute(string, "\"", "\\\"");
+        return string;
+    }
 
     //  Insert the specified name into the specified list
     //  if the name does not already exist in the list.
