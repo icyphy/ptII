@@ -98,6 +98,14 @@ JSRCS = \
 	RecordAssembler.java \
 	RecordDisassembler.java \
 	Recorder.java \
+
+
+
+
+
+
+
+
 	Remainder.java \
 	SequenceActor.java \
 	Sequencer.java \
@@ -119,10 +127,11 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+	Sinewave.xml \
+	PowerEstimate.xml \
 	flowcontrol.xml \
 	math.xml \
 	signalprocessing.xml \
-	Sinewave.xml \
 	sinks.xml \
 	sources.xml
 
