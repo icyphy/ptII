@@ -120,13 +120,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     boolean debug = false;
 
     public PtParser(Variable owner) {
-        this(new ByteArrayInputStream("a hack!!".getBytes()));
+        this(new StringReader(""));
         _initialize();
         _owner = owner;
     }
 
     public PtParser() {
-        this(new ByteArrayInputStream("a hack!!".getBytes()));
+        this(new StringReader(""));
         _initialize();
     }
 
@@ -138,10 +138,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
-        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-       // _scope = null;
+                //    InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
+
+                // _scope = null;
  //       _parserScope = null;
-        this.ReInit(stream);
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
         //debug = true;
         String str = stringIn.replace('\n', ' ');
         try {
@@ -156,46 +158,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
     }
 
-
-    /** Generates a parse tree from the given String. The root node is 
-     *  returned. To evaluate the parse tree, the method evaluateParseTree()
-     *  should be called on the rootNode
-     *  @param stringIn The expression to be parsed
-     *  @exception IllegalActionException If the parse fails.
-     *  @return The root node of the parse tree.
-     */
-//     public ASTPtRootNode generateParseTree(String stringIn)
-//             throws IllegalActionException {
-//          return generateParseTree(stringIn, (ParserScope)null);
-//     }
-
-    /** Generates a parse tree from the given String. The root node is 
-     *  returned. To evaluate the parse tree, the method evaluateParseTree()
-     *  should be called on the rootNode
-     *  @param stringIn The expression to be parsed.
-     *  @param scope Variables to which the expression can refer.
-     *  @exception IllegalActionException If the parse fails.
-     *  @return The root node of the parse tree.
-     */
-  //   public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
-//             throws IllegalActionException {
-//         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-//         _scope = scope;
-//         _parserScope = null;
-//         this.ReInit(stream);
-//         String str = stringIn.replace('\n', ' ');
-//         try {
-//             // Parse the expression to obtain the parse tree
-//             _undefined = null;
-//             ASTPtRootNode rootNode = start();
-//             if (debug) rootNode.displayParseTree(" ");
-//             return (ASTPtRootNode)rootNode.jjtGetChild(0);
-//         } catch (ParseException x) {
-//             throw new IllegalActionException("Error parsing expression \""
-//                     + stringIn + "\":\n" + x.getMessage());
-//         }
-//     }
-
     /** Generates a parse tree from the given String. The root node is
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
@@ -206,10 +168,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalActionException {
-        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-//        _scope = null;
- //       _parserScope = scope;
-        this.ReInit(stream);
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
         String str = stringIn.replace('\n', ' ');
         ASTPtRootNode rootNode;
         try {
@@ -237,18 +197,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         return _classesSearched;
     }
-
-    /** Return the list of Variables that comprise the current scope.
-     *  @return The current scope.
-     */
-//     public NamedList getScope() {
-//         if (_parserScope != null) {
-//             return _parserScope.attributeList();
-//         } else {
-//             return new NamedList();
-//         }
-//     }
-
 
     /** Add a constant to the list of constants that the parser recognizes.
      *  It is a static method. The constants are stored in a hash table by
@@ -351,27 +299,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
     }
 
-    /* Return true if the id is a variable name in scope or a registered
-     * constant.
-     */
-   //  private boolean _isKnownID(String id) {
-//         if (Constants.get(id) != null) {
-//             return true;
-//         }
-//         if (_parserScope != null) {
-//         {
-//             if (_parserScope.get(id) != null)
-//                 return true;
-//             }
-//         }
-//         if (_scope != null) {
-//             if (_scope.get(id) != null) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     }
-
     /* Flag indicating whether the default set of classes searched 
      * by the parser has already been loaded.
      */
@@ -382,14 +309,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  contains the java.lang.Math class.
      */
     private static LinkedList _classesSearched;
-
-    /*  Stores the variables to which the input expression can reference
-     */
-//    private NamedList _scope;
-
-    /* The instance of ParserScope that represents the current scope.
-     */
-//    private ParserScope _parserScope;
 
     /* Keeps track of undefined variables if not null
      */
@@ -1437,27 +1356,6 @@ String tidied, x;
         // Note that this name is not actually resolved into a value
         // until the parse tree is evaluated.
         jjtn000._name = token.image;
-        //        Variable referredVar = null;
-      //   if (_parserScope != null) {
-//             jjtThis._ptToken = (ptolemy.data.Token)
-//                 _parserScope.get(token.image);
-//             return;
-//         }
-      //   if (referredVar == null && _scope != null) {
-//             referredVar = (Variable)_scope.get(token.image);
-//         }
-        // if (referredVar != null) {
-//             // The Variable is stored in the node so that the tree 
-//             // does not have to be reparsed whenever the Token in 
-//             // the Variable changes.
-//             jjtThis._var = referredVar; 
-//             // Register the calling Variable as a listener
-//             // of the Variable this ID references.
-//             if (_owner != null) {
-//                 //   referredVar.addValueListener(_owner);
-//                 referredVar._addValueDependent(_owner);
-//             }
-//         } else
 
 //FIXME: Constants shouldn't shadow other variables in scope.
         if (Constants.get(token.image) != null) {
@@ -1470,7 +1368,6 @@ String tidied, x;
             if (_undefined != null) {
                 // System.out.println("Defining <" + token.image + ">");
                 _undefined.add(token.image);
-                //            jjtThis._var = null;
             }
         }
     } finally {
@@ -1724,6 +1621,12 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_1() {
+    if (jj_scan_token(46)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_4() {
     if (jj_scan_token(ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1744,12 +1647,6 @@ String tidied, x;
     if (jj_scan_token(ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(48)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_1() {
-    if (jj_scan_token(46)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
