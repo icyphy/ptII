@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy moml package.
+# Makefile for the MoML JXTA classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,58 +29,33 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/moml
+ME =		ptolemy/moml/jxta
 
-# $PTII/configure looks for JXTA and sets PTJXTA_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
-DIRS = 		demo filter $(PTJXTA_DIR) test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# $(JXTA_JARS) is set in $PTII/mk/ptII.mk by $PTII/configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JXTA_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	moml
-PTCLASSJAR =
+PTPACKAGE = 	jxta
+PTCLASSJAR =	$(PTPACKAGE).jar 
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	filter/filter.jar
+JSRCS =	JXTALibrary.java \
+	JXTAClassLoader.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS =	Documentation.java \
-	EntityLibrary.java \
-	ErrorHandler.java \
-	ImportAttribute.java \
-	LibraryAttribute.java \
-	MoMLAttribute.java \
-	MoMLChangeRequest.java \
-	MoMLFilter.java \
-	MoMLParser.java \
-	MoMLUndoChangeRequest.java \
-	MoMLUndoEntry.java \
-	ParserAttribute.java \
-	StreamErrorHandler.java \
-	UndoContext.java \
-	UndoInfoAttribute.java \
-	Vertex.java
-
-
-EXTRA_SRCS =	$(JSRCS) \
-	moml.dtd
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = \
-	filter \
-	MoML_1.dtd
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
