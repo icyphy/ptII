@@ -37,8 +37,11 @@ ME =		java/pt/domains/pn/kernel
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
+# Flags to pass to javadoc. (Override value in tycho.mk)
+JDOCFLAGS = 	-author -version -public
 
-DIRS = 		demo #test doc
+
+DIRS = 		demo test doc
 
 CLASSPATH = ../../../..
 
@@ -71,9 +74,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+# Needed for compiling under Cygwin on NT
+LIB = dummylib
 
-install: jclass javadocs
+all: jclass
+install: jclass javadocs $(JARFILE)
 docs: javadocs
 
 depend:
@@ -81,3 +86,9 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
+
+
+
+
+
+
