@@ -44,6 +44,9 @@ include $(CONFIG)
 PTPACKAGE = 	wireless
 PTCLASSJAR =
 
+OTHER_FILES_TO_BE_JARED = \
+	wireless.xml
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
