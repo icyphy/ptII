@@ -37,7 +37,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,6 +82,9 @@ public class WindowPropertiesAttribute extends Parameter
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
+        // The class mechanism tends to suppress export of this attribute.
+        // Why?  We override that here.
+        setPersistent(true);
     }
 
     ///////////////////////////////////////////////////////////////////
