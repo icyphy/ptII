@@ -105,16 +105,39 @@ interface DataflowActor {
          /*
     public int getTokenInitConsumption(IOPort p)
         throws IllegalActionException;
-        
+        */
+
+
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor during each firing.   
+     *  Return zero if setTokenProductionRate has not been called
+     *   on this IOPort.
+     *
+     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @return The number of tokens produced on the port, as supplied by 
+     *  setTokenProductionRate, or zero if setTokenProductionRate has not been
+     *  called
+     */
     public int getTokenInitProduction(IOPort p)
             throws IllegalActionException;
+
             /*
     public void setTokenInitConsumption(IOPort p, int count)
             throws IllegalActionException;
-            
+            */
+
+    /** Set the number of tokens that are produced or consumed 
+     *  on the appropriate port of this Actor during the initialization phase.
+     *  This is usually used to simulate a delay along the relation that the
+     *  port is connected to, and may be necessary in order to get the SDF
+     *  scheduler to create a valid schedule from certain kinds of topologies.
+     * 
+     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @throw IllegalActionException if port is not an input IOPort.
+     */
     public void setTokenInitProduction(IOPort p, int count)
             throws IllegalActionException;
-            */
+            
  
 }
 
