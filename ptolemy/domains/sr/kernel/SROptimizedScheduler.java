@@ -59,6 +59,7 @@ FIXME: Add comments.
 
 @author Paul Whitaker
 @version $Id$
+@see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SROptimizedScheduler extends Scheduler {
 
@@ -104,8 +105,8 @@ public class SROptimizedScheduler extends Scheduler {
      *  Overrides _getSchedule() method in the base class.
      *
      *  This method should not be called directly, rather the getSchedule()
-     *  method will call it when the schedule is invalid.  So it is not
-     *  synchronized on the workspace.
+     *  method (which is defined in the superclass) will call it when the 
+     *  schedule is invalid.  This method is not synchronized on the workspace.
      *
      *  @return A schedule representing the scheduling sequence.
      *  @exception NotSchedulableException If the CompositeActor is not

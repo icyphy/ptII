@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Green (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.kernel;
@@ -40,6 +40,8 @@ Thrown on an attempt to obtain information about an unknown token.
 
 @author Paul Whitaker
 @version $Id$
+@see ptolemy.domains.sr.kernel.SRDirector
+@see ptolemy.domains.sr.kernel.SRReceiver
 */
 public class UnknownTokenException extends KernelRuntimeException {
 

@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
@@ -77,7 +78,7 @@ inherit the current time of the outside director.
 In SR, each iteration begins with the values on all channels being unknown.  
 To ensure that an iteration converges to final values in finite time, it is 
 required that values change only from unknown to known, and never the other 
-way around.  Once a value is known (or known to be absent), it must not 
+way around.  Once a value is set (or set to be absent), it must not 
 change again in the course of the iteration.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
@@ -87,8 +88,12 @@ actor contains an attribute called "_nonStrictMarker", it is assumed to be a
 strict actor, meaning that it requires all of its inputs to be known before 
 it is fired.  This is very important since once an actor defines a particular 
 output, it is not allowed to change that value in a subsequent firing in the 
-course of the iteration.  An actor <i>has completed firing</i> if it has 
-defined all of its outputs.
+course of the iteration.  A nonstrict actor can fire even if no inputs are 
+known, and may fire any number of times in the course of an iteration.  Thus, 
+a nonstrict actor can be used to produce an initial token in a cyclic graph.  
+Since strict actors are only fired if all of their inputs are known, a given 
+strict actor is only fired once in a given iteration.  An actor <i>has 
+completed firing</i> if it has defined all of its outputs.
 <p>
 An actor is considered <i>allowed to fire</i> if its prefire()
 method has returned true.  An actor is considered <i>allowed to iterate</i>
@@ -110,10 +115,14 @@ called again in the same iteration.  It is only possible for the number of
 known inputs of an actor to increase in a given iteration, so, for example, 
 if the prefire() method of an actor returns true and then more inputs become 
 known, the method must return true if it were to be called again.  If this
-were not the case, the behavior of the model would be nondeterministic.
+were not the case, the behavior of the model would be nondeterministic since
+the execution results would depend on the order of the schedule.
 <p>
 An iteration <i>has converged</i> if both the total number of known outputs 
-and the number of actors that are allowed to fire have converged.
+and the number of actors that are allowed to fire have converged.  In other
+words, the system is executed until the values in the model reach a
+<i>fixed-point</i>.  Further execution would not result in more defined 
+values, and the iteration has converged.
 
 @author Paul Whitaker
 @version $Id$
@@ -183,7 +192,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *  In particular, if the <i>scheduler</i> parameter is changed, then
      *  the corresponding scheduler name will be recorded.  The new
      *  scheduler will be instantiated during the next invocation of 
-     *  prefire().
+     *  preinitialize().
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the new scheduler that is 
      *   specified is not valid.
@@ -217,7 +226,6 @@ public class SRDirector extends StaticSchedulingDirector {
         Schedule schedule = _getSchedule();
         boolean randomizedScheduler =
             (getScheduler() instanceof SRRandomizedScheduler);
-        Iterator firingIterator;
 
         _initFiring();
 
@@ -234,7 +242,7 @@ public class SRDirector extends StaticSchedulingDirector {
         // ready to fire (sufficient known inputs are available).
 
         do {
-            firingIterator = schedule.firingIterator();
+            Iterator firingIterator = schedule.firingIterator();
 
             while (firingIterator.hasNext()) {
                 Firing firing = (Firing) firingIterator.next();
@@ -264,10 +272,11 @@ public class SRDirector extends StaticSchedulingDirector {
         return ((IntToken) iterations.getToken()).intValue();
     }
 
-    /** Increment the count of known receivers.  Called by a receiver when
-     *  it changes from unknown to known status.
+    /** React to the change in receiver status by incrementing the count of 
+     *  known receivers.
      */
-    public void incrementKnownReceiverCount() {
+    public void receiverChanged(Receiver receiver) {
+        // In this implementation, we do not make use of the receiver itself.
         _currentNumOfKnownReceivers++;
     }
 
@@ -277,7 +286,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _iteration = 0;
+        _currentIteration = 0;
         _actorsNotAllowedToIterate = null;
 
         _resetAllReceivers();
@@ -290,8 +299,10 @@ public class SRDirector extends StaticSchedulingDirector {
      *  @return A new SRReceiver.
      */
     public Receiver newReceiver() {
-        if (_receivers == null) _receivers = new LinkedList();
         Receiver receiver = new SRReceiver(this);
+        if (_receivers == null) {
+            _receivers = new LinkedList();
+        }
         _receivers.add(receiver);
         return receiver;
     }
@@ -304,6 +315,8 @@ public class SRDirector extends StaticSchedulingDirector {
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
+
+        boolean postfireReturns = false;
 
         // Actors are postfired here since updating the state of contained
         // actors inherently updates the state of a composite actor.
@@ -318,7 +331,7 @@ public class SRDirector extends StaticSchedulingDirector {
             if (_isIterationAllowed(actor)) {
                 if (!actorsPostfired.contains(actor)) {
                     if (_postfireActor(actor)) {
-                        _postfireReturns = true;
+                        postfireReturns = true;
                     } else {
                         _doNotAllowIterationOf(actor);
                     }
@@ -327,12 +340,11 @@ public class SRDirector extends StaticSchedulingDirector {
             }
         }
 
-        int numberOfIterations = getIterations();
-        _iteration++;
-
         _debug("SRDirector: Instant",
-                String.valueOf(_iteration-1), 
+                String.valueOf(_currentIteration), 
                 "is complete.");
+
+        _currentIteration++;
 
         // All receivers must be reset before any actors are executed in the 
         // next iteration.  Since some domains (including SR) might fire one
@@ -342,12 +354,15 @@ public class SRDirector extends StaticSchedulingDirector {
         // a hierarchical model.
         _resetAllReceivers();
 
-        if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
-            _iteration = 0;
+        int numberOfIterations = getIterations();
+
+        if ((numberOfIterations > 0) &&
+                (_currentIteration >= numberOfIterations)) {
+            _currentIteration = 0;
             return false;
         }
 
-        return _postfireReturns;
+        return postfireReturns;
     }
 
     /** Instantiate a new scheduler if necessary and invoke the 
@@ -355,12 +370,14 @@ public class SRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
+
+        // Call the parent preinitialize method to create the receivers.
+        super.preinitialize();
+
         if (_updateScheduler) {
             _setNewScheduler(_schedulerClassName);
             _updateScheduler = false;
         }
-        // Call the parent preinitialize method to create the receivers.
-        super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -382,10 +399,13 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _areAllInputsKnown(Actor actor)
             throws IllegalActionException {
 
-        if (_cachedAllInputsKnown == null)
+        if (_cachedAllInputsKnown == null) {
             _cachedAllInputsKnown = new HashSet();
-
-        if (_cachedAllInputsKnown.contains(actor)) return true;
+        }
+        
+        if (_cachedAllInputsKnown.contains(actor)) {
+            return true;
+        }
 
         Iterator inputPorts = actor.inputPortList().iterator();
 
@@ -403,10 +423,13 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _areAllOutputsKnown(Actor actor)
             throws IllegalActionException {
 
-        if (_cachedAllOutputsKnown == null)
+        if (_cachedAllOutputsKnown == null) {
             _cachedAllOutputsKnown = new HashSet();
+        }
 
-        if (_cachedAllOutputsKnown.contains(actor)) return true;
+        if (_cachedAllOutputsKnown.contains(actor)) {
+            return true;
+        }
 
         Iterator outputPorts = actor.outputPortList().iterator();
 
@@ -493,11 +516,11 @@ public class SRDirector extends StaticSchedulingDirector {
      *   associated scheduler.
      */
     private Schedule _getSchedule() throws IllegalActionException {
-        Scheduler sched = getScheduler();
-        if (sched == null)
+        Scheduler currentScheduler = getScheduler();
+        if (currentScheduler == null)
             throw new IllegalActionException(this,
                     "SRDirector has no associated scheduler.");
-        return sched.getSchedule();
+        return currentScheduler.getSchedule();
     }
 
     /** Return true if this iteration has converged.  The iteration has
@@ -541,18 +564,22 @@ public class SRDirector extends StaticSchedulingDirector {
         // have the opportunity to fire before the end of the iteration.
 
         // This is the first phase of actor firings.
-        if (previousNumOfKnownReceivers == -1) return false;
+        if (previousNumOfKnownReceivers == -1) {
+            return false;
+        }
 
         // The number of actors to fire has not converged, so the
         // iteration has not converged.
         if (previousNumOfActorsAllowedToFire != 
-                currentNumOfActorsAllowedToFire)
+                currentNumOfActorsAllowedToFire) {
             return false;
+        }
 
         // The number of known receivers has not converged, so the
         // iteration has not converged.
-        if (previousNumOfKnownReceivers != currentNumOfKnownReceivers)
+        if (previousNumOfKnownReceivers != currentNumOfKnownReceivers) {
             return false;
+        }
 
         // The number of actors to fire and the number of known receivers
         // have both converged, so the iteration has converged.
@@ -579,14 +606,12 @@ public class SRDirector extends StaticSchedulingDirector {
                     "Cannot initialize SRDirector: " + ex.getMessage());
         }
 
-        _receivers = new LinkedList();
     }
 
     /** Initialize the firing of the director by resetting state variables
      *  and obtaining the current time from an outside director if one exists.
      */
     private void _initFiring() throws IllegalActionException {
-        _postfireReturns = false;
         _actorsAllowedToFire = null;
         _actorsFired = null;
 
@@ -598,8 +623,9 @@ public class SRDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getContainer();
         Director outsideDirector = container.getExecutiveDirector();
-        if (outsideDirector != null) 
+        if (outsideDirector != null) {
             setCurrentTime(outsideDirector.getCurrentTime());
+        }
 
     }
 
@@ -613,19 +639,20 @@ public class SRDirector extends StaticSchedulingDirector {
     protected Scheduler _instantiateScheduler(String className)
             throws IllegalActionException {
         Scheduler newScheduler;
-        if(_debugging) _debug("instantiating scheduler..." + className);
+        _debug("instantiating scheduler..." + className);
         try {
             Class constructorParameters[] = new Class[2];
-            String directorClassName = "ptolemy.actor.Director";
-            // Constructor parameters are Director and String 
-            constructorParameters[0] = Class.forName(directorClassName);
-            constructorParameters[1] = directorClassName.getClass();
+            constructorParameters[0] = Director.class;
+            constructorParameters[1] = String.class;
+
             Class schedulerClass = Class.forName(className);
             Constructor schedulerConstructor =
                 schedulerClass.getDeclaredConstructor(constructorParameters);
+
             Object constructorArguments[] = new Object[2];
             constructorArguments[0] = this;
             constructorArguments[1] = uniqueName("Scheduler");
+
             newScheduler = (Scheduler)
                 schedulerConstructor.newInstance(constructorArguments);
         } catch(ClassNotFoundException e) {
@@ -656,14 +683,17 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _isFinishedFiring(Actor actor)
             throws IllegalActionException {
 
-        // Non strict actors should fire every phase in case more inputs
+        // Nonstrict actors should fire in every phase in case more inputs
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration).
-        if (_isNonStrict(actor)) return false;
+        if (_isNonStrict(actor)) {
+            return false;
+        }
 
         // Actors that have not fired in this iteration are not finished.
-        if (_actorsFired == null) return false;
-        if (!_actorsFired.contains(actor)) return false;
+        if ((_actorsFired == null) || (!_actorsFired.contains(actor))) {
+            return false;
+        }
 
         return _areAllOutputsKnown(actor);
     }
@@ -700,8 +730,10 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
 
-        // Non strict actors are allowed to fire even if no inputs are known.
-        if (_isNonStrict(actor)) return true;
+        // Nonstrict actors are allowed to fire even if no inputs are known.
+        if (_isNonStrict(actor)) {
+            return true;
+        }
 
         return _areAllInputsKnown(actor);
     }
@@ -748,9 +780,9 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _resetAllReceivers() {
         _debug("    SRDirector is resetting all receivers");
         _currentNumOfKnownReceivers = 0;
-        Iterator i = _receivers.iterator();
-        while (i.hasNext()) {
-            ((SRReceiver) i.next()).reset();
+        Iterator receiverIterator = _receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            ((SRReceiver) receiverIterator.next()).reset();
         }
     }
 
@@ -761,25 +793,22 @@ public class SRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
 
         // Nonstrict actors may intend to output undefined values.
-        if (!_isNonStrict(actor)) {
+        if ((!_isNonStrict(actor)) || (!_isFinishedFiring(actor))) {
             // No need to do anything if this actor has defined all of its 
             // outputs.
-            if (!_isFinishedFiring(actor)) {
-                _debug("  SRDirector is calling sendAbsent()",
-                        "on the output ports of", _getNameOf(actor));
-
-                Iterator outputPorts = actor.outputPortList().iterator();
-
-                while (outputPorts.hasNext()) {
-                    IOPort outputPort = (IOPort)outputPorts.next();
-                    for (int j = 0; j < outputPort.getWidth(); j++) {
-                        if (!outputPort.isKnown(j)) outputPort.sendAbsent(j);
-                    }
+            _debug("  SRDirector is calling sendAbsent()",
+                    "on the output ports of", _getNameOf(actor));
+            
+            Iterator outputPorts = actor.outputPortList().iterator();
+            
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)outputPorts.next();
+                for (int j = 0; j < outputPort.getWidth(); j++) {
+                    if (!outputPort.isKnown(j)) outputPort.sendAbsent(j);
                 }
             }
         }
     }
-
 
     /** Create a new scheduler, and set it as the scheduler for the director.
      */
@@ -804,31 +833,27 @@ public class SRDirector extends StaticSchedulingDirector {
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
     // never fired.
-    private HashSet _actorsNotAllowedToIterate;
+    private Set _actorsNotAllowedToIterate;
 
     // The set of actors that have returned true in their prefire() methods
     // on the given iteration.
-    private HashSet _actorsAllowedToFire;
+    private Set _actorsAllowedToFire;
 
     // The set of actors that have been fired once or more in the given 
     // iteration.
-    private HashSet _actorsFired;
+    private Set _actorsFired;
 
     // The set of actors that have all inputs known in the given iteration.
-    private HashSet _cachedAllInputsKnown;
+    private Set _cachedAllInputsKnown;
 
     // The set of actors that have all outputs known in the given iteration.
-    private HashSet _cachedAllOutputsKnown;
+    private Set _cachedAllOutputsKnown;
 
     // The current number of receivers with known state.
     private int _currentNumOfKnownReceivers;
 
     // The count of iterations executed.
-    private int _iteration;
-
-    // The logical 'or' of the values returned by the postfire() methods of 
-    // all contained actors.
-    private boolean _postfireReturns;
+    private int _currentIteration;
 
     // The number of actors that were fired on the last phase of
     // actor firings.
@@ -848,7 +873,7 @@ public class SRDirector extends StaticSchedulingDirector {
     // A flag indicating whether a new scheduler must instantiated.
     private boolean _updateScheduler;
 
-    // The name of an attribute that marks an actor as non strict.
+    // The name of an attribute that marks an actor as nonstrict.
     private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
 }
 

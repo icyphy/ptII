@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+@ProposedRating Green (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.kernel;
@@ -50,7 +50,8 @@ has a token.  If the receiver has unknown status, the hasToken() method
 will throw an UnknownTokenException.
 <p>
 In the course of an iteration in SR, receivers can change from unknown status 
-to known status, but never the other way around.
+to known status, but never the other way around, as shown by the transitions
+in the diagram below.
 <p>
 <pre>
 known values:     absent     value (present)
@@ -64,15 +65,16 @@ known values:     absent     value (present)
 <p>
 The status is automatically set to known when the put() method or setAbsent() 
 method is called.  Once a receiver becomes known, its value (or lack of a 
-value if it is absent) can not change until the next iteration of the 
+value if it is absent) cannot change until the next iteration of the 
 director.  The hasRoom() method always returns true, but attempting to change 
 the status of a receiver from present to absent or from absent to present will
 result in an exception.  An exception will also be thrown if a receiver has 
 present status and it receives a token that is not the same as the one it 
-already contains.  Thus, for an actor to be valid in SR, a firing must produce
-the same outputs given the same inputs (in a given iteration).
+already contains (as determined by the isEqualTo() method of the token).
+Thus, for an actor to be valid in SR, a firing must produce the same outputs 
+given the same inputs (in a given iteration).
 <p>
-Since the value of a receiver can not change (once it is known) in the course 
+Since the value of a receiver cannot change (once it is known) in the course 
 of an iteration, tokens need not be consumed.  A receiver retains its token 
 until the director calls the reset() method at the beginning of the next 
 iteration, which resets the receiver to have unknown status.  There is no way 
@@ -80,6 +82,7 @@ for an actor to reset a receiver to have unknown status.
 
 @author Paul Whitaker
 @version $Id$
+@see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends Mailbox {
 
@@ -107,7 +110,7 @@ public class SRReceiver extends Mailbox {
         }
     }
 
-    /** Return true, since the new token will override the old one.
+    /** Return true, since a token can always be accepted.
      *  @return True.
      */
     public boolean hasRoom() {
@@ -141,16 +144,20 @@ public class SRReceiver extends Mailbox {
      *  specified token.  If the receiver already contains an equal token, 
      *  do nothing.
      *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException If this receiver already contains a 
-     *   different token, or if this receiver is in an absent state.
      */
     public void put(Token token) {
         if (token == null) {
             throw new InternalErrorException("SRReceiver.put(null) is " +
                     "invalid.");
         }
-        if (isKnown()) {
-            if (hasToken()) {
+        if (!isKnown()) {
+            _putToken(token);
+        } else {
+            if (!hasToken()) {
+                throw new IllegalOutputException(getContainer(), 
+                        "SRReceiver cannot transition from an absent state " +
+                        "to a present state.");
+            } else {
                 try {
                     if ( (token.getType().isEqualTo( _token.getType())) &&
                             (token.isEqualTo(_token).booleanValue()) ) {
@@ -166,31 +173,22 @@ public class SRReceiver extends Mailbox {
                             "determine whether the two tokens received are " +
                             "equal.");
                 }
-            } else {
-                throw new IllegalOutputException(getContainer(), 
-                        "SRReceiver cannot transition from an absent state " +
-                        "to a present state.");
             }
-        } else {
-            _putToken(token);
         }
     }
 
     /** Set the state of this receiver to be known and to contain no token.
-     *  @exception NoRoomException If this receiver already contains 
-     *   a token.
      */
     public void setAbsent() {
-        if (isKnown()) {
+        if (!isKnown()) {
+            _putToken(null);
+        } else {
             if (hasToken()) {
                 throw new IllegalOutputException(getContainer(),
                         "SRReceiver cannot transition from a present " +
                         "state to an absent state.");
-            } else {
-                // Do nothing, because already in an absent state.
             }
-        } else {
-            _putToken(null);
+            // Otherwise, do nothing, because already in an absent state.
         }
     }
 
@@ -199,11 +197,15 @@ public class SRReceiver extends Mailbox {
 
     /** Reset the receiver by removing any contained token and setting
      *  the state of this receiver to be unknown.  Should be called
-     *  only by the director.
+     *  only by the director.  Note that this method has no access specifier,
+     *  so it defaults to package protection.  Thus, the director can invoke
+     *  this method, but actors in other packages cannot.
      */
-    protected void reset() {
+    void reset() {
         if (isKnown()) {
-            if (hasToken()) super.get();
+            if (hasToken()) {
+                super.get();
+            }
             _known = false;
         }
     }
@@ -229,7 +231,7 @@ public class SRReceiver extends Mailbox {
     private void _putToken(Token token) {
         reset();
         super.put(token);
-        _director.incrementKnownReceiverCount();
+        _director.receiverChanged(this);
         _known = true;
     }
 
