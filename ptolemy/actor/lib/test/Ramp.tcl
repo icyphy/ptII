@@ -90,7 +90,7 @@ test Ramp-2.1 {test with strings} {
 } {{"a"} {"ab"} {"abb"} {"abbb"} {"abbbb"}}
 
 test Ramp-2.2 {test with record} {
-    # first record is {name="a", value=1, extra1=2}
+    # first record is {name = "a", value = 1, extra1 = 2}
     # Old, very labor intensive way to do this.
     #     set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
     # 
@@ -101,7 +101,7 @@ test Ramp-2.2 {test with record} {
     # 
     #     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-    # second record is {name="b", value=2.5}
+    # second record is {name = "b", value = 2.5}
     # Old, very labor intensive way to do this.
     # Actually, this would no longer work, since setToken on step
     # doesn't do the same thing as setExpression.
@@ -116,22 +116,22 @@ test Ramp-2.2 {test with record} {
     # set Ramp parameters
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression "{name=\"a\", value=1, extra1=2}"
-    $step setExpression "{name=\"b\", value=2.5}"
+    $init setExpression "{name = \"a\", value = 1, extra1 = 2}"
+    $step setExpression "{name = \"b\", value = 2.5}"
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{name="a", value=1.0}} {{name="ab", value=3.5}} {{name="abb", value=6.0}} {{name="abbb", value=8.5}} {{name="abbbb", value=11.0}}}
+} {{{name = "a", value = 1.0}} {{name = "ab", value = 3.5}} {{name = "abb", value = 6.0}} {{name = "abbb", value = 8.5}} {{name = "abbbb", value = 11.0}}}
 
 test Ramp-2.3 {check types of the above model} {
     set constOut [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{name=string, value=double}} {{name=string, value=double}}}
+} {{{name = string, value = double}} {{name = string, value = double}}}
 
 
 test Ramp-2.4 {test with record containing array} {
-    # first record is {name="a", value=1, anArray={1.5, 2.5}, extra1=2}
+    # first record is {name = "a", value = 1, anArray = {1.5, 2.5}, extra1 = 2}
     # Old, very labor intensive way to do this.
     #     set l1 [java::new {String[]} {4} {{name} {value} {anArray} {extra1}}]
     # 
@@ -148,7 +148,7 @@ test Ramp-2.4 {test with record containing array} {
     # 
     #     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-    # second record is {name="b", value=2.5, anArray={10, 20}}
+    # second record is {name = "b", value = 2.5, anArray = {10, 20}}
     # Old, very labor intensive way to do this.
     #     set l2 [java::new {String[]} {3} {{name} {value} {anArray}}]
     # 
@@ -168,18 +168,18 @@ test Ramp-2.4 {test with record containing array} {
     # set Ramp parameters
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression "{name=\"a\", value=1, anArray={1.5, 2.5}, extra1=2}"
-    $step setExpression "{name=\"b\", value=2.5, anArray={10, 20}}"
+    $init setExpression "{name = \"a\", value = 1, anArray = {1.5, 2.5}, extra1 = 2}"
+    $step setExpression "{name = \"b\", value = 2.5, anArray = {10, 20}}"
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{anArray={1.5, 2.5}, name="a", value=1.0}} {{anArray={11.5, 22.5}, name="ab", value=3.5}} {{anArray={21.5, 42.5}, name="abb", value=6.0}} {{anArray={31.5, 62.5}, name="abbb", value=8.5}} {{anArray={41.5, 82.5}, name="abbbb", value=11.0}}}
+} {{{anArray = {1.5, 2.5}, name = "a", value = 1.0}} {{anArray = {11.5, 22.5}, name = "ab", value = 3.5}} {{anArray = {21.5, 42.5}, name = "abb", value = 6.0}} {{anArray = {31.5, 62.5}, name = "abbb", value = 8.5}} {{anArray = {41.5, 82.5}, name = "abbbb", value = 11.0}}}
 
 test Ramp-2.5 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray={double}, name=string, value=double}} {{anArray={double}, name=string, value=double}}}
+} {{{anArray = {double}, name = string, value = double}} {{anArray = {double}, name = string, value = double}}}
 
 test Ramp-2.6 {test an array of record} {
-    # init is {{name="a", value=1}, {name="b", value=2}}
+    # init is {{name = "a", value = 1}, {name = "b", value = 2}}
     # Old, very labor intensive way to do this.
     #     set l1 [java::new {String[]} {2} {{name} {value}}]
     #     set nt1 [java::new {ptolemy.data.StringToken String} a]
@@ -195,7 +195,7 @@ test Ramp-2.6 {test an array of record} {
     #     set valArray [java::new {ptolemy.data.Token[]} 2 [list $r1 $r2]]
     #     set initToken [java::new {ptolemy.data.ArrayToken} $valArray]
 
-    # step is {{name="c", value=1.5}, {name="d", value=2.5}}
+    # step is {{name = "c", value = 1.5}, {name = "d", value = 2.5}}
     #     set nt1 [java::new {ptolemy.data.StringToken String} c]
     #     set vt1 [java::new {ptolemy.data.DoubleToken double} 1.5]
     #     set v1 [java::new {ptolemy.data.Token[]} 2 [list $nt1 $vt1]]
@@ -212,15 +212,15 @@ test Ramp-2.6 {test an array of record} {
     # set Ramp parameters
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression "{{name=\"a\", value=1}, {name=\"b\", value=2}}"
-    $step setExpression "{{name=\"c\", value=1.5}, {name=\"d\", value=2.5}}"
+    $init setExpression "{{name = \"a\", value = 1}, {name = \"b\", value = 2}}"
+    $step setExpression "{{name = \"c\", value = 1.5}, {name = \"d\", value = 2.5}}"
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{{name="a", value=1.0}, {name="b", value=2.0}}} {{{name="ac", value=2.5}, {name="bd", value=4.5}}} {{{name="acc", value=4.0}, {name="bdd", value=7.0}}} {{{name="accc", value=5.5}, {name="bddd", value=9.5}}} {{{name="acccc", value=7.0}, {name="bdddd", value=12.0}}}}
+} {{{{name = "a", value = 1.0}, {name = "b", value = 2.0}}} {{{name = "ac", value = 2.5}, {name = "bd", value = 4.5}}} {{{name = "acc", value = 4.0}, {name = "bdd", value = 7.0}}} {{{name = "accc", value = 5.5}, {name = "bddd", value = 9.5}}} {{{name = "acccc", value = 7.0}, {name = "bdddd", value = 12.0}}}}
 
 test Ramp-2.7 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{{name=string, value=double}}} {{{name=string, value=double}}}}
+} {{{{name = string, value = double}}} {{{name = string, value = double}}}}
 
 
 test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {

@@ -75,12 +75,12 @@ test RecordAssembler-2.1 {run with one input port, test prefire} {
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec getRecord 0]
-} {{{fromRamp=0}} {{fromRamp=1}} {{fromRamp=2}}}
+} {{{fromRamp = 0}} {{fromRamp = 1}} {{fromRamp = 2}}}
 
 test RecordAssembler-2.3 {check types} {
     list [[$rampOut getType] toString] [[$fromRamp getType] toString] \
          [[$output getType] toString] [[$recIn getType] toString]
-} {int int {{fromRamp=int}} {{fromRamp=int}}}
+} {int int {{fromRamp = int}} {{fromRamp = int}}}
 
 test RecordAssembler-2.4 {run with two input port} {
     set fromConst [java::new ptolemy.actor.TypedIOPort $assembler fromConst \
@@ -94,11 +94,11 @@ test RecordAssembler-2.4 {run with two input port} {
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec getRecord 0]
-} {{{fromConst=1, fromRamp=0}} {{fromConst=1, fromRamp=1}} {{fromConst=1, fromRamp=2}}}
+} {{{fromConst = 1, fromRamp = 0}} {{fromConst = 1, fromRamp = 1}} {{fromConst = 1, fromRamp = 2}}}
 
 test RecordAssembler-2.5 {check types} {
     list [[$rampOut getType] toString] [[$constOut getType] toString] \
     	[[$fromRamp getType] toString] [[$fromConst getType] toString] \
 	[[$output getType] toString] [[$recIn getType] toString]
-} {int int int int {{fromConst=int, fromRamp=int}} {{fromConst=int, fromRamp=int}}}
+} {int int int int {{fromConst = int, fromRamp = int}} {{fromConst = int, fromRamp = int}}}
 

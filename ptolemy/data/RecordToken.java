@@ -333,7 +333,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             if (i != 0) {
                 stringRepresentation += ", ";
             }
-            stringRepresentation += label + "=" + value;
+            stringRepresentation += label + " = " + value;
         }
         return stringRepresentation + "}";
     }

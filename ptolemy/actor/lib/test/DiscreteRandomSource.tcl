@@ -118,8 +118,8 @@ test DiscreteRandomSource-2.5 {change type to array} {
 #### Change type
 #
 test DiscreteRandomSource-2.6 {change type to record} {
-    $v setExpression {{{a=0.7, b=0.8}, {a=1.7, b=1.8}}} 
+    $v setExpression {{{a = 0.7, b = 0.8}, {a = 1.7, b = 1.8}}} 
     $manager execute
     list [[$out getType] toString] [[$in getType] toString]
-} {{{a=double, b=double}} {{a=double, b=double}}}
+} {{{a = double, b = double}} {{a = double, b = double}}}
 

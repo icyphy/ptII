@@ -102,7 +102,7 @@ test Const-2.1 {change output value and type and rerun} {
 } {3.0}
 
 test Const-2.3 {change type to RecordToken} {
-    # RecordToken is {name="foo", value=5}
+    # RecordToken is {name = "foo", value = 5}
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -116,17 +116,17 @@ test Const-2.3 {change type to RecordToken} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{name="foo", value=5}}}
+} {{{name = "foo", value = 5}}}
 
 test Const-2.4 {check types of the above model} {
     set constOut [java::field [java::cast ptolemy.actor.lib.Source $const] output]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{name=string, value=int}} {{name=string, value=int}}}
+} {{{name = string, value = int}} {{name = string, value = int}}}
 
 test Const-2.5 {test RecordToken containing ArrayToken} {
-    # RecordToken is {name="foo", value=5, anArray=[1.5, 2.5]}
+    # RecordToken is {name = "foo", value = 5, anArray = [1.5, 2.5]}
     set l [java::new {String[]} {3} {{name} {value} {anArray}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -146,14 +146,14 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{anArray={1.5, 2.5}, name="foo", value=5}}}
+} {{{anArray = {1.5, 2.5}, name = "foo", value = 5}}}
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{anArray={double}, name=string, value=int}} {{anArray={double}, name=string, value=int}}}
+} {{{anArray = {double}, name = string, value = int}} {{anArray = {double}, name = string, value = int}}}
 
 test Const-2.7 {test an array of record} {
-    # first record is {name="foo", value=5}
+    # first record is {name = "foo", value = 5}
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -162,7 +162,7 @@ test Const-2.7 {test an array of record} {
 
     set r1 [java::new {ptolemy.data.RecordToken} $l $v]
 
-    # second record is {name="bar", value=3}
+    # second record is {name = "bar", value = 3}
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} bar]
@@ -180,11 +180,11 @@ test Const-2.7 {test an array of record} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{{name="foo", value=5}, {name="bar", value=3}}}}
+} {{{{name = "foo", value = 5}, {name = "bar", value = 3}}}}
 
 test Const-2.8 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{{name=string, value=int}}} {{{name=string, value=int}}}}
+} {{{{name = string, value = int}}} {{{name = string, value = int}}}}
 
 
 test Const-3.0 {check out ReadFile} {

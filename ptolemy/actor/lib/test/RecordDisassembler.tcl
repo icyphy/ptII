@@ -99,7 +99,7 @@ test RecordDisassembler-2.3 {check types} {
     list [[$rampOut getType] toString] [[$fromRamp getType] toString] \
          [[$output getType] toString] [[$input getType] toString] \
 	 [[$disRampOut getType] toString] [[$recIn getType] toString]
-} {int int {{fromRamp=int}} {{fromRamp=int}} int int}
+} {int int {{fromRamp = int}} {{fromRamp = int}} int int}
 
 test RecordDisassembler-2.4 {run with two input port} {
     set fromConst [java::new ptolemy.actor.TypedIOPort $assembler fromConst \
@@ -133,5 +133,5 @@ test RecordDisassembler-2.5 {check types} {
 	[[$output getType] toString] [[$input getType] toString] \
 	[[$disRampOut getType] toString] [[$disConstOut getType] toString] \
 	[[$recIn getType] toString] [[$rec2In getType] toString]
-} {int double int double {{fromConst=double, fromRamp=int}} {{fromConst=double, fromRamp=int}} int double int double}
+} {int double int double {{fromConst = double, fromRamp = int}} {{fromConst = double, fromRamp = int}} int double int double}
 
