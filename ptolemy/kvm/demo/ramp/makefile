@@ -93,7 +93,7 @@ run_codegen:
 		$(JAVA) -classpath ../.. cg.ramp.CG_Main)
 
 J2ME_CLDC = $(PTII)/vendors/sun/j2me_cldc
-J2ME_CLDC = /j2me_cldc
+#J2ME_CLDC = /j2me_cldc
 
 
 
@@ -102,14 +102,16 @@ $(ROOT)/cg/ramp/CG_Main.class: $(ROOT)/cg/ramp/CG_Main.java
 	(cd $(ROOT)/cg/ramp; \
 	javac -g:none -verbose \
 		-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
-		-classpath $(ROOT) \
+		-classpath ../.. \
 		CG_Main.java)
 
 preverify:
 	(cd $(ROOT)/cg/ramp; \
+	echo `pwd`; \
 	for class in *.class; do \
+	echo $$class ; \
 	$(J2ME_CLDC)/bin/preverify \
-		-classpath "$(J2ME_CLDC)/bin/api/classes$(CLASSPATHSEPARATOR)$(ROOT)" \
+		-classpath "$(J2ME_CLDC)/bin/api/classes$(CLASSPATHSEPARATOR)../.." \
 		$(ME)/`basename $$class .class`; \
 	done)
 
@@ -121,7 +123,7 @@ ramp.prc: $(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class
 	-v -v \
 	-version "1.0" \
 	-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
-	-classpath $(PTII) \
+	-classpath ../.. \
 	cg.ramp.CG_Main)
 
 $(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class: \
