@@ -127,12 +127,13 @@ public final class DEEvent implements Comparable {
      *  event for an order. Return -1, 0, or 1 if this event happens
      *  earlier than, the same time as, or later than the argument event.
      *  <p>
-     *  Their time stamps are compared first. If the two timestamps are not
-     *  the same, their order defines the events' order. Otherwise, the
-     *  microsteps of events are compared for an order, where the smaller
-     *  microstep, the earlier the event. If the events have the same microstep,
-     *  their depths are compared. The smaller depth, the earlier the event.
-     *  If the two events have the same tags and depths, they happen at the
+     *  Their time stamps are compared first. If the two timestamps
+     *  are not the same, their order defines the events'
+     *  order. Otherwise, the microsteps of events are compared for an
+     *  order, where the smaller microstep, the earlier the event. If
+     *  the events have the same microstep, their depths are
+     *  compared. The smaller depth, the earlier the event.  If the
+     *  two events have the same tags and depths, they happen at the
      *  same time.
      *
      *  @param event The event to compare against.
@@ -142,15 +143,15 @@ public final class DEEvent implements Comparable {
 
         if (timeStamp().compareTo(event.timeStamp()) > 0 ) {
             return 1;
-        } else if ( timeStamp().compareTo(event.timeStamp()) < 0) {
+        } else if (timeStamp().compareTo(event.timeStamp()) < 0) {
             return -1;
         } else if (microstep() > event.microstep()) {
             return 1;
-        } else if ( microstep() < event.microstep()) {
+        } else if (microstep() < event.microstep()) {
             return -1;
         } else if (depth() > event.depth()) {
             return 1;
-        } else if ( depth() < event.depth()) {
+        } else if (depth() < event.depth()) {
             return -1;
         } else {
             return 0;
