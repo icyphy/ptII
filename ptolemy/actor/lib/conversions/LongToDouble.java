@@ -72,7 +72,7 @@ public class LongToDouble extends Transformer {
     ////                         public methods                    ////
 
     /** Read at most one token from the input and output the converted
-     *  fixed-point value with the precision and quantization given by the
+     *  fix-point value with the precision and quantization given by the
      *  corresponding parameters on the output port.
      *  @exception IllegalActionException If there is no director.
      */

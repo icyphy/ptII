@@ -52,7 +52,7 @@ of the <i>quantization</i> parameter. If <i>quantization</i> is
 "round" (the default), then the output will be the
 FixToken of the specified precision that is nearest to the input value.
 If <i>quantization</i> is "truncate", then the output will be the
-FixToken of the specified precision that is nearest but to the
+FixToken of the specified precision that is nearest to the
 input value, but no greater than the input value in magnitude.
 <p>
 The precision of the output is given by the <i>precision</i> parameter,
@@ -107,17 +107,15 @@ public class FixToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The precision of the output fixed-point number, represented by an
+    /** The precision of the output fix-point number, represented by an
         integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, encoded as an integer, where 0
-        represents round and 1 represents truncate. */
+    /** The quantization strategy used, either "round" or "truncate". */
     public StringAttribute quantization;
 
     /** The overflow strategy used to convert a double into a fix point,
-        encoded as an integer, where 0 represents saturate and 1 represents
-        overflow to zero. */
+        either "saturate" or "overflow_to_zero". */
     public StringAttribute overflow;
 
     ///////////////////////////////////////////////////////////////////
@@ -140,9 +138,9 @@ public class FixToFix extends Transformer {
         } else if (attribute == quantization) {
             String spec = quantization.getExpression();
             if (spec.equals("truncate")) {
-                _quantization = 1;
+                _quantization = TRUNCATE;
             } else if (spec.equals("round")) {
-                _quantization = 0;
+                _quantization = ROUND;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized quantization: " + spec);
@@ -150,9 +148,9 @@ public class FixToFix extends Transformer {
         } else if (attribute == overflow) {
             String spec = overflow.getExpression();
             if (spec.equals("saturate")) {
-                _overflow = 0;
+                _overflow = SATURATE;
             } else if (spec.equals("overflow_to_zero")) {
-                _overflow = 1;
+                _overflow = OVERFLOW_TO_ZERO;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized overflow strategy: " + spec);
@@ -201,8 +199,15 @@ public class FixToFix extends Transformer {
     private Precision _precision = null;
 
     // The quantization strategy, encoded as an int.
-    private int _quantization = 0;
+    private int _quantization = ROUND;
 
     // The overflow strategy, encoded as an int.
-    private int _overflow = 0;
+    private int _overflow = SATURATE;
+
+    private static final int ROUND = 0;
+    private static final int TRUNCATE = 1;
+
+    private static final int SATURATE = 0;
+    private static final int OVERFLOW_TO_ZERO = 1;
+
 }

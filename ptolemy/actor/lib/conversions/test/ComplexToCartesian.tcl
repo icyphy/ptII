@@ -56,11 +56,11 @@ test ComplexToCartesian-1.1 {test 1} {
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field $conver input]
     $e0 connect \
-            [java::field $conver real] \
+            [java::field $conver x] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
 
     $e0 connect \
-            [java::field $conver imag] \
+            [java::field $conver y] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
@@ -90,9 +90,9 @@ test ComplexToCartesian-1.2 {test 2: testing both PolarToRec and RecToPolar} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output]              [java::field $conver1 input]
     $e0 connect \
-            [java::field $conver1 real] [java::field $conver2 real]
+            [java::field $conver1 x] [java::field $conver2 x]
     $e0 connect \
-            [java::field $conver1 imag] [java::field $conver2 imag]
+            [java::field $conver1 y] [java::field $conver2 y]
     $e0 connect \
             [java::field $conver2 output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]

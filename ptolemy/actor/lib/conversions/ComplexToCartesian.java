@@ -66,11 +66,11 @@ public class ComplexToCartesian extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.COMPLEX);
 
-        real = new TypedIOPort(this, "real", false, true);
-        real.setTypeEquals(BaseType.DOUBLE);
+        x = new TypedIOPort(this, "x", false, true);
+        x.setTypeEquals(BaseType.DOUBLE);
 
-        imag = new TypedIOPort(this, "imag", false, true);
-        imag.setTypeEquals(BaseType.DOUBLE);
+        y = new TypedIOPort(this, "y", false, true);
+        y.setTypeEquals(BaseType.DOUBLE);
 
     }
 
@@ -80,12 +80,12 @@ public class ComplexToCartesian extends TypedAtomicActor {
     /** The port for the input, which has type ComplexToken. */
     public TypedIOPort input;
 
-    /** The output port for real coordinate, which has type DoubleToken. */
-    public TypedIOPort real;
+    /** The output port for x coordinate, which has type DoubleToken. */
+    public TypedIOPort x;
 
     /** The output port for the imaginary coordinate, which has type
         DoubleToken. */
-    public TypedIOPort imag;
+    public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,12 +97,12 @@ public class ComplexToCartesian extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
 
-    public final void fire() throws IllegalActionException  {
+    public void fire() throws IllegalActionException  {
 
         Complex complexNumber = ((ComplexToken) (input.get(0))).complexValue();
 
-        real.send(0, new DoubleToken (complexNumber.real));
-        imag.send(0, new DoubleToken (complexNumber.imag));
+        x.send(0, new DoubleToken (complexNumber.real));
+        y.send(0, new DoubleToken (complexNumber.imag));
     }
 
     /** Return false if the input port has no token, otherwise return

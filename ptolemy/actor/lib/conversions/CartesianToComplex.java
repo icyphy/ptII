@@ -67,11 +67,11 @@ public class CartesianToComplex extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        real = new TypedIOPort(this, "real", true, false);
-        real.setTypeEquals(BaseType.DOUBLE);
+        x = new TypedIOPort(this, "x", true, false);
+        x.setTypeEquals(BaseType.DOUBLE);
 
-        imag = new TypedIOPort(this, "imag", true, false);
-        imag.setTypeEquals(BaseType.DOUBLE);
+        y = new TypedIOPort(this, "y", true, false);
+        y.setTypeEquals(BaseType.DOUBLE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
@@ -83,12 +83,12 @@ public class CartesianToComplex extends TypedAtomicActor {
     /** The input port for the x coordinate of the Cartesian pair, which
         has type DoubleToken.
     */
-    public TypedIOPort real;
+    public TypedIOPort x;
 
     /** The input port for the y coordinate of the Cartesian pair, which
         has type DoubleToken.
     */
-    public TypedIOPort imag;
+    public TypedIOPort y;
 
     /** The port for the output, which has type ComplexToken.
      */
@@ -102,13 +102,11 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (real.hasToken(0) && imag.hasToken(0)) {
-            double realValue = ((DoubleToken)real.get(0)).doubleValue();
-            double imagValue = ((DoubleToken)imag.get(0)).doubleValue();
-            ComplexToken token
-                = new ComplexToken (new Complex(realValue, imagValue));
-            output.send(0, token);
-        }
+        double xValue = ((DoubleToken)x.get(0)).doubleValue();
+        double yValue = ((DoubleToken)y.get(0)).doubleValue();
+        ComplexToken token
+            = new ComplexToken (new Complex(xValue, yValue));
+        output.send(0, token);
     }
 
     /** Return false if either of the input ports has no token, otherwise
@@ -116,7 +114,7 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if ( !real.hasToken(0) || !imag.hasToken(0) ) {
+        if ( !x.hasToken(0) || !y.hasToken(0) ) {
             return false;
         }
         return super.prefire();

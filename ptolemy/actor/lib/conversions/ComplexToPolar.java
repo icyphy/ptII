@@ -102,7 +102,6 @@ public class ComplexToPolar extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
-
     public void fire() throws IllegalActionException {
         Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
 

@@ -51,15 +51,12 @@ The functions are a subset of those in the java.lang.Math class.
 They are:
 <ul>
 <li> <b>ceil</b>: Round towards positive infinity.
-If the argument is NaN, then the result is NaN.
 <li> <b>floor</b>: Round towards negative infinity.
-If the argument is NaN, then the result is NaN.
 <li> <b>round</b>: Round towards nearest integer.
-This is the default function for this actor.
-If the argument is NaN, then the result is NaN.
 <li> <b>truncate</b>: Round towards zero.
-If the argument is NaN, then the result is NaN.
 </ul>
+
+If the argument is NaN, then the result is NaN.  The default is "round".
 
 @author C. Fong
 @version $Id$
@@ -92,7 +89,7 @@ public class Round extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The function to compute.  This is a string-valued parameter
+    /** The rounding strategy to use.  This is a string-valued parameter
      *  that defaults to "round".
      */
     public StringAttribute function;
@@ -127,18 +124,14 @@ public class Round extends Transformer {
         }
     }
 
-    /** This computes the specified rounded value of the input. The rounding
-     *  function can be selected from a pulldown list in Vergil, which in
-     *  turn modifies the StringAttribute parameter called "function"
+    /** This computes the specified rounded value of the input.
      *  This consumes and produces at most one token for each firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            double in = ((DoubleToken)input.get(0)).doubleValue();
-            output.send(0, new IntToken(_doFunction(in)));
-        }
+        double in = ((DoubleToken)input.get(0)).doubleValue();
+        output.send(0, new IntToken(_doFunction(in)));
     }
 
     /** Invoke a specified number of iterations of this actor. Each
@@ -178,6 +171,17 @@ public class Round extends Transformer {
         }
     }
 
+    /** Return false if there is no available input token, and otherwise
+     *  return whatever the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(0)) {
+            return false;
+        }
+        return super.prefire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -205,7 +209,7 @@ public class Round extends Transformer {
             }
             break;
         default:
-            throw new InternalErrorException(
+            throw new InvalidStateException(
                     "Invalid value for _function private variable. "
                     + "Round actor (" + getFullName()
                     + ")"

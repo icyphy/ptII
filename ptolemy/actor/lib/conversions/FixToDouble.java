@@ -48,7 +48,7 @@ This actor converts a FixToken into a DoubleToken. This conversion is
 explicitly provided because there is no lossless conversion
 between these two types in the type lattice, and thus the type system
 does not do this conversion automatically.  Although the conversion
-is in fact usually lossless, a FixToken can, in principle, have
+might be lossless, a FixToken can, in principle, have
 arbitrary precision, and thus can exceed the capabilities of a double.
 
 @author Bart Kienhuis and Edward A. Lee

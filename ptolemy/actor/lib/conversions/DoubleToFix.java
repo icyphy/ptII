@@ -1,4 +1,4 @@
-/* An actor that converts a DoubleToken into a FixToken.
+/* An actor that converts a DoubleToken to a FixToken.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
 /**
-This actor converts a DoubleToken into a FixToken with a specified
+This actor converts a DoubleToken to a FixToken with a specified
 precision. Note that this conversion is lossy, in that the output
 is an approximation of the input.  The approximation can be
 constructed using rounding or truncation, depending on the value
@@ -101,11 +101,10 @@ public class DoubleToFix extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The precision of the output fixed-point number, which is represented
-        by an integer matrix. */
+        by a 2-element integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used, encoded as an integer, where 0
-        represents round, and 1 represents truncate. */
+    /** The quantization strategy used, either "round" or "truncate". */
     public StringAttribute quantization;
 
     ///////////////////////////////////////////////////////////////////
@@ -126,14 +125,14 @@ public class DoubleToFix extends Transformer {
             _precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
         } else if (attribute == quantization) {
-            String spec = quantization.getExpression();
-            if (spec.equals("truncate")) {
-                _quantization = 1;
-            } else if (spec.equals("round")) {
-                _quantization = 0;
+            String strategy = quantization.getExpression();
+            if (strategy.equals("truncate")) {
+                _quantization = TRUNCATE;
+            } else if (strategy.equals("round")) {
+                _quantization = ROUND;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized quantization: " + spec);
+                        "Unrecognized quantization: " + strategy);
             }
         } else {
             super.attributeChanged(attribute);
@@ -146,8 +145,8 @@ public class DoubleToFix extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        FixToken result = null;
         DoubleToken in = (DoubleToken)input.get(0);
+        FixToken result = null;
         switch( _quantization ) {
         case 1:
             result = new FixToken(
@@ -178,6 +177,9 @@ public class DoubleToFix extends Transformer {
     private Precision _precision = null;
 
     // The quantization strategy, encoded as an int.
-    private int _quantization = 0;
+    private int _quantization = ROUND;
+
+    private static final int ROUND = 0;
+    private static final int TRUNCATE = 1;
 }
 
