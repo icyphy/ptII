@@ -410,10 +410,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             throws IllegalActionException {
         RecordToken result = properties;
         Token defaultPropertiesValue = defaultProperties.getToken();
-        if (properties != null &&
-                defaultPropertiesValue instanceof RecordToken) {
-            result = RecordToken.merge(
-                    properties, (RecordToken)defaultPropertiesValue);
+        if (defaultPropertiesValue instanceof RecordToken) {
+            if (properties != null) {
+                result = RecordToken.merge(
+                        properties, (RecordToken)defaultPropertiesValue);
+            } else {
+                result = (RecordToken)defaultPropertiesValue;
+            }
         }
 
         if (_propertyTransformersByPort != null) {
