@@ -249,7 +249,7 @@ public class ModelReference
     ////                         public methods                    ////
 
     /** Override the base class to open the model specified if the
-     *  attribue is modelFileOrURL, or for other parameters, to cache
+     *  attribute is modelFileOrURL, or for other parameters, to cache
      *  their values.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable

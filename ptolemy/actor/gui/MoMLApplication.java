@@ -336,7 +336,7 @@ public class MoMLApplication {
     /** Return a string summarizing the command-line arguments,
      *  including an configuration directories in a base path,
      *  typically "ptolemy/configs".
-     *  Some subclasses of this class use configuations from ptolemy/configs.
+     *  Some subclasses of this class use configurations from ptolemy/configs.
      *  For example, if ptolemy/configs/full/configuration.xml exists
      *  then -full is a legitmate argument.
      *  @param commandTemplate The form of the command line

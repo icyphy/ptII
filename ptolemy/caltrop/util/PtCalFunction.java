@@ -82,7 +82,7 @@ public class PtCalFunction implements ptolemy.data.Function {
     /**
      * Return Function object wrapped by this object.
      *
-     * @return The Funtion object.
+     * @return The Function object.
      * @see caltrop.interpreter.Function
      */
     public Function getFunction() {

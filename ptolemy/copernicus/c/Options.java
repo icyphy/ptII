@@ -62,7 +62,7 @@ stored.
 
 <p>
 <b> gcDir </b> <br>
-stores the path to the directory containing the garbage colloector. Not
+stores the path to the directory containing the garbage collector. Not
 using this option turns the collector off.
 
 <p>

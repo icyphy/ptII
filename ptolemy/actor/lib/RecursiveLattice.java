@@ -103,11 +103,10 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see LevinsonDurbin
 @see Lattice
 @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
-@author Edward A. Lee, Christopher Hylands, Steve Neuenodorffer
+@author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
-
 public class RecursiveLattice extends Transformer {
 
     /** Construct an actor with the given container and name.

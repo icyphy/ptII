@@ -169,7 +169,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Close the window.  Look for any Dialogs that are open and close those
      *  first. If a DialogTableau returns false then it means that the user
-     *  has cacelled the close operation.
+     *  has cancelled the close operation.
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {

@@ -263,7 +263,7 @@ public class Unit implements UnitPresentation {
     }
 
     /** Create a String that is the concatenation of all the labels.
-     * @return The cancatenation of the labels.
+     * @return The concatenation of the labels.
      */
     public String getLabelsString() {
         String retv = null;

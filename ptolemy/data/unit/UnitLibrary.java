@@ -45,7 +45,7 @@ import java.util.Vector;
 Currently, the Unit library is static in the sense that it is loaded when the
 system starts and is hard-wired to a particular Unit System (the System
 International Unit System). However, it should be easy to change the
-architecture so that multiple Unit Systems can be accomodated, and loaded
+architecture so that multiple Unit Systems can be accommodated, and loaded
 on-the-fly.
 @author Rowland R Johnson
 @version $Id$
