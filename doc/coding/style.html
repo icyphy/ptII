@@ -129,15 +129,11 @@ names is up to the implementer.
 if they are <CODE>static final</CODE> constants.
 
 <h2><a name="java exceptions conventions">Java exceptions conventions</a></h2>
-Java exception classes that are part of the <CODE>pt.kernel.util</CODE> package
-in <A HREF="../../pt/kernel/util"><CODE>$PTII/pt/kernel/util</CODE></A> should
-follow these conventions.
+Java exception classes should follow these conventions.
 <MENU>
-<LI> All <CODE>pt</CODE> package exceptions should extend
-<A HREF="../../pt/kernel/util/KernelException.java">KernelException</A>
-so that we can catch these exceptions at runtime.  By having a hierarchy
-of exceptions, we can differentiate between generic Java exceptions and
-exceptions that the pt package has thrown.
+<LI> <CODE>ptolemy</CODE> package exceptions should extend
+<A HREF="../../ptolemy/kernel/util/KernelException.java">KernelException</A>
+or java.lang.RuntimeException.
 
 <LI> Exceptions should be defined in the same package as the classes
 that throw them.  The exceptions in java.lang follow this convention.
@@ -158,7 +154,68 @@ throw MyException(this, "The list already contains an element named `" +
 	getElementName() +"'.");
 </PRE>
 
+
+<li> An <CODE>@exception</CODE> tag should always read like this:
+
+<pre>
+   * @exception MyException If such and such occurs.
+</pre>
+
+
+Notice that the body always starts with "If", not "Thrown if", or
+anything else.  Just look at the Javadoc output to see why this is.
+
+In the case of an interface or base class that does not throw the
+exception, use the following:
+
+<pre>
+   * @exception MyException Not thrown in this base class.  Derived
+   *  classes may throw it if such and such happens.
+</pre>
+
 </MENU>
+<h3>Runtime exceptions</h3>
+The principle for throwing exceptions is this:
+
+<BLOCKQUOTE>
+  If a precondition of a method is violated,
+  throw a runtime exception. Otherwise throw
+  a regular exception.
+</BLOCKQUOTE>
+
+The principle implies:
+<ol>
+<li> There is a suitable set of exceptions and
+
+<li> It is possible for clients to ascertain whether
+preconditions will be satisfied.
+
+</ol>
+
+<h4>Example 1</h4>
+
+Receiver.get() may not be able to supply a
+token. The precondition is
+
+<pre>
+  Domain is blocking || data is available
+</pre>
+
+
+If there is no data in a non-blocking domain,
+then the precondition fails. NoSuchItemException
+(preferably with a better name) must therefore
+be a runtime exception.
+
+<h4>Example 2</h4>
+
+
+ <p>MutationRequest.processEvents() may fail because
+a mutation request failed. There is no reasonable
+and checkable precondition for calling this method,
+therefore MutationFailedException is a regular
+exception.
+
 
 
 <h2><a name="copyright conventions">Copyright and Acknowledgements</a></h2>
