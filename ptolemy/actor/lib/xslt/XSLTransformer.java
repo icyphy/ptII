@@ -115,26 +115,33 @@ public class XSLTransformer extends Transformer{
         javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(out);
         System.out.println("--- open an output stream for the result. \n");
         if (_transformer != null ) {
-            try {
-	            for (int i = 0; i < input.getWidth(); i++) {
-	                if (input.hasToken(i)) {
-	                    XmlToken in = (XmlToken)input.get(i);
-	                    Document doc = in.getDomTree();
-	                    javax.xml.transform.Source xmlSource = new javax.xml.transform.dom.DOMSource(doc);
-	                    _transformer.transform(xmlSource, result);
-	                    //System.out.println("--- transform the xmlSource: " + in.toString() + "\n");
-						if (out != null) {
-							//System.out.println("--- moml change request string: " + out.toString() + "\n");
-							StringToken t = new StringToken(out.toString());
-							output.broadcast(t);
-							//System.out.println("--- change request string token send out. \n");
-						}
-	                }
-					out.flush();
-	            }
-				out.close();		
-            } catch (java.lang.Exception e) {
-                throw new IllegalActionException(this, e.getMessage());
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    XmlToken in = (XmlToken)input.get(i);
+                    Document doc = in.getDomTree();
+                    try {
+                        javax.xml.transform.Source xmlSource
+                            = new javax.xml.transform.dom.DOMSource(doc);
+                        _transformer.transform(xmlSource, result);
+                        //System.out.println("--- transform the xmlSource: " + in.toString() + "\n");
+                        if (out != null) {
+                            //System.out.println("--- moml change request string: " + out.toString() + "\n");
+                            StringToken t = new StringToken(out.toString());
+                            output.broadcast(t);
+                            //System.out.println("--- change request string token send out. \n");
+                        }
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed  to process '" + in + "'");
+                    }
+                    try {
+                        out.flush();
+                        out.close();		
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed  to close or flush '" + out + "'");
+                    }
+                }
             }
         }
         //if there is no transformer, than output the xml string.
