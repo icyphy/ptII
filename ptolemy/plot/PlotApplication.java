@@ -204,6 +204,10 @@ public class PlotApplication extends PlotFrame {
     /** Parse the command-line
      *  arguments and make calls to the Plot class accordingly.
      *  @return The number of arguments read.
+     *  @exception CmdLineArgException If a command line argument cannot
+     *  be parsed.
+     *  @exception FileNotFoundException If an input file cannot be found.
+     *  @exception IOException If there is a problem reading an input.
      */
     protected int _parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
