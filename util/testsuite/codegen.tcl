@@ -328,7 +328,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
     #
     if { "$defaultIterations" != "" } {
 	puts "Using the defaultIterations parameter of '$defaultIterations'"
-	set iterationsParameter ",iterations:$defaultIterations"
+	set iterationsParameter ,iterations:$defaultIterations
     } else {
 	# Take a stab at guessing the number of iterations
 	set iterationsParameter ""
@@ -355,7 +355,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 		puts "WARNING: iterationsValue was 0, defaulting to 200"
 		set iterationsValue 200
 	    }
-	    set iterationsParameter ",iterations:$iterationsValue"
+	    set iterationsParameter ,iterations:$iterationsValue
 	}
     }
 
@@ -376,12 +376,14 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
       } else {
 	 set codeGenerator "shallow"
       }
-      set args [java::new {String[]} 5 \
+      set args [java::new {String[]} 7 \
   	      [list \
   	      $modelPath \
-	      "-iterationsParameter" "\"$iterationsParameter\"" \
-	      "-codeGenerator" $codeGenerator] ]
+	      "-iterationsParameter" $iterationsParameter \
+	      "-codeGenerator" $codeGenerator \
+              "-compile" "true" ]]
 
+        puts "Running Copernicus: [$args getrange]"
 	java::new ptolemy.copernicus.kernel.Copernicus $args
 
 	#set results [exec $relativePathToPTII/bin/copernicus $modelPath -iterations $iterationsValue]
