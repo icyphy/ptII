@@ -41,17 +41,22 @@ list of demos</a>.
 
 <ul>
 <li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
-Simple Signal Processing</a>.
+Simple Signal Processing</a> (See also
+<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">Maximum Entropy Spectrum</a>,
+<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>, and
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>)
 <br> This example shows simple spectral estimation of the product
 of two sinusoids in noise.  It illustrates models for signal
 processing, hierarchical models,
 the Expression actor, and the FFT actor.
 This model is build using the <i>synchronous dataflow</i> (SDF) domain,
 which statically schedules the firing of the actors.
+
 </li>
 
 <li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
-Continuous-Time Modeling</a>.
+Continuous-Time Modeling</a> (see also
+<a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>)
 <br> This example shows a continuous-time
 nonlinear feedback system that exhibits
 chaotic behavior (this system is called a Lorenz attractor).
@@ -60,7 +65,10 @@ which uses an underlying solver for ordinary differential equations.
 </li>
 
 <li><a href="../../domains/de/demo/Inspection/Inspection.xml">
-Discrete-Event Modeling</a>.
+Discrete-Event Modeling</a> (see also
+<a href="../../data/type/demo/Router/Router.xml">Router</a>
+and <a href="../../domains/de/demo/TimingParadox/TimingParadox.xml">
+Timing Paradox</a>).
 <br> This example shows
 a famous paradox in probability called the inspection paradox.
 It illustrates use of the <i>discrete-event</i> (DE) domain, where
@@ -69,6 +77,15 @@ In this example, random
 data stimulates a model and statistics are collected and reported
 in various ways.
 </li>
+
+<li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">
+Mixed-Signal Modeling</a> (see also
+<a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous</a>)
+<br> This example shows how to combine continuous-time modeling
+with discrete-event modeling to get mixed-signal modeling.
+The example models a MEMS accelerometer where a digital circuit
+implements feedback control and A/D conversion (a design due to
+Mark Lemkin).
 
 <li> <a href="../../domains/de/demo/ModalModel/ModalModel.xml">
 Modal Models</a>
@@ -85,12 +102,33 @@ events in time.
 </li>
 
 <li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
-Hybrid Systems</a>
+Hybrid Systems</a> (see also
+<a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a>,
+and <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a> and
+<a href="../../domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">Furuta Pendulum</a>).
 <br> <i>Hybrid systems</i> are a special case of modal models
 where the FSM domain is combined with the CT domain
 to get mixed continuous-time and discrete-event models.
 This example models a physical system consisting of two point masses
 on springs that stick together when they collide.
+</li>
+
+<li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
+Process Networks</a> (see also
+<a href="../../domains/pn/demo/QR/QR.xml">QR</a>).<br>
+This example illustrates the <i>process networks</i> (PN) domain,
+where each actor executes in a separate Ptolemy II thread.
+The example calculates numbers whose prime
+factors are 2, 3, and 5, only, and produces
+them in an ordered sequence.
+</li>
+
+<li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
+Synchronous/Reactive Modeling</a>.<br>
+This example illustrates the <i>synchronous/reactive</i> (SR) domain,
+which is inspired by the synchronous languages Esterel, Lustre, and Signal.
+The example uses the fixed-point semantics of SR to arbitrate access
+to a shared medium using a token-ring protocol.
 </li>
 
 <li><a href="../../data/type/demo/Router/Router.xml">
@@ -104,6 +142,19 @@ constructed out of tokens with various types. Here, a record
 models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
+
+<li><a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketched Signal</a>
+(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>)
+<br>This model illustrates the use of plotter to provide input
+as well as rendering output from a model.  Right click and drag
+on the plot to trace out a new signal. The model runs each time you
+do this.
+
+<li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
+Matlab Integration</a>.
+This example uses the Matlab interface created by
+Zoltan Kemenczy, of Research in Motion Ltd., to plot a 3-D surface.
+This works only if Matlab is installed locally.
 
 <li>
 <a href="../../data/unit/demo/Units/Units.xml">
@@ -136,6 +187,14 @@ You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
 </li>
 
+<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
+Audio</a> (see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>).
+<br>
+This example shows the Karplus-Strong algorithm, which synthesizes
+a musical sound that closely resembles a plucked string instrument.
+It illustrates the audio capabilities of Ptolemy II.
+</li>
+
 </ul>
 
 <!--vergilDocs-->
@@ -146,22 +205,20 @@ capabilities that may continue to evolve over time.
 These are illustrated in the following examples.
 
 <ul>
-<!--vergilDocs-->
-<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
-Audio</a>.<br>
-This example shows the Karplus-Strong algorithm, which synthesizes
-a musical sound that closely resembles a plucked string instrument.
-It illustrates the audio capabilities of Ptolemy II, which require
-version 1.3 of Java, and a reasonably capable computer.
-</li>
+<li><a href="../../actor/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a>.
+<br>Higher-order components are components that operate on components.
+This example contains a component that is a composite actor that
+replicates itself some specified number of times to operate on
+multiple channels of input.  This capability was created by
+Zoltan Kemenczy, of Research in Motion Ltd.
 
-<li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
-Process Networks</a>.<br>
-This example illustrates the <i>process networks</i> (PN) domain,
-where each actor executes in a separate Ptolemy II thread.
-The example calculates all multiples of 2, 3, and 5, and produces
-them in an ordered sequence.
-</li>
+<li> <a href="../../domains/ci/demo/Router/Router.xml">Push/Pull
+Component Interaction</a>.
+<br>
+The CI (component interaction) domain models communication between
+components that uses a combination of push and pull. This model
+illustrates the use of these styles of communication to route packets
+through queues using some policy that depends on the queue sizes.
 
 <!--vergilDocs-->
 </ul>
