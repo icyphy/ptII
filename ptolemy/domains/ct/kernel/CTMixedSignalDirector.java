@@ -330,6 +330,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                         + " current time " + _outsideTime
                         + " next iteration time " + nextIterTime);
             }
+            System.out.println( "Current Time " + getCurrentTime() 
+                    + "Outside domain current time " + _outsideTime
+                    + " next iteration time " + nextIterTime
+                    + "run length "+ runlength);
+            
             // synchronization, handle round up error.
             if(runlength < timeAcc) {
                 exe.fireAt(ca, nextIterTime);
@@ -365,10 +370,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 _catchUp();
             }
             //runlength = Math.min(runlength, _runAheadLength);
-            System.out.println( "Current Time " + getCurrentTime() 
-                    + "Outside domain current time " + _outsideTime
-                    + " next iteration time " + nextIterTime
-                    + "run length "+ runlength);
+            
             if(runlength < _runAheadLength) {
                 _setFireEndTime(nextIterTime);
             } else {
