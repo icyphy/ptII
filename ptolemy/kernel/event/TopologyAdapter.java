@@ -41,7 +41,6 @@ in all possible types of mutation event.
 
 @author John Reekie
 @version $Id$
-@see Topology
 */
 public class TopologyAdapter implements TopologyListener {
 

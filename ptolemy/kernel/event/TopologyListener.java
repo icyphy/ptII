@@ -45,7 +45,6 @@ a mutation is performed.
 
 @author John Reekie
 @version $Id$
-@see Topology
 */
 public interface TopologyListener {
 

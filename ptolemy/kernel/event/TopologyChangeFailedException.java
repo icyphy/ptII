@@ -47,7 +47,6 @@ will also be set.
 
 @author John Reekie
 @version $Id$
-@see Topology
 */
 public class TopologyChangeFailedException extends KernelException {
 
