@@ -1,4 +1,4 @@
-/* 
+/* Assignment transformation rule.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -38,18 +38,32 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentRule
 /**
- *  
- * 
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 5.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+    Assignment transformation rule. This rule specifies the actions to be
+    executed before and after {@link TypeAnalyzer} traverses an AST. Those
+    actions refactor the AST to add in support for backtracking.
+   
+    @author Thomas Feng
+    @version $Id$
+    @since Ptolemy II 5.1
+    @Pt.ProposedRating Red (tfeng)
+    @Pt.AcceptedRating Red (tfeng)
+*/
 public class AssignmentRule extends TransformRule {
     
+    /** Execution actions after the AST is traversed. (Not necessary for
+     *  this rule.)
+     *  
+     *  @param root The root of the AST.
+     */
     public void afterTraverse(CompilationUnit root) {
     }
     
+    /** Add a handler (@link AssignmentTransformer) to the type analyzer.
+     *  The handler refactors the AST while the type analyzer traverses it.
+     * 
+     *  @param analyzer The type analyzer.
+     *  @param root The root of the AST.
+     */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
         AssignmentTransformer transformer = new AssignmentTransformer();
         _handlers.add(transformer);
@@ -57,5 +71,7 @@ public class AssignmentRule extends TransformRule {
         analyzer.getHandlers().addClassHandler(transformer);
     }
     
+    /** The list of handlers used.
+     */
     private List _handlers = new LinkedList();
 }
