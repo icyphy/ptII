@@ -97,25 +97,32 @@ public class UndoStackAttribute extends SingletonAttribute {
      *  This is done by searching up the containment hierarchy until
      *  such an attribute is found. If no such attribute is found,
      *  then create and attach a new one to the top level.
-     *  @param object The model for which an undo stack is required.
+     *  This method gets read access on the workspace associated
+     *  with the specified object.
+     *  @param object The model for which an undo stack is required
+     *   (must not be null or a NullPointerException will the thrown).
      *  @return The current undo stack attribute if there is one, or a new one.
-     *  @exception NullPointerException If the argument is null.
      */
     public static UndoStackAttribute getUndoInfo(NamedObj object) {
-        NamedObj topLevel = object.toplevel();
-        while (object != null) {
-            List attrList = object.attributeList(UndoStackAttribute.class);
-            if (attrList.size() > 0) {
-                return (UndoStackAttribute)attrList.get(0);
-            }
-            object = (NamedObj)object.getContainer();
-        }
-        // If we get here, there is no such attribute.
-        // Create and attach a new instance.
         try {
-            return new UndoStackAttribute(topLevel, "_undoInfo");
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
+            object.workspace().getReadAccess();
+            NamedObj topLevel = object.toplevel();
+            while (object != null) {
+                List attrList = object.attributeList(UndoStackAttribute.class);
+                if (attrList.size() > 0) {
+                    return (UndoStackAttribute)attrList.get(0);
+                }
+                object = (NamedObj)object.getContainer();
+            }
+            // If we get here, there is no such attribute.
+            // Create and attach a new instance.
+            try {
+                return new UndoStackAttribute(topLevel, "_undoInfo");
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }           
+        } finally {
+        	object.workspace().doneReading();
         }
     }
 
@@ -127,121 +134,140 @@ public class UndoStackAttribute extends SingletonAttribute {
      *  that when two entries are merged, the one on the top of
      *  the stack becomes the first one executed and the one
      *  below that on the stack becomes the second one executed.
+     *  This method gets write access on the workspace.
      */
     public void mergeTopTwo() {
-        if (_inUndo == 0 && _inRedo == 0) {
-            if (_undoEntries.size() > 1) {
-                UndoAction lastUndo = (UndoAction)_undoEntries.pop();
-                UndoAction firstUndo = (UndoAction)_undoEntries.pop();
-                UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
-                _undoEntries.push(mergedAction);
-                if (_DEBUG) {
-                    System.out.println(
-                            "=======> Merging top two on undo stack:\n"
-                            + mergedAction.toString());
-                }
-            }
-        }
+        try {
+            workspace().getWriteAccess();
+			if (_inUndo == 0 && _inRedo == 0) {
+			    if (_undoEntries.size() > 1) {
+			        UndoAction lastUndo = (UndoAction)_undoEntries.pop();
+			        UndoAction firstUndo = (UndoAction)_undoEntries.pop();
+			        UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
+			        _undoEntries.push(mergedAction);
+			        if (_debugging) {
+			            _debug("=======> Merging top two on undo stack:\n"
+			                    + mergedAction);
+			        }
+			    }
+			}
+		} finally {
+			workspace().doneWriting();
+		}
     }
 
     /** Push an action to the undo stack, or if we are executing an undo,
-     *  onto the redo stack.
+     *  onto the redo stack. This method gets write access on the workspace.
      *  @param action The undo action.
      */
     public void push(UndoAction action) {
-        if (_inUndo > 1) {
-            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
-            UndoAction mergedAction = _mergeActions(action, previousRedo);
-            _redoEntries.push(mergedAction);
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Merging action onto redo stack to get:\n"
-                        + mergedAction.toString());
+        try {
+            workspace().getWriteAccess();
+            if (_inUndo > 1) {
+                UndoAction previousRedo = (UndoAction)_redoEntries.pop();
+                UndoAction mergedAction = _mergeActions(action, previousRedo);
+                _redoEntries.push(mergedAction);
+                if (_debugging) {
+                    _debug("=======> Merging action onto redo stack to get:\n"
+                            + mergedAction);
+                }
+                _inUndo++;
+            } else if (_inUndo == 1) {
+                if (_debugging) {
+                    _debug("=======> Pushing action onto redo stack:\n"
+                            + action);
+                }
+                _redoEntries.push(action);
+                _inUndo++;
+            } else if (_inRedo > 1) {
+                UndoAction previousUndo = (UndoAction)_undoEntries.pop();
+                UndoAction mergedAction = _mergeActions(action, previousUndo);
+                if (_debugging) {
+                    _debug("=======> Merging redo action onto undo stack to get:\n"
+                            + mergedAction);
+                }
+                _undoEntries.push(mergedAction);
+                _inRedo++;
+            } else if (_inRedo == 1) {
+                if (_debugging) {
+                    _debug("=======> Pushing redo action onto undo stack:\n"
+                            + action);
+                }
+                _undoEntries.push(action);
+                _inRedo++;
+            } else {
+                if (_debugging) {
+                    _debug("=======> Pushing action onto undo stack:\n"
+                            + action);
+                }
+                _undoEntries.push(action);
+                if (_debugging) {
+                    _debug("======= Clearing redo stack.\n");
+                }
+                _redoEntries.clear();
             }
-            _inUndo++;
-        } else if (_inUndo == 1) {
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Pushing action onto redo stack:\n"
-                        + action.toString());
-            }
-            _redoEntries.push(action);
-            _inUndo++;
-        } else if (_inRedo > 1) {
-            UndoAction previousUndo = (UndoAction)_undoEntries.pop();
-            UndoAction mergedAction = _mergeActions(action, previousUndo);
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Merging redo action onto undo stack to get:\n"
-                        + mergedAction.toString());
-            }
-            _undoEntries.push(mergedAction);
-            _inRedo++;
-        } else if (_inRedo == 1) {
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Pushing redo action onto undo stack:\n"
-                        + action.toString());
-            }
-            _undoEntries.push(action);
-            _inRedo++;
-        } else {
-            if (_DEBUG) {
-                System.out.println(
-                        "=======> Pushing action onto undo stack:\n"
-                        + action.toString());
-            }
-            _undoEntries.push(action);
-            if (_DEBUG) {
-                System.out.println( "======= Clearing redo stack.\n");
-            }
-            _redoEntries.clear();
+        } finally {
+        	workspace().doneWriting();
         }
     }
 
     /** Remove the top redo action and execute it.
      *  If there are no redo entries, do nothing.
+     *  This method gets write acess on the workspace.
+     *  @throws Exception If something goes wrong.
      */
     public void redo() throws Exception {
         if (_redoEntries.size() > 0) {
-            UndoAction action = (UndoAction)_redoEntries.pop();
-            if (_DEBUG) {
-                System.out.println(
-                        "<====== Executing redo action:\n"
-                        + action.toString());
-            }
             try {
-                _inRedo = 1;
-                // NOTE: We assume that if in executing this
-                // action any change request is made, that the
-                // change request is honored before execute()
-                // returns. Otherwise, _inRedo will erroneously
-                // be back at 0 when that change is finally
-                // executed.
-                action.execute();
+                workspace().getWriteAccess();
+
+                UndoAction action = (UndoAction)_redoEntries.pop();
+                if (_debugging) {
+                    _debug("<====== Executing redo action:\n"
+                            + action);
+                }
+                try {
+                    _inRedo = 1;
+                    // NOTE: We assume that if in executing this
+                    // action any change request is made, that the
+                    // change request is honored before execute()
+                    // returns. Otherwise, _inRedo will erroneously
+                    // be back at 0 when that change is finally
+                    // executed.
+                    action.execute();
+                } finally {
+                    _inRedo = 0;
+                }
             } finally {
-                _inRedo = 0;
+            	workspace().doneWriting();
             }
         }
     }
 
     /** Remove the top undo action and execute it.
      *  If there are no undo entries, do nothing.
+     *  This method gets write access on the workspace.
+     *  @throws Exception If something goes wrong.
      */
     public void undo() throws Exception {
-        if (_undoEntries.size() > 0) {
-            UndoAction action = (UndoAction)_undoEntries.pop();
-            if (_DEBUG) {
-                System.out.println(
-                        "<====== Executing undo action:\n"
-                        + action.toString());
+        try {
+            workspace().getWriteAccess();
+
+            if (_undoEntries.size() > 0) {
+                UndoAction action = (UndoAction)_undoEntries.pop();
+                if (_debugging) {
+                    _debug("<====== Executing undo action:\n"
+                            + action);
+                }
+                try {
+                    _inUndo = 1;
+                    action.execute();
+                } finally {
+                    _inUndo = 0;
+                }
             }
-            try {
-                _inUndo = 1;
-                action.execute();
-            } finally {
-                _inUndo = 0;
-            }
+        } finally {
+        	workspace().doneWriting();
         }
     }
 
@@ -253,26 +279,23 @@ public class UndoStackAttribute extends SingletonAttribute {
      */
     private UndoAction _mergeActions(
             final UndoAction firstAction,
-            final UndoAction lastAction) {
+            final UndoAction secondAction) {
         return new UndoAction() {
                 public void execute() throws Exception {
                     firstAction.execute();
-                    lastAction.execute();
+                    secondAction.execute();
                 }
                 public String toString() {
                     return "Merged action.\nFirst part:\n"
-                        + firstAction.toString()
+                        + firstAction
                         + "\n\nSecond part:\n"
-                        + lastAction.toString();
+                        + secondAction;
                 }
             };
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Flag indicating whether to debug.
-    private static boolean _DEBUG = false;
 
     // Counter used to count pushes during a redo.
     private int _inRedo = 0;

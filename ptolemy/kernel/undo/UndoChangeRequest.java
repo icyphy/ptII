@@ -39,16 +39,11 @@ import ptolemy.kernel.util.NamedObj;
    and it will execute the top undo action on that stack, if there is
    one.
    <p>
-   See MoMLChangeRequest for subtleties regarding the use of MoML change
-   requests. In particular, the choice of context is important, and should
-   be that returned by the getDeferredToContext() static method of
-   MoMLChangeRequest.
-   <p>
    @author Edward A. Lee and Neil Smyth
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (nsmyth)
-   @Pt.AcceptedRating Red (neuendor)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class UndoChangeRequest extends ChangeRequest {
 

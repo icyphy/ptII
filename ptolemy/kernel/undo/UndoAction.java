@@ -38,8 +38,8 @@ package ptolemy.kernel.undo;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public interface UndoAction  {
 

@@ -39,16 +39,11 @@ import ptolemy.kernel.util.NamedObj;
    and it will execute the top redo action on that stack, if there is
    one.
    <p>
-   See MoMLChangeRequest for subtleties regarding the use of MoML change
-   requests. In particular, the choice of context is important, and should
-   be that returned by the getDeferredToContext() static method of
-   MoMLChangeRequest.
-   <p>
    @author Edward A. Lee and Neil Smyth
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (nsmyth)
-   @Pt.AcceptedRating Red (neuendor)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class RedoChangeRequest extends ChangeRequest {
 
@@ -78,7 +73,17 @@ public class RedoChangeRequest extends ChangeRequest {
             throw new InternalErrorException("Context is unexpectedly null.");
         }
         UndoStackAttribute undoStack = UndoStackAttribute.getUndoInfo(_context);
-        undoStack.redo();
+        // The undo action may involve several subactions.
+        // These may queue further change requests.
+        // Collect these change requests without executing them
+        // until after the whole action is completed.
+        boolean previous = _context.isDeferringChangeRequests();
+        try {
+            previous = _context.setDeferringChangeRequests(true);
+            undoStack.redo();
+        } finally {
+            _context.setDeferringChangeRequests(previous);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
