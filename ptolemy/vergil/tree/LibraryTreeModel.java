@@ -96,10 +96,11 @@ public class LibraryTreeModel extends EntityTreeModel {
     }
 
     /** Create a JTree object to display this library, and populate it
-     *  with the master actor library.  If the JTree object has already
-     *  been created, then simply return it.
+     *  with the master actor library given in the specified URL. 
+     *  If the JTree object has already been created, then simply return it.
      *  @param application The application, for error reporting, or null
      *   to send errors to the standard error stream.
+     *  @param entitylibURL The URL to load the entity library from.
      */
     public static JTree createTree(Application application, URL entitylibURL) {
 	// FIXME: perhaps this should clear the tree and reparse?
