@@ -85,13 +85,11 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
 
         // the number of rows is defaulted to 1
         rows = new Parameter(this, "rows", new IntToken(1));
-
-        attributeChanged(rows);
-
+        
         // the number of columns is defaulted to 1
         columns = new Parameter(this, "columns", new IntToken(1));
 
-        // set the token consumption rate one final time in this constructor
+        // set the token consumption rate 
         attributeChanged(columns);
 
         output.setTokenProductionRate(1);
@@ -123,30 +121,16 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == rows) {
-           _iRows = ((IntToken) rows.getToken()).intValue();
-
-           input.setTokenConsumptionRate(_iRows * _iColumns);
-
+        if ((attribute == rows) || (attribute == columns)) {           
+           int iRows = ((IntToken) rows.getToken()).intValue();
+           int iColumns = ((IntToken) columns.getToken()).intValue();        
+                
+           input.setTokenConsumptionRate(iRows * iColumns);
            Director dir = getDirector();
 
            if (dir != null) {
               dir.invalidateSchedule();
-           }
-
-        } else if (attribute == columns) {
-           _iColumns = ((IntToken) columns.getToken()).intValue();
-
-           input.setTokenConsumptionRate(_iRows * _iColumns);
-
-           _tokenArray = new Token[_iColumns];
-
-           Director dir = getDirector();
-
-           if (dir != null) {
-              dir.invalidateSchedule();
-           }
-
+           }                
         } else {
            super.attributeChanged(attribute);
         }
@@ -174,37 +158,19 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     /** Consume the inputs and produce the output DoubleMatrixToken.
      *  @exception IllegalActionException Not thrown in this base class
      */
-    public void fire() throws IllegalActionException {
-        double[][] matrix = new double[_iRows][_iColumns];
+    public void fire() throws IllegalActionException {    
+        int iRows = ((IntToken) rows.getToken()).intValue();
+        int iColumns = ((IntToken) columns.getToken()).intValue();        
 
-        for (int i = 0; i < _iRows; i++) {
-            input.getArray(0, _tokenArray);
+        double[][] matrix = new double[iRows][iColumns];
 
-            for (int j = 0; j < _iColumns; j++) {
-                matrix[i][j] = ((ScalarToken) _tokenArray[j]).doubleValue();
+        for (int i = 0; i < iRows; i++) {        
+            for (int j = 0; j < iColumns; j++) { 
+                matrix[i][j] = ((ScalarToken) input.get(0)).doubleValue();
             }
         }
 
         // could be optimized not to copy matrix on token construction
         output.send(0, new DoubleMatrixToken(matrix));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The cached number of rows of the output matrix. */
-    protected int _iRows = 1; // must be initialized for attributeChanged()
-                              // call in constructor
-
-
-    /** The cached number of columns of the output matrix. */
-    protected int _iColumns = 1; // must be initialized for attributeChanged()
-                                 // call in constructor
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // An array to place tokens in the same row, used to take advantage of
-    // the optimization possible with SDFIOPort.getArray().
-    private Token[] _tokenArray = null;
 }
