@@ -121,9 +121,21 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void locateFigure(Object node) {
         Figure nf = getController().getFigure(node);
-        if (hasLocation(node)) {
-            double[] location = getLocation(node);
-            CanvasUtilities.translateTo(nf, location[0], location[1]);
+        try {
+            if (hasLocation(node)) {
+                double[] location = getLocation(node);
+                CanvasUtilities.translateTo(nf, location[0], location[1]);
+            }
+        } catch(Exception ex) {
+            // FIXME: Ignore if there is no valid location.  This
+            // happens occasionally due to a race condition in the
+            // Bouncer demo.  Occasionally, the repaint thread will
+            // attempt to locate the bouncing icon before the location
+            // parameter has been evaluated, causing an exception to
+            // be thrown.  Basically the lazy parameter evaluation
+            // mechanism causes rerendering in Diva to be rentrant,
+            // which it shouldn't be.  Unfortunately, I have no idea
+            // how to fix it... SN 5/5/2003
         }
     }
 
