@@ -67,7 +67,7 @@ public class CSPSource extends AtomicActor {
         try {
             Random rand = new Random();
             int count = 0;
-            while (count < 15 ) {
+            while (count < 12 ) {
                 //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
                 Token t = new IntToken(count);
                 //System.out.println(getName() + " sending...");

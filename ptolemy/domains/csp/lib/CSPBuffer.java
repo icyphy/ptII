@@ -58,11 +58,7 @@ public class CSPBuffer extends CSPActor {
     
     public CSPBuffer(CompositeActor cont, String name) 
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
-         _depth = 1;
-         _buffer = new Token[_depth];
-         output = new IOPort(this, "bufferOutput", false, true);
-         input = new IOPort(this, "bufferInput", true, false);
+         this(cont, name, 1);
     }
 
     public CSPBuffer(CompositeActor cont, String name, int depth) 
@@ -99,15 +95,17 @@ public class CSPBuffer extends CSPActor {
                 if (successfulBranch == 0) {
                     _size++;
                     _buffer[_writeTo] = getToken();
-                    _writeTo = ++_writeTo % _depth;
                     System.out.println(getName() + " got Token: " + 
-                            getToken().toString() + ", size is: " + _size);
+                            _buffer[_writeTo].toString() + ", size is: " + 
+                            _size);
+                    _writeTo = ++_writeTo % _depth;
                 } else {
                     // successful branch = 1
                     _size--;
-                    _readFrom = ++_readFrom % _depth;
                     System.out.println(getName() + " sent Token: " + 
-                            getToken().toString() + ", size is: " + _size);
+                            _buffer[_readFrom].toString() + ", size is: " +
+                            _size);
+                    _readFrom = ++_readFrom % _depth;
                 }
                 count++;
             }
