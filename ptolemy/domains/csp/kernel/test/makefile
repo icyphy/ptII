@@ -46,9 +46,11 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	CSPCondGet.java \
 	CSPHasRoom.java \
 	CSPHasToken.java \
 	CSPGet.java \
+	CSPGetToken.java \
 	CSPPut.java
 
 # Non-graphical Java tests written in Tcl
