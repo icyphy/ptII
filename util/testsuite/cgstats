@@ -35,7 +35,7 @@ else
     statsfile=$1
 fi
 
-grep StatRT $statsfile | grep ave |
+grep StatRT $statsfile | grep ave | sort |
 	awk 'BEGIN { runs["codegen"] = 1
 		     runs["interpreted"] = 1
 		     runs["jimple1"] = 1
@@ -84,7 +84,19 @@ grep StatRT $statsfile | grep ave |
 		static[$2] = substr($12,1,length($12) -1)
 		staticRT[$2] = substr($14,1,length($14) -1)
 		dynamicRT[$2] = substr($16,1,length($15) -1)
-
+        }
+        END {
+		        printf("%-16s ", $1)
+			for (run in runs) {
+			    printf("%s: %3d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
+			    time[run] = 0
+			    mem[run] = 0
+			    free[run] = 0
+			    static[run] = 0
+			    staticRT[run] = 0
+			    dynamicRT[run] = 0
+			}    
+			printf("\n");
 
 	}' 
 
@@ -117,4 +129,13 @@ grep /treeshake $statsfile | egrep '^-rw' | sort | uniq |
 			current = $1
 		 }
 		 row[$2] = $3
-	     }'  
+	     }	 
+	     END {
+			if (row["interp"] == 0) {
+				codegenOverInterp = 0
+			} else {
+				codegenOverInterp = int ( ((row["codegen"]+0.0)/(row["interp"]+0.0) * 100.0) +0.5)
+			}
+			printf("%-16s %2d%% %6d %6d %6d %6d %6d %6d %6d %6d \n", $1, codegenOverInterp, row["interp"], row["codegen"], row["jimple1"], row["jimple2"], row["jimple3"], row["jimple4"], row["jimple5"], row ["jimple6"])
+			row["interp"] = 0
+	    }'  
