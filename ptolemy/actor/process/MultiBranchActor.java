@@ -41,7 +41,6 @@ CSP domain.
 
 @author Bilung Lee
 @version $Id$
-@see ConditionalBranch
 @see BranchController
 */
 public interface MultiBranchActor extends Actor {
