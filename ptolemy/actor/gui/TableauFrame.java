@@ -351,7 +351,7 @@ public abstract class TableauFrame extends Top {
         // windowClosed events rather than overriding the
         // windowClosing behavior given here.
         Effigy topEffigy = getEffigy().topEffigy();
-        if (topEffigy != null && topEffigy.numberOfOpenTableaux() > 1) {
+        if (topEffigy != getEffigy() && topEffigy.numberOfOpenTableaux() > 1) {
             // There are other tableau, so just close.
             dispose();
             return true;
