@@ -308,7 +308,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
 
     /** Return a list that contains the parameters referenced in the code.
-     * @return The list.
+     *  @return The list.
      */
     public HashSet getReferencedParameter() {
         return _referencedParameters;
@@ -317,11 +317,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Return a list of channel objects that are the sink input ports
      *  given an output port and a given channel.
-     *  Return a string that contains all the sink input ports
-     * @param outputPort The given output port.
-     * @param channelNumber The given channel number.
-     * @return The list of channel objects that are the sink input ports
-     *  of the given output port and channel.
+     *  @param outputPort The given output port.
+     *  @param channelNumber The given channel number.
+     *  @return The list of channel objects that are the sink input ports
+     *   of the given output port and channel.
      */
     public List getSinkChannels(IOPort outputPort, int channelNumber) {
 
@@ -335,9 +334,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return sinkChannels;
         }
 
-        //StringBuffer result = new StringBuffer();
-        
-        boolean foundIt = false;
         for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
             IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
             Receiver[][] portReceivers = sinkPort.getReceivers();
@@ -348,8 +344,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         Channel sinkChannel = new Channel(sinkPort, j);
                         sinkChannels.add(sinkChannel);
                         break;
-                        //sinkPorts.add(sinkPort);
-                        //sinkChannels.add(new Integer(j));
                     }
                 }
 
@@ -357,6 +351,36 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return sinkChannels;
     }
+    
+    /** Return a set of channel objects that are the source output ports
+     *  given an input port and a given channel.
+     *  @param inputPort The given input port.
+     *  @param channelNumber The given channel number.
+     *  @return The list of channel objects that are the source output ports
+     *  of the given input port and channel.
+     */
+    /*
+    public Set getSourceChannel(IOPort inputPort, int channelNumber) {
+        Set sourceChannels = new HashSet();
+        // local receivers of the given input channel.
+        Receiver[] receivers = inputPort.getReceivers()[channelNumber];
+        Iterator connectedPorts = inputPort.connectedPortList().iterator();
+        while (connectedPorts.hasNext()) {
+            IOPort sourcePort = (IOPort) connectedPorts.next();
+            Receiver[][] remoteReceivers = sourcePort.getRemoteReceivers();
+            for (int i = 0; i < remoteReceivers.length; i ++) {
+                for (int j = 0; j < remoteReceivers[i].length; j ++) {
+                    for (int k = 0; k < receivers.length; k ++) {
+                        if (receivers[k] == remoteReceivers[i][j]) {
+                            Channel channel = new Channel(sourcePort, i);
+                            sourceChannels.add(channel);
+                        }
+                    }
+                }
+            }
+        }
+        return sourceChannels;
+    }*/
 
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.AddSubtract
+/* A code generation helper class for ptolemy.actor.lib.AddSubtract
 
 Copyright (c) 1997-2005 The Regents of the University of California.
 All rights reserved.
@@ -33,9 +33,9 @@ import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// Repeat
 /**
-   A helper class for ptolemy.actor.lib.AddSubtract
+   A code generation helper class for ptolemy.domains.sdf.lib.Repeat
 
    @author Ye Zhou
    @version $Id$

@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -189,17 +190,29 @@ public class SDFDirector extends Director {
                     = ((IntToken) ((Variable)buffer).getToken()).intValue();
             }
         }
-        /*
-        Variable firings =
-            (Variable)port.getContainer().getAttribute("firingsPerIteration");
-        int firingsPerIteration = 1;
-        if (firings != null) {
-            firingsPerIteration = ((IntToken)firings.getToken()).intValue();
-        }
-        if (port.isInput() || port.getRemoteReceivers().length > 0) {
-            bufferSize = firingsPerIteration
-                    * DFUtilities.getRate(port);
-        }*/
         return bufferSize;
+    }
+    
+    /** Get the set of relations connected to the given channel (i.e., given
+     *  a port and a channel number). The set should contains at most one
+     *  relation.
+     *  @param port The given port.
+     *  @param channelNumber The given channel number.
+     *  @return The set of relations that connect to the given channel.
+     */
+    public Set getConnectedRelations(IOPort port, int channelNumber) {
+        Set connectedRelations = new HashSet();
+        Iterator relations = port.linkedRelationList().iterator();
+        int channel = 0;
+        while (relations.hasNext()) {
+            IORelation relation = (IORelation) relations.next();
+            int width = relation.getWidth();
+            for (int i = 0; i < width; i ++, channel ++) {
+                if (channel == channelNumber) {
+                    connectedRelations.add(relation);
+                }
+            }
+        }
+        return connectedRelations;
     }
 }
