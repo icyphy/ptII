@@ -409,9 +409,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         State st = fsm.currentState();
         Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
 
-        if (tr == null) {
-            //System.out.println("ModelError is not handled but reported to upper level.");
-	    throw exception;
+	if (tr == null) {
+	    ModelErrorHandler container = getContainer();
+	    if (container != null) {
+		return container.handleModelError(context, exception);
+	    }
         }
 
         //System.out.println("ModelError is discarded.");
@@ -542,7 +544,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
-    public void setContainer(CompositeEntity container)
+    public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
 	super.setContainer(container);
 	if (container !=null) {
