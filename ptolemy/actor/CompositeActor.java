@@ -794,8 +794,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         + "with a container.");
             }
             // If there was a previous manager, we need to reset it.
-            if (_manager != null) _manager._makeManagerOf(null);
+            if (_manager != null) {
+                // Remove this from the list of debug listeners of the old
+                // manager.
+                _manager.removeDebugListener(this);
+                // Notify the old manager that it is no longer the manager
+                // of anything.
+                _manager._makeManagerOf(null);
+            }
             if (manager != null) {
+                // Add this to the list of debug listeners of the new manager.
+                // This composite actor will relay debug messages from
+                // the manager.
+                manager.addDebugListener(this);
                 manager._makeManagerOf(this);
             }
             _manager = manager;
