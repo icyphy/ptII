@@ -144,7 +144,8 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double dotProduct(double[] array1, double[] array2) {
-        int length = _commonLength(array1, array2, "DoubleArrayMath.dotProduct");
+        int length = _commonLength(array1, array2,
+                "DoubleArrayMath.dotProduct");
 
         double sum = 0.0;
 
@@ -249,8 +250,8 @@ public class DoubleArrayMath {
         int copySize = Math.min(newLength, array.length - startIdx);
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.DoubleArrayMath.resize() : input array size is " +
-                    "less than the start index");
+                    "ptolemy.math.DoubleArrayMath.resize() : " +
+                    "input array size is less than the start index");
         }
 
         if (copySize > 0) {
@@ -291,7 +292,8 @@ public class DoubleArrayMath {
 
     /** Return a new array that is formed by converting the shorts in
      *  the argument to doubles.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  If the length of the argument array is 0,
+     *  return a new array of length 0.
      *  @param array An array of shorts.
      *  @return A new array of doubles.
      */
@@ -307,7 +309,8 @@ public class DoubleArrayMath {
 
     /** Return a new array that is formed by converting the integers in
      *  the argument to doubles.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  If the length of the argument array is 0,
+     *  return a new array of length 0.
      *  @param array An array of integers.
      *  @return A new array of doubles.
      */
@@ -323,7 +326,8 @@ public class DoubleArrayMath {
 
     /** Return a new array that is formed by converting the floats in
      *  the argument to doubles.
-     *  If the length of the argument array is 0, return a new array of length 0.
+     *  If the length of the argument array is 0,
+     *  return a new array of length 0.
      *  @param array An array of floats.
      *  @return A new array of doubles.
      */
@@ -439,9 +443,10 @@ public class DoubleArrayMath {
 
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input arrays must have the same length, but the first " +
-                    "array has length " + array1.length + " and the second array " +
-                    "has length " + array2.length + ".");
+                    "() : input arrays must have the same length, " +
+                    "but the first array has length " + array1.length +
+                    " and the second array has length " + 
+                    array2.length + ".");
         }
 
         return array1.length;
