@@ -31,7 +31,7 @@ package diva.gui;
  * might be opened, closed, iconified, and so on. Although there are
  * various listeners in AWT and Swing that capture these events, they
  * are all specific to certain widgets, whereas the ViewListener
- * interface abtracts from specific widgets.
+ * interface abstracts from specific widgets.
  *
  * <p> This interface is partly based on the Swing InternalFrameListener
  * interface.
