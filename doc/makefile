@@ -87,10 +87,12 @@ EXTRA_SRCS = \
 	domains.htm \
 	footer.htm \
 	help.htm \
+	hyVisualHtml.awk \
 	index.htm \
 	install.htm \
 	installJNLP.htm \
 	javahtml.awk \
+	limitations.htm \
 	main.htm \
 	mainheader.htm \
 	oldFeatures.htm \
