@@ -42,7 +42,8 @@ infrastructure.
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
 	<LI> <A HREF="#appletprinting"><B>3.4 How do I print an plot from a Plot applet?</B></A>
-	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
+	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
+	<LI> <A HREF="#simpleapp"><B>3.6 How do I create a simple standalone Plot application?</B></A>
 	</MENU>
 
 </MENU>
@@ -259,7 +260,7 @@ pxgraph -print -o /tmp/data.ps demo/data.plt
 ptplot2mif.tcl /tmp/data.ps &gt; /tmp/data.mif
 </PRE>
 
-<DT>  <A NAME="twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
+<DT>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
 <DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
 more than one file to the plotter.  The <CODE>pxgraphargs</CODE> parameter
 can also pass <CODE>pxgraph</CODE> command line arguments.
@@ -277,9 +278,54 @@ of the plot would be <CODE>Two datafiles</CODE>.
 &lt;/APPLET&gt;
 </PRE>
 
+<DL>  <A NAME="simpleapp"><B>3.6 How do I create a simple standalone Plot application?</B></A>
+<dd> <A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>
+ is a standalone application that uses the Plot class.
+Pxgraph.java is fairly large, but most of the code is for argument
+parsing and backward compatibility with an older program.
+Most of the real work is done in the <CODE>Pxgraph</CODE> constructor
+and in <CODE>main()</CODE>.
+
+ <p><a href="PlotApplication.java"><CODE>PlotApplication.java</CODE></a>
+is a simple standalone Java application that uses the Plot class.
+ <p>Here's how to compile and run it
+<ol>
+<li> Change to the <CODE>ptplot</CODE> directory:
+<pre>
+cd ptplot
+</pre>
+
+<li> Copy the Java code to the <CODE>ptplot</CODE> directory:
+<pre>
+cp doc/internals/PlotApplication.java .
+</pre>
+
+<li> Set your <CODE>CLASSPATH</CODE> to point to the directory
+above the ptplot directory:
+<pre>
+setenv CLASSPATH ..
+</pre>
+Note that you might want to use an absolute path for your 
+<CODE>CLASSPATH</CODE> if you plan on using <CODE>PlotApplication</CODE>
+from any directory.  Note further that setting your <CODE>CLASSPATH</CODE>
+in your environment is bound to cause problems with other applications, such
+as Netscape.  In general it is best to have a shell script that 
+sets the <CODE>CLASSPATH</CODE> appropriately for each Java application.
+ <p>
+<li> Compile the Java class:
+<pre>
+javac PlotApplication.java
+</pre>
+
+<li> Run the class with a sample datafile:
+<pre>
+java ptplot.PlotApplication demo/data.plt
+</pre>
+</ol>
 </DL>
 
 <p>
+<HR>
 <a href="index.html">Ptplot infrastructure</a><br>
 <p>
 <HR>
