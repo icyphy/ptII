@@ -227,16 +227,28 @@ public class XSLTUtilities {
     public static void transform (String xsltFileName,
             String sourceFileName,
             String resultFileName) throws Exception {
-        OutputStream resultStream = new FileOutputStream(resultFileName);
-        StreamSource source = new StreamSource(sourceFileName);
-        StreamResult result = new StreamResult(resultStream);
-        TransformerFactory transformerFactory =
-            TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory
-            .newTransformer(new StreamSource(xsltFileName));
-        transformer.setOutputProperty("indent", "yes");
-        transformer.transform(source, result);
-        resultStream.flush();
-        resultStream.close();
+        OutputStream resultStream = null;
+        try {
+            resultStream = new FileOutputStream(resultFileName);
+            StreamSource source = new StreamSource(sourceFileName);
+            StreamResult result = new StreamResult(resultStream);
+            TransformerFactory transformerFactory =
+                TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory
+                .newTransformer(new StreamSource(xsltFileName));
+            transformer.setOutputProperty("indent", "yes");
+            transformer.transform(source, result);
+            resultStream.flush();
+        } finally {
+            if (resultStream != null) {
+                try {
+                    resultStream.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Ignoring failure to close stream "
+                            + "on " + resultFileName);
+                    throwable.printStackTrace();
+                }
+            }
+        }
     }
 }
