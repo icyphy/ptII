@@ -40,6 +40,12 @@
 <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
 </entity>
 
+<entity name="network" class="ptolemy.moml.EntityLibrary">
+    <entity name="MAC" class="ptolemy.moml.EntityLibrary">
+        <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.mac.IEEE80211MAC">
+        </entity>
+    </entity>
+</entity>    
       </group>
     ?>
   </configure>
