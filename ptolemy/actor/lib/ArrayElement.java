@@ -126,7 +126,8 @@ public class ArrayElement extends Transformer {
             int indexValue = ((IntToken)index.getToken()).intValue();
             if (indexValue < 0 || indexValue >= token.length()) {
                 throw new IllegalActionException(this,
-                        "index " + indexValue + " is out of range for the input "
+                        "index " + indexValue
+                        + " is out of range for the input "
                         + "array, which has length " + token.length());
             }
             output.send(0, token.getElement(indexValue));
