@@ -473,7 +473,7 @@ public class Pxgraph extends Frame {
                 case 'x':
                     // Used for debugging, brings up pxgraph.x11.
                     _pxgraphX11();
-                break;
+                    break;
                 }
             }
         });
