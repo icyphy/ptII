@@ -74,14 +74,13 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
      *  @param name The name of the entry that changed.
      */
     public void changed(String name) {
-	// System.out.println(" QUERY CHANGED TO: " + name);
         try {
 	    if ( name == "precision" ) {
 		 _doubleToFix.precision.setToken(new StringToken(_query.stringValue("precision")));
-	    }
-	    if ( name=="rounding" ) {
-		_doubleToFix.mode.setToken(new StringToken(_query.stringValue("rounding")));
-	    }
+	    } 
+            if ( name=="rounding" ) {
+                _doubleToFix.mode.setToken(new StringToken(_query.stringValue("rounding")));                
+	    } 
             _go();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -94,20 +93,17 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
     public void init() {
         super.init();
 
-        // The 1 argument requests a go and a stop button.
-        // add(_createRunControls(2));
-
         try {            
 
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-	    String[] options = {"Saturate", "Rounding", "Truncate"};
+	    String[] options = {"Round", "Truncate"};
 	    
 	    _query = new Query();
             _query.setBackground(getBackground());
             _query.addLine("precision", "Precision of the FixTokens", "2.1");
-	    _query.addRadioButtons("rounding","Rounding Mode",options,"Saturate");
+	    _query.addRadioButtons("rounding","Rounding Mode",options,"Round");
             _query.addQueryListener(this);
             getContentPane().add( _query );
 
@@ -125,7 +121,7 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             // Create and configure coder
             _doubleToFix = new DoubleToFix(_toplevel, "tofix");
 	    _doubleToFix.precision.setToken(new StringToken("(2.1)"));
-            _doubleToFix.mode.setToken(new StringToken("SATURATE"));	    
+            _doubleToFix.mode.setToken(new StringToken("Round"));	    
             
             // Create and configure coder
             _fixToDouble = new FixToDouble(_toplevel, "todouble");
@@ -139,7 +135,6 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             _myplot.plot.setWrap(true);
             _myplot.plot.setYRange(-10, 10);
             _myplot.plot.setMarksStyle("dots");
-            // _myplot.plot.setPointsPersistence(1512);
             _myplot.plot.setSize(500, 300);
 
             _toplevel.connect( _ramp.output, _doubleToFix.input);
