@@ -4,7 +4,7 @@
 <entity name="DatagramCounter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 415]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -36,7 +36,8 @@ has been sent by the DatagramWriter.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo shows the datagram actors used in the SDF domain.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo measures the speed of the datagram actors in the SDF domain.
+Look for the execution time on the console which invoked the model.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -49,17 +50,17 @@ has been sent by the DatagramWriter.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="0.0, 15.0">
+        <property name="_location" class="ptolemy.moml.Location" value="-20.0, 5.0">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 80.0">
+        <property name="_location" class="ptolemy.moml.Location" value="105.0, 235.0">
         </property>
     </property>
     <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
@@ -164,44 +165,12 @@ has been sent by the DatagramWriter.</text></svg></configure>
             <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
         </property>
     </property>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="386.5, 303.5">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 148.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
         </property>
-        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter">
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -213,7 +182,7 @@ has been sent by the DatagramWriter.</text></svg></configure>
         </property>
         <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
                 </property>
@@ -233,6 +202,8 @@ has been sent by the DatagramWriter.</text></svg></configure>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -268,23 +239,84 @@ has been sent by the DatagramWriter.</text></svg></configure>
         </port>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
         <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 155.0">
-        </vertex>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="455.0, 320.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>HistogramPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.0" max="3.5"/>
+<yRange min="0.0" max="900.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="1.0" offset="0.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
+        <property name="_location" class="ptolemy.moml.Location" value="370.0, 320.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="130.0, 145.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Display.input" relation="relation5"/>
-    <link port="Ramp.output" relation="relation2"/>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DatagramReader.output" relation="relation5"/>
     <link port="DatagramReader.trigger" relation="relation"/>
-    <link port="DatagramWriter.data" relation="relation2"/>
+    <link port="DatagramWriter.data" relation="relation7"/>
     <link port="DatagramWriter.triggerOutput" relation="relation"/>
+    <link port="HistogramPlotter.input" relation="relation6"/>
+    <link port="ArrayLength.input" relation="relation5"/>
+    <link port="ArrayLength.output" relation="relation6"/>
+    <link port="Ramp.output" relation="relation7"/>
 </entity>
