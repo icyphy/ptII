@@ -21,10 +21,6 @@
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
-        <property name="displaySchedule" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="91.0, 30.0">
         </property>
     </property>
