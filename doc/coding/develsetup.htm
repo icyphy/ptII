@@ -76,51 +76,6 @@ ln -s ~/ptII .
 </pre>
 </ol>
 
-<h2>Releases</h2>
-Below are the steps to build a release
-<ol>
-<li> Clean the tree by running <CODE>make checkjunk</CODE>
-and adding files as appropriate to the makefiles
-
-<li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
-
-<li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
-coding standard.
-
-<li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
-the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
-
-<li> Run the nightly build, build a release and run 
-<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the files.
-
-<pre>
-find . -type f -print &gt; ~/tmp/ff
-sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif` 
-</pre>
-
-<li> Tag the tree as the release tree and create a branch
-For more information about CVS, see the 
-<a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
-
- <p>To make a branch for 0.4beta, use the following command:
-<pre>
-cd $PTII
-cvs tag -b rel-0-4-beta
-</pre>
-Then check out the release branch  with
-<pre>
-cd ~/src
-cvs co -r rel-0-4-beta ptII
-mv ptII ptII0.4
-</pre>
-
-<li> The nightly build uses a makefile in ~ptII/adm (not shipped)
-to build the release.  Copy the most recent makefile and
-set up a new tree for the release tree.
-
-</ol>
-
-
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
