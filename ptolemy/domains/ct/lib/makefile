@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/lib
 
-DIRS =
+DIRS =		test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
