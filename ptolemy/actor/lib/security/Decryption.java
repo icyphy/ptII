@@ -136,7 +136,7 @@ public class Decryption extends TypedAtomicActor {
         provider.setTypeEquals(BaseType.STRING);
         provider.setExpression("\"\"");
 
-        cryptoMode = new StringAttribute(this, "mode");
+        cryptoMode = new StringAttribute(this, "cyrptoMode");
         cryptoMode.setExpression("\"asymmetric\"");
         _keyMode = _ASYMMETRIC;
     }
