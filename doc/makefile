@@ -86,6 +86,7 @@ MISC_FILES =	\
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	\
 	codeDoc \
+	codeDocPtiny \
 	uml
 
 PTINYJSRCS = \
