@@ -111,27 +111,23 @@ public class DDEGetNToken extends DDEGet {
 		    for( int j = 0; j < rcvrs[i].length; j++ ) {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 			if( rcvr.hasToken() ) {
-			    /*
-			    System.out.println("DDEGetNToken.hasToken()"
-				    + "returned true;   cnt = " + cnt);
-			    */
 			    _tokens[cnt] = rcvr.get(); 
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime(); 
-                            /*
-			    System.out.println("DDEGetNToken time set to "
-				    + timeKeeper.getCurrentTime() +
-				    " for cnt " +cnt);
-                            */
+		            cnt++;
 			    j = rcvrs[i].length + 1;
 			    finished = true;
+			    /*
+			} else if( rcvr._ignoreNotSeen ) {
+			    System.out.println("_ignoreNotSeen is true");
+			} else if( !rcvr._ignoreNotSeen ) {
+			    System.out.println("_ignoreNotSeen is false");
+			    */
 			}
 		    }
 		    if( finished ) {
 			i = rcvrs.length + 1;
 		    }
 		}
-		// _tokens[cnt] = getNextToken(); 
-		cnt++;
 	    }
 	}
     }
