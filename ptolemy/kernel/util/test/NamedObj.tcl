@@ -48,9 +48,31 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 ######################################################################
-#### Create a NamedObj
+####
 # 
-test NamedObj-1.1 {Create a NamedObj, set the name, change it} {
+test NamedObj-1.1 {Get information about an instance of NamedObj} {
+    # If anything changes, we want to know about it so we can write tests.
+    set n [java::new pt.kernel.NamedObj]
+    list "\n \
+    class:         [java::info class $n]\n \
+    fields:        [java::info fields $n]\n \
+    methods:       [java::info methods $n]\n \
+    constructors:  [java::info constructors $n]\n \
+    properties:    [java::info properties $n]\n \
+    superclass:    [java::info superclass $n]\n"
+} {{
+  class:         pt.kernel.NamedObj
+  fields:        
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParam
+  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String}
+  properties:    class name param
+  superclass:    java.lang.Object
+}}
+
+######################################################################
+####
+# 
+test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
     set n [java::new pt.kernel.NamedObj]
     set result1 [$n getName]
     $n setName "A Named Obj"
@@ -61,3 +83,36 @@ test NamedObj-1.1 {Create a NamedObj, set the name, change it} {
     set result4 [$n getName]
     list $result1 $result2 $result3 $result4
 } {{} {A Named Obj} {A different Name} {}}
+
+######################################################################
+####
+# 
+test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
+    set n [java::new pt.kernel.NamedObj "name set in constructor"]
+    set result1 [$n getName]
+    $n setName "A Named Obj"
+    set result2 [$n getName]
+    $n setName "A different Name"
+    set result3 [$n getName]
+    $n setName {}
+    set result4 [$n getName]
+    list $result1 $result2 $result3 $result4
+} {{name set in constructor} {A Named Obj} {A different Name} {}}
+
+
+######################################################################
+####
+# 
+test NamedObj-2.3 { Check names with dots} {
+    catch {set n [java::new pt.kernel.NamedObj "This.name.has.dots"]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: NamedObj name (This.name.has.dots) has illegal embedded dot (.)}}
+
+######################################################################
+####
+# 
+test NamedObj-3.1 {Experiment with Parameters} {
+    set n [java::new pt.kernel.NamedObj]
+    set paramlist [ $n getParam]
+    list ""
+} {{}}
