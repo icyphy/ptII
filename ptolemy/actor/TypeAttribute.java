@@ -42,7 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
 An attribute for defining a data type for a port.
 Use setExpression() to define a data type, as in for example,
 <pre>
-    attribute.setExpression("BaseType.DOUBLE");
+    attribute.setExpression("double");
 </pre>
 The class TypedIOPort recognizes when this attribute is inserted
 and calls setTypeEquals() to define its type.
