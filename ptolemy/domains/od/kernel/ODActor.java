@@ -367,7 +367,8 @@ public class ODActor extends AtomicActor {
             String testString = "null";
             try {
             if( testRcvr.hasToken() && getName().equals("printer") ) {
-                System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
+	        // System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
+		//System.out.println("Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
                 Event testEvent = ((Event)((ODReceiver)testRcvr)._queue.get(0));
                 StringToken testToken = (StringToken)testEvent.getToken();
                 testString = testToken.stringValue();
