@@ -44,11 +44,8 @@ A CT director that does not change its ODE solver.
 @author Jie Liu
 @version $Id$
 */
-public class CTSingleSolverDirector extends StaticSchedulingDirector
-        implements CTDirector, ParameterListener{
+public class CTSingleSolverDirector extends CTDirector {
 
-    public static final boolean VERBOSE = false;
-    public static final boolean DEBUG = false;
 
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
@@ -56,13 +53,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */	
     public CTSingleSolverDirector () {
         super();
-        try {
-            setScheduler(new CTScheduler());
-        }catch(IllegalActionException e) {
-            // Should never occur.
-            throw new InternalErrorException(this.getFullName() + 
-                "setting scheduler error");
-        }
         _initParameters();
     }
 
@@ -77,13 +67,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */
     public CTSingleSolverDirector (String name) {
         super(name);
-        try {
-            setScheduler(new CTScheduler());
-        }catch(IllegalActionException e) {
-            // Should never occur.
-            throw new InternalErrorException(this.getFullName() + 
-                "setting scheduler error");
-        }
         _initParameters();
     }
 
@@ -100,104 +83,12 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
      */
     public CTSingleSolverDirector (Workspace workspace, String name) {
         super(workspace, name);
-        try {
-            setScheduler(new CTScheduler());
-        }catch(IllegalActionException e) {
-            // Should never occur.
-            throw new InternalErrorException(this.getFullName() +
-                "setting scheduler error");
-        }
         _initParameters();
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Return the current ODESolver. 
-     *  @return The current ODESolver
-     */
-    public final ODESolver getCurrentODESolver() {
-        return _currentSolver;
-    }
-
-    /** Return the current step size. In a fixed step size method this is 
-     *  is the value set by setParam("initialStepSize"). For a variable step
-     *  size method, the step size is controlled by the algorithm.
-     *  @return the current step size.
-     */
-    public final double getCurrentStepSize() {
-        return _currentStepSize;
-    }
-
-    /** Return the currentTime.
-     *  @return the currentTime.
-     */
-    public final double getCurrentTime() {
-        return _currentTime;
-    }
-
-    /** Return the initial step size, as in the parameter.
-     */
-    public final double getInitialStepSize() {
-        return ((DoubleToken)_paramInitStepSize.getToken()).doubleValue();
-    }
-
-    /** Return the startTime.
-     *  @return the startTime.
-     */
-    public final double getStartTime() {
-        return _startTime;
-    }
-
-    /** Return the stopTime.
-     *  @return the stopTime.
-     */
-    public final double getStopTime() {
-        return _stopTime;
-    }
-
-    /** Return the time accuracy such that two time stamp within this
-     *  accuracy is considered identical.
-     *  @return The time accuracy.
-     */
-    public final double getTimeAccuracy() {
-        return _timeAccuracy;
-    }
-   
-    /** Return the local trancation error tolerant, used for
-     *  adjustable step size solvers.
-     *  @return The local trancation error tolerant.
-     */   
-    public final double getLTETolerant() {
-        return _lteTolerant;
-    }
-
-    /** Return the value accuracy, used for test if implicit method 
-     *  has reached the fixed point. Two values differ less than 
-     *  this accuracy is considered identical in fixed point 
-     *  calculation.
-     *  
-     *  @return The local trancation error tolerant.
-     */ 
-    public final double getValueAccuracy() {
-        return _valueAccuracy;
-    }
-    
-    /** Return the minimum step size used in variable step size
-     *  ODE solvers.
-     */
-    public final double getMinStepSize() {
-        return _minStepSize;
-    }
-
-    /** Return the maximum number of iterations in fixed point
-     *  calculation. If the iteration has exceed this number
-     *  and the fixed point is still not found, then the algorithm
-     *  is considered failed.
-     */
-    public final int getMaxIterations() {
-        return _maxIterations;
-    }
 
     /** This does the initialization for the entire subsystem. This 
      *  is called exactly once at the start of the entire execution.
@@ -244,9 +135,10 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         if(VERBOSE) {
             System.out.println("instantiating ODE solver"+_solverclass);
         }
-        if(getCurrentODESolver() == null) {
+        if(_defaultSolver == null) {
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
+         setCurrentODESolver(_defaultSolver);
         // set time
         setCurrentTime(getStartTime());
         setCurrentStepSize(getInitialStepSize());
@@ -258,11 +150,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         super.initialize();
     }
 
-    /** Return a CTReceiver.
-     */
-    public Receiver newReceiver() {
-        return new CTReceiver();
-    }
 
     /** Perform mutation and process pause/stop request.
      *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
@@ -322,16 +209,17 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         }
         ODESolver solver = getCurrentODESolver();
         double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
         // If now is a break point, remove the break point from table;
-        if(!_breakPoints.isEmpty()) {
-            bp = ((Double)_breakPoints.first()).doubleValue();
+        if((breakPoints != null) && !breakPoints.isEmpty()) {
+            bp = ((Double)breakPoints.first()).doubleValue();
             if(bp <= getCurrentTime()) {
                 // break point now!
-                _breakPoints.removeFirst();   
+                breakPoints.removeFirst();   
             }
             //adjust step size;
-            if(!_breakPoints.isEmpty()) {
-                bp = ((Double)_breakPoints.first()).doubleValue();
+            if(!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
                 double iterEndTime = getCurrentTime()+getCurrentStepSize();
                 if (iterEndTime > bp) {
                     setCurrentStepSize(bp-getCurrentTime());
@@ -343,17 +231,6 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
         updateStates(); // call postfire on all actors 
     }
 
-    /** Register a break point in the future. This request the
-     *  Director to fire exactly at the each registered time.
-     *  Override the fireAfterDelay() method in Director.
-     */
-    public void fireAfterDelay(Actor actor, double delay) {
-        if(_breakPoints == null) {
-            _breakPoints = new TotallyOrderedSet(new DoubleComparator());
-        }
-        Double bp = new Double(delay+getCurrentTime());   
-        _breakPoints.insert(bp);
-    }
 
     /** test if the current time is the stop time. 
      *  If so, return false ( for stop further simulaiton).
@@ -401,240 +278,72 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
 
     /** update States
      */
-     public void updateStates() throws IllegalActionException {
-         CompositeActor container = (CompositeActor) getContainer();
-         Enumeration allactors = container.deepGetEntities();
-         while(allactors.hasMoreElements()) {
-             Actor nextactor = (Actor)allactors.nextElement();
-             nextactor.postfire();
-         }
-     }
+    public void updateStates() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        Enumeration allactors = container.deepGetEntities();
+        while(allactors.hasMoreElements()) {
+            Actor nextactor = (Actor)allactors.nextElement();
+            nextactor.postfire();
+        }
+    }
     
-    /** If parameter changed, queue the event
-     */
-    public void parameterChanged(ParameterEvent e) {
-        if(VERBOSE) {
-            System.out.println("Parameter Changed.");
-        }
-        if(_parameterEvents == null) {
-            _parameterEvents = new LinkedList();
-        }
-        _parameterEvents.insertLast(e);
-    }
-
-    /** Throw a InvalidStateException if any of the parameters are deleted.
-     */
-    public void parameterRemoved(ParameterEvent e) {
-        throw new InvalidStateException(this,
-            "Critical Parameter deleted");
-    }
     /** Update paramters.
      */
     public void updateParameters() throws IllegalActionException {
-        if((_parameterEvents != null )&& (!_parameterEvents.isEmpty())) {
+        LinkedList pEvents = _getParameterEvents();
+        if((pEvents != null )&& (!pEvents.isEmpty())) {
             if(DEBUG) {
-                System.out.println("events = "+_parameterEvents.size());
-            }
-            Enumeration pevents = _parameterEvents.elements();
-            while(pevents.hasMoreElements()) {
-                ParameterEvent event = (ParameterEvent) pevents.nextElement();
+                System.out.println(" # of events = "+pEvents.size());
+            }            
+            Enumeration pes = pEvents.elements();
+            while(pes.hasMoreElements()) {
+                ParameterEvent event = (ParameterEvent) pes.nextElement();
                 Parameter param = event.getParameter();
-                if(param == _paramStopTime) {
-                    if(VERBOSE) {
-                        System.out.println("StopTime updating.");
-                    }
-                    _stopTime = ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramInitStepSize) {
-                    if(VERBOSE) {
-                        System.out.println("initStepSize updating.");
-                    }
-                    _initStepSize = 
-                    ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramStartTime) {
-                    if(VERBOSE) {
-                        System.out.println("starttime updating.");
-                    }
-                    _startTime = ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramODESolver) {
+                if(param == _paramODESolver) {
                     if(VERBOSE) {
                         System.out.println("solver updating.");
                     }
-                    _solverclass =((StringToken)param.getToken()).stringValue();
+                    _solverclass =
+                        ((StringToken)param.getToken()).stringValue();
                     _defaultSolver = _instantiateODESolver(_solverclass);
-                } else if(param == _paramLTETolerant) {
-                    if(VERBOSE) {
-                        System.out.println("LTE tolerant updating.");
-                    }
-                    _lteTolerant = 
-                    ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramMinStepSize) {
-                    if(VERBOSE) {
-                        System.out.println("minstep updating.");
-                    }
-                    _minStepSize = 
-                    ((DoubleToken)param.getToken()).doubleValue();
-                }  else if(param == _paramValueAccuracy) {
-                    _valueAccuracy = 
-                    ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramTimeAccuracy) {
-                    _timeAccuracy = 
-                    ((DoubleToken)param.getToken()).doubleValue();
-                } else if(param == _paramMaxIterations) {
-                    _maxIterations = 
-                    ((IntToken)param.getToken()).intValue();
                 } else {
-                    System.out.println("Unknowparameter"+param.getName());
+                    super.updateParameter(event);
                 }
             }
-            _parameterEvents.clear();
+            pEvents.clear();
         }
     }
-
-    /** set the currentODESolver
-     */
-    public void setCurrentODESolver(ODESolver solver)
-            throws IllegalActionException {
-        _currentSolver = solver;
-    }   
-
-    /** Set the current step size. This variable is very import during
-     *  the simulation and can not be changed in the middle of an
-     *  iteration.
-     *  @param curstepsize The step size used for currentStepSize().
-     */
-    public void setCurrentStepSize(double curstepsize){
-        _currentStepSize = curstepsize;
-    }
-
-    /** Set the current simulation time. All the actors directed by this
-     *  director will share this global time. 
-     *  @param tnow The current time.
-     */
-    public void setCurrentTime(double tnow){
-        _currentTime = tnow;
-    }
+                
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-
-    /** Add all the parameters.
-     */
     protected void _initParameters() {
         try {
-            _startTime = 0.0;
-            _stopTime = 1.0;
-            _initStepSize = 0.1;
-            _minStepSize = 0.001;
-            _maxIterations = 20;
-            _lteTolerant = 1e-4;
-            _valueAccuracy = 1e-6;
-            _timeAccuracy = 1e-6;
-            _solverclass = "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
-
-            _paramStartTime = new CTParameter(
-                this, "StartTime", new DoubleToken(_startTime));
-            _paramStopTime = new CTParameter(
-                this, "StopTime", new DoubleToken(_stopTime));
-            _paramInitStepSize = new CTParameter(
-                this, "InitialStepSize", new DoubleToken(_initStepSize));
-            _paramMinStepSize = new CTParameter(
-                this, "MinimumStepSize", new DoubleToken(_minStepSize));
-            _paramMaxIterations = new CTParameter(
-                this, "MaximumIterationsPerStep", new IntToken(_maxIterations));
-            _paramLTETolerant =  new CTParameter(
-                this, "LocalTrancationErrorTolerant",
-                new DoubleToken(_lteTolerant));
-            _paramValueAccuracy =  new CTParameter(
-                this, "ConvergeValueAccuracy", new DoubleToken(_valueAccuracy));
-            _paramTimeAccuracy= new CTParameter(
-                this, "TimeAccuracy", new DoubleToken(_timeAccuracy));
+            _solverclass= "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             _paramODESolver = new CTParameter(
                 this, "ODESolver", new StringToken(_solverclass));
-            //The director is registered as parameterlistener automatically. 
-
+            super._initParameters();
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
             throw new InvalidStateException(this,"Parameter name duplication.");
         }
+        
     }
-  
-    /** Instantiate ODESolver from its classname
-     */
-    protected ODESolver _instantiateODESolver(String solverclass) 
-            throws IllegalActionException {
-        ODESolver newsolver;
-        if(VERBOSE) {
-            System.out.println("instantiating solver..."+solverclass);
-        }
-        try {
-            Class solver = Class.forName(solverclass);
-            newsolver = (ODESolver)solver.newInstance();
-        } catch(ClassNotFoundException e) {
-            if(DEBUG) {
-                System.out.println("solver class not found" + e.getMessage());
-            }
-            throw new IllegalActionException( this, "ODESolver: "+
-                solverclass + " not found.");
-        } catch(InstantiationException e) {
-            if(DEBUG) {
-                System.out.println("solver instantiate error" + e.getMessage());
-            }
-            throw new IllegalActionException( this, "ODESolver: "+
-                solverclass + " instantiation failed.");
-        } catch(IllegalAccessException e) {
-            if(DEBUG) {
-                System.out.println("solver not accessible" + e.getMessage());
-            }
-            throw new IllegalActionException( this, "ODESolver: "+
-                solverclass + " not accessible.");
-        }
-        newsolver._makeSolverOf(this);
-        return newsolver;
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // current ODE solver.
-    private ODESolver _currentSolver = null;
-    private ODESolver _defaultSolver = null;
-
-    // parameters.
-    private CTParameter _paramStartTime;
-    private CTParameter _paramStopTime;
-    private CTParameter _paramInitStepSize;
-    private CTParameter _paramMinStepSize;
-    private CTParameter _paramMaxIterations;
-    private CTParameter _paramLTETolerant;
-    private CTParameter _paramValueAccuracy;
-    private CTParameter _paramTimeAccuracy;
+    // parameter of ODE solver
     private CTParameter _paramODESolver;
-    
-    //values
-    private double _startTime;
-    private double _stopTime;
-    private double _initStepSize;
-    private double _minStepSize;
-    private int _maxIterations;
-    private double _lteTolerant;
-    private double _valueAccuracy;
-    private double _timeAccuracy;
+    // The classname of the ODE solver
     private String _solverclass;
 
-    private LinkedList _parameterEvents = null;
-    
-    // Simulation progress variables.
-    private double _currentTime;
-    private double _currentStepSize;
+    // The default solver.
+    private ODESolver _defaultSolver = null;
 
     //indicate the first round of execution.
+    
     private boolean _first;
-
-    //A table for wave form break points.
-    private TotallyOrderedSet _breakPoints;
 }
