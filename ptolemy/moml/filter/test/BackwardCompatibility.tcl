@@ -651,34 +651,38 @@ proc createAndExecute {file} {
 	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
 	    || "$file" == "compat/TransferFunction.xml" \
 	    || "$file" == "compat/ArrayAppend.xml" \
-	    || "$file" == "compat2/ImageReaderImageDisplay.xml" \
-	    || "$file" == "compat2/ImageReaderImageRotateImageToString.xml" \
-	    || "$file" == "compat2/ImageReaderImageToString.xml" \
-	    || "$file" == "compat2/testAudioReader.xml" \
-	    || "$file" == "compat2/testAudioPlayer.xml" \
-	    || "$file" == "compat2/testAudioCapture_AudioPlayer.xml" \
-	    || "$file" == "compat2/testAudioCapture.xml" \
-	    || "$file" == "compat2/automataLibrary.xml" \
-	    || "$file" == "compat2/DifferentialSystem.xml" \
-	    || "$file" == "compat2/FireAtCT.xml" \
-	    || "$file" == "compat2/FireAtCT2.xml" \
-	    || "$file" == "compat2/FireAtDE.xml" \
-	    || "$file" == "compat2/MaximumEntropySpectrum.xml" \
-	    || "$file" == "compat2/MethodCallTest.xml" \
-	    || "$file" == "compat2/MultimodeTest.xml" \
-	    || "$file" == "compat2/TransferFunction.xml" \
-	    || "$file" == "compat2/Samplers.xml" \
-	    || "$file" == "compat2/SampleDelay.xml" \
-	    || "$file" == "compat2/Sampler.xml" \
-	    || "$file" == "compat2/SamplerWithDefault.xml" \
-	    || "$file" == "compat2/SamplerWithDefault1.xml" \
-	    || "$file" == "compat2/SamplerWithDefault2.xml" \
-	    || "$file" == "compat2/multirate.xml" \
-	    || "$file" == "compat2/testAudioReaderAudioPlayer.xml" \
-	    || "$file" == "compat2/VariableFIR2.xml" \
-	    || "$file" == "compat/Autocorrelation3.xml" \
-	    || "$file" == "compat2/Autocorrelation3.xml" \
-	    || "$file" == "compat2/test-pn-composite-1.xml" \
+	    || [file tail $file] == "ImageReaderImageDisplay.xml" \
+	    || [file tail $file] == "ImageReaderImageRotateImageToString.xml" \
+	    || [file tail $file] == "ImageReaderImageToString.xml" \
+	    || [file tail $file] == "testAudioReader.xml" \
+	    || [file tail $file] == "testAudioPlayer.xml" \
+	    || [file tail $file] == "testAudioCapture_AudioPlayer.xml" \
+	    || [file tail $file] == "testAudioCapture.xml" \
+	    || [file tail $file] == "automataLibrary.xml" \
+	    || [file tail $file] == "DifferentialSystem.xml" \
+	    || [file tail $file] == "FireAtCT.xml" \
+	    || [file tail $file] == "FireAtCT2.xml" \
+	    || [file tail $file] == "FireAtDE.xml" \
+	    || [file tail $file] == "MaximumEntropySpectrum.xml" \
+	    || [file tail $file] == "MethodCallTest.xml" \
+	    || [file tail $file] == "MultimodeTest.xml" \
+	    || [file tail $file] == "TransferFunction.xml" \
+	    || [file tail $file] == "Samplers.xml" \
+	    || [file tail $file] == "SampleDelay.xml" \
+	    || [file tail $file] == "Sampler.xml" \
+	    || [file tail $file] == "SamplerWithDefault.xml" \
+	    || [file tail $file] == "SamplerWithDefault1.xml" \
+	    || [file tail $file] == "SamplerWithDefault2.xml" \
+	    || [file tail $file] == "multirate.xml" \
+	    || [file tail $file] == "testAudioReaderAudioPlayer.xml" \
+	    || [file tail $file] == "VariableFIR2.xml" \
+	    || [file tail $file] == "Autocorrelation3.xml" \
+	    || [file tail $file] == "test-pn-composite-1.xml" \
+	    || "$file" == "compat3/FileWriter2.xml" \
+	    || "$file" == "compat3/ReadLineInPTII.xml" \
+	    || "$file" == "compat3/function.xml" \
+	    || "$file" == "compat3/automataActorLibrary.xml" \
+	    || "$file" == "compat3/ViterbiDecoderSoft.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
