@@ -48,10 +48,26 @@ PTPACKAGE = 	ast
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# Don't use GNU make extensions here
+#    $(wildcard *.java)
 JSRCS = \
-    $(wildcard *.java)
+	ASTClassNotFoundException.java \
+	ASTException.java \
+	ASTQuery.java \
+	ASTResolutionException.java \
+	ASTRewrite.java \
+	ASTVisitor.java \
+	ExceptionPrinter.java \
+	LocalClassLoader.java \
+	Type.java \
+	TypeAnalyzer.java \
+	UnknownASTException.java
 
-EXTRA_SRCS =	$(JSRCS)
+
+OTHER_FILES_TO_BE_JARED = \
+	jrefactory-copyright.txt
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
