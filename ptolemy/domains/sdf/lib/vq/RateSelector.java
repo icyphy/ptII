@@ -80,7 +80,7 @@ public class RateSelector extends SDFAtomicActor {
         maxRate = 
             new Parameter(this, "maxRate", new IntToken("8000"));
 	blocks =
-	    new Parameter(this, "blocks", new DoubleToken("1584"));
+	    new Parameter(this, "blocks", new IntToken("1584"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,9 +144,9 @@ public class RateSelector extends SDFAtomicActor {
 	int x, y;
         int partitionNumber;
 	double _maxRate = 
-	    ((DoubleToken)maxRate.getToken()).doubleValue();
+	    ((ScalarToken)maxRate.getToken()).doubleValue();
 	int _blocks =
-	    ((IntToken)blocks.getToken()).intValue();
+	    ((ScalarToken)blocks.getToken()).intValue();
 	
 	IntMatrixToken optimalData[] = new IntMatrixToken[_blocks];
         IntToken optimalRate[] = new IntToken[_blocks];
