@@ -1,8 +1,8 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Communicating Sequential Processes domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, Neil Smyth
 #
-# @Version: @(#)makefile	1.20 08/20/98
+# @Version:$Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/ct/kernel
+ME =		ptolemy/domains/csp/kernel
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -46,37 +43,21 @@ DIRS = 		test #demo #doc
 CLASSPATH =	../../../..
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.domains.ct.kernel
+TYPACKAGE = 	ptolemy.domains.csp.kernel
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/domains/ct/kernel
+TYPACKAGE_DIR = ptolemy/domains/csp/kernel
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	CTActor.java \
-	CTBaseIntegrator.java \
-	CTBackwardEulerDirector.java \
-	CTBackwardEulerSolver.java \
-	CTDirector.java \
-	CTDP45Solver.java \
-	CTFixedStepRKDirector.java \
-	CTFixedStepRKSolver.java \
-	CTFixedStepRK4Solver.java \
-	CTForwardEulerSolver.java \
-	CTModifiedEnglandDirector.java \
-	CTODESolver.java \
-	CTPort.java \
-	CTRKEnglandDirector.java \
-	CTRKEnglandSolver.java \
-	CTScheduler.java \
-	CTSimulationDirector.java \
-	CTSubSystem.java \
-	CTSystem.java \
-	CTTopSortScheduler.java \
-	CTVariableStepRKDirector.java \
-	CTVariableStepRKSolver.java
+	ConditionalBranch.java \
+	ConditionalReceive.java \
+	ConditionalSend.java \
+	CSPActor.java \
+	CSPCompositeActor \
+	CSPReceiver.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
