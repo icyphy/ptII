@@ -61,7 +61,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DirectoryListing
 /**
 Given a URL or directory name, this actor produces an array of file names
-in that directory that match an (optional) pattern.  The pattern is
+in that directory that match an (optional) pattern.  The file names that
+are returned are absolute. The pattern is
 a regular expression. For a reference on regular expression syntax see:
 <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
 http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
@@ -177,7 +178,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
                 File[] files = sourceFile.listFiles(this);
                 StringToken[] result = new StringToken[files.length];
                 for (int i = 0; i < files.length; i++) {
-                    result[i] = new StringToken(files[i].getName());
+                    result[i] = new StringToken(files[i].getAbsolutePath());
                 }
                 output.broadcast(new ArrayToken(result));
                 return;
