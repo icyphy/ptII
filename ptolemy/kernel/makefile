@@ -53,58 +53,28 @@ CLASSPATH = ../..
 
 JSRCS = \
 	CrossRefList.java \
-	DataPort.java \
 	Entity.java \
 	GraphException.java \
-	HasValue.java \
-	IntervalTag.java \
-	InvalidMoCException.java \
 	IntParam.java \
 	NamedObj.java \
 	NamedObjList.java \
 	NameDuplicationException.java \
-	NoTag.java \
-	NoTagDoubleParticle.java \
-	NoTagHasValue.java \
-	NoValue.java \
 	NullReferenceException.java \
 	ObservableParameter.java \
 	Param.java \
 	ParamList.java \
 	Parameter.java \
-	Particle.java \
 	Port.java \
 	PortList.java \
 	PtolemyException.java \
 	Relation.java \
-	StatusArray.java \
-	Tag.java \
-	TagInterface.java \
-	TimedTag.java \
-	TimedHasValue.java \
-	TimedNoValue.java \
-	ThreadedEntity.java \
-	Value.java \
-	ValueInterface.java
-	#FIXME: FIFORelation.java \
-	#FIXME: Galaxy.java \
-	#FIXME: Star.java \
-	#FIXME: Universe.java \
-	#Removed GraphElement.java on 11/11/97 by davisj
-	#Removed GenericPort.java on 11/11/97 by davisj 
-	#Removed MultiPort.java on 11/11/97 by davisj
-	#Moved CentralizedExecutive.java to kernel/copies
-	#Moved DistributedExecutive.java to kernel/copies 
-	#Moved Executive.java to kernel/copies 
-	#Moved Target.java to kernel/copies
-	#Moved POElement.java to kernel/copies
 
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc itcl test
+MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
