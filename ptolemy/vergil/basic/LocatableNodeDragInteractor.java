@@ -133,16 +133,16 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // It isn't the right thing to do to align the center of the figure
         // to the grid.  So we align to the zero point of the figure,
         // which is a little tough to get...
+        // NOTENOTE: Yes, but this doesn't have an effect here, since the
+        // label is not going to change during a drag...
 
         Iterator targets = targets();
         double[] originalUpperLeft = null;
         while (targets.hasNext()) {
             Figure figure = (Figure) targets.next();
             originalUpperLeft = new double[2];
-            AffineTransform transform
-                    = figure.getTransformContext().getTransform();
-            originalUpperLeft[0] = transform.getTranslateX();
-            originalUpperLeft[1] = transform.getTranslateY();
+            originalUpperLeft[0] = figure.getBounds().getX();
+            originalUpperLeft[1] = figure.getBounds().getY();
             // Only snap the first figure in the set.
             break;
         }
