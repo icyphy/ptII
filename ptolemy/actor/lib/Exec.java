@@ -44,7 +44,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
@@ -199,7 +201,8 @@ public class Exec extends TypedAtomicActor {
             if (_process == null
                     || ((StringToken)command.getToken()).stringValue()
                     != _oldCommandValue) {
-                // If the command changed, we restart
+                // If the command changed, we stop the process
+                // and start another.
                 _terminateProcess();
                 _exec();
                 _oldCommandValue =
@@ -279,6 +282,8 @@ public class Exec extends TypedAtomicActor {
         // hits the stop button, the fire() method is at
         // blockingGetAndReset() and waiting for input.
         // What we do is call notifyAll on the outputGobbler process.
+
+        // See ptolemy.actor.io.comm.SerialComm for a similar situation.
         super.stop();
         if (_outputGobbler != null) {
             _outputGobbler.notifyStringBuffer();
@@ -347,7 +352,7 @@ public class Exec extends TypedAtomicActor {
                 environmentArray = new String[environmentToken.length];
                 for (int i = 0; i < environmentToken.length; i++) {
                     // FIXME: is there a better way to convert a Token []
-                    // to a String [].
+                    // to a String []?
                     StringToken stringToken =
                         (StringToken)environmentToken[i];
                     environmentArray[i] = stringToken.stringValue();
@@ -376,14 +381,19 @@ public class Exec extends TypedAtomicActor {
 
             _outputGobbler =
                 new _StreamReaderThread(_process.getInputStream(),
-                        "Exec Stdout Gobbler" + _count++);
-
+                        "Exec Stdout Gobbler-" + _streamReaderThreadCount++,
+                        this);
             _errorGobbler =
                 new _StreamReaderThread(_process.getErrorStream(),
-                        "Exec Stderr Gobbler" + _count++, _outputGobbler);
-
+                        "Exec Stderr Gobbler-" +  _streamReaderThreadCount++,
+                        this, _outputGobbler);
             _errorGobbler.start();
             _outputGobbler.start();
+
+            if (_streamReaderThreadCount++ > 1000) {
+                // Avoid overflow. 
+                _streamReaderThreadCount = 0;
+            }
 
             OutputStreamWriter inputStreamWriter =
                 new OutputStreamWriter(_process.getOutputStream());
@@ -398,25 +408,31 @@ public class Exec extends TypedAtomicActor {
 
     // Terminate the process and close any associated streams.
     private void _terminateProcess() throws IllegalActionException {
-        try {
-            if (_inputBufferedWriter != null) {
-                _inputBufferedWriter.close();
-            }
-            if (_process != null) {
-                if (_process.getInputStream() != null) {
-                    _process.getInputStream().close();
-                }
-                if (_process.getOutputStream() != null) {
-                    _process.getOutputStream().close();
-                }
-                if (_process.getErrorStream() != null) {
-                    _process.getErrorStream().close();
-                }
-                //_process = null;
-            }
+        // FIXME: Note that if we terminate the streams associated
+        // with the process, then we get various errors.
 
-            // Kill of the gobblers threads. See
-            // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
+//        try {
+//             if (_inputBufferedWriter != null) {
+//                 _inputBufferedWriter.close();
+//             }
+//             if (_process != null) {
+//                 if (_process.getInputStream() != null) {
+//                     if (_outputGobbler != null) {
+//                         _outputGobbler.notifyStringBuffer();
+//                     }
+//                     _process.getInputStream().close();
+//                 }
+//                 if (_process.getOutputStream() != null) {
+//                     _process.getOutputStream().close();
+//                 }
+//                 if (_process.getErrorStream() != null) {
+//                     _process.getErrorStream().close();
+//                 }
+//                 //_process = null;
+//             }
+//
+//            // Kill of the gobblers threads. See
+//            // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
 //             if (_errorGobbler != null) {
 //                 Thread moribundErrorGobbler = _errorGobbler;
 //                 _errorGobbler = null;
@@ -427,10 +443,12 @@ public class Exec extends TypedAtomicActor {
 //                 _outputGobbler = null;
 //                 moribundOutputGobbler.interrupt();
 //             }
-
-        } catch (IOException ex) {
-            // ignore
-        }
+//
+//         } catch (IOException ex) {
+//             System.out.println("Exec._terminate: IOException" + Thread.currentThread());
+//             ex.printStackTrace();
+//             // ignore
+//         }
 
         // FIXME: Should we do a process.waitFor() and throw an exception
         // if the return value is not 0?
@@ -453,29 +471,47 @@ public class Exec extends TypedAtomicActor {
     // stringBuffer.
     private class _StreamReaderThread extends Thread {
 
-        _StreamReaderThread(InputStream inputStream, String name) {
-            this(inputStream, name, null);
+        /** Create a _StreamReaderThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this StreamReaderThread,
+         *  which is useful for debugging.
+         *  @param actor The parent actor of this thread, which
+         *  is used in error messages.
+         */
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) {
+            this(inputStream, name, actor, null);
         }
 
+        /** Create a _StreamReaderThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this StreamReaderThread,
+         *  which is useful for debugging.
+         *  @param actor The parent actor of this thread, which
+         *  is used in error messages.
+         *  @param otherStream The other stream associated with
+         *  this stream.  If non-null, then if this stream reads
+         *  any data, we notify the otherStream.
+         */
         _StreamReaderThread(InputStream inputStream, String name,
-                _StreamReaderThread otherStream) {
+                Nameable actor, _StreamReaderThread otherStream) {
             super(name);
             _inputStream = inputStream;
-            _lockingStringBuffer = new LockingStringBuffer();
+            _actor = actor;
             _otherStream = otherStream;
+
+            _lockingStringBuffer = new LockingStringBuffer(actor);
         }
 
         public String blockingGetAndReset() throws IllegalActionException {
             return _lockingStringBuffer.blockingGetAndReset();
         }
 
-        public void interrupt() {
-            System.out.println("Exec: " + this + "interrupted");
-            dumpStack();
-            //_lockingStringBuffer.append("Exec: " + this + "interrupted");
-            super.interrupt();
-        }
-
+        /** Notify the associatedLockingStringBuffer.
+         *  This method is called if we call stop() or stopFire() or if
+         *  another StreamReaderThread gets output and we want to
+         *  notify this thread so it stop blocking.
+         */   
         public void notifyStringBuffer() {
             // Object.notifyAll() is final, so we call this method
             // notifyStringBuffer instead.
@@ -483,7 +519,7 @@ public class Exec extends TypedAtomicActor {
         }
 
         /** Get the current value of the stringBuffer and empty
-         *  the contents of the stringBuffer.
+         *  the contents of the StringBuffer.
          */
         public String nonblockingGetAndReset() {
             return _lockingStringBuffer.nonblockingGetAndReset();
@@ -524,11 +560,14 @@ public class Exec extends TypedAtomicActor {
                         _otherStream.notifyStringBuffer();
                     }
                 }
-                System.out.println("Exec: " + this + "run(): leaving");
-            } catch (IOException ioe) {
-                _lockingStringBuffer.append("IOException: " + ioe);
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(_actor, throwable,
+                        "Failed while reading from " + _inputStream); 
             }
         }
+
+        // The actor associated with this stream reader.
+        private Nameable _actor;
 
         // StringBuffer that we read and write to in a locking fashion.
         private LockingStringBuffer _lockingStringBuffer;
@@ -545,20 +584,28 @@ public class Exec extends TypedAtomicActor {
     }
 
 
-    // Private class that provides a synchronized interface to
-    // StringBuffer.  The documentation for StringBuffer says that
-    // the underlying mechanism is synchronized, but we need slightly
-    // finer control so that we can optionally block on reading
-    // from a StringBuffer until either there is data or stop as been
-    // requested or the error stream has been written to.
+    // A specially synchronized interface to StringBuffer.
+    //
+    // The documentation for StringBuffer says that the underlying
+    // mechanism is synchronized, but we need slightly finer control
+    // so that we can optionally block on reading from a StringBuffer
+    // until either there is data or stop as been requested or the
+    // error stream has been written to.
+    //
     // See
     // http://java.sun.com/docs/books/tutorial/essential/threads/synchronization.html
     private class LockingStringBuffer {
 
-        public LockingStringBuffer() {
+        /** Create a LockingStringBuffer.
+         *  @param actor The parent actor of this LockingStringBuffer, which
+         *  is used in error messages.
+         */   
+        public LockingStringBuffer(Nameable actor) {
+            _actor = actor;
             _stringBuffer = new StringBuffer();
         }
 
+        /* Call notifyAll() */ 
         public synchronized void notifyStringBuffer() {
             // Object.notifyAll() is final, so we call this method
             // notifyStringBuffer instead.
@@ -614,8 +661,7 @@ public class Exec extends TypedAtomicActor {
                     }
                     wait();
                 } catch (InterruptedException ex) {
-                    // FIXME: Pass in a Nameable for this exception
-                    throw new IllegalActionException(null, ex,
+                    throw new IllegalActionException(_actor, ex,
                             "Thread interrupted waiting for exec() data.");
                 }
             }
@@ -630,8 +676,7 @@ public class Exec extends TypedAtomicActor {
                 try {
                     Thread.currentThread().sleep(100);
                 } catch (InterruptedException ex) {
-                    // FIXME: Pass in a Nameable for this exception
-                    throw new IllegalActionException(null, ex,
+                    throw new IllegalActionException(_actor, ex,
                             "Thread interrupted waiting 100 ms. "
                             + "for exec() data.");
                 }
@@ -658,6 +703,9 @@ public class Exec extends TypedAtomicActor {
             return returnValue;
         }
 
+        // The actor associated with this locking string buffer;
+        private Nameable _actor;
+
         // The internal StringBuffer that we use to store
         // the data.
         private StringBuffer _stringBuffer;
@@ -665,6 +713,11 @@ public class Exec extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Indicator that append() was called.
+    // We use this to handle the case where we are blocking on
+    // stdout, but stderr gets output and we want to proceed.
+    private boolean _appendCalled = false;
 
     // Whether this actor is blocking.
     private boolean _blocking;
@@ -688,12 +741,7 @@ public class Exec extends TypedAtomicActor {
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
 
-    // Indicator that append() was called.
-    // We use this to handle the case where we are blocking on
-    // stdout, but stderr gets output and we want to proceed.
-    private boolean _appendCalled = false;
-
-    // Instance count, used for debugging.
-    private static int _count = 0;
-
+    // Instance count of output and error threads, used for debugging.
+    // When the value is greater than 1000, we reset to 0.
+    private static int _streamReaderThreadCount = 0;
 }
