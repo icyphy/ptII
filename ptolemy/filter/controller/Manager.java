@@ -88,6 +88,7 @@ public class Manager {
        _addView("PoleZeroView");
        _addView("FreqView");
        _addView("ImpulseView");
+       _addView("TransferFunctionView");
 
        // setup view controller
        Enumeration viewkey = _views.keys();
@@ -97,7 +98,14 @@ public class Manager {
             viewnames[i++] = new String((String) viewkey.nextElement());
        }           
        _viewcontroller = new ViewController(name, viewnames, this);
-        
+      
+       // send the view controller reference to the view
+       viewkey = _views.keys();
+       i = 0; 
+       while (viewkey.hasMoreElements()){
+            FilterView view = (FilterView) _views.get(viewkey.nextElement());
+            view.setViewController(_viewcontroller);
+       }           
     }
 
 
@@ -186,7 +194,8 @@ public class Manager {
     // 
    private void _addView(String name){
         if (name.equals("PoleZeroView")){
-             PoleZeroView pzv = new PoleZeroView(_fobj, _opMode, new String("PoleZeroView"));
+             PoleZeroView pzv = new PoleZeroView(_fobj, _opMode, 
+                                new String("PoleZeroView"));
              _fobj.addObserver(pzv);
              _views.put(new String(name), pzv);
         } else if (name.equals("FreqView")){
@@ -194,13 +203,20 @@ public class Manager {
              _fobj.addObserver(fv);
              _views.put(new String(name), fv);
         } else if (name.equals("ImpulseView")){
-             ImpulseView iv = new ImpulseView(_fobj, _opMode, new String("ImpulseView"));
+             ImpulseView iv = new ImpulseView(_fobj, _opMode, 
+                              new String("ImpulseView"));
              _fobj.addObserver(iv);
              _views.put(new String(name), iv);
         } else if (name.equals("IIRFilterParameterView")){
-             IIRFiltSetView iirv = new IIRFiltSetView(_fobj, _opMode, new String("IIRFilterParameterView"));
+             IIRFiltSetView iirv = new IIRFiltSetView(_fobj, _opMode, 
+                                   new String("IIRFilterParameterView"));
              _fobj.addObserver(iirv);
              _views.put(new String(name), iirv);
+        } else if (name.equals("TransferFunctionView")){
+             TransFunctView tfv = new TransFunctView(_fobj, _opMode, 
+                                  new String("TransferFunctionView")); 
+             _fobj.addObserver(tfv);
+             _views.put(new String(name), tfv);
         }
    }
              
