@@ -141,7 +141,9 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                                     plot.addLegend(finalid, actorName);
                                 }
                             };
-                        plot.deferIfNecessary(doAddPoint);
+                        synchronized(plot) {
+                            plot.deferIfNecessary(doAddPoint);
+                        }
                     } else {
                         id = ((Integer) taskID).intValue();
                     }
