@@ -215,7 +215,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 				      .findFile(dirs.nextToken()) + "'");
                         }
                         cellFormat.append("}");
-
+                        
                         if (cellFormat.length() > 2) {
                             addPathCommand = "addedPath_=" + cellFormat.toString()
                                 + ";addpath(addedPath_{:});";
@@ -262,7 +262,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object result = FindAndRunMethod(_funcName, argTypes, argValues);
 
         if (result == null) {
-
+            
             // Note: Java makes a distinction between the class objects
             // for double & Double...
             for (int i = 0; i < args; i++) {
@@ -340,7 +340,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     argTypes[i] = argValues[i].getClass();
                 }
                 if (debug) System.out.println("Arg "+i+": "+child);
-
+                
                 // FIXME: what is the TYPE that needs to be filled
                 // in the argValues[]. Current it is from the
                 // child.
@@ -350,7 +350,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             result = FindAndRunMethod(_funcName, argTypes, argValues);
         }
         if (debug) System.out.println("function: "+_funcName);
-
+        
         if (result != null) {
             ptolemy.data.Token retval = null;
             if (result instanceof ptolemy.data.Token) {
@@ -368,7 +368,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (result instanceof Complex) {
                 retval = new ComplexToken((Complex)result);
             } else if (result instanceof FixPoint) {
-                retval = ((FixPoint)result).tokenValue();
+                //retval = ((FixPoint)result).tokenValue();
 	    } else if (result instanceof int[][]) {
 		retval = new IntMatrixToken((int[][])result);
 	    } else if (result instanceof double[][]) {
@@ -408,7 +408,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		// Create back an ArrayToken containing FixTokens
 		FixToken[] temp = new FixToken[((FixPoint[])result).length];
 		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = ((FixPoint)((FixPoint[])result)[j]).tokenValue();
+		    //temp[j] = ((FixPoint)((FixPoint[])result)[j]).tokenValue();
+                    temp[j] = null;
 		}
 		retval = new ArrayToken(temp);
             } else {
@@ -446,7 +447,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         private methods                   ////
 
    private Object FindAndRunMethod(
-	String funcName,
+	String funcName, 
         Class[] argTypes,
         Object[] argValues
 	) throws IllegalActionException {
