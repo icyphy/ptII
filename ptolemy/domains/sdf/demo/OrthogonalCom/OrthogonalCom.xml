@@ -23,8 +23,8 @@ code generation.  It produces data
 on standard out, so nothing much happens
 when it is run in the standard interpreted
 mode.
-To run the code generator,
-select View -> Code Generator.
+To run the Java code generator, run 
+ $PTII/bin/copernicus OrthogonalCom.xml
 See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
