@@ -92,8 +92,8 @@ public abstract class ODStringSource extends ODSourceActor {
 	    }
 
 	    if( nextOutputReady ) {
-		// _output.send( 0, strToken );
-		_output.send( 0, strToken, getCurrentTime() );
+		_output.send( 0, strToken );
+		// _output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
 
