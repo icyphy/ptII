@@ -37,8 +37,8 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
 /**
-ExapmleSystem constructs a hierachical graph as shown in
-Ptolemy 2 design document, Figure 8.
+ExampleSystem constructs a hierachical graph as shown in
+Ptolemy II design document, Figure 8.
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.

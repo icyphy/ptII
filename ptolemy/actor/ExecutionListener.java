@@ -53,7 +53,7 @@ until they return.
 public interface ExecutionListener {
 
     /** Called to report an execution failure.   This method will be called
-     *  when an Exeception is caught at the top level of execution.  Instead
+     *  when an Exception is caught at the top level of execution.  Instead
      *  of allowing the exception to propagate out the user interface,
      *  it is caught
      *  here and encapsulated within an event.   The event will also report
