@@ -181,6 +181,12 @@ abstract public class GRShape2D extends GRActor2D {
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+
+    protected BasicFigure _figure;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -198,9 +204,4 @@ abstract public class GRShape2D extends GRActor2D {
         figure.setLineWidth(lineWidth);
 
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
-
-    protected BasicFigure _figure;
 }
