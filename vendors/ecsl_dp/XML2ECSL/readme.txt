@@ -3,13 +3,36 @@ $Id$
 XML2ECSL translator
 -----------------------------
 
-This folder contatins the source files for the XML2ECSL translator in
+This folder contains the source files for the XML2ECSL translator in
 the ECSL DP tool chain.
 
 Requirements to build XML2ECSL:
   - Udm 2.19 
   - STLport 4.5.3 (part of UDM 3rdParty source)
   - Xerces-C 2.6.0
+
+The ECSL_DP toolchain workflow is the following.
+First, the user creates the Matlab SL/SF models to capture the
+signal/state-flow of the system.
+Then, there are two translators to be used sequentially to produce an
+ECSL-DP representation of the Matlab Simulink model.
+These are: MDL2XML.exe, and XML2ECSL.exe. MDL2XML.exe takes a Matlab
+Simulink .mdl file, and produces an XML model, whose schema is described
+by matlab.xsd.
+This XML model is the input of the next translator: MDL2XML.exe, which
+converts this file into an ECSL-DP GME model file (.mga).
+Then the ECSL-DP model can be expanded by various software and hardware
+modeling elements available in the ECSL-DP language.
+Finally, the ECSL-DP model can be transformed into analysis artifacts/
+executable code with the help of other model transformers.
+Some of the model transformers are GME interpreters, but most of them
+are command line tools.
+
+The etc_control.xml is an example XML file (output of MDL2XML.exe) which
+represents the Electronic Throttle Control model in Matlab SL/SF.
+You are not supposed to do anything before running the command line
+translator XML2ECSL.exe on this file, except importing and registering
+ECSL-DP metamodel in GME.
 
 UDM
 ---
