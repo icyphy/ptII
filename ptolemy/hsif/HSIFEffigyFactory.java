@@ -56,7 +56,7 @@ An HSIF filename can end with either .xml or .hsif
 @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
-@see Configuration
+@see ptolemy.actor.Configuration
 @see Effigy
 */
 public class HSIFEffigyFactory extends EffigyFactory {
@@ -97,7 +97,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
      *  @param container The container for the effigy.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
-     *  @param in The input URL.
+     *  @param input The input URL.
      *  @return A new effigy.
      *  @exception Exception If the stream cannot be read, or if the data
      *   is malformed in some way.
