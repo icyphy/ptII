@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: makefile,v 1.3 2003/06/28 05:25:43 ellen_zh Exp
 #
 # @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
@@ -49,9 +49,10 @@ PTCLASSALLJARS =
 # Keep this list alphabetized.
 JSRCS = \
 	XSLTransformer.java
-	
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	xslt.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
