@@ -75,7 +75,7 @@ public class RecordToken extends Token {
 	        throw new IllegalArgumentException("RecordToken: the " + i +
 		    "'th element of the labels or values array is null");
 	    }
-	    if (_fields.containsKey(labels[i])) {
+	    if ( !_fields.containsKey(labels[i])) {
 	        _fields.put(labels[i], values[i]);
 	    } else {
 	        throw new IllegalArgumentException("RecordToken: The " +
@@ -133,8 +133,7 @@ public class RecordToken extends Token {
     /** Throw an exception. Use the convert method in RecordType.
      *  @exception IllegalActionException Always thrown.
      */
-    public static Token convert(Token t)
-	    throws IllegalActionException {
+    public static Token convert(Token t) throws IllegalActionException {
 	throw new IllegalActionException("RecordToken.convert: " +
                 "This method cannot be used, use the convert method " +
                 "in RecordType.");
