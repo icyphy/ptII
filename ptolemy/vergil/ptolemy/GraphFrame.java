@@ -762,7 +762,7 @@ public abstract class GraphFrame extends PtolemyFrame
     protected abstract GraphPane _createGraphPane();
 
     /** Get the directory that was last accessed by this window.
-     *  @see _setDirectory
+     *  @see #_setDirectory
      *  @return The directory last accessed.
      */
     protected File _getDirectory() {
@@ -790,7 +790,7 @@ public abstract class GraphFrame extends PtolemyFrame
     }
 
     /** Set the directory that was last accessed by this window.
-     *  @see _getDirectory
+     *  @see #_getDirectory
      *  @param directory The directory last accessed.
      */
     protected void _setDirectory(File directory) {
