@@ -48,11 +48,12 @@ CLASSPATH =	..
 JSRCS = \
 	PlotBox.java \
 	Plot.java \
+	PlotDataException.java \
 	PlotDemo.java \
 	PlotLive.java \
 	PlotLiveDemo.java \
-	PlotPoint.java
-	#Pxgraph.java
+	PlotPoint.java \
+	Pxgraph.java
 
 EXTRA_SRCS = $(JSRCS) pxgraph
 
@@ -61,11 +62,13 @@ MISC_FILES = demo doc #test
 JCLASS = \
 	PlotBox.class \
 	Plot.class \
+	PlotDataException.class \
 	PlotDemo.class \
 	PlotLive.class \
 	PlotLiveDemo.class \
-	PlotPoint.class
-	#Pxgraph.class
+	PlotPoint.class \
+	Pxgraph.class
+
 all: jclass
 	chmod a+x pxgraph
 install: jclass javadocs $(JZIP)
