@@ -30,22 +30,20 @@
 
 package ptolemy.domains.sdf.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// DelayLine
@@ -81,7 +79,7 @@ public class DelayLine extends SDFTransformer {
 
         initialValues = new Parameter(this, "initialValues");
         initialValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        initialValues.setExpression("{0,0,0,0}");
+        initialValues.setExpression("{0, 0, 0, 0}");
 
 	// default tokenConsumptionRate is 1.
 	input.setTokenConsumptionRate(1);
@@ -153,7 +151,7 @@ public class DelayLine extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-        if(!input.hasToken(0)) return false;
+        if (!input.hasToken(0)) return false;
         return super.prefire();
     }
 

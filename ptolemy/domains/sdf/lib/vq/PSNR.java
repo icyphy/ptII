@@ -114,14 +114,14 @@ public class PSNR extends TypedAtomicActor {
             (IntMatrixToken) distortedSignal.get(0);
         int columns = signalToken.getColumnCount();
         int rows = signalToken.getRowCount();
-        if((distortedSignalToken.getColumnCount() != columns)||
+        if ((distortedSignalToken.getColumnCount() != columns)||
                 (distortedSignalToken.getRowCount() != rows)) {
             throw new IllegalActionException("Input token dimensions " +
                     "must match!");
         }
 
-        for(j = 0; j < rows; j ++) {
-            for(i = 0; i < columns; i ++) {
+        for (j = 0; j < rows; j ++) {
+            for (i = 0; i < columns; i ++) {
 
                 element1 = signalToken.getElementAt(j, i);
                 element2 = distortedSignalToken.getElementAt(j, i);

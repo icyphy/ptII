@@ -30,17 +30,20 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
@@ -170,13 +173,13 @@ public class FIR extends SDFTransformer {
             throws IllegalActionException {
         if (attribute == interpolation) {
             IntToken token = (IntToken)(interpolation.getToken());
-            _interp = token.intValue();
-            if (_interp <= 0) {
+            _interpolationValue = token.intValue();
+            if (_interpolationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid interpolation: " + _interp
+                        "Invalid interpolation: " + _interpolationValue
                         + ". Must be positive.");
             }
-            output.setTokenProductionRate(_interp);
+            output.setTokenProductionRate(_interpolationValue);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -184,13 +187,13 @@ public class FIR extends SDFTransformer {
             _reinitializeNeeded = true;
         } else if (attribute == decimation) {
             IntToken token = (IntToken)(decimation.getToken());
-            _dec = token.intValue();
-            if (_dec <= 0) {
+            _decimationValue = token.intValue();
+            if (_decimationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _dec
+                        "Invalid decimation: " + _decimationValue
                         + ". Must be positive.");
             }
-            input.setTokenConsumptionRate(_dec);
+            input.setTokenConsumptionRate(_decimationValue);
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
@@ -198,10 +201,10 @@ public class FIR extends SDFTransformer {
             _reinitializeNeeded = true;
         } else if (attribute == decimationPhase) {
             IntToken token = (IntToken)(decimationPhase.getToken());
-            _decPhase = token.intValue();
-            if (_decPhase < 0) {
+            _decimationPhaseValue = token.intValue();
+            if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimationPhase: " + _decPhase
+                        "Invalid decimationPhase: " + _decimationPhaseValue
                         + ". Must be nonnegative.");
             }
             _reinitializeNeeded = true;
@@ -246,29 +249,29 @@ public class FIR extends SDFTransformer {
     public void fire() throws IllegalActionException {
 
         // Phase keeps track of which phase of the filter coefficients
-        // are used. Starting phase depends on the _decPhase value.
-        int phase = _dec - _decPhase - 1;
+        // are used. Starting phase depends on the _decimationPhaseValue value.
+        int phase = _decimationValue - _decimationPhaseValue - 1;
 
-        // Transfer _dec inputs to _data[]
-        for (int inC = 1; inC <= _dec; inC++) {
+        // Transfer _decimationValue inputs to _data[]
+        for (int inC = 1; inC <= _decimationValue; inC++) {
             if (--_mostRecent < 0) _mostRecent = _data.length - 1;
             _data[_mostRecent] = input.get(0);
         }
 
         // Interpolate once for each input consumed
-        for (int inC = 1; inC <= _dec; inC++) {
+        for (int inC = 1; inC <= _decimationValue; inC++) {
 
             // Produce however many outputs are required
             // for each input consumed
-            while (phase < _interp) {
+            while (phase < _interpolationValue) {
                 _outToken = _zero;
 
                 // Compute the inner product.
                 for (int i = 0; i < _phaseLength; i++) {
-                    int tapsIndex = i * _interp + phase;
+                    int tapsIndex = i * _interpolationValue + phase;
 
                     int dataIndex =
-                        (_mostRecent + _dec - inC + i)%(_data.length);
+                        (_mostRecent + _decimationValue - inC + i)%(_data.length);
 
                     if (tapsIndex < _taps.length) {
                         _tapItem = _taps[tapsIndex];
@@ -280,9 +283,9 @@ public class FIR extends SDFTransformer {
                 }
 
                 output.send(0, _outToken);
-                phase += _dec;
+                phase += _decimationValue;
             }
-            phase -= _interp;
+            phase -= _interpolationValue;
         }
     }
 
@@ -297,7 +300,7 @@ public class FIR extends SDFTransformer {
         // this is the first fire(), then reinitialize.
         if (_reinitializeNeeded) _reinitialize();
 
-        if (input.hasToken(0, _dec)) return super.prefire();
+        if (input.hasToken(0, _decimationValue)) return super.prefire();
         else return false;
     }
 
@@ -320,23 +323,23 @@ public class FIR extends SDFTransformer {
 
     // Reinitialize local variables in response to changes in attributes.
     protected void _reinitialize() throws IllegalActionException {
-        if (_decPhase >= _dec) {
+        if (_decimationPhaseValue >= _decimationValue) {
             throw new IllegalActionException(this,
-                    "Invalid decimationPhase: " + _decPhase
-                    + ". Must be less than decimation: " + _dec + ".");
+                    "Invalid decimationPhase: " + _decimationPhaseValue
+                    + ". Must be less than decimation: " + _decimationValue + ".");
         }
 
-        _phaseLength = (int)(_taps.length / _interp);
-        if ((_taps.length % _interp) != 0) _phaseLength++;
+        _phaseLength = (int)(_taps.length / _interpolationValue);
+        if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
 
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
         // FIXME: data is thrown away if the filter length increases.  This
         // is not necessary.
-        int length = (int)Math.max(_phaseLength, _dec);
+        int length = (int)Math.max(_phaseLength, _decimationValue);
         if (_data == null || _data.length != length) {
             _data = new Token[_phaseLength];
-            for(int i = 0; i < _phaseLength; i++ ) {
+            for (int i = 0; i < _phaseLength; i++ ) {
                 _data[i] = _zero;
             }
             _mostRecent = _phaseLength;
@@ -359,13 +362,13 @@ public class FIR extends SDFTransformer {
     protected int _phaseLength;
 
     /** Decimation value. */
-    protected int _dec = 1;
+    protected int _decimationValue = 1;
 
     /** Interpolation value. */
-    protected int _interp = 1;
+    protected int _interpolationValue = 1;
 
     /** DecimationPhase value. */
-    protected int _decPhase = 0;
+    protected int _decimationPhaseValue = 0;
 
     /** Indicator that at least one attribute has been changed
      *  since the last initialization.

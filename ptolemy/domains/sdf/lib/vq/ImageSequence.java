@@ -143,7 +143,7 @@ public class ImageSequence extends Source {
 
         // If we've already loaded all these images, then don't load
         // them again.
-        if(_images != null) {
+        if (_images != null) {
             return;
         }
 
@@ -151,7 +151,7 @@ public class ImageSequence extends Source {
         _images = new IntMatrixToken[_frameCount];
         _frameInts = new int[_imageRows][_imageColumns];
         _frameBytes = new byte[_imageRows * _imageColumns];
-        for(_frameNumber = 0;
+        for (_frameNumber = 0;
             _frameNumber < _frameCount;
             _frameNumber++) {
 
@@ -177,13 +177,13 @@ public class ImageSequence extends Source {
                 }
 
                 // Load the frame from the file.
-                if(_fullRead(source, _frameBytes)
+                if (_fullRead(source, _frameBytes)
                         != _imageRows*_imageColumns)
                     throw new IllegalActionException("Error reading " +
                             "image file!");
                 // This is necessary to convert from bytes to ints
-                for(i = 0, n = 0; i < _imageRows; i++) {
-                    for(j = 0; j < _imageColumns; j++, n++)
+                for (i = 0, n = 0; i < _imageRows; i++) {
+                    for (j = 0; j < _imageColumns; j++, n++)
                         _frameInts[i][j] = ((int) _frameBytes[n]) & 255;
                 }
 
@@ -199,7 +199,7 @@ public class ImageSequence extends Source {
                 throw new IllegalActionException(this, ex, null);
             }
             finally {
-                if(source != null) {
+                if (source != null) {
                     try {
                         source.close();
                     }
@@ -225,7 +225,7 @@ public class ImageSequence extends Source {
 
         output.send(0, _images[_frameNumber]);
         _frameNumber++;
-        if(_frameNumber >= _frameCount) _frameNumber = 0;
+        if (_frameNumber >= _frameCount) _frameNumber = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -237,7 +237,7 @@ public class ImageSequence extends Source {
         int bytesRead = 0;
         while(remaining > 0) {
             bytesRead = s.read(b, length, remaining);
-            if(bytesRead == -1) {
+            if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF:" + s);
             }
             remaining -= bytesRead;

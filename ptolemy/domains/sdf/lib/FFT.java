@@ -30,13 +30,17 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.Director;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
@@ -100,7 +104,7 @@ public class FFT extends SDFTransformer {
         if (attribute == order) {
             // Get the size of the FFT transform
             _orderValue = ((IntToken)order.getToken()).intValue();
-            if(_orderValue <= 0) {
+            if (_orderValue <= 0) {
                 throw new IllegalActionException(this,
                         "Order was " + _orderValue
                         + " but must be greater than zero.");

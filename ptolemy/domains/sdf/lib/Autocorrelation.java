@@ -30,23 +30,27 @@
 
 package ptolemy.domains.sdf.lib;
 
+import java.util.LinkedList;
+import java.util.List;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
@@ -71,9 +75,9 @@ the autocorrelation estimate is
 r(k) = -  \    x<sup>*</sup>(n)x(n+k)
        N  /
           ---
-          n=0
+          n = 0
 </pre>
-for <i>k </i>=0<i>, ... , p</i>, where <i>N</i> is the number of
+for <i>k </i>= 0<i>, ... , p</i>, where <i>N</i> is the number of
 inputs to average (<i>numberOfInputs</i>), <i>p</i> is the number of
 lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
 conjugate of the input (if it is complex).
@@ -88,7 +92,7 @@ If the parameter <i>biased</i> is false (the default), then the estimate is
 r(k) = ---  \    x(n)x(n+k)
        N-k  /
             ---
-            n=0
+            n = 0
 </pre>
 In this case, the estimate is unbiased.
 However, note that the unbiased estimate does not guarantee
@@ -192,12 +196,12 @@ public class Autocorrelation extends SDFTransformer {
             _symmetricOutput
                     = ((BooleanToken)symmetricOutput.getToken()).booleanValue();
 
-            if(_numberOfInputs <= 0) {
+            if (_numberOfInputs <= 0) {
                 throw new IllegalActionException(this,
                 "Invalid numberOfInputs: " + _numberOfInputs);
             }
 
-            if(_numberOfLags <= 0) {
+            if (_numberOfLags <= 0) {
                 throw new IllegalActionException(this,
                 "Invalid numberOfLags: " + _numberOfLags);
             }
@@ -244,24 +248,24 @@ public class Autocorrelation extends SDFTransformer {
     public void fire() throws IllegalActionException {
         boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
-        int notsymmetric = _symmetricOutput ? 0 : 1;
-        for(int i = _numberOfLags; i >= 0; i--) {
+        int notSymmetric  = _symmetricOutput ? 0 : 1;
+        for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
-            for(int j = 0; j < _numberOfInputs - i; j++) {
+            for (int j = 0; j < _numberOfInputs - i; j++) {
                 sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
             }
             if (biasedValue) {
-                _outputs[i + _numberOfLags - notsymmetric]
+                _outputs[i + _numberOfLags - notSymmetric ]
                          = sum.divide(numberOfInputs.getToken());
             } else {
-                _outputs[i + _numberOfLags - notsymmetric]
+                _outputs[i + _numberOfLags - notSymmetric ]
                          = sum.divide(new IntToken(_numberOfInputs - i));
 	    }
         }
         // Now fill in the first half, which by symmetry is just
         // identical to what was just produced.
-        for(int i = _numberOfLags - 1 - notsymmetric; i >= 0; i--) {
-            _outputs[i] = _outputs[2 * (_numberOfLags - notsymmetric) - i];
+        for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
+            _outputs[i] = _outputs[2 * (_numberOfLags - notSymmetric) - i];
         }
         output.broadcast(new ArrayToken(_outputs));
     }

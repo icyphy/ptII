@@ -122,11 +122,11 @@ public class ImageUnpartition extends Transformer {
         _partitionColumns = ((IntToken)partitionColumns.getToken()).intValue();
         _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
 
-        if(_imageColumns % _partitionColumns != 0) {
+        if (_imageColumns % _partitionColumns != 0) {
             throw new IllegalActionException(imageColumns, partitionColumns,
                     "Partition size must evenly divide image size");
         }
-        if(_imageRows % _partitionRows != 0) {
+        if (_imageRows % _partitionRows != 0) {
             throw new IllegalActionException(imageRows, partitionRows,
                     "Partition size must evenly divide image size");
         }
@@ -151,22 +151,22 @@ public class ImageUnpartition extends Transformer {
 
         Token _partitions[] = input.get(0, _partitionCount);
 
-        for(j = 0, partitionNumber = 0;
+        for (j = 0, partitionNumber = 0;
             j < _imageRows;
             j += _partitionRows)
-            for(i = 0;
+            for (i = 0;
                 i < _imageColumns;
                 i += _partitionColumns, partitionNumber++) {
                 IntMatrixToken partition = (IntMatrixToken)
                     _partitions[partitionNumber];
-                if((partition.getRowCount() != _partitionRows) ||
+                if ((partition.getRowCount() != _partitionRows) ||
                         (partition.getColumnCount() != _partitionColumns)) {
                     throw new IllegalActionException(
                             "input data must be partitionRows " +
                             "by partitionColumns");
                 }
                 int part[][] = partition.intMatrix();
-                for(y = 0; y < _partitionRows; y++)
+                for (y = 0; y < _partitionRows; y++)
                     System.arraycopy(part[y], 0,
                             _image[j + y], i, _partitionColumns);
             }

@@ -31,17 +31,13 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.Token;
 import ptolemy.data.IntToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
-import ptolemy.domains.sdf.lib.SDFTransformer;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -107,15 +103,15 @@ public class Repeat extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == numberOfTimes || attribute == blockSize) {
+        if (attribute == numberOfTimes || attribute == blockSize) {
             int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
             int count = ((IntToken)blockSize.getToken()).intValue();
-            if(repetitions < 1)
+            if (repetitions < 1)
                 throw new IllegalActionException(numberOfTimes,
                         "The value of numberOfTimes must be positive, but "
                         + "was set to " + repetitions);
 
-            if(count < 1)
+            if (count < 1)
                 throw new IllegalActionException(blockSize,
                         "The value of blockSize must be positive, but "
                         + "was set to " + count);

@@ -105,13 +105,13 @@ public class ImageContrast extends Transformer {
         // that has color either bigger than 255 OR small than 0, then throw an
         // illegal action exception.
 
-        for(i = 0; i < 256; i ++)
+        for (i = 0; i < 256; i ++)
             colorHistogram[i] = 0;
 
         int pixels = frame.length * frame[0].length;
 
-        for(i = 0; i < frame.length; i++) {
-            for(j = 0; j < frame[i].length; j++) {
+        for (i = 0; i < frame.length; i++) {
+            for (j = 0; j < frame[i].length; j++) {
                 frameElement = frame[i][j];
                 if ((frameElement < 0) || (frameElement > 255 )) {
                     throw new IllegalActionException("ImageContrast:"
@@ -128,7 +128,7 @@ public class ImageContrast extends Transformer {
         //Construct the cdf of the color distribution histogram
         //colorHistogram[0] = colorHistogram[0]
 
-        for(i = 1; i < 256; i ++)
+        for (i = 1; i < 256; i ++)
             colorHistogram[i] = colorHistogram[i-1] + colorHistogram[i];
 
         // Search each pixel in the image and re-map it to a new
@@ -137,8 +137,8 @@ public class ImageContrast extends Transformer {
 
         int distributionConstant = pixels / 255;
 
-        for(i = 0; i < frame.length; i ++) {
-            for(j = 0; j < frame[i].length; j++) {
+        for (i = 0; i < frame.length; i ++) {
+            for (j = 0; j < frame[i].length; j++) {
                 frameElement = frame[i][j];
                 frame[i][j] = colorHistogram[frameElement] /
                     distributionConstant;

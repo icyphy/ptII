@@ -203,7 +203,7 @@ public class HTVQEncode extends Transformer {
         int j;
 	_blocks = input.get(0, _blockCount);
 
-        for(j = 0; j < _blockCount; j++) {
+        for (j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
                     _encode(IntegerMatrixMath.fromMatrixToArray(
                             ((IntMatrixToken)_blocks[j]).intMatrix()),
@@ -253,24 +253,24 @@ public class HTVQEncode extends Transformer {
 
             int i, j, y, x, size = 1;
             byte temp[];
-            for(i = 0; i < 5; i++) {
+            for (i = 0; i < 5; i++) {
                 size = size * 2;
                 temp = new byte[size];
-                for(j = 0; j < 256; j++) {
+                for (j = 0; j < 256; j++) {
                     _codeBook[i][j] = new int[size];
-                    if(_fullRead(source, temp) != size)
+                    if (_fullRead(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
-                    for(x = 0; x < size; x++)
+                    for (x = 0; x < size; x++)
                         _codeBook[i][j][x] = temp[x] & 255;
                 }
 
                 temp = new byte[65536];
                 // read in the lookup table.
-                if(_fullRead(source, temp) != 65536)
+                if (_fullRead(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
-                for(x = 0; x < 65536; x++)
+                for (x = 0; x < 65536; x++)
                     _lookupTable[i][x] = temp[x] & 255;
             }
         }
@@ -278,7 +278,7 @@ public class HTVQEncode extends Transformer {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source != null) {
+            if (source != null) {
                 try {
                     source.close();
                 }
@@ -300,7 +300,7 @@ public class HTVQEncode extends Transformer {
 
         numberOfStages = _stages(length);
 
-	if(numberOfStages > 4) {
+	if (numberOfStages > 4) {
             throw new RuntimeException(
                     "Number of stages = " + numberOfStages + ", which is "
                     + "greater than 4");
@@ -444,7 +444,7 @@ public class HTVQEncode extends Transformer {
         int bytesRead = 0;
         while(remaining > 0) {
             bytesRead = s.read(b, length, remaining);
-            if(bytesRead == -1)  {
+            if (bytesRead == -1)  {
                 throw new IOException("Unexpected EOF");
             }
             remaining -= bytesRead;
@@ -459,7 +459,7 @@ public class HTVQEncode extends Transformer {
      */
     private int _stages(int length) {
         int x = 0;
-        if(length < 2) throw new RuntimeException(
+        if (length < 2) throw new RuntimeException(
                 "Vector length of " + length +
                 "must be greater than 1");
         while(length > 2) {

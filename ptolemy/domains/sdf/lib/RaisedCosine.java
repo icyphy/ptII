@@ -30,14 +30,22 @@
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.math.SignalProcessing;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.math.DoubleUnaryOperation;
+import ptolemy.math.SignalProcessing;
+import ptolemy.math.SignalProcessing.RaisedCosineSampleGenerator;
+import ptolemy.math.SignalProcessing.SqrtRaisedCosineSampleGenerator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RaisedCosine
@@ -171,22 +179,22 @@ public class RaisedCosine extends FIR {
                 || attribute == root || attribute == symbolInterval) {
             double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
             int inter = ((IntToken)(symbolInterval.getToken())).intValue();
-            int len = ((IntToken)(length.getToken())).intValue();
+            int lengthValue = ((IntToken)(length.getToken())).intValue();
             boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
-            if(ebw < 0.0) {
+            if (ebw < 0.0) {
                 throw new IllegalActionException(this,
                         "Excess bandwidth was "
                         + ebw
                         + " which is not greater than or equal to zero.");
             }
-            if(len <= 0) {
+            if (lengthValue <= 0) {
                 throw new IllegalActionException(this, "Length was " +
-                        len + " which is not greater than zero.");
+                        lengthValue + " which is not greater than zero.");
             }
 
-            double center = len * 0.5;
+            double center = lengthValue * 0.5;
 
-            DoubleUnaryOperation rcSg = sqrt ?
+            DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
                    (DoubleUnaryOperation)
                    new SignalProcessing.SqrtRaisedCosineSampleGenerator(
                        inter, ebw) :
@@ -194,13 +202,15 @@ public class RaisedCosine extends FIR {
                    new SignalProcessing.RaisedCosineSampleGenerator(
                        inter, ebw);
 
-            double[] tps = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
-	    Token[] tpsToken = new Token[tps.length];
-	    for (int i=0; i<tps.length; i++) {
-	        tpsToken[i] = new DoubleToken(tps[i]);
+            double[] tapsArray =
+                SignalProcessing.sampleWave(lengthValue, -center, 1.0,
+                        raisedCosineSampleGenerator);
+	    Token[] tapsArrayToken = new Token[tapsArray.length];
+	    for (int i = 0; i < tapsArray.length; i++) {
+	        tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
 	    }
 
-            taps.setToken(new ArrayToken(tpsToken));
+            taps.setToken(new ArrayToken(tapsArrayToken));
         } else {
             super.attributeChanged(attribute);
         }

@@ -31,22 +31,13 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.Director;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// UpSample
@@ -127,7 +118,7 @@ public class UpSample extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == factor) {
+        if (attribute == factor) {
             int factorValue = ((IntToken)factor.getToken()).intValue();
             if (factorValue <= 0) {
                 throw new IllegalActionException(this,
@@ -138,7 +129,7 @@ public class UpSample extends SDFTransformer {
             if (dir != null) {
                 dir.invalidateSchedule();
             }
-        } else if(attribute == phase) {
+        } else if (attribute == phase) {
             int phaseValue = ((IntToken)phase.getToken()).intValue();
             if (phaseValue < 0) {
                 throw new IllegalActionException(this,
@@ -168,7 +159,7 @@ public class UpSample extends SDFTransformer {
 
         Token[] result = new Token[factorValue];
         Token zero = token.zero();
-        for(int i = 0; i < factorValue; i++) {
+        for (int i = 0; i < factorValue; i++) {
             if (i == phaseValue) {
                 result[i] = token;
             } else {

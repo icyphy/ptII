@@ -151,7 +151,7 @@ public class VQDecode extends Transformer {
         int stage = _stages(_blockWidth * _blockHeight);
         _codewords = input.get(0, _blockCount);
 
-        for(j = 0; j < _blockCount; j++) {
+        for (j = 0; j < _blockCount; j++) {
             _blocks[j] =
                 new IntMatrixToken(
                         _codebook[stage][((IntToken)_codewords[j]).intValue()]);
@@ -201,20 +201,20 @@ public class VQDecode extends Transformer {
             byte temp[];
             int intTemp[];
             int rows = 1, columns = 1;
-            for(i = 0; i < 5; i++) {
+            for (i = 0; i < 5; i++) {
                 size = size * 2;
-                if(i % 2 == 0) {
+                if (i % 2 == 0) {
                     columns = columns * 2;
                 } else {
                     rows = rows * 2;
                 }
                 temp = new byte[size];
                 intTemp = new int[size];
-                for(j = 0; j < 256; j++) {
-                    if(_fullRead(source, temp) != size)
+                for (j = 0; j < 256; j++) {
+                    if (_fullRead(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
-                    for(x = 0; x < size; x++)
+                    for (x = 0; x < size; x++)
                         intTemp[x] = temp[x] & 255;
                     _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(
                             intTemp, rows, columns);
@@ -224,7 +224,7 @@ public class VQDecode extends Transformer {
 
                 temp = new byte[65536];
                 // read in the lookup table.
-                if(_fullRead(source, temp) != 65536)
+                if (_fullRead(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
             }
@@ -233,7 +233,7 @@ public class VQDecode extends Transformer {
             throw new IllegalActionException(e.getMessage());
         }
         finally {
-            if(source != null) {
+            if (source != null) {
                 try {
                     source.close();
                 }
@@ -252,7 +252,7 @@ public class VQDecode extends Transformer {
         int bytesRead = 0;
         while(remaining > 0) {
             bytesRead = s.read(b, length, remaining);
-            if(bytesRead == -1) {
+            if (bytesRead == -1) {
                 throw new IOException("Unexpected EOF");
             }
             remaining -= bytesRead;
@@ -267,7 +267,7 @@ public class VQDecode extends Transformer {
      */
     private int _stages(int length) {
         int x = 0;
-        if(length < 2) {
+        if (length < 2) {
             throw new RuntimeException(
                     "Vector length of " + length +
                     "must be greater than 1");
