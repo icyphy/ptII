@@ -52,8 +52,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AbstractCase.java \
-	ApplyFunction.java \
-	ApplyFunctionOverSequence.java \
 	Case.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
