@@ -170,7 +170,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         
         super.initialize();
        
-        _blockedRcvrs = new LinkedList();
+        _blockedRcvrs.clear();
         _blockedActorCount = 0;
         
         _inputBranchController = new BranchController(container);
@@ -527,23 +527,22 @@ public class CompositeProcessDirector extends ProcessDirector {
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
+        Thread thread = Thread.currentThread();
+        ProcessThread pThread = null;
+        if( thread instanceof ProcessThread ) {
+            pThread = (ProcessThread)thread;
+            Actor actor = pThread.getActor();
+            String name = ((Nameable)actor).getName();
+            if( _blockedRcvrs == null ) {
+                System.out.println("WARNING: " + name + " called _actorUnBlocked with null _blockedRcvrs");
+            }
+        } else {
+            System.out.println("WARNING: Unknown object called _actorUnBlocked with null _blockedRcvrs");
+        }
+        
         _blockedRcvrs.remove(rcvr); 
         _blockedActorCount--;
         notifyAll();
-        /*
-        if( !foundItem ) {
-            Thread thread = Thread.currentThread();
-            ProcessThread pThread = null;
-            if( thread instanceof ProcessThread ) {
-            	pThread = (ProcessThread)thread;
-                Actor actor = pThread.getActor();
-                String name = ((Nameable)actor).getName();
-            	System.out.println("ITEM NOT FOUND; Called by " + name);
-            } else {
-            	System.out.println("ITEM NOT FOUND; Actor name unknown");
-            }
-        }
-        */
     }
 
     /** Implementations of this method must be synchronized.
@@ -691,7 +690,7 @@ public class CompositeProcessDirector extends ProcessDirector {
     private boolean _inputControllerIsBlocked = true;
     private boolean _outputControllerIsBlocked = true;
     
-    private LinkedList _blockedRcvrs;
+    private LinkedList _blockedRcvrs = new LinkedList();
     private int _blockedActorCount = 0;
     
     private Object _branchCntlrLock = new Object();
