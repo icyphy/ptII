@@ -408,8 +408,9 @@ public class DEDirector extends Director {
                     break;
                 } else if (next.timeStamp() < getCurrentTime()) {
                     throw new InternalErrorException(
-                            "fire(): the next event has smaller time stamp" +
-                            " than the current time!");
+                            "fire(): the time stamp of the next event " 
+                            + next.timeStamp() + " is smaller than the "
+                            + "current time " + getCurrentTime() + " !");
                 }
             } else {
                 // The queue is empty, proceed to postfire().
@@ -713,14 +714,30 @@ public class DEDirector extends Director {
         if (container instanceof Actor) {
             double outsideCurrentTime = ((Actor)container)
                 .getExecutiveDirector().getCurrentTime();
+            // FIXME: Also need a time resolution parameter, like the one
+            // in CT.
             if (outsideCurrentTime < getCurrentTime()) {
                 throw new IllegalActionException(this,
                         "Received an event in the past at "
                         + "an opaque composite actor boundary: "
                         + "Outside time is " + outsideCurrentTime
-                        + ". Local current time is " + getCurrentTime() + ".");
+                        + ". Local current time is " 
+                        + getCurrentTime() + ".");
             }
-            setCurrentTime(outsideCurrentTime);
+            if (!_eventQueue.isEmpty()) {
+                DEEvent nextEvent = _eventQueue.get();
+                // FIXME: Need a time resolution parameter, like the one
+                // in CT (?)
+                if (Math.abs(nextEvent.timeStamp() - outsideCurrentTime)
+                        < 1e-10) {
+                    setCurrentTime(nextEvent.timeStamp());
+                } else {
+                    setCurrentTime(outsideCurrentTime);
+                }
+            } else {
+                setCurrentTime(outsideCurrentTime);
+            }
+            
             return super.transferInputs(port);
         } else {
             return false;
