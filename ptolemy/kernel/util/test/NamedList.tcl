@@ -61,12 +61,15 @@ test NamedList-2.1 {Construct a list, call get} {
     set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
     set n3 [java::new ptolemy.kernel.util.NamedObj "n3"]
     $dir prepend $n1
-    set result1 [expr {$n1 == [$dir get "n1"]}]
+    set result1 [expr {$n1 == \
+	    [java::cast ptolemy.kernel.util.NamedObj [$dir get "n1"]]}]
     $dir prepend $n2
     $dir prepend $n3
     set result2 [[$dir first] getName]
-    set result3 [expr {$n1 == [$dir get n1]}]
-    set result4 [expr {$n3 == [$dir get n3]}]
+    set result3 [expr {$n1 == \
+	    [java::cast ptolemy.kernel.util.NamedObj [$dir get "n1"]]}]
+    set result4 [expr {$n3 == \
+	    [java::cast ptolemy.kernel.util.NamedObj [$dir get "n3"]]}]
     list $result1 $result2 $result3 $result4
 } {1 n3 1 1}
 
@@ -219,7 +222,8 @@ test NamedList-5.3 {prepend with a node with a null name} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $dir prepend $n0
-    list [expr {$n0 == [$dir {get String} {}]}]
+    list [expr {$n0 == \
+	    [java::cast ptolemy.kernel.util.NamedObj [$dir {get String} {}]]}]
 } {1}
 
 ######################################################################
@@ -231,7 +235,9 @@ test NamedList-5.4 {prepend two nodes with null names} {
     set n00 [java::new ptolemy.kernel.util.NamedObj]
     $dir prepend $n0
     catch {$dir prepend $n00} errMsg1
-    list [expr {$n0 == [$dir {get String} ""]}] $errMsg1
+    list [expr {$n0 == [java::cast ptolemy.kernel.util.NamedObj \
+	    [$dir {get String} ""]]}] \
+	    $errMsg1
 } {1 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into a container that already contains an object with that name.}}
 
 ######################################################################
