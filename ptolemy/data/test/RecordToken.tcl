@@ -85,8 +85,8 @@ test RecordToken-1.2 {Create an empty instance from string} {
 # 
 test RecordToken-1.3 {Create a non-empty instance from string} {
     set r [java::new {ptolemy.data.RecordToken String} "{name=\"bar\", value=6}"]
-    $r toString
-} {{name="bar", value=6}}
+    list [$r toString] [$r length]
+} {{{name="bar", value=6}} 2}
 
 ######################################################################
 ####

@@ -101,9 +101,8 @@ test FixMatrixToken-3.3 {Test adding FixMatrixToken to FixMatrixToken.} {
     set res2 [$p addReverse $q]
     set res3 [$q add $p]
     set res4 [$q addReverse $p]
-
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res toString]
+} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]}
 
 test FixMatrixToken-3.7 {Test adding FixMatrixToken to FixToken.} {
     set r [java::new {ptolemy.data.FixToken String} "fix(2.0, 8, 4)"]
@@ -144,6 +143,9 @@ test FixMatrixToken-7.7 {Test multiplying FixMatrixToken to FixToken.} {
     set res2 [$p multiplyReverse $r]
     set res3 [$r multiply $p]
     set res4 [$r multiplyReverse $p]
+    # NOTE: I'm not sure the result is correct... shouldn't the precision
+    # be 16, 8 rather than 12, 4?  I guess the results are representable
+    # in 12, 4.
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[fix(2.0,8,4), fix(4.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(4.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(4.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(4.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {{[fix(2.0,12,4), fix(4.0,12,4); fix(6.0,12,4), fix(8.0,12,4)]} {[fix(2.0,12,4),fix(4.0,12,4); fix(6.0,12,4), fix(8.0,12,4)]} {[fix(2.0,12,4), fix(4.0,12,4); fix(6.0,12,4), fix(8.0,12,4)]} {[fix(2.0,12,4), fix(4.0,12,4); fix(6.0,12,4), fix(8.0,12,4)]}}

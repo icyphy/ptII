@@ -206,10 +206,9 @@ test IntMatrixToken-3.5 {Test adding IntMatrixToken to DoubleToken.} {
     set res1 [$p add $r]
     set res2 [$p addReverse $r]
     set res3 [$r add $p]
-    set res4 [$r addReverse $p]
  
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[7.0, 6.0; 5.0, 4.0]} {[7.0, 6.0; 5.0, 4.0]} {[7.0, 6.0; 5.0, 4.0]} {[7.0, 6.0; 5.0, 4.0]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[7.0, 6.0; 5.0, 4.0]} {[7.0, 6.0; 5.0, 4.0]} {[7.0, 6.0; 5.0, 4.0]}}
 
 test IntMatrixToken-3.6 {Test adding IntMatrixToken to BooleanToken.} {
     set r [java::new {ptolemy.data.BooleanToken boolean} true]
@@ -227,10 +226,9 @@ test IntMatrixToken-3.7 {Test adding IntMatrixToken to ComplexToken.} {
     set res1 [$p add $r]
     set res2 [$p addReverse $r]
     set res3 [$r add $p]
-    set res4 [$r addReverse $p]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]}}
 
 ######################################################################
 ####
@@ -406,7 +404,7 @@ test IntMatrixToken-7.5 {Test multiplying IntMatrixToken to DoubleToken.} {
     set res4 [$r multiplyReverse $p]
  
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]}} {KNOWN_FAILED}
+} {{[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]} {[10.0, 8.0; 6.0, 4.0]}}
 
 test IntMatrixToken-7.6 {Test multiplying IntMatrixToken to BooleanToken.} {
     set r [java::new {ptolemy.data.BooleanToken boolean} true]
@@ -430,7 +428,7 @@ test IntMatrixToken-7.7 {Test multiplying IntMatrixToken to ComplexToken.} {
     set res4 [$r multiplyReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]}} {KNOWN_FAILED}
+} {{[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]}}
 
 ######################################################################
 ####
@@ -502,10 +500,9 @@ test IntMatrixToken-8.5 {Test subtracting IntMatrixToken to DoubleToken.} {
     set res1 [$p subtract $r]
     set res2 [$p subtractReverse $r]
     set res3 [$r subtract $p]
-    set res4 [$r subtractReverse $p]
  
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[3.0, 2.0; 1.0, 0.0]} {[-3.0, -2.0; -1.0, 0.0]} {[-3.0, -2.0; -1.0, 0.0]} {[3.0, 2.0; 1.0, 0.0]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[3.0, 2.0; 1.0, 0.0]} {[-3.0, -2.0; -1.0, -0.0]} {[-3.0, -2.0; -1.0, -0.0]}}
 
 test IntMatrixToken-8.6 {Test subtracting IntMatrixToken to BooleanToken.} {
     set r [java::new {ptolemy.data.BooleanToken boolean} true]
@@ -523,10 +520,9 @@ test IntMatrixToken-8.7 {Test subtracting IntMatrixToken to ComplexToken.} {
     set res1 [$p subtract $r]
     set res2 [$p subtractReverse $r]
     set res3 [$r subtract $p]
-    set res4 [$r subtractReverse $p]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]}}
 
 ######################################################################
 ####

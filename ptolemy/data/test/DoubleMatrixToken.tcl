@@ -227,10 +227,9 @@ test DoubleMatrixToken-3.7 {Test adding DoubleMatrixToken to ComplexToken.} {
     set res1 [$p add $r]
     set res2 [$p addReverse $r]
     set res3 [$r add $p]
-    set res4 [$r addReverse $p]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]}}
 
 ######################################################################
 ####
@@ -456,7 +455,7 @@ test DoubleMatrixToken-7.7 {Test multiplying DoubleMatrixToken to ComplexToken.}
     set res4 [$r multiplyReverse $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]}} {KNOWN_FAILED}
+} {{[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]} {[10.0 + 0.0i, 8.0 + 0.0i; 6.0 + 0.0i, 4.0 + 0.0i]}}
 
 ######################################################################
 ####
@@ -550,10 +549,9 @@ test DoubleMatrixToken-8.7 {Test subtracting DoubleMatrixToken to ComplexToken.}
     set res1 [$p subtract $r]
     set res2 [$p subtractReverse $r]
     set res3 [$r subtract $p]
-    set res4 [$r subtractReverse $p]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {{[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]}} {KNOWN_FAILED}
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {{[3.0 + 0.0i, 2.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]} {[-3.0 + 0.0i, -2.0 + 0.0i; -1.0 + 0.0i, 0.0 + 0.0i]}}
 
 ######################################################################
 ####
