@@ -90,15 +90,13 @@ values with 10 bits of precision, two of which are integer bits.
 In all cases, rounding is used when quantization errors occur,
 and saturation is used when overflow occurs.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis,  Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
 @see PtParser
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Quantizer
 */
-
 public class FixPointFunctions {
 
     // The only constructor is private so that this class cannot
