@@ -45,6 +45,7 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
 	copernicus \
+	copernicusjhdl \
 	decompile \
 	histogram \
 	htmlconverter \
@@ -96,6 +97,8 @@ all: ptinvoke
 	-chmod a+x ptinvoke
 	rm -f copernicus
 	ln -s ptinvoke copernicus
+	rm -f copernicusjhdl
+	ln -s ptinvoke copernicusjhdl
 	rm -f histogram
 	ln -s ptinvoke histogram
 	rm -f htmlconverter

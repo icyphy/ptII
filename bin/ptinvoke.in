@@ -135,8 +135,9 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
         # -Dsun.java2d.noddraw=true
         # T30's seem to be happier with noddraw than with only d3d, at least
 	# under 1.4.1-beta-b14
-		J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
-	;;	
+#	   J141BUGWORKAROUND=-Dsun.java2d.d3d=false
+	   J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
+	;;     
    esac
 fi
 
@@ -228,6 +229,12 @@ case `basename "$0"` in
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
         ;;
+    copernicusjhdl)
+	help="Do deep jhdl codegen"
+	javastartupclass=ptolemy.copernicus.kernel.Copernicus
+	javasourcedir=
+	applicationflags="-codeGenerator \"\\\"jhdl\"\\\""
+        ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
 	    help="Decompile by calling jode, for example: \
@@ -268,7 +275,7 @@ case `basename "$0"` in
 	javastartupclass=jshrink.Jshrink
 	javasourcedir=
 	jarfile="$PTII/lib/jshrink.jar"
-	javaflag=""
+	javaflag="-Xmx256M"
 	;;
     jode)
 	help="Java decompiler"
