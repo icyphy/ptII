@@ -217,10 +217,6 @@ public class ClassChanges implements MoMLFilter {
         //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
         //            "ptolemy.domains.de.kernel.DEEDirector");
 
-        // DEIOPort is obsolete as of 4.1-devel
-        _classChanges.put("ptolemy.domains.de.kernel.DEIOPort",
-                "ptolemy.actor.TypedIOPort");
-
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
                 "ptolemy.domains.gr.lib.ViewScreen3D");
     }
@@ -236,5 +232,8 @@ public class ClassChanges implements MoMLFilter {
 
         // NotEditableParameter
         _classesToRemove.add("ptolemy.data.expr.NotEditableParameter");
+        
+        //DEIOPort
+        _classesToRemove.add("ptolemy.domains.de.kernel.DEIOPort");
     }
 }

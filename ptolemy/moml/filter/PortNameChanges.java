@@ -268,5 +268,11 @@ public class PortNameChanges implements MoMLFilter {
         _actorsWithPortNameChanges
             .put("ptolemy.actor.lib.comm.ViterbiDecoder",
                     viterbiDecoderPorts);
+
+        // Server: after 4.1, the newServiceTime is renamed to serviceTime.
+        HashMap serverPorts = new HashMap();
+        serverPorts.put("serviceTime", "newServiceTime");
+        _actorsWithPortNameChanges
+            .put("ptolemy.domains.de.lib.Server", serverPorts);
     }
 }

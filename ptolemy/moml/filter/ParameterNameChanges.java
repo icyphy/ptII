@@ -258,5 +258,15 @@ public class ParameterNameChanges implements MoMLFilter {
         _classesWithParameterNameChanges.put(
                 "ptolemy.domains.de.lib.VariableDelay",
                 variableDelayChanges);
+
+        // ServerDelay: After 4.1, 'serviceTime'
+        // property is now 'newServiceTime'
+        HashMap serverChanges = new HashMap();
+        serverChanges.put(
+                "serviceTime",
+                "newServiceTime");
+        _classesWithParameterNameChanges.put(
+                "ptolemy.domains.de.lib.Server",
+                serverChanges);
     }
 }

@@ -41,7 +41,7 @@ import ptolemy.moml.MoMLParser;
     method, it will cause MoMLParser to filter so that models from
     earlier releases will run in the current release.
 
-    <p>This class will filter for actors that have had port name changes
+    <p>This class will filter for actors that have had port class changes
 
     @author Haiyang Zheng
     @version $Id$
@@ -213,16 +213,16 @@ public class PortClassChanges implements MoMLFilter {
             .put("ptolemy.domains.de.lib.VariableDelay",
             variableDelayPortChanges);
 
-        // Server: delay is now a ParameterPort,
+        // Server: serviceTime is now a ParameterPort,
         // not a DEIOPort.
         HashMap serverPorts = new HashMap();
         HashMap serverPortChanges = new HashMap();
 
-        variableDelayPorts.put(
+        serverPorts.put(
                 "ptolemy.domains.de.kernel.DEIOPort",
                 "ptolemy.actor.parameters.ParameterPort");
 
-        serverPortChanges.put("serviceTime", serverPorts);
+        serverPortChanges.put("newServiceTime", serverPorts);
 
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.Server",
