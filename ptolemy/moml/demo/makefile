@@ -49,7 +49,9 @@ JSRCS =
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
 	MoMLApplet.htm \
 	example.xml \
-	moml.dtd
+	modulation.mom \
+	moml.dtd \
+	sinewave.mom
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,7 +72,7 @@ install: all
 
 demos: demo
 demo:	all
-	CLASSPATH=$(CLASSPATH) appletviewer MoMLApplet.htm
+	CLASSPATH=$(CLASSPATH) appletviewer modulation.htm
 
 
 depend:

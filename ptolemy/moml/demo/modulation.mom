@@ -6,18 +6,18 @@
   </doc>
 
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <parameter name="iterations" value="100"/>
+    <setParameter name="iterations" value="100"/>
   </director>
 
   <!-- Define the actors -->
   <clone name="carrier" master="sinewave" source="sinewave.mom">
-    <parameter name="samplingFrequency" value="2*PI"/>
-    <parameter name="frequency" value="PI/50"/>
+    <setParameter name="samplingFrequency" value="2*PI"/>
+    <setParameter name="frequency" value="PI*0.02"/>
   </clone>
 
   <actor name="display" class="ptolemy.actor.gui.SequencePlotter"></actor>
 
   <!-- Make the connections -->
-  <connection port1="carrier.output" port2="display.input" name="c">
+  <connection name="c" port1="carrier.output" port2="display.input">
   </connection>
 </model>

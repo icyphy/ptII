@@ -31,11 +31,13 @@
 package ptolemy.moml;
 
 import java.net.URL;
+import java.awt.Color;
+
+import com.microstar.xml.XmlException;
 
 import ptolemy.moml.*;
 import ptolemy.gui.*;
 import ptolemy.actor.gui.PtolemyApplet;
-import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
@@ -105,12 +107,22 @@ public class MoMLApplet extends PtolemyApplet {
             MoMLParser parser = new MoMLParser();
             URL docBase = getDocumentBase();
             URL xmlFile = new URL(docBase, modelURL);
-            _toplevel = parser.parse(docBase.toExternalForm(),
-                    xmlFile.openStream());
+            _toplevel = parser.parse(docBase, xmlFile.openStream());
             _manager = _toplevel.getManager();
+            _manager.addExecutionListener(this);
             _workspace = _toplevel.workspace();
         } catch (Exception ex) {
-            report("MoML applet failed:\n", ex);
+            if (ex instanceof XmlException) {
+                XmlException xmlEx = (XmlException)ex;
+                // FIXME: Unfortunately, the line and column information
+                // reported by the microstar parser are wrong, so the
+                // following information is misleading at best.
+                report("MoML exception on line " + xmlEx.getLine()
+                + ", column " + xmlEx.getColumn()
+                + ", of file:\n" + xmlEx.getSystemId(), ex);
+            } else {
+                report("MoML applet failed:\n", ex);
+            }
             _setupOK = false;
         }
     }

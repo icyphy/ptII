@@ -1,16 +1,21 @@
-<!ENTITY % inlines "(doc | manager | director | parameter | actor |
-	 connection | link | placement | icon)*">
-<!ELEMENT model %inlines;>
+<!ELEMENT model (doc | manager | director | setParameter | parameter |
+          actor | clone | connection | link | placement | icon)*>
 <!ATTLIST model name CDATA "top">
 <!ATTLIST model class CDATA "ptolemy.actor.TypedCompositeActor">
 
   <!ELEMENT doc (#PCDATA)>
 
-  <!ELEMENT actor %inlines;>
+  <!ELEMENT actor (doc | director | setParameter | parameter | actor |
+	 clone | connection | link | placement | icon)*>
   <!ATTLIST actor name CDATA #REQUIRED>
   <!ATTLIST actor class CDATA "ptolemy.actor.TypedCompositeActor">
 
-  <!ELEMENT director (parameter*)>
+  <!ELEMENT clone (doc | director | setParameter | placement | icon)*>
+  <!ATTLIST clone foo CDATA #REQUIRED>
+  <!ATTLIST clone master CDATA #REQUIRED>
+  <!ATTLIST clone source CDATA #REQUIRED>
+
+  <!ELEMENT director (setParameter*)>
   <!ATTLIST director name CDATA "director">
   <!ATTLIST director class CDATA #REQUIRED>
 
@@ -25,11 +30,16 @@
   <!ATTLIST link vertex CDATA #IMPLIED>
 
     <!ELEMENT vertex EMPTY>
-    <!ATTLIST vertex name CDATA "">
+    <!ATTLIST vertex name CDATA #IMPLIED>
     <!ATTLIST vertex xpos CDATA #IMPLIED>
     <!ATTLIST vertex ypos CDATA #IMPLIED>
 
-  <!ELEMENT parameter EMPTY>
+  <!ELEMENT setParameter EMPTY>
+  <!ATTLIST setParameter name CDATA #REQUIRED>
+  <!ATTLIST setParameter value CDATA #REQUIRED>
+
+  <!ELEMENT parameter (doc*)>
+  <!ATTLIST parameter class CDATA "ptolemy.data.expr.Parameter">
   <!ATTLIST parameter name CDATA #REQUIRED>
   <!ATTLIST parameter value CDATA #REQUIRED>
 
@@ -38,3 +48,9 @@
   <!ATTLIST icon xpos CDATA #IMPLIED>
   <!ATTLIST icon ypos CDATA #IMPLIED>
   <!ATTLIST icon modifiers CDATA #IMPLIED>
+
+  <!ELEMENT port (doc*)>
+  <!ATTLIST port name CDATA #REQUIRED>
+  <!ATTLIST port class CDATA "ptolemy.actor.TypedIOPort">
+  <!-- FIXME: use an enumeration here! -->
+  <!ATTLIST port direction CDATA "output">
