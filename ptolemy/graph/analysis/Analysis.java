@@ -149,21 +149,15 @@ public class Analysis {
     /** Return the result (cached value) of the analysis on the associated 
      *  graph. The cached value is updated (recomputed) if the graph
      *  has changed since the last time the cached value was computed.
-     *  If the object returned by the analysis is mutable, 
-     *  one may wish to override this method to copy the cached
-     *  value (or convert it to some other form) before returning it.
-     *  Then changes made by the client to the returned value will
-     *  not affect the cached value in the analysis (as an example,
-     *  see {@link #SelfLoopAnalysis.result}).
      *
      *  @return The result of the analysis.
      */
-    public Object result() {
+    public final Object result() {
         if (obsolete()) {
-            _compute();
+            _cachedResult = _compute();
             registerComputation();
         }
-        return _cachedResult;
+        return _convertResult();
     }
 
     /** Return a description of the analysis. This method 
@@ -181,20 +175,41 @@ public class Analysis {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Perform the graph analysis and
-     *  set the value of {@link _cachedResult} to the value obtained by this 
-     *  invocation of the analysis. This method will typically be overridden
+    /** Perform the graph analysis and return the resulting value.
+     *  Upon entry, {@link #_cachedResult} contains the result of the
+     *  previous invocation of the analysis; this value can be
+     *  used, for example, to facilitate incremental analyses.
+     *  This method just returns null, and will typically be overridden
      *  in each derived class to perform the appropriate graph analysis. 
-     *  Care should be taken to set the value of {@link _cachedResult},
-     *  as described above, before the method returns.
-     *  FIXME: this method should be abstract.
      */
-    protected void _compute() {
-        _cachedResult = null;
+    protected Object _compute() {
+        return null;
+    }
+
+    /** Convert the cached result ({@link _cachedResult}) to a form that is 
+     *  suitable for the client to access (via {@link #result()}). 
+     *  This base class method just returns a reference to the cached result.
+     *  However, it may be appropriate for derived classes to override this
+     *  method. For example, if the object returned by the analysis is mutable, 
+     *  one may wish to override this method to copy the cached
+     *  value (or convert it to some other form) before returning it.
+     *  Then changes made by the client to the returned value will
+     *  not affect the cached value in the analysis (as an example,
+     *  see {@link #SelfLoopAnalysis.result}). This consideration is
+     *  important for incremental analyses that use the cached value
+     *  across successive invocations of the analysis.
+     */
+    protected Object _convertResult() {
+        return _cachedResult;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
+
+    /** The result of the most recent computation of the analysis (without
+     *  conversion by {@link #_convertResult()}.
+     */
+    protected Object _cachedResult = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -219,9 +234,6 @@ public class Analysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The result of the most recent computation of the analysis.
-    protected Object _cachedResult;
 
     // The graph that this analysis is associated with.
     private Graph _graph;

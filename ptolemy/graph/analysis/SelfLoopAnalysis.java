@@ -36,6 +36,15 @@ import java.util.Collections;
 //// SelfLoopAnalysis
 /** Computation of self loops in a graph.
 
+The <code>result</code> method
+(see {@link #ptolemy.graph.analysis.Analysis.result()})
+of this analysis returns the self loop edges in the associated graph.
+The self loop edges are returned in the form of a 
+{@link java.util.Collection}, where each element in the collection is an
+{@link Edge}. The collection returned is safe in that modifications
+to the returned collection do not affect the value cached
+in this analysis.
+
 @author Shuvra S. Bhattacharyya
 @version $Id$
 */
@@ -52,17 +61,6 @@ public class SelfLoopAnalysis extends Analysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the self loop edges in the associated graph in the 
-     *  form of a Collection. Each element in the collection is an
-     *  Edge. The collection returned is safe in that modifications
-     *  to the returned collection do not affect the value cached
-     *  in this analysis.
-     *  @return the self loop edges.
-     */
-    public Object result() {
-        return Collections.unmodifiableList((List)(super.result()));
-    } 
 
     /** Return a description of the analysis. This method 
      *  simply returns a description of the associated graph.
@@ -81,7 +79,7 @@ public class SelfLoopAnalysis extends Analysis {
 
     /** Compute the set of self-loop edges in the graph.
      */
-    protected void _compute() {
+    protected Object _compute() {
         ArrayList selfLoopEdges = new ArrayList();
         Iterator edges = graph().edges().iterator();
         while (edges.hasNext()) {
@@ -90,6 +88,11 @@ public class SelfLoopAnalysis extends Analysis {
                 selfLoopEdges.add(edge);
             }
         }
-        _cachedResult = selfLoopEdges;
+        return selfLoopEdges;
     }
+
+    protected Object _convertResult() {
+        return Collections.unmodifiableList((List)_cachedResult);
+    }
+
 }
