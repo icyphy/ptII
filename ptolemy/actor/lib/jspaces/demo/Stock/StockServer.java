@@ -45,7 +45,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.actor.lib.jspaces.Publisher;
@@ -201,7 +200,7 @@ public class StockServer extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                       inner class                         ////
 
-    private class DummySink extends SDFAtomicActor {
+    private class DummySink extends TypedCompositeActor {
 	private DummySink(TypedCompositeActor container, String name)
 		throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
