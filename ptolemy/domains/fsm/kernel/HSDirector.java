@@ -45,6 +45,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// HSDirector
@@ -99,6 +100,69 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Set the values of input variables in the mode controller. Examine
+     *  the preemptive outgoing transitions of its current state. Throw an
+     *  exception if there is more than one transition enabled. If there
+     *  is exactly one preemptive transition enabled then it is chosen and
+     *  the choice actions contained by the transition are executed. The
+     *  refinement of the current state of the mode controller is not fired.
+     *  If no preemptive transition is enabled and the refinement is ready
+     *  to fire in the current iteration, fire the refinement. The
+     *  non-preemptive transitions from the current state of the mode
+     *  controller are examined. If there is more than one transition
+     *  enabled, an exception is thrown. If there is exactly one
+     *  non-preemptive transition enabled then it is chosen and the choice
+     *  actions contained by the transition are executed.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled, or there is no controller, or thrown by any
+     *   choice action.
+     */
+    public void fire() throws IllegalActionException {
+        if(_debugging) _debug(getName(), " fire.");
+        if (_firstFire) {
+            Actor[] actors = getController().currentState().getRefinement();
+            _enabledRefinements = new LinkedList();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (actors[i].prefire()) {
+                        _enabledRefinements.add(actors[i]);
+                    }
+                }
+            }
+            _firstFire = false;
+        }
+       FSMActor ctrl = getController();
+        ctrl._setInputVariables();
+        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
+        State st = ctrl.currentState();
+        Transition tr =
+            ctrl._chooseTransition(st.preemptiveTransitionList());
+        if (tr != null) {
+
+	    Actor[] actors = tr.destinationState().getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+			actors[i].postfire();
+                    }
+                }
+            }
+    
+            return;
+        }
+	Iterator actors = _enabledRefinements.iterator();
+	while (actors.hasNext()) {
+	    Actor actor = (Actor)actors.next();
+            if(_debugging) _debug(getName(), " fire refinement",
+                    ((ptolemy.kernel.util.NamedObj)actor).getName());
+	    actor.fire();
+	}
+	ctrl._setInputsFromRefinement();
+        ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        return;
+    }
 
     /** Return true if the current integration step is accurate with
      *  the respect of all the enabled refinements, which are refinements
