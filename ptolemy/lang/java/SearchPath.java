@@ -91,6 +91,7 @@ public class SearchPath extends Vector {
      *  a string with path names separated by File.separatorChar.
      *  @param propertyName Name of the property to look for.
      *  @param fallbackPaths Path list to use if propertyName can't be found.
+     *  FIXME: what about separtors for the fallback paths 
      */
     public SearchPath(String propertyName, String fallbackPaths) {
         if (propertyName != null) {
@@ -145,6 +146,7 @@ public class SearchPath extends Vector {
 
     /** Return a Set that contains an entry for each class in the
      * in the Ptolemy II core as listed in ptolemyCorePackages.
+     * Classes are found by reading SearchPath.NAMED_PATH.
      * The entry will be a String of the form "ptolemy.kernel.util.NamedObj".
      * As a side effect, this method also updates the public variable
      * ptolemyCorePackageSet, which contains the names of the Ptolemy
@@ -155,10 +157,13 @@ public class SearchPath extends Vector {
     public static Set ptolemyCoreClasses() {
         // Create a HashSet with a size of 373
         // The number of .class files in the Ptolemy core is 186
-        // Determine that the number of .class files in the Ptolemy core with:
+        // Determine the number of .class files in the Ptolemy core with:
         // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
         // The Collections tutorial suggests a prime number slightly
         // larger than twice the size of the Set.
+        // Note that we have a test in the test suite that will warn
+        // us if the number of classes is too large and we need to adjust
+        // the size of the HashSet.
         Set classSet = new HashSet(373);
 
         // Array of names of packages that are in the Ptolemy core.
@@ -229,8 +234,12 @@ public class SearchPath extends Vector {
      * system Packages.
      * @returns A set of Strings where each element is a fully
      * qualified class name.
+     * @exception FileNotFoundException If we cannot find the JDK jar
+     * file 'rt.jar'.
+     * @exception IOException If we cannot read the JDK jar file 'rt.jar'.
      */
-    public static Set systemClasses() {
+    public static Set systemClasses() 
+            throws IOException, FileNotFoundException {
         // We use class names because they are . separated,
         // whereas filenames are separated by a platform dependent char.
 
@@ -247,17 +256,21 @@ public class SearchPath extends Vector {
         // It also suggests selecting a prime number just larger.
         // Primes can be found at
         // http://www.utm.edu/research/primes/lists/small/10000.txt
+        // Note that we have a test in the test suite that will warn
+        // us if the number of classes is too large and we need to adjust
+        // the size of the HashSet.
         Set classSet = new HashSet(10427);
 
         systemPackageSet = new HashSet();
         // Now read in the system jar file (jre/lib/rt.jar) and
         // add each .class file to the set
-	File systemJarFile = _getSystemJar();
+        File systemJarFile = _getSystemJar();
+
 	JarFile systemJar = null;
 	try {
 	    systemJar = new JarFile(systemJarFile);
 	} catch (IOException e) {
-	    throw new RuntimeException("Failed to read '" + systemJarFile +
+	    throw new IOException("Failed to read '" + systemJarFile +
 				       "': " + e);
 	}
 
@@ -283,38 +296,62 @@ public class SearchPath extends Vector {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Vector of containing directories to search for classes in.
+     *  Initially set to the value of the java.class.path JVM property.
+     */   
     public static final SearchPath NAMED_PATH =
 	new SearchPath("java.class.path", ".");
 
+    /** Vector containing directories to search for classes in.
+     *  Initially set to the current directory "."
+     */   
     public static final SearchPath UNNAMED_PATH =
 	new SearchPath(null, ".");
 
     /** Set of Strings that name all class files in the system jar file.
+     *  Entries are fully qualified classname Strings like "java.lang.Object".
      */
-    public static Set systemClassSet = systemClasses() ;
+    public static Set systemClassSet;
 
     /** Set of Strings that name all the packages in the system jar file.
+     *  Entries are fully qualified package name Strings like "java.lang".
      */
     public static Set systemPackageSet;
 
-    /** Set of Strings that name the .java files in the Ptolemy II core
+    /** Set of Strings that name the .java files in the Ptolemy II core.
+     *  Entries are fully qualified classname Strings like 
+     *  "ptolemy.kernel.util.NamedObj".
      */
     public static Set ptolemyCoreClassSet = ptolemyCoreClasses();
 
-    /** Set of Strings that name all the Ptolemy II Core packages */
+    /** Set of Strings that name all the Ptolemy II Core packages
+     *  Entries are fully qualified package name Strings like
+     *  "ptolemy.kernel.util".
+     */
     public static Set ptolemyCorePackageSet;
 
+
+    // Do things in a static initializer so that we can properly
+    // handle exceptions.
+    static {
+        try {
+            systemClassSet = systemClasses() ;
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // Split a String consisting of 0 or more path names separated by
-    // File.pathSeparated path names, and add them to the Vector of paths.
+    // File.pathSeparator, and add them to the Vector of paths.
     private void _addPaths(String paths) {
         int begin = 0;
 
         int end;
         do {
+            // FIXME: use a tokenizer here.
             end = paths.indexOf(File.pathSeparator, begin);
             String path = null;
             if (end == -1) {
@@ -334,15 +371,25 @@ public class SearchPath extends Vector {
     }
 
     // Return the path name to the system jar file, usually rt.jar.
-    private static File _getSystemJar() {
+    private static File _getSystemJar() 
+            throws IOException, FileNotFoundException {
 	String systemJarPathName =
-	    new String(System.getProperty("java.home") + "/lib/rt.jar");
+	    new String(System.getProperty("java.home") + 
+                    File.separator + "lib" +
+                    File.separator + "rt.jar");
+
 	File systemJar = new File(systemJarPathName);
 
 	// This would be a good place to search in other places, perhaps
         // by reading a property like ptolemy.system.jar
+        // However, we should wait until this is a problem. 
+        // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
+	if ( ! systemJar.isFile()) {
+	    throw new FileNotFoundException(systemJarPathName + 
+                    " either does not exist or is not readable");
+        }
 	if ( ! systemJar.canRead()) {
-	    throw new RuntimeException("Can't read '" + systemJarPathName +
+	    throw new IOException("Can't read '" + systemJarPathName +
 				       "'");
 	}
 	return systemJar;
