@@ -1,4 +1,4 @@
-/* Marker interface for actors that are nonstrict.
+/* A placeholder that represents the absence of a token.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -23,28 +23,34 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
 @ProposedRating Red (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
 
-//////////////////////////////////////////////////////////////////////////
-//// NonStrictActor
-/**
-This is a marker interface for actors that are nonstrict. That is, the actor
-does not require that all its inputs are known before it is fired.  Actors
-that implement this interface should produce outputs only if those outputs
-can be determined from the given inputs.  Outputs that cannot be determined 
-from the given inputs should not be produced.
-<p>
-An actor could implement this interface to notify the director that it may
-output undefined values.  Otherwise the director might assume that these 
-values are absent.
+import ptolemy.data.Token;
 
-@author Paul Whitaker
-@version $Id$
+//////////////////////////////////////////////////////////////////////////
+//// AbsentToken
+/**
+ * A placeholder that represents the absence of a token.
+ *
+ * @author Paul Whitaker
+ * @version $Id$
 */
 
-public interface NonStrictActor {}
+public class AbsentToken extends Token {
+
+    /** Construct a token with value false
+     */
+    public AbsentToken() {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** An instance of an absent token. */
+    public static AbsentToken ABSENT = new AbsentToken();
+
+}

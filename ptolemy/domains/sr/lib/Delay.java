@@ -78,12 +78,19 @@ public class Delay extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+
         if (input.hasToken(0)) {
             _currentToken = input.get(0);
+        } else if (input.isKnown(0)) {
+            _currentToken = AbsentToken.ABSENT;
         }
         
         if (_previousToken != null) {
-            output.send(0, _previousToken);
+            if (_previousToken == AbsentToken.ABSENT) {
+                output.sendAbsent(0);
+            } else {
+                output.send(0, _previousToken);
+            }
         }
     }
 
@@ -119,3 +126,5 @@ public class Delay extends Transformer {
     private Token _currentToken;
 
 }
+
+

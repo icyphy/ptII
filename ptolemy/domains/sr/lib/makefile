@@ -50,13 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Absent.java \
+	AbsentToken.java \
 	Delay.java \
 	Latch.java \
 	NonStrictActor.java \
+	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	SequenceTest.java \
 	SingleTokenDistributor.java \
-	TimedDisplay.java \
 	TriggeredTime.java \
 	Undefined.java
 

@@ -52,7 +52,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedDisplay" class="ptolemy.domains.sr.lib.TimedDisplay">
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
@@ -66,7 +66,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedDisplay2" class="ptolemy.domains.sr.lib.TimedDisplay">
+    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
@@ -80,7 +80,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedDisplay3" class="ptolemy.domains.sr.lib.TimedDisplay">
+    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
@@ -133,9 +133,9 @@
     </relation>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Pulse2.output" relation="relation6"/>
-    <link port="TimedDisplay.input" relation="relation5"/>
-    <link port="TimedDisplay2.input" relation="relation6"/>
-    <link port="TimedDisplay3.input" relation="relation"/>
+    <link port="NonStrictDisplay.input" relation="relation5"/>
+    <link port="NonStrictDisplay2.input" relation="relation6"/>
+    <link port="NonStrictDisplay3.input" relation="relation"/>
     <link port="NonStrictLogicalAnd.input" relation="relation5"/>
     <link port="NonStrictLogicalAnd.input" relation="relation6"/>
     <link port="NonStrictLogicalAnd.output" relation="relation"/>

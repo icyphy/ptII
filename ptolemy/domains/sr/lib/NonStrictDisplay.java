@@ -1,4 +1,4 @@
-/* An actor that displays input data and the associated time in a text area.
+/* An actor that displays the status and value of input tokens in a text area.
 
 @Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
+@ProposedRating Red (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
@@ -40,9 +40,10 @@ import javax.swing.text.BadLocationException;
 
 /**
 Display the values of the tokens arriving on the input channels along
-with the associated time in a text area on the screen.  Each input token 
-is written on a separate line.  The input type can be of any type.
-If the input happens to be a StringToken,
+with the associated time in a text area on the screen.  If the value is
+undefined or known to be absent, that information is indicated instead.
+Each input token  is written on a separate line.  The input type can be 
+of any type.  If the input happens to be a StringToken,
 then the surrounding quotation marks are stripped before printing
 the value of the token.  Thus, string-valued tokens can be used to
 generate arbitrary textual output, at one token per line.
@@ -53,7 +54,7 @@ converge to a fixed point.
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
  */
-public class TimedDisplay extends Display {
+public class NonStrictDisplay extends Display {
 
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
@@ -63,7 +64,7 @@ public class TimedDisplay extends Display {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimedDisplay(CompositeEntity container, String name)
+    public NonStrictDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -82,38 +83,50 @@ public class TimedDisplay extends Display {
             + String.valueOf(getDirector().getCurrentTime())
             + ": ";
         for (int i = 0; i < width; i++) {
+            String value;
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                String value = token.toString();
+                value = token.toString();
                 // If the value is a pure string, strip the quotation marks.
-                if((value.length() > 1) && value.startsWith("\"") &&
+                if ((value.length() > 1) && value.startsWith("\"") &&
                         value.endsWith("\"")) {
                     value = value.substring(1, value.length()-1);
                 }
-                textArea.append(time);
-                textArea.append(value);
+            } else if (input.isKnown(i)) {
+                value = ABSENT_STRING;
+            } else {
+                value = UNDEFINED_STRING;
+            }
 
-                // Append a newline character.
-                if (width > i + 1) textArea.append("\n");
+            textArea.append(time);
+            textArea.append(value);
 
-                // Regrettably, the default in swing is that the top
-                // of the textArea is visible, not the most recent text.
-                // So we have to manually move the scrollbar.
-                // The (undocumented) way to do this is to set the
-                // caret position (despite the fact that the caret
-                // is already where want it).
-                try {
-                    int lineOffset = textArea
-                        .getLineStartOffset(textArea.getLineCount() - 1);
-                    textArea.setCaretPosition(lineOffset);
-                } catch (BadLocationException ex) {
-                    // Ignore ... worst case is that the scrollbar
-                    // doesn't move.
-                }
+            // Append a newline character.
+            if (width > i + 1) textArea.append("\n");
+            
+            // Regrettably, the default in swing is that the top
+            // of the textArea is visible, not the most recent text.
+            // So we have to manually move the scrollbar.
+            // The (undocumented) way to do this is to set the
+            // caret position (despite the fact that the caret
+            // is already where want it).
+            try {
+                int lineOffset = textArea
+                    .getLineStartOffset(textArea.getLineCount() - 1);
+                textArea.setCaretPosition(lineOffset);
+            } catch (BadLocationException ex) {
+                // Ignore ... worst case is that the scrollbar
+                // doesn't move.
             }
         }
         textArea.append("\n");
         return true;
     }
-}
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static final String ABSENT_STRING = "absent";
+    private static final String UNDEFINED_STRING = "undefined";
+
+}

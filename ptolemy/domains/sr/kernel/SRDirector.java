@@ -57,6 +57,17 @@ import java.util.List;
 /**
 
 FIXME: update.
+<p>
+An actor is considered <i>ready to fire</i> if sufficient known inputs are 
+available.  An actor <i>has completed firing</i> if it has defined all of 
+its outputs.
+<p>
+An actor is considered <i>allowed to fire</i> if its prefire()
+method has returned true.  An actor is considered <i>allowed to iterate</i>
+if its postfire() method has not returned false.
+<p>
+An iteration <i>has converged</i> if both the total number of receivers and
+the number of actors that are allowed to fire have converged.
 
 @author Paul Whitaker
 @version $Id$
@@ -171,26 +182,29 @@ public class SRDirector extends Director {
 
             while (actorIterator.hasNext()) {
                 Actor actor = (Actor) actorIterator.next();
-                if (_isIterationAllowed(actor)) _fireActor(actor);
+                if (_isIterationAllowed(actor)) {
+                    _fireActor(actor);
+                } else {
+                    // The postfire() method of this actor returned false in 
+                    // a previous iteration, so here, for the benefit of 
+                    // connected actors, we need to explicitly call the 
+                    // sendAbsent() method of all of its output ports.
+                    _sendAbsentToAllUnknownOutputsOf(actor);
+                }
+
             }
         } while (!_hasIterationConverged());
 
         actorIterator = actorList.iterator();
-
         while (actorIterator.hasNext()) {
-
             Actor actor = (Actor)actorIterator.next();
-
             if (_isIterationAllowed(actor)) {
-
                 if (_postfireActor(actor)) {
                     _postfireReturns = true;
                 } else {
                     _doNotAllowIterationOf(actor);
                 }
-
             }
-
         }
 
     }
@@ -219,10 +233,8 @@ public class SRDirector extends Director {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
-
         _iteration = 0;        
-        _doNotIterateActors = null;
-
+        _actorsNotAllowedToIterate = null;
         super.initialize();
     }
 
@@ -250,8 +262,8 @@ public class SRDirector extends Director {
         int numberOfIterations = getIterations();
         _iteration++;
 
-        _debug("SRDirector: iteration",
-                String.valueOf(_iteration), 
+        _debug("SRDirector: Time instant",
+                String.valueOf(_iteration-1), 
                 "is complete.");
 
         if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
@@ -300,39 +312,51 @@ public class SRDirector extends Director {
     ////                         private methods                   ////
 
     /** Advance the current time by the specified amount.
-     *  @param amount The amount to advance the current time.
      */
     private void _advanceCurrentTime(double amount) {
         _currentTime = getCurrentTime() + amount;
     }
 
-    /** Do not allow the specified actor to fire.  Typically called when
-     *  the prefire method of the actor returns false.
+    /** Return true if all the inputs of the specified actor are known.
+     */
+    private boolean _areAllInputsKnown(Actor actor)
+            throws IllegalActionException {
+
+        // FIXME: Is this list deep enough?
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)inputPorts.next();
+            if (!inputPort.isKnown()) return false;
+        }
+
+        return true;
+    }
+
+    /** Do allow the specified actor to fire.  Typically called when
+     *  the prefire method of the actor returns true.
      *  will be ignored. If the argument is null, then do nothing.
-     *  @param actor The actor to allow to fire.
      */
     private void _doAllowFiringOf(Actor actor) {
         if (actor != null) {
-            if (_doFireActors == null) {
-                _doFireActors = new HashSet();
+            if (_actorsAllowedToFire == null) {
+                _actorsAllowedToFire = new HashSet();
             }
-            //_debug("  Added to _doFireActors:", ((Nameable)actor).getName());
-            _doFireActors.add(actor);
+            _actorsAllowedToFire.add(actor);
         }
     }
 
     /** Disable the specified actor.  All events destined to this actor
      *  will be ignored. If the argument is null, then do nothing.
-     *  @param actor The actor to disallow to iterate.
      */
     private void _doNotAllowIterationOf(Actor actor) {
         if (actor != null) {
-            if (_doNotIterateActors == null) {
-                _doNotIterateActors = new HashSet();
+            if (_actorsNotAllowedToIterate == null) {
+                _actorsNotAllowedToIterate = new HashSet();
             }
-            _debug("  Added to _doNotIterateActors:",
-                    ((Nameable)actor).getName());
-            _doNotIterateActors.add(actor);
+            _debug("  Added to _actorsNotAllowedToIterate:",
+                    _getNameOf(actor));
+            _actorsNotAllowedToIterate.add(actor);
         }
     }
 
@@ -340,22 +364,28 @@ public class SRDirector extends Director {
      *  returned true in the current iteration.  If the prefire() method 
      *  of this actor has not returned true in the current iteration, 
      *  the prefire() method will be called first.
-     *  @param actor The actor to fire.
-     *  @exception IllegalActionException If the prefire() method or fire()
-     *   method of the actor throws it.
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
 
         if (_isReadyToFire(actor)) {
             if (_isFiringAllowed(actor)) {
                 if (!_hasCompletedFiring(actor)) {
-                    _debug("    SRDirector is firing",
-                            ((Nameable)actor).getName());
+                    _debug("    SRDirector is firing", _getNameOf(actor));
                     actor.fire();
+
+                    // If all of the inputs of this actor are known, firing
+                    // the actor again in this iteration is not necessary.
+                    // The actor will not produce any more outputs because
+                    // it will have no new inputs to react to.  Thus, we
+                    // can assume that any unknown outputs of this actor
+                    // are actually absent.
+                    if (_areAllInputsKnown(actor)) 
+                        _sendAbsentToAllUnknownOutputsOf(actor);
+                    // FIXME:* it might be possible to improve efficiency here
+                    // by caching the fact that this actor is done firing. 
                 }
             } else {
-                _debug("    SRDirector is prefiring",
-                        ((Nameable)actor).getName());
+                _debug("    SRDirector is prefiring", _getNameOf(actor));
                 if (actor.prefire()) {
                     _doAllowFiringOf(actor);
                     _fireActor(actor);
@@ -365,7 +395,6 @@ public class SRDirector extends Director {
     }
 
     /** Return a list of the actors to be fired by this director.
-     *  @return The list of actors to be fired by this director.
      */
     private List _getActorList() {
 
@@ -389,11 +418,14 @@ public class SRDirector extends Director {
         return actorList;
     }
 
+    /** Return the name of the specified actor.
+     */
+    private String _getNameOf(Actor actor) {
+        return ((Nameable)actor).getName();
+    }
+
     /** Return true if the specified actor has completed firing.  An actor 
      *  has completed firing if it has defined all of its outputs.
-     *  @return True if the specified actor has completed firing.
-     *  @exception IllegalActionException If it cannot be determined
-     *   whether the output ports have known state.
      */
     private boolean _hasCompletedFiring(Actor actor)
             throws IllegalActionException {
@@ -406,33 +438,34 @@ public class SRDirector extends Director {
             if (!outputPort.isKnown()) return false;
         }
 
+        // FIXME:* it might be possible to improve efficiency here
+        // by caching the fact that this actor is done firing. 
         return true;
     }
 
     /** Return true if this iteration has converged.  The iteration has
      *  converged if both the number of known receivers has converged and
      *  the number of actors to fire has converged.
-     *  @return True if the iteration has converged.
      */
     private boolean _hasIterationConverged() {
 
         // Get the previous values for local use.
-        int previousNumOfActorsToFire = _lastNumOfActorsToFire;
+        int previousNumOfActorsAllowedToFire = _lastNumOfActorsAllowedToFire;
         int previousNumOfKnownReceivers = _lastNumOfKnownReceivers;
 
         // Get the current values for local use.
-        int currentNumOfActorsToFire = _numOfActorsToFire();
+        int currentNumOfActorsAllowedToFire = _numOfActorsAllowedToFire();
         int currentNumOfKnownReceivers = _numOfKnownReceivers();
 
         // Update the previous values for use the next time this method
         // is called.
-        _lastNumOfActorsToFire = currentNumOfActorsToFire;
+        _lastNumOfActorsAllowedToFire = currentNumOfActorsAllowedToFire;
         _lastNumOfKnownReceivers = currentNumOfKnownReceivers;
 
-        _debug("  previousNumOfActorsToFire is",
-                String.valueOf(previousNumOfActorsToFire));
-        _debug("  currentNumOfActorsToFire is",
-                String.valueOf(currentNumOfActorsToFire));
+        _debug("  previousNumOfActorsAllowedToFire is",
+                String.valueOf(previousNumOfActorsAllowedToFire));
+        _debug("  currentNumOfActorsAllowedToFire is",
+                String.valueOf(currentNumOfActorsAllowedToFire));
 
         _debug("  previousNumOfKnownReceivers is",
                 String.valueOf(previousNumOfKnownReceivers));
@@ -442,9 +475,9 @@ public class SRDirector extends Director {
         _debug("  total number of receivers is",
                 String.valueOf(_receivers.size()));
 
-        // No actors to fire, so the iteration has converged.  This
-        // check may eliminate one unnecessary phase of actor firings.
-        if (currentNumOfActorsToFire == 0) return true;
+        // Note that having zero actors to fire is not sufficient for 
+        // convergence.  Some actors may fire in the next phase if
+        // the director calls sendAbsent() on any output ports.
 
         // Note that all receivers having known state is not sufficient
         // for convergence.  After the values are present, each actor must
@@ -455,7 +488,8 @@ public class SRDirector extends Director {
 
         // The number of actors to fire has not converged, so the
         // iteration has not converged.
-        if (previousNumOfActorsToFire != currentNumOfActorsToFire)
+        if (previousNumOfActorsAllowedToFire != 
+                currentNumOfActorsAllowedToFire)
             return false;
 
         // The number of known receivers has not converged, so the
@@ -472,7 +506,6 @@ public class SRDirector extends Director {
      */
     private void _init() {
 	try {
-            //FIXME check that the defaults happen.
 	    period = new Parameter(this, "period",
                     new IntToken(_DEFAULT_SR_PERIOD));
             period.setTypeEquals(BaseType.DOUBLE);
@@ -489,11 +522,10 @@ public class SRDirector extends Director {
      *  and resetting all receivers to have unknown status.
      */
     private void _initFiring() {
-
         _postfireReturns = false;
-        _doFireActors = null;
+        _actorsAllowedToFire = null;
 
-        _lastNumOfActorsToFire = -1;
+        _lastNumOfActorsAllowedToFire = -1;
         _lastNumOfKnownReceivers = -1;
 
         _resetAllReceivers();
@@ -501,55 +533,41 @@ public class SRDirector extends Director {
 
     /** Return true if the specified actor is allowed to fire, that is,
      *  the prefire method of the actor has returned true.
-     *  @return True if the specified actor is allowed to fire.
      */
     private boolean _isFiringAllowed(Actor actor) {
-        return (!(_doFireActors == null) && 
-                _doFireActors.contains(actor));
+        return (!(_actorsAllowedToFire == null) && 
+                _actorsAllowedToFire.contains(actor));
     }
 
     /** Return true if the specified actor is allowed to iterate.
-     *  @return True if the specified actor is allowed to iterate.
      */
     private boolean _isIterationAllowed(Actor actor) {
-        return (_doNotIterateActors == null || 
-                !_doNotIterateActors.contains(actor));
+        return (_actorsNotAllowedToIterate == null || 
+                !_actorsNotAllowedToIterate.contains(actor));
     }
 
     /** Return true if the specified actor is ready to fire.  An actor is
      *  ready to fire if sufficient known inputs are available.
-     *  @return True if the specified actor is ready to fire.
-     *  @exception IllegalActionException If it cannot be determined
-     *   whether the input ports have known state.
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
         if (actor instanceof NonStrictActor) {
             return true;
         }
 
-        // FIXME: Is this list deep enough?
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-            if (!inputPort.isKnown()) return false;
-        }
-
-        return true;
+        return _areAllInputsKnown(actor);
     }
 
     /** Return the number of actors that are allowed to fire.
-     *  @return The number of actors that are allowed to fire.
      */
-    private int _numOfActorsToFire() {
-        if (_doFireActors == null) {
+    private int _numOfActorsAllowedToFire() {
+        if (_actorsAllowedToFire == null) {
            return 0;
         }
-        return _doFireActors.size();
+
+        return _actorsAllowedToFire.size();
     }
 
     /** Return the number of receivers with known state.
-     *  @return The number of receivers with known state.
      */
     private int _numOfKnownReceivers() {
         if (_receivers == null) {
@@ -570,19 +588,15 @@ public class SRDirector extends Director {
      *  if it has been fired in the current iteration.  If this actor has 
      *  not been fired in the current iteration, return true without
      *  calling the postfire() method of the actor.
-     *  @param actor The actor to postfire.
-     *  @return True if this actor can execute in the next iteration.
-     *  @exception IllegalActionException If the postfire() method of the
-     *   actor throws it.
      */
     private boolean _postfireActor(Actor actor)
             throws IllegalActionException {
 
         if (_isFiringAllowed(actor)) {
-            _debug("    SRDirector is postfiring",
-                    ((Nameable)actor).getName());
+            _debug("    SRDirector is postfiring", _getNameOf(actor));
             return actor.postfire();
         }
+
         return true;
     }
 
@@ -595,17 +609,46 @@ public class SRDirector extends Director {
         }
     }
 
+    /** Call the sendAbsent() method of each of the output ports of the
+     *  specified actor.
+     */
+    private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
+            throws IllegalActionException {
+
+        if (!(actor instanceof NonStrictActor)) {
+            // No need to do anything if this actor has defined all of its 
+            // outputs.
+            if (!_hasCompletedFiring(actor)) {
+                _debug("  SRDirector is calling sendAbsent()",
+                        "on the output ports of", _getNameOf(actor));
+
+                // FIXME: Is this list deep enough?
+                Iterator outputPorts = actor.outputPortList().iterator();
+
+                while (outputPorts.hasNext()) {
+                    IOPort outputPort = (IOPort)outputPorts.next();
+                    for (int j = 0; j < outputPort.getWidth(); j++) {
+                        if (!outputPort.isKnown(j)) outputPort.sendAbsent(j);
+                    }
+                }
+            }
+
+            // FIXME:* it might be possible to improve efficiency here
+            // by caching the fact that this actor is done firing. 
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
     // never fired.
-    private HashSet _doNotIterateActors;
+    private HashSet _actorsNotAllowedToIterate;
 
     // The set of actors that have returned true in their prefire() methods
     // on the given iteration.
-    private HashSet _doFireActors;
+    private HashSet _actorsAllowedToFire;
 
     // The count of iterations executed.
     private int _iteration;
@@ -615,7 +658,7 @@ public class SRDirector extends Director {
 
     // The number of actors that were fired on the last phase of
     // actor firings.
-    private int _lastNumOfActorsToFire;
+    private int _lastNumOfActorsAllowedToFire;
 
     // The number of receivers with known state on the last phase of
     // actor firings.
@@ -625,5 +668,6 @@ public class SRDirector extends Director {
     private List _receivers;
 
 }
+
 
 

@@ -7,7 +7,8 @@ FIXMEs
 
 are tests running?
 
-fix type constraints for Absent, Undefined - write tests
+verify that all SR actors handle absent appropriately
+figure out what is wrong with Undefined - write tests
 
 add SRDirector and sr.lib to the library
 
