@@ -225,7 +225,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         return retVal;
     }
 
-        /** Topology analysis and initialization.
+    /** Topology analysis and initialization.
      *
      * @ return True if in giotto domain, False if in other domains.
      */
@@ -333,8 +333,8 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                 TypedIOPort port = (TypedIOPort)outPorts.next();
                 // Ignore unconnected ports
                 if (port.getWidth()>0) {
-                    String portID = StringUtilities.sanitizeName(
-                            port.getName(model));
+                    String portID = StringUtilities.sanitizeName( 
+			    port.getName(model));
                     String portTypeID = _getTypeString(port);
                     String portInitialValue = "CGinit_" + portID;
                     _checkGiottoID(portID);
@@ -958,12 +958,19 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             }
 
             actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
-            boolean firstParameter = true;
             
             codeString     += "inline void " + actorName + "_inputdriver( ";
             funcDeclString += "inline void " + actorName + "_inputdriver( ";
-            
+
+	    varDeclString = _tabChar + "// Counter to optimize the copying to execute only when required" + _endLine;
+	    varDeclString += _tabChar + "static int copy_counter = 0;" + _endLine;
+            arrayInitString = "";
+	    assgtStmtString = _tabChar + "if (copy_counter > 0) {" + _endLine;
+
             Map driverIOMap = new LinkedHashMap();
+            boolean firstParameter = true;
+	    boolean firstArray = true;
+
             for (Iterator inPorts = actor.inputPortList().iterator();
                  inPorts.hasNext();) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();
@@ -988,34 +995,44 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                     codeString += ", ";
                     funcDeclString += ", ";
                 }
-                codeString += portType + " " + sanitizedPortName2
-                           + ", " + _getTypeString(inPort) + " " + sanitizedPortName;
-                funcDeclString += portType + " " + sanitizedPortName2
-                           + ", " + _getTypeString(inPort) + " " + sanitizedPortName;
+                codeString += portType + " *" + sanitizedPortName2
+                           + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
+                funcDeclString += portType + " *" + sanitizedPortName2
+                           + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
                 
-                     // Allocate memory for the arrays
-                     if (portType.endsWith("array")) {
-                         if (varDeclString.length() == 0) { // First time an array has been found
-                             varDeclString += _tabChar + "int i;" + _endLine;
-                         }
-                         String arrayLength = _getArrayLength(port);
-                         varDeclString += _tabChar + "static "
-                                         + portType.substring(0, portType.length()-5/* Length of "array" */)
-                                         + "[" + arrayLength + "] "
-                                         + "array" + sanitizedPortName2 + ";" + _endLine;
+		// Allocate memory for the arrays
+		if (portType.endsWith("array")) {
+		    if (firstArray) { // First time an array has been found
+			firstArray = false;
+			varDeclString += _tabChar + "int i;" + _endLine;
+		    }
+		    String arrayLength = _getArrayLength(port);
+		    varDeclString += _tabChar + "static "
+			+ portType.substring(0, portType.length()-5/* Length of "array" */)
+			+ " array" + sanitizedPortName2
+			+ "[" + arrayLength + "]" + ";" + _endLine;
                     
-                         arrayInitString += _tabChar + "" + sanitizedPortName + " = "
-                                             + "array" + sanitizedPortName2 + ";" + _endLine;
-
-                         assgtStmtString += _tabChar + "for( i=0 ; i<" + arrayLength + " ; i++ ) {" + _endLine
-                                          + _tabChar + _tabChar + sanitizedPortName + "[i] = " + sanitizedPortName2 + "[i];" + _endLine
-                                          + _tabChar + "}" + _endLine;
-                     }
-                     else {
-                         assgtStmtString += _tabChar + "*" + sanitizedPortName
-                                          + " = *" + sanitizedPortName2 + ";" + _endLine;
-                     }
+		    arrayInitString += _tabChar + "*" + sanitizedPortName + " = "
+			+ "array" + sanitizedPortName2 + ";" + _endLine;
+		    
+		    String sourceActorName = 
+			StringUtilities.sanitizeName(
+				   port.getContainer().getName());
+		    assgtStmtString += _tabChar + _tabChar + "if (!(copy_counter % "
+			             + "(" + actorName + "_FREQ/" + sourceActorName + "_FREQ) )) {" + _endLine
+			             + _tabChar + _tabChar + _tabChar + "for( i=0 ; i<" + arrayLength + " ; i++ ) {" + _endLine
+			+ _tabChar + _tabChar + _tabChar + _tabChar + "(*" + sanitizedPortName + ")[i] = (*" + sanitizedPortName2 + ")[i];" + _endLine
+			+ _tabChar + _tabChar + _tabChar + "}" + _endLine
+			+ _tabChar + _tabChar + "}" + _endLine;
+		}
+		else {
+		    assgtStmtString += _tabChar + _tabChar + "*" + sanitizedPortName
+			+ " = *" + sanitizedPortName2 + ";" + _endLine;
+		}
             }
+	    assgtStmtString += _tabChar + "}" + _endLine
+		+ _tabChar + "copy_counter = (copy_counter % " + actorName + "_FREQ) + 1;" + _endLine;
+
             codeString += ") {" + _endLine;
             funcDeclString += ");" + _endLine + _endLine;
             codeString += varDeclString + _endLine // Statically allocate space for all the arrays used
@@ -1050,6 +1067,25 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         codeString += "#include \"f_spec.h\"" + _endLine;
         codeString += "#include \"f_interface.h\"" + _endLine;
         codeString +=  _endLine;
+	codeString += "// Task Frequency Definitions" + _endLine;
+        Iterator actors = model.entityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+	    String actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
+	    int actorFreq = 0;
+
+            Parameter actorFreqPara = (Parameter)
+                ((NamedObj) actor).getAttribute("frequency");
+            if (actorFreqPara == null) {
+                actorFreq = 1;
+            } else {
+                actorFreq = ((IntToken) actorFreqPara.
+                        getToken()).intValue();
+            }
+
+	    codeString += "#define " + actorName + "_FREQ" + _tabChar + _tabChar + "(" + actorFreq + ")" + _endLine;
+	}
+	codeString += _endLine;
         
         codeString += "// Datatype Declarations" + _endLine;
         Iterator dataType = dataTypes.iterator();
