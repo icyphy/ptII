@@ -43,6 +43,10 @@
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
+<entity name="SketchedSource" class="ptolemy.actor.lib.SketchedSource">
+<doc>Create values from a sketch on the screen</doc>
+</entity>
+
 <entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
