@@ -130,11 +130,23 @@ public class SCDirector extends Director {
     // The controller may delegate firing its current refinement to this
     // director.
     // Note that the fire sequence of SCController is: 1. evaluate preemptive
-    // transitions; 2. invoke refinement; 3. evaluate non-preemptive
+    // transitions; 2. invoke refinement; 3. evaluate non-preemptive 
     // transitions.
     public void fire() throws IllegalActionException {
         // _controller must not be null
         _controller.fire();
+    }
+
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        CompositeActor cont = (CompositeActor)getContainer();
+        Director execdir = (Director)cont.getExecutiveDirector();
+        if (execdir == null) {
+            // PANIC!!
+            throw new InvalidStateException(this,
+                    "SCDirector must have an executive director!");
+        }
+        execdir.fireAt(cont, time);
     }
 
     /** Return the current time of the simulation. In this base class,
@@ -170,14 +182,26 @@ public class SCDirector extends Director {
     // governed by this director.
     // Should only be called by executive director.
     public double getNextIterationTime() {
-        // Enumerate the actors, ask them the next iteration time,
-        // return the minimum.
-        // ADD THIS.
-        return 0.0;
+        double nxtime = 0.0;
+        CompositeActor cont = (CompositeActor)getContainer();
+        if (cont == null) {
+            // In fact this should not happen, this director must have
+            // a container.
+            nxtime = 0.0;
+        } else {
+            Director execdir = (Director)cont.getExecutiveDirector();
+            if (execdir == null) {
+                // PANIC!!
+                throw new InvalidStateException(this,
+                        "SCDirector must have an executive director!");
+            }
+            nxtime = execdir.getNextIterationTime();
+        }
+        return nxtime;
     }
 
     /** Create receivers and then invoke the initialize()
-     *  methods of all its deeply contained actors.
+     *  methods of all its deeply contained actors.  
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
@@ -200,6 +224,10 @@ public class SCDirector extends Director {
                 actor.initialize();
             }
         }
+
+/* REMOVE! */
+System.out.println("Initializing SCDirector " + this.getFullName());
+
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -216,14 +244,14 @@ public class SCDirector extends Director {
     /** Return false. The default director will only get fired once, and will
      *  terminate execution afterwards.   Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director wishes to execute anymore, and
+     *  this Director to see if the Director wishes to execute anymore, and 
      *  should *NOT*, in general, just take the logical AND of calling
      *  postfire on all the contained actors.
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
-     *  method of the container or one of the deeply contained actors
+     *  @exception IllegalActionException *Deprecate* If the postfire() 
+     *  method of the container or one of the deeply contained actors 
      *  throws it.
      */
     // NOTE! There is the problem of how to deal with refinements' return
@@ -237,17 +265,17 @@ public class SCDirector extends Director {
         return _controller.postfire();
     }
 
-    /** return True, indicating that the Director is ready to fire.
+    /** return True, indicating that the Director is ready to fire.   
      *  Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director is ready to execute, and
+     *  this Director to see if the Director is ready to execute, and 
      *  should *NOT*, in general, just take the logical AND of calling
      *  prefire on all the contained actors.
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
-     *  method of the container or one of the deeply contained actors
+     *  @exception IllegalActionException *Deprecate* If the postfire() 
+     *  method of the container or one of the deeply contained actors 
      *  throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -256,14 +284,19 @@ public class SCDirector extends Director {
         boolean result = true;
         if (refine != null) {
             result = refine.prefire();
+
+/* REMOVE! */
+System.out.println("Result of prefire " + ((CompositeActor)refine).getFullName()
+	+ " is " + result);
         }
+
         // result = result & _controller.prefire();
         return result;
     }
 
-    public void setController(SCController ctrl)
+    public void setController(SCController ctrl) 
             throws IllegalActionException {
-        if (getContainer() == null) {
+        if (getContainer() == null) {        
             throw new IllegalActionException(this, ctrl,
                     "SCDirector must have a container to set its "
                     + "controller.");
@@ -278,17 +311,17 @@ public class SCDirector extends Director {
 
     /** Set the current time.
      *  Do nothing in this base class implementation.
-     *  @exception IllegalActionException If time cannot be changed
-     *   due to the state of the simulation. Only thrown in derived
+     *  @exception IllegalActionException If time cannot be changed 
+     *   due to the state of the simulation. Only thrown in derived 
      *   classes.
      *  @param newTime The new current simulation time.
-     *
+     *  
      */
     // FIXME: complete this.
     // Call this method on all CompositeActor refinements.
     public void setCurrentTime(double newTime) throws IllegalActionException {
     }
-
+  
     /** Transfer data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
@@ -312,11 +345,17 @@ public class SCDirector extends Director {
                 p = (IOPort)_controller.getPort(port.getName());
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
+                    if (rec.hasToken()) {
+                        rec.get();
+                    }
                     rec.put(t);
                 }
                 p = (IOPort)refine.getPort(port.getName());
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
+                    if (rec.hasToken()) {
+                        rec.get();
+                    }
                     rec.put(t);
                 }
             } catch (NoTokenException ex) {
@@ -367,9 +406,10 @@ public class SCDirector extends Director {
      *  the need for a write access.
      *
      *  @return True if this director need write access, false otherwise.
-     */
-    protected boolean _writeAccessPreference() {
-        return true;
+     */ 
+    protected boolean _writeAccessPreference() { 
+        // should ask the refinements
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

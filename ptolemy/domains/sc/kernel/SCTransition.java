@@ -89,6 +89,30 @@ public class SCTransition extends ComponentRelation {
     // Trigger condition set.
     boolean _tcSet = false;
 
+    // List of transition actions.
+    LinkedList _transActions = null;
+
+    public void addTransitionAction(TransitionAction act) {
+        if (act == null) {
+            return;
+        }
+        if (_transActions == null) {
+            _transActions = new LinkedList();
+        }
+        _transActions.insertFirst(act);
+    }
+
+    public void executeTransitionActions() {
+        if (_transActions == null) {
+            return;
+        }
+        Enumeration tas = _transActions.elements();
+        while (tas.hasMoreElements()) {
+            TransitionAction ta = (TransitionAction)tas.nextElement();
+            ta.execute();
+        }
+    }
+
     private void _createVarLists() {
         try {
             _trigger = new VariableList(this, "Trigger");
@@ -302,6 +326,16 @@ public class SCTransition extends ComponentRelation {
                 update.addToScope(localInputVarV);
             }
         }
+
+        // initialize the transition actions
+        if (_transActions != null) {
+            Enumeration tas = _transActions.elements();
+            while (tas.hasMoreElements()) {
+                TransitionAction ta = (TransitionAction)tas.nextElement();
+                ta.initialize();
+            }
+        }
+
     }
 
     public VariableList getTriggerActions() {
