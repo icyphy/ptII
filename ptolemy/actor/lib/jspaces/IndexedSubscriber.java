@@ -239,7 +239,8 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                     // no one can produce outputs at this time.
                     while(!finished) {
                         TokenEntry entrytemp = new TokenEntry(_entryName,
-                                new Long(_lastRead.getSerialNumber()+1), null);
+                                new Long(_lastRead.getSerialNumber() + 1),
+                                null);
                         TokenEntry entry;
                         try {
                             entry = (TokenEntry)_space.readIfExists(
