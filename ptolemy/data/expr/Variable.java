@@ -1121,6 +1121,67 @@ public class Variable extends Attribute
         return result;
     }
 
+    /*  Set the token value and type of the variable, and notify the
+     *  container that the value (and type, if appropriate) has changed.
+     *  Also notify value dependents that they need to be re-evaluated,
+     *  and notify any listeners that have been registered with
+     *  addValueListener().
+     *  If setTypeEquals() has been called, then attempt to convert
+     *  the specified token into one of the appropriate type, if needed,
+     *  rather than changing the type.
+     *  @param newToken The new value of the variable.
+     *  @exception IllegalActionException If the token type is not
+     *   compatible with specified constraints, or if you are attempting
+     *   to set to null a variable that has value dependents.
+     */
+    protected void _setTokenAndNotify(Token newToken)
+            throws IllegalActionException {
+
+        // Save to restore in case the change is rejected.
+        Token oldToken = _token;
+        Type oldVarType = _varType;
+        if (_varType instanceof StructuredType) {
+            try {
+                oldVarType = (Type)((StructuredType)_varType).clone();
+            } catch (CloneNotSupportedException ex2) {
+                throw new InternalErrorException(
+                        "Variable._setTokenAndNotify: " +
+                        " Cannot clone _varType" +
+                        ex2.getMessage());
+            }
+        }
+        boolean oldNoTokenYet = _noTokenYet;
+        String oldInitialExpression = _initialExpression;
+        Token oldInitialToken = _initialToken;
+
+
+        try {
+            _setToken(newToken);
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                if ( !oldVarType.equals(_varType) &&
+                        oldVarType != BaseType.UNKNOWN) {
+                    container.attributeTypeChanged(this);
+                }
+                container.attributeChanged(this);
+            }
+            _notifyValueListeners();
+        } catch (IllegalActionException ex) {
+            // reverse the changes
+            _token = oldToken;
+            if (_varType instanceof StructuredType) {
+                ((StructuredType)_varType).updateType(
+                        (StructuredType)oldVarType);
+            } else {
+                _varType = oldVarType;
+            }
+            _noTokenYet = oldNoTokenYet;
+            _initialExpression = oldInitialExpression;
+            _initialToken = oldInitialToken;
+            throw ex;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1331,67 +1392,6 @@ public class Variable extends Attribute
             }
             _token = newToken;
             _needsEvaluation = false;
-        }
-    }
-
-    /*  Set the token value and type of the variable, and notify the
-     *  container that the value (and type, if appropriate) has changed.
-     *  Also notify value dependents that they need to be re-evaluated,
-     *  and notify any listeners that have been registered with
-     *  addValueListener().
-     *  If setTypeEquals() has been called, then attempt to convert
-     *  the specified token into one of the appropriate type, if needed,
-     *  rather than changing the type.
-     *  @param newToken The new value of the variable.
-     *  @exception IllegalActionException If the token type is not
-     *   compatible with specified constraints, or if you are attempting
-     *   to set to null a variable that has value dependents.
-     */
-    private void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
-
-        // Save to restore in case the change is rejected.
-        Token oldToken = _token;
-        Type oldVarType = _varType;
-        if (_varType instanceof StructuredType) {
-            try {
-                oldVarType = (Type)((StructuredType)_varType).clone();
-            } catch (CloneNotSupportedException ex2) {
-                throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: " +
-                        " Cannot clone _varType" +
-                        ex2.getMessage());
-            }
-        }
-        boolean oldNoTokenYet = _noTokenYet;
-        String oldInitialExpression = _initialExpression;
-        Token oldInitialToken = _initialToken;
-
-
-        try {
-            _setToken(newToken);
-            NamedObj container = (NamedObj)getContainer();
-            if (container != null) {
-                if ( !oldVarType.equals(_varType) &&
-                        oldVarType != BaseType.UNKNOWN) {
-                    container.attributeTypeChanged(this);
-                }
-                container.attributeChanged(this);
-            }
-            _notifyValueListeners();
-        } catch (IllegalActionException ex) {
-            // reverse the changes
-            _token = oldToken;
-            if (_varType instanceof StructuredType) {
-                ((StructuredType)_varType).updateType(
-                        (StructuredType)oldVarType);
-            } else {
-                _varType = oldVarType;
-            }
-            _noTokenYet = oldNoTokenYet;
-            _initialExpression = oldInitialExpression;
-            _initialToken = oldInitialToken;
-            throw ex;
         }
     }
 
