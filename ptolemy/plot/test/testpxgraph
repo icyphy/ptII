@@ -9,7 +9,7 @@ DataSet: First dataset
 0,0
 1,1
 2,2
-0,1
+3,-0.2
 EOF
 
 # Test out Flags in order
@@ -17,8 +17,9 @@ $pxgraph -test $tmpfile
 $pxgraph -test -bar $tmpfile
 $pxgraph -test -bb $tmpfile
 $pxgraph -test -binary bin.plt
+$pxgraph -test -bar -binary bin.plt
 $pxgraph -test -db $tmpfile
-$pxgraph -test -help $tmpfile
+$pxgraph -help $tmpfile
 $pxgraph -test -lnx $tmpfile
 $pxgraph -test -lny $tmpfile
 $pxgraph -test -m $tmpfile
@@ -27,16 +28,31 @@ $pxgraph -test -nl $tmpfile
 $pxgraph -test -p $tmpfile
 $pxgraph -test -p -nl $tmpfile
 $pxgraph -test -P $tmpfile
+$pxgraph -test -P -nl -binary bin.plt
 $pxgraph -test -P -nl $tmpfile
 $pxgraph -test -rv $tmpfile
 $pxgraph -test -tk $tmpfile
+
+# Test out Options in order
+$pxgraph -test -bd Blue $tmpfile
+$pxgraph -test -bg Green $tmpfile
+$pxgraph -test -brb 1.0 -bar $tmpfile
+$pxgraph -test -brw 0.3 -bar $tmpfile
+$pxgraph -test -fg Pink $tmpfile
+$pxgraph -test -gw 10 $tmpfile
+$pxgraph -test -lf 9x15 $tmpfile
+$pxgraph -test -lx 0.5,1.5 $tmpfile
+$pxgraph -test -ly 0.5,1.5 $tmpfile
+$pxgraph -test -lx 0.5,1.5 -ly 0.5,1.5 $tmpfile
+$pxgraph -test -t "This is the Title" $tmpfile
+$pxgraph -test -tf 9x15 $tmpfile
+$pxgraph -test -x Years -y "$ Profit" $tmpfile
+$pxgraph -test -zg Yellow $tmpfile
+$pxgraph -test -zw 5 $tmpfile
 rm -f $tmpfile
 
 # Test out stdin
-cat demo/data.plt | $pxgraph -test
-
-# Test out title
-cat demo/bargraph.plt | $pxgraph -test -t "This is the Title"
+$pxgraph -test < demo/data.plt
 
 # Test out file args
 $pxgraph -test ./demo/bargraph.plt
