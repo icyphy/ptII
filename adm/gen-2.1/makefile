@@ -527,6 +527,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
