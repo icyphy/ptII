@@ -239,6 +239,8 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
 			ptolemy.domains.tm.lib \
+			ptolemy.domains.wireless.kernel \
+			ptolemy.domains.wireless.lib \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
@@ -383,6 +385,10 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
 			../ptolemy/domains/sr/kernel/*.java \
 			../ptolemy/domains/sr/lib/*.java \
+			../ptolemy/domains/tm/kernel/*.java \
+			../ptolemy/domains/tm/lib/*.java \
+			../ptolemy/domains/wireless/kernel/*.java \
+			../ptolemy/domains/wireless/lib/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java \
 			../ptolemy/data/type/*.java \

@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS = \
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
 DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto pbo petrinet \
 		$(PTPSDF_DIR) rtp \
-		sr tm $(PTJAVA3D_DIR) 
+		sr tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 
