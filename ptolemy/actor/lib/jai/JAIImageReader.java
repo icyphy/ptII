@@ -76,14 +76,15 @@ public class JAIImageReader extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("$PTII/doc/img/PtolemyII.jpg");
+        fileOrURL.setExpression("$CLASSPATH/doc/img/PtolemyII.jpg");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by File Attribute.
+     *  any form accepted by FileAttribute.
+     *  The initial value is "$CLASSPATH/doc/img/PtolemyII.jpg".
      *  @see FileParameter
      */
     public FileParameter fileOrURL;
@@ -117,16 +118,21 @@ public class JAIImageReader extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         try {
-            _stream = new FileSeekableStream(_fileRoot);
-        } catch (IOException error) {
-            throw new IllegalActionException("Unable to load file");
-        }
-        _outputtedImage = JAI.create("stream", _stream);
-        PlanarImage dummy = _outputtedImage.getRendering();
-        try {
-            _stream.close();
-        } catch (IOException error) {
-            throw new IllegalActionException("Unable to close stream");
+            try {
+                _stream = new FileSeekableStream(_fileRoot);
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Unable to load file '" + _fileRoot + "'");
+            }
+            _outputtedImage = JAI.create("stream", _stream);
+            PlanarImage dummy = _outputtedImage.getRendering();
+        } finally {
+            try {
+                _stream.close();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Unable to close stream for '" + _fileRoot + "'");
+            }
         }
         output.send(0, new JAIImageToken(_outputtedImage));
     }
