@@ -47,9 +47,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
     public ChangeTypesVisitor() {
         super(TM_CUSTOM);
     }
-        
-    
-            
+                        
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _declToTypeMap = (Map) args.get(0);
         _declsLeft = _declToTypeMap.size();
@@ -64,6 +62,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         
         if (typeNode != null) {
            node.setDefType(typeNode);
+           typedDecl.setType(typeNode);
            _declsLeft--;
         }
         
@@ -86,6 +85,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         
         if (typeNode != null) {
            node.setDefType(typeNode);
+           typedDecl.setType(typeNode);           
            _declsLeft--;
         }
         

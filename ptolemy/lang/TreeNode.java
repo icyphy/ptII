@@ -125,6 +125,11 @@ public abstract class TreeNode extends TrackedPropertyMap {
 
     /** Return a clone of this node, cloning all children of the node. */
     public Object clone() {
+        // don't clone singletons
+        if (isSingleton()) {
+           return this;
+        }
+        
         TreeNode copy = (TreeNode) super.clone();
             
         copy._childList = TNLManip.cloneList(_childList);

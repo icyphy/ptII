@@ -290,12 +290,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  and method arguments, which must be defined in the given 
      *  CompileUnitNode, which must have gone through pass 1 static
      *  resolution. If the category is a method, the methodArgs
-     *  parameter should be a List of TypeNode's. Otherwise, methodArgs
-     *  will be ignored. Throw a NoSuchElementException if the 
-     *  declaration cannot be found.
+     *  parameter should be a List of TypeNode's and typeVisitor should
+     *  be an instance of TypeVisitor that implements a type policy. 
+     *  Otherwise, methodArgs and typeVisitor will be ignored. Throw a 
+     *  NoSuchElementException if the declaration cannot be found.
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
-     String qualifiedName, int category, List methodArgs) {
+     String qualifiedName, int category, List methodArgs, TypeVisitor typeVisitor) {
         Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
         
@@ -307,7 +308,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
          pkgDecl, category);
          
         if (category == CG_METHOD) {
-           return ResolveFieldVisitor.resolveCall(environIter, methodArgs);       
+           ResolveFieldVisitor resolveFieldVisitor = new ResolveFieldVisitor(typeVisitor);
+           return resolveFieldVisitor.resolveCall(environIter, methodArgs);       
         }          
      
         // no check for multiple matches (this should be handled by

@@ -167,8 +167,8 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
     /** The key that retrieves the resolved type of the ExprNode. */
     public static final Integer TYPE_KEY = new Integer(16);    
     
-    /** A key that retrieves a Boolean that indicates to the compiler that 
-     *  compilation should be / has been done fully, instead of lazily.
+    /** The number of properties reserved for static resolution of Java. 
+     *  This number can be used to start numbering extended properties.
      */
-    public static final Integer FULL_RESOLVE_KEY = new Integer(32);
+    public static final int RESERVED_JAVA_PROPERTIES = TYPE_KEY.intValue() + 1;
 }

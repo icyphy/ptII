@@ -50,7 +50,13 @@ import ptolemy.lang.java.nodetypes.*;
 public class ResolveFieldVisitor extends ReplacementJavaVisitor 
        implements JavaStaticSemanticConstants {
     public ResolveFieldVisitor() {
-        super(TM_CUSTOM);
+        this(new TypeVisitor());
+    }
+    
+    public ResolveFieldVisitor(TypeVisitor typeVisitor) {
+       super(TM_CUSTOM);
+     
+       _typeVisitor = typeVisitor;
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
@@ -212,9 +218,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
              
         node.setObject(expr);
 
-        TypeNode ot = TypeUtility.type(expr);
+        TypeNode ot = _typeVisitor.type(expr);
         
-        if (!(TypeUtility.isReferenceType(ot) || TypeUtility.isArrayType(ot))) {
+        if (!(_typeVisitor.isReferenceType(ot) || _typeVisitor.isArrayType(ot))) {
            ApplicationUtility.error("attempt to select from non-reference type " + ot);
         } else {                                           
            resolveAField(node, false, false, ctx);
@@ -254,7 +260,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         if ((d.getModifiers() & STATIC_MOD) == 0) {        
            ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node.getFType());
            
-           if (!TypeUtility.isSubClass(ctx.currentClassDecl, typeDecl)) {
+           if (!_typeVisitor.isSubClass(ctx.currentClassDecl, typeDecl)) {
               ApplicationUtility.error("access to non-static " + d.getName() +
                " that does not exist in this class");
            }                 
@@ -320,7 +326,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         TypeNameNode typeName = node.getDtype();
         
-        if (TypeUtility.kind(typeName) != TypeUtility.TYPE_KIND_CLASS) {
+        if (_typeVisitor.kind(typeName) != TypeVisitor.TYPE_KIND_CLASS) {
            ApplicationUtility.error("can't allocate something of non-class type " +
             typeName.getName().getIdent());
         } else {
@@ -388,7 +394,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper, 
      FieldContext ctx) {
         EnvironIter resolutions;
-        TypeNode oType = TypeUtility.accessedObjectType(node);
+        TypeNode oType = _typeVisitor.accessedObjectType(node);
         ClassDecl typeDecl;        
         
         if (oType.classID() == ARRAYTYPENODE_ID) {
@@ -432,7 +438,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         //checkFieldAccess(d, typeDecl, thisAccess, isSuper, false, ctx, position());
     }
 
-    public static MethodDecl resolveCall(EnvironIter methods, List args) {
+    public MethodDecl resolveCall(EnvironIter methods, List args) {
 
         Decl aMethod = methods.head();      
         Decl d;
@@ -445,14 +451,14 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
       
         while (argsItr.hasNext()) {
            ExprNode expr = (ExprNode) argsItr.next();
-           argTypes.addLast(TypeUtility.type(expr));
+           argTypes.addLast(_typeVisitor.type(expr));
         }
       
         LinkedList matches = new LinkedList();
                 
         while (methods.hasNext()) {
            MethodDecl method = (MethodDecl) methods.next();
-           if (TypeUtility.isCallableWith(method, argTypes)) {
+           if (_typeVisitor.isCallableWith(method, argTypes)) {
               matches.addLast(method);
            }          
         }
@@ -474,7 +480,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
               if (m1 == m2) {
                 continue; // get out of this inner loop      
               }
-              if (!TypeUtility.isMoreSpecific(m1, m2) || TypeUtility.isMoreSpecific(m2, m1)) {
+              if (!_typeVisitor.isMoreSpecific(m1, m2) || _typeVisitor.isMoreSpecific(m2, m1)) {
                  thisOne = false; // keep looking
                  continue; // get out of this inner loop      
               }             
@@ -511,6 +517,11 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         public List methodArgs = null;
     }
 
+    /** The visitor used for resolving types. */
+    protected final TypeVisitor _typeVisitor;
+
     /** The current package. */
-    protected PackageDecl _currentPackage = null;
+    protected PackageDecl _currentPackage = null;    
+    
+    
 }    

@@ -33,6 +33,7 @@ package ptolemy.lang.java;
 import java.util.LinkedList;
 import java.util.Map;
 
+import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,7 +41,7 @@ import ptolemy.lang.java.nodetypes.*;
 /** A Java AST visitor that does renaming. The argument to each visitation 
  *  method should be a LinkedList containing a Map of old name strings to
  *  new name strings. The renaming is done in place, i.e. no new nodes
- *  are allocated.
+ *  are allocated. Renaming is only done on NameNodes that are unqualified.
  *
  *  @author Jeff Tsay
  */
@@ -51,18 +52,22 @@ public class RenameJavaVisitor extends ResolveVisitorBase {
     }
 
     public Object visitNameNode(NameNode node, LinkedList args) {
-        node.getQualifier().accept(this, args);              
+        TreeNode qualifier = node.getQualifier();
         
-        String ident = node.getIdent();
+        qualifier.accept(this, args);              
+                
+        if (qualifier == AbsentTreeNode.instance) {        
+           String ident = node.getIdent();  
         
-        Map nameToNewNameMap = (Map) args.get(0);
+           Map nameToNewNameMap = (Map) args.get(0);
+          
+           String newName = (String) nameToNewNameMap.get(ident);    
         
-        String newName = (String) nameToNewNameMap.get(ident);    
-        
-        if (newName != null) {
-           node.setIdent(newName);
+           if (newName != null) {
+              node.setIdent(newName);
+           }
         }
-    
+            
         return null;
     }    
 

@@ -277,12 +277,15 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         NameNode name = node.getName();
         String constructorName = name.getIdent();
 
-        Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
-         CG_CONSTRUCTOR);
-
         MethodDecl d = new MethodDecl(constructorName, CG_CONSTRUCTOR,
          NullTypeNode.instance, modifiers, node, classDecl,
          _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
+
+
+        /* Do not do any checking that involves types. 
+
+        Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
+         CG_CONSTRUCTOR);
 
         while (constructorItr.hasNext()) {
 
@@ -293,6 +296,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                constructorName);
            }
         }
+        */
 
         classEnv.add(d);
 
@@ -369,6 +373,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
          node.getReturnType(), modifiers, node, classDecl,
          _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
+        /* Do not do any checking that involves types. 
         while (methodItr.hasNext()) {
 
            MethodDecl dd = (MethodDecl) methodItr.next();
@@ -377,6 +382,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
               ApplicationUtility.error("illegal overloading of " + methodName);
            }
         }
+        */
 
         classEnv.add(d);
 

@@ -50,8 +50,14 @@ import ptolemy.lang.java.nodetypes.*;
  */
 public class ResolveInheritanceVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {
+       
+    /** Create a new visitor that uses the default type policy. */
     public ResolveInheritanceVisitor() {
-        super();
+        this(new TypeVisitor());
+    }
+
+    public ResolveInheritanceVisitor(TypeVisitor typeVisitor) {
+        _typeVisitor = typeVisitor;
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
@@ -163,7 +169,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     /** Return true iff MEMBER would be hidden or overridden by a declaration in TO.
      */
-    protected static boolean _overriddenIn(JavaDecl member, ClassDecl to) {
+    protected boolean _overriddenIn(JavaDecl member, ClassDecl to) {
         Environ env = to.getEnviron();
         String memberName = member.getName();
 
@@ -190,7 +196,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
               MethodDecl d = (MethodDecl) methodItr.next();
 
-	          if (d.conflictsWith(methodMember)) {
+	          if (_typeVisitor.doMethodsConflict(d, methodMember)) {
 
    	             // Note: member is overriden method, d is overriding method
 
@@ -210,7 +216,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     	         TypeNode dtype = d.getType();
 
-	             if (!TypeUtility.compareTypes(d.getType(),
+	             if (!_typeVisitor.compareTypes(d.getType(),
                      methodMember.getType())) {
   	                ApplicationUtility.error("overriding of " + memberName +
                     " changes return type");
@@ -260,7 +266,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     }
 		         }
                  return !inheritAllAbstract;
-              } // if (_methodsConflict(dtype, mtype))
+              } // if (doMethodsConflict(dtype, mtype))
 	       } // while methodItr.hasNext()
            return false;
 	    } else if (member.category == CG_CLASS) {
@@ -327,8 +333,13 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, node, args, node.children());
         return null;
     }
+   
+    /** A TypeVisitor used to do comparison of types. */
+    protected TypeVisitor _typeVisitor = null;
     
     /** The Class object of this visitor. */
     private static Class _myClass = new ResolveInheritanceVisitor().getClass();
+    
+   
     
 }

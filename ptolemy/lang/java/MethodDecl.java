@@ -106,28 +106,6 @@ public class MethodDecl extends MemberDecl {
         return _throwsSet;
     }
 
-    /** Return true if two methods conflict, i.e. they have the same
-     *  parameter types).
-     */
-    public boolean conflictsWith(MethodDecl decl) {
-        Iterator myParamTypesItr = _paramList.iterator();
-        Iterator argParamTypesItr = decl.getParams().iterator();
-
-        // Search for different parameter types. If a different type is
-        // found, the methods do not conflict.
-        while (myParamTypesItr.hasNext() && argParamTypesItr.hasNext()) {
-           TypeNode myParamType = (TypeNode) myParamTypesItr.next();
-           TypeNode argParamType = (TypeNode) argParamTypesItr.next();
-           if (!TypeUtility.compareTypes(myParamType, argParamType)) {
-              return false;
-           }
-        }
-
-        // If there are any more parameters leftover, the two methods
-        // do not conflict. Otherwise, they do conflict.
-        return !(myParamTypesItr.hasNext() || argParamTypesItr.hasNext());
-    }
-
     /** The MethodDecl that this MethodDecl overrides/hides.
      *  null if this is the initial definition of the method.
      */
