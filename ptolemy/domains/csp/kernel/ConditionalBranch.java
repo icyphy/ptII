@@ -135,7 +135,8 @@ public abstract class ConditionalBranch {
         return _branchID;
     }
 
-    /** Return the CSPActor that created this branch.
+    /** Return the CSPActor that created this branchwhen perfroming 
+     *  a CIF or CDO.
      *  @return The CSPActor that created this branch.
      */
     public CSPActor getParent() {
@@ -149,11 +150,11 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
-    /** The token transferred if the branch succeeded. For a ConditionalSend
+    /** The token contianed by this branch. For a ConditionalSend
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
-     *  @return The Token transferred if the rendezvous succeeded.
+     *  @return The Token contained by this branch.
      */
     public Token getToken() {
         return _token;
@@ -163,14 +164,14 @@ public abstract class ConditionalBranch {
      *  indicates another conditional branch was able to rendezvous before
      *  this branch. The branch should stop trying to rendezvous with
      *  its receiver and terminate.
-     *  @return boolean indicating if this branch is still alive(needed).
+     *  @return Boolean indicating if this branch is still alive(needed).
      */
     public boolean isAlive() {
         return _alive;
     }
 
     /** Set a flag indicating this branch should fail.
-     *  @param value boolean indicating whether this branch is still alive.
+     *  @param value Boolean indicating whether this branch is still alive.
      */
     public void setAlive(boolean value) {
         _alive = value;

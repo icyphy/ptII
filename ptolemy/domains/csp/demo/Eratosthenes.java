@@ -70,13 +70,13 @@ public class Eratosthenes {
         CSPSource source = new CSPSource(univ, "source", 50, 2);
         CSPSieve sieve = new CSPSieve(univ, "2_sieve", 2);
 
-        IOPort portin = (IOPort)sieve.getInputPort();
-        IOPort portout = (IOPort)source.output;
+        IOPort portin = (IOPort)sieve.getPort("input");
+        IOPort portout = (IOPort)source.getPort("output");
         univ.connect(portin, portout, "2_queue");
 
 	//CSPSink sink = new CSPSink(univ, "sink");
-	//portout = (IOPort)sieve.getOutputPort();
-        //portin = (IOPort)sink.getInputPort();
+	//portout = (IOPort)sieve.getPort("output");
+        //portin = (IOPort)sink.getPort("input");
 	//univ.connect(portin, portout, "plot_queue");
 
 

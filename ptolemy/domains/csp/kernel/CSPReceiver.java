@@ -61,7 +61,7 @@ public class CSPReceiver implements ProcessReceiver {
     public CSPReceiver() {}
 
     /** Construct a CSPReceiver with the specified container.
-     *  @param container The container.
+     *  @param container The port containing this receiver.
      */
     public CSPReceiver(IOPort container) {
         _container = container;
@@ -132,7 +132,7 @@ public class CSPReceiver implements ProcessReceiver {
         return tmp;
     }
 
-    /** Place a Token from the receiver by rendezvous. This method
+    /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If get has already been reached, it notifies the waiting get
      *  and waits for the rendezvous to complete. When the rendezvous is
@@ -297,24 +297,24 @@ public class CSPReceiver implements ProcessReceiver {
         return _conditionalSendWaiting;
     }
 
-    /** Flag indicating whether or not a get is waiting to rendezvous
+    /** Flag indicating whether or not a get() is waiting to rendezvous
      *  at this receiver.
-     *  @return Flag indicating if  get is waiting to rendezvous.
+     *  @return Flag indicating if a get() is waiting to rendezvous.
      */
     protected boolean _isGetWaiting() {
         return _getWaiting;
     }
 
-    /** Flag indicating whether or not a put is waiting to rendezvous
+    /** Flag indicating whether or not a pu()t is waiting to rendezvous
      *  at this receiver.
-     *  @return Flag indicating if  put is waiting to rendezvous.
+     *  @return Flag indicating if a put() is waiting to rendezvous.
      */
     protected boolean _isPutWaiting() {
         return _putWaiting;
     }
 
-    /** Set a flag so that a conditional send branch knows whether or
-     *  not a conditional receive is ready to rendezvous with it.
+    /** Set a flag so that a ConditionalSend branch knows whether or
+     *  not a ConditionalReceive is ready to rendezvous with it.
      *  @param v Boolean indicating whether or not a conditional
      *   receive is waiting to rendezvous.
      *  @param p The CSPActor which contains the ConditionalReceive
@@ -328,8 +328,8 @@ public class CSPReceiver implements ProcessReceiver {
 	_otherParent = p;
     }
 
-    /** Set a flag so that a conditional receive branch knows whether or
-     *  not a conditional send is ready to rendezvous with it.
+    /** Set a flag so that a ConditionalReceive branch knows whether or
+     *  not a ConditionalSend is ready to rendezvous with it.
      *  @param v Boolean indicating whether or not a conditional
      *   send is waiting to rendezvous.
      *  @param p The CSPActor which contains the ConditionalSend

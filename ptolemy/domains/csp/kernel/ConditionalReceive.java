@@ -40,11 +40,11 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalReceive
 /**
-Represents a guarded communication statement in which the
-communication is a get(). Thus is represents
-<br>
+Represents a <I>guarded communication statement</I> in which the
+communication is a get(). Thus it represents
+<P>
      <CENTER> guard; get() => statements</CENTER>
-<br>
+<P>
 It is one branch of either a CDO or a CIF conditional
 communication construct.
 <p>
@@ -75,7 +75,7 @@ to the different rendezvous scenarios.
 <I>Case 1:</I> There is a put already waiting at the rendezvous point. In 
 this case
 the branch attempts to register itself, with the parent actor, as the first
-branch ready to rendezvous. If it succeeds it performs the rendezvous,
+branch ready to rendezvous. If it succeeds, it performs the rendezvous,
 notifies the parent that it succeeded and returns. If it is not the first, it
 keeps on trying to register itself until it finally succeeds or another
 branch successfully rendezvoused in which case it fails and terminates. Note
@@ -113,7 +113,7 @@ check that the rendezvous can proceed(see case 2).
 
 public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
-    /** Create a guarded communication with a receive communication.
+    /** Create a guarded communication with a get() communication.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
      *  @param port The IOPort containing the channel (and thus receiver)
@@ -164,9 +164,13 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     ////                         public methods                         ////
 
     /** The run method has roughly three parts: (1) where there is already
-     *  a put waiting, (2) where there is a conditional send waiting, and
-     *  (3) where the conditional receive is the first to arrive at the
+     *  a put waiting, (2) where there is a ConditionalSend waiting, and
+     *  (3) where the ConditionalReceive is the first to arrive at the
      *  receiver.
+     *  <P>
+     *  The algorithm used in this method, together with some methods in 
+     *  CSPActor, control how conditional communication takes place in 
+     *  the CSP domain. 
      */
     public void run() {
         try {

@@ -48,6 +48,45 @@ This class is the base class of all atomic actors using the
 non-deterministic communication and timed features of  the communicating
 sequential processes(CSP) domain.
 <p>
+Two conditional communication constructs are available: CIF and CDO. The 
+steps involved in using both of these are 
+<BR>(1) create the branches involved and assign an identification number 
+to each branch.
+<BR>(2) call the chooseBranch() method to determine which branch should 
+succeed.
+<BR>(3) execute the statements associated with the sucessful branch.
+<P>
+Each branch is either an instance of ConditionalSend or ConditionalReceive, 
+depending on the communication in the branch. Please see these classes for 
+details on <I>guarded communication statements</I>, which they represent.
+The identification number assigned to each branch only needs to identify 
+the branch uniquely for one sequence of the steps above.
+<P>
+The chooseBranch() method takes an array of the branches as an argument, and 
+controls which branch is sucessful. The successful branch is the branch 
+that succeeds with its communication. To determine which branch is succesful, 
+the guards of <I>all</I> branches are checked. If the guard for a branch is 
+true then that branch is <I>enabled</I>. If no branches are enabled, 
+i.e. if all the guards are false, then -1 is returned to indicate this.
+If exactly one branch is enabled, the corresponding comunication is 
+carried out and the identification number of the branch is returned. 
+If more than one branch is enabled, a seperate thread is created and 
+started for each enabled branch. The method then waits for one of 
+the branches to suceed, after which it wakes up and terminates the 
+remaining branches. When the last conditional branch thread has finished, 
+the method returns allowing the actor threads to continue.
+<p>
+Time is supported by two methods, delay() and delay(double). The first 
+method just pauses the process until the next occasion the
+director advances time. The second method
+pauses the process until time is advanced the argument time from the
+current model time. As far as each process is concerned, time can 
+only increase while the process is blocked trying to rendezvous or when 
+it is delayed. A process can be aware of the current model time, but it 
+should only ever affect the model time through delays. Thus time is 
+centralized in that it is advanced by the director controlling the 
+process represented by this actor.
+<p>
 The model of computation used in this domain extends the original CSP
 model of computation in two ways. First it allows non-deterministic
 communication using both sends and receives. The original model only
@@ -58,26 +97,11 @@ the model we use and the original model. If an actor wishes to use
 either non-deterministic rendezvous or time, it must derive from
 this class. Otherwise deriving from AtomicActor is sufficient.
 <p>
-This class provides the methods for controlling which branch of a
-conditional rendezvous construct gets followed. It controls the branches
-performing the conditional rendezvous in three steps. First it starts them.
-Then it waits for one branch to succeed, after which it wakes up and
-terminates the remaining branches. When the last conditional branch
-thread has finished it allows the actor thread to continue.
-<p>
-Time is supported by two methods, delay() and delay(double). The first 
-method just pauses the process until the next occasion the
-director advances time. The second method
-pauses the process until time is advanced the argument time from the
-current model time. As far as each process is concerned, time can 
-only increase while the process is blocked trying to rendezvous or when 
-it is delayed. A process can be aware of the current model time, but it 
-should only ever affect the model time through delays. Thus time is 
-centralized in that it is controlled by the director controlling the 
-process represented by this actor.
-<p>
 @author Neil Smyth
 @version $Id$
+@see ConditionalBranch
+@see ConditionalReceive
+@see ConditionalSend
 */
 
 public class CSPActor extends AtomicActor {
@@ -109,10 +133,10 @@ public class CSPActor extends AtomicActor {
      *  NullPointerException will be thrown.
      *
      *  @param container The CompositeActor that contains this actor.
-     *  @param name the actor's name.
+     *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
     public CSPActor(CompositeActor container, String name)
@@ -155,8 +179,10 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Delay this actor until the director sufficiently advances
-     *  time from the current time. 
-     *  @param The delta time to delay this actor by.
+     *  time. The actor resumes executing when the current model time 
+     *  reaches "getCurrentTime() + delta". 
+     *  @param delta The time to delay this actor for from the current 
+     *  time.
      */
     public void delay(double delta) {
         try {
@@ -174,7 +200,7 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Default implementation for CSPActors is to return false. If an
-     *  actor wishes to go for more than one iteration it should
+     *  actor wishes to continue for more than one iteration it should
      *  override this method to return true.
      *  @return Boolean indicating if another iteration can occur.
      */
@@ -218,7 +244,7 @@ public class CSPActor extends AtomicActor {
      *  are not first.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @return boolean indicating whether or not the calling branch is the
+     *  @return Boolean indicating whether or not the calling branch is the
      *   first branch to try to rendezvous.
      */
     protected boolean _isBranchFirst(int branchNumber) {
@@ -232,9 +258,9 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Increase the count of conditional branches that are blocked.
-     *  Check if all the conditional branches are blocked, and if so
-     *  register this actor as being blocked.
+    /** Increase the count of branches that are blocked trying to rendezvous.
+     *  If all the enabled branches (for the CIF or CDO currently 
+     *  being executed) are blocked, register this actor as being blocked.
      */
     protected void _branchBlocked() {
         synchronized(_getInternalLock()) {
@@ -266,7 +292,7 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Called by a conditional branch after a successful rendezvous. It
+    /** Called by a branch after a successful rendezvous. It
      *  wakes up chooseBranch() which then proceeds to terminate the
      *  remaining branches.
      *  @param branchID The ID assigned to the calling branch upon creation.
@@ -285,13 +311,18 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Decrease the count of conditional branches that are blocked.
-     *  Check if all the conditional branches were previously blocked,
-     *  and if so register this actor with the director as being unblocked.
+    /** Decrease the count of branches that are blocked.
+     *  If the actor was previously registered as being block, register 
+     *  this actor with the director as no longer being blocked.
      */
     protected void _branchUnblocked() {
         synchronized(_getInternalLock()) {
-            if (_branchesBlocked == _branchesStarted) {
+ 	    if (!_blocked) {
+	        if (_branchesBlocked == _branchesStarted) {
+		     throw new InternalErrorException(getName() +
+			     ": blocked when not all enabled branches are " +
+			     "blocked.");
+		}
                 // Note: acquiring a second lock, need to be careful.
                 ((CSPDirector)getDirector())._actorUnblocked();
                 _blocked = false;
@@ -300,7 +331,7 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Determine which branch succeeds in rendezvousing. This method is
+    /** Determine which branch succeeds with a rendezvous. This method is
      *  central to nondeterministic rendezvous. It is passed in an array
      *  of branches, each element of which represents one of the
      *  conditional rendezvous branches. If the guard for the branch is
@@ -447,12 +478,14 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Release the calling branches status as the first branch to
-     *  try to rendezvous. The branch was obviously not able to complete
-     *  the rendezvous because the other side of the rendezvous was also
-     *  conditional and could not claim the status of
-     *  being the first branch. Thus allow another branch the chance
-     *  to proceed with a rendezvous.
+    /** Release the status of the calling branch as the first branch 
+     *  to be ready to rendezvous. This method is only called when both 
+     *  sides of a communication at a receiver are conditional. In 
+     *  this case, both of the branches have to be the first branches, 
+     *  for thir respective actors, for the rendezvous to go ahead. If 
+     *  one branch registers as being first, for its actor, but the 
+     *  other branch cannot, then the status of the first branch needs 
+     *  to be released to allow other branches the possibility of succeeding.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
     protected void _releaseFirst(int branchNumber) {
@@ -534,3 +567,4 @@ public class CSPActor extends AtomicActor {
     // terminated abruptly.
     private LinkedList _threadList = null;
 }
+

@@ -75,7 +75,7 @@ to the different rendezvous scenarios.
 <br>
 <I>Case 1:</I> There is a get already waiting at the rendezvous point. In 
 this case the branch attempts to register itself, with the parent actor, as 
-the first branch ready to rendezvous. If it succeeds it performs the 
+the first branch ready to rendezvous. If it succeeds, it performs the 
 rendezvous, notifies the parent that it succeeded and returns. If it 
 is not the first, it keeps on trying to register itself until it 
 finally succeeds or another branch succeeds with a rendezvous in which 
@@ -122,6 +122,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   trying to rendezvous with.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
+     *  @param t The token this branch is trying to send.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
@@ -164,10 +165,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** The run method has roughly three parts: (1) where there is already
-     * a get waiting, (2) where there is a conditional receive waiting, and
-     * (3) where the conditional send is the first to arrive at the
-     * receiver.
+    /** The run method has roughly three parts: (1) when there is already
+     *  a get waiting, (2) when there is a ConditionalReceive waiting, and
+     *  (3) where this ConditionalSend is the first to arrive at the
+     *  receiver.
+     *  <P>
+     *  The algorithm used in this method, together with some methods in 
+     *  CSPActor, control how conditional communication takes place in 
+     *  the CSP domain. 
      */
     public void run() {
         try {

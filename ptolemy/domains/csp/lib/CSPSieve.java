@@ -80,16 +80,16 @@ public class CSPSieve extends CSPActor {
 	    //System.out.println("Sieve getting data");
 	    data = _input.get(0);
             lastSeen = ((IntToken)data).intValue();
-	    System.out.println("Sieve got data:" + data.toString());
+	    //System.out.println("Sieve got data:" + data.toString());
 	    if (lastSeen % _prime != 0) {
 		// is it the next prime?
 		if (islargestprime) {
 		  // yes - make and queue the topologyChange
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
 		    getDirector().queueTopologyChangeRequest(t);
-                    System.out.println(getName() +":Queued TopologyChange");
+                    //System.out.println(getName() +":Queued TopologyChange");
 		    delay();
-                    System.out.println(getName() +": change succeeded?");
+                    //System.out.println(getName() +": change succeeded?");
 		    islargestprime = false;
 		}
 		else {
@@ -97,18 +97,6 @@ public class CSPSieve extends CSPActor {
                 }
 	    }
 	}
-    }
-
-    /** Get the input port for this actor.
-     */
-    public IOPort getInputPort() {
-        return _input;
-    }
-
-    /** Get the output port for this actor.
-     */
-    public IOPort getOutputPort() {
-        return _output;
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -141,7 +129,7 @@ public class CSPSieve extends CSPActor {
                 queueEntityAddedEvent(container, newSieve);
                 queueRelationAddedEvent(container, newRel);
                 queuePortLinkedEvent(newRel, _output);
-                queuePortLinkedEvent(newRel, newSieve.getInputPort());
+                queuePortLinkedEvent(newRel, newSieve.getPort("input"));
             }
         };
         return request;
@@ -151,9 +139,10 @@ public class CSPSieve extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /* The input port */
+    // The input port 
     private IOPort _input;
-    /* The output port */
+
+    // The output port 
     private IOPort _output;
 
     // The prime this sieve is filtering out.

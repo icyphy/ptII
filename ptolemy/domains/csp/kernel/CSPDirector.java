@@ -44,10 +44,8 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
 /**
-A CSPDirector governs the execution of a CompositeActor with
-Communicating Sequential Processes (CSP) semantics. Thus to make
-a composite actor obey CSP semantics, call the method setDirector()
-with an instance of this class.
+CSPDirector governs the execution of a CompositeActor with the semantics 
+of the Communicating Sequential Processes (CSP) domain.
 <p>
 In the CSP domain, the director creates a thread for executing each
 actor under its control. Each actor corresponds to a
@@ -113,8 +111,7 @@ more compositionality discussion...
 <p>
 @author Neil Smyth
 @version $Id$
-@see ptolemy.actor.Director;
-
+@see ptolemy.actor.Director
 */
 public class CSPDirector extends ProcessDirector {
 
@@ -205,7 +202,10 @@ public class CSPDirector extends ProcessDirector {
 
     /** Return false to indicate that the iteration is over. Real
      *   deadlock must have occurred.
-     *  FIXME: should we control this better? - iteration lock?
+     *  <P>
+     *  FIXME: when considering compositionality, this method will need 
+     *  to be changed, together with prefire.
+     *  <P>
      *  @return false indicating the iteration is over.
      */
     public boolean postfire() {
@@ -284,8 +284,7 @@ public class CSPDirector extends ProcessDirector {
      *  corresponding to the actor will continue.
      *  Note that actors can only deal with delta time.
      *  <p>
-     *  If delta is negative, treat as delaying until next time
-     *  deadlock is reached.
+     *  If the actor is delayed for a negative time, treat as zero delay.
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
      */
@@ -408,8 +407,7 @@ public class CSPDirector extends ProcessDirector {
                     return false;
                 } else if (_actorsDelayed > 0) {
                     // Time deadlock.
-                    System.out.println("TIME DEADLOCK!!");
-                    double nextTime = _getNextTime();
+		    double nextTime = _getNextTime();
                     System.out.println("\nCSPDirector: advancing time " +
                             "to: " + nextTime);
                     _currentTime = nextTime;

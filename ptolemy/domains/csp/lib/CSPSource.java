@@ -42,7 +42,7 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// CSPSource
 /**
-    FIXME: add description!!
+   FIXME: add description!!
 
 @author Neil Smyth
 @version $Id$
@@ -80,23 +80,21 @@ public class CSPSource extends AtomicActor {
                 System.out.println(getName() + " sent Token: " + t.toString());
                 _value++;
             }
-            System.out.println("CSP(" + getName() + "):finished normally.");
-            _again = false;
+            System.out.println("CSP(" + getName() + "): finished normally.");
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSource: illegalActionException, exiting");
         }
     }
 
-    public boolean prefire() {
-        return _again;
+    public boolean postfire() {
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
     public IOPort output;
-    private boolean _again = true;
     private int _tokenLimit = -1;
     private int _value = 0;
 }
