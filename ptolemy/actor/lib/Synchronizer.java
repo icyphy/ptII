@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -79,8 +79,8 @@ public class Synchronizer extends Transformer {
     /** Consume exactly one token from each input channel and output
      *  the tokens on the corresponding output channels.
      *  @exception IllegalActionException If there is no director or
-     if the number of input channels does not equal the number of
-     output channels.
+     *   if the number of input channels does not equal the number of
+     *   output channels.
     */
     public void fire() throws IllegalActionException {
         int outWidth = output.getWidth();
@@ -96,16 +96,15 @@ public class Synchronizer extends Transformer {
         }
     }
 
-    /** Return true if all input channels have at least one token,
-     *  and return false otherwise.
-     *  @return True If there is at least one token on each input channel,
-     *   false otherwise.
+    /** If all of the input channels have at least one token, return
+     *  what the superclass returns (presumably true).  Otherwise return 
+     *  false.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i)) return false;
         }
-        return true;
+        return super.prefire();
     }
 }
