@@ -91,8 +91,8 @@ public class LorenzApplet extends CTApplet {
         try {
             // Set up the top level composite actor, director and manager
             _toplevel.setName("LorenzSystem");
-            _dir = new CTSingleSolverDirector(
-                    _toplevel, "CTSingleSolverDirector");
+            _dir = new CTMultiSolverDirector(
+                    _toplevel, "CTMultiSolverDirector");
             //_dir.addDebugListener(new StreamListener());
             //_manager.addDebugListener(new StreamListener());
             // ---------------------------------
@@ -171,9 +171,6 @@ public class LorenzApplet extends CTApplet {
             // CT Director parameters
             _dir.InitStepSize.setToken(new DoubleToken(0.01));
             _dir.MinStepSize.setToken(new DoubleToken(1e-6));
-            StringToken token2 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-            _dir.ODESolver.setToken(token2);
 
             // CTActorParameters
             X1.InitialState.setToken(new DoubleToken(1.0));
@@ -214,7 +211,7 @@ public class LorenzApplet extends CTApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CTSingleSolverDirector _dir;
+    private CTMultiSolverDirector _dir;
     private Query _query;
     private Const _LAMBDA;
     private Scale _SIGMA;

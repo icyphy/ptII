@@ -223,9 +223,9 @@ public class SigmaDeltaApplet extends CTApplet {
 
             ctdir.MinStepSize.setToken(new DoubleToken(1e-6));
 
-            StringToken token1 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            ctdir.BreakpointODESolver.setToken(token1);
+            //StringToken token1 = new StringToken(
+            //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            //ctdir.BreakpointODESolver.setToken(token1);
 
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");

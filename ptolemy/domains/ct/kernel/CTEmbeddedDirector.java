@@ -110,8 +110,8 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     public void initialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
-        _first = true;
-        if(_debugging) _debug(getName(), " _first is set to true.");
+        //_first = true;
+        //if(_debugging) _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
@@ -124,14 +124,14 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     public void fire() throws IllegalActionException {
         _eventPhaseExecution();
         _prefireSystem();
-        if(_first) {
+        /*if(_first) {
             produceOutput();
             return;
-        }
+            }*/
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
-            //if(_debugging) _debug(getFullName() + "resolve state failed.");
+            if(_debugging) _debug(getFullName() + "resolve state failed.");
         }
 
         if(_debugging) _debug(getFullName() + " current time after" +
@@ -203,9 +203,9 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         _eventPhaseExecution();
         updateStates();
         
-        if(_first) {
+        /*if(_first) {
             _first = false;
-        }
+            }*/
         /**
         if(!_first) {
             double bp;
@@ -276,11 +276,10 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
             breakPoints.removeAllLessThan(tnow);
             if(breakPoints.contains(tnow)) {
                 if(_debugging) _debug(getName(), " Break point now at" + _outsideTime);
-                // now is the break point.
-                // The break point will be removed in the next iteration
-                // if this iteration is successful. Otherwise, the break
-                // point will be kept using.
+                // Breakpoints iterations are always successful 
+                // so remove the breakpoints.
                 _setCurrentODESolver(getBreakpointSolver());   
+                breakPoints.removeFirst();
                 // does not adjust step size, since the exe-dir should do it.
                 _setIsBPIteration(true);
             } else {

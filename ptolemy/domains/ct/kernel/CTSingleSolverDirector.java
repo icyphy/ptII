@@ -70,7 +70,7 @@ telling the manager that the simulation finished.
 @author Jie Liu
 @version $Id$
 */
-public class CTSingleSolverDirector extends CTDirector {
+public abstract class CTSingleSolverDirector extends CTDirector {
 
 
     /** Construct a director in the default workspace with an empty string
@@ -149,9 +149,7 @@ public class CTSingleSolverDirector extends CTDirector {
 
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
-     *   resolving states and producing outputs. For the first iteration
-     *   it only produces the output, since the initial states are
-     *   the "real" states of the system, and no more resolving is needed.
+     *   resolving states, and producing outputs.
      *   The step size of one iteration is determined by the suggested
      *   next step size and the breakpoints. If the first breakpoint in
      *   the breakpoint table is in the middle of the "intended" step.
@@ -167,13 +165,14 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public void fire() throws IllegalActionException {
         // If this is the first fire, the states are not resolved.
+        /*
         if (_first) {
             _first = false;
             _prefireSystem();
             produceOutput();
             updateStates();
             return;
-        }
+        }*/
         //event phase:
         _eventPhaseExecution();
         _setIterationBeginTime(getCurrentTime());
@@ -228,7 +227,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if(_debugging) _debug(getFullName(), " set the stop time as a break point: " + 
                 getStopTime());
         fireAt(null, getStopTime());
-        _first = true;
+        //_first = true;
         if(_debugging) _debug(getFullName() + " initialize directed actors: ");
         super.initialize();  
         if(_debugging) _debug(getFullName() + " End of Initialization.");
@@ -589,7 +588,7 @@ public class CTSingleSolverDirector extends CTDirector {
     ////                         protected variables               ////
 
     // Indicate the first round of execution.
-    protected boolean _first;
+    //protected boolean _first;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -125,12 +125,7 @@ public class ExplicitRK23Solver extends ODESolver{
         switch (r) {
         case 0:
             //derivative at t;
-            double k0;
-            if(dir.isBPIteration()) {
-                k0 = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            } else {
-                k0 = (integrator.getHistory(0))[1];
-            }
+            double k0 = (integrator.getHistory(0))[1];
             integrator.setAuxVariables(0, k0);
             outvalue = xn + h * k0 *_B[0][0];
             break;

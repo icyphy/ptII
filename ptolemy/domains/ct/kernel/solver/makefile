@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	BackwardEulerSolver.java \
+	DerivativeResolver.java \
 	ExplicitRK23Solver.java \
 	FixedStepSolver.java \
 	ForwardEulerSolver.java \

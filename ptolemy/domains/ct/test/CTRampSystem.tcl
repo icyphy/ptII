@@ -66,7 +66,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     $sys setName System
     set man [java::new ptolemy.actor.Manager]
     $sys setManager $man
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
     set const [java::new ptolemy.actor.lib.Const $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.Integrator $sys Integ]
     set print [java::new ptolemy.domains.ct.test.CTTestValueSink\
@@ -82,6 +82,11 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     set r2 [$sys connect $intglout $printin R2]
     #$sinkin link $r2
     
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ForwardEulerSolver]
+    $solver setToken $token
+
     set initstate [java::cast ptolemy.data.expr.Parameter \
 	    [$integral getAttribute InitialState]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
@@ -113,6 +118,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
 
 test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     #Note: use above setup. reset parameters.
+
     set solver [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken\
@@ -148,13 +154,20 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     list [$print isSuccessful]
 } {1}
 
-test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver} {
+test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
     #Note: use above setup. reset parameters.
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
     set solver [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
     set token [java::new ptolemy.data.StringToken\
 	    ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
     $solver setToken $token
+
+    set bpsolver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute BreakpointODESolver]]
+    set token [java::new ptolemy.data.StringToken\
+	    ptolemy.domains.ct.kernel.solver.DerivativeResolver]
+    $bpsolver setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
 	    [$integral getAttribute InitialState]]
@@ -180,6 +193,14 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver} {
 	    [$const getAttribute value]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $constval setToken $token
+    
+    #set debugger [java::cast ptolemy.data.expr.Parameter \
+    #	    [$print getAttribute Print]]
+    #   set token [java::new ptolemy.data.BooleanToken true]
+    #  $debugger setToken $token
+    
+    #set dl [java::new ptolemy.kernel.util.StreamListener]
+    #$dir addDebugListener $dl
 
     $man run
     list [$print isSuccessful] 

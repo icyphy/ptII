@@ -78,7 +78,7 @@ public class SquareWaveResponse extends CTApplet {
         _query.addLine("solver", "DefaultSolver",
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         _query.addLine("bpsolver", "BreakpointSolver",
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
 
         controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 

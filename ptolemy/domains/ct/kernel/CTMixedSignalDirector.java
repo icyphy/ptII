@@ -182,11 +182,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             super.fire();
             return;
         }
-        if (_first) {
+        /*if (_first) {
             _first = false;
             produceOutput();
             //return;
-        }
+            }*/
         CompositeActor ca = (CompositeActor) getContainer();
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();

@@ -217,7 +217,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  matches a parameter of the director, then the corresponding
      *  private copy of the
      *  parameter value will be updated.
-     *  @param param The changed parameter.
+     *  @param attr The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
      */
@@ -454,12 +454,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         if (ca.getContainer() != null) {
             if (!canBeInsideDirector()) {
                 throw new IllegalActionException(this,
-                        " can not serve as an inside director.");
+                        " cannot serve as an inside director.");
             }
         } else {
             if (!canBeTopLevelDirector()) {
                 throw new IllegalActionException(this,
-                        " can not serve as an top-level director.");
+                        " cannot serve as an top-level director.");
             }
         }
         CTScheduler sch = (CTScheduler)getScheduler();

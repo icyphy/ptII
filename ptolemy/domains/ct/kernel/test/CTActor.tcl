@@ -54,7 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Generally used director.
 #
-set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector]
+set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector]
 
 ######################################################################
 ####  Test constructors.
@@ -111,7 +111,7 @@ test CTActor-2.1 {Create a CTParameter} {
 test CTActor-3.1 {passing tokens} {
     set ca [java::new ptolemy.actor.TypedCompositeActor]
     $ca setName CA
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $ca Dir]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]
     set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
     set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummySink $ca A2]
     set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]

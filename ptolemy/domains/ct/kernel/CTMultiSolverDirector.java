@@ -56,7 +56,8 @@ This class has one additional parameters than the CTSingleSolverDirector,
 which is "breakpointODESolver". The value of the
 parameter is a String that specifies the full class name of ODE solvers.
 The default "ODESolver" is ExplicitRK23Solver. The default
-"breakpointODESolver" is the BackwardEulerSolver.
+"breakpointODESolver" is the DerivativeResolver, which assumes the 
+continuity of state.
 All other parameters are maintained by the CTDirector base class. And the
 two solvers share them.
 
@@ -164,7 +165,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             ODESolver.setToken(
                     new StringToken(defaultsolverclass));
             _bpsolverclassname =
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
             BreakpointODESolver = new Parameter(
                     this, "BreakpointODESolver",
                     new StringToken(_bpsolverclassname));
@@ -198,7 +199,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 breakPoints.removeFirst();
                 _setIsBPIteration(true);
                 _setCurrentODESolver(_breakpointsolver);
-                setCurrentStepSize(getMinStepSize());
+                setCurrentStepSize(0.0); //getMinStepSize());
                 if(_debugging) _debug(getFullName(), 
                         "IN BREAKPOINT iteration.");
             }else { 

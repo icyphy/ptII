@@ -89,10 +89,11 @@ public class Thermostat extends CTApplet {
              // the top level composite actor
              _toplevel.setName("HybridSystem");
              
-             // the top level DE director
+             // the top level CT director
              CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                      _toplevel, "CTTopLevelDirector");
-             // topdir.addDebugListener(new StreamListener());
+             //StreamListener dbl = new StreamListener();
+             //topdir.addDebugListener(dbl);
              // a CT ramp
              Const source = new Const(_toplevel, "Const");
              source.value.setToken(new DoubleToken(1.0));
@@ -192,7 +193,7 @@ public class Thermostat extends CTApplet {
              ctIncSt.link(ctIncR1);
              CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                      ctInc, "CTIncDir");
-             //ctIncDir.addDebugListener(new StreamListener());
+             //ctIncDir.addDebugListener(dbl);
              
              CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
              CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
@@ -277,7 +278,7 @@ public class Thermostat extends CTApplet {
              ctIncDir.MaxStepSize.setToken(new DoubleToken(0.05));
                           
              StringToken tok = new StringToken(
-                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                     "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
              ctIncDir.BreakpointODESolver.setToken(tok);
              Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
              tok = new StringToken(
@@ -290,7 +291,7 @@ public class Thermostat extends CTApplet {
              ctDecDir.MaxStepSize.setToken(new DoubleToken(0.05));
              
              tok = new StringToken(
-                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                     "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
              ctDecDir.BreakpointODESolver.setToken(tok);
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");                 ctDecDir.ODESolver.setToken(tok);
@@ -301,7 +302,7 @@ public class Thermostat extends CTApplet {
              topdir.MinStepSize.setToken(new DoubleToken(1e-3));
              topdir.MaxStepSize.setToken(new DoubleToken(0.05));
              tok = new StringToken(
-                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                     "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
              topdir.BreakpointODESolver.setToken(tok);
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");

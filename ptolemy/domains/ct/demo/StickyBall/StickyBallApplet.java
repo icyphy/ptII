@@ -345,7 +345,7 @@ public class StickyBallApplet extends CTApplet {
             //System.out.println("Set parameters.");
             // try to run the system
             topdir.StartTime.setToken(new DoubleToken(0.0));
-            topdir.StopTime.setToken(new DoubleToken(100.0));
+            topdir.StopTime.setToken(new DoubleToken(50.0));
 
             // CT embedded director 1 parameters
             ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
