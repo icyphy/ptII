@@ -378,6 +378,14 @@ public class CompositeEntity extends ComponentEntity {
      *  the _exportMoMLContents() protected method, so that derived classes
      *  can override that method alone to alter only how the contents
      *  of this object are described.
+     *  <p>
+     *  If this composite entity was created by cloning another,
+     *  then instead of referring to its Java class, we refer to the
+     *  master instance from which it was cloned (using the full name
+     *  of that master instance).  In addition, the only contents
+     *  that are described in this case are the attributes and the ports,
+     *  not the contained entities or relations.
+     *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
      *  terminated with a newline.
@@ -398,13 +406,19 @@ public class CompositeEntity extends ComponentEntity {
             + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
             + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
         }
+        String master = null;
+        if (_clonedFrom != null) {
+            master = _clonedFrom.getFullName();
+        } else {
+            master = getClass().getName();
+        }
         output.write(_getIndentPrefix(depth)
                + "<"
                + momlElement
                + " name=\""
                + getName()
                + classAttribute
-               + getClass().getName()
+               + master
                + "\">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
@@ -833,6 +847,11 @@ public class CompositeEntity extends ComponentEntity {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
+
+        // If this entity was cloned from another, then we do not
+        // describe the contents, and therefore we are done.
+        if (_clonedFrom != null) return;
+
         Enumeration entities = getEntities();
         while (entities.hasMoreElements()) {
             ComponentEntity entity = (ComponentEntity)entities.nextElement();
