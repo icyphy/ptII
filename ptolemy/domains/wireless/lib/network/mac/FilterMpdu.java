@@ -1,4 +1,7 @@
-/* An actor that filters MPDU packets.
+/* An actor that filters out duplicate MPDU packets. It also reads the 
+ *duration field of a RTS message and let the ChannelState process to
+ * make reservation. In addition, if a data packet is received, it informs
+ * the ProtocolControl block that an Ack is needed.
  
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -55,7 +58,7 @@ The code is based on a OMNET model created by Charlie Zhong.
 @author Xiaojun Liu
 @version $Id$
 */
-public class FilterMpdu extends TypedAtomicActor {
+public class FilterMpdu extends MACActorBase {
 
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -74,17 +77,15 @@ public class FilterMpdu extends TypedAtomicActor {
         super(container, name);
         
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMPDU", true, false);
-        String[] labels = {"kind", "content"};
-        Type[] types = {BaseType.INT, BaseType.GENERAL};
-        RecordType recordType = new RecordType(labels, types);
-        fromValidateMpdu.setTypeEquals(recordType);
+
+        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
         
         toChannelState = new TypedIOPort(this, "toChannelState", false, true);
-        toChannelState.setTypeEquals(recordType);
+        toChannelState.setTypeEquals(BaseType.GENERAL);
         toChannelState.setMultiport(true);
         
         toProtocolControl = new TypedIOPort(this, "toProtocolControl", false, true);
-        toProtocolControl.setTypeEquals(recordType);
+        toProtocolControl.setTypeEquals(BaseType.GENERAL);
     }
 
     /////////////////////////////////////////////////////////////////   
@@ -119,26 +120,27 @@ public class FilterMpdu extends TypedAtomicActor {
         
         RecordToken msg = (RecordToken)fromValidateMpdu.get(0);
         int msgKind = ((IntToken)msg.get("kind")).intValue();
-        if (msgKind == MACActorBase.RxMpdu) {
+
+        if (msgKind == RxMpdu) {
             if (_debugging) _debug("FILTER: Got RxMpdu");
             RecordToken pdu = (RecordToken)msg.get("pdu");
             if (intFieldValue(pdu, "moreFrag") ==1)
                 dAck = intFieldValue(pdu, "durId");
             int dNav = intFieldValue(pdu, "durId");
-            int src = MACActorBase.misc;
+            int src =misc;
             // code for broadcast
             if (intFieldValue(pdu, "Addr1") == MAC_BROADCAST_ADDR) {
                 RecordToken msgout = new RecordToken(
                         RxIndicateMessageFields,
                         new Token[] {
-								new IntToken(MACActorBase.RxIndicate),
-								//TODO: how to implement this?
+				new IntToken(RxIndicate),
+				//TODO: how to implement this?
                                 //msgout->pdu=pdu->copyEncapMsg();
-                                pdu.get("pdu"),
-                                pdu.get("endRx"),
-                                pdu.get("rxRate"),
-								pdu.get("channel")});
-                                
+                                pdu,
+                                msg.get("endRx"),
+                                msg.get("rxRate")
+				});
+                // send RxIndicate message to the ProtocolControl block             
                 toProtocolControl.send(0, msgout);
                 if (_debugging) _debug("FILTER: Sent RxIndicate");
             } else if (intFieldValue(pdu, "Addr1") == getID()) {
@@ -149,66 +151,56 @@ public class FilterMpdu extends TypedAtomicActor {
                     RecordToken msgout = new RecordToken(
                             RxIndicateMessageFields,
                             new Token[] {
-                                    new IntToken(MACActorBase.RxIndicate),
+                                    new IntToken(RxIndicate),
                                     //TODO: how to implement this?
                                     //msgout->pdu=pdu->copyEncapMsg();
-                                    pdu.get("pdu"),
-                                    pdu.get("endRx"),
-                                    pdu.get("rxRate"),
-                                    pdu.get("channel")});
-                                    
+                                    pdu,
+                                    msg.get("endRx"),
+                                    msg.get("rxRate")
+                                    });
+                    // only if it is not a duplicate packet, will it be forwarded                
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent RxIndicate");
                 }
 
-                if (intFieldValue(pdu, "Type") == MACActorBase.DataType) {
+                if (intFieldValue(pdu, "Type") == DataType) {
                     RecordToken msgout = new RecordToken(
                             NeedAckMessageFields,
                             new Token[] {
-                                    new IntToken(MACActorBase.NeedAck),
+                                    new IntToken(NeedAck),
                                     pdu.get("Addr2"),
-                                    pdu.get("endRx"),
-                                    pdu.get("rxRate"),
+                                    msg.get("endRx"),
+                                    msg.get("rxRate"),
                                     new IntToken(dAck)});
-                
+                    // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent NeedAck");
+		    // add this packet to the TupleCache
                     _updateTupleCache(pdu);
                 }
-            } else {
-                if (intFieldValue(pdu, "Type") == MACActorBase.ControlType &&
-                        intFieldValue(pdu, "Subtype") == MACActorBase.Rts)
-                    src = MACActorBase.Rts;
+            } 
+	    // if this packet is not for me
+	    else {
+                if (intFieldValue(pdu, "Type") ==ControlType &&
+                        intFieldValue(pdu, "Subtype") == Rts)
+                    src = Rts;
                 
                 if (intFieldValue(pdu, "durId") <= 32767) {
                     RecordToken msgout = new RecordToken(
                             SetNavMessageFields,
                             new Token[] {
-                                    new IntToken(MACActorBase.SetNav),
+                                    new IntToken(SetNav),
                                     msg.get("endRx"),
                                     new IntToken(dNav),
                                     new IntToken(src)});
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
-                    toChannelState.send(intFieldValue(msg, "channel"), msgout);
+         	    // ask the ChannelState process to make reservation
+                    toChannelState.send(0, msgout);
                 }
-            }
-        }
-    }
+            } // end of RTS
+        } // end of RxMpdu
+    } // end of fire()
 
-    /** Return the id of this node.
-     *  TODO: move to base class.
-     */
-    public int getID() {
-        int id = 0;
-        try {
-            Parameter p = (Parameter)getAttribute("id", Parameter.class);
-            id = ((IntToken)p.getToken()).intValue();
-        } catch (IllegalActionException ex) {
-            // ignore, use default id 0
-        }
-        return id;
-    }
-    
     /** Initialize this actor.
      *  @exception IllegalActionException If thrown by the superclass.
      */
@@ -237,6 +229,21 @@ public class FilterMpdu extends TypedAtomicActor {
     }
     
     private void _updateTupleCache(RecordToken pdu) {
+        int addr = intFieldValue(pdu, "Addr2");
+        int seqNum = intFieldValue(pdu, "SeqNum");
+        int fragNum = intFieldValue(pdu, "FragNum");
+        Iterator tuples = _tupleCache.iterator();
+        while (tuples.hasNext()) {
+            int[] tuple = (int[])tuples.next();
+	    // if both Addr2 and SeqNum match, use this entry
+	    // but overwite its FragNum
+            if (addr == tuple[0] && seqNum == tuple[1])
+	    {
+		tuple[2]=fragNum;
+                return;
+	    }
+        }
+	// only if no entry is found, will we add a new one
         int[] tuple = new int[] {
                 intFieldValue(pdu, "Addr2"),
                 intFieldValue(pdu, "SeqNum"),
@@ -249,12 +256,5 @@ public class FilterMpdu extends TypedAtomicActor {
     private LinkedList _tupleCache;
     private static final int _TUPLE_CACHE_SIZE = 32;
 
-    public static final int MAC_BROADCAST_ADDR = -1;
-    
-    public static final String[] RxIndicateMessageFields =
-            {"kind", "pdu", "endRx", "rxRate", "channel"};
-    public static final String[] NeedAckMessageFields =
-            {"kind", "ackto", "endRx", "rxRate", "dAck"};
-    public static final String[] SetNavMessageFields = 
-            {"kind", "tRef", "dNav", "src"};
+
 }

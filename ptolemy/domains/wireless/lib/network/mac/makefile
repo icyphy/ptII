@@ -49,6 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ChannelState.java \
 	FilterMpdu.java \
+	ValidateMpdu.java \
 	MACActorBase.java
 
 OTHER_FILES_TO_BE_JARED = \

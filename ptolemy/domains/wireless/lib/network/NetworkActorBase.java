@@ -1,4 +1,4 @@
-/* An actor that provides the channel status.
+/* An actor that provides the common functions to all wireless network models.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,6 +30,10 @@
 
 package ptolemy.domains.wireless.lib.network;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.IntToken;
@@ -46,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** 
 This is a base class designed for the Network actors. 
 
-Currently, it only contains several methods for dealing with timers 
+Currently, it mainly contains several methods for dealing with timers 
 that are widely used in the OMNET c++ classes.
 
 
@@ -73,27 +77,79 @@ public class NetworkActorBase extends TypedAtomicActor {
         super(container, name);
     }    
         
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                ////
-    //schecule the actor to be fired at the time specified by the <i>time<i>
-    //argument.
-    protected void _schedule(double time) throws IllegalActionException {
-        Director director = getDirector();
-        double currentTime = director.getCurrentTime();
-        if( time >= currentTime) {
-            director.fireAt(this, time);
+    public int getID() {
+        int id = 0;
+        try {
+            Parameter p = (Parameter)getAttribute("id", Parameter.class);
+            id = ((IntToken)p.getToken()).intValue();
+        } catch (IllegalActionException ex) {
+            // ignore, use default id 0
         }
+        return id;
+    }
+
+    // timer related methods
+
+    // This function creates a Timer object, records the timer type and
+    // its expiration time. Afterwards, this timer is added to the end
+    // of a queue. The pointer to this timer is returned to the caller
+    // function (make it easy for it to cancel the timer).
+    public Timer setTimer(int kind, double expirationTime) 
+	// kind corresponds to processing type
+            throws IllegalActionException {
+
+	// do director didn't do for the timers:
+	Timer timer=new Timer();
+	timer.kind=kind;	
+	timer.expirationTime=expirationTime;
+	// put all timers of this object into a queue
+	timersQueue.add(timer);
+	getDirector().fireAt(this, expirationTime);
+	return timer;
+    }
+  
+    // This function search in the queue for the pointer to the timer
+    // to be cancled and if a match is found, the timer is removed from
+    // the queue
+    public void cancelTimer(Timer timerToCancel)
+            throws IllegalActionException {
+        Iterator timers =timersQueue.listIterator();
+	// iterate through the queue to find the timer to be canceled
+        while (timers.hasNext()) {
+            Timer timer = (Timer) timers.next();
+	    // if the address of timer object matches with
+	    // that stored in the queue, remove the entry
+	    if (timer==timerToCancel)
+		timers.remove();
+	}
+    }
+
+    // This function goes through the queue and find the 1st timer whose
+    // expiration time is equal to the current time. The timer is removed
+    // from the queue and its type is returned.
+    public int whoTimeout()
+            throws IllegalActionException {
+	// find the 1st timer expired
+        Iterator timers =timersQueue.listIterator();
+        while (timers.hasNext()) {
+            Timer timer = (Timer) timers.next();
+	    if (timer.expirationTime==getDirector().getCurrentTime())
+		{
+		    // remove it from the queue no matter that
+		    // it will be processed or ignored 
+		    timers.remove();
+		    return timer.kind;
+		}
+	}
+	return -1;
+    }
+
+    public class Timer {
+  
+	public int kind;
+        public double expirationTime;
     }
     
-    //set the timer to be -1 to simulate a timer is canceled.
-    protected int _cancelTimer() {
-        return CancelTimer;
-    }
-    
-    //set the timer to be -1 to simulate a timer is canceled.
-    protected double _updateTimer(double newTime) {
-        return newTime;
-    }
-    
-    protected static final int  CancelTimer = -1;
+    protected List timersQueue=new LinkedList();
+
 }

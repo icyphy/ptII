@@ -1,4 +1,5 @@
-/* An actor that provides the channel status.
+/* An actor that maintains the channel state based on both the result of carrier sense
+ * and the reservation (NAV).
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -51,8 +52,9 @@ import ptolemy.kernel.util.Workspace;
 //// ChannelState
 
 /** 
-This actor update the channel status based on the information from PHY
-and NAV (Natwork Allocation Vector).
+This actor updates the channel state based on the information from PHY
+and NAV (Natwork Allocation Vector). To speed up simulation, slot events
+in 802.11 are not generated here.
 
 
 @author Yang Zhao
@@ -91,20 +93,13 @@ public class ChannelState extends MACActorBase {
         
         IfsControl = new TypedIOPort(this, "IfsControl", true, false);
         
-        fromControl = new TypedIOPort(this, "fromControl", true, false);
+        fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
         
         toTransmission = new TypedIOPort(this, "toTransmission", false, true);
-        
-        //String[] labels = {"type", "content"};
-        //Type[] types = {BaseType.INT, BaseType.GENERAL};
-        //RecordType recordType = new RecordType(labels, types);
-        
+
         channelStatus.setTypeEquals(BaseType.GENERAL);
         updateNav.setTypeEquals(BaseType.GENERAL);
-        fromControl.setTypeEquals(BaseType.GENERAL);
-        
-        //types[2] = BaseType.GENERAL;
-        //RecordType recordType2 = new RecordType(labels, types); 
+        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
         toTransmission.setTypeEquals(BaseType.GENERAL);     
     }
     
@@ -127,7 +122,7 @@ public class ChannelState extends MACActorBase {
     /** The input port for NAV change message from the
      *  protocol control block.
      */
-    public TypedIOPort fromControl;
+    public TypedIOPort fromValidateMpdu;
     
     /** The output port that produces messages that
      *  indicate the channel status.
@@ -154,7 +149,7 @@ public class ChannelState extends MACActorBase {
         
         newObject.channelStatus.setTypeAtMost(recordType);
         newObject.updateNav.setTypeAtMost(recordType);
-        newObject.fromControl.setTypeAtMost(recordType);
+        newObject.fromValidateMpdu.setTypeAtMost(recordType);
         //no need to set type constraint for toTransmission since
         //it has an absolute constraint.
          *
@@ -170,54 +165,44 @@ public class ChannelState extends MACActorBase {
         super.fire();
         Director director = getDirector();
         double currentTime = director.getCurrentTime();
+	int kind=whoTimeout();
         
-        //FIXME: THE SDL specification seems has don-deterministic
-        //transition. What should it do if multi inputs have token?
+        //THE SDL specification has don-deterministic
+        //transition.However the order does not matter,
+	// so We will pick an particular order.
         if (IfsControl.hasToken(0)) {
             _inputMessage = (RecordToken)IfsControl.get(0);
             _messageType = ((IntToken)_inputMessage.
                     get("kind")).intValue();
-            //_message = (RecordToken)_inputMessage.get("content");
+
             if (_messageType == (UseDifs)) {
-                _dIfs = _dDIfs - _RxTxTurnaroundTime;
+                _dIfs = _dDIfs - _aRxTxTurnaroundTime;
             } else if (_messageType == UseEifs){
-                _dIfs = _dEIfs - _RxTxTurnaroundTime;
+                _dIfs = _dEIfs - _aRxTxTurnaroundTime;
             }
             int tRxEnd = ((IntToken) _inputMessage.get("tRxEnd"))
                     .intValue();
-            _IfsTimer = currentTime + tRxEnd + _dIfs*1e-6;
-            //director.fireAt(this, _IfsTimer);
-            _schedule(_IfsTimer);
+
+	    _IfsTimer=setTimer(IfsTimeOut, currentTime + tRxEnd + _dIfs*1e-6);
 
         } else if (channelStatus.hasToken(0)) {
             _inputMessage = (RecordToken) channelStatus.get(0);
         } else if (updateNav.hasToken(0)){
             _inputMessage = (RecordToken) updateNav.get(0);
-        } else if (fromControl.hasToken(0)){
-            _inputMessage = (RecordToken) fromControl.get(0);
-        } else if( currentTime == _IfsTimer) {
-            _IfsTimeOut = true;
-            _IfsTimer = CancelTimer;
-        } else if( currentTime == _NavTimer) {
-            _NavTimeOut = true;
-            _NavTimer = CancelTimer;
-        } else if( currentTime == _slotTimer) {
-            _slotTimeOut = true;
-            _slotTimer = CancelTimer;
-        }
+        } else if (fromValidateMpdu.hasToken(0)){
+            _inputMessage = (RecordToken) fromValidateMpdu.get(0);
+        } 
         if(_inputMessage != null) {
             _messageType = ((IntToken)
                     _inputMessage.get("kind")).intValue();
-            //_message = (RecordToken)_inputMessage.get("content");
+
         } 
         
         switch (_state) {
             case Cs_noNav:
                 switch(_messageType) {
                     case Idle:
-                    _IfsTimer = currentTime + _dIfs*1e-6;
-                    //director.fireAt(this, _IfsTimer); 
-                    _schedule(_IfsTimer);
+		    _IfsTimer=setTimer(IfsTimeOut,currentTime + _dIfs*1e-6);
                     _state = Wait_Ifs;
                     break;
                     
@@ -230,19 +215,9 @@ public class ChannelState extends MACActorBase {
             break;
             
             case Wait_Ifs:
-                if (_IfsTimeOut) {
-                    if (_slotTimer > -1) {
-                        //set it to a negtive value to cancel a timer.
-                        _slotTimer = CancelTimer;
-                    }
-                    //From OMNET: modify standard here
-                    //scheduleAt(simTime()+dSlot*1e-6, Tslot).
-                    _state = noCs_noNav;
-                    //RecordToken t = _createRecordToken(Idle, null);
-                    Token[] value = {new IntToken(Idle)};
-                    RecordToken t = new RecordToken(CSMsgFields, value);
-                    toTransmission.send(0, t);
-                    
+                if (kind == IfsTimeOut) {
+  		    _changeStatus(Idle);
+                    _state = noCs_noNav;                   
                 } else { 
                     switch(_messageType) {
                         case Busy:
@@ -262,35 +237,25 @@ public class ChannelState extends MACActorBase {
             break;    
                 
             case noCs_noNav:
-                if (_slotTimeOut){
-                    Token[] value = {new IntToken(Slot)};
-                    RecordToken t = new RecordToken(CSMsgFields, value);
-                    toTransmission.send(0, t);
-                    //From OMNET: modify standard here
-                    //scheduleAt(simTime()+dSlot*1e-6, Tslot);
-                 } else {
+
                     switch(_messageType){
                         case Busy:
+			    _changeStatus(Busy);
                             _state = Cs_noNav;
-                        Token[] value = {new IntToken(Busy)};
-                        RecordToken t = new RecordToken(CSMsgFields, value);
-                            toTransmission.send(0, t);
                         break;
 
                         case SetNav:
                            if (_setNav()){
-                               Token[] value1 = {new IntToken(Busy)};
-                               RecordToken t1 = new RecordToken(CSMsgFields, value1);
-                               toTransmission.send(0, t1);
+			       _changeStatus(Busy);
                                _state = noCs_Nav;
                            }
                         break;
                     }
-                }
+
             break;
 
             case Cs_Nav:
-                if (_NavTimeOut) {
+                if (kind == NavTimeOut) {
                     _state = Cs_noNav;
                 } else {
                     if (_messageType == Idle) 
@@ -301,8 +266,8 @@ public class ChannelState extends MACActorBase {
             break;
 
             case noCs_Nav:
-                  if (_NavTimeOut) {
-                      _IfsTimer = currentTime + _dIfs*1e-6;
+                  if (kind == NavTimeOut) {
+                      _IfsTimer = setTimer(IfsTimeOut, currentTime + _dIfs*1e-6);
                       _state = Wait_Ifs;
                   } else {
                       if (_messageType == Busy)
@@ -322,17 +287,17 @@ public class ChannelState extends MACActorBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _dDIfs = _SIfsTime+2*_slotTime;
-        _dEIfs= _SIfsTime+_sAckCtsLng/_mBrate+
-                _preambleLength+_PLCPHeaderLength+_dDIfs;
+        _dDIfs = _aSifsTime+2*_aSlotTime;
+        _dEIfs= _aSifsTime+_sAckCtsLng/_mBrate+
+                _aPreambleLength+_aPlcpHeaderLength+_dDIfs;
         _dIfs=_dEIfs;
         _state = 0;
         _curSrc = nosrc;
         _inputMessage = null;
         //_message = null;
         _messageType = UNKNOWN;
-        _IfsTimer = _NavTimer = _slotTimer = CancelTimer;
-        _IfsTimeOut = _NavTimeOut = _slotTimeOut = false;
+
+
         
         //FIXME:Why I need to output a "Busy" state at the beginning?
         //Seems it won't change anything in the down stream components...
@@ -349,13 +314,10 @@ public class ChannelState extends MACActorBase {
             
                 tNew = ((IntToken)_inputMessage.get("tRef")).intValue()
                        +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
-                if (tNew > _NavTimer) {
-                    _NavTimer = tNew;
+                if (tNew > _NavTimer.expirationTime) {
+                    _NavTimer.expirationTime = tNew;
                     //curSrc=((SetNavMsg *)msg)->src;
                     _curSrc=((IntToken)_inputMessage.get("src")).intValue();
-                    Director director = getDirector();
-                    //director.fireAt(this, tNew);
-                    _schedule(tNew);
                 }
              break;
 
@@ -366,10 +328,9 @@ public class ChannelState extends MACActorBase {
              case ClearNav:
                 Director director = getDirector();
                 double currentTime = director.getCurrentTime();
-                _NavTimer = currentTime;
+		// force the state transition to noNav
+                _NavTimer.expirationTime = currentTime;
                 _curSrc=nosrc;
-                //director.fireAt(this, _NavTimer);
-                _schedule(_NavTimer);
              break;
       
          }
@@ -378,15 +339,21 @@ public class ChannelState extends MACActorBase {
     private boolean _setNav() throws IllegalActionException {
         Director director = getDirector();
         double currentTime = director.getCurrentTime();
-        _NavTimer =  ((IntToken)_inputMessage.get("tRef")).intValue()
+        double expirationTime =  ((IntToken)_inputMessage.get("tRef")).intValue()
                    +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
-        if(_NavTimer >= currentTime) {
-            //director.fireAt(this, _NavTimer);
-            _schedule(_NavTimer);
+        if(expirationTime > currentTime) {
+	    _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void _changeStatus(int kind) throws IllegalActionException {
+        // send idle/busy event to the Transmission block
+        Token[] value = {new IntToken(kind)};
+        RecordToken t = new RecordToken(CSMsgFields, value);
+        toTransmission.send(0, t);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -398,7 +365,7 @@ public class ChannelState extends MACActorBase {
     private static final int noCs_Nav   = 3;
     private static final int noCs_noNav = 4;
     
-    private int _state;
+    private int _state=0;
     
     //the distributed inter frame space.
     private int _dDIfs;
@@ -409,17 +376,15 @@ public class ChannelState extends MACActorBase {
     
     private int _curSrc;
     
-    private double _IfsTimer;
-    private boolean _IfsTimeOut;
-    private double _NavTimer;
-    private boolean _NavTimeOut;
-    private double _slotTimer;
-    private boolean _slotTimeOut;
-    
-    private static int CancelTimer = -1;
+    private Timer _IfsTimer;
+    private Timer _NavTimer;
+
+    // timer types
+    private static final int IfsTimeOut=0;
+    private static final int NavTimeOut=1;
+    private static final int SlotTimeOut=2;
+
     private RecordToken _inputMessage;
     private int _messageType;
-    //private RecordToken _message;
-    
-    private List _receptions = new LinkedList();
+
 }
