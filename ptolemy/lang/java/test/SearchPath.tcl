@@ -165,7 +165,6 @@ test SearchPath-4.1 {PtolemyCoreClasses} {
     set notAClassString [java::new String \
 	    "ptolemy.kernel.util.NotAClass."]
     list \
-[$ptolemyCoreClassSet size] \
 	    [expr {[$ptolemyCoreClassSet size] > 100}] \
 	    [$ptolemyCoreClassSet contains $namedObjString] \
 	    [$ptolemyCoreClassSet contains $notAClassString]
