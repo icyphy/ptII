@@ -55,14 +55,6 @@ public class GRDebug {
         }
     }
 
-    public static final void prompt(String string) {
-        if (_debugOn) {
-            JOptionPane.showMessageDialog(
-                    null, string,
-                    "MessageDialog", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     public static final void printStackTrace() {
         if (_debugOn) {
             try {
@@ -70,6 +62,14 @@ public class GRDebug {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static final void prompt(String string) {
+        if (_debugOn) {
+            JOptionPane.showMessageDialog(
+                    null, string,
+                    "MessageDialog", JOptionPane.ERROR_MESSAGE);
         }
     }
 
