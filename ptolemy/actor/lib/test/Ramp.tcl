@@ -87,3 +87,41 @@ test Ramp-2.1 {test with strings} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {{"a"} {"ab"} {"abb"} {"abbb"} {"abbbb"}}
+
+test Ramp-2.2 {test with record} {
+    # first record is {name="a", value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} a]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name="b", value=2.5}
+    set l2 [java::new {String[]} {2} {{name} {value}}]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} b]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set v2 [java::new {ptolemy.data.Token[]} 2 [list $nt2 $vt2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    # set Ramp parameters
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken $r1
+    $step setToken $r2
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{{name="a", value=1.0}} {{name="ab", value=3.5}} {{name="abb", value=6.0}} {{name="abbb", value=8.5}} {{name="abbbb", value=11.0}}}
+
+test Ramp-2.3 {check types of the above model} {
+    set constOut [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+    set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{{name:string, value:double}} {{name:string, value:double}}}
+
+

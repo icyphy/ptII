@@ -100,4 +100,28 @@ test Const-2.1 {change output value and type and rerun} {
     enumToTokenValues [$rec getRecord 0]
 } {3.0}
 
+test Const-2.3 {change type to RecordToken} {
+    # RecordToken is {name="foo", value=5}
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # set new token
+    $p setToken $r
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{{name="foo", value=5}}}
+
+test Const-2.4 {check types of the above model} {
+    set constOut [java::field [java::cast ptolemy.actor.lib.Source $const] output]
+    set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{{name:string, value:int}} {{name:string, value:int}}}
+
 # FIXME: Need a mechanism to test a change in parameter during a run.
