@@ -36,6 +36,11 @@ import java.util.Map;
 
 import ptolemy.actor.TypedAtomicActor;
 
+/**An object that hold information used as an argument to a
+code generator that operates on the actor level.
+@author Jeff Tsay
+@version $Id$
+ */
 public class ActorCodeGeneratorInfo {
 
     public ActorCodeGeneratorInfo() {}
@@ -43,8 +48,8 @@ public class ActorCodeGeneratorInfo {
     /** The actor itself. */
     public TypedAtomicActor actor = null;
 
-    /** A map containing instances of TypedIOPort (or its subclasses) which uses
-     *  port names as keys.
+    /** A map containing instances of TypedIOPort (or its subclasses)
+     *  which uses port names as keys.
      */
     public final Map portNameToPortMap = new HashMap();
 
