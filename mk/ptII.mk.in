@@ -271,6 +271,10 @@ PTCM_DIR =	@PTCM_DIR@
 #
 PTCOMM_DIR = @PTCOMM_DIR@
 
+# Ptolemy II packages that use the Java Serial Communication facility
+# PTCOMM_PACKAGES is used in ptII/doc/makefile
+PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@  	
+
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
@@ -325,6 +329,10 @@ PTGMP_LIB =	@PTGMP_LIB@
 # Used in domains/makefile.
 PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 
+# Ptolemy II packages that use the Java 3D facility
+# PTGR_PACKAGES is used in ptII/doc/makefile
+PTGR_PACKAGES =		@PTGR_PACKAGES@
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
 PTJACL_DIR =	@PTJACL_DIR@
@@ -375,6 +383,10 @@ PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 # Set to joystick if Joystick.jar was found.
 PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 
+# Ptolemy II packages that use the Java Joystick facilty
+# PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
+PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
+
 # PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
 # $PTII/ptolemy/actor/lib/makefile if Jython was found.
 PTJYTHON_DIR=	@PTJYTHON_DIR@
@@ -407,6 +419,10 @@ PTPSDF_DIR =	@PTPSDF_DIR@
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
 
+# Ptolemy II packages that use the Quicktime facility
+# PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+PTQUCKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
+
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
@@ -418,6 +434,10 @@ PTWABA_DIR =	@PTWABA_DIR@
 # $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
 PTX10_DIR =	@PTX10_DIR@
 X10_JAR =       @X10_CLASSES@
+
+# Ptolemy II packages that use the X10 facilty.
+# PTX10_PACKAGES is used in ptII/doc/makefile
+PTX10_PACKAGES = @PTX10_PACKAGES@	
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
