@@ -53,7 +53,8 @@ JSIMPLE_TESTS = \
 	EntityLibrary.tcl \
 	Location.tcl \
 	MoMLChangeRequest.tcl \
-	MoMLParser.tcl
+	MoMLParser.tcl \
+	StreamErrorHandler.tcl
 
 # FIXME: removed for now
 #	MoMLWriter.tcl \
