@@ -48,13 +48,12 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	FourierSeries.xml
+	FourierSeries.xml \
+	FourierSeries.htm \
+	FourierSeriesVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
-
-#	FourierSeries.htm \
-#	FourierSeriesVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
