@@ -1,4 +1,4 @@
-/* BusAssembler - assemble input port channels into output bus
+/* Assemble input port channels into output bus.
 
  Copyright (c) 2002-2003 The Regents of the University of California and
  Research in Motion Limited.
