@@ -198,7 +198,7 @@ abstract public class CipherActor extends CryptographyActor {
      * <dt><code>SSL3Padding</code>
      * <dd>The padding scheme defined in the SSL Protocol Version 3.0,
      * November 18, 1996, section 5.2.3.2 (CBC block cipher):
-     * </dt>
+     * </dl>
      *
      *  The initial default is the empty string, which indicates that
      *  the default setting for the algorithm should be used.
