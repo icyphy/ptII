@@ -850,8 +850,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	// JDK1.4 provides us with a LinkedHashSet that is ordered and
 	// has unique elements, so we use that. -cxh 11/16/02
 	//
-	// ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
-        // namedObjList.addAll(namedObjNodeSet);
+	//ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
+        //namedObjList.addAll(namedObjNodeSet);
 
         LinkedHashSet namedObjList = new LinkedHashSet(namedObjEdgeSet);
         namedObjList.addAll(namedObjNodeSet);
@@ -925,7 +925,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             toplevel.requestChange(change);
         }
         catch (Exception ex) {
-            MessageHandler.error("Delete failed", ex);
+            MessageHandler.error("Delete failed, changeRequest was:" + moml,
+				 ex);
         }
     }
 
