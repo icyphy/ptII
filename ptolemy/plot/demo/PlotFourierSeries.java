@@ -57,7 +57,7 @@ public class PlotFourierSeries extends PlotApplet {
     /**
      * Initialize the applet.
      */
-    public void init () {
+    public void init() {
         super.init();
 
         Plot plot = (Plot)plot();
