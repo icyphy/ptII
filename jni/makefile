@@ -60,6 +60,7 @@ JSRCS = \
 	ArgumentConfigurerDialog.java \
 	ArgumentDialogFactory.java \
 	GenericJNIActor.java \
+	JNIUtilities.java \
 	ThalesGraphFrame.java \
 	ThalesGraphTableau.java \
 	VergilApplication.java
