@@ -86,13 +86,17 @@ abstract public class GRPickActor extends GRActor {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
+        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
         clicked = new TypedIOPort(this, "click trigger");
         clicked.setOutput(true);
         clicked.setTypeEquals(BaseType.BOOLEAN);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
     public TypedIOPort sceneGraphOut;
+
     /** BooleanToken
      */
     public TypedIOPort clicked;
@@ -104,9 +108,6 @@ abstract public class GRPickActor extends GRActor {
      *  @exception IllegalActionException will not be thrown..
      */
     public boolean prefire() throws IllegalActionException {
-        // -prefire-
-        // Note: Actors return false on prefire if they don't want to be
-        // fired and postfired in the current iteration.
         boolean returnValue = true;;
 
 
@@ -118,7 +119,6 @@ abstract public class GRPickActor extends GRActor {
         if (isDirty) {
             returnValue = true;
         }
-        //System.out.println("prefire returns "+returnValue);
         return returnValue;
     }
 
@@ -182,7 +182,7 @@ abstract public class GRPickActor extends GRActor {
 
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
+        sceneGraphOut.send(0,new SceneGraphToken(_getNodeObject()));
     }
 
     protected void _createModel() throws IllegalActionException {
@@ -217,19 +217,19 @@ abstract public class GRPickActor extends GRActor {
         }
 
         public void updateScene(int xpos, int ypos) {
-        	PickResult pickResult = null;
-	        Shape3D shape = null;
-
-        	pickCanvas.setShapeLocation(xpos, ypos);
-
-	        pickResult = pickCanvas.pickClosest();
+            PickResult pickResult = null;
+            Shape3D shape = null;
+            
+            pickCanvas.setShapeLocation(xpos, ypos);
+            
+            pickResult = pickCanvas.pickClosest();
     	    if (pickResult != null) {
     	        if (mevent.getModifiers() == 4) {
-        	        shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
-        	        System.out.println("the result "+shape + " "+callbackActor);
-        	        callbackActor.processCallback();
-        	    }
-	        }
+                    shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
+                    System.out.println("the result "+shape + " "+callbackActor);
+                    callbackActor.processCallback();
+                }
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ import ptolemy.data.type.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.gr.lib.*;
+import ptolemy.domains.gr.kernel.*;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;
@@ -126,7 +127,6 @@ public class Switch3D extends GRTransform {
         detachableGroup.setCapability(BranchGroup.ALLOW_DETACH);
     }
 
-
     protected Node _getNodeObject() {
         return null;
     }
@@ -137,10 +137,8 @@ public class Switch3D extends GRTransform {
         int i;
         for(i=0;i<width;i++) {
             if (sceneGraphIn.hasToken(i)) {
-                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
-                Node n = (Node) o.getValue();
-                //System.out.println("node n "+n);
-                //System.out.println("branchgroup ? "+(n instanceof BranchGroup));
+                SceneGraphToken o = (SceneGraphToken) sceneGraphIn.get(i);
+                Node n = (Node) o.getSceneGraphNode();
                 detachableGroup.addChild(n);
             }
         }
@@ -153,7 +151,7 @@ public class Switch3D extends GRTransform {
             attachmentGroup[i] = new BranchGroup();
             attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_WRITE);
             attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_EXTEND);
-            sceneGraphOut.send(i,new ObjectToken(attachmentGroup[i]));
+            sceneGraphOut.send(i, new SceneGraphToken(attachmentGroup[i]));
         }
     }
 
