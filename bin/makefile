@@ -96,9 +96,11 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = $(SHELL_FILES) \
 	$(BAT_FILES) \
-	ptinvoke \
+	comm.policy \
 	makebat \
+	ptinvoke \
 	ptmatlab.dll
+
 
 # Files to be removed by make clean
 KRUFT = $(SHELL_FILES) $(BAT_FILES)
