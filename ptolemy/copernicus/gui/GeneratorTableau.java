@@ -511,7 +511,7 @@ public class GeneratorTableau extends Tableau {
                             if (run && commands != null) {
 				execCommands.add(commands.get(1));
                             }
-
+                            
                             if (execCommands.size() > 0) {
 				exec.setCommands(execCommands);
 				exec.start();
@@ -597,9 +597,20 @@ public class GeneratorTableau extends Tableau {
 	    (Parameter)generatorAttribute.getAttribute("codeGenerator");
 	codeGenerator.setExpression("\"" + copernicusSubdirectory + "\"");
 
-
 	List results = new LinkedList();
 	try { 
+            // Write out the GeneratorAttribute so that we can read it in
+            // when generating a makefile.
+            String generatorAttributeFileName =
+            Copernicus.exportMoMLToTemporaryFile(generatorAttribute);
+
+            // Add the name of the file that contains the
+            // GeneratorAttribute so that we can use it when substituting
+            // while running commandToCompile() and commandToRun();
+            new Parameter(generatorAttribute,
+                    "_generatorAttributeFileName",
+                    new StringToken(generatorAttributeFileName));
+
 	    results.add(Copernicus.commandToCompile(generatorAttribute));
 	    results.add(Copernicus.commandToRun(generatorAttribute));
 	} catch (Exception ex) {
