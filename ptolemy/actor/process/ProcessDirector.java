@@ -49,9 +49,9 @@ default implementations for methods that are common across such domains.
 In the process oriented domains, the director controlling a model
 needs to keep track of the state of the model. In particular it needs
 to maintain an accurate count of the number of active processes under
-its control, any processes that are blocked for whatever reason (trying
-to read from an empty channel as in PN) and the number of processes that have
-been paused. These counts, and perhaps other counts, are needed by the
+its control and any processes that are blocked for whatever reason (trying
+to read from an empty channel as in PN). 
+These counts, and perhaps other counts, are needed by the
 director to control and respond when deadlock is detected (no processes
 can make progress), or to respond to requests from higher in the hierarchy.
 <p>
@@ -107,8 +107,7 @@ public class ProcessDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active processes is zero
-     *  and it is not paused.
+     *  and no topology listeners. The count of active processes is zero.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -118,9 +117,7 @@ public class ProcessDirector extends Director {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
-        newobj._actorsPaused = 0;
         newobj._notDone = true;
-        newobj._pausedReceivers = new LinkedList();
         newobj._threadList = new LinkedList();
 	newobj._threadsStopped = 0;
         return newobj;
@@ -158,16 +155,6 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Increases the count of paused threads and checks whether the
-     *  entire model has successfully paused.
-     */
-    public synchronized void increasePausedCount() {
-        _actorsPaused++;
-        if (_isPaused()) {
-	    notifyAll();
-	}
-    }
-
     /** Invoke the initialize() methods of all the deeply contained
      *  actors in the container (a composite actor) of this director.
      *  These are expected to call initialize(Actor), which will result
@@ -181,9 +168,7 @@ public class ProcessDirector extends Director {
     public void initialize() throws IllegalActionException {
 	_notDone = true;
 	_actorsActive = 0;
-	_actorsPaused = 0;
 	_threadsStopped = 0;
-	_pausedReceivers = new LinkedList();
 	_threadList = new LinkedList();
 	_newthreads = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
@@ -282,99 +267,12 @@ public class ProcessDirector extends Director {
         return true;
     }
 
-    /** Pause the execution of the model. This method iterates through the
-     *  set of actors in the compositeActor and sets the pause flag of all
-     *  the receivers. It also sets the pause flag in all the output
-     *  ports of the CompositeActor under control of this director.
-     *  <p>
-     *  @exception IllegalActionException If cannot access all the receivers.
-     */
-    //  Note: Should be fixed after Director/Manager define pause, etc.
-    //  Should a pausedEvent be sent when the model is fully paused?
-    public void pause() throws IllegalActionException {
-        Workspace workspace = workspace();
-	workspace.getReadAccess();
-	try {
-	    // Obtaining a list of all actors in this compositeActor
-	    CompositeActor cont = (CompositeActor)getContainer();
-            Iterator actors = cont.deepEntityList().iterator();
-	    Iterator actorPorts;
-	    ProcessReceiver nextRec;
-
-	    while (actors.hasNext()) {
-		// Obtaining all the ports of each actor
-		Actor actor = (Actor)actors.next();
-		actorPorts = actor.inputPortList().iterator();
-		while (actorPorts.hasNext()) {
-		    IOPort port = (IOPort)actorPorts.next();
-		    // Setting paused flag in the receivers..
-		    Receiver[][] receivers = port.getReceivers();
-		    for (int i = 0; i < receivers.length; i++) {
-			for (int j = 0; j < receivers[i].length; j++) {
-			    nextRec = (ProcessReceiver)receivers[i][j];
-			    nextRec.requestPause(true);
-			    _pausedReceivers.addFirst(receivers[i][j]);
-			}
-		    }
-		}
-	    }
-
-	    // If this director is controlling a CompositeActor with
-	    // output ports, need to set the finished flag
-	    // there as well.
-	    // NOTE: is this the best way to set these flags.
-	    actorPorts  = cont.outputPortList().iterator();
-	    while (actorPorts.hasNext()) {
-		IOPort port = (IOPort)actorPorts.next();
-		// Terminating the ports and hence the star
-		Receiver[][] receivers = port.getReceivers();
-		for (int i = 0; i < receivers.length; i++) {
-		    for (int j = 0; j < receivers[i].length; j++) {
-			nextRec = (ProcessReceiver)receivers[i][j];
-			nextRec.requestPause(true);
-			_pausedReceivers.addFirst(receivers[i][j]);
-		    }
-		}
-	    }
-	} finally {
-	    workspace.doneReading();
-	}
-
-	synchronized (this) {
-	    while (!_isPaused()) {
-		workspace.wait(this);
-	    }
-	}
-        return;
-    }
-
     /** Indicate to the director that a new thread under it's control
      *  has been stopped.
      */
     public synchronized void registerStoppedThread() {
  	_threadsStopped++;
  	notifyAll();
-    }
-
-    /** Resumes execution of the model.
-     *  All the actors that were paused using setResumePaused are resumed.
-     *  The pause flag of the receivers is set to false and all the threads
-     *  that are waiting on the receiver are notified.
-     */
-    public void resume() {
-	LinkedList copy = new LinkedList();
-	synchronized(this) {
-	    copy.addAll(_pausedReceivers);
-	    _pausedReceivers.clear();
-	    _actorsPaused = 0;
-	}
-	Iterator receivers = copy.iterator();
-	while (receivers.hasNext()) {
-	    ProcessReceiver rec = (ProcessReceiver)receivers.next();
-            rec.requestPause(false);
-	}
-        // Now wake up all the receivers.
-        (new NotifyThread(copy)).start();
     }
 
     /** Request that execution of the current iteration stop. Call
@@ -524,19 +422,8 @@ public class ProcessDirector extends Director {
         return (_actorsActive == 0);
     }
 
-    /** Return true if all active processes in the container are paused.
-     *  Return false otherwise.
-     *  Should be overridden in derived classes to return true if all the
-     *  active processes are either blocked or paused.
-     * @deprecated Use isPaused() instead.
-     */
-    protected synchronized boolean _checkForPause() {
-        return (_actorsPaused == _actorsActive);
-    }
-
     /** Decrease by one the count of active processes under the control of
-     *  this director. Also check whether the model is now paused
-     *  if a pause was requested.
+     *  this director. 
      *  This method should be called only when an active thread that was
      *  registered using _increaseActiveCount() is terminated.
      *  This count is used to detect deadlocks for termination and other
@@ -544,7 +431,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
-	if (_isDeadlocked() || _isPaused()) {
+	if (_isDeadlocked()) {
 	    //Wake up the director waiting for a deadlock
 	    notifyAll();
 	}
@@ -558,14 +445,6 @@ public class ProcessDirector extends Director {
 	return _actorsActive;
     }
 
-
-    /** Return the number of paused processes under the control of this
-     *  director.
-     * @return The number of paused actors.
-     */
-    protected synchronized long _getPausedActorsCount() {
-	return _actorsPaused;
-    }
 
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
@@ -625,16 +504,6 @@ public class ProcessDirector extends Director {
         return (_actorsActive == 0);
     }
 
-    /** Return true if all active processes in the container are paused.
-     *  Return false otherwise.
-     *  Should be overridden in derived classes to return true if all the
-     *  active processes are either blocked or paused.
-     * @return true only if all active processes are paused.
-     */
-    protected synchronized boolean _isPaused() {
-        return (_actorsPaused == _actorsActive);
-    }
-
     /** Return false.
      *  In derived classes, override this method to obtain domain
      *  specific handling of deadlocks. Return false if a
@@ -682,13 +551,6 @@ public class ProcessDirector extends Director {
     // Count of the number of processes that were started by this
     // director but have not yet finished.
     private long _actorsActive;
-
-    // Count of the number of processes that have been paused
-    // following a request for a pause.
-    private long _actorsPaused;
-
-    // The receivers that were paused when a pause was requested.
-    private LinkedList _pausedReceivers;
 
     // The threads started by this director.
     private LinkedList _threadList;
