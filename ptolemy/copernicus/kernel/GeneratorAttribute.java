@@ -296,12 +296,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
         // Check that we will be able to write to the value of
         // the ptIIUserDirectory Parameter, and that
-        // if we are running under Webstart, then ptIIUserDirectory
-        // does not equal ptII.
+        // if we are running under Webstart or InstallAnywhere,
+        // then ptIIUserDirectory does not equal ptII.
         File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
         if (!ptIIUserDirectoryFile.isDirectory()
                 || !ptIIUserDirectoryFile.canWrite()
-                || (JNLPUtilities.isRunningUnderWebStart()
+                || ((JNLPUtilities.isRunningUnderWebStart()
+                     || StringUtilities.getProperty("lax.user.dir").length()
+                            > 0)
                         && ptIIUserDirectory == ptII)) {
 
             // It would be nice to tell the user we are changing the
