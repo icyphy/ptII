@@ -115,7 +115,7 @@ public class CTZeroCrossingDetector extends CTActor
     /** Emit the event at current time id there is any. There will be no
      *  current event after emitting it. If there is no current event,
      *  do nothing.
-     *  @exception IllegalActionExceptin If the event cannot be broadcasted.
+     *  @exception IllegalActionException If the event cannot be broadcasted.
      */
     public void emitCurrentEvents() throws IllegalActionException{
         _debug(this.getFullName() + " checking for currrent event...");
