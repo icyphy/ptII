@@ -408,7 +408,10 @@ public class Histogram extends PlotBox {
                     }
                 }
                 return true;
-            } else if (lcLine.startsWith("bars:")) {
+            } else if (lcLine.startsWith("bars:") || 
+                    lcLine.startsWith("bargraph:")) {
+                // The PlotML code uses barGraph, but the older style
+                // uses bars 
                 int comma = line.indexOf(",", 5);
                 String barwidth;
                 String baroffset = null;
