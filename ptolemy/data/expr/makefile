@@ -56,11 +56,12 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	ASTPtBitwiseOpNode.java \
+	ASTPtBitwiseNode.java \
 	ASTPtFunctionNode.java \
+	ASTPtFunctionalIfNode.java \
 	ASTPtLeafNode.java \
 	ASTPtLogicalNode.java \
-	ASTPtMiscNode.java \
+	ASTPtMethodCallNode.java \
 	ASTPtProductNode.java \
 	ASTPtRelationalNode.java \
 	ASTPtRootNode.java \
