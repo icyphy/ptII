@@ -40,7 +40,6 @@ nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
 ptolemy/actor/corba
-ptolemy/actor/gui/test/CompositeActorApplication.tcl
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/net/test_auto
