@@ -237,3 +237,4 @@ public class ComponentRelation extends Relation {
     private LinkedList _deeplinkedports;
     private long _deeplinkedportsversion = -1;
 }
+
