@@ -95,18 +95,54 @@ function ptplot(theform) {
     document.write("<title>Plot</title>");
     document.write("<body bgcolor=\"#faf0e6\">");
     document.write("<H1>Plot</H1>");
-    document.write("<applet name=\"JSPlot\" code=\"ptolemy.plot.PlotApplet\"");
-    document.write("   width=" + parseInt(width));
-    document.write("   height=" + parseInt(height));
-    document.write("   codebase=\"../../..\"\n");
-    document.write("   alt=\"If you had a java-enabled browser you would see an applet here.\">\n");
+
+    document.write("<!-- The HTML below is for the Java Plugin.  \n");
+    document.write("	The first section is for IE, \n");
+    document.write("	the second is for Netscape Communicator\n");
+    document.write(" -->\n");
+    document.write("\n");
+    document.write("<OBJECT classid=\"clsid:8AD9C840-044E-11D1-B3E9-00805F499D93\"\n");
+    document.write("   name=\"JSPlot\"\n");
+    document.write("   width=\"" + parseInt(width) + "\"\n");
+    document.write("   height=\"" + parseInt(height) + "\"\n");
+    document.write("   codebase=\"http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0\">\n");
+    document.write("<PARAM NAME=\"code\"       VALUE=\"ptolemy.plot.compat.PxgraphApplet.class\">\n");
+    document.write("<PARAM NAME=\"codebase\"   VALUE=\"../../..\">\n");
+    document.write("<PARAM NAME=\"archive\"    VALUE=\"ptolemy/plot/pxgraphapplet.jar\">\n");
+    document.write("<PARAM NAME=\"type\"       VALUE=\"application/x-java-applet;version=1.2\">\n");
     if ( background != "" )
         document.write("<param name=\"background\" value=\"" +
                 background +"\">\n");
     if ( foreground.value != "" )
         document.write("<param name=\"foreground\" value=\"" +
                 foreground +"\">\n");
-    document.write("</applet>");
+    document.write("<PARAM NAME=\"background\" VALUE=\"#faf0e6\">\n");
+    document.write("<PARAM NAME=\"pxgraphargs\"    VALUE=\"" +
+	otherargs + " " + tmpfiles +  "\">\n");
+    document.write("<COMMENT>\n");
+    document.write("<EMBED type=\"application/x-java-applet;version=1.2\"\n");
+    document.write("   name=\"JSPlot\"\n");
+    document.write("   width=\"" + parseInt(width) + "\"\n");
+    document.write("   height=\"" + parseInt(height) + "\"\n");
+    if ( background != "" )
+        document.write("    background=\"" + background +"\"\n");
+    if ( foreground.value != "" )
+        document.write("    foreground=\"" + foreground +"\"\n");
+    document.write("   code=\"ptolemy.plot.compat.PxgraphApplet.class\"\n");
+    document.write("   codebase=\"../../..\"\n");
+    document.write("   archive=\"ptolemy/plot/pxgraphapplet.jar\"\n");
+    document.write("   pxgraphargs=\"" +
+	otherargs + " " + tmpfiles +  "\"\n");
+    document.write("   pluginspage=\"http://java.sun.com/products/plugin/1.2/plugin-install.html\">\n");
+    document.write("</COMMENT>\n");
+    document.write("<NOEMBED>\n");
+    document.write("No JDK 1.2 support for applet!\n");
+    document.write("</NOEMBED>\n");
+    document.write("</EMBED>\n");
+    document.write("</OBJECT>\n");
+
+
+
     document.write("<form name=\"aboutplot\">")
         document.write("<input type=\"button\" Value=\"About\"");
     document.write("onClick=\"alert(document.JSPlot.getAppletInfo())\">");

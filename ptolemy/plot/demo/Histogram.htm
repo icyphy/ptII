@@ -22,19 +22,38 @@ the histogram from raw data.  Data can be provided by Java code
 or by an ASCII file in a simple format described below.
 Here is an example of a histogram:
 <p>
-<applet name="Histogram"
-    code="ptolemy.plot.demo.HistogramDemo"
-    width=500 height=300
-    codebase="../../.."
-    archive="ptolemy/plot/plotmlapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
->
-<param name="background" value="faf0e6">
-   <hr>If your browser recognized the applet tag,
-    you would see an applet here.<hr>
-</applet>
-<p>
 
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for Netscape Communicator
+ -->
+
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+   width="500"
+   height="300"
+   codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code"       VALUE="ptolemy.plot.demo.HistogramDemo">
+<PARAM NAME="codebase"   VALUE="../../..">
+<PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar">
+<PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+   width="500"
+   height="300"
+   background="#faf0e6"
+   code="ptolemy.plot.demo.HistogramDemo"
+   codebase="../../.."
+   archive="ptolemy/plot/plotmlapplet.jar"
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+No JDK 1.2 support for applet!
+</NOEMBED>
+</EMBED>
+</OBJECT>
+
+<p>
 The above applet shows three histograms. The one in red is a histogram
 of a cosine signal with amplitude 5.0, showing that fewer values lie in
 the ranges in the middle than near the amplitude extremes.
@@ -82,18 +101,38 @@ by the PlotMLParser class, so it is easy to plot the raw data
 and the histogram from the same specification file.
 Here is an example of a histogram that reads PlotML data from a URL:
 <p>
-<applet name="Histogram"
-    code="ptolemy.plot.plotml.HistogramMLApplet"
-    width=500 height=300
-    codebase="../../.."
-    archive="ptolemy/plot/plotapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
->
-<param name="background" value="faf0e6">
-<param name="dataurl" value="sinusoids.txt">
-   <hr>If your browser recognized the applet tag,
-    you would see an applet here.<hr>
-</applet>
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for Netscape Communicator
+ -->
+
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+   width="500"
+   height="300"
+   codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code"       VALUE="ptolemy.plot.plotml.HistogramMLApplet">
+<PARAM NAME="codebase"   VALUE="../../..">
+<PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar">
+<PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="dataurl"    VALUE="sinusoids.txt">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+   width="500"
+   height="300"
+   background="#faf0e6"
+   code="ptolemy.plot.plotml.HistogramMLApplet.class"
+   codebase="../../.."
+   archive="ptolemy/plot/plotmlapplet.jar"
+   dataurl="bargraph.plt"
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+No JDK 1.2 support for applet!
+</NOEMBED>
+</EMBED>
+</OBJECT>
+
 <p>
 The data here is exactly that of the <a href="Sinusoids.htm">sinusoids</a>
 demo, but <a href="sinusoids.txt">in PlotML format</a>.
@@ -118,14 +157,15 @@ Here is an example of data in the simpler ASCII syntax:
     3.6593908462220632
         ...
 </pre>
-<p>
-This latter syntax is probably more convenient for
+
+<p>This latter syntax is probably more convenient for
 interfacing to arbitrary programs that generate data, since the
 simple list of numbers is often easy to produce.
-<p>
-Either syntax can be simply put in a file and referenced by
+
+<p>Either syntax can be simply put in a file and referenced by
 the <i>dataurl</i> applet parameter of HistogramMLApplet
 (HistogramApplet can only read the latter syntax).
+
 <p>&nbsp;
 </body>
 </html>

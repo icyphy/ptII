@@ -7,28 +7,53 @@
 <h1><a name="bar graph plot">Bar Graph Plot</a></h1>
 
 Here is an example of a bar graph:
+
 <p>
-<applet name="BarGraph"
-    code="ptolemy.plot.PlotApplet"
-    width=600
-    height=400
-    codebase="../../.."
-    archive="ptolemy/plot/plotapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
->
-<param name="dataurl" value="bargraph.plt">
-<param name="background" value="faf0e6">
-    <hr>If your browser recognized the applet tag,
-    you would see an applet here.<hr>
-</applet>
-<p> Here, data is read from an <a href="bargraph.plt">ASCII file</a> at a URL. 
-  The format of that file is the &quot;old ptplot format,&quot; which is simpler 
-  than PlotML, but not as compatible with modern web tools. The horizontal axis 
-  is manually labeled with tick marks indicating years. It is possible to control 
-  the thickness of bars and the offset of the bars behind by editing that file. 
-  For details about the file format, see the documentation for the <a href="../../../doc/codeDoc/ptolemy/plot/Plot.html" target="_top">Plot</a> 
-  and <a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html" target="_top">PlotBox</a> 
-  classes. 
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for Netscape Communicator
+ -->
+
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+   width="600"
+   height="400"
+   codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code"       VALUE="ptolemy.plot.PlotApplet.class">
+<PARAM NAME="codebase"   VALUE="../../..">
+<PARAM NAME="archive"    VALUE="ptolemy/plot/plotapplet.jar">
+<PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="dataurl"    VALUE="bargraph.plt">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+   width="600"
+   height="400"
+   background="#faf0e6"
+   code="ptolemy.plot.PlotApplet.class"
+   codebase="../../.."
+   archive="ptolemy/plot/plotapplet.jar"
+   dataurl="bargraph.plt"
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+No JDK 1.2 support for applet!
+</NOEMBED>
+</EMBED>
+</OBJECT>
+
+<p> Here, data is read from an <a href="bargraph.plt">ASCII file</a>
+at a URL.  The format of that file is the &quot;old ptplot
+format,&quot; which is simpler than PlotML, but not as compatible with
+modern web tools. The horizontal axis is manually labeled with tick
+marks indicating years. It is possible to control the thickness of
+bars and the offset of the bars behind by editing that file.  For
+details about the file format, see the documentation for the
+
+<a href="../../../doc/codeDoc/ptolemy/plot/Plot.html" target="_top">Plot</a> 
+and
+<a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html" target="_top">PlotBox</a> 
+classes. 
+
 <p>&nbsp;
 </body>
 </html>

@@ -8,35 +8,50 @@
 
 The following plot illustrates a dynamically updated plot:
 <p>
-<applet name="Live" code="ptolemy.plot.demo.PlotLiveDemoApplet" width=400 height=400
-    codebase="../../.."
-    archive="ptolemy/plot/plotapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
->
-<param name="background" value="faf0e6">
-   <hr>If your browser recognized the applet tag,
-    you would see an applet here.<hr>
-</applet>
-<p>
-Click on the stop button to stop the plotting.
-The animation on this plot has been slowed down for visual
-aesthetics.
-On a reasonable computer, plotting is quite fast.
-<p>
-Such a plot is created by defining a class derived from
-<a href="../../../doc/codeDoc/ptolemy/plot/PlotLive.html">
-PlotLive</a>
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for Netscape Communicator
+ -->
+
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+   width="400"
+   height="400"
+   codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code"       VALUE="ptolemy.plot.demo.PlotLiveDemoApplet.class">
+<PARAM NAME="codebase"   VALUE="../../..">
+<PARAM NAME="archive"    VALUE="ptolemy/plot/plotapplet.jar">
+<PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+   width="400"
+   height="400"
+   background="#faf0e6"
+   code="ptolemy.plot.demo.PlotLiveDemoApplet.class"
+   codebase="../../.."
+   archive="ptolemy/plot/plotapplet.jar"
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+No JDK 1.2 support for applet!
+</NOEMBED>
+</EMBED>
+</OBJECT>
+
+<p>Click on the stop button to stop the plotting.  The animation on this
+plot has been slowed down for visual aesthetics.  On a reasonable
+computer, plotting is quite fast.
+
+<p>Such a plot is created by defining a class derived from
+<a href="../../../doc/codeDoc/ptolemy/plot/PlotLive.html">PlotLive</a>
 (which is abstract).  The example shown here is the
 <a href="PlotLiveDemo.java">PlotLiveDemo</a> class.
-It defines two methods, init() and addPoints().
-The init() method sets static properties of the plot
-(title, labels, etc.)
-while the addPoints() method is called 
-repeatedly from the body
-of the run() method in the parent class.
-<p>
+It defines two methods, init() and addPoints().  The init() method
+sets static properties of the plot (title, labels, etc.)  while the
+addPoints() method is called repeatedly from the body of the run()
+method in the parent class.
 
-There are still some problems with PlotLive.  The most
+<p>There are still some problems with PlotLive.  The most
 annoying is that this class uses the "exclusive or" drawing mode to
 allow it to easily erase old points as it adds new ones.  This mode,
 however, introduces a number of artifacts in the graph.  In
@@ -45,7 +60,7 @@ drawn between points, the lines effectively erase the marks where they
 intersect.  Moreover, if lines or points overlap, they erase each
 other. In the future we hope to replace this mechanism with one that
 treats marks on the screen as graphical objects.
-<p>&nbsp;
 
+<p>&nbsp;
 </body>
 </html>

@@ -12,29 +12,54 @@ vertical line.
 Like the <a href="FourierSeries.htm">Fourier series demo</a>,
 this one uses Java code to compute the data on the fly.
 <p>
-<applet name="Sinusoids" code="ptolemy.plot.demo.PlotDemo" width=400 height=200
-    codebase="../../.."
-    archive="ptolemy/plot/plotapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
->
-<param name="background" value="faf0e6">
-   <hr>If your browser recognized the applet tag,
-    you would see an applet here.<hr>
-</applet>
-<p> The <a href="PlotDemo.java">source code</a> defines a class <code>PlotDemo</code> 
-  derived from <code>Plot</code>. This class contains a sequence of Java statements 
-  in its <code>init()</code> method that configures and constructs the plot. This 
-  particular example also demonstrates a number of features. In particular, the 
-  X and Y ranges are given explicitly in the Java code, but note that the Y (vertical) 
-  range is insufficient to contain all the points. The lines are clipped at the 
-  boundary of the range. Clicking on the "fill" button at the upper right brings 
-  all data within range. Note further that the Y axis is labeled with explicitly 
-  given tick marks, this time placed at non-integer positions, and again given 
-  string labels. Notice also that the "impulses" or &quot;stems&quot; feature 
-  is turned on, causing a line to drawn from each plotted point down to the x 
-  axis. This is sometimes called a &quot;stem plot;&quot; it provides an alternative 
-  way to explicitly show each sample being plotted (vs. marks as in the <A HREF="Marks.htm">marks 
-  demo</A>). 
+<p>
+<!-- The HTML below is for the Java Plugin.  
+	The first section is for IE, 
+	the second is for Netscape Communicator
+ -->
+
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+   width="400"
+   height="200"
+   codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME="code"       VALUE="ptolemy.plot.demo.PlotDemo.class">
+<PARAM NAME="codebase"   VALUE="../../..">
+<PARAM NAME="archive"    VALUE="ptolemy/plot/plotapplet.jar">
+<PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+   width="400"
+   height="200"
+   background="#faf0e6"
+   code="ptolemy.plot.demo.PlotDemo.class"
+   codebase="../../.."
+   archive="ptolemy/plot/plotapplet.jar"
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+</COMMENT>
+<NOEMBED>
+No JDK 1.2 support for applet!
+</NOEMBED>
+</EMBED>
+</OBJECT>
+
+<p> The <a href="PlotDemo.java">source code</a> defines a class
+<code>PlotDemo</code> derived from <code>Plot</code>. This class
+contains a sequence of Java statements in its <code>init()</code>
+method that configures and constructs the plot. This particular
+example also demonstrates a number of features. In particular, the X
+and Y ranges are given explicitly in the Java code, but note that the
+Y (vertical) range is insufficient to contain all the points. The
+lines are clipped at the boundary of the range. Clicking on the "fill"
+button at the upper right brings all data within range. Note further
+that the Y axis is labeled with explicitly given tick marks, this time
+placed at non-integer positions, and again given string labels. Notice
+also that the "impulses" or &quot;stems&quot; feature is turned on,
+causing a line to drawn from each plotted point down to the x
+axis. This is sometimes called a &quot;stem plot;&quot; it provides an
+alternative way to explicitly show each sample being plotted
+(vs. marks as in the <A HREF="Marks.htm">marks demo</A>).
+
 <p>&nbsp;
 </body>
 </html>
