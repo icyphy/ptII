@@ -50,7 +50,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(String detail) {
-        this(null, null, detail);
+        this(null, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that is only the
@@ -58,7 +58,7 @@ public class IllegalActionException extends KernelException {
      *  @param obj The object.
      */
     public IllegalActionException(Nameable obj) {
-        this(null, obj, null);
+        this(null, obj, null, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -67,7 +67,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable obj, String detail) {
-        this(obj, null, detail);
+        this(obj, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that consists of
@@ -76,7 +76,7 @@ public class IllegalActionException extends KernelException {
      *  @param obj2 The second object.
      */
     public IllegalActionException(Nameable obj1, Nameable obj2)  {
-        this(obj1, obj2, null);
+        this(obj1, obj2, null, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -87,6 +87,20 @@ public class IllegalActionException extends KernelException {
      */
     public IllegalActionException(Nameable obj1, Nameable obj2,
             String detail) {
-        super(obj1, obj2, detail);
+        this(obj1, obj2, null, detail);
+    }
+
+    /** Constructs an Exception with a cause and a detail message that
+     *  includes the names of the obj1 and obj2 arguments.
+     *
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistant.
+     *  @param detail The message.
+     */
+    public IllegalActionException(Nameable obj1, Nameable obj2,
+            Throwable cause, String detail) {
+        super(obj1, obj2, cause, detail);
     }
 }

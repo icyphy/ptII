@@ -44,15 +44,27 @@ public class NoSuchItemException extends KernelException {
      *  @param detail A message.
      */
     public NoSuchItemException(String detail) {
-        super(null, null, detail);
+        super(null, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the argument.
-     *  @param obj An object in which the item might have been.
+     *  @param obj The object in which the item might have been.
      *  @param detail A message.
      */
     public NoSuchItemException(Nameable obj, String detail) {
-        super(obj, null, detail);
+        super(obj, null, null, detail);
+    }
+
+    /** Constructs an Exception with a cause and a detail message that
+     *  includes the name of the argument.
+     *
+     *  @param obj The object in which the item might have been.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistant.
+     *  @param detail The message.
+     */
+    public NoSuchItemException(Nameable obj, Throwable cause, String detail) {
+        super(obj, null, cause, detail);
     }
 }
