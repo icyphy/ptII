@@ -51,13 +51,11 @@ if {[string compare test [info procs test]] == 1} then {
 
 #----------------------------------------------------------------------
 set moml_1 {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="generic" extends="ptolemy.actor.TypedCompositeActor">
 <property name="iconDescription" class="ptolemy.kernel.util.SingletonAttribute">
-<configure><?svg
-<!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
-  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
+<configure>
 <svg>
   <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
   <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
@@ -65,7 +63,7 @@ set moml_1 {<?xml version="1.0" standalone="no"?>
   <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
   <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
   <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> ?>
+</svg>
 </configure>
 </property>   
 </class>
@@ -77,7 +75,7 @@ test XMLIcon-1.1 {parse and dump an XMLIcon} {
     set icon [java::new ptolemy.vergil.toolbox.XMLIcon $toplevel _icon]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="generic" extends="ptolemy.actor.TypedCompositeActor">
 </class>

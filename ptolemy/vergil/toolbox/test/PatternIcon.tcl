@@ -49,7 +49,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------

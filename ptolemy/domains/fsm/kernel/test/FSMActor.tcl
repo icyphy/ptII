@@ -309,9 +309,9 @@ test FSMActor-8.1 {test newRelation} {
 test FSMActor-9.1 {test working with MoML} {
 # MoML description of an AMI (Alternating Mark 1) model
     set model {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.actor.TypedCompositeActor">
+<entity name="" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="14">
         </property>
@@ -433,7 +433,7 @@ test FSMActor-9.1 {test working with MoML} {
     <link port="fsm.out" relation="r1"/>
     <link port="src.output" relation="r0"/>
     <link port="rec.input" relation="r1"/>
-</model>}
+</entity>}
 
     set par [java::new ptolemy.moml.MoMLParser]
     set top [java::cast ptolemy.actor.TypedCompositeActor [$par parse $model]]

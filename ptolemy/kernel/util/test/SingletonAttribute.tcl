@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
@@ -54,25 +54,25 @@ test SingletonAttribute-1.1 {test export moml.} {
     $p1 configure [java::null] [java::null] {My Test String}
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="P1" class="ptolemy.kernel.util.SingletonAttribute">
         <configure>My Test String</configure>
     </property>
-</model>
+</entity>
 }
 
 test SingletonAttribute-1.2 {test replacement of previous via constructor.} {
     set p2 [java::new ptolemy.kernel.util.SingletonAttribute $n0 P1]
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="P1" class="ptolemy.kernel.util.SingletonAttribute">
     </property>
-</model>
+</entity>
 }
 
 test SingletonAttribute-1.2 {test replacement of setContainer()} {
@@ -82,11 +82,11 @@ test SingletonAttribute-1.2 {test replacement of setContainer()} {
     $p3 setContainer $n0
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="P1" class="ptolemy.kernel.util.SingletonAttribute">
         <configure>yyy</configure>
     </property>
-</model>
+</entity>
 }

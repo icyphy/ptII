@@ -50,13 +50,13 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set baseModel {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" value="2"/>
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -69,17 +69,17 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
     $toplevel setManager $manager
 
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <entity name="const" class="ptolemy.actor.lib.Const"/>
-        </model>
+        </entity>
     }]
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -97,15 +97,15 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
             <property name="multiport"/>
         </port>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.2 {Test adding another entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <entity name="rec" class="ptolemy.actor.lib.Recorder"/>
-        </model>
+        </entity>
     }]
     $manager requestChange $change
     set recorder [java::cast ptolemy.actor.lib.Recorder \
@@ -116,9 +116,9 @@ test MoMLChangeRequest-1.2 {Test adding another entity} {
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.3 {Test adding a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <relation name="r" class="ptolemy.actor.TypedIORelation"/>
-        </model>
+        </entity>
     }]
     $manager requestChange $change
     set r [$toplevel getRelation "r"]
@@ -128,10 +128,10 @@ test MoMLChangeRequest-1.3 {Test adding a relation} {
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.4 {Test adding a pair of links} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <link relation="r" port="const.output"/>
             <link relation="r" port="rec.input"/>
-        </model>
+        </entity>
     }]
     $manager requestChange $change
     $manager execute
@@ -141,11 +141,11 @@ test MoMLChangeRequest-1.4 {Test adding a pair of links} {
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.5 {Test changing a parameter} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <entity name="const">
                 <property name="value" value="2"/>
             </entity>
-        </model>
+        </entity>
     }]
     $manager initialize
     $manager iterate
@@ -158,16 +158,16 @@ test MoMLChangeRequest-1.5 {Test changing a parameter} {
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.5 {Test deleting an entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <deleteEntity name="const"/>
-        </model>
+        </entity>
     }]
     $manager requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -185,22 +185,22 @@ test MoMLChangeRequest-1.5 {Test deleting an entity} {
     <relation name="r" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="rec.input" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.6 {Test deleting a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
-        <model name=".top">
+        <entity name=".top">
             <deleteRelation name="r"/>
-        </model>
+        </entity>
     }]
     $manager requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -215,7 +215,7 @@ test MoMLChangeRequest-1.6 {Test deleting a relation} {
             <property name="multiport"/>
         </port>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -226,9 +226,9 @@ test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context
     $manager requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -239,7 +239,7 @@ test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -251,9 +251,9 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     $manager requestChange $change
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -262,7 +262,7 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     </property>
     <entity name="rec" class="ptolemy.actor.lib.Recorder">
     </entity>
-</model>
+</entity>
 }
 
 # FIXME:  delete links
@@ -274,13 +274,13 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
 # Test propagation of changes from a class to instances.
 
 set baseModel {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
    <class name="gen" extends="ptolemy.kernel.CompositeEntity">
    </class>
    <entity name="der" class=".top.gen"/>
-</model>
+</entity>
 }
 
 test MoMLChangeRequest-2.1 {Setup} {
@@ -290,14 +290,14 @@ test MoMLChangeRequest-2.1 {Setup} {
             [$parser parse $baseModel]]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="gen" extends="ptolemy.kernel.CompositeEntity">
     </class>
     <entity name="der" class=".top.gen">
     </entity>
-</model>
+</entity>
 }
 
 test MoMLChangeRequest-2.2 {Test propagation} {
@@ -352,14 +352,14 @@ test MoMLChangeRequest-2.2 {Test propagation} {
 # Test propagation of changes from a class to class to instances.
 
 set baseModel {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
    <class name="gen" extends="ptolemy.kernel.CompositeEntity">
    </class>
    <class name="intClass" extends=".top.gen"/>
    <entity name="der" class=".top.intClass"/>
-</model>
+</entity>
 }
 
 test MoMLChangeRequest-3.1 {Setup} {
@@ -369,16 +369,16 @@ test MoMLChangeRequest-3.1 {Setup} {
             [$parser parse $baseModel]]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="gen" extends="ptolemy.kernel.CompositeEntity">
     </class>
     <class name="intClass" extends=".top.gen">
     </class>
     <entity name="der" class=".top.intClass">
     </entity>
-</model>
+</entity>
 }
 
 test MoMLChangeRequest-3.2 {Test propagation} {

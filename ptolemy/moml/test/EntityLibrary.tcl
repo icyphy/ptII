@@ -43,19 +43,19 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
 test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</model>
+<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     $parser parse {
-<model name=".top">
+<entity name=".top">
     <entity name="lib" class="ptolemy.moml.EntityLibrary">
         <configure>
             <?moml
@@ -66,13 +66,13 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
             ?>
         </configure>
     </entity>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="lib" class="ptolemy.moml.EntityLibrary">
         <configure><?moml
             <group>
@@ -85,13 +85,13 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
             </group>
         ?></configure>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.moml.EntityLibrary\">
+<entity name=\"top\" class=\"ptolemy.moml.EntityLibrary\">
     <configure>
         <?moml
             <group>
@@ -102,15 +102,15 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
             </group>
         ?>
     </configure>
-</model>
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.moml.EntityLibrary">
+<entity name="top" class="ptolemy.moml.EntityLibrary">
     <configure><?moml
         <group>
             <property name="_libraryMarker" class="ptolemy.kernel.util.LibraryMarkerAttribute">
@@ -121,5 +121,5 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
             </entity>
         </group>
     ?></configure>
-</model>
+</entity>
 }

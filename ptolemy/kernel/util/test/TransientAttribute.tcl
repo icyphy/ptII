@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
@@ -54,20 +54,20 @@ test TransientAttribute-1.1 {test export moml.} {
     $p1 configure [java::null] [java::null] {My Test String}
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
-</model>
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
+</entity>
 }
 
 test TransientAttribute-1.2 {test replacement of previous via constructor.} {
     set p2 [java::new ptolemy.kernel.util.TransientAttribute $n0 P1]
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
-</model>
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
+</entity>
 }
 
 test TransientAttribute-1.2 {test replacement of setContainer()} {
@@ -77,8 +77,8 @@ test TransientAttribute-1.2 {test replacement of setContainer()} {
     $p3 setContainer $n0
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
-</model>
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
+</entity>
 }

@@ -335,34 +335,34 @@ test Parameter-13.0 {Test exportMoML} {
     set a1 [java::new ptolemy.data.expr.Parameter $a "A1"]
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="A" class="ptolemy.kernel.util.NamedObj">
+<entity name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter">
     </property>
-</model>
+</entity>
 }
 
 test Parameter-13.1 {Test exportMoML} {
     $a1 setExpression {3}
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="A" class="ptolemy.kernel.util.NamedObj">
+<entity name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter" value="3">
     </property>
-</model>
+</entity>
 }
 
 test Parameter-13.2 {Test exportMoML} {
     $a1 setExpression {"Test String"}
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="A" class="ptolemy.kernel.util.NamedObj">
+<entity name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.data.expr.Parameter" value="&quot;Test String&quot;">
     </property>
-</model>
+</entity>
 }

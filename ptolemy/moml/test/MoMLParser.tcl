@@ -50,7 +50,11 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+set classheader {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
@@ -67,9 +71,9 @@ test MoMLParser-1.1 {parse tolerated incorrect MoML} {
 
 #----------------------------------------------------------------------
 set moml_2 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
-</model>
+</entity>
 "
 test MoMLParser-1.2 {parse simple model with doc only} {
     $parser reset
@@ -79,9 +83,9 @@ test MoMLParser-1.2 {parse simple model with doc only} {
 
 #----------------------------------------------------------------------
 set moml_2_1 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><?html <H1>HTML Markup</H1><I>italics</I>.?></doc>
-</model>
+</entity>
 "
 test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruction} {
     $parser reset
@@ -91,9 +95,9 @@ test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruc
 
 #----------------------------------------------------------------------
 set moml_2_1 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><H1>HTML Markup</H1><I>italics</I>.</doc>
-</model>
+</entity>
 "
 test MoMLParser-1.2.2 {parse simple model with HTML markup} {
     $parser reset
@@ -105,9 +109,9 @@ test MoMLParser-1.2.2 {parse simple model with HTML markup} {
 # NOTE: If no name is given to the inside doc element, then it will
 # be assigned the MoML default name "_doc_".
 set moml_2_1 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><H1>HTML <doc name=\"foo\">Markup</doc></H1><I>italics</I>.</doc>
-</model>
+</entity>
 "
 test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
     $parser reset
@@ -117,7 +121,7 @@ test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
 
 
 #----------------------------------------------------------------------
-set moml_3 "$header
+set moml_3 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
 </class>
@@ -129,7 +133,7 @@ test MoMLParser-1.3 {parse simple class with doc only} {
 } $moml_3
 
 #----------------------------------------------------------------------
-set moml_3_1 "$header
+set moml_3_1 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
     <doc name=\"foo\">yyy</doc>
@@ -142,7 +146,7 @@ test MoMLParser-1.3.1 {parse simple class with two doc tags} {
 } $moml_3_1
 
 #----------------------------------------------------------------------
-set moml_3_2 "$header
+set moml_3_2 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
 </class>
@@ -152,7 +156,7 @@ test MoMLParser-1.3.2 {parse class with a property with no class} {
     set toplevel [$parser parse $moml_3_2]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <property name="xxx" class="ptolemy.kernel.util.Attribute">
@@ -162,7 +166,7 @@ test MoMLParser-1.3.2 {parse class with a property with no class} {
 
 #----------------------------------------------------------------------
 set moml_3_3 "$header
-<model name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
 </class>
@@ -170,7 +174,7 @@ set moml_3_3 "$header
     <property name=\"yyy\"/>
 </class>
 <entity name=\"test\" class=\".lib.top\"/>
-</model>
+</entity>
 "
 test MoMLParser-1.3.3 {check overriding class definition} {
     $parser reset
@@ -188,14 +192,14 @@ test MoMLParser-1.3.3 {check overriding class definition} {
 
 #----------------------------------------------------------------------
 set moml_3_4 "$header
-<model name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
 </entity>
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"yyy\"/>
 </entity>
-</model>
+</entity>
 "
 test MoMLParser-1.3.4 {check overriding class definition} {
     $parser reset
@@ -213,14 +217,14 @@ test MoMLParser-1.3.4 {check overriding class definition} {
 
 #----------------------------------------------------------------------
 set moml_3_5 "$header
-<model name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
 </entity>
 <entity name=\".lib.top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"yyy\"/>
 </entity>
-</model>
+</entity>
 "
 test MoMLParser-1.3.5 {check multiple reference with absolute name} {
     $parser reset
@@ -238,7 +242,7 @@ test MoMLParser-1.3.5 {check multiple reference with absolute name} {
 
 #----------------------------------------------------------------------
 set moml_3_6 "$header
-<model name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
 </entity>
@@ -247,7 +251,7 @@ set moml_3_6 "$header
     <property name=\"yyy\"/>
 </entity>
 </entity>
-</model>
+</entity>
 "
 test MoMLParser-1.3.6 {check multiple reference with absolute name} {
     $parser reset
@@ -276,7 +280,7 @@ set moml "$header
 </class>
 "
 set result {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <entity name="a" class="ptolemy.actor.lib.Ramp">
@@ -304,7 +308,7 @@ test MoMLParser-1.5 {test with an actor} {
 } $result
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
         <property name=\"init\" value=\"0\" class=\"ptolemy.data.expr.Parameter\">
@@ -320,7 +324,7 @@ test MoMLParser-1.6 {test with a pre-existing parameter given, with class} {
 } $result
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
         <port name=\"output\">
@@ -336,7 +340,7 @@ test MoMLParser-1.7 {test with a pre-existing port given, without class} {
 } $result
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
         <port name=\"output\" class=\"ptolemy.actor.lib.Ramp\">
@@ -352,7 +356,7 @@ test MoMLParser-1.8 {test with a pre-existing port given, with wrong class} {
 } {com.microstar.xml.XmlException}
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
         <property name=\"init\" value=\"1\">
@@ -361,7 +365,7 @@ set moml "$header
 </class>
 "
 set result {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <entity name="a" class="ptolemy.actor.lib.Ramp">
@@ -391,9 +395,9 @@ test MoMLParser-1.9 {test with changed parameter value from default} {
 #----------------------------------------------------------------------
 set moml {
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="foo" class="ptolemy.actor.TypedCompositeActor">
+<entity name="foo" class="ptolemy.actor.TypedCompositeActor">
    <port name="C" class="ptolemy.actor.TypedIOPort"></port>
    <relation name="R2" class="ptolemy.actor.TypedIORelation"></relation>
    <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
@@ -407,16 +411,16 @@ set moml {
    <link port="C1.A" relation="R2"/>
    <link port="C1.A" relation="C1.R1"/>
    <link port="C1.C2.B" relation="C1.R1"/>
-</model>
+</entity>
 }
 test MoMLParser-1.10 {test with hierarchy} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="foo" class="ptolemy.actor.TypedCompositeActor">
+<entity name="foo" class="ptolemy.actor.TypedCompositeActor">
     <port name="C" class="ptolemy.actor.TypedIOPort">
     </port>
     <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
@@ -435,12 +439,12 @@ test MoMLParser-1.10 {test with hierarchy} {
     </relation>
     <link port="C" relation="R2"/>
     <link port="C1.A" relation="R2"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
         <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
@@ -451,7 +455,7 @@ set body {
     </class>
     <entity name="b" class=".top.a">
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -461,9 +465,9 @@ test MoMLParser-1.11 {test instantiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
         <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
@@ -476,14 +480,14 @@ test MoMLParser-1.11 {test instantiation of a class} {
         <property name="p" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -507,10 +511,10 @@ test MoMLParser-1.12 {test instantiation of a class} {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
     <entity name="c" class="ptolemy.moml.test.testClass2"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -534,10 +538,10 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
     <entity name="c" class="ptolemy.moml.test.testClass2"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -561,10 +565,10 @@ test MoMLParser-1.12.2 {test import with a relative source } {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="testClass" source="testClass.xml"/>
     <entity name="c" class="testClass2" source="testClass2.xml"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -588,12 +592,12 @@ test MoMLParser-1.12.3 {test import with a relative source } {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort"/>
     </class>
     <entity name="derived" class=".top.master"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -606,9 +610,9 @@ test MoMLParser-1.13.1 {test mutation after class instantiation} {
 </entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -617,12 +621,12 @@ test MoMLParser-1.13.1 {test mutation after class instantiation} {
         <port name="q" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -631,7 +635,7 @@ set body {
         <port name="q" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -641,9 +645,9 @@ test MoMLParser-1.13.2 {test extension of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -652,17 +656,17 @@ test MoMLParser-1.13.2 {test extension of a class} {
         <port name="q" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="master" class="ptolemy.kernel.ComponentEntity">
     </entity>
     <entity name="derived" class="master">
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -675,7 +679,7 @@ test MoMLParser-1.14 {test that instantiation of an entity fails} {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
@@ -684,7 +688,7 @@ set body {
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -694,9 +698,9 @@ test MoMLParser-1.15 {test extension of a composite class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
@@ -705,12 +709,12 @@ test MoMLParser-1.15 {test extension of a composite class} {
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
@@ -719,7 +723,7 @@ set body {
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -729,9 +733,9 @@ test MoMLParser-1.16 {test instatiation of a composite class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
@@ -740,19 +744,19 @@ test MoMLParser-1.16 {test instatiation of a composite class} {
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
     <class name="derived" extends=".top.master">
     </class>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -762,23 +766,23 @@ test MoMLParser-1.17 {test extension of a composite class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
     <class name="derived" extends=".top.master">
     </class>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <property name="dir" class="ptolemy.actor.Director"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -788,23 +792,23 @@ test MoMLParser-1.18 {test property persistence} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <property name="dir" class="ptolemy.actor.Director">
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class=".top.master">
         <property name="dir" class="ptolemy.actor.Director"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -814,27 +818,27 @@ test MoMLParser-1.18.1 {test property persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class=".top.master">
         <property name="dir" class="ptolemy.actor.Director">
         </property>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class=".top.master">
         <relation name="rel" class="ptolemy.actor.IORelation"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -844,28 +848,28 @@ test MoMLParser-1.18.2 {test relation persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
     <entity name="derived" class=".top.master">
         <relation name="rel" class="ptolemy.actor.IORelation">
         </relation>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <entity name="e" class="ptolemy.actor.CompositeActor"/>
     </class>
     <entity name="derived" class=".top.master">
         <deleteEntity name="e"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -875,9 +879,9 @@ test MoMLParser-1.18.3 {test deletion persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <entity name="e" class="ptolemy.actor.CompositeActor">
         </entity>
@@ -885,19 +889,19 @@ test MoMLParser-1.18.3 {test deletion persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <deleteEntity name="e"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
     </class>
     <entity name="derived" class=".top.master">
         <deletePort name="p"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -907,9 +911,9 @@ test MoMLParser-1.18.4 {test deletion persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
@@ -917,12 +921,12 @@ test MoMLParser-1.18.4 {test deletion persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <deletePort name="p"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <property name="a" class="ptolemy.data.expr.Parameter"/>
         <property name="b" class="ptolemy.data.expr.Parameter"/>
@@ -930,7 +934,7 @@ set body {
     <entity name="derived" class=".top.master">
         <deleteProperty name="a"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -940,9 +944,9 @@ test MoMLParser-1.18.5 {test deletion persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <property name="a" class="ptolemy.data.expr.Parameter">
         </property>
@@ -954,19 +958,19 @@ test MoMLParser-1.18.5 {test deletion persistence in instatiation of a class} {
         </property>
         <deleteProperty name="a"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
     <entity name="derived" class=".top.master">
         <deleteRelation name="r"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -976,9 +980,9 @@ test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <relation name="r" class="ptolemy.actor.IORelation">
         </relation>
@@ -986,12 +990,12 @@ test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <deleteRelation name="r"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
@@ -999,7 +1003,7 @@ set body {
     <entity name="derived" class=".top.master">
         <link port="p" relation="r"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1009,9 +1013,9 @@ test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
@@ -1021,12 +1025,12 @@ test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <link port="p" relation="r"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
@@ -1034,7 +1038,7 @@ set body {
     <entity name="derived" class=".top.master">
         <link port="p" relation="r" insertAt="1"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1044,9 +1048,9 @@ test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
@@ -1056,12 +1060,12 @@ test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <link port="p" relation="r" insertAt="1"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
@@ -1070,7 +1074,7 @@ set body {
     <entity name="derived" class=".top.master">
         <unlink port="p" relation="r"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1080,9 +1084,9 @@ test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
@@ -1093,19 +1097,19 @@ test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <unlink port="p" relation="r"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <entity name="master" class="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="p" relation="r"/>        
         <unlink port="p" relation="r"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1115,21 +1119,21 @@ test MoMLParser-1.18.9.1 {test unlink inside by relation} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <entity name="master" class="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
         <relation name="r" class="ptolemy.actor.IORelation">
         </relation>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
@@ -1138,7 +1142,7 @@ set body {
     <entity name="derived" class=".top.master">
         <unlink port="p" insideIndex="0"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1148,9 +1152,9 @@ test MoMLParser-1.18.10 {test unlink persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
@@ -1161,12 +1165,12 @@ test MoMLParser-1.18.10 {test unlink persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <unlink port="p" insideIndex="0"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <entity name="e" class="ptolemy.actor.AtomicActor">
             <port name="p" class="ptolemy.actor.IOPort"/>
@@ -1177,7 +1181,7 @@ set body {
     <entity name="derived" class=".top.master">
         <unlink port="e.p" index="0"/>
     </entity>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -1187,9 +1191,9 @@ test MoMLParser-1.18.11 {test unlink persistence in instatiation of a class} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.CompositeActor">
+<entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <entity name="e" class="ptolemy.actor.AtomicActor">
             <port name="p" class="ptolemy.actor.IOPort">
@@ -1202,24 +1206,24 @@ test MoMLParser-1.18.11 {test unlink persistence in instatiation of a class} {
     <entity name="derived" class=".top.master">
         <unlink port="e.p" index="0"/>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set moml "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"a\" class=\"ptolemy.data.expr.Parameter\"
          value=\"&quot;x&quot;\">
     </property>
-</model>
+</entity>
 "
 set result {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="a" class="ptolemy.data.expr.Parameter" value="&quot;x&quot;">
     </property>
-</model>
+</entity>
 }
 test MoMLParser-1.19 {test quoted parameter values} {
     $parser reset
@@ -1241,7 +1245,7 @@ test MoMLParser-1.21 {test quote resolution in reverse} {
 }
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.CompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.AtomicActor\">
         <port name=\"p\" class=\"ptolemy.actor.IOPort\">
@@ -1258,7 +1262,7 @@ test MoMLParser-1.22 {test with an actor} {
 
 
 #----------------------------------------------------------------------
-set moml "$header
+set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"Sender\" class=\"ptolemy.actor.TypedCompositeActor\">
         <entity name=\"Connect\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1279,9 +1283,9 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
     #   <property name="input"
     #
     #<?xml version="1.0" standalone="no"?>
-    #<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    #<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     #    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    #<model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+    #<entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
     #    <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
     #    </property>
     #    <entity name="Sender" class="ptolemy.actor.TypedCompositeActor">
@@ -1295,7 +1299,7 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
     #            </entity>
     #        </entity>
     #     </entity>
-    #</model>
+    #</entity>
 
     $parser reset
     set toplevel [$parser parse $moml]
@@ -1305,8 +1309,8 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
 #----------------------------------------------------------------------
 test MoMLParser-2.1 {Test incremental parsing: add entity} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-</model>
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</entity>
 "
 
 # NOTE: Here is the incremental MoML
@@ -1319,12 +1323,12 @@ test MoMLParser-2.1 {Test incremental parsing: add entity} {
     set toplevel [$parser parse $incMoml_1]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1336,14 +1340,14 @@ test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
     set toplevel [$parser parse $incMoml_2]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1355,16 +1359,16 @@ test MoMLParser-2.3 {Test incremental parsing: add port} {
     set toplevel [$parser parse $incMoml_2_3]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1381,9 +1385,9 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
     set toplevel [$parser parse $incMoml_2_4]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -1398,7 +1402,7 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
     </relation>
     <link port="inside.input" relation="r"/>
     <link port="a.output" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1410,9 +1414,9 @@ test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
     set toplevel [$parser parse $incMoml_2_5]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -1422,7 +1426,7 @@ test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
     <relation name="r" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="inside.input" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1433,9 +1437,9 @@ test MoMLParser-2.5.1 {Test incremental parsing: remove a link} {
     set toplevel [$parser parse $incMoml_2_5_1]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -1444,7 +1448,7 @@ test MoMLParser-2.5.1 {Test incremental parsing: remove a link} {
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
     </relation>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1469,16 +1473,16 @@ test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
     $parser parse $incMoml_2_7
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -1492,34 +1496,34 @@ test MoMLParser-2.8 {Test incremental parsing: remove a port} {
     $parser parse $incMoml_2_8
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     $parser reset
     set toplevel [$parser parse {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort"/>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort"/>
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
     <link port="p" relation="r" insertAt="1"/>
-</model>
+</entity>
 }]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1529,21 +1533,21 @@ test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" insertAt="1" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.10 {Test link with insertAt attribute, inside links} {
    $parser parse {
-<model name="top">
+<entity name="top">
    <link port="p" relation="r" insertAt="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1554,21 +1558,21 @@ test MoMLParser-2.10 {Test link with insertAt attribute, inside links} {
     </relation>
     <link port="p" relation="r"/>
     <link port="p" insertAt="2" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.11 {Test link with insertAt attribute} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <link port="a.p" relation="r" insertAt="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1580,21 +1584,21 @@ test MoMLParser-2.11 {Test link with insertAt attribute} {
     <link port="p" relation="r"/>
     <link port="p" insertAt="2" relation="r"/>
     <link port="a.p" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.12 {Test link with insertAt attribute} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <link port="a.p" insertAt="2" relation="r"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1607,21 +1611,21 @@ test MoMLParser-2.12 {Test link with insertAt attribute} {
     <link port="p" insertAt="2" relation="r"/>
     <link port="a.p" relation="r"/>
     <link port="a.p" insertAt="2" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.13 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="a.p" index="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1633,21 +1637,21 @@ test MoMLParser-2.13 {Test unlink with index} {
     <link port="p" relation="r"/>
     <link port="p" insertAt="2" relation="r"/>
     <link port="a.p" insertAt="1" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.14 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="a.p" index="1"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1658,21 +1662,21 @@ test MoMLParser-2.14 {Test unlink with index} {
     </relation>
     <link port="p" relation="r"/>
     <link port="p" insertAt="2" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.15 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="p" insideIndex="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1682,21 +1686,21 @@ test MoMLParser-2.15 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" insertAt="1" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.16 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="p" insideIndex="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1706,21 +1710,21 @@ test MoMLParser-2.16 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.17 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="p" insideIndex="1"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1730,21 +1734,21 @@ test MoMLParser-2.17 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-2.18 {Test unlink with index} {
    $parser parse {
-<model name=".top">
+<entity name=".top">
    <unlink port="p" insideIndex="0"/>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <port name="p" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
@@ -1753,20 +1757,20 @@ test MoMLParser-2.18 {Test unlink with index} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-3.1 {Test invalid containment} {
     set incMoml_3_1 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\"/>
   <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
      <entity name=\".top.a\">
         <entity name=\"c\" class=\"ptolemy.actor.TypedCompositeActor\"/>
      </entity>
   </entity>
-</model>
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $incMoml_3_1} msg
@@ -1776,13 +1780,13 @@ test MoMLParser-3.1 {Test invalid containment} {
 #----------------------------------------------------------------------
 test MoMLParser-3.2 {Test invalid containment} {
     set incMoml_3_2 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
      <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
         <entity name=\".top.a\"/>
      </entity>
   </entity>
-</model>
+</entity>
 "
     $parser reset
     catch {$parser parse $incMoml_3_2} msg
@@ -1792,13 +1796,13 @@ test MoMLParser-3.2 {Test invalid containment} {
 #----------------------------------------------------------------------
 test MoMLParser-3.3 {Test invalid containment} {
     set incMoml_3_3 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
      <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
         <entity name=\".top\"/>
      </entity>
   </entity>
-</model>
+</entity>
 "
     $parser reset
     catch {$parser parse $incMoml_3_3} msg
@@ -1808,14 +1812,14 @@ test MoMLParser-3.3 {Test invalid containment} {
 #----------------------------------------------------------------------
 test MoMLParser-3.4 {Test invalid containment} {
     set incMoml_3_4 "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
      <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
         <entity name=\".top\"/>
      </entity>
   </entity>
   <entity name=\"a.b\"/>
-</model>
+</entity>
 "
     $parser reset
     catch {$parser parse $incMoml_3_4} msg
@@ -1825,97 +1829,97 @@ test MoMLParser-3.4 {Test invalid containment} {
 #----------------------------------------------------------------------
 test MoMLParser-4.1 {Test doc element addition} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-</model>
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $incMomlBase]
-    $parser parse {<model name=".top"><doc name="foo">xxx</doc></model>}
+    $parser parse {<entity name=".top"><doc name="foo">xxx</doc></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <doc name="foo">xxx</doc>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-4.2 {Test doc element modifications} {
-    $parser parse {<model name=".top"><doc name="foo">yyy</doc></model>}
+    $parser parse {<entity name=".top"><doc name="foo">yyy</doc></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <doc name="foo">yyy</doc>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-4.3 {Test doc element removal} {
-    $parser parse {<model name=".top"><doc name="foo"/></model>}
+    $parser parse {<entity name=".top"><doc name="foo"/></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
-</model>
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-4.4 {Test doc element removal with default name} {
-    $parser parse {<model name=".top"><doc>zzz</doc></model>}
-    $parser parse {<model name=".top"><doc></doc></model>}
+    $parser parse {<entity name=".top"><doc>zzz</doc></entity>}
+    $parser parse {<entity name=".top"><doc></doc></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
-</model>
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-5.1 {Test property deletion} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
    <property name=\"foo\"/>
-</model>
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $incMomlBase]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="foo" class="ptolemy.kernel.util.Attribute">
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-5.2 {Test property deletion} {
-    $parser parse {<model name=".top"><deleteProperty name="foo"/></model>}
+    $parser parse {<entity name=".top"><deleteProperty name="foo"/></entity>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
-</model>
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+</entity>
 }
 
 #----------------------------------------------------------------------
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-</model>
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $incMomlBase]]
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
     <property name="iterations" value="1"/>
 </property>
@@ -1932,7 +1936,7 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 <link port="comm.input" relation="r2"/>
 <link port="comm.output" relation="r3"/>
 <link port="sink.input" relation="r3"/>
-</model>
+</entity>
 }
     set manager [java::new ptolemy.actor.Manager \
             [$toplevel workspace] "manager"]
@@ -1946,14 +1950,14 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-</model>
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $incMomlBase]]
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
     <property name="iterations" value="1"/>
 </property>
@@ -1970,7 +1974,7 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 <link port="comm.input" relation="r2"/>
 <link port="comm.output" relation="r3"/>
 <link port="sink.input" relation="r3"/>
-</model>
+</entity>
 }
     set manager [java::new ptolemy.actor.Manager \
             [$toplevel workspace] "manager"]
@@ -1984,11 +1988,11 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.2 {Straight with blocksize 2.} {
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <relation name="r4" class="ptolemy.actor.TypedIORelation"/>
 <link port="dist.output" relation="r4"/>
 <link port="comm.input" relation="r4"/>
-</model>
+</entity>
 }
 #     set dir [java::cast ptolemy.domains.sdf.kernel.SDFDirector \
 #             [$toplevel getDirector]]
@@ -2002,12 +2006,12 @@ test MoMLParser-6.2 {Straight with blocksize 2.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.3 {Reverse with blocksize 2.} {
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <unlink port="dist.output" relation="r4"/>
 <unlink port="comm.input" index="1"/>
 <link port="dist.output" relation="r4"/>
 <link port="comm.input" relation="r4" insertAt="0"/>
-</model>
+</entity>
 }
     $manager execute
     enumToTokenValues [$recorder getRecord 0]
@@ -2016,11 +2020,11 @@ test MoMLParser-6.3 {Reverse with blocksize 2.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.4 {Reverse with blocksize 3.} {
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <relation name="r5" class="ptolemy.actor.TypedIORelation"/>
 <link port="dist.output" relation="r5" insertAt="0"/>
 <link port="comm.input" relation="r5"/>
-</model>
+</entity>
 }
     $manager execute
     enumToTokenValues [$recorder getRecord 0]
@@ -2029,11 +2033,11 @@ test MoMLParser-6.4 {Reverse with blocksize 3.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <relation name="r6" class="ptolemy.actor.TypedIORelation"/>
 <link port="dist.output" relation="r6" insertAt="10"/>
 <link port="comm.input" relation="r6" insertAt="0"/>
-</model>
+</entity>
 }
     $manager execute
     enumToTokenValues [$recorder getRecord 0]
@@ -2042,9 +2046,9 @@ test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
 #----------------------------------------------------------------------
 test MoMLParser-6.6 {Delete the gaps, having no effect.} {
     $parser parse {
-<model name=".top">
+<entity name=".top">
 <unlink port="dist.output" index="8"/>
-</model>
+</entity>
 }
     $manager execute
     enumToTokenValues [$recorder getRecord 0]
@@ -2053,37 +2057,37 @@ test MoMLParser-6.6 {Delete the gaps, having no effect.} {
 #----------------------------------------------------------------------
 test MoMLParser-7.1 {Test setContext()} {
     set incMomlBase "$header
-<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</model>
+<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $incMomlBase]]
     $parser parse {
-<model name=".top">
+<entity name=".top">
    <entity name="a" class="ptolemy.kernel.CompositeEntity"/>
-</model>
+</entity>
 }
     $parser setContext [$toplevel getEntity "a"]
     $parser parse {<entity name="b" class="ptolemy.kernel.CompositeEntity"/>}
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="a" class="ptolemy.kernel.CompositeEntity">
         <entity name="b" class="ptolemy.kernel.CompositeEntity">
         </entity>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <!-- Note that here, we are searching using the classpath -->
     <input source="ptolemy/moml/test/testClass2.xml"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2093,22 +2097,22 @@ test MoMLParser-8.1 {test input with a relative source } {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
         <property name="x" class="ptolemy.kernel.util.Attribute">
         </property>
     </class>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <!-- Note that here, we are searching relative to the cwd -->
     <input source="testClass2.xml"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2118,25 +2122,25 @@ test MoMLParser-8.2 {test input with a relative source } {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
         <property name="x" class="ptolemy.kernel.util.Attribute">
         </property>
     </class>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
   <group name="a">
     <entity name="b" class="ptolemy.kernel.CompositeEntity">
       <entity name="c" class="ptolemy.kernel.CompositeEntity"/>
     </entity>
   </group>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2146,19 +2150,19 @@ test MoMLParser-9.1 {test namespaces} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="a:b" class="ptolemy.kernel.CompositeEntity">
         <entity name="c" class="ptolemy.kernel.CompositeEntity">
         </entity>
     </entity>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
    <entity name="A" class="ptolemy.actor.TypedAtomicActor">
       <port name="out" class="ptolemy.actor.TypedIOPort">
          <property name="output"/>
@@ -2183,7 +2187,7 @@ set body {
    <link port="A.out" relation="r" vertex="v1"/>
    <link port="B.in" relation="r" vertex="v1"/>
    <link port="C.in" relation="r" vertex="v2"/>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2193,9 +2197,9 @@ test MoMLParser-10.1 {test vertex} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <entity name="A" class="ptolemy.actor.TypedAtomicActor">
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -2220,16 +2224,16 @@ test MoMLParser-10.1 {test vertex} {
     <link port="A.out" relation="r"/>
     <link port="B.in" relation="r"/>
     <link port="C.in" relation="r"/>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
       <configure>xxx</configure>
    </property>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2239,25 +2243,25 @@ test MoMLParser-11.1 {test configuration} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>xxx</configure>
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
 <p>Paragraph.</p>
         </configure>
     </property>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2267,21 +2271,21 @@ test MoMLParser-11.2 {test configuration with embedded HTML} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
 <p>Paragraph.</p>
         </configure>
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2289,7 +2293,7 @@ set body {
 <p>Paragraph.</p>
 </configure>
     </property>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2299,9 +2303,9 @@ test MoMLParser-11.3 {test configuration with embedded configure tag} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <h1>Header</h1>
@@ -2309,7 +2313,7 @@ test MoMLParser-11.3 {test configuration with embedded configure tag} {
 <p>Paragraph.</p>
 </configure>
     </property>
-</model>
+</entity>
 }
 
 #----------------------------------------------------------------------
@@ -2325,13 +2329,13 @@ test MoMLParser-11.4 {test configuration value() method} {
 
 #----------------------------------------------------------------------
 set body {
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure source="test.xml">
 <h1>Header</h1>
 </configure>
     </property>
-</model>
+</entity>
 }
 
 set moml "$header $body"
@@ -2341,14 +2345,14 @@ test MoMLParser-11.5 {test configuration with external source} {
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure source="test.xml">
 <h1>Header</h1>
 </configure>
     </property>
-</model>
+</entity>
 }
 

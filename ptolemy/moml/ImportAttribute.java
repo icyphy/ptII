@@ -62,13 +62,6 @@ public class ImportAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the base for a relative file reference.
-     *  @param base The base for a relative file reference.
-     */
-    public void setBase(String base) {
-        _base = base;
-    }
-
     /** Set the name of the external file being referenced.
      *  @param source The name of the external file.
      */
@@ -85,26 +78,14 @@ public class ImportAttribute extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        String moml;
-        if (_base != null) {
-            moml = "<import base=\""
-                    + _base
-                    + "\" source=\""
+        String moml = "<import source=\""
                     + _source
                     + "\"/>";
-        } else {
-            moml = "<import source=\""
-                    + _source
-                    + "\"/>";
-        }
         output.write(_getIndentPrefix(depth) + moml + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The base.
-    private String _base;
 
     // The external file name;
     private String _source;

@@ -54,10 +54,10 @@ test EditorIcon-1.1 {parse and dump an EditorIcon} {
     set icon [java::new ptolemy.vergil.toolbox.EditorIcon $toplevel _icon]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.kernel.CompositeEntity">
-</model>
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+</entity>
 }
 
 test EditorIcon-2.3 {test createIcon when parsed} {

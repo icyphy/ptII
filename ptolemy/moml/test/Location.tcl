@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
@@ -53,45 +53,45 @@ test Location-1.1 {} {
     set l1 [java::new ptolemy.moml.Location $n0 L1]
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="L1" class="ptolemy.moml.Location">
     </property>
-</model>
+</entity>
 }
 
 test Location-1.2 {} {
     $l1 setExpression {83.0, 92.0}
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="L1" class="ptolemy.moml.Location" value="83.0, 92.0">
     </property>
-</model>
+</entity>
 }
 
 test Location-1.3 {} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</model>
+<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     $parser parse {
-<model name=".top">
+<entity name=".top">
     <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
     </property>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
     </property>
-</model>
+</entity>
 }

@@ -427,8 +427,8 @@ test Variable-12.0 {Test exportMoML} {
     set a1 [java::new ptolemy.data.expr.Variable $a "A1"]
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="A" class="ptolemy.kernel.util.NamedObj">
-</model>
+<entity name="A" class="ptolemy.kernel.util.NamedObj">
+</entity>
 }

@@ -578,9 +578,11 @@ public class NamedObj implements Nameable, Debuggable,
      *  then this method prepends XML file header information, which is:
      *  <pre>
      *  &lt;?xml version="1.0" standalone="no"?&gt;
-     *  &lt;!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+     *  &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
      *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
      *  </pre>
+     *  If the element has class name "class" instead of "entity",
+     *  then "entity" above is replaced with "class".
      *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
@@ -606,22 +608,21 @@ public class NamedObj implements Nameable, Debuggable,
         } else {
             template = "\" class=\"";
         }
-        if (depth == 0
-                && getContainer() == null
-                && (momlElement.equals("class")
-                        || momlElement.equals("model")
-                        || momlElement.equals("entity"))) {
+        if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
-            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n");
-
-            // Correct the element name, if appropriate.
-            if (momlElement.equals("entity")) {
-                // Erroneous element name.  Change it.
-                momlElement = "model";
-                getMoMLInfo().elementName = momlElement;
+            if (momlElement.equals("class")) {
+                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                    + "<!DOCTYPE class PUBLIC "
+                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "    \"http://ptolemy.eecs.berkeley.edu"
+                    + "/xml/dtd/MoML_1.dtd\">\n");
+            } else if (momlElement.equals("entity")) {
+                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                    + "<!DOCTYPE entity PUBLIC "
+                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "    \"http://ptolemy.eecs.berkeley.edu"
+                    + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
         output.write(_getIndentPrefix(depth)

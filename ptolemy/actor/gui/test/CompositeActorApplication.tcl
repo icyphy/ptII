@@ -39,9 +39,9 @@ if {[string compare test [info procs test]] == 1} then {
 set VERBOSE 1
 
 set testCase {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" value="2"/>
     </propery>
@@ -50,7 +50,7 @@ set testCase {<?xml version="1.0" standalone="no"?>
     <relation name="r" class="ptolemy.actor.TypedIORelation"/>
     <link port="ramp.output" relation="r"/>
     <link port="rec.input" relation="r"/>
-</model>
+</entity>
 }
 
 ######################################################################

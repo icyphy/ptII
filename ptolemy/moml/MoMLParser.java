@@ -1,4 +1,4 @@
-/* A parser for MoML (model markup language)
+/* A parser for MoML (modeling markup language)
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -73,7 +73,7 @@ import com.microstar.xml.*;
 //// MoMLParser
 /**
 This class constructs Ptolemy II models from specifications
-in MoML (model markup language), which is based on XML.
+in MoML (modeling markup language), which is based on XML.
 The class contains an instance of the Microstar &AElig;lfred XML
 parser and implements callback methods to interpret the parsed XML.
 The way to use this class is to call its parse() method.
@@ -113,7 +113,7 @@ so it is best to give the DOCTYPE element.
 <p>
 The parse() methods can be used for incremental parsing.  After
 creating an initial model using a call to parse(), further MoML
-fragments without top-level model or class elements can be evaluated
+fragments without top-level entity or class elements can be evaluated
 to modify the model.  You can specify the context in which the
 MoML to be interepreted by calling setContext().  However, the
 XML parser limits each fragment to one element.  So there always has
@@ -820,15 +820,17 @@ public class MoMLParser extends HandlerBase {
                 // Count doc tags so that they can nest.
                 _docNesting++;
 
-            } else if (elementName.equals("entity")) {
+            } else if (elementName.equals("entity")
+                    || elementName.equals("model")) {
+                // NOTE: The "model" element is deprecated.  It is treated
+                // exactly as an entity.
                 String className = (String)_attributes.get("class");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
                 String source = (String)_attributes.get("source");
                 NamedObj newEntity = _createEntity(
                          className, entityName, source);
-                // NOTE: We tolerate entities at the top level, even
-                // though this is not proper MoML.
+                // NOTE: The entity may be at the top level.
                 if (_current != null) {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
@@ -852,48 +854,11 @@ public class MoMLParser extends HandlerBase {
                     _namespace = DEFAULT_NAMESPACE;
                 }
 
-            } else if (elementName.equals("import")) {
-                String source = (String)_attributes.get("source");
-                _checkForNull(source, "No source for element \"import\"");
-
-                // If the base is specified, use that.
-                // Otherwise, use this document's base.
-                String baseSpec = (String)_attributes.get("base");
-                URL base = _base;
-                if (baseSpec != null) {
-                    base = new URL(base, baseSpec);
-                }
-
-                // Read external model definition in a new parser,
-                // rather than in the current context.
-                MoMLParser newParser =
-		    new MoMLParser(_workspace, _classLoader);
-                NamedObj reference = _parse(newParser, base, source);
-
-                if (_imports == null) {
-                    _imports = new LinkedList();
-                }
-                // Put the entity at the top of the list so that if there
-                // are name duplications in the imports, the most recent
-                // import prevails.
-                _imports.add(0, reference);
-
-                ImportAttribute attr = new ImportAttribute(_current,
-                       _current.uniqueName("_import"));
-                attr.setBase(baseSpec);
-                attr.setSource(source);
-
             } else if (elementName.equals("input")) {
                 String source = (String)_attributes.get("source");
                 _checkForNull(source, "No source for element \"input\"");
 
-                // If the base is specified, use that.
-                // Otherwise, use this document's base.
-                String baseSpec = (String)_attributes.get("base");
-                URL base = _base;
-                if (baseSpec != null) {
-                    base = new URL(base, baseSpec);
-                }
+                // NOTE: The base attribute has been deprecated.  Ignore.
 
                 // Read external file in the current context, but with
                 // a new parser.
@@ -901,7 +866,7 @@ public class MoMLParser extends HandlerBase {
 		    new MoMLParser(_workspace, _classLoader);
                 newParser.setContext(_current);
                 newParser._propagating = _propagating;
-                _parse(newParser, base, source);
+                _parse(newParser, _base, source);
 
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
@@ -938,43 +903,6 @@ public class MoMLParser extends HandlerBase {
                 // add to it a MoML description of the new link, so that
                 // this new link will be persistent.
                 _recordLink(context, portName, relationName, insertAtSpec);
-
-            } else if (elementName.equals("model")) {
-                String className = (String)_attributes.get("class");
-                String modelName = (String)_attributes.get("name");
-                _checkForNull(modelName, "No name for element \"model\"");
-
-                NamedObj newModel;
-                if (className != null) {
-                    Object[] arguments = new Object[1];
-                    arguments[0] = _workspace;
-                    Class newClass
-                            = Class.forName(className, true, _classLoader);
-                    newModel = _createInstance(newClass, arguments);
-                    newModel.setName(modelName);
-                    newModel.getMoMLInfo().elementName = "model";
-                } else {
-                    // Look for previously existing model.
-                    newModel = _searchForEntity(modelName);
-                    if (newModel == null) {
-                        throw new XmlException(
-                                "No class given for element \"model\".",
-                                _currentExternalEntity(),
-                                _parser.getLineNumber(),
-                                _parser.getColumnNumber());
-                    }
-                }
-                if (_current != null) {
-                    _containers.push(_current);
-                    _namespaces.push(_namespace);
-                } else if (_toplevel == null) {
-                    // NOTE: We used to set _toplevel to newEntity, but
-                    // this isn't quite right because the entity may have a
-                    // composite name.
-                    _toplevel = newModel.toplevel();
-                }
-                _current = newModel;
-                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("port")) {
                 String className = (String)_attributes.get("class");
@@ -1740,7 +1668,7 @@ public class MoMLParser extends HandlerBase {
         return (ComponentPort)port;
     }
 
-    /** Use the specified parser to parse the a file or URL,
+    /** Use the specified parser to parse the file or URL,
      *  which contains MoML, using the specified base to find the URL.
      *  If the URL cannot be found relative to this base, then it
      *  is searched for relative to the current working directory

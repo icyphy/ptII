@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 set header {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 #----------------------------------------------------------------------
@@ -54,13 +54,13 @@ test ConfigurableAttribute-1.1 {test export moml.} {
     $p1 configure [java::null] [java::null] {My Test String}
     $n0 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="N0" class="ptolemy.kernel.util.NamedObj">
+<entity name="N0" class="ptolemy.kernel.util.NamedObj">
     <property name="P1" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>My Test String</configure>
     </property>
-</model>
+</entity>
 }
 
 test ConfigurableAttribute-1.2 {test value method.} {
@@ -69,27 +69,27 @@ test ConfigurableAttribute-1.2 {test value method.} {
 
 test ConfigurableAttribute-1.3 {test parse moml.} {
     set moml_1 "$header
-<model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</model>
+<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
+</entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     $parser parse {
-<model name=".top">
+<entity name=".top">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure><?testML xxx ?></configure>
     </property>
-</model>
+</entity>
 }
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure><?testML xxx ?></configure>
     </property>
-</model>
+</entity>
 }
 
 test ConfigurableAttribute-1.4 {test value method with parse moml} {
@@ -100,7 +100,7 @@ test ConfigurableAttribute-1.4 {test value method with parse moml} {
 test ConfigurableAttribute-1.5 {test with weird configure text} {
     $parser reset
     set toplevel [$parser parse {
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
 <configure><?svg
 <!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
@@ -115,13 +115,13 @@ test ConfigurableAttribute-1.5 {test with weird configure text} {
 </svg> ?>
 </configure>
     </property>
-</model>
+</entity>
 }]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.util.NamedObj">
+<entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure><?svg <!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
   "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
@@ -135,7 +135,7 @@ test ConfigurableAttribute-1.5 {test with weird configure text} {
 </svg> ?>
 </configure>
     </property>
-</model>
+</entity>
 }
 
 

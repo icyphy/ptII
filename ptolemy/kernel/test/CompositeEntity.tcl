@@ -965,9 +965,9 @@ test CompositeEntity-18.0 {test exportMoML} {
     $p2 link $r
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <property name="a1" class="ptolemy.kernel.util.Attribute">
     </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
@@ -982,7 +982,7 @@ test CompositeEntity-18.0 {test exportMoML} {
     </relation>
     <link port="p1" relation="r"/>
     <link port="e2.p2" relation="r"/>
-</model>
+</entity>
 }
 
 ######################################################################
@@ -1000,9 +1000,9 @@ test CompositeEntity-20.0 {test exportMoML with link indexing, inside links} {
     $p2 insertLink 0 $r
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="e2" class="ptolemy.kernel.ComponentEntity">
@@ -1013,7 +1013,7 @@ test CompositeEntity-20.0 {test exportMoML with link indexing, inside links} {
     </relation>
     <link port="p1" relation="r"/>
     <link port="e2.p2" relation="r"/>
-</model>
+</entity>
 }
 
 ######################################################################
@@ -1031,9 +1031,9 @@ test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
     $p2 insertLink 1 $r
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <entity name="e2" class="ptolemy.kernel.ComponentEntity">
@@ -1044,7 +1044,7 @@ test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
     </relation>
     <link port="p1" insertAt="1" relation="r"/>
     <link port="e2.p2" insertAt="1" relation="r"/>
-</model>
+</entity>
 }
 
 ######################################################################
@@ -1061,9 +1061,9 @@ test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
     $p1 insertLink 0 $r2
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
@@ -1072,7 +1072,7 @@ test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
     </relation>
     <link port="p1" relation="r2"/>
     <link port="p1" insertAt="2" relation="r1"/>
-</model>
+</entity>
 }
 
 ######################################################################
@@ -1083,9 +1083,9 @@ test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
     $p1 {unlinkInside int} 0
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
@@ -1093,7 +1093,7 @@ test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p1" insertAt="1" relation="r1"/>
-</model>
+</entity>
 }
 
 ######################################################################
@@ -1104,16 +1104,16 @@ test CompositeEntity-20.4 {test unlinkInside by relation, inside links} {
     $p1 unlinkInside $r1
     $e1 exportMoML
 } {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="e1" class="ptolemy.kernel.CompositeEntity">
+<entity name="e1" class="ptolemy.kernel.CompositeEntity">
     <port name="p1" class="ptolemy.kernel.ComponentPort">
     </port>
     <relation name="r1" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
-</model>
+</entity>
 }
 
 ######################################################################
