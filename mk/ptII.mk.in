@@ -359,4 +359,7 @@ INSTALL =		$(ROOT)/config/install-sh -c
 INSTALL_PROGRAM =	${INSTALL}
 INSTALL_DATA =		${INSTALL} -m 644
 
+#Location of the chic.jar file.
+CHIC_JAR = $(PTII)/lib/chic.jar
+
 
