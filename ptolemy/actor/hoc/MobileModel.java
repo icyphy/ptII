@@ -32,6 +32,7 @@ package ptolemy.actor.hoc;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Const;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
@@ -84,6 +85,10 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
+        refresh = new Parameter(this, "refresh", new BooleanToken(true));
+        refresh.setTypeEquals(BaseType.BOOLEAN);
+        connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
+        connectPorts.setTypeEquals(BaseType.BOOLEAN);                
         // create a defaultDirector. Without this director, it may get
         // an infinite loop when preinitialize, etc. is called in case the
         // specified director is not successfully constructed. Even when the
@@ -120,6 +125,10 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
+        connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
+        connectPorts.setTypeEquals(BaseType.BOOLEAN);
+        refresh = new Parameter(this, "refresh", new BooleanToken(true));
+        refresh.setTypeEquals(BaseType.BOOLEAN);
         // create a defaultDirector. Without this director, it may get
         // an infinite loop when preinitialize, etc. is called in case the
         // specified director is not successfully constructed. Even when the
@@ -152,7 +161,18 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     public Parameter director;
+    
+    /** This Parameter specifies whether to replace the previous model
+     *  when there is model changing request or not. The type of thie
+     *  parameter is boolean. Select this parameter if it does replace.
+     */
+    public Parameter refresh;
 
+    /** the Parameter specifies whether to connect the input and output 
+     * to the inside model. The type of this parameter is boolean.
+     */
+    public Parameter connectPorts;
+    
     /** The default output token when there is no inside model
      *  defined. The default value is 0, and the default type is
      *  int. Notice that the type of the output port
@@ -162,6 +182,22 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** If the attribute is <i>refresh</i> update the local
+     *  cache of the parameter value, otherwise pass the call to
+     *  the super class.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == refresh) {
+            _refresh = ((BooleanToken)refresh.getToken()).booleanValue();
+        } else if (attribute == connectPorts) {
+            _connectPorts = ((BooleanToken)connectPorts.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
@@ -174,8 +210,6 @@ public class MobileModel extends TypedCompositeActor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         MobileModel newObject = (MobileModel)super.clone(workspace);
-        // Set the type constraint.
-        newObject.output.setTypeAtLeast(newObject.defaultValue);
         return newObject;
     }
 
@@ -196,8 +230,9 @@ public class MobileModel extends TypedCompositeActor {
             StringToken str = null;
             try {
                 str = (StringToken) modelString.get(0);
-
-                _parser.reset();
+                //if(_refresh) {
+                    _parser.reset();
+                //}
                 CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
                 StringWriter writer = new StringWriter();
                 try {
@@ -207,6 +242,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
 
                 String modelMoML =  writer.toString();
+                if (_connectPorts) {
                 _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
                         + "class=\"ptolemy.actor.TypedIORelation\">\n"
                         + "</relation>\n"
@@ -220,6 +256,9 @@ public class MobileModel extends TypedCompositeActor {
                         + ".output\" relation=\"newR2\"/>\n"
                         + "<link port=\"output\" relation=\"newR2\"/>\n"
                         + "</group>";
+                } else {
+                    _moml = "<group>\n" + modelMoML + "</group>";
+                }
                 } catch (Exception ex) {
                     if (_debugging) {
                         _debug("Problem parsing " + str.stringValue());
@@ -227,10 +266,18 @@ public class MobileModel extends TypedCompositeActor {
                     throw new IllegalActionException(this, ex,
                             "Problem parsing " + str.stringValue());
                 }
-
-        }
+            //By calling fireAt to register an event at the current time, so that the outside
+            // time won't advance. This is necessary to allow the newly instantiated sub-model
+            // to register event that should happen before the next outside event. 
+            
+            try {
+                 getDirector().fireAtCurrentTime(this);
+            } catch (IllegalActionException ex) {
+                 throw new IllegalActionException("failed in dealing with director.");
+            }
+        }               
         super.fire();
-    }
+        }
 
     /** Initialize this actor. create a new moml parser for passing
      *  the applied model to it.
@@ -248,10 +295,12 @@ public class MobileModel extends TypedCompositeActor {
             _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // When no model applied, output the default value.
-            Const constActor = new Const(this, "Const");
-            constActor.value.setExpression(defaultValue.getToken().toString());
-            connect(input, constActor.trigger);
-            connect(constActor.output, output);
+            if (_connectPorts) {
+                Const constActor = new Const(this, "Const");
+                constActor.value.setExpression(defaultValue.getToken().toString());
+                connect(input, constActor.trigger);
+                connect(constActor.output, output);
+            } //otherwise, do nothing.
 
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "initialize() failed");
@@ -274,13 +323,15 @@ public class MobileModel extends TypedCompositeActor {
     public boolean postfire() throws IllegalActionException {
         if (!_stopRequested && _moml != null) {
             //remove the old model inside first, if there is one.
-            String delete = _requestToRemoveAll(this);
-            MoMLChangeRequest removeRequest = new MoMLChangeRequest(
-                    this,            // originator
-                    this,            // context
-                    delete,          // MoML code
-                    null);
-            requestChange(removeRequest);
+            if (_refresh) {
+                String delete = _requestToRemoveAll(this);
+                MoMLChangeRequest removeRequest = new MoMLChangeRequest(
+                        this,            // originator
+                        this,            // context
+                        delete,          // MoML code
+                        null);
+                requestChange(removeRequest);
+            }
             //update the inside model change.
             MoMLChangeRequest request2 = new MoMLChangeRequest(
                     this,            // originator
@@ -303,10 +354,10 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking prefire");
         }
-        if (input.hasToken(0) || modelString.hasToken(0)) {
+        //if (input.hasToken(0) || modelString.hasToken(0)) {
             return super.prefire();
-        }
-        return false;
+        //}
+        //return false;
     }
 
     /** preinitialize this actor. create the director as specified
@@ -405,6 +456,9 @@ public class MobileModel extends TypedCompositeActor {
      *  @param actor The composite actor.
      */
     private String _requestToRemoveAll(CompositeActor actor) {
+        if (_debugging) {
+                            _debug("create request to remove old model");
+                        }
         StringBuffer delete = new StringBuffer("<group>");
         Iterator entities = actor.entityList().iterator();
         while (entities.hasNext()) {
@@ -427,6 +481,16 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     private Director _director;
+    
+    /** the local cache of the <i>refresh<i> Parameter value
+     * 
+     */
+    private boolean _refresh;
+    
+    /** the local cache of the <i>connectPorts<i> Parameter value
+     * 
+     */    
+    private boolean _connectPorts;
 
     /** The moml string for the inside model that contained by this actor.
      *
