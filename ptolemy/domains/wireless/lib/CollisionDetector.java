@@ -198,7 +198,7 @@ public class CollisionDetector extends TypedAtomicActor {
         new Attribute(collided, "_showName");
         
         // Configure parameters.
-        SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB(db)");
+        SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
         SNRThresholdInDB.setTypeEquals(BaseType.DOUBLE);
         SNRThresholdInDB.setExpression("Infinity");
         
