@@ -71,7 +71,7 @@ public class StringUtilities {
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see #split(String longName)
+     *  @see #split(String)
      *  @return The name.
      */
     public static String abbreviate(String longName) {
@@ -397,8 +397,8 @@ public class StringUtilities {
      *  that are longer than 79 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see #abbreviate(String longName)
-     *  @see #split(int)
+     *  @see #abbreviate(String)
+     *  @see #split(String, int)
      *  @param longName The string to optionally split up
      *  @return Either the original string, or the string with newlines
      *  inserted
@@ -413,8 +413,8 @@ public class StringUtilities {
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see #abbreviate(String longName)
-     *  @see #split()
+     *  @see #abbreviate(String)
+     *  @see #split(String)
      *  @param longName The string to optionally split.
      *  @param length The maximum length of the sequence of characters
      *  before a newline is inserted.
