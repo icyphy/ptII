@@ -1,5 +1,5 @@
 /* A class for tracking changes to a graph so that graph properties
-are recomputed only when necessary. 
+are recomputed only when necessary.
 
  Copyright (c) 2001 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ package ptolemy.graph;
 /** A class for tracking changes to a graph so that graph properties can be
  *  recomputed only when necessary. Any given computation
  *  for the graph (e.g., computation of the transitive closure of a directed
- *  graph) can have a graph listener associated with it. If the 
+ *  graph) can have a graph listener associated with it. If the
  *  <code>registerComputation()</code> method is invoked each time the
  *  computation is performed, and results of the computation are cached,
  *  then the <code>obsolete()</code> method can be used to determine
@@ -81,10 +81,10 @@ public class GraphListener {
      *  any invocation of the computation.
      */
     public void registerComputation() {
-        _lastComputation = _graph.changeCount();    
+        _lastComputation = _graph.changeCount();
     }
 
-    /** Reset the listener to invalidate any cached value (i.e., to force 
+    /** Reset the listener to invalidate any cached value (i.e., to force
      *  recomputation the next time a result of the computation is needed.
      */
     public void reset() {
@@ -97,7 +97,7 @@ public class GraphListener {
     // The graph that this listener is associated with.
     private Graph _graph;
 
-    // The change count of the associated graph that was in effect when the 
+    // The change count of the associated graph that was in effect when the
     // the computation associated with this listener was last performed.
     private long _lastComputation;
 

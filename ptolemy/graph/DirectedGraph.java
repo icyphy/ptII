@@ -58,8 +58,6 @@ individual weights or arrays of weights.
 */
 public class DirectedGraph extends Graph {
 
-    // FIXME: Incorporate GraphListeners to minimize re-computation.
-
     /** Construct an empty directed graph.
      */
     public DirectedGraph() {
@@ -117,7 +115,7 @@ public class DirectedGraph extends Graph {
         int N = nodeCollection.size();
         Node[] nodeArray = new Node[N];
         Iterator nodes = nodeCollection.iterator();
-        int i=0;
+        int i = 0;
         while (nodes.hasNext()) {
             nodeArray[i++] = (Node)(nodes.next());
         }

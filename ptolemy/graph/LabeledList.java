@@ -39,26 +39,26 @@ import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
-/** A list of unique objects (elements) with a mapping from the elements 
-into consecutive integer labels. The labels are consecutive 
+/** A list of unique objects (elements) with a mapping from the elements
+into consecutive integer labels. The labels are consecutive
 integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
 the total number of elements in the list. This list features <em>O</em>(1)
-list insertion, <em>O</em>(1) testing for membership in the list, 
+list insertion, <em>O</em>(1) testing for membership in the list,
 <em>O</em>(1) access of a list element from its associated label,
 and <em>O</em>(1) access of a label from its corresponding element.
-The element labels are useful, for example, in creating mappings from 
+The element labels are useful, for example, in creating mappings from
 list elements into elements of arbitrary arrays.
-More generally, element labels can be used to maintain arbitrary 
+More generally, element labels can be used to maintain arbitrary
 <em>m</em>-dimensional matrices that are indexed by the list elements
-(via the associated element labels). 
+(via the associated element labels).
 
 <p> Element labels maintain their consistency (remain constant) during periods
 when no elements are removed from the list. When elements are removed, the
-labels assigned to the remaining elements may change 
+labels assigned to the remaining elements may change
 (see {@link #remove(Object)} for details.
 
-<p> Elements themselves must be non-null and distinct, as determined by the 
-<code>equals</code> method. 
+<p> Elements themselves must be non-null and distinct, as determined by the
+<code>equals</code> method.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
@@ -87,7 +87,7 @@ public class LabeledList implements List {
 
     /** Add an element to the list. The label assigned to this element
      *  will be equal to the number of elements in the list
-     *  prior to insertion of the element. 
+     *  prior to insertion of the element.
      *  @param element The element to insert.
      *  @return True unconditionally (assuming an exception does not occur).
      *  @exception IllegalArgumentException if the specified element is null,
@@ -135,8 +135,8 @@ public class LabeledList implements List {
         _labels = new HashMap();
     }
 
-    /* Return true if the specified object is an element of this list. 
-     * @param object The specified object. 
+    /* Return true if the specified object is an element of this list.
+     * @param object The specified object.
      * @return True if the specified object is an element of this list;
      * return false if the object is null or is not in the list.
      */
@@ -148,10 +148,10 @@ public class LabeledList implements List {
         }
     }
 
-    /** Returns true if this list contains all of the elements of the 
-     *  specified collection 
-     * @param collection The specified collection. 
-     * @return True if this list contains all of the elements of the 
+    /** Returns true if this list contains all of the elements of the
+     *  specified collection
+     * @param collection The specified collection.
+     * @return True if this list contains all of the elements of the
      * specified collection.
      */
     public boolean containsAll(Collection collection) {
@@ -183,7 +183,7 @@ public class LabeledList implements List {
         return _elements.get(label);
     }
 
-    /** Return the hash code value for this list. 
+    /** Return the hash code value for this list.
      *  @return The hash code value.
      */
     public int hashCode() {
@@ -191,8 +191,8 @@ public class LabeledList implements List {
     }
 
     /** Return the label in this list of the specified
-     *  element; return -1 if the element is null or this list does not 
-     *  contain the element. 
+     *  element; return -1 if the element is null or this list does not
+     *  contain the element.
      *  @param element The element.
      *  @return The label of the element.
      *  @see label(Object).
@@ -220,7 +220,7 @@ public class LabeledList implements List {
 
     /** Return an iterator over the elements in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
-     *  @return An iterator over the elements in the list; 
+     *  @return An iterator over the elements in the list;
      */
     public Iterator iterator() {
         return Collections.unmodifiableList(_elements).iterator();
@@ -236,7 +236,7 @@ public class LabeledList implements List {
     public final int label(Object element) {
         if (element == null) {
             throw new NullPointerException("Null element specified.");
-        } else { 
+        } else {
             Integer label = (Integer)(_labels.get(element));
             if (label == null) {
                 throw new IllegalArgumentException("The specified object is not"
@@ -247,8 +247,8 @@ public class LabeledList implements List {
         }
     }
 
-    /** Returns the index in this list of the last occurrence of the specified 
-     *  element, or -1 if this list does not contain this element. 
+    /** Returns the index in this list of the last occurrence of the specified
+     *  element, or -1 if this list does not contain this element.
      *  Since elements in a labeled list are distinct, this is the same
      *  as {@link #indexOf(Object)}, and is maintained only for conformance
      *  with the list interface.
@@ -259,7 +259,7 @@ public class LabeledList implements List {
 
     /** Return a list iterator over the elements in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
-     *  @return A list iterator over the elements in the list; 
+     *  @return A list iterator over the elements in the list;
      */
     public ListIterator listIterator() {
         return Collections.unmodifiableList(_elements).listIterator();
@@ -269,20 +269,20 @@ public class LabeledList implements List {
      *  at a specified position in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
      *  @param index The specified starting position.
-     *  @return A list iterator over the elements in the list; 
+     *  @return A list iterator over the elements in the list;
      */
     public ListIterator listIterator(int index) {
         return Collections.unmodifiableList(_elements).listIterator(index);
     }
 
-    /* Remove an element from the list. 
+    /* Remove an element from the list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
      * If the specified element is not in the list, leave the list
      * unchanged.
      * @param element The element.
-     * @return True If this list contained the element. 
+     * @return True If this list contained the element.
      */
     public boolean remove(Object element) {
         int label;
@@ -292,13 +292,13 @@ public class LabeledList implements List {
             throw  new IllegalArgumentException("Attempt to remove a "
                     + "non-existent element. " + _elementDump(element));
         }
-        _labels.remove(element);  
-        _elements.remove(label); 
-        _labelElements(label);  
+        _labels.remove(element);
+        _elements.remove(label);
+        _labelElements(label);
         return true;
     }
 
-    /* Remove and return an element with a specified label from the list. 
+    /* Remove and return an element with a specified label from the list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
@@ -309,9 +309,9 @@ public class LabeledList implements List {
      */
     public Object remove(int label) {
         Object element = get(label);
-        _labels.remove(element);  
-        Object removed = _elements.remove(label); 
-        _labelElements(label);  
+        _labels.remove(element);
+        Object removed = _elements.remove(label);
+        _labelElements(label);
         return removed;
     }
 
@@ -351,7 +351,7 @@ public class LabeledList implements List {
         throw new UnsupportedOperationException();
     }
 
-    /** Returns an array containing all of the elements in this list in 
+    /** Returns an array containing all of the elements in this list in
      *  proper sequence.
      *  @return An array containing all of the elements in this list.
      */
@@ -359,9 +359,9 @@ public class LabeledList implements List {
         return _elements.toArray();
     }
 
-    /** Returns an array containing all of the elements in this list in 
-     *  proper sequence; the runtime type of the returned array is that of 
-     *  the specified array. 
+    /** Returns an array containing all of the elements in this list in
+     *  proper sequence; the runtime type of the returned array is that of
+     *  the specified array.
      *  @param array The specified array.
      *  @return An array containing all of the elements in this list.
      */
@@ -377,8 +377,8 @@ public class LabeledList implements List {
      *  preceded by the associated labels.
      *  @param delimeter The delimeter that separates elements in the
      *  generated string.
-     *  @param includeLabels If this is <code>/true<code>, then precede each 
-     *  element with its label (followed by a colon and space) in the 
+     *  @param includeLabels If this is <code>/true<code>, then precede each
+     *  element with its label (followed by a colon and space) in the
      *  generated string; otherwise, omit the labels.
      *  @return A string representation of this list.
      */
@@ -398,7 +398,7 @@ public class LabeledList implements List {
      *  the string representations of the individual elements,
      *  according to the order of their labels. The element strings
      *  are separated by newlines. The element labels are not included
-     *  in the string representation. 
+     *  in the string representation.
      *  @return A string representation of this list.
      */
     public String toString() {
@@ -431,9 +431,9 @@ public class LabeledList implements List {
 
     // Translation from list element to label. The keys of this HashMap
     // are list elements (instances of Object), and the values are
-    // the corresponding element labels (instances of Integer).  
+    // the corresponding element labels (instances of Integer).
     // This translation can also be
     // done with indexOf(), but a HashMap is faster.
     private HashMap _labels;
-    
+
 }
