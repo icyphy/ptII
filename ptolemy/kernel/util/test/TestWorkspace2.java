@@ -39,13 +39,17 @@ import ptolemy.kernel.util.Workspace;
 //// TestWorkspace2
 /**
 This object implements a thread that obtains read permission to
-a workspace three times sequentially, then obtains write permission.
+a workspace three times sequentially, then calls workspace.wait(obj) on an
+object and exits. The object "obj" on which the wait method is called is an 
+inner class of TestWorkspace2 and has a thread of its own. This thread gets a 
+write access on the workspace, after the TestWorkspace2 object calls wait(obj)
+on it. Then it gives up the write access and returns.
 To use it, create an instance and then call its start() method.
 To obtain a profile of what it did, call its profile() method.
 That will return only after the thread completes.
 NOTE: This is a very primitive test.  It does not check very much.
 
-@author Edward A. Lee
+@author Mudit Goel, Edward A. Lee
 @version $Id$
 
 */
@@ -57,6 +61,12 @@ public class TestWorkspace2 extends Thread {
         _notif = new Notification(_name + ".notif");
     }
 
+    /** Start a thread for an instance of the inner class "Notification", 
+     *  obtain read access on the workspace 3 times, call wait(obj) on the 
+     *  workspace, ask the inner class to get a write access on the workspace
+     *  and return after relinquishing the read accesses on the workspace.
+     *  This method is synchronized both on this class and the inner class
+     */
     public synchronized void run() {
         _notif.start();
         int i = 0;
@@ -81,15 +91,19 @@ public class TestWorkspace2 extends Thread {
         }
     }
     
+    /** Return a profile which contains the various actions performed by this 
+     *  object.
+     */
     public synchronized String profile() {
         return profile;
     }
 
+    public Workspace _workspace;
+    public String profile = "";
+
 
     private Notification _notif;
     private String _name;
-    public Workspace _workspace;
-    public String profile = "";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -120,8 +134,8 @@ public class TestWorkspace2 extends Thread {
                                 _name + ".doneWriting()\n";
                         }
                         getwriteaccess = false;
+                        notifyAll();
                     }
-                    notifyAll();
                 }
             }
         }
