@@ -80,7 +80,7 @@ public class BooleanToken extends Token {
      */
     public void fromString(String init)
 	    throws IllegalArgumentException {
-                _value = (Boolean.valueOf(init)).booleanValue();
+        _value = (Boolean.valueOf(init)).booleanValue();
     }
 
     /** Returns the value currently stored in this BooleanToken

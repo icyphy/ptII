@@ -89,7 +89,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (result instanceof Integer) {
                 return new IntToken(((Integer)result).intValue());
                 /*  } else if (result instanceof Float) {
-                return new ptolemy.data.FloatToken(((Float)result).floatValue()); */
+                    return new ptolemy.data.FloatToken(((Float)result).floatValue()); */
             } else if (result instanceof Long) { 
                 return new LongToken(((Long)result).longValue());
             } else  {
@@ -113,19 +113,19 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
 
-  public ASTPtFunctionNode(int id) {
-    super(id);
-  }
+    public ASTPtFunctionNode(int id) {
+        super(id);
+    }
 
-  public ASTPtFunctionNode(PtParser p, int id) {
-    super(p, id);
-  }
+    public ASTPtFunctionNode(PtParser p, int id) {
+        super(p, id);
+    }
 
-  public static Node jjtCreate(int id) {
-      return new ASTPtFunctionNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtFunctionNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-      return new ASTPtFunctionNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtFunctionNode(p, id);
+    }
 }

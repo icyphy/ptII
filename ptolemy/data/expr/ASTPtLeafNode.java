@@ -60,12 +60,12 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
-    /** When the input String refers to another parameter, we store the 
-     *  refered parameter in the leaf node. Thus when the value of a 
-     *  parameter changes, by reevaluating the parse tree we get the 
-     *  correct result.
-     */
-   protected ptolemy.data.expr.Parameter _param;  
+/** When the input String refers to another parameter, we store the 
+ *  refered parameter in the leaf node. Thus when the value of a 
+ *  parameter changes, by reevaluating the parse tree we get the 
+ *  correct result.
+ */
+protected ptolemy.data.expr.Parameter _param;  
 
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken
@@ -86,19 +86,19 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     }
    
     ///////////////////////////////////////////////////////////////////
- public ASTPtLeafNode(int id) {
-    super(id);
-  }
+    public ASTPtLeafNode(int id) {
+        super(id);
+    }
 
-  public ASTPtLeafNode(PtParser p, int id) {
-    super(p, id);
-  }
+    public ASTPtLeafNode(PtParser p, int id) {
+        super(p, id);
+    }
 
-  public static Node jjtCreate(int id) {
-      return new ASTPtLeafNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtLeafNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-      return new ASTPtLeafNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtLeafNode(p, id);
+    }
 }

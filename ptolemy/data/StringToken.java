@@ -99,7 +99,7 @@ public class StringToken extends ObjectToken {
         }
     }
 
-     /** Add the value of this Token to the argument Token. The value of
+    /** Add the value of this Token to the argument Token. The value of
      *  the argument token is converted to a String and concatenated
      *  with the value stored in this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
@@ -159,8 +159,8 @@ public class StringToken extends ObjectToken {
             } else {
                 return new BooleanToken(false);
             }
-       } else {
-           String str = "equality method not supported between ";
+        } else {
+            String str = "equality method not supported between ";
             str = str + this.getClass().getName();
             str = str + " and " + a.getClass().getName();
             throw new IllegalActionException(str);
@@ -181,9 +181,9 @@ public class StringToken extends ObjectToken {
         }
     }
 
-   /**  Get the value of the String currently contained in this token.
-    *   @return The value currently contained.
-    */
+    /**  Get the value of the String currently contained in this token.
+     *   @return The value currently contained.
+     */
     public String getValue() {
         return _value;
     }

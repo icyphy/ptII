@@ -243,8 +243,8 @@ public abstract class Token implements Cloneable {
      */
     public void notifySubscribers() {
         if (_publisher != null) {
-           _publisher.setChanged();
-           _publisher.notifyObservers(this);
+            _publisher.setChanged();
+            _publisher.notifyObservers(this);
         }
     }
 
@@ -265,11 +265,11 @@ public abstract class Token implements Cloneable {
      *  only intended for use when placing a new Token in a Parameter.
      *  This method should be called by a parameter and be synchronized.
      *  @param publ The new TokenPublisher associated with this Token.
-      */
-     public void setPublisher(TokenPublisher publ) {
-         _publisher = publ;
-         if (_publisher != null) _publisher.setToken(this);
-     }
+     */
+    public void setPublisher(TokenPublisher publ) {
+        _publisher = publ;
+        if (_publisher != null) _publisher.setToken(this);
+    }
 
     /** Return the value of the Token as a String.
      *  @exception IllegalActionException thrown in this base class.

@@ -91,19 +91,19 @@ public class ASTPtProductNode extends ASTPtRootNode {
         return result;
     }
 
-  public ASTPtProductNode(int id) {
-    super(id);
-  }
+    public ASTPtProductNode(int id) {
+        super(id);
+    }
 
-  public ASTPtProductNode(PtParser p, int id) {
-    super(p, id);
-  }
+    public ASTPtProductNode(PtParser p, int id) {
+        super(p, id);
+    }
 
-  public static Node jjtCreate(int id) {
-      return new ASTPtProductNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtProductNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-      return new ASTPtProductNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtProductNode(p, id);
+    }
 }

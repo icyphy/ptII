@@ -62,9 +62,9 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         boolean values[] = new boolean[num];
         int i = 0;
         try {
-             for ( i=0; i<num; i++ ) {
-                 values[i] = ((ptolemy.data.BooleanToken)childTokens[i]).getValue();
-             }
+            for ( i=0; i<num; i++ ) {
+                values[i] = ((ptolemy.data.BooleanToken)childTokens[i]).getValue();
+            }
         } catch (Exception ex) {
             String str = "Could not convert " + childTokens[i].toString();
             throw new IllegalArgumentException(str + "to a Boolean");

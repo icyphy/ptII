@@ -57,10 +57,10 @@ package ptolemy.data.expr;
 import collections.LinkedList;
 
 public class ASTPtRootNode implements Node {
-  protected Node parent;
-  protected Node[] children;
-  protected int id;
-  protected PtParser parser;
+    protected Node parent;
+    protected Node[] children;
+    protected int id;
+    protected PtParser parser;
 
     ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
@@ -76,7 +76,7 @@ public class ASTPtRootNode implements Node {
     protected LinkedList _tokenList = new LinkedList();
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
-   protected ptolemy.data.Token[] childTokens;
+    protected ptolemy.data.Token[] childTokens;
      
     /** Called to recursively evaluate the parse tree 
      *  of nodes returned from the parser. Starting at the top, it resolves 
@@ -135,79 +135,79 @@ public class ASTPtRootNode implements Node {
         
    
     ///////////////////////////////////////////////////////////////////
-  public ASTPtRootNode(int i) {
-    id = i;
-  }
+    public ASTPtRootNode(int i) {
+        id = i;
+    }
 
-  public ASTPtRootNode(PtParser p, int i) {
-    this(i);
-    parser = p;
-  }
+    public ASTPtRootNode(PtParser p, int i) {
+        this(i);
+        parser = p;
+    }
 
-  public static Node jjtCreate(int id) {
-    return new ASTPtRootNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtRootNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-    return new ASTPtRootNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtRootNode(p, id);
+    }
 
-  public void jjtOpen() {
-  }
+    public void jjtOpen() {
+    }
 
-  public void jjtClose() {
-  }
+    public void jjtClose() {
+    }
   
-  public void jjtSetParent(Node n) { parent = n; }
-  public Node jjtGetParent() { return parent; }
+    public void jjtSetParent(Node n) { parent = n; }
+    public Node jjtGetParent() { return parent; }
 
-  public void jjtAddChild(Node n, int i) {
-    if (children == null) {
-      children = new Node[i + 1];
-    } else if (i >= children.length) {
-      Node c[] = new Node[i + 1];
-      System.arraycopy(children, 0, c, 0, children.length);
-      children = c;
+    public void jjtAddChild(Node n, int i) {
+        if (children == null) {
+            children = new Node[i + 1];
+        } else if (i >= children.length) {
+            Node c[] = new Node[i + 1];
+            System.arraycopy(children, 0, c, 0, children.length);
+            children = c;
+        }
+        children[i] = n;
     }
-    children[i] = n;
-  }
 
-  public Node jjtGetChild(int i) {
-    return children[i];
-  }
-
-  public int jjtGetNumChildren() {
-    return (children == null) ? 0 : children.length;
-  }
-
-  /* You can override these two methods in subclasses of RootNode to
-     customize the way the node appears when the tree is dumped.  If
-     your output uses more than one line you should override
-     toString(String), otherwise overriding toString() is probably all
-     you need to do. */
-
-  public String toString() { return PtParserTreeConstants.jjtNodeName[id]; }
-  public String toString(String prefix) { return prefix + toString() ; }
-
-  /* Override this method if you want to customize how the node dumps
-     out its children. - overridden Neil Smyth*/
-
-  public void displayParseTree(String prefix) {
-      if (_ptToken != null) {
-          String str = toString(prefix) + ", Token type: ";
-          str = str + _ptToken.getClass().getName() + ", Value: "; 
-          System.out.println( str + _ptToken.toString());
-      } else {
-           System.out.println( toString(prefix) + "  _ptToken is null");
-      }
-    if (children != null) {
-      for (int i = 0; i < children.length; ++i) {
-	ASTPtRootNode n = (ASTPtRootNode)children[i];
-	if (n != null) {
-	  n.displayParseTree(prefix + " ");
-	}
-      }
+    public Node jjtGetChild(int i) {
+        return children[i];
     }
-  }
+
+    public int jjtGetNumChildren() {
+        return (children == null) ? 0 : children.length;
+    }
+
+    /* You can override these two methods in subclasses of RootNode to
+       customize the way the node appears when the tree is dumped.  If
+       your output uses more than one line you should override
+       toString(String), otherwise overriding toString() is probably all
+       you need to do. */
+
+    public String toString() { return PtParserTreeConstants.jjtNodeName[id]; }
+    public String toString(String prefix) { return prefix + toString() ; }
+
+    /* Override this method if you want to customize how the node dumps
+       out its children. - overridden Neil Smyth*/
+
+    public void displayParseTree(String prefix) {
+        if (_ptToken != null) {
+            String str = toString(prefix) + ", Token type: ";
+            str = str + _ptToken.getClass().getName() + ", Value: "; 
+            System.out.println( str + _ptToken.toString());
+        } else {
+            System.out.println( toString(prefix) + "  _ptToken is null");
+        }
+        if (children != null) {
+            for (int i = 0; i < children.length; ++i) {
+                ASTPtRootNode n = (ASTPtRootNode)children[i];
+                if (n != null) {
+                    n.displayParseTree(prefix + " ");
+                }
+            }
+        }
+    }
 }
 

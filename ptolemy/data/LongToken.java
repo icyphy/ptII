@@ -101,7 +101,7 @@ public class LongToken extends ScalarToken {
         return new LongToken(result);
     }
 
-     /** Used to convert Token types further down the type hierarchy to
+    /** Used to convert Token types further down the type hierarchy to
      *  the type of this Token
      *  @param tok The token to be converted to a LongToken.
      *  @exception IllegalActionException Thrown if the conversion

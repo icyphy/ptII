@@ -55,61 +55,61 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     protected boolean isNot = false;
     protected boolean isBitwiseNot = false;
        
-     protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
-         if (jjtGetNumChildren() != 1) {
-             String str = "More than one child of a Unary node";
-             throw new IllegalArgumentException(str); 
-         }
-         ptolemy.data.Token result = childTokens[0];
-         try {
-             if (isMinus == true) {
-                 // Need to chose the type at the bottom of the hierarch
-                 // so as to not do any upcasting. For now IntToken will do.
-                 result = result.multiply(new ptolemy.data.IntToken(-1));
-             } else if (isNot == true) {
-                 if (!(result instanceof BooleanToken)) {
-                     String str = "Cannot negate a nonBoolean type: ";
-                     throw new IllegalArgumentException(str + result.toString()); 
-                 }
-                 ((BooleanToken)result).negate();
-             } else if (isBitwiseNot == true) {
-                 if (result instanceof IntToken) {
-                     int tmp = ~(((IntToken)result).getValue());
-                     return new IntToken(tmp);
-                     /*                 } else if (result instanceof LongToken) {
-                     long tmp = ~(((LongToken)result).getValue());
-                     return new LongToken(tmp);*/
-                 } else { 
-                     String str = "Cannot apply bitwise NOT \"~\" to  ";
-                     str = str + "non-Integer type: " + result.toString();
-                     throw new IllegalArgumentException(str);
-                 }
-             }
-         } catch (Exception ex) {
-             String str = "Invalid negation operation(!, ~, -) on ";
-             str = str + childTokens[0].getClass().getName();
-             throw new IllegalArgumentException(str);
-         } 
-         return result;
-     }
+    protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
+        if (jjtGetNumChildren() != 1) {
+            String str = "More than one child of a Unary node";
+            throw new IllegalArgumentException(str); 
+        }
+        ptolemy.data.Token result = childTokens[0];
+        try {
+            if (isMinus == true) {
+                // Need to chose the type at the bottom of the hierarch
+                // so as to not do any upcasting. For now IntToken will do.
+                result = result.multiply(new ptolemy.data.IntToken(-1));
+            } else if (isNot == true) {
+                if (!(result instanceof BooleanToken)) {
+                    String str = "Cannot negate a nonBoolean type: ";
+                    throw new IllegalArgumentException(str + result.toString()); 
+                }
+                ((BooleanToken)result).negate();
+            } else if (isBitwiseNot == true) {
+                if (result instanceof IntToken) {
+                    int tmp = ~(((IntToken)result).getValue());
+                    return new IntToken(tmp);
+                    /*                 } else if (result instanceof LongToken) {
+                                       long tmp = ~(((LongToken)result).getValue());
+                                       return new LongToken(tmp);*/
+                } else { 
+                    String str = "Cannot apply bitwise NOT \"~\" to  ";
+                    str = str + "non-Integer type: " + result.toString();
+                    throw new IllegalArgumentException(str);
+                }
+            }
+        } catch (Exception ex) {
+            String str = "Invalid negation operation(!, ~, -) on ";
+            str = str + childTokens[0].getClass().getName();
+            throw new IllegalArgumentException(str);
+        } 
+        return result;
+    }
 
 
 
              
 
-  public ASTPtUnaryNode(int id) {
-    super(id);
-  }
+    public ASTPtUnaryNode(int id) {
+        super(id);
+    }
 
-  public ASTPtUnaryNode(PtParser p, int id) {
-    super(p, id);
-  }
+    public ASTPtUnaryNode(PtParser p, int id) {
+        super(p, id);
+    }
 
-  public static Node jjtCreate(int id) {
-      return new ASTPtUnaryNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtUnaryNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-      return new ASTPtUnaryNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtUnaryNode(p, id);
+    }
 }

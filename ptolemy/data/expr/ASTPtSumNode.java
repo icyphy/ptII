@@ -89,19 +89,19 @@ public class ASTPtSumNode extends ASTPtRootNode {
     }
 
 
-  public ASTPtSumNode(int id) {
-    super(id);
-  }
+    public ASTPtSumNode(int id) {
+        super(id);
+    }
 
-  public ASTPtSumNode(PtParser p, int id) {
-    super(p, id);
-  }
+    public ASTPtSumNode(PtParser p, int id) {
+        super(p, id);
+    }
 
-  public static Node jjtCreate(int id) {
-      return new ASTPtSumNode(id);
-  }
+    public static Node jjtCreate(int id) {
+        return new ASTPtSumNode(id);
+    }
 
-  public static Node jjtCreate(PtParser p, int id) {
-      return new ASTPtSumNode(p, id);
-  }
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtSumNode(p, id);
+    }
 }

@@ -45,9 +45,9 @@ public abstract class ScalarToken extends Token {
     ////                         public methods                    ////
 
     /** Return the value in the token as a byte.
-      * In this base class, we just throw an exception.
-      * @exception IllegalActionException thrown in this base class.
-      */
+     * In this base class, we just throw an exception.
+     * @exception IllegalActionException thrown in this base class.
+     */
     public byte byteValue()
 	    throws IllegalActionException {
 	Class myclass = getClass();
@@ -61,18 +61,18 @@ public abstract class ScalarToken extends Token {
     // @exception IllegalActionException thrown in this base class.
     //
     // FIXME: restore this method after the Complex class is available.
-//    public Complex complexValue()
-//	    throws IllegalActionException {
-//	Class myclass = getClass();
-//	throw new IllegalActionException("Value in class "
-//		+ myclass.getName() + " cannot be converted to a Complex" +
-//		"without loss of information.");
-//    }
+    //    public Complex complexValue()
+    //	    throws IllegalActionException {
+    //	Class myclass = getClass();
+    //	throw new IllegalActionException("Value in class "
+    //		+ myclass.getName() + " cannot be converted to a Complex" +
+    //		"without loss of information.");
+    //    }
 
     /** Return the value in the token as a double.
-      * In this base class, we just throw an exception.
-      * @exception IllegalActionException thrown in this base class.
-      */
+     * In this base class, we just throw an exception.
+     * @exception IllegalActionException thrown in this base class.
+     */
     public double doubleValue()
 	    throws IllegalActionException {
 	Class myclass = getClass();
@@ -86,18 +86,18 @@ public abstract class ScalarToken extends Token {
     // @exception IllegalActionException thrown in this base class.
     //
     // FIXME: restore this method after the Fix class is available.
-//    public Fix fixValue()
-//	    throws IllegalActionException {
-//	Class myclass = getClass();
-//	throw new IllegalActionException("Value in class "
-//		+ myclass.getName() + " cannot be converted to a Fix" +
-//		"without loss of information.");
-//    }
+    //    public Fix fixValue()
+    //	    throws IllegalActionException {
+    //	Class myclass = getClass();
+    //	throw new IllegalActionException("Value in class "
+    //		+ myclass.getName() + " cannot be converted to a Fix" +
+    //		"without loss of information.");
+    //    }
 
     /** Return the value in the token as an int.
-      * In this base class, we just throw an exception.
-      * @exception IllegalActionException thrown in this base class.
-      */
+     * In this base class, we just throw an exception.
+     * @exception IllegalActionException thrown in this base class.
+     */
     public int intValue()
 	    throws IllegalActionException {
 	Class myclass = getClass();
@@ -107,14 +107,14 @@ public abstract class ScalarToken extends Token {
     }
 
     /** Return the value in the token as a long integer.
-      * In this base class, we just throw an exception.
-      * @exception IllegalActionException thrown in this base class.
-      */
+     * In this base class, we just throw an exception.
+     * @exception IllegalActionException thrown in this base class.
+     */
     public long longValue()
 	    throws IllegalActionException {
 	Class myclass = getClass();
 	throw new IllegalActionException("Value in class "
-	      + myclass.getName() + " cannot be converted to a long integer" +
+                + myclass.getName() + " cannot be converted to a long integer" +
 		"without loss of information.");
     }
 }

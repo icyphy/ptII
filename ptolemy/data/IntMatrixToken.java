@@ -81,7 +81,7 @@ public class IntMatrixToken extends MatrixToken {
 
     /** Return the number of rows in the matrix.  If the matrix is not
         initialized, return 0.
-     */
+    */
     public int numRows() {
         if (_value == null) {
             return 0;
@@ -92,7 +92,7 @@ public class IntMatrixToken extends MatrixToken {
 
     /** Return the number of columns in the matrix.  If the matrix is not
         initialized, return 0.
-     */
+    */
     public int numColumns() {
         if (_value == null) {
             return 0;

@@ -126,20 +126,20 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
+    public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
-         super(container, name);
-         if (token != null) {
-             try {
-                 _origToken = (ptolemy.data.Token)token.clone();
-                 _noTokenYet = false;
-                 _paramType = token.getClass();
-             } catch (CloneNotSupportedException c) {
-                 _origToken = token;
-             }
-         }
-         _token = token;
-     }
+        super(container, name);
+        if (token != null) {
+            try {
+                _origToken = (ptolemy.data.Token)token.clone();
+                _noTokenYet = false;
+                _paramType = token.getClass();
+            } catch (CloneNotSupportedException c) {
+                _origToken = token;
+            }
+        }
+        _token = token;
+    }
      
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -157,29 +157,29 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      *  @return An identical Parameter.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-      Parameter result = (Parameter)super.clone(ws);
-      if (_token != null) {
-          result._token = (ptolemy.data.Token)_token.clone();
-      }
-      if (_origToken != null) {
-          result._origToken = (ptolemy.data.Token)_origToken.clone();
-      }
-      if (_paramType != null) {
-          try {
-              result._paramType = (Class)_paramType.newInstance().getClass();
-          } catch (Exception ex) {
-              // do nothing as must be able to get a new instance
-          }
-      }
-      result._currentValue = _currentValue;
-      result._dependencyLoop = false;
-      result._initialValue = _initialValue;
-      result._lastVersion = 0;
-      result._noTokenYet = _noTokenYet;      
-      result._parser = null;
-      result._parseTreeRoot = null;
-      result._scope = null;
-      return result;
+        Parameter result = (Parameter)super.clone(ws);
+        if (_token != null) {
+            result._token = (ptolemy.data.Token)_token.clone();
+        }
+        if (_origToken != null) {
+            result._origToken = (ptolemy.data.Token)_origToken.clone();
+        }
+        if (_paramType != null) {
+            try {
+                result._paramType = (Class)_paramType.newInstance().getClass();
+            } catch (Exception ex) {
+                // do nothing as must be able to get a new instance
+            }
+        }
+        result._currentValue = _currentValue;
+        result._dependencyLoop = false;
+        result._initialValue = _initialValue;
+        result._lastVersion = 0;
+        result._noTokenYet = _noTokenYet;      
+        result._parser = null;
+        result._parseTreeRoot = null;
+        result._scope = null;
+        return result;
     }
 
     /** Return a description of the object.
@@ -240,8 +240,8 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
         }
     }
         
-     /** Get the Token this Parameter contains. It may be null.
-      *  @return The token contained by this parameter.
+    /** Get the Token this Parameter contains. It may be null.
+     *  @return The token contained by this parameter.
      */
     public ptolemy.data.Token getToken() {
         return _token;
