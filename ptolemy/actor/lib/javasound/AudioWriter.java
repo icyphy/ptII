@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -57,20 +57,33 @@ with the same name will be silently overwritten. The input port
 is of type DoubleToken. Each DoubleToken read from the input
 port represents one sample of the audio data and should be in
 the range [-1.0, 1.0]. Any samples that are outside of this range
-will be hard clipped to fall within this range before they are
+will be hard-clipped to fall within this range before they are
 written to the sound file. Single channel (mono) and two
 channel (stereo) formats are supported. For single channel
-audio, tokens are read from channel 0 of the input port. For stereo
-, tokens are read from channel 0 (left) and channel 1
-(right) of the input port.
+audio, tokens are written to channel 0 of the output port. For
+stereo , tokens are written to channel 0 (left) and channel 1
+(right) of the output port.
 <p>
 The following parameters should be set to specify the format
-of the file to write.
+of the file to write. In all cases, an exception is thrown if
+an illegal parameter value is used. Note that if a parameter is
+changed while audio writing is active, all data written so far will
+be saved, and the sound file will be closed. Subsequent audio
+samples will then be written to a new sound file with the new
+parameter values.
 <p>
 <ul>
 <li><i>pathName</i> should be set to the name of the output
-file. Relative filenames are supported. The default value is
-"outfile.wav".
+file. Any existing file with the same name will be silently
+overwritten. Relative filenames are supported. The default value is
+"outfile.wav". The audio format to use is determined by the file
+extension. E.g., "outfile.wav" will create a WAV format file.
+The supported file formats are AU, WAV, and, AIFF.  For example,
+to write samples to a Sun AU format file with the name "test.au"
+in the directory "c:\tmp", this parameter should be set to the
+value c:\tmp\test.au. To write samples to a file with name "test.au"
+in the current directory, this parameter should be set to the value
+test.au.
 <li><i>channels</i> should be set to desired number of audio
 channels. Allowable values are 1 (for mono) and 2 (for stereo).
 The default value is 1.
@@ -129,24 +142,13 @@ public class AudioWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the file to write to. Any existing file with the
-     *  same name will be silently overwritten. Relative filenames are
-     *  supported. For example, to write samples to a file with the
-     *  name "test.au" in the directory "c:\tmp", this parameter
-     *  should be set to the value c:\tmp\test.au. To write samples
-     *  to a file with name "test.au" in the current directory,
-     *  this parameter should be set to the value test.au. The default
+    /** The name of the file to write to. The default
      *  value of this parameter is "test.wav", which creates a file called
      *  test.wav in the current directory and writes samples to this file.
      *  <p>
      *  The audio format to use is determined by the file extension.
      *  E.g., "outfile.wav" will create a WAV format file.
      *  The supported file formats are AU, WAV, and, AIFF.
-     *  <p>
-     *  If this parameter is changed during execution, all data
-     *  written so far will be saved, and the sound file will be
-     *  closed. Subsequent audio samples will then be written to the
-     *  newly specified file.
      *  <p>
      *  An exception will be occur if the path references an
      *  unsupported sound file.
@@ -155,39 +157,23 @@ public class AudioWriter extends Sink {
 
     /** The desired sample rate to use, in Hz. Valid values
      *  include: 8000, 11025, 22050, 44100, and 48000.
-     *  The default value of the sample rate is 8000 Hz.
+     *  The default value of the sample rate is an IntToken equal
+     *  to 8000.
      *  <p>
-     *  If this parameter is changed during execution, all data
-     *  written so far will be saved, and the sound file will be
-     *  closed. Subsequent audio samples will then be written to the
-     *  newly specified file.
-     *  <p>
-     *  An exception will be thrown if an illegal value is used.
+      *  An exception will be thrown if an illegal value is used.
      */
     public Parameter sampleRate;
 
-    /** The desired number of bits per sample.
-     *  The default value is 16. Supported values are 8 and 16.
-     *  <p>
-     *  If this parameter is changed during execution, all data
-     *  written so far will be saved, and the sound file will be
-     *  closed. Subsequent audio samples will then be written to the
-     *  newly specified file.
-     *  <p>
+    /** The desired number of bits per sample. The default value is
+     *  an IntToken equal to 16. Supported values are 8 and 16.
      *  An exception will be thrown if an illegal value is
      *  used.
      */
     public Parameter bitsPerSample;
 
     /** The number of audio channels to use. Supported values are
-     *  1 (single channel) and 2 (stereo). The default value is 1.
-     *  The default value is an IntToken of value 1.
-     *  <p>
-     *  If this parameter is changed during execution, all data
-     *  written so far will be saved, and the sound file will be
-     *  closed. Subsequent audio samples will then be written to the
-     *  newly specified file.
-     *  <p>
+     *  1 (single channel) and 2 (stereo).
+     *  The default value is an IntToken equal to 1.
      *  An exception will be thrown if an illegal value is used.
      */
     public Parameter channels;

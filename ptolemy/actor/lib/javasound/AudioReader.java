@@ -51,35 +51,36 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 /**
-This actor sequentially outputs the samples from an sound file, 
-specified as a URL. Although the sound file must be specified 
-as a URL, it is still possible to specify files on the local 
-file system. The audio samples that are read from the file are 
+This actor sequentially outputs the samples from an sound file,
+specified as a URL. Although the sound file must be specified
+as a URL, it is still possible to specify files on the local
+file system. The audio samples that are read from the file are
 converted to DoubleTokens that may range from [-1.0, 1.0].
 Thus, the output type of this actor is DoubleToken.
 <p>
 <b>Usage</b>
 <p>
 The <i>sourceURL</i> parameter should be set to the name of the file,
-specified as a fully qualified URL. It is possible to load a file 
-from the local file system by using the prefix "file://" instead of 
-"http://". Relative file paths are allowed. To specify a file 
-relative to the current directory, use "../" or "./". For example, 
-if the current directory contains a file called "test.wav", then 
-<i>sourceURL</i> should be set to "file:./test.wav". If the parent 
-directory contains a file called "test.wav", then <i>sourceURL</i> 
+specified as a fully qualified URL. It is possible to load a file
+from the local file system by using the prefix "file://" instead of
+"http://". Relative file paths are allowed. To specify a file
+relative to the current directory, use "../" or "./". For example,
+if the current directory contains a file called "test.wav", then
+<i>sourceURL</i> should be set to "file:./test.wav". If the parent
+directory contains a file called "test.wav", then <i>sourceURL</i>
 should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
 should be set to "file:///tmp/test.wav" The default value is
-"file:///tmp/test.wav". 
+"file:///tmp/test.wav".
+<p>
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
 file is reached.
 <p>
 There are security issues involved with accessing files and audio
-resources in applets. Applets are only allowed access to files 
-specified by a URL and located on the machine from which the 
-applet is loaded. The .java.policy file may be modified to grant 
+resources in applets. Applets are only allowed access to files
+specified by a URL and located on the machine from which the
+applet is loaded. The .java.policy file may be modified to grant
 applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
@@ -114,7 +115,7 @@ public class AudioReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** The URL of the file to read from. The default value of this 
+    /** The URL of the file to read from. The default value of this
      *  parameter is the URL "file:///tmp/test.wav".
      *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
@@ -180,7 +181,7 @@ public class AudioReader extends Source {
      *  <p>
      *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors. 
+     *  domain that supports vectorized actors.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Return STOP_ITERATING if the
