@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -107,12 +107,6 @@ public class Select extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        // NOTE: We have probably read the token in prefire(), but we
-        // check anyway in case there is an iteration to a fixed point
-        // going on.
-        if (control.hasToken(0)) {
-            _control = ((IntToken)control.get(0)).intValue();
-        }
         // Redo this check in case the control has changed since prefire().
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));

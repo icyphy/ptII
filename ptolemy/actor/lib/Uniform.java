@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -43,7 +43,7 @@ import java.util.Random;
 Produce a random sequence with a uniform distribution.  On each iteration,
 a new random number is produced.  The output port is of type DoubleToken.
 The values that are generated are independent and identically distributed
-with bounds defined by the the parameters.  In addition, the
+with bounds defined by the parameters.  In addition, the
 seed can be specified as a parameter to control the sequence that is
 generated.
 
@@ -92,21 +92,17 @@ public class Uniform extends RandomSource {
     /** Send a random number with a uniform distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
+     *  @exception IllegalActionException If there is no director.
      */
-    public void fire() {
-        try {
-            super.fire();
-            output.send(0, new DoubleToken(_current));
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
-        }
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, new DoubleToken(_current));
     }
 
     /** Calculate the next random number.
      *  @exception IllegalActionException If the value of <i>lowerBound</i>
      *   is greater than the value of <i>upperBound</i>.
-     *  @return True if it is ok to continue.
+     *  @return Whatever the superclass returns (probably true).
      */
     public boolean prefire() throws IllegalActionException {
 	double lowerValue = ((DoubleToken)

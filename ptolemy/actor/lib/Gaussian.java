@@ -94,15 +94,11 @@ public class Gaussian extends RandomSource {
     /** Send a random number with a Gaussian distribution to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
+     *  @exception IllegalActionException If there is no director.
      */
-    public void fire() {
-        try {
-            super.fire();
-            output.send(0, new DoubleToken(_current));
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
-        }
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, new DoubleToken(_current));
     }
 
     /** Calculate the next random number.

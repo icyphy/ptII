@@ -25,16 +25,17 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
 
-// FIXME: trim this.
-import ptolemy.actor.*;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -61,7 +62,7 @@ saved, if their sequence numbers are next.
 @version $Id$
 */
 
-public class Sequencer extends Transformer {
+public class Sequencer extends Transformer implements SequenceActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -79,14 +80,22 @@ public class Sequencer extends Transformer {
         sequenceNumber = new TypedIOPort(this, "sequenceNumber", true, false);
         sequenceNumber.setTypeEquals(BaseType.INT);
 
+        startingSequenceNumber = new Parameter(this, "startingSequenceNumber");
+        startingSequenceNumber.setExpression("0");
+
         output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for the sequence number. The type is IntToken. */
+    /** Input for the sequence number. The type is int. */
     public TypedIOPort sequenceNumber;
+
+    /** The first number of the sequence.  This is an int that
+     *  defaults to 0.
+     */
+    public Parameter startingSequenceNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -99,21 +108,23 @@ public class Sequencer extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int number = ((IntToken) sequenceNumber.get(0)).intValue();
-        Token token = input.get(0);
-        if (number == _nextSequenceNumber) {
-            output.send(0, token);
+        _sequenceNumberOfInput = ((IntToken) sequenceNumber.get(0)).intValue();
+        _nextToken = input.get(0);
+        if (_sequenceNumberOfInput == _nextSequenceNumber) {
+            output.send(0, _nextToken);
             _fireProducedOutput = true;
-        } else {
-            _pending.put(new Integer(number), token);
         }
     }
 
-    /** Reset internal flags.
+    /** Reset current sequence number to the value given by the
+     *  <i>startingSequenceNumber</i> parameter.
+     *  @exception IllegalActionException If accessing the
+     *   <i>startingSequenceNumber</i> parameter causes an exception.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         _fireProducedOutput = false;
-        _nextSequenceNumber = 0;
+        _nextSequenceNumber =
+                 ((IntToken)startingSequenceNumber.getToken()).intValue();
     }
 
     /** Return false if either the <i>input</i> port or the
@@ -123,6 +134,7 @@ public class Sequencer extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
+        _fireProducedOutput = false;
         if (!sequenceNumber.hasToken(0)) return false;
         if (!input.hasToken(0)) return false;
         return super.prefire();
@@ -148,6 +160,8 @@ public class Sequencer extends Transformer {
                 }
             }
             _fireProducedOutput = false;
+        } else {
+            _pending.put(new Integer(_sequenceNumberOfInput), _nextToken);
         }
         return super.postfire();
     }
@@ -159,12 +173,15 @@ public class Sequencer extends Transformer {
     private boolean _fireProducedOutput = false;
 
     // Indicator of the next sequence number for the output.
-    private int _nextSequenceNumber = 0;
+    private int _nextSequenceNumber;
 
-    // The next sequence number.
-    private int _next = 0;
+    // Token consumed by fire() to be recorded in postfire().
+    private Token _nextToken;
 
     // The sorted pending data.
     private TreeMap _pending = new TreeMap();
+
+    // The sequence number of the data read in the fire() method.
+    private int _sequenceNumberOfInput;
 }
 
