@@ -400,6 +400,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(JMF_JARS)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
+	-chmod a+x removeasd
 	./removeasd codeDoc
 
 
@@ -410,6 +411,7 @@ codeDocPtiny/tree.html:
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
+	-chmod a+x removeasd
 	./removeasd codeDocPtiny
 
 
@@ -430,6 +432,7 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(JMF_JARS)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
+	-chmod a+x removeasd
 	./removeasd codeDocHyVisual
 
 # We don't include common.mk since we don't use the compiler here
