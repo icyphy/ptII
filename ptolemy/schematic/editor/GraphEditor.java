@@ -108,34 +108,35 @@ public class GraphEditor extends AbstractApplication {
         _applicationFrame = new DesktopFrame(this);
         _documentFactory = new GraphDocument.Factory();
         // _incrementalLayout = new LevelLayout();
+	_applicationFrame.setVisible(true);
 
         // Initialize the menubar, toolbar, and palettes
         initializeMenuBar(_applicationFrame.getJMenuBar());
         initializeToolBar(_applicationFrame.getJToolBar());
         initializePalette();
-
+	
         Icon icon = getApplicationResources().getImageIcon("GraphIcon");
         Image iconImage = getApplicationResources().getImage("GraphIcon");
         // Image iconImg = getApplicationResources().getImageIcon("GraphIcon");
-
+	
         _applicationFrame.setFrameIcon(icon);
         _applicationFrame.setIconImage(iconImage);
-
+	
         // Create and initialize the storage policy
 	_storagePolicy = new DefaultStoragePolicy();
 	JFileChooser fc = _storagePolicy.getFileChooser();
 	FileFilter ff = new FileFilter() {
 	    public boolean accept (File file) {
 		return GUIUtilities.getFileExtension(file).toLowerCase().equals(
-										"xml");
+										"ptml");
 	    }
 	    public String getDescription () {
-              return "XML files";
-          }
-      };
-      fc.addChoosableFileFilter(ff);
-      fc.setFileFilter(ff);
-
+		return "PTML files";
+	    }
+	};
+	fc.addChoosableFileFilter(ff);
+	fc.setFileFilter(ff);
+	
         // Experimental -- doesn't work... open a file
         // getAction("open").actionPerformed(null);
     }
@@ -237,14 +238,15 @@ public class GraphEditor extends AbstractApplication {
     /** Get the title of this application
      */
     public String getTitle() {
-        return "Diva graph editor";
+        return "PtolemyII";
     }
 
     /** Initialize the palette in the.
      */
     public void initializePalette () {
         JShadePane s =_applicationFrame.getShadePane();
-        
+        s.setVisible(true);
+
         ApplicationResources resources = getApplicationResources();
         Icon newIcon = resources.getImageIcon("New");
         Icon openIcon = resources.getImageIcon("Open");
@@ -255,19 +257,20 @@ public class GraphEditor extends AbstractApplication {
         p1.addIcon(newIcon, "foo");
         p1.addIcon(openIcon, "bar");
         p1.addIcon(saveIcon, "baz");
-        s.addShade("Test1", newIcon, p1, "new group -- cool icons!");
-        
+         
         JPalette p2 = new JPalette();
         SchematicPalette p3 = new SchematicPalette();
 
         try {
             parseLibraries();
             EntityTemplate template = 
-                _entityLibrary.findEntityTemplate("SDF.SaveImage");
+                _entityLibrary.findEntityTemplate("generic.ramp");
+	    //                _entityLibrary.findEntityTemplate("SDF.SaveImage");
             SchematicEntity node = new SchematicEntity("test1", template);
             p3.addNode(node, 60, 50);
             
-            template = _entityLibrary.findEntityTemplate("SDF.LoadImage");
+	    template = _entityLibrary.findEntityTemplate("generic.recorder");
+	    //            template = _entityLibrary.findEntityTemplate("SDF.LoadImage");
             node = new SchematicEntity("test2", template);
             p3.addNode(node, 60, 140);
         } catch (Exception ex) {
@@ -275,10 +278,28 @@ public class GraphEditor extends AbstractApplication {
             ex.printStackTrace();
         }
 
+        s.addShade("Test3", saveIcon, p3, "save group -- boring...");
+ 
         s.addShade("Test2", openIcon, p2, "open group -- disabled!");
 
-        s.addShade("Test3", saveIcon, p3, "save group -- boring...");
+	s.addShade("Test1", newIcon, p1, "new group -- cool icons!");
         s.setEnabledAt(1, false);
+    
+	s.setVisible(true);
+	p3.setVisible(true);
+	p3.repaint();
+	
+	GraphController controller = p3.getGraphPane().getGraphController();
+        LayoutTarget target = new BasicLayoutTarget(controller);
+        Graph graph = controller.getGraph();
+        GlobalLayout layout = new GridAnnealingLayout();
+        try {
+            layout.layout(target, graph);
+        } catch (Exception e) {
+            showError("layout", e);
+        }
+        p3.repaint();
+ 
     }
     
     /** Initialize the given menubar. Currently, all strings are
@@ -402,9 +423,13 @@ public class GraphEditor extends AbstractApplication {
         try {
             URL urlbase = new URL("file:" + System.getProperty("PTII"));
             iconlibURL = new URL(urlbase, 
-                    "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
+		"ptII/ptolemy/schematic/lib/rootIconLibrary.ptml");
+				 
+//                    "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
             entitylibURL = new URL(urlbase, 
-                    "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
+		"ptII/ptolemy/schematic/lib/rootEntityLibrary.ptml");
+				   
+//                    "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
             _iconLibrary = PTMLObjectFactory.parseIconLibrary(iconlibURL);
             System.out.println("Parsed:\n" + _iconLibrary);
 
@@ -428,7 +453,9 @@ public class GraphEditor extends AbstractApplication {
 
         if (type.equals("Random layout")) {
             layout = new RandomLayout();
-        } else {
+        } else if(type.equals("Grid layout")) {
+	    layout = new GridAnnealingLayout();
+	} else {
             layout = new LevelLayout(); 
         }
         // Perform the layout and repaint

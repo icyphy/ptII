@@ -57,6 +57,8 @@ public class SchematicParameter extends PTMLObject {
      */
     public SchematicParameter() {
         this("parameter");
+	_type = null;
+	_value = null;
     }
 
     /**
@@ -94,6 +96,34 @@ public class SchematicParameter extends PTMLObject {
         _value = value;
     }
     
+   /**
+     * Return a string representing this parameter.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+
+        result += " type {";
+        if(_type == null) 
+            result += "null";
+        else
+            result += _type;
+
+        result += "} value {";
+        if(_value == null) 
+            result += "null";
+        else
+            result += _value;
+	
+        result += "}";
+        if (bracket == 2) result += "}";
+
+        return result;
+    }
+
     private String _type;
     private String _value;
 }

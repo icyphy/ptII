@@ -178,6 +178,18 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
+     * Get a string representing the implementation of this entity.  This
+     * may be a java class name, or a URL for a PTML schematic object.
+     */
+    public String getImplementation () {
+        if(hasTemplate()) 
+            return ((EntityTemplate) getTemplate()).getImplementation();
+        else
+            return _implementation;
+    }
+
+
+    /**
      * Get the terminal style of this entity.
      */
     public TerminalStyle getTerminalStyle () {
@@ -267,6 +279,18 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     private void resetTerminalStyle () {
 	_terminalstyle = ((EntityTemplate) getTemplate()).getTerminalStyle();
+    }
+
+    /** 
+     * Set the string that represents the implementation of this entity
+     * @see #getImplementation
+     */
+    public void setImplementation (String implementation) {
+	if(hasTemplate()) 
+	    throw new InternalErrorException("Cannot set the implementation" + 
+		" of an entity that has a template");
+        else
+	    _implementation = implementation;
     }
 
     /**
@@ -472,6 +496,7 @@ public class SchematicEntity extends PTMLTemplateObject
     private TerminalStyle _terminalstyle;
     private NamedList _ports;
     private NamedList _terminals;
+    private String _implementation;
     private double _x;
     private double _y;
 

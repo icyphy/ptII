@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Editor.java \
 	EditorDropTarget.java \
 	EditorGraphController.java \
 	EditorNodeRenderer.java \

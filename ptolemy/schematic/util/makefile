@@ -58,6 +58,7 @@ JSRCS = \
 	PTMLObject.java \
 	PTMLObjectFactory.java \
 	PTMLTemplateObject.java \
+	PtolemyModelFactory.java \
 	Schematic.java \
 	SchematicEntity.java \
 	SchematicGraphImpl.java \

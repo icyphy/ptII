@@ -197,7 +197,9 @@ public class PTMLObjectFactory {
                 // and add it to the list of ports.
                 // FIXME
                 //ptmlobject.addPort(_createSchematicPort(child));
-            } else if(etype.equals("terminal")) {
+	    } else if(etype.equals("parameter")) {
+                ptmlobject.addParameter(_createSchematicParameter(child));
+	    } else if(etype.equals("terminal")) {
                 // if it's a terminal, then create it, 
                 // and add it to the list of terminals.
                 ptmlobject.addTerminal(_createSchematicTerminal(child, null));
@@ -348,7 +350,9 @@ public class PTMLObjectFactory {
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
-            if (n.equals("name")) {
+            if (n.equals("implementation")) {
+                ptmlobject.setImplementation(_getString(e, n));
+            } else if (n.equals("name")) {
                 ptmlobject.setName(_getString(e, n));
             } else if (n.equals("icon")) {
                 Icon icon = iconroot.findIcon(_getString(e, n));
@@ -367,8 +371,8 @@ public class PTMLObjectFactory {
             String etype = child.getElementType();
             if(etype.equals("description")) {
                 ptmlobject.setDocumentation(child.getPCData());
-                //            } else if(etype.equals("parameter")) {
-                //entity.addParameter(_createSchematicParameter(child));
+	    } else if(etype.equals("parameter")) {
+               ptmlobject.addParameter(_createSchematicParameter(child));
             } else if(etype.equals("port")) {
                 ptmlobject.addPort(_createEntityPort(child));
             } else if(etype.equals("terminalmap")) {
@@ -451,39 +455,51 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "entity");
 
-        EntityTemplate ptmlobject = null;
+        EntityTemplate template = null;
         if(e.hasAttribute("template")) {
             String templateString = _getString(e, "template");
-            ptmlobject = entityLib.findEntityTemplate(templateString);
+            template = entityLib.findEntityTemplate(templateString);
         } else {
             throw new IllegalActionException(
                     "SchematicEntity has no template.");
         }
 
-        SchematicEntity entity = 
-            new SchematicEntity(ptmlobject.getName(), ptmlobject);
+        SchematicEntity ptmlobject = 
+            new SchematicEntity(template.getName(), template);
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(ptmlobject, child);
+	    String etype = child.getElementType();
+	    if(etype.equals("parameter")) {
+                ptmlobject.addParameter(_createSchematicParameter(child));
+            } else 
+		_unknownElementType(ptmlobject, child);
         }
 
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
-            if (n.equals("name")) {
-                entity.setName(_getString(e, n));
+            if (n.equals("implementation")) {
+                ptmlobject.setImplementation(_getString(e, n));
+            } else if (n.equals("name")) {
+                ptmlobject.setName(_getString(e, n));
+            } else if (n.equals("icon")) {
+		//FIXME maybe this should be allowed.
+            } else if (n.equals("documentation")) {
+		//FIXME maybe this should be allowed.
+            } else if (n.equals("terminalstyle")) {
+		// FIXME this should be allowed.
             } else if (n.equals("x")) {
-                entity.setX(_getDouble(e, n));
+                ptmlobject.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
-                entity.setY(_getDouble(e, n));
+                ptmlobject.setY(_getDouble(e, n));
             } else if (n.equals("template")) {
-                //ignore
+                //ignore..  it's already been used above.
             } else {
                 _unknownAttribute(ptmlobject, e, n);
             }
         }
-        return entity;
+        return ptmlobject;
     }
 
     private static SchematicLink _createSchematicLink(XMLElement e, 
@@ -518,6 +534,34 @@ public class PTMLObjectFactory {
         return ptmlobject;
     }
 
+    private static SchematicParameter _createSchematicParameter(XMLElement e)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "parameter");
+
+        SchematicParameter ptmlobject = new SchematicParameter();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+	    _unknownElementType(ptmlobject, child);
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                ptmlobject.setName(_getString(e, n));
+            } else if (n.equals("value")) {
+                ptmlobject.setValue(_getString(e, n));
+            } else if (n.equals("type")) {
+                ptmlobject.setType(_getString(e, n));
+            } else {
+                _unknownAttribute(ptmlobject, e, n);
+            }
+        }
+        return ptmlobject;
+    }
+
     private static SchematicRelation _createSchematicRelation(XMLElement e, 
             Schematic schematic)
         throws IllegalActionException, NameDuplicationException {
@@ -531,6 +575,8 @@ public class PTMLObjectFactory {
             String etype = child.getElementType();
             if(etype.equals("link")) {
                 ptmlobject.addLink(_createSchematicLink(child, schematic));
+	    } else if(etype.equals("parameter")) {
+                ptmlobject.addParameter(_createSchematicParameter(child));
             } else if(etype.equals("terminal")) {
                 ptmlobject.addTerminal(_createSchematicTerminal(child, null));
             } else 

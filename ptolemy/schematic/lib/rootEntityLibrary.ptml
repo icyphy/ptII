@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entitylibrary SYSTEM "../../schematic/lib/ptml.dtd">
+
+<entitylibrary name="root" version="1.0">
+<description>Root entities</description>
+<sublibrary url="../../actor/lib/genericentities.ptml"/>
+</entitylibrary>
+

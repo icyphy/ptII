@@ -39,14 +39,6 @@ import java.util.*;
 A schematic port represents a port of an entity in a PtolemyII
 schematic. Currently, it is not clear exactly how much
 information is in this object...
-<!-- port elements will be parsed into class SchematicPort -->
-<!ELEMENT port EMPTY>
-<!ATTLIST port
-name ID #REQUIRED
-input (true|false) "false"
-output (true|false) "false"
-multiport (true|false) "false"
-type (string|double|doubleArray) #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$

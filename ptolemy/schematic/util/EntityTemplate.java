@@ -96,6 +96,14 @@ public class EntityTemplate extends PTMLObject {
     }
 
     /**
+     * Get a string representing the implementation of this entity.  This
+     * may be a java class name, or a URL for a PTML schematic object.
+     */
+    public String getImplementation () {
+	return _implementation;
+    }
+
+    /**
      * Get the terminal style for this entity.
      */
     public TerminalStyle getTerminalStyle () {
@@ -154,6 +162,14 @@ public class EntityTemplate extends PTMLObject {
      */
     public void setIcon (Icon icon) {
 	_icon = icon;
+    }
+
+    /** 
+     * Set the string that represents the implementation of this entity
+     * @see #getImplementation
+     */
+    public void setImplementation (String implementation) {
+	_implementation = implementation;
     }
 
     /**
@@ -249,6 +265,7 @@ public class EntityTemplate extends PTMLObject {
     public static final String DEFAULTICONNAME = "default";
     private NamedList _ports;
     private Icon _icon;
+    private String _implementation;
     private TerminalStyle _terminalstyle;
     private TerminalMap _terminalmap;
 }

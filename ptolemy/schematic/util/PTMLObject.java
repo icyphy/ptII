@@ -324,6 +324,8 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      */
     protected String _createUniqueName() {
         // FIXME This is such a ridiculously lame way to do this.
+	// This doesn't actually create a unique name across all 
+	// executions.
         return getClass().getName() + PTMLObject._uniqueID++;
     }
 

@@ -52,6 +52,7 @@ JSIMPLE_TESTS = \
 	Icon.tcl \
 	IconLibrary.tcl \
 	PTMLObjectFactory.tcl \
+	PtolemyModelFactory.tcl \
 	SchematicEntity.tcl \
 	SchematicLink.tcl \
 	SchematicRelation.tcl \

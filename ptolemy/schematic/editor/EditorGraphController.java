@@ -71,7 +71,7 @@ public class EditorGraphController extends GraphController {
 
     /** The interactor for creating new entities
      */
-    private EntityCreator _entityCreator;
+    //  private EntityCreator _entityCreator;
 
     /** The interactor that interactively creates edges
      */
@@ -122,7 +122,7 @@ public class EditorGraphController extends GraphController {
         manipulator.setSnapHalo(4.0);
         manipulator.setConnectorTarget(ct);
         manipulator.addConnectorListener(new EdgeDropper());
-        ei.setSelectionManipulator(manipulator);
+        ei.setPrototypeDecorator(manipulator);
 
         // The mouse filter needs to accept regular click or control click
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
@@ -173,6 +173,7 @@ public class EditorGraphController extends GraphController {
         edge.setVisualObject(ef);
         layer.add(ef);
 
+	ef.route();
         // Add to the graph
         
         //        getGraphImpl().addEdge(edge, getGraph());    
@@ -214,6 +215,7 @@ public class EditorGraphController extends GraphController {
         ef.setUserObject(edge);
         ef.setInteractor(getEdgeInteractor());
         layer.add(ef);
+ef.route();
     }
 
     /** Draw a node at the given location.
@@ -269,11 +271,6 @@ public class EditorGraphController extends GraphController {
         _terminalCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
 
-       // Create a listener that creates new terminals
-        _entityCreator = new EntityCreator();
-        _entityCreator.setMouseFilter(_shiftFilter);
-        pane.getBackgroundEventLayer().addInteractor(_entityCreator);
-
         // Create the interactor that drags new edges.
         _edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
@@ -301,6 +298,8 @@ public class EditorGraphController extends GraphController {
      * on the screen, if control-clicked with mouse button 1. This
      * needs to be made more customizable.
      */
+    /*
+// This has been replaced by drag and drop of entities.
     protected class EntityCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
 	    EntityTemplate template = new EntityTemplate();
@@ -327,7 +326,7 @@ public class EditorGraphController extends GraphController {
             addEntity((SchematicEntity)n, e.getLayerX(), e.getLayerY());
         }
     }
-
+    */
     ///////////////////////////////////////////////////////////////
     //// EdgeDropper
 
