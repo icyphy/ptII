@@ -32,17 +32,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.demo;
 
-import ptolemy.plot.*;
+import ptolemy.plot.PlotBox;
+import ptolemy.plot.PlotLiveApplet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemoApplet
 
-/** An Applet that demonstrates the PlotLiveDemo class.
- *
- *  @author Edward A. Lee, Christopher Hylands
- *  @version $Id$
- *  @since Ptolemy II 0.2
- */
+/**
+An Applet that demonstrates the PlotLiveDemo class.
+
+@author Edward A. Lee, Christopher Hylands
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class PlotLiveDemoApplet extends PlotLiveApplet {
 
     /** Return a string describing this applet.

@@ -33,9 +33,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.compat;
 
-import ptolemy.plot.*;
+import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotBox;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.StringTokenizer;
 import java.awt.Point;

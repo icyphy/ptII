@@ -30,22 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.demo;
 
-import ptolemy.plot.*;
+import ptolemy.plot.PlotLive;
 
 import java.awt.Event;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
 /**
- * Dynamically plot a test signal, illustrating how to use the
- * PlotLive class.
- *
- * @author Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.2
- */
+Dynamically plot a test signal, illustrating how to use the
+PlotLive class.
+
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class PlotLiveDemo extends PlotLive {
 
     /** Construct a plot for live, animated signal display.

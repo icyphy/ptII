@@ -30,7 +30,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.*;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
+import ptolemy.plot.EditablePlot;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -41,14 +44,14 @@ import javax.swing.JLabel;
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplet
 /**
- * This applet reads a URL giving a PlotML file for a plot and places
- * the data into an editable plot.
- *
- * @see EditablePlot
- * @author Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.4
- */
+This applet reads a URL giving a PlotML file for a plot and places
+the data into an editable plot.
+
+@see EditablePlot
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.4
+*/
 public class EditablePlotMLApplet extends PlotMLApplet {
 
     ///////////////////////////////////////////////////////////////////

@@ -30,10 +30,8 @@
 
 package ptolemy.plot.plotml;
 
-// Ptolemy imports.
-import ptolemy.plot.*;
+import ptolemy.plot.Histogram;
 
-// XML imports.
 import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////

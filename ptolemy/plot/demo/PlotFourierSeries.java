@@ -30,18 +30,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.demo;
 
-import ptolemy.plot.*;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFourierSeries
 /**
- * Plot a Fourier series approximation to a square wave.
- * This is a demonstration of the use of the Plot class.
- *
- * @author Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.2
- */
+Plot a Fourier series approximation to a square wave.
+This is a demonstration of the use of the Plot class.
+
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class PlotFourierSeries extends PlotApplet {
 
     ///////////////////////////////////////////////////////////////////

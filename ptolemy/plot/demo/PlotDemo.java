@@ -30,17 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.demo;
 
-import ptolemy.plot.*;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotDemo
 /**
- * Plot a variety of test signals.
- *
- * @author Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.2
- */
+Plot a variety of test signals.
+
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class PlotDemo extends PlotApplet {
 
     ///////////////////////////////////////////////////////////////////

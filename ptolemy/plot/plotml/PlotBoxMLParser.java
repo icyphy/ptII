@@ -30,10 +30,8 @@
 
 package ptolemy.plot.plotml;
 
-// Ptolemy imports.
 import ptolemy.plot.PlotBox;
 
-// Java imports.
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -44,8 +42,9 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Stack;
 
-// XML imports.
-import com.microstar.xml.*;
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotBoxMLParser

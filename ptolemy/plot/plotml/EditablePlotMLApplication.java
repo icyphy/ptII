@@ -33,9 +33,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.plotml;
 
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.PlotBox;
-import ptolemy.gui.*;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

@@ -36,7 +36,15 @@ package ptolemy.plot.compat;
 import ptolemy.plot.Plot;
 import ptolemy.plot.CmdLineArgException;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.util.Vector;
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -958,6 +966,9 @@ public class PxgraphParser {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
+    // The current dataset, used for handling multiple files
+    protected int _currentdataset = -1;
+
     /** The plot object to which to apply commands. */
     protected Plot _plot;
 
@@ -1022,9 +1033,6 @@ public class PxgraphParser {
     private boolean _binary = false;
 
     private boolean _connected = true;
-
-    // The current dataset, used for handling multiple files
-    protected int _currentdataset = -1;
 
     // For debugging, call with -db or -debug.
     private static int _debug = 0;

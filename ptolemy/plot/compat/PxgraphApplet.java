@@ -38,27 +38,29 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.CmdLineArgException;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphApplet
 
 /** An Applet that can plot data in pxgraph format from a URL.
- *  The URL should be specified using the dataurl applet parameter
- *  or as part of the <i>pxgraphargs</i> applet parameter.
- *  That parameter contains
- *  command-line style arguments compatible with the older pxgraph program.
- *  See the documentation for the PxgraphParser class for the format of
- *  these arguments.
- *
- *  @author Edward A. Lee
- *  @version $Id$
- *  @since Ptolemy II 0.4
- *  @see PxgraphParser
- *  @see ptolemy.plot.PlotBox
- *  @see ptolemy.plot.Plot
- */
+The URL should be specified using the dataurl applet parameter
+or as part of the <i>pxgraphargs</i> applet parameter.
+That parameter contains command-line style arguments compatible with
+the older pxgraph program.
+See the documentation for the PxgraphParser class for the format of
+these arguments.
+
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.4
+@see PxgraphParser
+@see ptolemy.plot.PlotBox
+@see ptolemy.plot.Plot
+*/
 public class PxgraphApplet extends PlotApplet {
 
     /** Return a string describing this applet.
