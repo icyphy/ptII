@@ -22,6 +22,9 @@
 <entity name="PreemptableTask" class="ptolemy.domains.de.lib.PreemptableTask">
 </entity>
 
+<entity name="Previous" class="ptolemy.domains.de.lib.Previous">
+</entity>
+
 <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
 </entity>
 
