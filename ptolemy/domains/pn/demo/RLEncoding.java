@@ -58,9 +58,7 @@ class RLEncoding {
 
         PNImageSource a1 = new PNImageSource(c1, "A1");
         Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-System.out.println("Me here");
         p1.setToken(new StringToken("/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm"));
-System.out.println("Me here");
         MatrixUnpacker a2 = new MatrixUnpacker(c1, "A2");
         RLEncoder a3 = new RLEncoder(c1, "A3");
         RLDecoder a4 = new RLDecoder(c1, "A4");
@@ -68,12 +66,14 @@ System.out.println("Me here");
         PNImageSink a6 = new PNImageSink(c1, "A6");
         p1 = (Parameter)a6.getAttribute("Output_file");
         p1.setToken(new StringToken("/tmp/image.pbm"));
+        ImageDisplay a7 = new ImageDisplay(c1, "dispin");
+        ImageDisplay a8 = new ImageDisplay(c1, "dispout");
 
-System.out.println("Me here");
 
         IOPort portin = (IOPort)a1.getPort("output");
         IOPort portout = (IOPort)a2.getPort("input");
-        c1.connect(portin, portout);
+        ComponentRelation rel = c1.connect(portin, portout);
+        (a7.getPort("image")).link(rel);
 
         portin = (IOPort)a2.getPort("output");
         portout = (IOPort)a3.getPort("input");
@@ -101,7 +101,8 @@ System.out.println("Me here");
 
         portin = (IOPort)a5.getPort("output");
         portout = (IOPort)a6.getPort("input");
-        c1.connect(portin, portout);        
+        rel = c1.connect(portin, portout);        
+        (a8.getPort("image")).link(rel);
         
 	System.out.println("Connections made");
         Parameter p = (Parameter)local.getAttribute("Initial_queue_capacity");
