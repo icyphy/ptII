@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
@@ -42,10 +42,10 @@ http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {75, 31, 761, 612}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {192, 60, 761, 612}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -125,16 +125,10 @@ to all instances.</text></svg></configure>
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 230.0]">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16">
-            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 335.0]">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -265,7 +259,7 @@ to all instances.</text></svg></configure>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
             </property>
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="{0x00ub,0x01ub,0x02ub,0x03ub,0x04ub,0x05ub,0x06ub,0x07ub,0x08ub,0x09ub,0x0aub,0x0bub,0x0cub,0x0dub,0x0eub,0x0fub}">
@@ -331,22 +325,22 @@ internal models.
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, -100.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {4, 0, 996, 676}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-10, 49, 996, 676}, maximized = false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.2143308080808, 175.3252840909092}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 283.5}">
         </property>
         <port name="text" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 170.0]">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16">
             </property>
         </port>
         <port name="cipher" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="725.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 230.0]">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
             </property>
@@ -356,7 +350,7 @@ internal models.
         <class name="Sbox" extends="ptolemy.actor.lib.LookupTable">
             <property name="table" class="ptolemy.data.expr.Parameter" value="{99ub, 124ub, 119ub, 123ub, 242ub, 107ub, 111ub, 197ub,  48ub,   1ub, 103ub,  43ub, 254ub, 215ub, 171ub, 118ub, 202ub, 130ub, 201ub, 125ub, 250ub,  89ub,  71ub, 240ub, 173ub, 212ub, 162ub, 175ub, 156ub, 164ub, 114ub, 192ub, 183ub, 253ub, 147ub,  38ub,  54ub,  63ub, 247ub, 204ub,  52ub, 165ub, 229ub, 241ub, 113ub, 216ub,  49ub,  21ub,   4ub, 199ub,  35ub, 195ub,  24ub, 150ub,   5ub, 154ub,   7ub,  18ub, 128ub, 226ub, 235ub,  39ub, 178ub, 117ub,   9ub, 131ub,  44ub,  26ub,  27ub, 110ub,  90ub, 160ub,  82ub,  59ub, 214ub, 179ub,  41ub, 227ub,  47ub, 132ub,  83ub, 209ub,   0ub, 237ub,  32ub, 252ub, 177ub,  91ub, 106ub, 203ub, 190ub,  57ub,  74ub,  76ub,  88ub, 207ub, 208ub, 239ub, 170ub, 251ub,  67ub,  77ub,  51ub, 133ub,  69ub, 249ub,   2ub, 127ub,  80ub,  60ub, 159ub, 168ub,  81ub, 163ub,  64ub, 143ub, 146ub, 157ub,  56ub, 245ub, 188ub, 182ub, 218ub,  33ub,  16ub, 255ub, 243ub, 210ub, 205ub,  12ub,  19ub, 236ub,  95ub, 151ub,  68ub,  23ub, 196ub, 167ub, 126ub,  61ub, 100ub,  93ub,  25ub, 115ub,  96ub, 129ub,  79ub, 220ub,  34ub,  42ub, 144ub, 136ub,  70ub, 238ub, 184ub,  20ub, 222ub,  94ub,  11ub, 219ub, 224ub,  50ub,  58ub,  10ub,  73ub,   6ub,  36ub,  92ub, 194ub, 211ub, 172ub,  98ub, 145ub, 149ub, 228ub, 121ub, 231ub, 200ub,  55ub, 109ub, 141ub, 213ub,  78ub, 169ub, 108ub,  86ub, 244ub, 234ub, 101ub, 122ub, 174ub,   8ub, 186ub, 120ub,  37ub,  46ub,  28ub, 166ub, 180ub, 198ub, 232ub, 221ub, 116ub,  31ub,  75ub, 189ub, 139ub, 138ub, 112ub,  62ub, 181ub, 102ub,  72ub,   3ub, 246ub,  14ub,  97ub,  53ub,  87ub, 185ub, 134ub, 193ub,  29ub, 158ub, 225ub, 248ub, 152ub,  17ub, 105ub, 217ub, 142ub, 148ub, 155ub,  30ub, 135ub, 233ub, 206ub,  85ub,  40ub, 223ub, 140ub, 161ub, 137ub,  13ub, 191ub, 230ub,  66ub, 104ub,  65ub, 153ub,  45ub,  15ub, 176ub,  84ub, 187ub,  22ub} ">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 115.0]">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -365,7 +359,7 @@ internal models.
             </port>
         </class>
         <class name="Shift Row" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 115.0]">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -459,17 +453,17 @@ internal models.
             <link port="ArrayToSequence.output" relation="relation8"/>
         </class>
         <class name="Mix Column" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 115.0]">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 564]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 85}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 83, 1025, 673}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 83, 1022, 673}, maximized = false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -477,16 +471,16 @@ internal models.
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 305.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.866455078125, 318.175048828125]">
                 </property>
             </port>
             <port name="port2" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="740.0, 310.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 320.0]">
                 </property>
             </port>
             <class name="MulTwo" extends="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 150.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 175.0]">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -527,7 +521,7 @@ internal models.
                 <link port="Expression.a" relation="relation"/>
             </class>
             <class name="MulThree" extends="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 215.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -568,7 +562,7 @@ internal models.
                 <link port="Expression.a" relation="relation"/>
             </class>
             <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 305.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[91.866455078125, 318.175048828125]">
                 </property>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -668,7 +662,7 @@ internal models.
                 </port>
             </entity>
             <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="680.0, 310.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 320.0]">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -711,19 +705,19 @@ internal models.
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="165.0, 140.0">
+                <vertex name="vertex1" value="[165.0, 140.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="205.0, 260.0">
+                <vertex name="vertex1" value="[205.0, 260.0]">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="205.0, 380.0">
+                <vertex name="vertex1" value="[205.0, 380.0]">
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="165.0, 500.0">
+                <vertex name="vertex1" value="[165.0, 500.0]">
                 </vertex>
             </relation>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
@@ -801,8 +795,8 @@ internal models.
             <link port="InstanceOfMulThree.port" relation="relation"/>
             <link port="InstanceOfMulThree.port2" relation="relation12"/>
         </class>
-        <entity name="round key generator" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 290.0}">
+        <entity name="RoundKeyGenerator" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 245.0]">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[679, 402]">
             </property>
@@ -843,10 +837,6 @@ the 128 bit user key as a seed.</text></svg></configure>
             <port name="round key" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="377.5, 375.0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <class name="MulTwo" extends="ptolemy.actor.TypedCompositeActor">
@@ -982,7 +972,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 325.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 325.0]">
                 </property>
                 <port name="a" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -994,7 +984,7 @@ the 128 bit user key as a seed.</text></svg></configure>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="4">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="192.5, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 260.0]">
                 </property>
             </entity>
             <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -1014,7 +1004,7 @@ the 128 bit user key as a seed.</text></svg></configure>
             <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
                 <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[472.5, 260.0]">
                 </property>
             </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -1030,7 +1020,7 @@ the 128 bit user key as a seed.</text></svg></configure>
             <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="317.5, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 260.0]">
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
@@ -1373,7 +1363,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="635.0, 395.0">
+                <vertex name="vertex1" value="[580.0, 395.0]">
                 </vertex>
             </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -1383,7 +1373,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="395.0, 250.0">
+                <vertex name="vertex1" value="[387.5, 260.0]">
                 </vertex>
             </relation>
             <link port="round key" relation="relation"/>
@@ -1403,14 +1393,20 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="modal model.input" relation="relation6"/>
             <link port="modal model.output" relation="relation2"/>
         </entity>
-        <entity name="round sequence" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="RoundSequence" class="ptolemy.domains.fsm.modal.ModalModel">
+            <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+            </property>
+            <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+                </property>
+            </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 200.0]">
             </property>
             <port name="text" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
             </port>
             <port name="round key" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -1420,7 +1416,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
             <port name="cipher" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
             </port>
             <port name="last cipher" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -1479,7 +1475,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
                 <port name="last cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 145.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 145.0]">
                     </property>
                 </port>
                 <entity name="regular" class="ptolemy.domains.fsm.kernel.State">
@@ -1489,7 +1485,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="284.49999999999994, 234.78725609151581">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
                     </property>
                 </entity>
                 <entity name="final" class="ptolemy.domains.fsm.kernel.State">
@@ -1583,6 +1579,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
                     </property>
                 </property>
@@ -1616,30 +1614,22 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 225.0">
                     </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
                 </port>
                 <port name="round key" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 275.0">
                     </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </port>
                 <port name="cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 265.0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </port>
                 <port name="last cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 160.0">
-                    </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 175.0]">
                     </property>
                 </port>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -1660,24 +1650,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 275.0">
-                    </property>
-                </entity>
-                <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 160.0">
-                    </property>
-                </entity>
-                <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                    <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 265.0">
-                    </property>
-                </entity>
                 <entity name="InstanceOfSbox" class="Sbox">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 175.0">
                     </property>
@@ -1694,36 +1666,22 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <vertex name="vertex1" value="505.0, 265.0">
                     </vertex>
                 </relation>
-                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" value="285.0, 275.0">
-                    </vertex>
-                </relation>
-                <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="round key" relation="relation6"/>
-                <link port="cipher" relation="relation9"/>
-                <link port="last cipher" relation="relation7"/>
+                <link port="cipher" relation="relation2"/>
+                <link port="last cipher" relation="relation"/>
                 <link port="Expression.output" relation="relation2"/>
                 <link port="Expression.input" relation="relation5"/>
-                <link port="Expression.roundKey" relation="relation10"/>
-                <link port="ArrayToSequence.input" relation="relation6"/>
-                <link port="ArrayToSequence.output" relation="relation10"/>
-                <link port="ArrayToSequence2.input" relation="relation7"/>
-                <link port="ArrayToSequence2.output" relation="relation"/>
-                <link port="SequenceToArray.input" relation="relation2"/>
-                <link port="SequenceToArray.output" relation="relation9"/>
+                <link port="Expression.roundKey" relation="relation6"/>
                 <link port="InstanceOfSbox.input" relation="relation"/>
                 <link port="InstanceOfSbox.output" relation="relation3"/>
                 <link port="InstanceOfShift Row.port" relation="relation3"/>
@@ -1737,6 +1695,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
                     </property>
                 </property>
@@ -1762,7 +1722,7 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 320.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {71, 154, 909, 496}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 909, 496}, maximized = false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -1772,38 +1732,24 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 195.0">
                     </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16">
                     </property>
                 </port>
                 <port name="round key" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 275.0">
-                    </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 275.0]">
                     </property>
                 </port>
                 <port name="cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="655.0, 265.0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </port>
                 <port name="last cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 145.0">
-                    </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 145.0]">
                     </property>
                 </port>
-                <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 275.0">
-                    </property>
-                </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input # roundKey">
                     </property>
@@ -1822,18 +1768,6 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 145.0">
-                    </property>
-                </entity>
-                <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                    <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 265.0">
-                    </property>
-                </entity>
                 <entity name="InstanceOfSbox" class="Sbox">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 175.0">
                     </property>
@@ -1842,37 +1776,25 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 175.0">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" value="505.0, 265.0">
                     </vertex>
-                </relation>
-                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <link port="round key" relation="relation3"/>
-                <link port="cipher" relation="relation7"/>
-                <link port="last cipher" relation="relation8"/>
-                <link port="ArrayToSequence.input" relation="relation3"/>
-                <link port="ArrayToSequence.output" relation="relation"/>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="round key" relation="relation2"/>
+                <link port="cipher" relation="relation6"/>
+                <link port="last cipher" relation="relation"/>
                 <link port="Expression.output" relation="relation6"/>
                 <link port="Expression.input" relation="relation5"/>
-                <link port="Expression.roundKey" relation="relation"/>
-                <link port="ArrayToSequence2.input" relation="relation8"/>
-                <link port="ArrayToSequence2.output" relation="relation2"/>
-                <link port="SequenceToArray.input" relation="relation6"/>
-                <link port="SequenceToArray.output" relation="relation7"/>
-                <link port="InstanceOfSbox.input" relation="relation2"/>
+                <link port="Expression.roundKey" relation="relation2"/>
+                <link port="InstanceOfSbox.input" relation="relation"/>
                 <link port="InstanceOfSbox.output" relation="relation4"/>
                 <link port="InstanceOfShift Row.port" relation="relation4"/>
                 <link port="InstanceOfShift Row.port2" relation="relation5"/>
@@ -1883,6 +1805,8 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="16">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 60.0">
                     </property>
                 </property>
@@ -1916,38 +1840,24 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 150.0">
                     </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </port>
                 <port name="round key" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 250.0">
-                    </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </port>
                 <port name="cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 195.0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </port>
                 <port name="last cipher" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 85.0">
                     </property>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16">
                     </property>
                 </port>
-                <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 150.0">
-                    </property>
-                </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input # roundKey">
                     </property>
@@ -1966,42 +1876,18 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-                    <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 250.0">
-                    </property>
-                </entity>
-                <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                    <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
-                    </property>
-                </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 </relation>
-                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <link port="text" relation="relation"/>
-                <link port="round key" relation="relation3"/>
-                <link port="cipher" relation="relation6"/>
-                <link port="ArrayToSequence.input" relation="relation"/>
-                <link port="ArrayToSequence.output" relation="relation2"/>
-                <link port="Expression.output" relation="relation5"/>
-                <link port="Expression.input" relation="relation2"/>
-                <link port="Expression.roundKey" relation="relation4"/>
-                <link port="ArrayToSequence2.input" relation="relation3"/>
-                <link port="ArrayToSequence2.output" relation="relation4"/>
-                <link port="SequenceToArray.input" relation="relation5"/>
-                <link port="SequenceToArray.output" relation="relation6"/>
+                <link port="round key" relation="relation2"/>
+                <link port="cipher" relation="relation3"/>
+                <link port="Expression.output" relation="relation3"/>
+                <link port="Expression.input" relation="relation"/>
+                <link port="Expression.roundKey" relation="relation2"/>
             </entity>
             <relation name="textRelation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -2035,19 +1921,13 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 180.0]">
             </property>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="625.0, 200.0">
-            </property>
-        </entity>
-        <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
-            <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 290.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 225.0]">
             </property>
         </entity>
         <entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample">
@@ -2055,14 +1935,14 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
             </property>
             <property name="phase" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 180.0]">
             </property>
         </entity>
         <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{repeat(16,0ub)}">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(16,0ub)">
             </property>
             <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 265.0]">
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -2070,38 +1950,34 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {323, 534, 292, 222}, maximized = false}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 135.0]">
             </property>
         </entity>
         <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="roundCount +1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 200.0">
-            </property>
-        </entity>
-        <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 225.0]">
             </property>
         </entity>
         <entity name="convertToString" class="convertToStringClass">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 135.0]">
             </property>
         </entity>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="205.0, 290.0">
-            </vertex>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="685.0, 200.0">
-            </vertex>
-        </relation>
+        <entity name="ArrayToSequence3" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="SequenceToArray3" class="ptolemy.domains.sdf.lib.SequenceToArray">
+            <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="16">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 210.0]">
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="470.0, 200.0">
@@ -2113,38 +1989,44 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="330.0, 190.0">
-            </vertex>
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[340.0, 245.0]">
+            </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="text" relation="relation2"/>
         <link port="cipher" relation="relation"/>
-        <link port="round key generator.round key" relation="relation4"/>
-        <link port="round sequence.text" relation="relation10"/>
-        <link port="round sequence.round key" relation="relation7"/>
-        <link port="round sequence.cipher" relation="relation8"/>
-        <link port="round sequence.last cipher" relation="relation9"/>
+        <link port="RoundKeyGenerator.round key" relation="relation12"/>
+        <link port="RoundSequence.text" relation="relation7"/>
+        <link port="RoundSequence.round key" relation="relation12"/>
+        <link port="RoundSequence.cipher" relation="relation8"/>
+        <link port="RoundSequence.last cipher" relation="relation9"/>
         <link port="SequenceToArray.input" relation="relation2"/>
         <link port="SequenceToArray.output" relation="relation6"/>
         <link port="ArrayToSequence.input" relation="relation5"/>
         <link port="ArrayToSequence.output" relation="relation"/>
-        <link port="SequenceToArray2.input" relation="relation4"/>
-        <link port="SequenceToArray2.output" relation="relation7"/>
         <link port="UpSample.input" relation="relation6"/>
         <link port="UpSample.output" relation="relation10"/>
         <link port="SampleDelay.input" relation="relation8"/>
         <link port="SampleDelay.output" relation="relation9"/>
         <link port="Display.input" relation="relation3"/>
-        <link port="DownSample.input" relation="relation8"/>
+        <link port="DownSample.input" relation="relation13"/>
         <link port="DownSample.output" relation="relation5"/>
-        <link port="ArrayToSequence2.input" relation="relation8"/>
-        <link port="ArrayToSequence2.output" relation="relation11"/>
-        <link port="convertToString.port" relation="relation11"/>
+        <link port="convertToString.port" relation="relation8"/>
         <link port="convertToString.port2" relation="relation3"/>
+        <link port="ArrayToSequence3.input" relation="relation10"/>
+        <link port="ArrayToSequence3.output" relation="relation7"/>
+        <link port="SequenceToArray3.input" relation="relation8"/>
+        <link port="SequenceToArray3.output" relation="relation13"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrpyted Block">
