@@ -107,7 +107,7 @@ public class QueueReceiver implements Receiver {
      *  than or equal to the size, or is negative), throw an exception.
      *
      *  @param offset The offset from the most recent item on the queue.
-     *  @exception NoSuchItemException The offset is out of range.
+     *  @exception NoTokenException The offset is out of range.
      */
     public Token get(int offset) {
         // FIXME: should this throw NoTokenException ??
