@@ -201,7 +201,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
 
     /** Return an enumeration of the input ports.
      *  This method is synchronized on the workspace.
-     *  @returns An enumeration of IOPort objects.
+     *  @return An enumeration of IOPort objects.
      */ 
     public Enumeration inputPorts() {
         synchronized(workspace()) {
@@ -269,7 +269,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
 
     /** get an enumeration of the output ports
      *  This method is synchronized on the workspace.
-     *  @returns An enumeration of IOPort objects.
+     *  @return An enumeration of IOPort objects.
      */
     public Enumeration outputPorts() {
         synchronized(workspace()) {
