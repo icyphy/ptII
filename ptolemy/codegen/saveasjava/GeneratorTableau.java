@@ -39,8 +39,14 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.copernicus.c.Main;
-import ptolemy.copernicus.java.Main;
-import ptolemy.copernicus.jhdl.Main;
+// JDK1.2.2 barfs with:
+// Ambiguous class: ptolemy.copernicus.java.Main and ptolemy.copernicus.c.Main
+// if we have:
+// import ptolemy.copernicus.java.Main;
+// Something similar happens with:
+// import ptolemy.copernicus.jhdl.Main;
+import ptolemy.copernicus.java.*;
+import ptolemy.copernicus.jhdl.*;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.JTextAreaExec;
