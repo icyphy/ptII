@@ -311,7 +311,7 @@ public class CSPDirector extends ProcessDirector {
         resumeTime = getCurrentTime() + delta;
         // Enter the actor and the time to wake it up into the
         // LinkedList of delayed actors..
-        _delayedUntilTime(resumeTime, actor);
+        _registerDelayedActor(resumeTime, actor);
 
         _checkForDeadlock();
         return;
@@ -372,6 +372,9 @@ public class CSPDirector extends ProcessDirector {
      *  be advanced to the current time. This happens if one of the 
      *  delayed actors delayed with a delta delay of zero. Otherwise the 
      *  simulation time is increased as well as being advanced.
+     *  <p>
+     *  Current time is defined as the double value returned by 
+     *  getCurrentTime plus/minus 10e-10.
      *  @param True if real deadlock occured, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
@@ -475,7 +478,7 @@ public class CSPDirector extends ProcessDirector {
      *  @param actor The delayed actor.
      *  @param actorTime The time at which to rsume the actor.
      */
-    private void _delayedUntilTime(double actorTime, CSPActor actor) {
+    private void _registerDelayedActor(double actorTime, CSPActor actor) {
         DelayListLink newLink = new DelayListLink();
         newLink._resumeTime = actorTime;
         newLink._actor = actor;
@@ -494,15 +497,6 @@ public class CSPDirector extends ProcessDirector {
         if (!done) {
             _delayedActorList.insertLast(newLink);
             //System.out.println("Inserting at " + actorTime);
-        }
-        
-        // For debugging
-        System.out.println("\n");
-        Enumeration enum = _delayedActorList.elements();
-        while (enum.hasMoreElements()) {
-            DelayListLink val = (DelayListLink)enum.nextElement();
-            System.out.println(val._actor.getName() + 
-                    ": Delayyed actor at time: " + val._resumeTime);
         }
     }
 
