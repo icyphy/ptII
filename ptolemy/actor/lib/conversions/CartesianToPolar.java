@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -105,23 +105,28 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  and output one new double token on each of the two output ports
      *  (magnitude and angle). The output is a polar form representation of
      *  the Cartesian pair given at the inputs. The angle is in radians.
-     *  If either input has no token, then do nothing.
-     *
      *  @exception IllegalActionException If there is no director.
      */
-
     public void fire() throws IllegalActionException {
-        if (x.hasToken(0) && y.hasToken(0)) {
-            double xValue = ((DoubleToken) (x.get(0))).doubleValue();
-            double yValue = ((DoubleToken) (y.get(0))).doubleValue();
+        double xValue = ((DoubleToken) (x.get(0))).doubleValue();
+        double yValue = ((DoubleToken) (y.get(0))).doubleValue();
 
-            double magnitudeValue
-                = Math.sqrt (xValue * xValue + yValue * yValue);
-            double angleValue
-                = Math.atan2(yValue, xValue);
+        double magnitudeValue
+            = Math.sqrt (xValue * xValue + yValue * yValue);
+        double angleValue
+            = Math.atan2(yValue, xValue);
 
-            magnitude.send(0, new DoubleToken (magnitudeValue));
-            angle.send(0, new DoubleToken (angleValue));
-        }
+        magnitude.send(0, new DoubleToken (magnitudeValue));
+        angle.send(0, new DoubleToken (angleValue));
+    }
+
+    /** Return false if either of the input ports has no token, otherwise
+     *  return what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if ( (!x.hasToken(0)) || (!y.hasToken(0)) ) return false;
+        return super.prefire();
     }
 }
+
