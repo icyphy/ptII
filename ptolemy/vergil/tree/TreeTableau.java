@@ -145,27 +145,28 @@ public class TreeTableau extends Tableau {
         ////                     public methods                    ////
 
 	/** If the effigy is an instance of PtolemyEffigy referencing
-         *  an instance of CompositeEntity, then create
-         *  a TreeTableau contained by the effigy. The tableau will
-         *  assigned the name "treeTableau".  If there is already such
-         *  a tableau in the effigy, then just show it instead of creating
-         *  a new one.  If the
-         *  effigy is not an instance of PtolemyEffigy referencing
-         *  an instance of CompositeEntity, and there
-         *  no pre-existing tableau named "treeTableau", then return null.
+         *  an instance of CompositeEntity, then create a TreeTableau
+         *  contained by the effigy. The tableau will assigned the
+         *  name "treeTableau".  If there is already such a tableau in
+         *  the effigy, then just show it instead of creating a new
+         *  one.  If the effigy is not an instance of PtolemyEffigy
+         *  referencing an instance of CompositeEntity, and there no
+         *  pre-existing tableau named "treeTableau", then return
+         *  null.  It is the responsibility of callers of this method
+	 *  to check the return value and call show().
+	 *
 	 *  @param effigy An effigy of a Ptolemy model.
 	 *  @return A new tree-view tableau, or null if the effigy is not
          *   that of a composite entity.
          *  @exception Exception If the effigy is a PtolemyEffigy, but
-         *   construction of the tree view fails for some reason.
-	 */
+         *   construction of the tree view fails for some reason.  */
 	public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a TreeTableau.
                 TreeTableau previous =
                     (TreeTableau)effigy.getEntity("treeTableau");
+
                 if (previous != null) {
-                    previous.show();
                     return previous;
                 } else {
                     PtolemyEffigy ptEffigy = (PtolemyEffigy)effigy;
