@@ -69,7 +69,7 @@ import javax.swing.table.TableColumn;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.unit.Units;
+import ptolemy.data.unit.UnitAttribute;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -226,7 +226,8 @@ public class PortConfigurerDialog
                     }
 
                     String _units = "";
-                    Units _unitsAttribute = (Units) port.getAttribute("_units");
+                    UnitAttribute _unitsAttribute =
+                        (UnitAttribute) port.getAttribute("_units");
                     if (_unitsAttribute != null) {
                         _units = _unitsAttribute.getExpression();
                     }
@@ -767,8 +768,8 @@ public class PortConfigurerDialog
                 }
 
                 String _units = null;
-                Units _unitsAttribute =
-                    (Units) actualPort.getAttribute("_units");
+                UnitAttribute _unitsAttribute =
+                    (UnitAttribute) actualPort.getAttribute("_units");
                 if (_unitsAttribute != null) {
                     _units = _unitsAttribute.getExpression();
                 }
