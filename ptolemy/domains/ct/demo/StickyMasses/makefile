@@ -54,11 +54,8 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Controller.gif \
-	Separate.gif \
 	StickyMasses.htm \
 	StickyMassesVergil.htm \
-	Together.gif \
 	SMdiagram.gif \
 	SMphysics.gif \
 	SMresult.gif
