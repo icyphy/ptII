@@ -37,11 +37,13 @@ ME =		ptolemy/apps
 # the variables are empty
 #
 # PTKVM_DIR is set to kvm by configure if the kvm runtime was found
+# PTJMF_DIR is set to jmf if the Java Media Framework was found.
 # PTLEGO_DIR is set to lego if the commapi was found.
 # PTLEJOS_DIR is set to lejos if Legos and the commapi was found.
 # PTSOOT_DIR is set to soot if Soot was fount.
 # PTWABA_DIR is set to waba if waba was found
-DIRS =		agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTLEJOS) \
+DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
+		$(PTLEGO_DIR) $(PTLEJOS) \
 		tini $(PTSOOT_DIR) $(PTWABA_DIR)
 
 # Root of Ptolemy II directory
