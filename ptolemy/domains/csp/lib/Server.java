@@ -74,7 +74,7 @@ public class Server extends CSPActor {
         super();
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(1)) );
         _input = new TypedIOPort(this, "input", true, false);
-	_input.setDeclaredType(Token.class);
+	_input.setTypeEquals(Token.class);
     }
 
     /** Construct a Server in the specified container with the specified
@@ -118,7 +118,7 @@ public class Server extends CSPActor {
         super(cont, name);
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
         _input = new TypedIOPort(this, "input", true, false);
-	_input.setDeclaredType(Token.class);
+	_input.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

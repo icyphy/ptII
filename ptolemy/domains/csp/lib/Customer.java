@@ -122,7 +122,7 @@ public class Customer extends CSPActor {
          _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
          _output = new TypedIOPort(this, "output", false, true);
 
-	 _output.setDeclaredType(IntToken.class);
+	 _output.setTypeEquals(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
