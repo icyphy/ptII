@@ -10,7 +10,7 @@
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergilHyVisual.jnlp"> 
   <information>
-	  <title>HyVisual @PTVERSION@ </title>
+	  <title>HyVisual 2.2-beta</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
 	  <description>Hybrid Systems Modeling Environment</description>
 	  <description kind="tooltip">Hybrid Systems Modelling</description>
