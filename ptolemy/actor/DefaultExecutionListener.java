@@ -90,7 +90,7 @@ public class DefaultExecutionListener implements ExecutionListener {
         System.out.println("DefaultExecutionListener.executionPaused()");
     }
 
-    /** Called to report a successfull resumption of execution.
+    /** Called to report a successful resumption of execution.
      */
     public void executionResumed(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionResumed()");
