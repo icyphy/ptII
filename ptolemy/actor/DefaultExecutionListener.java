@@ -1,4 +1,4 @@
-/* One line description of file.
+/* A default implementation of the ExecutionListener interface
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -75,8 +75,7 @@ public class DefaultExecutionListener implements ExecutionListener {
     /** Called to report that a toplevel iteration has begun
      */
     public void executionIterationStarted(ExecutionEvent event) {
-        //This is printed every iteration.. way too much for now..
-        //System.out.println("DefaultExecutionListener.executionIterationStarted()");
+        // This is printed every iteration.. way too much for now..
     }
 
     /** Called to report a successful pause of execution
@@ -102,6 +101,4 @@ public class DefaultExecutionListener implements ExecutionListener {
     public void executionTerminated(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionTerminated()");
     }
-
-
 }
