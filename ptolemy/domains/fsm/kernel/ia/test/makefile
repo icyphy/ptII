@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/fsm/kernel/test
+ME =		ptolemy/domains/fsm/kernel/ia/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,23 +45,11 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-        AlternatingSimulation.java \
-        CombineInternalTransitions.java \
-        Compose.java \
-	DeadlockStates.java \
-        GetInfo.java \
-	Project.java \
-	ZeroOneSource.java
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	FSMActor.tcl \
-	FSM-ConstVariableModelAnalysis.tcl \
-	FSMDirector.tcl \
-	HSDirector.tcl \
-	State.tcl \
-	Transition.tcl
+	InterfaceAutomaton.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -70,13 +58,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	README \
-	channel.xml \
-	comp.xml \
-	goodChannel.xml \
-	quickComp.xml \
-	user.xml
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS)
 
 	#$(JGRAPHICAL_TESTS)
 

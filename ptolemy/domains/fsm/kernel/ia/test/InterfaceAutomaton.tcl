@@ -45,14 +45,14 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test InterfaceAutomaton-1.1 {test creating an InterfaceAutomaton} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $e0 ia]
 
     set v0 [java::field [java::cast ptolemy.domains.fsm.kernel.FSMActor $ia] \
         initialStateName]
 
-    set ia1 [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton]
+    set ia1 [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton]
     set ws [java::new ptolemy.kernel.util.Workspace]
-    set ia2 [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $ws]
+    set ia2 [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $ws]
     list [$ia getFullName] [$v0 getFullName] [$ia1 getFullName] \
             [$ia2 getFullName]
 } {..ia ..ia.initialStateName . .}
@@ -72,7 +72,7 @@ test InterfaceAutomaton-1.2 {container must be TypedCompositeActor or null} {
 test InterfaceAutomaton-2.1 {test getDirector} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set dir [java::new ptolemy.actor.Director $e0 dir]
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $e0 ia]
     set re0 [expr {[$ia getDirector] == $dir}]
     set re1 [expr {[$ia getExecutiveDirector] == $dir}]
     $ia setContainer [java::null]
@@ -94,7 +94,7 @@ test InterfaceAutomaton-2.2 {test getManager} {
 #
 test InterfaceAutomaton-3.1 {test listing input and output ports} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $e0 ia]
     set p0 [java::new ptolemy.actor.TypedIOPort $ia p0]
     set p1 [java::new ptolemy.actor.TypedIOPort $ia p1 true true]
     set p2 [java::new ptolemy.actor.TypedIOPort $ia p2 true false]
@@ -123,7 +123,7 @@ test InterfaceAutomaton-3.3 {test newReceiver} {
 #
 test InterfaceAutomaton-4.1 {test setting initial state} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $e0 ia]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $ia s0]
     set s1 [java::new ptolemy.domains.fsm.kernel.State $ia s1]
     set p [java::field [java::cast \
@@ -142,10 +142,10 @@ test InterfaceAutomaton-4.1 {test setting initial state} {
 ####
 #
 test InterfaceAutomaton-6.1 {test newRelation} {
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton]
     set r0 [$ia newRelation r0]
     set re0 [java::instanceof $r0 \
-        ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition]
+        ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition]
     catch {$ia newRelation r0} msg
     list $re0 [$r0 getFullName] $msg
 } {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".<Unnamed Object>", which already contains an object with that name.}}
@@ -157,12 +157,12 @@ test InterfaceAutomaton-7.1 {test setting input transition} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set dir [java::new ptolemy.actor.Director $e0 dir]
 
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
+    set ia [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton $e0 ia]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $ia s0]
     [java::field [java::cast ptolemy.domains.fsm.kernel.FSMActor $ia] \
       initialStateName] setExpression s0
     set s1 [java::new ptolemy.domains.fsm.kernel.State $ia s1]
-    set t0 [java::new ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition \
+    set t0 [java::new ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition \
       $ia t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
@@ -189,7 +189,7 @@ test InterfaceAutomaton-7.3 {test setting internal transition} {
 #
 test InterfaceAutomaton-8.1 {test generating moml} {
     $ia exportMoML
-} {<entity name="ia" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+} {<entity name="ia" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="s0">
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -218,7 +218,7 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <relation name="t0" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="t0" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c=true">

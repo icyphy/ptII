@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-package ptolemy.domains.fsm.kernel;
+package ptolemy.domains.fsm.kernel.ia;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +36,9 @@ import java.util.Set;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;

@@ -24,7 +24,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-package ptolemy.domains.fsm.kernel;
+package ptolemy.domains.fsm.kernel.ia;
+
+import ptolemy.domains.fsm.kernel.State;
 
 
 //////////////////////////////////////////////////////////////////////////

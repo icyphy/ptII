@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
+# Makefile for the Ptolemy II Finite State Machine (FSM) Interface Automatons
 #
-# @Authors: Xiaojun Liu
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,53 +29,31 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/fsm/kernel
+ME =            ptolemy/domains/fsm/kernel/ia
 
 # Root of the ptII directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		ia test
+DIRS = 		test
 
 CLASSPATH =	$(ROOT)
 
 # Used to build zip files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	ia
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		ia/ia.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	AbstractActionsAttribute.java \
-	Action.java \
-	ChoiceAction.java \
-	CommitAction.java \
-	CommitActionsAttribute.java \
-	FSMActor.java \
-	FSMDirector.java \
-	FunctionDependencyOfFSMActor.java \
-	HSDirector.java \
-	MultipleEnabledTransitionsException.java \
-	MultirateFSMDirector.java \
-	NonStrictFSMDirector.java \
-	OutputActionsAttribute.java \
-	ParseTreeEvaluatorForGuardExpression.java \
-	RelationList.java \
-	State.java \
-	StateEvent.java \
-	Transition.java
+	InterfaceAutomaton.java \
+	InterfaceAutomatonTransition.java \
+	StatePair.java
 
-OTHER_FILES_TO_BE_JARED = \
-	fsmentities.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -24,9 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-package ptolemy.domains.fsm.kernel;
+package ptolemy.domains.fsm.kernel.ia;
 
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
