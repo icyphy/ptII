@@ -57,7 +57,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="DifferentialSystem0" class="ptolemy.domains.ct.lib.DifferentialSystem">
-        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;x1&quot;, &quot;x2&quot;]">
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;}">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
         </property>
@@ -147,9 +147,6 @@
             <port name="x2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="u" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <relation name="relation_x1" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -180,7 +177,6 @@
         <link port="output_y.output" relation="_R3"/>
         <link port="output_y.x1" relation="relation_x1"/>
         <link port="output_y.x2" relation="relation_x2"/>
-        <link port="output_y.u" relation="relation_u"/>
     </entity>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -212,6 +208,9 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
