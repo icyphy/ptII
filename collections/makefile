@@ -152,6 +152,8 @@ PTCOLLECTIONS_CLASSES = \
 	collections/Assertable.class \
 	collections/Bag.class \
 	collections/CEImpl.class \
+	collections/CLCell.class \
+	collections/CLEnumeration.class \
 	collections/Cell.class \
 	collections/CircularList.class \
 	collections/Collection.class \
@@ -172,6 +174,7 @@ PTCOLLECTIONS_CLASSES = \
 	collections/LLCellEnumeration.class \
 	collections/LLMap.class \
 	collections/LLPair.class \
+	collections/LLPairEnumeration.class \
 	collections/LinkedList.class \
 	collections/Map.class \
 	collections/Predicate.class \
