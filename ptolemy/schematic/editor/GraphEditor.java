@@ -33,6 +33,7 @@ package ptolemy.schematic.editor;
 import ptolemy.schematic.util.Schematic;
 import ptolemy.schematic.util.SchematicDirector;
 import ptolemy.schematic.util.SchematicEntity;
+import ptolemy.schematic.util.SchematicParameter;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.EntityLibrary;
 import ptolemy.schematic.util.PTMLObjectFactory;
@@ -256,44 +257,31 @@ public class GraphEditor extends AbstractApplication {
     public void initializePalette () {
         JShadePane s =_applicationFrame.getShadePane();
 
-        ApplicationResources resources = getApplicationResources();
-        Icon newIcon = resources.getImageIcon("New");
-        Icon openIcon = resources.getImageIcon("Open");
-        Icon saveIcon = resources.getImageIcon("Save");
-        
-        JPalette p1 = new JPalette();
-        p1.removeAll();
-        p1.addIcon(newIcon, "foo");
-        p1.addIcon(openIcon, "bar");
-        p1.addIcon(saveIcon, "baz");
-         
-        JPalette p2 = new JPalette();
-        SchematicPalette p3 = new SchematicPalette();
-
-        try {
-            parseLibraries();
-            EntityLibrary genericlib = 
-                _entityLibrary.getSubLibrary("generic");
-            Enumeration entities = genericlib.entities();
-            int i = 0;
-            while(entities.hasMoreElements()) {
-                p3.addNode((SchematicEntity) entities.nextElement(), 
-                    60, 50 + (i++) * 50);            
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+        parseLibraries();
+        JTabbedPane pane = createPaneFromEntityLibrary(_entityLibrary);
+        s.addShade("Entity Library", null, pane, "The Default entity library");
+    }
+    
+    public JTabbedPane createPaneFromEntityLibrary(EntityLibrary library) {
+        Enumeration enum;
+        JTabbedPane pane = new JTabbedPane();
+        enum = library.subLibraries();
+        while(enum.hasMoreElements()) {
+            EntityLibrary sublib = (EntityLibrary) enum.nextElement();
+            pane.addTab(sublib.getName(), createPaneFromEntityLibrary(sublib));
         }
 
-        s.addShade("Test3", saveIcon, p3, "save group -- boring...");
- 
-        s.addShade("Test2", openIcon, p2, "open group -- disabled!");
- 
-	s.addShade("Test1", newIcon, p1, "new group -- cool icons!");
-
-        s.setEnabledAt(1, false);
-
-        p3.triggerLayout();
+        enum = library.entities();
+        if(enum.hasMoreElements()) {
+            SchematicPalette palette = new SchematicPalette();
+            int i = 0;
+            while(enum.hasMoreElements()) {
+                palette.addNode((SchematicEntity) enum.nextElement(), 
+                        60, 50 + (i++) * 50);            
+            }
+            pane.addTab("entities", palette);
+        }
+        return pane;
     }
     
     /** Initialize the given menubar. Currently, all strings are
@@ -365,16 +353,18 @@ public class GraphEditor extends AbstractApplication {
                 try {
                     Schematic schematic = 
                         (Schematic) d.getCurrentSheet().getModel();
+                    // FIXME set the Director.  This is a hack, but it's the 
+                    // Simplest hack.
+		    SchematicDirector director = 
+			_entityLibrary.findDirector(
+                                (String)_directorComboBox.getSelectedItem());
+		    schematic.setDirector(director);
+                    
                     PtolemyModelFactory factory = new PtolemyModelFactory();
                     TypedCompositeActor system = 
                         factory.createPtolemyModel(schematic);
                     Manager manager = system.getManager();
 		    // manager.addDebugListener(new StreamListener());
-		    Director director = system.getDirector();
-		    Parameter iterations = 
-		    (Parameter) director.getAttribute("iterations");
-		    iterations.setToken(new IntToken(20000));
-
                     manager.startRun();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -439,16 +429,42 @@ public class GraphEditor extends AbstractApplication {
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged (ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    GraphDocument d = (GraphDocument) getCurrentDocument();
-		    Schematic schematic = 
-			(Schematic) d.getCurrentSheet().getModel();
-		    SchematicDirector director = 
-			_entityLibrary.findDirector((String)e.getItem());
-		    schematic.setDirector(director);
+                    setDirectorOfCurrentDocument((String)e.getItem());
                 }
             }
         });
         tb.add(_directorComboBox);
+
+        action = new AbstractAction ("Director Parameters") {
+            public void actionPerformed(ActionEvent e) {
+                Document d = getCurrentDocument();
+                if (d == null) {
+                    return;
+                } 
+                try {
+                    Schematic schematic = 
+                        (Schematic) d.getCurrentSheet().getModel();
+                    SchematicDirector director = 
+                        schematic.getDirector();
+                    // FIXME open a window containing 
+                    // the director's parameters.
+                    // For right now, just give the iterations parameter
+                    // something useful.
+                    SchematicParameter param =
+                        director.getParameter("iterations");
+                    if(param == null)
+                        param = new SchematicParameter("iterations");
+                    param.setType("ptolemy.data.IntToken");
+                    param.setValue("256");                    
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new GraphException(ex.getMessage());
+                }
+                 
+            }
+        };
+        addAction(action);
+        addToolBarButton(tb, action, "Set Director Parameters", resources.getImageIcon("New"));
     }
 
     /** Create and run a new graph application
@@ -535,8 +551,22 @@ public class GraphEditor extends AbstractApplication {
             JComponent pane = (JComponent) _contentPanes.get(d);
             _applicationFrame.setCurrentContentPane(pane);
         }
+        setDirectorOfCurrentDocument((String) _directorComboBox.getSelectedItem());
     }
- 
+    
+    /** Set the director of the current document to the director in
+     * the entity library with the given name
+     */
+    public void setDirectorOfCurrentDocument(String name) {
+        GraphDocument d = (GraphDocument) getCurrentDocument();
+        if(d == null) return;
+        Schematic schematic = 
+            (Schematic) d.getCurrentSheet().getModel();
+        SchematicDirector director = 
+            _entityLibrary.findDirector(name);
+        schematic.setDirector(director);
+    }
+
     /** Show an error that occurred in this class.
      */
     private void showError(String op, Exception e) {

@@ -61,6 +61,11 @@ import java.net.URL;
  */
 public class EditorGraphController extends GraphController {
  
+    /**
+     * The graph that is being displayed.
+     */
+    private Graph _graph;
+
     /** The selection interactor for drag-selecting nodes
      */
     private SelectionDragger _selectionDragger;
@@ -252,6 +257,13 @@ ef.route();
     }
 
     /**
+     * Return the graph being viewed.
+     */
+    public Graph getGraph() {
+        return _graph;
+    }
+
+    /**
      * Initialize all interaction on the graph pane. This method
      * is called by the setGraphPane() method of the superclass.
      * This initialization cannot be done in the constructor because
@@ -275,6 +287,74 @@ ef.route();
         _edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
+    }
+
+    /**
+     * Set the graph being viewed. If there is a graph already
+     * and it contains data, delete the figures of that graph's
+     * nodes and edges (but don't modify the graph itself).
+     */
+    public void setGraph(Graph graph) {
+        Schematic g = (Schematic) graph;
+        Figure f;
+        Node n;
+        Edge e;
+        Iterator i;
+        FigureLayer layer = getGraphPane().getForegroundLayer();
+
+        // Clear existing figures
+        if (getGraph() != null && getGraph().getNodeCount() != 0) {
+            for (i = getGraph().nodes(); i.hasNext(); ) {
+                n = (Node) i.next();
+                f = (Figure) n.getVisualObject();
+                layer.remove(f);
+                f.setUserObject(null);
+                n.setVisualObject(null);
+            }
+            Enumeration relations = g.relations();
+            while(relations.hasMoreElements()) {
+                SchematicRelation relation = 
+                    (SchematicRelation) relations.nextElement();
+                Enumeration enum;
+                for (enum = relation.terminals(); 
+                     enum.hasMoreElements(); ) {
+                    n = (Node) enum.nextElement();
+                    f = (Figure) n.getVisualObject();
+                    layer.remove(f);
+                    f.setUserObject(null);
+                    n.setVisualObject(null);
+                }
+                for (enum = relation.links(); enum.hasMoreElements(); ) {
+                    e = (Edge) enum.nextElement();
+                    f = (Figure) e.getVisualObject();
+                    layer.remove(f);
+                    f.setUserObject(null);
+                    e.setVisualObject(null);
+                }
+            }
+        }
+
+        // Draw new entities
+        for (i = g.nodes(); i.hasNext(); ) {
+            drawNode((Node)i.next(), 100, 100);
+        }
+        
+        Enumeration relations = g.relations();
+        while(relations.hasMoreElements()) {
+            SchematicRelation relation = 
+                (SchematicRelation) relations.nextElement();
+            Enumeration enum;
+            for (enum = relation.terminals(); enum.hasMoreElements(); ) {
+                drawNode((Node)enum.nextElement(), 100, 100);
+            }
+
+            for (enum = relation.links(); enum.hasMoreElements(); ) {
+                drawEdge((Edge) enum.nextElement());
+            }
+        }
+
+        // Set the graph
+        _graph = g;
     }
 
     ///////////////////////////////////////////////////////////////
