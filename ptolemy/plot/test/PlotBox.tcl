@@ -174,11 +174,6 @@ test PlotBox-10.2 {getTitle} {
     $plot getTitle
 } {Software Downloads}
 
-test PlotBox-11.1 {setXLog} {
-    $plot setXLog true
-    $plot setYLog true
-    $plot repaint
-} {}
 
 test PlotBox-12.1 {setXRange} {
     $plot setXRange 0.001 10
@@ -326,7 +321,7 @@ test PlotBox-14.2 {write with DTD included} {
 <yLog/>
 <noColor/>
 </plot>
-}
+}}
 
 test PlotBox-14.3 {writeOldSyntax} {
     set stream [java::new java.io.ByteArrayOutputStream]
@@ -339,7 +334,7 @@ test PlotBox-14.3 {writeOldSyntax} {
                 [$stream toString] "\n" output
 
     list $output
-} {# Ptolemy plot, version 2.0
+} {{# Ptolemy plot, version 2.0
 TitleText: Software Downloads
 XLabel: Year
 YLabel: Downloads
@@ -349,7 +344,7 @@ XTicks: "1993" 0.0, "1994" 1.0, "1995" 2.0, "1996" 3.0, "1997" 4.0, "1998" 5.0, 
 XLog: on
 YLog: on
 Color: off
-}
+}}
 
 test PlotBox-15.1 {export} {
     set stream [java::new java.io.ByteArrayOutputStream]
@@ -384,14 +379,13 @@ test PlotBox-17.1 {setXLog, setYLog, getXLog, getYLog} {
     list $r1 $r2
 } {1 1}
 
-
-test PlotBox-17.1 {getXRange, getYRange} {
+test PlotBox-18.1 {getXRange, getYRange} {
     set xrange [$plot getXRange]
     set yrange [$plot getYRange]
     list [$xrange getrange] [$yrange getrange]
 } {{0.001 10.0} {1.0 1000.0}}
 
-test PlotBox-17.2 {setXRange, setYRange} {
+test PlotBox-18.2 {setXRange, setYRange} {
     $plot setXRange 0.002 11.0
     $plot setYRange 0.5 1020.0
     set xrange [$plot getXRange]
@@ -400,7 +394,7 @@ test PlotBox-17.2 {setXRange, setYRange} {
 } {{0.002 11.0} {0.5 1020.0}}
 
 
-test PlotBox-18.1 {getXTicks, getYTicks} {
+test PlotBox-19.1 {getXTicks, getYTicks} {
     set xticks [$plot getXTicks]
     set xtick0 [$xticks get 0]
     set xtick1 [$xticks get 1]
@@ -408,13 +402,13 @@ test PlotBox-18.1 {getXTicks, getYTicks} {
     list [$xtick0 toString] [$xtick1 toString] [java::isnull $yticks]
 } {{[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]} {[1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003]} 1}
 
-test PlotBox-19.1 {read} {
+test PlotBox-20.1 {read} {
     $plot read "Title: Read Title Test"
     list [$plot getTitle]
 } {}
 
 # FIXME: Need a better test of setWrap 
-test PlotBox-20.1 {setWrap} {
+test PlotBox-21.1 {setWrap} {
     $plot setWrap true
 } {}
 
