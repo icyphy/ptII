@@ -136,7 +136,7 @@ cannot be read for some reason.
 This parser supports the way Ptolemy II handles hierarchical models,
 where components are instances cloned from reference models called
 "classes." A model (a composite entity) is a "class" in Ptolemy II if
-the className field of its MoMLInfo object is the string "class".  If a
+the elementName field of its MoMLInfo object is the string "class".  If a
 component is cloned from a class, then when that component exports
 MoML, it references the class from which it was cloned
 and exports only its attributes.  However, if further changes are
@@ -1330,8 +1330,8 @@ public class MoMLParser extends HandlerBase {
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
-                // System.err.println("******** original error:");
-                // ex.printStackTrace();
+                System.err.println("******** original error:");
+                ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
@@ -1538,7 +1538,10 @@ public class MoMLParser extends HandlerBase {
                     }
 
                     // Set the classname and source of the import.
-                    reference.getMoMLInfo().className = className;
+                    // NOTE: This isn't right. It results in the class
+                    // name of the master being the master itself, which
+                    // is self-referential.
+                    // reference.getMoMLInfo().className = className;
 
                     // NOTE: This might be a relative file reference, which
                     // won't be of much use if a MoML file is moved.
@@ -1604,9 +1607,16 @@ public class MoMLParser extends HandlerBase {
                         _parser.getColumnNumber());
             }
 
-            // Clone it into the workspace of the container.
-            ComponentEntity newEntity =
-                (ComponentEntity)reference.clone(container.workspace());
+            // Clone it into the workspace of the container, if there is one,
+            // or the workspace of the reference if not.
+            ComponentEntity newEntity = null;
+            if (container == null) {
+                newEntity = (ComponentEntity)
+                        reference.clone(reference.workspace());
+            } else {
+                newEntity = (ComponentEntity)
+                        reference.clone(container.workspace());
+            }
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -1633,7 +1643,9 @@ public class MoMLParser extends HandlerBase {
             // If the container is cloned from something, then
             // add to it a MoML description of the entity, so that
             // this new entity will be persistent.
-            _recordNewObject(container, newEntity);
+            if (container != null) {
+                _recordNewObject(container, newEntity);
+            }
 
             return newEntity;
         }
