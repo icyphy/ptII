@@ -102,29 +102,6 @@ public class WirelessReceiver extends DEReceiver {
 
     /** Override the base class to attach an empty properties token.
      *  @param token The token to put.
-     *  @param time The time in the future.
-     *  @exception IllegalActionException If there are problems creating
-     *  the RecordToken or if the parent class throws it.
-     */
-    public synchronized void put(Token token, Time time)
-            throws IllegalActionException {
-        // Bundle the two into one token.
-        // Construct the message about the input signal detected.
-        String[] labels = {"properties", "value"};
-        // The following should not occur, but just in case...
-        if (token == null) {
-            token = _dummy;
-        }
-        Token[] values = {
-            _dummy,
-            token
-        };
-        Token result = new RecordToken(labels, values);
-        super.put(result, time);
-    }
-
-    /** Override the base class to attach an empty properties token.
-     *  @param token The token to put.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
     public synchronized void put(Token token) {

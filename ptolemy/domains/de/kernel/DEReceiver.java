@@ -162,70 +162,10 @@ public class DEReceiver extends AbstractReceiver {
     public synchronized void put(Token token) {
         try {
             DEDirector dir = _getDirector();
-            if (_useDelay) {
-                _useDelay = false;
-                if (_delay == 0.0) {
-                    // Use special enqueue method to increment microstep.
-                    dir._enqueueEvent(this, token);
-                } else {
-                    dir._enqueueEvent(this, token,
-                            dir.getModelTime().add(_delay));
-                }
-            } else {
-                dir._enqueueEvent(this, token, dir.getModelTime());
-            }
+            dir._enqueueEvent(this, token, dir.getModelTime());
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }
-    }
-
-    /** Put a token into this receiver with a future time stamp. This token
-     *  will be available to the get() method at the time specified.
-     *  Note that the time should be greater than or equal
-     *  to the current time of the director, otherwise an exception will
-     *  be thrown.
-     *  This method is synchronized since the actor may not
-     *  execute in the same thread as the director.
-     *  @param token The token to be put.
-     *  @param time The time stamp of the token
-     *  @exception IllegalActionException If time is less than the
-     *     current time of the director, or no director is available.
-     */
-    public synchronized void put(Token token, Time time)
-            throws IllegalActionException{
-        DEDirector dir = _getDirector();
-        Time now = dir.getModelTime();
-        if (time.compareTo(now) < 0) {
-            throw new IllegalActionException(getContainer(),
-                    "Cannot enqueue a token in the past.");
-        }
-        if (time.equals(now)) {
-            // Use special enqueue method to increment microstep.
-            dir._enqueueEvent(this, token);
-        } else {
-            dir._enqueueEvent(this, token, time);
-        }
-    }
-
-    /** Set the delay for the next call to put().  This causes the director
-     *  to make the token available for the get() method at some future time,
-     *  i.e. current time plus the specified delay.  This value of delay is
-     *  only used in the next call to put().
-     *  If the specified delay is zero, then the next event is queued to be
-     *  processed in the next microstep.
-     *  This method is synchronized since the actor may not
-     *  execute in the same thread as the director.
-     *  @param delay The delay.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public synchronized void setDelay(double delay)
-            throws IllegalActionException {
-        if (delay < 0.0) {
-            throw new IllegalActionException(getContainer(),
-                    "Cannot specify a negative delay.");
-        }
-        _delay = delay;
-        _useDelay = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -298,19 +238,12 @@ public class DEReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The delay for the next call to put().
-    private double _delay = 0.0;
-
-    // A flag indicating that setDelay() has been called.
-    private boolean _useDelay = false;
-
     // The director where this DEReceiver should register the
     // events being put in it.
     // NOTE: This should be accessed only via getDirector().
     private DEDirector _director;
     private long _directorVersion = -1;
 
-    // List for storing tokens.  Access with clear(), add(),
-    // and take().
+    // List for storing tokens.  Access with clear(), add(), and take().
     private LinkedList _tokens = new LinkedList();
 }
