@@ -66,7 +66,7 @@ It is required that the value of the input index be less than or equal to the
 length parameter.
 @see LookupTable
 @see RecordDisassembler
-@authors Edward A. Lee, Elaine Cheong,Jim Armstrong
+@authors Edward A. Lee, Elaine Cheong, Jim Armstrong
 @version $Id$
 */
 
@@ -166,14 +166,15 @@ public class ArrayMem extends TypedAtomicActor {
         _aLength =((IntToken)length.getToken()).intValue();
         _mem = new Token[_aLength];
     }
-    /** If read has a token, copy the ith elment of the memory to dataOutSer.
-     *  If write has a token, copy the dataInSer input to the ith element of memory.
-     *  If init has a token, copy the dataInPar input to the internal array*
+    /** If read has a token, copy the ith elment of the memory to
+     *  dataOutSer.  If write has a token, copy the dataInSer input to
+     *  the ith element of memory.  If init has a token, copy the
+     *  dataInPar input to the internal array*
      *  @exception IllegalActionException If the index input
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-        BooleanToken yes=BooleanToken.TRUE;
+        BooleanToken yes = BooleanToken.TRUE;
         /**Read the Serial/Parallel Control*/
         if(serPar.hasToken(0)){
             _serPar = ((BooleanToken)serPar.get(0)).booleanValue();
@@ -195,12 +196,12 @@ public class ArrayMem extends TypedAtomicActor {
 
             if (_write.isEqualTo(yes).booleanValue()){
                 if(_serPar){
-                    _mem[_index]=(Token)dataInSer.get(0);
+                    _mem[_index] = (Token)dataInSer.get(0);
                 }
                 else {if(dataInPar.hasToken(0)){
                     ArrayToken token = (ArrayToken)dataInPar.get(0);
                     for(int i = 0; i < _aLength; i++) {
-                        _mem[i]=(token.getElement(i));
+                        _mem[i] = (token.getElement(i));
                     }
                 }
                 }
@@ -210,11 +211,10 @@ public class ArrayMem extends TypedAtomicActor {
                 _read  = (BooleanToken)read.get(0);
                 if(_read.isEqualTo(yes).booleanValue()){
                     if(_serPar){
-                        dataOutSer.send(0,_mem[_index]);
+                        dataOutSer.send(0, _mem[_index]);
                     }
                     else{
-
-                        dataOutPar.send(0,new ArrayToken(_mem));
+                        dataOutPar.send(0, new ArrayToken(_mem));
                     }
                 }
             }
