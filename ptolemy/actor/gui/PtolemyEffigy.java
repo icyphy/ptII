@@ -365,4 +365,36 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             }
 	}
     }
+
+    /** A factory for creating new Ptolemy effigies, but without the
+     *  capability of creating a new blank effigy.  Use this factory
+     *  in a configuration if you do not want the factory to appear
+     *  in the File->New menu.
+     */
+    public static class FactoryWithoutNew extends Factory {
+
+	/** Create a factory with the given name and container.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public FactoryWithoutNew(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Return false, indicating that this effigy factory is not
+         *  capable of creating an effigy without a URL being specified.
+         *  @return False.
+         */
+        public boolean canCreateBlankEffigy() {
+            return false;
+        }
+    }
 }
