@@ -1,0 +1,331 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Review guidelines and check-lists</title>
+</head>
+
+<body bgcolor="#faf0e6">
+
+
+<h1>Review guidelines and check-lists</h1>
+
+This document lists Ptolemy-specific guidelines and check-lists for
+the process described in the <a href="rating.html">Change control and
+code rating</a> document. The guidelines list the steps in the process
+-- these steps are based on practical experience with making the
+process as smooth and effective as possible. The check-lists seem
+long, but we highliy recommend that authors go through these to make
+their reviews as smooth and productive as possible.
+
+
+<p><B>Contents</B>
+<ul>
+<li><a href="#process">The review process</a>
+<li><a href="#mini-reviews">Mini-reviews</a>
+<li><a href="#moderator">Moderator check-list</a>
+<li><a href="#yellow-checklist">Author check-list -- yellow</a>
+<li><a href="#green-checklist">Author check-list -- green</a>
+<li><a href="#blue-checklist">Author check-list -- blue</a>
+</ul>
+
+<p>
+
+<p><B>See also</B>:
+
+<ul>
+
+<li><a
+href="rating.html">Change control and code rating overview</a>
+
+<li><a
+href="http://ptolemy.eecs.berkeley.edu/~johnr/info/reviews.html">Notes
+on software reviews</a>
+
+</ul>
+
+<a name="process">
+<h2>The review process</h2>
+</a>
+
+This is the suggested process for conducting a review in
+the Ptolemy project. All reviews follow this same basic
+format, which deviates from the formal inspection process
+where we have felt it necessary to stream-line the process
+in our environment.
+
+<p>
+<b>Organizing a review</b>
+
+<p>
+The author is responsible for getting the review
+process started. When an author has code that is
+ready for review, he or she verifies this by running
+through the <i>Development check-list</i> for the type
+of review. (See lists below).
+
+<p> The author then finds someone willing to be the
+moderator, and they agree on a suitable time.
+The author then runs through the <i>Review preparation</i>
+check-list. When completed, the moderator announces
+the review and requests reviewers.
+
+<p> Here are the steps:
+
+<ol>
+<li>Author steps through <i>Development check-list</i>
+<li>Author finds moderator and they schedule a date
+<li>Author steps through <i>Review preparation check-list</i>
+<li>Moderator announces review and calls for reviewers
+</ol>
+
+<p>
+<b>Conducting a review</b>
+
+<p>
+The review requires four roles:
+
+<ul>
+<li>The <b>moderator</b> runs the meeting. In our
+process, the moderator also acts as reader.
+<li>The <b>author</b> answers questions about the design or code.
+<li>The <b>scribe</b> notes down issues and defects
+raised at the meeting.
+<li>The <b>reviewers</b> are all other reviewers. (The moderator
+and scribe are also reviewers.)
+</ul>
+
+<p>
+
+[...]
+
+<a name="mini-reviews">
+<h2>Mini-reviews</h2>
+</a>
+
+[...]
+
+<a name="moderator">
+<h2>Moderator check-list</h2>
+</a>
+
+The role of the moderator is crucial for successful reviews.
+If you are mdoerator for a review, print out this list
+and refer to it throughout the review process.
+
+<ol>
+<li> Verify with author that review materials are stable
+     for the duration of the review process. If not,
+     cancel process and request author to start again.
+
+<li> Verify that review can be announced no less then
+THREE days prior to the scheduled date.
+
+<li> Verify that the proposed material can be
+covered in the time scheduled for the meeting
+(75 - 90 minutes).
+
+<li> Announce the review and call for reviewers.
+
+<li> Verify that enough reviewers of the right type
+will be present. If not, re-announce or walk around
+recruiting.
+
+<li> Nominate or get a volunteer for scribe at least
+one day prior to the review.
+
+<li> Send a reminder to eallocal the day before the
+review.
+
+<li> At the start of the review meeting, state:
+<ol>
+<li> The purpose and scope of the meeting (i.e. to
+do a design review of these classes.)
+<li> The time at which the meeting will finish.
+
+</ol>
+
+<li> During the meeting, paraphrase the review material
+to focus the reviewers' attention on the right things.
+
+<li> During the meeting, keep the reviewers focussed
+on the review material. Do not allow discussion not
+directly related to the stated purpose of the meeting.
+
+<li> At the conclusion of the meeting, thank the
+participants.
+
+<li> At the conclusion of the meeting, remind the
+scribe to update the review Web page with
+noted issues within 24 hours.
+
+<li> When the author announces completion of rework,
+verify that the Web page has been updated with the
+author's responses.
+
+</ol>
+
+<a name="yellow-checklist">
+<h2>Author check-list -- yellow</h2>
+</a>
+
+Yellow is a committment to an initial architecture
+and design. Yellow requires a description of the design and
+javadoc-produced API documentation.
+
+<p>
+<b>Development</b>
+
+<ol>
+<li> Javadoc runs with no errors on classes scheduled
+     for review.
+<li> All methods produce documentation in javadoc output.
+<li> Review the output of <CODE>spell *.java</CODE>.
+
+</ol>
+
+<p><b>Review preparation</b>
+
+<ol>
+<li> Probable review date and time agreed with moderator.
+<li> Web page created for review and under SCCS control.
+<li> Web page contains HTTP links to:
+<ol>
+<li> Overview document
+<li> Javadoc output
+</ol>
+<li> Moderator notified of readiness.
+
+</ol>
+
+<p><b>Rework</b>
+
+<ol>
+<li> Each items on review Web page annotated with a response
+contained in <code>&lt;blockquote&gt; ... &lt;/blockquote&gt;</code>
+
+<li> Updated Web page and rework announced to ptdesign.
+
+</ol>
+
+<a name="green-checklist">
+<h2>Author check-list -- green</h2>
+</a>
+
+Green  is a committment to an implementation of the
+design. Green requires solid and tested code.
+
+<p>
+
+<b>Development</b>
+
+<ol>
+
+<li> Compile with <CODE>-deprecation</CODE>, run <CODE>make clean all
+JFLAGS=-deprecation</CODE> and fix any warnings. If it is not
+possibile to fix the warnings, consider adding the
+<CODE>@deprecated</CODE> javadoc tag to the method.
+
+<li> <CODE>make javadocs</CODE> does not produce any warnings.
+
+<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.
+
+<li> Run <CODE>jindent delget *.java</CODE> to
+reformat to Ptolemy group <a href="style.html">style standards</a>
+
+</ol>
+
+
+<p><b>Review preparation</b>
+
+<ol>
+<li> Probable review date and time agreed with moderator.
+<li> Web page created for review and under SCCS control.
+<li> Web page contains lists classes under review and
+contains HTTP links to:
+<ol>
+<li> Javadoc output
+<li> Source code directory
+</ol>
+<li> Moderator notified of readiness.
+</ol>
+
+<p><b>Rework</b>
+
+<ol>
+<li> Each items on review Web page annotated with a response
+contained in <code>&lt;blockquote&gt; ... &lt;/blockquote&gt;</code>
+
+<li> Updated Web page and rework announced to ptdesign.
+
+</ol>
+
+<a name="blue-checklist">
+<h2>Author check-list -- blue</h2>
+</a>
+
+<p
+Blue is a firm committment to backwards compatibility.
+Blue requires complete design, implementation, testing,
+and documentation. A blue review looks for defects
+in completed documentation, presentation, and packaging.
+
+<p>
+<b>Development</b>
+
+<ol>
+
+<li> Compile with <CODE>-deprecation</CODE>, run <CODE>make clean all
+JFLAGS=-deprecation</CODE> and fix any warnings. If it is not
+possibile to fix the warnings, consider adding the
+<CODE>@deprecated</CODE> javadoc tag to the method.
+
+<li> <CODE>make javadocs</CODE> does not produce any warnings.
+
+<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.
+
+<li> Review the output of <CODE>spell *.java</CODE>.
+
+<li> Check the test suite code coverage.  In general,
+	every method should be called by the test suite.
+	
+<li> Run <CODE>jindent delget *.java</CODE> to
+reformat to Ptolemy group <a href="style.html">style standards</a>
+
+<li> FIXME: what else?
+
+</ol>
+
+<p><b>Review preparation</b>
+
+<ol>
+<li> Probable review date and time agreed with moderator.
+<li> Web page created for review and under SCCS control.
+<li> Web page contains links to:
+<ol>
+<li> All associated documentation 
+</ol>
+<li> Moderator notified of readiness.
+</ol>
+
+<p><b>Rework</b>
+
+<ol>
+<li> Each items on review Web page annotated with a response
+contained in <code>&lt;blockquote&gt; ... &lt;/blockquote&gt;</code>
+
+<li> Updated Web page and rework announced to ptdesign.
+
+</ol>
+
+<p>
+<a href="../index.html">Ptolemy II Home Page</a><br>
+<p>
+<HR>
+Copyright &#169 1997- The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>johnr@eecs.berkeley.edu</author>
+
+</body>
+</html>
