@@ -17,6 +17,8 @@
 create refinements for the states. Each refinement needs a director.
 For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure></property>
            <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0"/>
+           <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
          </property>
        </entity>
     </entity>
