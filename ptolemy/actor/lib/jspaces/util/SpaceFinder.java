@@ -70,7 +70,7 @@ public class SpaceFinder {
                 System.setSecurityManager(
                     new RMISecurityManager());
             }
-                      
+
             if (System.getProperty("com.sun.jini.use.registry") == null) {
                 Locator locator =
                     new com.sun.jini.outrigger.DiscoveryLocator();
@@ -83,7 +83,7 @@ public class SpaceFinder {
             }
         } catch (Exception ex) {
             throw new IllegalActionException("Cannot find JavaSpace. " +
-					ex.getMessage());
+			ex.getClass().getName() + " " + ex.getMessage());
         }
     }
     

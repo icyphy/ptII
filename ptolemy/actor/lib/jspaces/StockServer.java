@@ -46,6 +46,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFAtomicActor;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 
 import java.util.StringTokenizer;
@@ -67,10 +68,38 @@ are queried at the same rate, and all the actors run in the same thread.
 */
 public class StockServer extends TypedCompositeActor {
 
+    /** Construct a StockServer with no container and empty string as its
+     *  name.
+     */
+    public StockServer() {
+        super();
+
+	try {
+	    _init();
+	} catch (IllegalActionException iae) {
+	    throw new InternalErrorException(iae.getMessage());
+	} catch (NameDuplicationException nde) {
+	    throw new InternalErrorException(nde.getMessage());
+	}
+    }
+
+    /** Construct a StockServer in the specified workspace with no
+     *  container and an empty string as a name.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public StockServer(Workspace workspace) {
+	super(workspace);
+
+	try {
+	    _init();
+	} catch (IllegalActionException iae) {
+	    throw new InternalErrorException(iae.getMessage());
+	} catch (NameDuplicationException nde) {
+	    throw new InternalErrorException(nde.getMessage());
+	}
+    }
+
     /** Construct a StockServer with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *
@@ -85,12 +114,6 @@ public class StockServer extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	tickers = new Parameter(this, "tickers", new StringToken("YHOO"));
-	tickers.setTypeEquals(BaseType.STRING);
-
-	// create a SDF director and set its iteration to maximum.
-	SDFDirector director = new SDFDirector(this, "director");
-	director.iterations.setToken(new IntToken(Integer.MAX_VALUE));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,6 +182,8 @@ public class StockServer extends TypedCompositeActor {
 	    }
 
 	    sink.input.tokenConsumptionRate.setToken(new IntToken(numQuotes));
+	    super.preinitialize();
+
         } catch (NameDuplicationException nde) {
 	    throw new InternalErrorException(nde.getMessage());
 	}
@@ -170,6 +195,17 @@ public class StockServer extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // Initialize parameters and create director.
+    private void _init()
+	    throws IllegalActionException, NameDuplicationException {
+	tickers = new Parameter(this, "tickers", new StringToken("YHOO"));
+	tickers.setTypeEquals(BaseType.STRING);
+
+	// create a SDF director and set its iteration to 0 (run forever).
+	SDFDirector director = new SDFDirector(this, "director");
+	director.iterations.setToken(new IntToken(0));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       inner class                         ////
