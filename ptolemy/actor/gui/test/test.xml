@@ -10,7 +10,7 @@
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
         <property name="step" value="step"/>
     </entity>
-    <entity name="rec" class="ptolemy.actor.lib.FileWrite"/>
+    <entity name="rec" class="ptolemy.actor.lib.Recorder"/>
     <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
     <link port="ramp.output" relation="r1"/>
     <link port="rec.input" relation="r1"/>
