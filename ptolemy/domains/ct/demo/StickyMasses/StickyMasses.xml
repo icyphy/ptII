@@ -626,7 +626,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </port>
             <port name="P2" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="370.0, 370.0">
+                <property name="_location" class="ptolemy.moml.Location" value="370.0, 240.0">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -686,7 +686,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <entity name="1:E2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="345.0, 210.0">
+                <property name="_location" class="ptolemy.moml.Location" value="425.0, 210.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -698,7 +698,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <entity name="1:P1" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="205.0, 170.0">
+                <property name="_location" class="ptolemy.moml.Location" value="200.0, 170.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -732,7 +732,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </port>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="147.0, 172.0">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="145.0, 170.0">
                 </vertex>
             </relation>
             <relation name="1:relation0" class="ptolemy.actor.TypedIORelation">
@@ -744,7 +744,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </vertex>
             </relation>
             <relation name="1:_R4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="261.0, 171.0">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="260.0, 170.0">
                 </vertex>
             </relation>
             <relation name="1:relation1" class="ptolemy.actor.TypedIORelation">
