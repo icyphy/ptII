@@ -445,6 +445,7 @@ caprho
 capsigma
 captau
 capupsil
+cbc
 celaine
 cellpadding
 cellspacing
@@ -693,6 +694,8 @@ tcl
 tclblend
 td
 th
+thunk
+thunks
 toc
 toolbar
 toolbars
