@@ -14,7 +14,7 @@
 mailto=$1
 
 ADMDIR=/home/bldmastr/ptII/adm
-GENDIR=$ADMDIR/gen-1.0
+GENDIR=$ADMDIR/gen-1.1
 cd $GENDIR
 
 
@@ -38,7 +38,7 @@ ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 #ls -l $GENDIR/.gz >> $mailmsg
 #echo "" >> $mailmsg
 #echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
-#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-1.0"  >> $mailmsg
+#echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-1.1"  >> $mailmsg
 #echo "" >> $mailmsg
 #echo "The links below are on the nightly build page:" >> $mailmsg
 #echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
