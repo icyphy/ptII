@@ -41,6 +41,7 @@ import java.util.Enumeration;
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
+@version $Id$
 */
 
 public class PNImageSink extends AtomicActor {
@@ -55,7 +56,8 @@ public class PNImageSink extends AtomicActor {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
         //_output = new IOPort(this, "output", false, true);
-	_filename = new Parameter(this, "Output_file", new StringToken("/tmp/image.pbm"));
+	_filename = new Parameter(this, "Output_file",
+                new StringToken("/tmp/image.pbm"));
     }
 
 
@@ -68,7 +70,7 @@ public class PNImageSink extends AtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-	String filename =((StringToken)_filename.getToken()).stringValue();
+	String filename = ((StringToken)_filename.getToken()).stringValue();
 	try {
             //_file = new BufferedReader(new FileReader(filename));
             _file = new FileOutputStream(filename);
