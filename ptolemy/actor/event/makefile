@@ -56,7 +56,8 @@ JSRCS = \
 	Link.java \
 	RemoveActor.java \
 	RemovePort.java \
-	RemoveRelation.java
+	RemoveRelation.java \
+	SetParameter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
