@@ -49,51 +49,20 @@ public final class ImageContrast extends SDFAtomicActor {
 
         super(container,name);
     
-	/* below is what we want to enlarge an input signal which is assumed 
-         * to be quantized as 255 pixtel in y axis and is also quantized in 
-         * time axis. and change it into scale of 128 to 126
-         */ public void fire() throws IllegalActionException {
-       
-	int i, j;
-	int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
-
-        message = (ImageToken) image.get(0);
-        frame = message.intArrayRef();
-	
-	/*enlagreing the input signal*/
-	for (i = 0, i < xframesize , i++){
-	    for (j = 0, j < yframesize, j++){
-		inSignal[i,j] = (inSignal[i,j] - inMin)* 
-		    yframesize / (inMax-inMin); 
-	    }
-	}
-	
-	/*diminish the input signal*/
-	for (i = xframesize - 1, i >= 0 , i--){
-	    for (j = jframesize - 1, j >= 0 , j--){
-	    inSignal[i,j] = (inSignal[i,j] - inMin)* 
-		    yframesize / (inMax-inMin); 
-	    }
-	}
-
-
-
-
-
-
-
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
-        new Parameter(this, "XPartitionSize", new IntToken("4"));
-        new Parameter(this, "YPartitionSize", new IntToken("2"));
+        new Parameter(this, "outmax", new IntToken("255"));
+        new Parameter(this, "outmin", new IntToken("0"));
  
-        SDFIOPort outputport = (SDFIOPort) newPort("partition");
+        SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 3168);
+        setTokenProductionRate(outputport, 1);
+        //        outputport.setDeclaredType(IntMatrixToken.class);
 
-        SDFIOPort inputport = (SDFIOPort) newPort("image");
+        SDFIOPort inputport = (SDFIOPort) newPort("figure");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
+        // inputport.setDeclaredType(IntMatrixToken.class);
     }
 
     public void initialize() throws IllegalActionException {
@@ -102,55 +71,55 @@ public final class ImageContrast extends SDFAtomicActor {
         xframesize = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("YFramesize");
         yframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("XPartitionSize");
-        xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YPartitionSize");
-        ypartsize = ((IntToken)p.getToken()).intValue();
 
-        partition = ((SDFIOPort) getPort("partition"));
-        image = ((SDFIOPort) getPort("image"));
-        part = new int[xpartsize*ypartsize];
-	inSignal = new int[xframesize*yframesize];
-        partitions = new ImageToken[3168];
     }
 
     public void fire() throws IllegalActionException {
         int i, j;
-	int x, y;
+	
         int a;
-        int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
-
-        message = (ImageToken) image.get(0);
+        
+        int inMin, inMax;
+        int frameElement;
+        SDFIOPort outputport = (SDFIOPort) getPort("contrast");
+        SDFIOPort inputport = (SDFIOPort) getPort("figure");
+       
+        //for just now, we used inMax = 255 and inMin =0
+        inMax = 255;
+        inMin = 0;
+        message = (ImageToken) inputport.get(0);
         frame = message.intArrayRef();
 
-	//for(j = 0, a = numpartitions - 1 ; j < yframesize; j += ypartsize)
-        //    for(i = 0; i < xframesize; i += xpartsize, a--) {
-        for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
-            for(i = 0; i < xframesize; i += xpartsize, a++) {
-		inSignal[i,j] = (inSignal[i,j] - inMin)* 
-		    yframesize / (inMax-inMin); 
-		for(y = 0; y < ypartsize; y++)
-                    System.arraycopy(frame, (j + y) * xframesize + i,
-                            part, y * xpartsize, xpartsize);
-                partitions[a] = new ImageToken(part, ypartsize, xpartsize);
+        for(j = 0; j < yframesize; j ++) 
+            for(i = 0; i < xframesize; i ++) {    
+                frameElement = frame[xframesize*j+i];
+                if (frameElement >= inMax)
+                    inMax = frameElement;
+                if (frameElement <= inMin)
+                    inMin = frameElement;
             }
+        
+        //if the (inMax != inMin), inMax and inMin is not the default
+        //value 255 and 0, then do the image contrast. If not, don't do
+        // anything             
+
+        if ((inMax != inMin) && !((inMax == 255) && (inMin == 0))) 
+            for (j = 0; j < yframesize; j ++)
+                for(i = 0; i < xframesize; i ++) {
+                    frameElement = frame[xframesize*j+i];
+                    frameElement = (frameElement - inMin)* 255 / (inMax-inMin);                 }
+        message = new ImageToken(frame, yframesize, xframesize);
+        outputport.send(0, message);
 	
-        partition.sendArray(0, partitions);
-	
-    }
+    } 
 
     ImageToken message;
-    SDFIOPort partition;
-    SDFIOPort image;
-    private ImageToken partitions[];
+ 
     private int part[];
     private int frame[];
     private int xframesize;
     private int yframesize;
-    private int xpartsize;
-    private int ypartsize;
-           /*added this lines*/
-    private int inSignal[];
+         
 }
 
 
