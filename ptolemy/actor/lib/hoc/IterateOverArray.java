@@ -110,6 +110,10 @@ functions of functional languages, but unlike those, the
 contained actor need not be functional. That is, it can have
 state.
 <p>
+Note that you cannot place class definitions inside this
+actor. There should be no need to because class instances
+inside it can be instances of classes defined outside of it.
+<p>
 FIXME: There should be an option to reset between
 firings of the inside actor.
 
@@ -202,10 +206,15 @@ public class IterateOverArray extends TypedCompositeActor {
      *   action would result in a recursive containment structure, or the
      *   argument does not implement the TypedActor interface.
      *  @exception NameDuplicationException If the name collides with a name
-     *   already on the actor contents list.
+     *   already on the actor contents list, or if the added element is a
+     *   class definition.
      */
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
+        if (entity.isClassDefinition()) {
+            throw new IllegalActionException(this,
+            "Cannot place a class definition in an IterateOverArray actor.");
+        }
         super._addEntity(entity);
         
         // This needs to be a MoMLChangeRequest so that undo works.
