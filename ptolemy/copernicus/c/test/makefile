@@ -40,7 +40,7 @@ ROOT =		../../../..
 
 # $PTII/configure looks for Soot and JHDL and sets
 # variables in $PTII/mk/ptII.mk
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES);.
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR).
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
