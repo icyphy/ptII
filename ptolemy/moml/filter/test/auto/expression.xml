@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="model" class="ptolemy.actor.TypedCompositeActor">
+<entity class="ptolemy.actor.lib.Expression" name="invariant">
+   <property name="expression" value="!(t &lt;= P)"/>
+   <port class="ptolemy.actor.TypedIOPort" name="output">
+      <property name="output"/>
+   </port>
+   <property name="expression" value="!(t &lt;= P)"/>
+   <property class="ptolemy.data.expr.Parameter" name="parameter" value="1">
+   </property>
+</entity>
+</entity>

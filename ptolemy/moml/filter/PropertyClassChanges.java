@@ -147,13 +147,6 @@ public class PropertyClassChanges implements MoMLFilter {
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
 
-                // We found a property class to change, and now we
-                // found the class itself that needs changing.
-
-                // Only return the new class once, but we might
-                // have other properties that need changing
-                //_currentlyProcessingActorWithPropertyClassChanges = false;
-
                 String temporaryNewClass = _newClass;
                 if (!attributeValue.equals(_newClass)) {
                     MoMLParser.setModified(true);
@@ -185,6 +178,7 @@ public class PropertyClassChanges implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
+        _foundChange = false;
         return elementName;
     }
 
@@ -241,7 +235,7 @@ public class PropertyClassChanges implements MoMLFilter {
     // Cache of map from old property names to new class names for
     // the actor we are working on.
     private static HashMap _propertyMap;
-
+    
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.

@@ -104,7 +104,6 @@ public class PortClassChanges implements MoMLFilter {
             if (_actorsWithPortClassChanges.containsKey(attributeValue)) {
                 // We found a class (actor) with a port class change.
                 _currentlyProcessingActorWithPortClassChanges = true;
-                _doneProcessingActorWithPortClassChanges  = false;
 
                 // Find the port mapping of the current actor.
                 _portMap = (HashMap) _actorsWithPortClassChanges
@@ -117,7 +116,6 @@ public class PortClassChanges implements MoMLFilter {
                 
                 // Reset the state variables indicating a new start.
                 _currentlyProcessingActorWithPortClassChanges = false;
-                _doneProcessingActorWithPortClassChanges  = true;
                 _foundPort = false;
 
                 MoMLParser.setModified(true);
@@ -137,6 +135,7 @@ public class PortClassChanges implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
+        _foundPort = false;
         return elementName;
     }
 
@@ -186,9 +185,6 @@ public class PortClassChanges implements MoMLFilter {
     // changes, set to false when we are done.
     private static boolean
     _currentlyProcessingActorWithPortClassChanges = false;
-
-    // Set to true if we are done processing an actor.
-    private static boolean _doneProcessingActorWithPortClassChanges = false;
 
     private static boolean _foundPort = false;
 
