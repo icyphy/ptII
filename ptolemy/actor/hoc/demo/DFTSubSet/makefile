@@ -51,7 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DFTSubSet.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
 	DFTSubSet.htm \
 	DFTSubSetVergil.htm
 
