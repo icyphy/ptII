@@ -33,6 +33,7 @@ package ptolemy.hsif;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
@@ -46,6 +47,7 @@ import ptolemy.util.XSLTUtilities;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -227,9 +229,28 @@ public class HSIFEffigyFactory extends EffigyFactory {
 
     // Return true if the input file is a HSIF file.
     private static boolean _isHSIF(URL inputURL) throws IOException {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        inputURL.openStream()));
+
+	InputStream inputStream = null;
+	try {
+	    inputStream = inputURL.openStream();
+	} catch (FileNotFoundException ex) {
+	    // Try it as a jar URL 
+	    try {
+		URL jarURL =
+		    JNLPUtilities.jarURLEntryResource(inputURL.toString());
+		if (jarURL == null) {
+		    throw new Exception("'" + inputURL + "' was not a jar "
+					+ "URL, or was not found");
+		}
+		inputStream = jarURL.openStream();
+	    } catch (Exception ex2) {
+		// FIXME: IOException does not take a cause argument
+		throw ex;
+	    }
+	}
+
+        BufferedReader reader =
+	    new BufferedReader(new InputStreamReader(inputStream));
 
         String inputLine;
 
