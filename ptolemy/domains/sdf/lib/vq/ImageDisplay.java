@@ -49,6 +49,7 @@ import java.awt.image.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 import java.awt.Dimension;
 
 //////////////////////////////////////////////////////////////////////////
@@ -130,9 +131,10 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
         if(_container == null) {
             _frame = new _PictureFrame("ImageDisplay");
             _container = _frame.getContentPane();
-        } else {
-            _frame = null;
         }
+	if(_frame != null) {
+	    _frame.setVisible(true);
+	}
     }
 
     /**
@@ -158,38 +160,37 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
         if((_oldxsize != xsize) || (_oldysize != ysize)) {
             _oldxsize = xsize;
             _oldysize = ysize;
-            _RGBbuffer = new int[xsize*ysize];
-            if(_container == null) {
-                _frame = new _PictureFrame("ImageDisplay");
-                _container = _frame.getContentPane();
-            } else {
-                _frame = null;
-            }
-            if(_picture != null)
+            _RGBbuffer = new int[xsize * ysize];
+	    
+	    if(_picture != null)
                 _container.remove(_picture);
-            _container.setSize(xsize, ysize);
-	  
+            	  
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
             _container.add("Center", _picture);
             _container.validate();
-
-            Container c = _container.getParent();
-            while(c.getParent() != null) {
-                c = c.getParent();
-            }
-            if(c instanceof JWindow) {
-                ((JWindow) c).pack();
-            } else {
-                c.validate();
-            }
-
-            _container.invalidate();
+	    _container.invalidate();
             _container.repaint();
-
-            if(_frame != null) {
-                _frame.pack();
-            }
+	    _container.doLayout();
+	    Container c = _container.getParent();
+	    while(c.getParent() != null) {
+		c.invalidate();
+		c.validate();
+		c = c.getParent();
+	    }
+	    if(_frame != null) {
+		_frame.pack();
+	    }
+	    Runnable painter = new Runnable() {
+		public void run() {
+		    _container.repaint();
+		}
+	    };
+	    try {
+		// Make sure the image gets updated.
+		SwingUtilities.invokeAndWait(painter);
+	    } catch(Exception e) {
+	    }
         }
 
         // convert the B/W image to a packed RGB image.  This includes
@@ -214,6 +215,13 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
      */
     public void place(Container container) {
         _container = container;
+	Container c = _container.getParent();
+	while(c.getParent() != null) {
+	    c = c.getParent();
+	}
+	if(c instanceof JFrame) {
+	    _frame = (JFrame)c;
+	}	
     }
 
     /** This inner class provides a convenient way to create a JFrame for the
@@ -230,7 +238,7 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
     }
 
     private Picture _picture;
-    private _PictureFrame _frame;
+    private JFrame _frame;
     private Container _container;
     private int _oldxsize, _oldysize;
     private int _RGBbuffer[] = null;
