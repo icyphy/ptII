@@ -530,8 +530,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Reset _firstIteration to true.
-        _firstIteration = true;
         // Reset _postFireReturns to true.
         _postfireReturns = true;
         // Record starting point of the real time (the computer system time)
@@ -925,11 +923,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** A boolean value indicating whether the current iteration is the first
-     *  iteration after a breakpoint in a simulation.
-     */
-    protected boolean _firstIteration = false;
 
     /** This flag will be set to false if any actor returns false from
      *  its postfire().
