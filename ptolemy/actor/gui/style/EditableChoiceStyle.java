@@ -68,6 +68,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      */
     public EditableChoiceStyle() {
         super();
+        _isEditable = true;
     }
 
     /** Construct an attribute with the specified container and name.
@@ -82,6 +83,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
     public EditableChoiceStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _isEditable = true;
     }
 
     /** Create a new editable
@@ -95,11 +97,6 @@ public class EditableChoiceStyle extends ChoiceStyle {
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         super.addEntry(query);
-        // This method is only here for documentation.
+        _isEditable = true;
     }
-
-    /** Whether or not the combobox is editable. In this class the
-     *  value is true.
-     */
-    protected boolean _isEditable = true;
 }
