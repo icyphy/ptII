@@ -214,6 +214,10 @@ MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
 
+# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
+# if the CaffeineMark Java Benchmark kit is found.
+PTCM_DIR =	@PTCM_DIR@
+
 # Set to comm and used in
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
 #
