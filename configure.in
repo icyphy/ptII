@@ -626,10 +626,10 @@ else
     fi
     if test "$TINI_CLASSES" = "no"; then
         AC_MSG_WARN(['Failed to find tini/bin/tiniclasses.jar
-perhaps Tini is not installed?
-You need not download Tini unless you plan on building applications
-for the Dallas Semiconductor Tini board
-Tini can be downloaded from http://www.ibutton.com'])
+   perhaps Tini is not installed?
+   You need not download Tini unless you plan on building applications
+   for the Dallas Semiconductor Tini board.
+   The Tini SDK can be downloaded from http://www.ibutton.com'])
 	# Note that we don't substitute in the $(PTII) or $(TINI_DIR) here
 	TINI_DIR='$(PTII)/vendors/dalsemi/tini'
    	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
