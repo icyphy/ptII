@@ -30,8 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.BasicModelErrorHandler;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -128,6 +127,24 @@ public abstract class PtolemyFrame extends TableauFrame {
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
             _about();
+        }
+    }
+
+    /** Print the contents.  If this frame implements either the
+     *  Printable or Pageable then those interfaces are used to print
+     *  it.  This overrides the base class to queue a change request to do
+     *  the printing, because otherwise, printing will cause a deadlock.
+     */
+    protected void _print() {
+        if (_model != null) {
+            ChangeRequest request = new ChangeRequest(this, "Print") {
+                protected void _execute() throws Exception {
+                    PtolemyFrame.super._print();
+                }
+            };
+            _model.requestChange(request);
+        } else {
+            super._print();
         }
     }
 
