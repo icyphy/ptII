@@ -37,6 +37,14 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}
+
+if {[string compare test [info procs jdkCaptureErr]] == 1} then {
+    source [file join $PTII util testsuite jdktools.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -147,3 +155,50 @@ test KernelException-7.8 {Create a KernelException with null NamedObj \
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
 } {{}}
+
+######################################################################
+####
+#
+
+test KernelException-7.9 {Create a KernelException with a named NamedObj \
+	and a named NamedObj and a detail message and a cause} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.KernelException \
+	    $n1 $n2 $cause "Detail Message"]
+
+    # Try out printStackTrace(PrintStream)
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    $pe printStackTrace $printStream
+    $printStream flush
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+
+    list [$pe getMessage] [[$pe getCause] toString] "\n\n" \
+	    [string range $output 0 108]
+} {{Detail Message
+  in .NamedObj 1 and .NamedObj 2
+Because:
+Cause Exception} {java.lang.Exception: Cause Exception} {
+
+} {ptolemy.kernel.util.KernelException: Detail Message
+  in .NamedObj 1 and .NamedObj 2
+Because:
+Cause Exception}}
+
+
+test KernelException-8.0 {printStackTrace()} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.KernelException \
+	    $n1 $n2 $cause "Detail Message"]
+    jdkCaptureErr {$pe printStackTrace} errMsg
+    list [string range $errMsg 0 108]
+} {{ptolemy.kernel.util.KernelException: Detail Message
+  in .NamedObj 1 and .NamedObj 2
+Because:
+Cause Exception}}
