@@ -30,6 +30,11 @@
 
 package ptolemy.domains.ct.kernel;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -43,21 +48,19 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
@@ -811,37 +814,57 @@ public class CTScheduler extends Scheduler {
         return ctSchedule;
     }
 
+    /** Set or create a not-visible, not-persistent parameter
+     *  with the specified name in the specified container with
+     *  the specified value.
+     *  @param container The container for the parameter.
+     *  @param name The name for the parameter.
+     *  @param value The value for the parameter.
+     *  @throws IllegalActionException If the parameter cannot
+     *   contain the specified value.
+     */
+    private static void _setOrCreate(
+            NamedObj container, String name, String value)
+            throws IllegalActionException {
+        Variable parameter = (Variable)container.getAttribute(name);
+        if (parameter == null) {
+            // Parameter does not exist, so create it.
+            try {
+                parameter = new Variable(container, name);
+                parameter.setVisibility(Settable.NOT_EDITABLE);
+                parameter.setPersistent(false);
+            } catch (KernelException ex) {
+                // Should not occur.
+                throw new InternalErrorException(ex.toString());
+            }
+        }
+        parameter.setToken(new StringToken(value));
+    }
+
     /** Create and set a parameter in each port according
      *  to the resolved. continuous/discrete nature of the port.
      *  @param typeMap A map from ports to
      */
-    private void _setPortSignalTypes(SignalTypeMap typeMap) {
+    private void _setPortSignalTypes(final SignalTypeMap typeMap) {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<group>\n");
-
-        Iterator entities = container.deepEntityList().iterator();
-        while (entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-                String typeString =
-                    typeMap.getType(port).toString();
-                buffer.append("<port name=\"");
-                buffer.append(port.getName(container));
-                buffer.append("\">\n");
-                buffer.append("<property name=\"resolvedSignalType\" "
-                        + "class=\"ptolemy.data.expr.NotEditableParameter\" "
-                        +  "value=\"&quot;" + typeString + "&quot;\"/>\n");
-                buffer.append("</port>\n");
+            
+        ChangeRequest request = new ChangeRequest(this, "Record signal types") {
+            protected void _execute() throws KernelException {
+                Iterator entities = container.deepEntityList().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity)entities.next();
+                    for (Iterator ports = entity.portList().iterator();
+                         ports.hasNext();) {
+                        IOPort port = (IOPort)ports.next();
+                        String typeString =
+                                typeMap.getType(port).toString();
+                        _setOrCreate(port, "resolvedSignalType", typeString);
+                    }
+                }
             }
-        }
-        buffer.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, container, buffer.toString());
+        };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
