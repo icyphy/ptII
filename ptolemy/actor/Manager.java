@@ -651,12 +651,13 @@ public final class Manager extends NamedObj implements Runnable {
     ////                         protected methods                 ////
 
     /** Make this manager the manager of the specified composite
-     *  actor. If the composite actor is not null, then the manager is 
-     *  removed from the directory of the workspace.  If the composite actor
-     *  is null, then the mnager is <b>not</b> returned to the directory of the
-     *  workspace, which may result in it being garbage collected.
-     *  This method should not be called directly.  Instead, call
-     *  setManager in the CompositeActor class (or a derived class).
+     *  actor. If the composite actor is not null, then the manager is
+     *  removed from the directory of the workspace.  If the composite
+     *  actor is null, then the manager is <b>not</b> returned to the
+     *  directory of the workspace, which may result in it being
+     *  garbage collected.  This method should not be called directly.
+     *  Instead, call setManager in the CompositeActor class (or a
+     *  derived class).
      */
     protected void _makeManagerOf(CompositeActor ca) {
         if (ca != null) {
