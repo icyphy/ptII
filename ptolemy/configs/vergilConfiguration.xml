@@ -178,6 +178,7 @@
             <input source="../domains/ct/lib/ctentities.xml"/>
             <input source="../domains/de/lib/deentities.xml"/>
             <input source="../domains/sr/lib/srentities.xml"/>
+	    <input source="../domains/rtos/lib/rtosentities.xml"/>
           </group>
         ?>
       </configure>
@@ -191,6 +192,27 @@
           <group>
             <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
             <input source="../domains/gr/lib/grentities.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
+
+    <!-- The Ellipsis actors. -->
+    <class name="Ellipsis" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="../actor/ellipsis/ellipsis.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
+
+    <class name="HIL" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="../apps/pendulum/lib/HIL.xml"/>
           </group>
         ?>
       </configure>
