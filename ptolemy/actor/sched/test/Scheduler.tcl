@@ -371,7 +371,7 @@ test Scheduler-6.4.3 {Test Firing.ActorIterator.remove()} {
 
 
     list $errMsg1 $errMsg2
-} {java.lang.UnsupportedOperationException java.lang.UnsupportedOperationException} {KNOWN_ERROR  This should throw an UnsupportedOperationException, but it does not because we do not have our own inner class implementation of this method.}
+} {java.lang.UnsupportedOperationException java.lang.UnsupportedOperationException}
 
 ######################################################################
 ####

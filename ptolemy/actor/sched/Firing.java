@@ -32,6 +32,7 @@ package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
 
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -119,8 +120,7 @@ public class Firing extends ScheduleElement {
         // FIXME: a ConcurrentModificationException will not necessarily
         // be thrown, see the failing tests.
         if (_firing == null) {
-            _firing = new LinkedList();
-            _firing.add(this);
+            _firing = Collections.singletonList(this);
         }
         return _firing.iterator();
     }
@@ -145,10 +145,6 @@ public class Firing extends ScheduleElement {
     public void setActor(Actor actor) {
         _incrementVersion();
         _actor  = actor;
-        if (_firing != null) {
-            _firing.clear();
-            _firing.add(this);
-        }
     }
 
     /**
